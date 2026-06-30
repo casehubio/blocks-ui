@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/blocks-ui-core" },
+    { "path": "components/case-timeline" },
+    { "path": "components/trust-score-panel" },
+    { "path": "components/channel-activity" }
+  ]
+}
