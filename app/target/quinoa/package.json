@@ -1,8 +1,0 @@
-{
-  "name": "blocks-ui-devapp",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "build": "cp -r src/ dist/"
-  }
-}
