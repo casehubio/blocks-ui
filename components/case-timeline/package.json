@@ -19,8 +19,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-component": "^0.2.0"
+    "@casehubio/blocks-ui-core": "workspace:*"
   },
   "devDependencies": {
     "rimraf": "^6.1.0",

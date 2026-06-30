@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseHub Blocks UI — Dev Server</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 2rem; background: #0f172a; color: #e2e8f0; }
+        h1 { color: #38bdf8; }
+        .card { background: #1e293b; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; border: 1px solid #334155; }
+        .status { color: #4ade80; }
+        pre { background: #0f172a; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+        .component-slot { border: 2px dashed #475569; border-radius: 8px; padding: 2rem; margin: 1rem 0; text-align: center; color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <h1>CaseHub Blocks UI</h1>
+    <p>Dev server for shared UI component development</p>
+
+    <div class="card">
+        <h2>Backend Status</h2>
+        <p id="backend-status">Checking...</p>
+    </div>
+
+    <h2>Component Slots</h2>
+
+    <div class="component-slot">
+        <h3>case-timeline</h3>
+        <p>Case lifecycle timeline — status progression, milestones, agent activity</p>
+    </div>
+
+    <div class="component-slot">
+        <h3>trust-score-panel</h3>
+        <p>Agent trust score visualisation — Bayesian Beta scores, trend lines</p>
+    </div>
+
+    <div class="component-slot">
+        <h3>channel-activity</h3>
+        <p>Qhorus channel activity feed — message stream, commitment status</p>
+    </div>
+
+    <script>
+        fetch('/api/hello')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('backend-status').innerHTML =
+                    `<span class="status">✅ ${data.name} — ${data.status}</span>`;
+            })
+            .catch(err => {
+                document.getElementById('backend-status').innerHTML =
+                    `<span style="color: #f87171">❌ Backend unreachable: ${err.message}</span>`;
+            });
+    </script>
+</body>
+</html>
