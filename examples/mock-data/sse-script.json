@@ -1,0 +1,202 @@
+[
+  {
+    "delaySeconds": 5,
+    "event": {
+      "type": "CREATED",
+      "source": "work-service",
+      "subject": "work-item/WI-NEW-001",
+      "workItemId": "WI-NEW-001",
+      "status": "PENDING",
+      "occurredAt": "2026-07-04T08:30:00Z",
+      "actor": "system",
+      "detail": "New fraud alert work item created",
+      "rationale": null,
+      "planRef": null,
+      "outcome": null,
+      "callerRef": "fraud-detector-v3",
+      "assigneeId": null,
+      "resolution": null,
+      "candidateGroups": "fraud-analysts"
+    }
+  },
+  {
+    "delaySeconds": 10,
+    "event": {
+      "type": "ASSIGNED",
+      "source": "work-service",
+      "subject": "work-item/WI-AML-001",
+      "workItemId": "WI-AML-001",
+      "status": "ASSIGNED",
+      "occurredAt": "2026-07-04T08:30:05Z",
+      "actor": "analyst-susan-lee",
+      "detail": "Work item claimed by analyst",
+      "rationale": null,
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "analyst-susan-lee",
+      "resolution": null,
+      "candidateGroups": "aml-l2-analysts"
+    }
+  },
+  {
+    "delaySeconds": 15,
+    "event": {
+      "type": "STARTED",
+      "source": "work-service",
+      "subject": "work-item/WI-AML-001",
+      "workItemId": "WI-AML-001",
+      "status": "IN_PROGRESS",
+      "occurredAt": "2026-07-04T08:30:10Z",
+      "actor": "analyst-susan-lee",
+      "detail": "Investigation started",
+      "rationale": null,
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "analyst-susan-lee",
+      "resolution": null,
+      "candidateGroups": null
+    }
+  },
+  {
+    "delaySeconds": 20,
+    "event": {
+      "type": "PROGRESS_UPDATE",
+      "source": "work-service",
+      "subject": "work-item/WI-DT-002",
+      "workItemId": "WI-DT-002",
+      "status": "IN_PROGRESS",
+      "occurredAt": "2026-07-04T08:30:15Z",
+      "actor": "engineer-alex-kumar",
+      "detail": "Progress update: dependency issue identified, testing fix",
+      "rationale": null,
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "engineer-alex-kumar",
+      "resolution": null,
+      "candidateGroups": null
+    }
+  },
+  {
+    "delaySeconds": 25,
+    "event": {
+      "type": "RESUMED",
+      "source": "work-service",
+      "subject": "work-item/WI-CLIN-003",
+      "workItemId": "WI-CLIN-003",
+      "status": "IN_PROGRESS",
+      "occurredAt": "2026-07-04T08:30:20Z",
+      "actor": "physician-dr-patel",
+      "detail": "Work item resumed after physician callback",
+      "rationale": "Physician called back, peer discussion scheduled for tomorrow",
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "physician-dr-patel",
+      "resolution": null,
+      "candidateGroups": null
+    }
+  },
+  {
+    "delaySeconds": 30,
+    "event": {
+      "type": "COMPLETED",
+      "source": "work-service",
+      "subject": "work-item/WI-DT-002",
+      "workItemId": "WI-DT-002",
+      "status": "COMPLETED",
+      "occurredAt": "2026-07-04T08:30:25Z",
+      "actor": "engineer-alex-kumar",
+      "detail": "Build fixed and deployed",
+      "rationale": null,
+      "planRef": null,
+      "outcome": "FIXED",
+      "callerRef": null,
+      "assigneeId": "engineer-alex-kumar",
+      "resolution": "Missing dependency added to package.json, CI build now passing",
+      "candidateGroups": null
+    }
+  },
+  {
+    "delaySeconds": 35,
+    "event": {
+      "type": "DELEGATED",
+      "source": "work-service",
+      "subject": "work-item/WI-IOT-001",
+      "workItemId": "WI-IOT-001",
+      "status": "DELEGATED",
+      "occurredAt": "2026-07-04T08:30:30Z",
+      "actor": "technician-jane-doe",
+      "detail": "Delegated to senior technician for hardware diagnostics",
+      "rationale": "Requires advanced hardware diagnostics beyond L1 scope",
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "senior-tech-bob-smith",
+      "resolution": null,
+      "candidateGroups": null
+    }
+  },
+  {
+    "delaySeconds": 40,
+    "event": {
+      "type": "ESCALATED",
+      "source": "work-service",
+      "subject": "work-item/WI-AML-002",
+      "workItemId": "WI-AML-002",
+      "status": "ESCALATED",
+      "occurredAt": "2026-07-04T08:30:35Z",
+      "actor": "analyst-mike-chen",
+      "detail": "Escalated to senior analyst",
+      "rationale": "Customer unresponsive, account risk profile warrants senior review",
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": null,
+      "resolution": null,
+      "candidateGroups": "aml-senior-analysts"
+    }
+  },
+  {
+    "delaySeconds": 45,
+    "event": {
+      "type": "CLAIM_EXPIRED",
+      "source": "work-service",
+      "subject": "work-item/WI-CLIN-001",
+      "workItemId": "WI-CLIN-001",
+      "status": "PENDING",
+      "occurredAt": "2026-07-04T08:30:40Z",
+      "actor": "system",
+      "detail": "Claim deadline expired, work item returned to pool",
+      "rationale": "No analyst claimed within SLA deadline",
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": null,
+      "resolution": null,
+      "candidateGroups": "clinical-reviewers"
+    }
+  },
+  {
+    "delaySeconds": 50,
+    "event": {
+      "type": "LABEL_ADDED",
+      "source": "work-service",
+      "subject": "work-item/WI-AML-001",
+      "workItemId": "WI-AML-001",
+      "status": "IN_PROGRESS",
+      "occurredAt": "2026-07-04T08:30:45Z",
+      "actor": "analyst-susan-lee",
+      "detail": "Label added: escalation-candidate=true",
+      "rationale": null,
+      "planRef": null,
+      "outcome": null,
+      "callerRef": null,
+      "assigneeId": "analyst-susan-lee",
+      "resolution": null,
+      "candidateGroups": null
+    }
+  }
+]

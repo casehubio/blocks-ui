@@ -1,0 +1,1025 @@
+import { LitElement, html, css, type TemplateResult } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import type {
+  WorkItemResponse,
+  WorkIdentity,
+  UserSearchProvider,
+  WorkItemLifecycleEvent,
+  CompleteRequest,
+  EscalateRequest,
+  DelegateRequest,
+} from '@casehubio/blocks-ui-core';
+import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin } from '@casehubio/blocks-ui-core';
+import './detail-action-bar.js';
+import './detail-activity-tab.js';
+import './detail-relations-tab.js';
+
+type TabName = 'overview' | 'activity' | 'relations';
+
+@customElement('work-item-detail')
+export class WorkItemDetail extends FocusTrapMixin(LitElement) {
+  @property({ type: String }) endpoint: string | null = null;
+  @property({ type: String }) workItemId: string | null = null;
+  @property({ type: Object }) identity: WorkIdentity | null = null;
+  @property({ type: Object }) userSearchProvider: UserSearchProvider | null = null;
+  @property({ type: Object }) data: WorkItemResponse | null = null;
+
+  @state() private _activeTab: TabName = 'overview';
+  @state() private _events: readonly WorkItemLifecycleEvent[] = [];
+  @state() private _loading = false;
+  @state() private _error: string | null = null;
+
+  // Dialog states
+  @state() private _showEscalateDialog = false;
+  @state() private _showDelegateDialog = false;
+  @state() private _showCompleteDialog = false;
+
+  private _unsubscribeSelection?: () => void;
+
+  static override styles = css`
+    :host {
+      display: block;
+      height: 100%;
+      overflow-y: auto;
+      font-family: var(--blocks-font-family, system-ui);
+      background: var(--blocks-neutral-1, #fff);
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--blocks-space-10, 40px);
+      text-align: center;
+      color: var(--blocks-neutral-9, #888);
+      min-height: 400px;
+    }
+
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--blocks-space-3, 12px);
+      color: var(--blocks-neutral-6, #ccc);
+    }
+
+    .empty-text {
+      font-size: var(--blocks-font-size-base, 14px);
+      margin-bottom: var(--blocks-space-1, 4px);
+    }
+
+    .empty-hint {
+      font-size: var(--blocks-font-size-sm, 12px);
+      color: var(--blocks-neutral-8, #999);
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      background: var(--blocks-neutral-1, #fff);
+      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
+      z-index: 20;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: var(--blocks-space-2, 8px);
+      margin-bottom: var(--blocks-space-2, 8px);
+    }
+
+    .title {
+      font-size: var(--blocks-font-size-lg, 16px);
+      font-weight: var(--blocks-font-weight-semibold, 600);
+      color: var(--blocks-neutral-12, #111);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      padding: 4px 8px;
+      border-radius: var(--blocks-radius-sm, 4px);
+      font-size: var(--blocks-font-size-xs, 11px);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      text-transform: uppercase;
+      background: var(--blocks-neutral-3, #f3f3f3);
+      color: var(--blocks-neutral-11, #444);
+    }
+
+    .status-pill.active {
+      background: var(--blocks-accent-3, #dbeafe);
+      color: var(--blocks-accent-11, #1e40af);
+    }
+
+    .status-pill.terminal {
+      background: var(--blocks-neutral-3, #f3f3f3);
+      color: var(--blocks-neutral-9, #888);
+    }
+
+    .priority-badge {
+      padding: 4px 8px;
+      border-radius: var(--blocks-radius-sm, 4px);
+      font-size: var(--blocks-font-size-xs, 11px);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      text-transform: uppercase;
+    }
+
+    .priority-badge.urgent {
+      background: var(--blocks-danger-9, #dc2626);
+      color: #fff;
+    }
+
+    .priority-badge.high {
+      background: var(--blocks-warning-9, #f59e0b);
+      color: #fff;
+    }
+
+    .priority-badge.medium {
+      background: var(--blocks-accent-9, #2563eb);
+      color: #fff;
+    }
+
+    .priority-badge.low {
+      background: var(--blocks-neutral-7, #aaa);
+      color: #fff;
+    }
+
+    .terminal-banner {
+      background: var(--blocks-neutral-2, #fafafa);
+      border-left: 4px solid var(--blocks-neutral-7, #aaa);
+      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
+      margin: var(--blocks-space-4, 16px);
+      border-radius: var(--blocks-radius-sm, 4px);
+    }
+
+    .terminal-banner.faulted {
+      background: var(--blocks-danger-2, #fee);
+      border-left-color: var(--blocks-danger-9, #dc2626);
+    }
+
+    .terminal-banner-title {
+      font-weight: var(--blocks-font-weight-medium, 500);
+      font-size: var(--blocks-font-size-base, 14px);
+      color: var(--blocks-neutral-12, #111);
+      margin-bottom: var(--blocks-space-1, 4px);
+    }
+
+    .terminal-banner-meta {
+      font-size: var(--blocks-font-size-sm, 12px);
+      color: var(--blocks-neutral-10, #666);
+    }
+
+    .tabs {
+      display: flex;
+      gap: var(--blocks-space-1, 4px);
+      padding: 0 var(--blocks-space-4, 16px);
+      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
+    }
+
+    .tab {
+      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
+      font-size: var(--blocks-font-size-sm, 12px);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      color: var(--blocks-neutral-10, #666);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      transition: color 120ms ease-out, border-color 120ms ease-out;
+    }
+
+    .tab:hover {
+      color: var(--blocks-neutral-12, #111);
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--blocks-accent-11, #1e40af);
+      border-bottom-color: var(--blocks-accent-9, #2563eb);
+    }
+
+    .tab:focus-visible {
+      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline-offset: -2px;
+    }
+
+    .tab-panels {
+      padding: var(--blocks-space-4, 16px);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel[aria-hidden="false"] {
+      display: block;
+    }
+
+    .overview-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--blocks-space-4, 16px);
+    }
+
+    .metadata-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--blocks-space-2, 8px);
+    }
+
+    .metadata-item {
+      display: flex;
+      gap: var(--blocks-space-2, 8px);
+      font-size: var(--blocks-font-size-sm, 12px);
+    }
+
+    .metadata-label {
+      color: var(--blocks-neutral-9, #888);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      min-width: 120px;
+    }
+
+    .metadata-value {
+      color: var(--blocks-neutral-12, #111);
+    }
+
+    .loading {
+      text-align: center;
+      padding: var(--blocks-space-10, 40px);
+      color: var(--blocks-neutral-9, #888);
+    }
+
+    .error {
+      background: var(--blocks-danger-2, #fee);
+      color: var(--blocks-danger-11, #991b1b);
+      padding: var(--blocks-space-3, 12px);
+      border-radius: var(--blocks-radius-sm, 4px);
+      margin: var(--blocks-space-4, 16px);
+    }
+
+    /* Dialog styles */
+    .dialog-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .dialog {
+      background: var(--blocks-neutral-1, #fff);
+      border-radius: var(--blocks-radius-md, 6px);
+      padding: var(--blocks-space-4, 16px);
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .dialog-title {
+      font-size: var(--blocks-font-size-lg, 16px);
+      font-weight: var(--blocks-font-weight-semibold, 600);
+      margin: 0 0 var(--blocks-space-3, 12px) 0;
+      color: var(--blocks-neutral-12, #111);
+    }
+
+    .dialog-content {
+      margin-bottom: var(--blocks-space-4, 16px);
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: var(--blocks-space-2, 8px);
+      justify-content: flex-end;
+    }
+
+    .form-field {
+      margin-bottom: var(--blocks-space-3, 12px);
+    }
+
+    label {
+      display: block;
+      font-size: var(--blocks-font-size-sm, 12px);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      margin-bottom: var(--blocks-space-1, 4px);
+      color: var(--blocks-neutral-11, #444);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: var(--blocks-space-2, 8px);
+      border: 1px solid var(--blocks-neutral-6, #ccc);
+      border-radius: var(--blocks-radius-sm, 4px);
+      font-family: inherit;
+      font-size: var(--blocks-font-size-sm, 12px);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline-offset: -1px;
+      border-color: var(--blocks-accent-9, #2563eb);
+    }
+
+    button {
+      padding: var(--blocks-space-1-5, 6px) var(--blocks-space-3, 12px);
+      border-radius: var(--blocks-radius-sm, 4px);
+      font-family: inherit;
+      font-size: var(--blocks-font-size-sm, 12px);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--blocks-accent-9, #2563eb);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--blocks-neutral-3, #f3f3f3);
+      color: var(--blocks-neutral-12, #111);
+    }
+
+    .btn-danger {
+      background: var(--blocks-danger-9, #dc2626);
+      color: #fff;
+    }
+  `;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    // Listen for work item selection events
+    this._unsubscribeSelection = onPagesEvent<{ workItemId: string }>(
+      document,
+      WorkItemEventTopics.SELECTED,
+      (payload) => {
+        this.workItemId = payload.workItemId;
+        this._loadWorkItem();
+      },
+    );
+
+    if (this.workItemId) {
+      this._loadWorkItem();
+    }
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._unsubscribeSelection?.();
+  }
+
+  override willUpdate(changed: Map<string, unknown>): void {
+    if (changed.has('workItemId') && this.workItemId && this.endpoint != null) {
+      this._loadWorkItem();
+    }
+  }
+
+  override updated(changed: Map<string, unknown>): void {
+    super.updated(changed);
+
+    // Trap focus when a dialog opens
+    if (changed.has('_showEscalateDialog') && this._showEscalateDialog) {
+      const dialog = this.shadowRoot?.querySelector('.dialog-overlay .dialog') as HTMLElement;
+      if (dialog) this.trapFocus(dialog);
+    }
+    if (changed.has('_showDelegateDialog') && this._showDelegateDialog) {
+      const dialog = this.shadowRoot?.querySelector('.dialog-overlay .dialog') as HTMLElement;
+      if (dialog) this.trapFocus(dialog);
+    }
+    if (changed.has('_showCompleteDialog') && this._showCompleteDialog) {
+      const dialog = this.shadowRoot?.querySelector('.dialog-overlay .dialog') as HTMLElement;
+      if (dialog) this.trapFocus(dialog);
+    }
+
+    // Release focus when all dialogs close
+    if ((changed.has('_showEscalateDialog') || changed.has('_showDelegateDialog') || changed.has('_showCompleteDialog'))
+        && !this._showEscalateDialog && !this._showDelegateDialog && !this._showCompleteDialog) {
+      this.releaseFocus();
+    }
+  }
+
+  configure(props: Record<string, unknown>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
+    if (props.workItemId) this.workItemId = props.workItemId as string;
+    if (props.identity) this.identity = props.identity as WorkIdentity;
+    if (props.userSearchProvider) this.userSearchProvider = props.userSearchProvider as UserSearchProvider;
+    if (props.data) this.data = props.data as WorkItemResponse;
+  }
+
+  override render(): TemplateResult {
+    if (this._error) {
+      return html`<div class="error">Error: ${this._error}</div>`;
+    }
+
+    if (this._loading) {
+      return html`<div class="loading">Loading...</div>`;
+    }
+
+    const workItem = this.data;
+
+    if (!workItem) {
+      return this._renderEmptyState();
+    }
+
+    const isTerminal = isTerminalStatus(workItem.status);
+
+    return html`
+      ${this._renderHeader(workItem)}
+      ${isTerminal ? this._renderTerminalBanner(workItem) : html`<detail-action-bar .workItem="${workItem}" .identity="${this.identity}" @action-click="${this._handleAction}"></detail-action-bar>`}
+      ${this._renderTabs()}
+      ${this._renderTabPanels(workItem)}
+      ${this._showEscalateDialog ? this._renderEscalateDialog() : ''}
+      ${this._showDelegateDialog ? this._renderDelegateDialog() : ''}
+      ${this._showCompleteDialog ? this._renderCompleteDialog() : ''}
+    `;
+  }
+
+  private _renderEmptyState(): TemplateResult {
+    return html`
+      <div class="empty-state">
+        <svg class="empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <div class="empty-text">Select a work item to view details</div>
+        <div class="empty-hint">Use arrow keys to navigate the inbox, Enter to select</div>
+      </div>
+    `;
+  }
+
+  private _renderHeader(workItem: WorkItemResponse): TemplateResult {
+    const isTerminal = isTerminalStatus(workItem.status);
+    const priorityClass = workItem.priority.toLowerCase();
+
+    return html`
+      <div class="sticky-header">
+        <div class="header-row">
+          <h1 class="title">${workItem.title}</h1>
+          <div class="status-pill ${isTerminal ? 'terminal' : 'active'}">${workItem.status}</div>
+          <div class="priority-badge ${priorityClass}">${workItem.priority}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  private _renderTerminalBanner(workItem: WorkItemResponse): TemplateResult {
+    const isFaulted = workItem.status === 'FAULTED';
+    const timestamp = workItem.completedAt || workItem.updatedAt;
+
+    return html`
+      <div class="terminal-banner ${isFaulted ? 'faulted' : ''}">
+        <div class="terminal-banner-title">${workItem.status}</div>
+        <div class="terminal-banner-meta">
+          ${timestamp ? `Completed at ${new Date(timestamp).toLocaleString()}` : ''}
+          ${workItem.outcome ? ` — Outcome: ${workItem.outcome}` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  private _renderTabs(): TemplateResult {
+    const tabs: Array<{ id: TabName; label: string }> = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'activity', label: 'Activity' },
+      { id: 'relations', label: 'Relations' },
+    ];
+
+    return html`
+      <div class="tabs" role="tablist">
+        ${tabs.map(
+          tab => html`
+            <button
+              class="tab"
+              role="tab"
+              aria-selected="${this._activeTab === tab.id}"
+              @click="${() => this._setActiveTab(tab.id)}"
+            >
+              ${tab.label}
+            </button>
+          `,
+        )}
+      </div>
+    `;
+  }
+
+  private _renderTabPanels(workItem: WorkItemResponse): TemplateResult {
+    return html`
+      <div class="tab-panels">
+        <div
+          class="tab-panel"
+          role="tabpanel"
+          data-tab="overview"
+          aria-hidden="${this._activeTab !== 'overview'}"
+        >
+          ${this._renderOverviewTab(workItem)}
+        </div>
+        <div
+          class="tab-panel"
+          role="tabpanel"
+          data-tab="activity"
+          aria-hidden="${this._activeTab !== 'activity'}"
+        >
+          <detail-activity-tab
+            .workItem="${workItem}"
+            .events="${this._events}"
+            @add-note="${this._handleAddNote}"
+          ></detail-activity-tab>
+        </div>
+        <div
+          class="tab-panel"
+          role="tabpanel"
+          data-tab="relations"
+          aria-hidden="${this._activeTab !== 'relations'}"
+        >
+          <detail-relations-tab .workItem="${workItem}"></detail-relations-tab>
+        </div>
+      </div>
+    `;
+  }
+
+  private _renderOverviewTab(workItem: WorkItemResponse): TemplateResult {
+    return html`
+      <div class="overview-content">
+        ${workItem.description
+          ? html`
+              <div class="metadata-section">
+                <div class="metadata-item">
+                  <span class="metadata-label">Description</span>
+                  <span class="metadata-value">${workItem.description}</span>
+                </div>
+              </div>
+            `
+          : ''}
+        <div class="metadata-section">
+          ${workItem.assigneeId
+            ? html`
+                <div class="metadata-item">
+                  <span class="metadata-label">Assignee</span>
+                  <span class="metadata-value">${workItem.assigneeId}</span>
+                </div>
+              `
+            : ''}
+          ${workItem.category
+            ? html`
+                <div class="metadata-item">
+                  <span class="metadata-label">Category</span>
+                  <span class="metadata-value">${workItem.category}</span>
+                </div>
+              `
+            : ''}
+          ${workItem.candidateGroups
+            ? html`
+                <div class="metadata-item">
+                  <span class="metadata-label">Candidate Groups</span>
+                  <span class="metadata-value">${workItem.candidateGroups}</span>
+                </div>
+              `
+            : ''}
+          <div class="metadata-item">
+            <span class="metadata-label">Created</span>
+            <span class="metadata-value">${new Date(workItem.createdAt).toLocaleString()}</span>
+          </div>
+          <div class="metadata-item">
+            <span class="metadata-label">Updated</span>
+            <span class="metadata-value">${new Date(workItem.updatedAt).toLocaleString()}</span>
+          </div>
+        </div>
+        ${workItem.inputDataSchema && workItem.payload
+          ? html`<schema-form
+              mode="display"
+              .schema="${JSON.parse(workItem.inputDataSchema)}"
+              .data="${JSON.parse(workItem.payload)}"
+            ></schema-form>`
+          : ''}
+        <slot name="payload-renderer"></slot>
+      </div>
+    `;
+  }
+
+  private _renderEscalateDialog(): TemplateResult {
+    return html`
+      <div class="dialog-overlay" @click="${this._handleDialogOverlayClick}">
+        <div class="dialog" @click="${(e: Event) => e.stopPropagation()}">
+          <h2 class="dialog-title">Escalate Work Item</h2>
+          <div class="dialog-content">
+            <div class="form-field">
+              <label for="escalate-target">Target Group</label>
+              <input type="text" id="escalate-target" placeholder="Enter target group" />
+            </div>
+            <div class="form-field">
+              <label for="escalate-reason">Reason</label>
+              <textarea id="escalate-reason" rows="3" placeholder="Reason for escalation"></textarea>
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button class="btn-secondary" @click="${() => (this._showEscalateDialog = false)}">
+              Cancel
+            </button>
+            <button class="btn-primary" @click="${this._handleEscalateSubmit}">Escalate</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  private _renderDelegateDialog(): TemplateResult {
+    return html`
+      <div class="dialog-overlay" @click="${this._handleDialogOverlayClick}">
+        <div class="dialog" @click="${(e: Event) => e.stopPropagation()}">
+          <h2 class="dialog-title">Delegate Work Item</h2>
+          <div class="dialog-content">
+            <div class="form-field">
+              <label for="delegate-target">Delegate To</label>
+              <input type="text" id="delegate-target" placeholder="User ID or group" />
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button class="btn-secondary" @click="${() => (this._showDelegateDialog = false)}">
+              Cancel
+            </button>
+            <button class="btn-primary" @click="${this._handleDelegateSubmit}">Delegate</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  private _renderCompleteDialog(): TemplateResult {
+    const outcomes = this.data?.permittedOutcomes || [];
+
+    return html`
+      <div class="dialog-overlay" @click="${this._handleDialogOverlayClick}">
+        <div class="dialog" @click="${(e: Event) => e.stopPropagation()}">
+          <h2 class="dialog-title">Complete Work Item</h2>
+          <div class="dialog-content">
+            ${outcomes.length > 0
+              ? html`
+                  <div class="form-field">
+                    <label for="complete-outcome">Outcome</label>
+                    <select id="complete-outcome">
+                      ${outcomes.map(
+                        outcome => html`<option value="${outcome.value}">${outcome.label}</option>`,
+                      )}
+                    </select>
+                  </div>
+                `
+              : ''}
+            ${this.data?.outputDataSchema
+              ? html`<schema-form
+                  mode="edit"
+                  .schema="${JSON.parse(this.data.outputDataSchema)}"
+                  .data="${{}}"
+                ></schema-form>`
+              : ''}
+          </div>
+          <div class="dialog-actions">
+            <button class="btn-secondary" @click="${() => (this._showCompleteDialog = false)}">
+              Cancel
+            </button>
+            <button class="btn-primary" @click="${this._handleCompleteSubmit}">Complete</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  private _setActiveTab(tab: TabName): void {
+    this._activeTab = tab;
+  }
+
+  private async _loadWorkItem(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId) return;
+
+    this._loading = true;
+    this._error = null;
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/${this.workItemId}`);
+      if (!response.ok) throw new Error(`Failed to load work item: ${response.statusText}`);
+
+      const raw = await response.json() as Record<string, unknown>;
+      // Handle both wrapped {item: WorkItemResponse} and unwrapped WorkItemResponse
+      this.data = (raw.item && typeof (raw.item as Record<string, unknown>).id === 'string')
+        ? raw.item as WorkItemResponse
+        : raw as unknown as WorkItemResponse;
+
+      // Load activity events
+      const eventsResponse = await fetch(`${this.endpoint}/workitems/${this.workItemId}/events`);
+      if (eventsResponse.ok) {
+        this._events = await eventsResponse.json();
+      }
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    } finally {
+      this._loading = false;
+    }
+  }
+
+  private _handleAction(e: CustomEvent): void {
+    const { action } = e.detail;
+
+    switch (action) {
+      case 'claim':
+        this._handleClaim();
+        break;
+      case 'start':
+        this._handleStart();
+        break;
+      case 'complete':
+        this._showCompleteDialog = true;
+        break;
+      case 'reject':
+        this._handleReject();
+        break;
+      case 'suspend':
+        this._handleSuspend();
+        break;
+      case 'resume':
+        this._handleResume();
+        break;
+      case 'cancel':
+        this._handleCancel();
+        break;
+      case 'release':
+        this._handleRelease();
+        break;
+      case 'delegate':
+        this._showDelegateDialog = true;
+        break;
+      case 'escalate':
+        this._showEscalateDialog = true;
+        break;
+      case 'accept-delegation':
+        this._handleAcceptDelegation();
+        break;
+      case 'decline-delegation':
+        this._handleDeclineDelegation();
+        break;
+    }
+  }
+
+  private async _handleClaim(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/claim?claimant=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to claim work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleStart(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/start?actor=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to start work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleReject(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/reject?actor=${this.identity.userId}`,
+        { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) },
+      );
+      if (!response.ok) throw new Error('Failed to reject work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleSuspend(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/suspend?actor=${this.identity.userId}`,
+        { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) },
+      );
+      if (!response.ok) throw new Error('Failed to suspend work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleResume(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/resume?actor=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to resume work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleCancel(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/cancel?actor=${this.identity.userId}`,
+        { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) },
+      );
+      if (!response.ok) throw new Error('Failed to cancel work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleRelease(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/release?actor=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to release work item');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleAcceptDelegation(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/accept-delegation?claimant=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to accept delegation');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleDeclineDelegation(): Promise<void> {
+    if (this.endpoint == null || !this.workItemId || !this.identity) return;
+
+    try {
+      const response = await fetch(
+        `${this.endpoint}/workitems/${this.workItemId}/decline-delegation?actor=${this.identity.userId}`,
+        { method: 'PUT' },
+      );
+      if (!response.ok) throw new Error('Failed to decline delegation');
+
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleEscalateSubmit(): Promise<void> {
+    const target = this.shadowRoot?.querySelector('#escalate-target') as HTMLInputElement;
+    const reason = this.shadowRoot?.querySelector('#escalate-reason') as HTMLTextAreaElement;
+
+    if (!target?.value || !reason?.value) return;
+    if (this.endpoint == null || !this.workItemId) return;
+
+    try {
+      const request: EscalateRequest = {
+        targetGroup: target.value,
+        reason: reason.value,
+      };
+
+      const response = await fetch(`${this.endpoint}/workitems/${this.workItemId}/escalate`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error('Failed to escalate work item');
+
+      this._showEscalateDialog = false;
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleDelegateSubmit(): Promise<void> {
+    const target = this.shadowRoot?.querySelector('#delegate-target') as HTMLInputElement;
+
+    if (!target?.value) return;
+    if (this.endpoint == null || !this.workItemId) return;
+
+    try {
+      const request: DelegateRequest = {
+        to: target.value,
+      };
+
+      const response = await fetch(`${this.endpoint}/workitems/${this.workItemId}/delegate`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error('Failed to delegate work item');
+
+      this._showDelegateDialog = false;
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private async _handleCompleteSubmit(): Promise<void> {
+    const outcomeSelect = this.shadowRoot?.querySelector('#complete-outcome') as HTMLSelectElement;
+    const schemaForm = this.shadowRoot?.querySelector('schema-form') as any;
+
+    if (this.endpoint == null || !this.workItemId) return;
+
+    try {
+      const formData = schemaForm?.submit?.();
+
+      const outcome = outcomeSelect?.value;
+      const resolution = formData ? JSON.stringify(formData) : undefined;
+
+      const request: CompleteRequest = {
+        ...(outcome ? { outcome } : {}),
+        ...(resolution ? { resolution } : {}),
+      };
+
+      const response = await fetch(`${this.endpoint}/workitems/${this.workItemId}/complete`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error('Failed to complete work item');
+
+      this._showCompleteDialog = false;
+      await this._loadWorkItem();
+    } catch (error) {
+      this._error = error instanceof Error ? error.message : 'Unknown error';
+    }
+  }
+
+  private _handleAddNote(e: CustomEvent): void {
+    // Emit pages-event so the host application can handle note persistence
+    const noteEvent = new CustomEvent('pages-event', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        topic: 'work-item.note-added',
+        payload: {
+          workItemId: this.workItemId,
+          note: e.detail.note,
+        },
+      },
+    });
+    this.dispatchEvent(noteEvent);
+  }
+
+  private _handleDialogOverlayClick(): void {
+    this._showEscalateDialog = false;
+    this._showDelegateDialog = false;
+    this._showCompleteDialog = false;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'work-item-detail': WorkItemDetail;
+  }
+}

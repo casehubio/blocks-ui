@@ -1,0 +1,26 @@
+{
+  "WI-AML-003": {
+    "parents": [],
+    "children": [],
+    "linked": ["WI-AML-001"],
+    "notes": "Related high-value transaction alerts from same customer screening period"
+  },
+  "WI-CLIN-002": {
+    "parents": [],
+    "children": ["WI-CLIN-003"],
+    "linked": [],
+    "notes": "Appeal triggered peer-to-peer review as child workflow"
+  },
+  "WI-CLIN-003": {
+    "parents": ["WI-CLIN-002"],
+    "children": [],
+    "linked": [],
+    "notes": "Peer-to-peer review spawned from appeal WI-CLIN-002"
+  },
+  "WI-IOT-002": {
+    "parents": [],
+    "children": [],
+    "linked": ["WI-IOT-001"],
+    "notes": "Both cold storage incidents may share root cause (HVAC system)"
+  }
+}

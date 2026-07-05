@@ -1,0 +1,32 @@
+[
+  {
+    "id": "queue-aml",
+    "name": "AML Investigations",
+    "labelPattern": "domain=aml",
+    "scope": "tenant:casehub-demo"
+  },
+  {
+    "id": "queue-clinical",
+    "name": "Clinical Reviews",
+    "labelPattern": "domain=clinical",
+    "scope": "tenant:casehub-demo"
+  },
+  {
+    "id": "queue-life",
+    "name": "Life Insurance",
+    "labelPattern": "domain=life",
+    "scope": "tenant:casehub-demo"
+  },
+  {
+    "id": "queue-iot",
+    "name": "IoT Operations",
+    "labelPattern": "domain=iot",
+    "scope": "tenant:casehub-demo"
+  },
+  {
+    "id": "queue-devtown",
+    "name": "DevTown",
+    "labelPattern": "domain=devtown",
+    "scope": "tenant:casehub-demo"
+  }
+]

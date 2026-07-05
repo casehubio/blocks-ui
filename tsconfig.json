@@ -4,6 +4,11 @@
     { "path": "packages/blocks-ui-core" },
     { "path": "components/case-timeline" },
     { "path": "components/trust-score-panel" },
-    { "path": "components/channel-activity" }
+    { "path": "components/channel-activity" },
+    { "path": "components/work-item-row" },
+    { "path": "components/work-item-inbox" },
+    { "path": "components/work-item-detail" },
+    { "path": "components/queue-board" },
+    { "path": "components/work-item-workbench" }
   ]
 }

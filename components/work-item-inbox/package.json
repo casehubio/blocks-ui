@@ -1,0 +1,26 @@
+{
+  "name": "@casehubio/blocks-ui-work-item-inbox",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@casehubio/blocks-ui-core": "workspace:*",
+    "@casehubio/blocks-ui-work-item-row": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@vitest/browser": "^2.1.8",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,1218 @@
+[
+  {
+    "id": "WI-AML-001",
+    "title": "Review high-value transaction alert \u2014 $850K wire to Cyprus",
+    "description": "Automated screening flagged outbound wire. Customer profile shows no prior international activity. Requires investigation and disposition.",
+    "category": "AML_INVESTIGATION",
+    "formKey": "aml-transaction-review",
+    "status": "PENDING",
+    "priority": "URGENT",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "compliance",
+    "candidateUsers": null,
+    "requiredCapabilities": "aml.investigation.l2",
+    "createdBy": "system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"transactionId\":\"TX-2026-07-04-18293\",\"amount\":850000,\"currency\":\"USD\",\"destination\":\"Cyprus\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T16:00:00Z",
+    "expiresAt": "2026-07-05T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T08:15:00Z",
+    "updatedAt": "2026-07-04T08:15:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "aml"
+      },
+      {
+        "name": "risk-level",
+        "value": "high"
+      },
+      {
+        "name": "region",
+        "value": "emea"
+      }
+    ],
+    "confidenceScore": 0.87,
+    "callerRef": "screening-engine-v3",
+    "version": 1,
+    "templateId": "aml-transaction-review-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "CLEARED",
+        "label": "Cleared - No Action"
+      },
+      {
+        "value": "SAR_FILED",
+        "label": "SAR Filed"
+      },
+      {
+        "value": "ESCALATED",
+        "label": "Escalate to Senior Analyst"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-CLIN-001",
+    "title": "Prior authorization request \u2014 CAR-T therapy",
+    "description": "Oncology prior auth for CAR-T cell therapy. Member diagnosis: relapsed B-cell lymphoma. Clinical criteria review required.",
+    "category": "PRIOR_AUTH",
+    "formKey": "clinical-prior-auth",
+    "status": "PENDING",
+    "priority": "HIGH",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "clinical-safety",
+    "candidateUsers": null,
+    "requiredCapabilities": "clinical.review.oncology",
+    "createdBy": "provider-portal",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"memberId\":\"M-9182374\",\"procedureCode\":\"J3590\",\"diagnosis\":\"C83.39\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T12:00:00Z",
+    "expiresAt": "2026-07-06T17:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-03T14:30:00Z",
+    "updatedAt": "2026-07-03T14:30:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "clinical"
+      },
+      {
+        "name": "specialty",
+        "value": "oncology"
+      },
+      {
+        "name": "urgency",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "pa-system-v5",
+    "version": 1,
+    "templateId": "prior-auth-clinical-v3",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "APPROVED",
+        "label": "Approved"
+      },
+      {
+        "value": "DENIED",
+        "label": "Denied"
+      },
+      {
+        "value": "PEER_REVIEW",
+        "label": "Peer-to-Peer Review Required"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-LIFE-001",
+    "title": "Underwriting review \u2014 $2M term life application",
+    "description": "New business application. Applicant age 52, elevated BMI, controlled hypertension. Medical records received, awaiting underwriter decision.",
+    "category": "UNDERWRITING",
+    "formKey": "life-underwriting",
+    "status": "PENDING",
+    "priority": "MEDIUM",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "household",
+    "candidateUsers": null,
+    "requiredCapabilities": "underwriting.life.senior",
+    "createdBy": "new-business-system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"applicationId\":\"APP-2026-001293\",\"coverage\":2000000,\"term\":20}",
+    "resolution": null,
+    "claimDeadline": "2026-07-07T17:00:00Z",
+    "expiresAt": "2026-07-10T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-02T10:00:00Z",
+    "updatedAt": "2026-07-02T10:00:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "life"
+      },
+      {
+        "name": "product",
+        "value": "term-life"
+      },
+      {
+        "name": "amount-tier",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": 0.72,
+    "callerRef": "underwriting-engine-v2",
+    "version": 1,
+    "templateId": "life-underwriting-v4",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "APPROVED_STANDARD",
+        "label": "Approved - Standard"
+      },
+      {
+        "value": "APPROVED_RATED",
+        "label": "Approved - Rated"
+      },
+      {
+        "value": "DECLINED",
+        "label": "Declined"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-IOT-001",
+    "title": "Device offline alert \u2014 Industrial pressure sensor P-4712",
+    "description": "Sensor has not reported telemetry for 45 minutes. Location: Refinery Unit 3, Section B. Investigate connectivity or hardware failure.",
+    "category": "IOT_ALERT",
+    "formKey": "iot-device-offline",
+    "status": "PENDING",
+    "priority": "HIGH",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "device-ops",
+    "candidateUsers": null,
+    "requiredCapabilities": "iot.troubleshooting.industrial",
+    "createdBy": "iot-platform",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"deviceId\":\"P-4712\",\"lastSeen\":\"2026-07-04T07:15:00Z\",\"location\":\"Unit3-SectionB\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T09:00:00Z",
+    "expiresAt": "2026-07-04T12:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T08:00:00Z",
+    "updatedAt": "2026-07-04T08:00:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "iot"
+      },
+      {
+        "name": "device-type",
+        "value": "pressure-sensor"
+      },
+      {
+        "name": "criticality",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "iot-monitoring-v2",
+    "version": 1,
+    "templateId": "iot-device-offline-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "CONNECTIVITY_RESTORED",
+        "label": "Connectivity Restored"
+      },
+      {
+        "value": "HARDWARE_REPLACED",
+        "label": "Hardware Replaced"
+      },
+      {
+        "value": "FALSE_POSITIVE",
+        "label": "False Positive"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-DT-001",
+    "title": "Code review \u2014 Feature branch feat/user-auth-refactor",
+    "description": "PR #842: Refactor authentication flow to use OAuth2 PKCE. 12 files changed, +450/-320 lines. Requires security review.",
+    "category": "CODE_REVIEW",
+    "formKey": "devtown-code-review",
+    "status": "PENDING",
+    "priority": "MEDIUM",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "code-review",
+    "candidateUsers": null,
+    "requiredCapabilities": "code-review.security",
+    "createdBy": "github-bot",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"prNumber\":842,\"repo\":\"casehubio/platform\",\"branch\":\"feat/user-auth-refactor\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T17:00:00Z",
+    "expiresAt": "2026-07-08T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-03T16:45:00Z",
+    "updatedAt": "2026-07-03T16:45:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "devtown"
+      },
+      {
+        "name": "type",
+        "value": "security"
+      },
+      {
+        "name": "priority",
+        "value": "normal"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "github-webhook-v1",
+    "version": 1,
+    "templateId": "code-review-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "APPROVED",
+        "label": "Approved"
+      },
+      {
+        "value": "CHANGES_REQUESTED",
+        "label": "Changes Requested"
+      },
+      {
+        "value": "REJECTED",
+        "label": "Rejected"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-AML-002",
+    "title": "Customer due diligence refresh \u2014 High-risk merchant account",
+    "description": "Annual CDD refresh for merchant account MER-47291. Previous risk rating: High. Review current business activity, beneficial ownership, transaction patterns.",
+    "category": "AML_CDD",
+    "formKey": "aml-cdd-refresh",
+    "status": "PENDING",
+    "priority": "MEDIUM",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "compliance",
+    "candidateUsers": null,
+    "requiredCapabilities": "aml.cdd.standard",
+    "createdBy": "system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"accountId\":\"MER-47291\",\"lastReviewDate\":\"2025-07-01\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-06T17:00:00Z",
+    "expiresAt": "2026-07-15T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-01T09:00:00Z",
+    "updatedAt": "2026-07-01T09:00:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "aml"
+      },
+      {
+        "name": "risk-level",
+        "value": "high"
+      },
+      {
+        "name": "type",
+        "value": "periodic-review"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "cdd-scheduler-v1",
+    "version": 1,
+    "templateId": "aml-cdd-refresh-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "RISK_UNCHANGED",
+        "label": "Risk Rating Unchanged"
+      },
+      {
+        "value": "RISK_INCREASED",
+        "label": "Risk Rating Increased"
+      },
+      {
+        "value": "RISK_DECREASED",
+        "label": "Risk Rating Decreased"
+      },
+      {
+        "value": "ACCOUNT_CLOSURE",
+        "label": "Recommend Account Closure"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-CLIN-002",
+    "title": "Appeal review \u2014 Denied lumbar fusion surgery",
+    "description": "Member appeal for L4-L5 fusion surgery. Original denial: medical necessity not met. Member submitted additional MRI results and specialist letter.",
+    "category": "APPEAL",
+    "formKey": "clinical-appeal",
+    "status": "ASSIGNED",
+    "priority": "HIGH",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "clinical-safety",
+    "candidateUsers": null,
+    "requiredCapabilities": "clinical.review.orthopedic",
+    "createdBy": "member-portal",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"memberId\":\"M-7123456\",\"originalDenial\":\"CLM-2026-05-1234\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-03T17:00:00Z",
+    "expiresAt": "2026-07-08T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-02T11:20:00Z",
+    "updatedAt": "2026-07-03T08:30:00Z",
+    "assignedAt": "2026-07-03T08:30:00Z",
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "clinical"
+      },
+      {
+        "name": "specialty",
+        "value": "orthopedic"
+      },
+      {
+        "name": "type",
+        "value": "appeal"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "appeals-system-v3",
+    "version": 2,
+    "templateId": "clinical-appeal-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "UPHELD",
+        "label": "Denial Upheld"
+      },
+      {
+        "value": "OVERTURNED",
+        "label": "Denial Overturned - Approved"
+      },
+      {
+        "value": "PARTIAL",
+        "label": "Partial Approval"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 25,
+    "statusNote": "Reviewing new MRI evidence"
+  },
+  {
+    "id": "WI-AML-003",
+    "title": "Sanctions screening hit \u2014 Wire to OFAC-listed entity",
+    "description": "URGENT: Sanctions screening flagged beneficiary as OFAC SDN match. Transaction blocked pending investigation. Customer notified.",
+    "category": "AML_SANCTIONS",
+    "formKey": "aml-sanctions-review",
+    "status": "IN_PROGRESS",
+    "priority": "URGENT",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "compliance",
+    "candidateUsers": null,
+    "requiredCapabilities": "aml.sanctions.review",
+    "createdBy": "system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "ASSIGNED",
+    "payload": "{\"transactionId\":\"TX-2026-07-04-19447\",\"matchScore\":0.95,\"listType\":\"OFAC-SDN\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T09:00:00Z",
+    "expiresAt": "2026-07-04T14:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T07:45:00Z",
+    "updatedAt": "2026-07-04T08:05:00Z",
+    "assignedAt": "2026-07-04T07:50:00Z",
+    "startedAt": "2026-07-04T08:05:00Z",
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "aml"
+      },
+      {
+        "name": "risk-level",
+        "value": "critical"
+      },
+      {
+        "name": "type",
+        "value": "sanctions"
+      }
+    ],
+    "confidenceScore": 0.95,
+    "callerRef": "sanctions-screening-v4",
+    "version": 3,
+    "templateId": "aml-sanctions-review-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "FALSE_POSITIVE",
+        "label": "False Positive - Release"
+      },
+      {
+        "value": "TRUE_MATCH",
+        "label": "True Match - Block"
+      },
+      {
+        "value": "ESCALATE_COMPLIANCE",
+        "label": "Escalate to Compliance Officer"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 60,
+    "statusNote": "Verifying beneficiary identity against OFAC records"
+  },
+  {
+    "id": "WI-IOT-002",
+    "title": "Anomaly detection \u2014 Temperature spike in cold storage unit CS-22",
+    "description": "Temperature sensor reports 12\u00b0C (target: -5\u00b0C). Pharmaceutical storage unit. Investigate cooling system failure. Product integrity at risk.",
+    "category": "IOT_ANOMALY",
+    "formKey": "iot-temperature-anomaly",
+    "status": "IN_PROGRESS",
+    "priority": "URGENT",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "device-ops",
+    "candidateUsers": null,
+    "requiredCapabilities": "iot.troubleshooting.hvac",
+    "createdBy": "iot-platform",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "ASSIGNED",
+    "payload": "{\"unitId\":\"CS-22\",\"currentTemp\":12,\"targetTemp\":-5,\"location\":\"Warehouse-East\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T07:30:00Z",
+    "expiresAt": "2026-07-04T10:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T07:00:00Z",
+    "updatedAt": "2026-07-04T07:35:00Z",
+    "assignedAt": "2026-07-04T07:20:00Z",
+    "startedAt": "2026-07-04T07:35:00Z",
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "iot"
+      },
+      {
+        "name": "device-type",
+        "value": "temperature-sensor"
+      },
+      {
+        "name": "criticality",
+        "value": "critical"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "iot-anomaly-detector-v3",
+    "version": 3,
+    "templateId": "iot-temperature-anomaly-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "SYSTEM_REPAIRED",
+        "label": "System Repaired"
+      },
+      {
+        "value": "PRODUCT_DISCARDED",
+        "label": "Product Discarded - Out of Spec"
+      },
+      {
+        "value": "SENSOR_FAILURE",
+        "label": "Sensor Malfunction"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 40,
+    "statusNote": "On-site, inspecting compressor unit"
+  },
+  {
+    "id": "WI-DT-002",
+    "title": "Build failure investigation \u2014 CI pipeline failing on main",
+    "description": "CI build failing since commit a7b3c9d. Error: 'module not found @casehubio/engine'. Blocking all deployments.",
+    "category": "BUILD_FAILURE",
+    "formKey": "devtown-build-failure",
+    "status": "IN_PROGRESS",
+    "priority": "URGENT",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "code-review",
+    "candidateUsers": null,
+    "requiredCapabilities": "devops.troubleshooting",
+    "createdBy": "jenkins-bot",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "ASSIGNED",
+    "payload": "{\"buildId\":\"BUILD-2026-07-04-2847\",\"failedCommit\":\"a7b3c9d\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T08:00:00Z",
+    "expiresAt": "2026-07-04T12:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T07:20:00Z",
+    "updatedAt": "2026-07-04T07:50:00Z",
+    "assignedAt": "2026-07-04T07:35:00Z",
+    "startedAt": "2026-07-04T07:50:00Z",
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "devtown"
+      },
+      {
+        "name": "type",
+        "value": "incident"
+      },
+      {
+        "name": "impact",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "jenkins-v2",
+    "version": 3,
+    "templateId": "build-failure-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "FIXED",
+        "label": "Fixed"
+      },
+      {
+        "value": "REVERTED",
+        "label": "Commit Reverted"
+      },
+      {
+        "value": "CONFIG_UPDATED",
+        "label": "Configuration Updated"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 75,
+    "statusNote": "Found missing dependency in package.json, testing fix"
+  },
+  {
+    "id": "WI-LIFE-002",
+    "title": "Claims investigation \u2014 Suspicious death claim",
+    "description": "Death claim filed 8 months after policy issue. Insured age 38, cause of death: accidental drowning. Beneficiary is ex-spouse. Requires SIU review.",
+    "category": "SIU_INVESTIGATION",
+    "formKey": "life-siu-investigation",
+    "status": "IN_PROGRESS",
+    "priority": "HIGH",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "household",
+    "candidateUsers": null,
+    "requiredCapabilities": "siu.investigation.death-claims",
+    "createdBy": "claims-system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "ASSIGNED",
+    "payload": "{\"claimId\":\"CLM-2026-00847\",\"policyId\":\"POL-2025-19283\",\"benefit\":500000}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T17:00:00Z",
+    "expiresAt": "2026-07-20T23:59:59Z",
+    "followUpDate": "2026-07-06T09:00:00Z",
+    "createdAt": "2026-07-01T10:15:00Z",
+    "updatedAt": "2026-07-03T14:20:00Z",
+    "assignedAt": "2026-07-01T11:00:00Z",
+    "startedAt": "2026-07-01T13:30:00Z",
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "life"
+      },
+      {
+        "name": "type",
+        "value": "fraud-investigation"
+      },
+      {
+        "name": "risk-level",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": 0.68,
+    "callerRef": "claims-fraud-detector-v2",
+    "version": 5,
+    "templateId": "siu-death-claim-v3",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "PAY_CLAIM",
+        "label": "Pay Claim"
+      },
+      {
+        "value": "DENY_CLAIM",
+        "label": "Deny Claim"
+      },
+      {
+        "value": "REQUEST_MORE_INFO",
+        "label": "Request Additional Information"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 50,
+    "statusNote": "Waiting on police report and medical examiner statement"
+  },
+  {
+    "id": "WI-CLIN-003",
+    "title": "Peer-to-peer review \u2014 Denied spinal cord stimulator",
+    "description": "Physician requested peer-to-peer discussion. Original denial: conservative treatment not exhausted. Member has chronic back pain, failed PT and medication.",
+    "category": "PEER_REVIEW",
+    "formKey": "clinical-peer-review",
+    "status": "SUSPENDED",
+    "priority": "MEDIUM",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "clinical-safety",
+    "candidateUsers": null,
+    "requiredCapabilities": "clinical.review.pain-management",
+    "createdBy": "peer-review-scheduler",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "ASSIGNED",
+    "payload": "{\"memberId\":\"M-3456789\",\"procedureCode\":\"63650\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T17:00:00Z",
+    "expiresAt": "2026-07-12T23:59:59Z",
+    "followUpDate": "2026-07-08T10:00:00Z",
+    "createdAt": "2026-07-01T09:00:00Z",
+    "updatedAt": "2026-07-03T11:00:00Z",
+    "assignedAt": "2026-07-02T08:00:00Z",
+    "startedAt": "2026-07-02T14:00:00Z",
+    "completedAt": null,
+    "suspendedAt": "2026-07-03T11:00:00Z",
+    "labels": [
+      {
+        "name": "domain",
+        "value": "clinical"
+      },
+      {
+        "name": "specialty",
+        "value": "pain-management"
+      },
+      {
+        "name": "type",
+        "value": "peer-review"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "peer-review-system-v2",
+    "version": 4,
+    "templateId": "peer-review-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "UPHELD",
+        "label": "Denial Upheld"
+      },
+      {
+        "value": "OVERTURNED",
+        "label": "Denial Overturned"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 30,
+    "statusNote": "Waiting for physician to schedule call"
+  },
+  {
+    "id": "WI-AML-004",
+    "title": "Structuring investigation \u2014 Multiple cash deposits under $10K",
+    "description": "Account holder made 8 cash deposits in 10 days, all between $9,200-$9,800. Pattern suggests structuring to avoid CTR filing. Investigate.",
+    "category": "AML_INVESTIGATION",
+    "formKey": "aml-structuring-review",
+    "status": "DELEGATED",
+    "priority": "HIGH",
+    "assigneeId": "demo-user",
+    "owner": "analyst-lisa-martinez",
+    "candidateGroups": "compliance",
+    "candidateUsers": null,
+    "requiredCapabilities": "aml.investigation.l2",
+    "createdBy": "system",
+    "delegationDeclineTarget": "DELEGATOR",
+    "delegationChain": "analyst-lisa-martinez",
+    "priorStatus": "IN_PROGRESS",
+    "payload": "{\"accountId\":\"ACC-9182374\",\"depositCount\":8,\"totalAmount\":74800}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T17:00:00Z",
+    "expiresAt": "2026-07-10T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-06-30T14:00:00Z",
+    "updatedAt": "2026-07-02T16:30:00Z",
+    "assignedAt": "2026-07-01T09:00:00Z",
+    "startedAt": "2026-07-01T10:15:00Z",
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "aml"
+      },
+      {
+        "name": "risk-level",
+        "value": "high"
+      },
+      {
+        "name": "type",
+        "value": "structuring"
+      }
+    ],
+    "confidenceScore": 0.91,
+    "callerRef": "structuring-detector-v2",
+    "version": 6,
+    "templateId": "aml-structuring-review-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "CLEARED",
+        "label": "Cleared - No Action"
+      },
+      {
+        "value": "SAR_FILED",
+        "label": "SAR Filed"
+      },
+      {
+        "value": "ACCOUNT_CLOSED",
+        "label": "Account Closed"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 45,
+    "statusNote": "Delegated to senior analyst for complex pattern analysis"
+  },
+  {
+    "id": "WI-IOT-003",
+    "title": "Firmware update \u2014 Security patch for 240 gateway devices",
+    "description": "Critical security vulnerability CVE-2026-1847 identified in gateway firmware v2.3.1. Deploy patch v2.3.2 to all affected devices.",
+    "category": "IOT_MAINTENANCE",
+    "formKey": "iot-firmware-update",
+    "status": "PENDING",
+    "priority": "HIGH",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "device-ops",
+    "candidateUsers": null,
+    "requiredCapabilities": "iot.firmware.deployment",
+    "createdBy": "security-system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"cveId\":\"CVE-2026-1847\",\"deviceCount\":240,\"currentVersion\":\"2.3.1\",\"targetVersion\":\"2.3.2\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-05T09:00:00Z",
+    "expiresAt": "2026-07-08T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-03T18:00:00Z",
+    "updatedAt": "2026-07-03T18:00:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "iot"
+      },
+      {
+        "name": "type",
+        "value": "security-patch"
+      },
+      {
+        "name": "criticality",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "vuln-scanner-v4",
+    "version": 1,
+    "templateId": "iot-firmware-update-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "DEPLOYED",
+        "label": "Successfully Deployed"
+      },
+      {
+        "value": "PARTIAL",
+        "label": "Partial Deployment - Some Failures"
+      },
+      {
+        "value": "FAILED",
+        "label": "Deployment Failed"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-DT-003",
+    "title": "Production incident \u2014 API rate limit exceeded on /work-items",
+    "description": "Endpoint /work-items returning 429 errors. Traffic spike detected from IP 203.45.67.89. Investigate and mitigate.",
+    "category": "INCIDENT",
+    "formKey": "devtown-incident",
+    "status": "PENDING",
+    "priority": "URGENT",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "code-review",
+    "candidateUsers": null,
+    "requiredCapabilities": "incident.response.production",
+    "createdBy": "monitoring-system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": null,
+    "payload": "{\"endpoint\":\"/work-items\",\"errorRate\":0.42,\"sourceIp\":\"203.45.67.89\"}",
+    "resolution": null,
+    "claimDeadline": "2026-07-04T08:15:00Z",
+    "expiresAt": "2026-07-04T10:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-04T08:10:00Z",
+    "updatedAt": "2026-07-04T08:10:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "devtown"
+      },
+      {
+        "name": "type",
+        "value": "incident"
+      },
+      {
+        "name": "impact",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "datadog-alerting-v3",
+    "version": 1,
+    "templateId": "incident-response-v2",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "MITIGATED",
+        "label": "Mitigated"
+      },
+      {
+        "value": "FALSE_ALARM",
+        "label": "False Alarm"
+      },
+      {
+        "value": "ESCALATED",
+        "label": "Escalated to Security"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": null
+  },
+  {
+    "id": "WI-LIFE-003",
+    "title": "Policy lapse investigation \u2014 $5M whole life policy",
+    "description": "High-value policy lapsed due to non-payment. Premium: $18,400/year. Customer contact attempted 3 times, no response. Verify intent before policy termination.",
+    "category": "POLICY_LAPSE",
+    "formKey": "life-lapse-review",
+    "status": "COMPLETED",
+    "priority": "LOW",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "household",
+    "candidateUsers": null,
+    "requiredCapabilities": "customer-service.retention",
+    "createdBy": "policy-admin-system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "IN_PROGRESS",
+    "payload": "{\"policyId\":\"POL-2018-47291\",\"premiumAmount\":18400,\"lapseDate\":\"2026-06-30\"}",
+    "resolution": "Customer confirmed intent to lapse. Policy terminated per policyholder request.",
+    "claimDeadline": "2026-06-28T17:00:00Z",
+    "expiresAt": "2026-07-15T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-06-25T10:00:00Z",
+    "updatedAt": "2026-06-29T15:45:00Z",
+    "assignedAt": "2026-06-26T09:00:00Z",
+    "startedAt": "2026-06-26T10:30:00Z",
+    "completedAt": "2026-06-29T15:45:00Z",
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "life"
+      },
+      {
+        "name": "type",
+        "value": "policy-admin"
+      },
+      {
+        "name": "value-tier",
+        "value": "high"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "lapse-prevention-v1",
+    "version": 8,
+    "templateId": "lapse-review-v2",
+    "outcome": "LAPSE_CONFIRMED",
+    "permittedOutcomes": [
+      {
+        "value": "REINSTATED",
+        "label": "Policy Reinstated"
+      },
+      {
+        "value": "LAPSE_CONFIRMED",
+        "label": "Lapse Confirmed"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 100,
+    "statusNote": "Completed - policy terminated"
+  },
+  {
+    "id": "WI-AML-005",
+    "title": "PEP screening alert \u2014 New account for foreign government official",
+    "description": "New business account opened for individual flagged as Politically Exposed Person (foreign government ministry official). Enhanced due diligence required.",
+    "category": "AML_EDD",
+    "formKey": "aml-edd-pep",
+    "status": "EXPIRED",
+    "priority": "HIGH",
+    "assigneeId": null,
+    "owner": null,
+    "candidateGroups": "compliance",
+    "candidateUsers": null,
+    "requiredCapabilities": "aml.edd.pep",
+    "createdBy": "system",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "PENDING",
+    "payload": "{\"accountId\":\"ACC-2026-001847\",\"pepCategory\":\"foreign-government\"}",
+    "resolution": null,
+    "claimDeadline": "2026-06-29T17:00:00Z",
+    "expiresAt": "2026-07-01T23:59:59Z",
+    "followUpDate": null,
+    "createdAt": "2026-06-28T11:00:00Z",
+    "updatedAt": "2026-07-02T00:00:00Z",
+    "assignedAt": null,
+    "startedAt": null,
+    "completedAt": null,
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "aml"
+      },
+      {
+        "name": "risk-level",
+        "value": "high"
+      },
+      {
+        "name": "type",
+        "value": "pep-screening"
+      }
+    ],
+    "confidenceScore": 0.88,
+    "callerRef": "pep-screening-v3",
+    "version": 2,
+    "templateId": "aml-edd-pep-v1",
+    "outcome": null,
+    "permittedOutcomes": [
+      {
+        "value": "APPROVED",
+        "label": "Approved with Enhanced Monitoring"
+      },
+      {
+        "value": "DECLINED",
+        "label": "Account Opening Declined"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": null,
+    "statusNote": "Work item expired - no action taken within SLA"
+  },
+  {
+    "id": "WI-CLIN-004",
+    "title": "Concurrent review \u2014 Inpatient psychiatric hospitalization (Day 8)",
+    "description": "Member admitted for major depressive disorder with suicidal ideation. Initial auth: 7 days. Facility requesting extension for additional 5 days.",
+    "category": "CONCURRENT_REVIEW",
+    "formKey": "clinical-concurrent-review",
+    "status": "REJECTED",
+    "priority": "HIGH",
+    "assigneeId": "demo-user",
+    "owner": null,
+    "candidateGroups": "clinical-safety",
+    "candidateUsers": null,
+    "requiredCapabilities": "clinical.review.behavioral-health",
+    "createdBy": "utilization-management",
+    "delegationDeclineTarget": null,
+    "delegationChain": null,
+    "priorStatus": "IN_PROGRESS",
+    "payload": "{\"memberId\":\"M-5647382\",\"facilityId\":\"FAC-0291\",\"admitDate\":\"2026-06-26\"}",
+    "resolution": "Clinical criteria for continued inpatient stay not met. Member stable for discharge to partial hospitalization program. Extension denied.",
+    "claimDeadline": "2026-07-03T12:00:00Z",
+    "expiresAt": "2026-07-04T17:00:00Z",
+    "followUpDate": null,
+    "createdAt": "2026-07-03T09:00:00Z",
+    "updatedAt": "2026-07-03T15:30:00Z",
+    "assignedAt": "2026-07-03T09:15:00Z",
+    "startedAt": "2026-07-03T10:00:00Z",
+    "completedAt": "2026-07-03T15:30:00Z",
+    "suspendedAt": null,
+    "labels": [
+      {
+        "name": "domain",
+        "value": "clinical"
+      },
+      {
+        "name": "specialty",
+        "value": "behavioral-health"
+      },
+      {
+        "name": "type",
+        "value": "concurrent-review"
+      }
+    ],
+    "confidenceScore": null,
+    "callerRef": "utilization-mgmt-v4",
+    "version": 5,
+    "templateId": "concurrent-review-v2",
+    "outcome": "DENIED",
+    "permittedOutcomes": [
+      {
+        "value": "APPROVED",
+        "label": "Extension Approved"
+      },
+      {
+        "value": "DENIED",
+        "label": "Extension Denied"
+      },
+      {
+        "value": "PARTIAL",
+        "label": "Partial Approval"
+      }
+    ],
+    "inputDataSchema": null,
+    "outputDataSchema": null,
+    "excludedUsers": null,
+    "scope": "tenant:casehub-demo",
+    "percentComplete": 100,
+    "statusNote": "Completed - extension denied, discharge recommended"
+  }
+]

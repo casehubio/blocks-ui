@@ -1,0 +1,21 @@
+{
+  "total": 18,
+  "byStatus": {
+    "PENDING": 8,
+    "ASSIGNED": 1,
+    "IN_PROGRESS": 5,
+    "SUSPENDED": 1,
+    "DELEGATED": 1,
+    "COMPLETED": 1,
+    "REJECTED": 1,
+    "EXPIRED": 1
+  },
+  "byPriority": {
+    "LOW": 1,
+    "MEDIUM": 5,
+    "HIGH": 7,
+    "URGENT": 5
+  },
+  "overdue": 3,
+  "claimDeadlineBreached": 4
+}

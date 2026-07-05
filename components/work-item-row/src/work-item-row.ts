@@ -1,0 +1,76 @@
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
+
+function relativeTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `${days}d`;
+}
+
+@customElement('work-item-row')
+export class WorkItemRow extends LitElement {
+  @property({ type: Object }) item!: WorkItemResponse;
+
+  static override styles = css`
+    :host { display: block; cursor: pointer; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 105px 140px 40px;
+      align-items: center;
+      gap: var(--blocks-space-3, 12px);
+      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
+      border-left: 3px solid transparent;
+      border-bottom: 1px solid var(--blocks-neutral-4, #e5e5e5);
+      transition: background var(--blocks-duration-fast, 120ms) var(--blocks-ease-out);
+    }
+    .row:hover { background: var(--blocks-neutral-3, #f5f5f5); }
+    .row.selected { background: var(--blocks-accent-3, #e0e7ff); }
+    .row.priority-urgent { border-left-color: var(--blocks-danger-9, #dc2626); }
+    .row.priority-high { border-left-color: var(--blocks-warning-9, #d97706); }
+    .row.priority-medium { border-left-color: var(--blocks-accent-9, #2563eb); }
+    .row.priority-low { border-left-color: var(--blocks-neutral-7, #a3a3a3); }
+    .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--blocks-neutral-12, #111); font-size: var(--blocks-font-size-base, 14px); min-width: 0; }
+    .status-pill {
+      font-size: var(--blocks-font-size-xs, 11px);
+      padding: 1px var(--blocks-space-1.5, 6px);
+      border-radius: var(--blocks-radius-sm, 4px);
+      background: var(--blocks-neutral-4, #e5e5e5);
+      color: var(--blocks-neutral-11, #666);
+      font-weight: var(--blocks-font-weight-medium, 500);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      min-width: 90px;
+      text-align: center;
+    }
+    .category { font-size: var(--blocks-font-size-sm, 12px); color: var(--blocks-neutral-9, #888); min-width: 80px; text-align: right; }
+    .age { font-size: var(--blocks-font-size-sm, 12px); color: var(--blocks-neutral-9, #888); min-width: 30px; text-align: right; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .row { transition: none; }
+    }
+  `;
+
+  override render() {
+    const priorityClass = `priority-${this.item.priority.toLowerCase()}`;
+    return html`
+      <div class="row ${priorityClass}" role="option" tabindex="-1" @click=${this._handleClick}>
+        <span class="title" title="${this.item.title}">${this.item.title}</span>
+        <span class="status-pill">${this.item.status}</span>
+        <span class="category">${this.item.category ?? ''}</span>
+        <span class="age">${relativeTime(this.item.createdAt)}</span>
+      </div>
+    `;
+  }
+
+  private _handleClick(): void {
+    this.dispatchEvent(new CustomEvent('row-select', {
+      bubbles: true, composed: true,
+      detail: { workItemId: this.item.id },
+    }));
+  }
+}

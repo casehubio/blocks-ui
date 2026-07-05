@@ -1,0 +1,25 @@
+import { initMockState } from './mock/mock-state.js';
+
+async function bootstrap() {
+  const app = document.getElementById('app')!;
+  app.textContent = 'Loading mock data...';
+
+  await initMockState();
+
+  // Import pages and shell AFTER mocks are installed
+  await import('./shell.js');
+  await import('./pages/row-page.js');
+  await import('./pages/inbox-page.js');
+  await import('./pages/detail-page.js');
+  await import('./pages/queue-page.js');
+  await import('./pages/schema-form-page.js');
+  await import('./pages/workbench-page.js');
+
+  app.textContent = '';
+  app.appendChild(document.createElement('example-shell'));
+}
+
+bootstrap().catch(err => {
+  console.error('Failed to bootstrap examples:', err);
+  document.getElementById('app')!.textContent = `Error: ${err.message}`;
+});

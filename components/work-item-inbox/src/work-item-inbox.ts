@@ -1,0 +1,1071 @@
+import { LitElement, html, css, nothing } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import type {
+  WorkItemResponse,
+  WorkItemRootResponse,
+  WorkIdentity,
+  InboxSummary,
+  BulkRequest,
+  BulkItemResult,
+  WorkItemLifecycleEvent,
+  WorkEventType,
+} from '@casehubio/blocks-ui-core';
+import {
+  emitPagesEvent,
+  WorkItemEventTopics,
+  isActiveStatus,
+  RovingTabindexMixin,
+  KeyboardShortcutMixin,
+  SSEManager,
+  WorkEventType as WorkEventTypeEnum,
+} from '@casehubio/blocks-ui-core';
+import type { SSEEvent } from '@casehubio/blocks-ui-core';
+import '@casehubio/blocks-ui-work-item-row';
+import './inbox-summary-bar.js';
+import './inbox-filter-bar.js';
+import type { FilterClickDetail } from './inbox-summary-bar.js';
+import type { FilterChangeDetail } from './inbox-filter-bar.js';
+
+type InboxMode = 'my-work' | 'claimable';
+
+const WorkItemInboxBase = KeyboardShortcutMixin(RovingTabindexMixin(LitElement));
+
+@customElement('work-item-inbox')
+export class WorkItemInbox extends WorkItemInboxBase {
+  override rovingSelector = 'work-item-row';
+  @property({ type: Object }) identity!: WorkIdentity;
+  @property({ type: String }) endpoint?: string;
+  @property({ type: Array }) data?: WorkItemRootResponse[];
+  @property({ type: String }) mode: InboxMode = 'my-work';
+
+  @state() private activeTab: InboxMode = 'my-work';
+  @state() private items: WorkItemRootResponse[] = [];
+  @state() private summary: InboxSummary | null = null;
+  @state() private loading = false;
+  @state() private error: string | null = null;
+
+  // Filter state
+  @state() private statusFilter: Set<string> = new Set();
+  @state() private priorityFilter: Set<string> = new Set();
+  @state() private selectedItems: Set<string> = new Set();
+  @state() private overdueFilter = false;
+  @state() private claimBreachFilter = false;
+  @state() private batchProcessing = false;
+  @state() private batchError: string | null = null;
+
+  private lastSelectedIndex: number = -1;
+
+  // Virtual scrolling
+  @state() private virtualScrollTop = 0;
+  private readonly itemHeight = 72; // Expected row height in pixels
+  private readonly bufferSize = 10; // Extra rows above/below viewport
+
+  // SSE
+  private sseManager = new SSEManager();
+  private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
+
+  static override readonly styles = css`
+    :host {
+      display: block;
+      container-type: inline-size;
+      background: var(--blocks-neutral-1, #ffffff);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .inbox-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      padding: 0 16px;
+      background: var(--blocks-neutral-2, #fafafa);
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blocks-neutral-11, #555555);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .tab {
+        transition: border-color 0.2s, color 0.2s;
+      }
+    }
+
+    .tab:hover {
+      color: var(--blocks-neutral-12, #000000);
+    }
+
+    .tab.active {
+      color: var(--blocks-accent-11, #0066cc);
+      border-bottom-color: var(--blocks-accent-9, #0080ff);
+    }
+
+    .summary-bar {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      background: var(--blocks-neutral-2, #fafafa);
+    }
+
+    .filter-bar {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      background: var(--blocks-neutral-2, #fafafa);
+    }
+
+    .items-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      position: relative;
+    }
+
+    .items-list.virtual {
+      padding: 0;
+    }
+
+    .virtual-spacer {
+      width: 100%;
+    }
+
+    .virtual-content {
+      padding: 8px;
+    }
+
+    .item-row {
+      margin-bottom: 4px;
+    }
+
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      color: var(--blocks-neutral-11, #555555);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .error {
+      padding: 16px;
+      background: var(--blocks-danger-3, #fee);
+      color: var(--blocks-danger-11, #c00);
+      border-radius: 4px;
+      margin: 16px;
+    }
+
+    /* Responsive: Medium (480-768px) - tighter spacing */
+    @container (max-width: 768px) {
+      .tabs {
+        padding: 0 12px;
+      }
+
+      .tab {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      .summary-bar,
+      .filter-bar {
+        padding: 10px 12px;
+      }
+
+      .items-list {
+        padding: 6px;
+      }
+    }
+
+    /* Responsive: Compact (<480px) - card layout */
+    @container (max-width: 480px) {
+      .tabs {
+        padding: 0 8px;
+      }
+
+      .tab {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .summary-bar,
+      .filter-bar {
+        padding: 8px;
+      }
+
+      .items-list {
+        padding: 4px;
+      }
+
+      .item-row {
+        margin-bottom: 8px;
+      }
+    }
+
+    /* Batch operations floating action bar */
+    .batch-action-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--blocks-neutral-1, #ffffff);
+      border: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      border-radius: 8px;
+      padding: 12px 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .batch-count {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .batch-button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .batch-button {
+        transition: background 0.15s, transform 0.1s;
+      }
+    }
+
+    .batch-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .batch-button:active {
+      transform: translateY(0);
+    }
+
+    .batch-button.primary {
+      background: var(--blocks-accent-9, #0080ff);
+      color: white;
+    }
+
+    .batch-button.primary:hover {
+      background: var(--blocks-accent-10, #0066cc);
+    }
+
+    .batch-button.danger {
+      background: var(--blocks-danger-9, #ff3333);
+      color: white;
+    }
+
+    .batch-button.danger:hover {
+      background: var(--blocks-danger-10, #cc0000);
+    }
+
+    .batch-button.secondary {
+      background: var(--blocks-neutral-3, #f5f5f5);
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .batch-button.secondary:hover {
+      background: var(--blocks-neutral-4, #eeeeee);
+    }
+
+    .batch-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .item-row {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .item-row.selected {
+      background: var(--blocks-accent-3, #e6f4ff);
+      border-left: 3px solid var(--blocks-accent-9, #0080ff);
+    }
+  `;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.activeTab = this.mode;
+
+    // Register keyboard shortcuts
+    this.registerShortcut('c', () => this.handleClaimShortcut(), {
+      description: 'Claim focused item',
+    });
+
+    if (this.data) {
+      this.items = this.data;
+    } else if (this.endpoint != null) {
+      this.fetchItems();
+      this.subscribeSSE();
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.unsubscribeSSE();
+  }
+
+  configure(props: Partial<WorkItemInbox>) {
+    if (props.identity) this.identity = props.identity;
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
+    if (props.data) this.data = props.data;
+    if (props.mode) this.mode = props.mode;
+  }
+
+  private subscribeSSE() {
+    if (this.endpoint == null) return;
+    const url = `${this.endpoint}/workitems/events`;
+    this.sseManager.subscribe(url, this.sseHandler);
+  }
+
+  private unsubscribeSSE() {
+    if (this.endpoint == null) return;
+    const url = `${this.endpoint}/workitems/events`;
+    this.sseManager.unsubscribe(url, this.sseHandler);
+  }
+
+  private handleSSEEvent(event: SSEEvent) {
+    // Map SSE event type to WorkEventType
+    const data = event.data as WorkItemLifecycleEvent;
+    const eventType = data.type as WorkEventType;
+
+    // Item appears (add row with entry animation)
+    if (
+      eventType === WorkEventTypeEnum.CREATED ||
+      eventType === WorkEventTypeEnum.ASSIGNED ||
+      eventType === WorkEventTypeEnum.SLA_REASSIGNED
+    ) {
+      this.handleItemAppears(data.workItemId);
+      return;
+    }
+
+    // Item disappears (remove row with exit animation)
+    if (
+      eventType === WorkEventTypeEnum.COMPLETED ||
+      eventType === WorkEventTypeEnum.REJECTED ||
+      eventType === WorkEventTypeEnum.FAULTED ||
+      eventType === WorkEventTypeEnum.CANCELLED ||
+      eventType === WorkEventTypeEnum.OBSOLETE ||
+      eventType === WorkEventTypeEnum.EXPIRED ||
+      eventType === WorkEventTypeEnum.ESCALATED
+    ) {
+      this.handleItemDisappears(data.workItemId);
+      return;
+    }
+
+    // Item updated (refresh row in place)
+    if (
+      eventType === WorkEventTypeEnum.STARTED ||
+      eventType === WorkEventTypeEnum.SUSPENDED ||
+      eventType === WorkEventTypeEnum.RESUMED ||
+      eventType === WorkEventTypeEnum.RELEASED ||
+      eventType === WorkEventTypeEnum.DELEGATED ||
+      eventType === WorkEventTypeEnum.DELEGATION_ACCEPTED ||
+      eventType === WorkEventTypeEnum.DELEGATION_DECLINED ||
+      eventType === WorkEventTypeEnum.PROGRESS_UPDATE ||
+      eventType === WorkEventTypeEnum.DEADLINE_EXTENDED ||
+      eventType === WorkEventTypeEnum.SLA_EXTENDED ||
+      eventType === WorkEventTypeEnum.MANUALLY_ESCALATED
+    ) {
+      this.handleItemUpdated(data.workItemId);
+      return;
+    }
+
+    // Label change (refresh if affects current filter)
+    if (
+      eventType === WorkEventTypeEnum.LABEL_ADDED ||
+      eventType === WorkEventTypeEnum.LABEL_REMOVED
+    ) {
+      this.handleItemUpdated(data.workItemId);
+      return;
+    }
+
+    // Metadata only (no visual change in list, but refresh summary)
+    if (
+      eventType === WorkEventTypeEnum.SPAWNED ||
+      eventType === WorkEventTypeEnum.SIGNAL_RECEIVED ||
+      eventType === WorkEventTypeEnum.CLAIM_EXPIRED
+    ) {
+      this.fetchSummary();
+      return;
+    }
+  }
+
+  private async handleItemAppears(workItemId: string) {
+    if (this.endpoint == null) return;
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/${workItemId}`);
+      if (!response.ok) return;
+
+      const raw = await response.json() as Record<string, unknown>;
+      // Defensive: handle both wrapped {item: WorkItemResponse} and unwrapped WorkItemResponse
+      const newItem: WorkItemRootResponse = raw.item && typeof (raw.item as Record<string, unknown>).id === 'string'
+        ? raw as unknown as WorkItemRootResponse
+        : { item: raw as unknown as WorkItemResponse, childCount: 0, completedCount: null, requiredCount: null, groupStatus: null };
+      const existsAlready = this.items.some((item) => item.item.id === workItemId);
+
+      const shouldBeVisible =
+        (this.activeTab === 'my-work' &&
+          newItem.item.assigneeId === this.identity.userId &&
+          isActiveStatus(newItem.item.status)) ||
+        (this.activeTab === 'claimable' &&
+          newItem.item.status === 'PENDING' &&
+          newItem.item.candidateGroups &&
+          this.identity.groups.some((g) =>
+            newItem.item.candidateGroups!.split(',').includes(g),
+          ));
+
+      if (existsAlready && !shouldBeVisible) {
+        this.items = this.items.filter((item) => item.item.id !== workItemId);
+        this.selectedItems.delete(workItemId);
+      } else if (existsAlready && shouldBeVisible) {
+        const index = this.items.findIndex((item) => item.item.id === workItemId);
+        this.items = [...this.items.slice(0, index), newItem, ...this.items.slice(index + 1)];
+      } else if (!existsAlready && shouldBeVisible) {
+        this.items = [newItem, ...this.items];
+      }
+
+      this.fetchSummary();
+    } catch (e) {
+      console.error('Failed to fetch new item:', e);
+    }
+  }
+
+  private handleItemDisappears(workItemId: string) {
+    const index = this.items.findIndex((item) => item.item.id === workItemId);
+    if (index !== -1) {
+      this.items = this.items.filter((item) => item.item.id !== workItemId);
+      this.selectedItems.delete(workItemId);
+      this.fetchSummary();
+      this.requestUpdate();
+    }
+  }
+
+  private async handleItemUpdated(workItemId: string) {
+    if (this.endpoint == null) return;
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/${workItemId}`);
+      if (!response.ok) return;
+
+      const raw = await response.json() as Record<string, unknown>;
+      const updatedItem: WorkItemRootResponse = raw.item && typeof (raw.item as Record<string, unknown>).id === 'string'
+        ? raw as unknown as WorkItemRootResponse
+        : { item: raw as unknown as WorkItemResponse, childCount: 0, completedCount: null, requiredCount: null, groupStatus: null };
+
+      // Update in place
+      const index = this.items.findIndex((item) => item.item.id === workItemId);
+      if (index !== -1) {
+        this.items = [
+          ...this.items.slice(0, index),
+          updatedItem,
+          ...this.items.slice(index + 1),
+        ];
+        this.fetchSummary();
+        this.requestUpdate();
+      }
+    } catch (e) {
+      console.error('Failed to fetch updated item:', e);
+    }
+  }
+
+  private async fetchSummary() {
+    if (this.endpoint == null) return;
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/inbox/summary`);
+      if (!response.ok) return;
+
+      this.summary = await response.json();
+      this.requestUpdate();
+    } catch (e) {
+      console.error('Failed to fetch summary:', e);
+    }
+  }
+
+  private async fetchItems() {
+    if (this.endpoint == null) return;
+
+    this.loading = true;
+    this.error = null;
+
+    try {
+      const [itemsResponse, summaryResponse] = await Promise.all([
+        fetch(`${this.endpoint}/workitems/inbox`),
+        fetch(`${this.endpoint}/workitems/inbox/summary`),
+      ]);
+
+      if (!itemsResponse.ok) throw new Error(`HTTP ${itemsResponse.status}`);
+      if (!summaryResponse.ok) throw new Error(`HTTP ${summaryResponse.status}`);
+
+      const items = await itemsResponse.json();
+      const summary = await summaryResponse.json();
+
+      this.items = items;
+      this.summary = summary;
+    } catch (e) {
+      this.error = e instanceof Error ? e.message : 'Failed to fetch items';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private getTabItems(): WorkItemRootResponse[] {
+    if (this.activeTab === 'my-work') {
+      return this.items.filter(
+        (item) =>
+          item.item.assigneeId === this.identity.userId &&
+          isActiveStatus(item.item.status),
+      );
+    }
+    return this.items.filter(
+      (item) =>
+        item.item.status === 'PENDING' &&
+        item.item.candidateGroups &&
+        this.identity.groups.some((g) =>
+          item.item.candidateGroups!.split(',').includes(g),
+        ),
+    );
+  }
+
+  getTabOverdueCount(): number {
+    const now = new Date();
+    return this.getTabItems().filter(
+      (r) => r.item.expiresAt && new Date(r.item.expiresAt) < now && isActiveStatus(r.item.status),
+    ).length;
+  }
+
+  getTabBreachCount(): number {
+    const now = new Date();
+    return this.getTabItems().filter(
+      (r) => r.item.claimDeadline && new Date(r.item.claimDeadline) < now && r.item.status === 'PENDING',
+    ).length;
+  }
+
+  private getFilteredItems(): WorkItemRootResponse[] {
+    let filtered = this.items;
+
+    // Mode filtering
+    if (this.activeTab === 'my-work') {
+      filtered = filtered.filter(
+        (item) =>
+          item.item.assigneeId === this.identity.userId &&
+          isActiveStatus(item.item.status),
+      );
+    } else {
+      // claimable
+      filtered = filtered.filter(
+        (item) =>
+          item.item.status === 'PENDING' &&
+          item.item.candidateGroups &&
+          this.identity.groups.some((g) =>
+            item.item.candidateGroups!.split(',').includes(g),
+          ),
+      );
+    }
+
+    // Status filter
+    if (this.statusFilter.size > 0) {
+      filtered = filtered.filter((item) => this.statusFilter.has(item.item.status));
+    }
+
+    // Priority filter
+    if (this.priorityFilter.size > 0) {
+      filtered = filtered.filter((item) => this.priorityFilter.has(item.item.priority));
+    }
+
+    // Overdue / Claim breach filters — OR logic when both active.
+    // These are nearly disjoint populations (overdue = active past expiry,
+    // breach = PENDING past claim deadline). AND produces zero results.
+    if (this.overdueFilter || this.claimBreachFilter) {
+      const now = new Date();
+      filtered = filtered.filter((item) => {
+        if (this.overdueFilter && item.item.expiresAt) {
+          if (new Date(item.item.expiresAt) < now && isActiveStatus(item.item.status)) return true;
+        }
+        if (this.claimBreachFilter && item.item.claimDeadline) {
+          if (new Date(item.item.claimDeadline) < now && item.item.status === 'PENDING') return true;
+        }
+        return false;
+      });
+    }
+
+    return filtered;
+  }
+
+  private getVirtualWindow(items: WorkItemRootResponse[]): { startIndex: number; endIndex: number; offsetY: number } {
+    const listElement = this.shadowRoot?.querySelector('.items-list') as HTMLElement | null;
+    if (!listElement) return { startIndex: 0, endIndex: items.length, offsetY: 0 };
+
+    const viewportHeight = listElement.clientHeight;
+    const startIndex = Math.max(0, Math.floor(this.virtualScrollTop / this.itemHeight) - this.bufferSize);
+    const visibleCount = Math.ceil(viewportHeight / this.itemHeight);
+    const endIndex = Math.min(items.length, startIndex + visibleCount + this.bufferSize * 2);
+    const offsetY = startIndex * this.itemHeight;
+
+    return { startIndex, endIndex, offsetY };
+  }
+
+  override willUpdate(changed: Map<string, unknown>): void {
+    if (changed.has('activeTab') && this.activeTab === 'my-work') {
+      this.claimBreachFilter = false;
+    }
+  }
+
+  private handleTabClick(tab: InboxMode) {
+    this.activeTab = tab;
+    this.selectedItems.clear();
+    this.lastSelectedIndex = -1;
+  }
+
+  private async handleBatchClaim() {
+    if (!this.endpoint || this.selectedItems.size === 0) return;
+
+    this.batchProcessing = true;
+    this.batchError = null;
+
+    const request: BulkRequest = {
+      operation: 'claim',
+      workItemIds: Array.from(this.selectedItems),
+      actorId: this.identity.userId,
+    };
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/bulk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const results: BulkItemResult[] = await response.json();
+      const succeeded = results.filter((r) => r.status === 'success');
+      const failed = results.filter((r) => r.status === 'failure');
+
+      if (failed.length === 0) {
+        // Full success
+        this.selectedItems.clear();
+        this.lastSelectedIndex = -1;
+        // Items will refresh via SSE
+      } else {
+        // Partial failure
+        const failedIds = new Set(failed.map((r) => r.id));
+        this.selectedItems = new Set(Array.from(this.selectedItems).filter((id) => failedIds.has(id)));
+        this.batchError = `${succeeded.length} of ${results.length} claimed — ${failed.length} failed`;
+      }
+    } catch (e) {
+      this.batchError = e instanceof Error ? e.message : 'Batch claim failed';
+    } finally {
+      this.batchProcessing = false;
+      this.requestUpdate();
+    }
+  }
+
+  private async handleBatchCancel() {
+    if (!this.endpoint || this.selectedItems.size === 0) return;
+
+    const confirmed = confirm(
+      `Cancel ${this.selectedItems.size} items? This cannot be undone.`,
+    );
+    if (!confirmed) return;
+
+    this.batchProcessing = true;
+    this.batchError = null;
+
+    const request: BulkRequest = {
+      operation: 'cancel',
+      workItemIds: Array.from(this.selectedItems),
+      actorId: this.identity.userId,
+    };
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/bulk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      const results: BulkItemResult[] = await response.json();
+      const succeeded = results.filter((r) => r.status === 'success');
+      const failed = results.filter((r) => r.status === 'failure');
+
+      if (failed.length === 0) {
+        // Full success
+        this.selectedItems.clear();
+        this.lastSelectedIndex = -1;
+        // Items will refresh via SSE
+      } else {
+        // Partial failure
+        const failedIds = new Set(failed.map((r) => r.id));
+        this.selectedItems = new Set(Array.from(this.selectedItems).filter((id) => failedIds.has(id)));
+        this.batchError = `${succeeded.length} of ${results.length} cancelled — ${failed.length} failed`;
+      }
+    } catch (e) {
+      this.batchError = e instanceof Error ? e.message : 'Batch cancel failed';
+    } finally {
+      this.batchProcessing = false;
+      this.requestUpdate();
+    }
+  }
+
+  private handleClearSelection() {
+    this.selectedItems.clear();
+    this.lastSelectedIndex = -1;
+    this.batchError = null;
+    this.requestUpdate();
+  }
+
+  private handleRowSelect(e: CustomEvent) {
+    const { workItemId } = e.detail;
+    const event = e as CustomEvent & { shiftKey?: boolean };
+
+    if (event.shiftKey) {
+      // Range selection
+      this.handleRangeSelect(workItemId);
+    } else {
+      // Single selection or toggle
+      if (this.selectedItems.has(workItemId)) {
+        this.selectedItems.delete(workItemId);
+      } else {
+        this.selectedItems.clear();
+        this.selectedItems.add(workItemId);
+        emitPagesEvent(document, WorkItemEventTopics.SELECTED, { workItemId });
+      }
+      this.requestUpdate();
+    }
+  }
+
+  private handleRangeSelect(workItemId: string) {
+    const filtered = this.getFilteredItems();
+    const clickedIndex = filtered.findIndex((item) => item.item.id === workItemId);
+
+    if (clickedIndex === -1) return;
+
+    if (this.lastSelectedIndex === -1) {
+      this.selectedItems.add(workItemId);
+      this.lastSelectedIndex = clickedIndex;
+    } else {
+      const start = Math.min(this.lastSelectedIndex, clickedIndex);
+      const end = Math.max(this.lastSelectedIndex, clickedIndex);
+
+      for (let i = start; i <= end; i++) {
+        const item = filtered[i];
+        if (item) {
+          this.selectedItems.add(item.item.id);
+        }
+      }
+    }
+
+    this.requestUpdate();
+  }
+
+  private handleRowClick(workItemId: string, event: MouseEvent) {
+    if (event.shiftKey) {
+      this.handleRangeSelect(workItemId);
+    } else {
+      if (this.selectedItems.has(workItemId)) {
+        this.selectedItems.delete(workItemId);
+      } else {
+        this.selectedItems.add(workItemId);
+      }
+      this.requestUpdate();
+    }
+  }
+
+  private handleSummaryFilterClick(e: CustomEvent<FilterClickDetail>) {
+    const { type } = e.detail;
+
+    if (type === 'overdue') {
+      this.overdueFilter = !this.overdueFilter;
+    } else if (type === 'claimDeadlineBreached') {
+      this.claimBreachFilter = !this.claimBreachFilter;
+    }
+  }
+
+  private handleFilterChange(e: CustomEvent<FilterChangeDetail>) {
+    const { type, value, active } = e.detail;
+
+    if (type === 'status') {
+      const next = new Set(this.statusFilter);
+      if (active) { next.add(value); } else { next.delete(value); }
+      this.statusFilter = next;
+    } else if (type === 'priority') {
+      const next = new Set(this.priorityFilter);
+      if (active) { next.add(value); } else { next.delete(value); }
+      this.priorityFilter = next;
+    }
+  }
+
+  private handleClearFilters() {
+    this.statusFilter = new Set();
+    this.priorityFilter = new Set();
+    this.overdueFilter = false;
+    this.claimBreachFilter = false;
+  }
+
+  private handleScroll(e: Event) {
+    const target = e.target as HTMLElement;
+    this.virtualScrollTop = target.scrollTop;
+  }
+
+  private handleClaimShortcut() {
+    // Get the currently focused item via roving tabindex
+    if (this.rovingIndex === -1) return;
+
+    const filtered = this.getFilteredItems();
+    const focusedItem = filtered[this.rovingIndex];
+    if (!focusedItem) return;
+
+    // Only claim in claimable mode for pending items
+    if (this.activeTab === 'claimable' && focusedItem.item.status === 'PENDING') {
+      this.claimItem(focusedItem.item.id);
+    }
+  }
+
+  private async claimItem(workItemId: string) {
+    if (this.endpoint == null) return;
+
+    try {
+      const response = await fetch(`${this.endpoint}/workitems/${workItemId}/claim`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ claimant: this.identity.userId }),
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      // Optimistic update - item will move to my-work via SSE or next fetch
+      this.items = this.items.map((item) =>
+        item.item.id === workItemId
+          ? {
+              ...item,
+              item: {
+                ...item.item,
+                status: 'ASSIGNED' as const,
+                assigneeId: this.identity.userId,
+              },
+            }
+          : item,
+      );
+      this.requestUpdate();
+    } catch (e) {
+      console.error('Failed to claim item:', e);
+      // TODO: Show error toast
+    }
+  }
+
+  private renderTabs() {
+    return html`
+      <div class="tabs">
+        <button
+          class="tab ${this.activeTab === 'my-work' ? 'active' : ''}"
+          @click="${() => this.handleTabClick('my-work')}"
+          aria-current="${this.activeTab === 'my-work' ? 'page' : 'false'}"
+        >
+          My Work
+        </button>
+        <button
+          class="tab ${this.activeTab === 'claimable' ? 'active' : ''}"
+          @click="${() => this.handleTabClick('claimable')}"
+          aria-current="${this.activeTab === 'claimable' ? 'page' : 'false'}"
+        >
+          Claimable
+        </button>
+      </div>
+    `;
+  }
+
+  private renderSummaryBar() {
+    return html`
+      <div class="summary-bar">
+        <inbox-summary-bar
+          .summary="${this.summary}"
+          .visibleTotal=${this.getTabItems().length}
+          .visibleOverdue=${this.getTabOverdueCount()}
+          .visibleBreach=${this.getTabBreachCount()}
+          .overdueActive=${this.overdueFilter}
+          .claimBreachActive=${this.claimBreachFilter}
+          .hideClaimBreach=${this.activeTab === 'my-work'}
+          @filter-click="${this.handleSummaryFilterClick}"
+        ></inbox-summary-bar>
+      </div>
+    `;
+  }
+
+  private renderFilterBar() {
+    return html`
+      <div class="filter-bar">
+        <inbox-filter-bar
+          .activeStatusFilters="${this.statusFilter}"
+          .activePriorityFilters="${this.priorityFilter}"
+          @filter-change="${this.handleFilterChange}"
+          @clear-filters="${this.handleClearFilters}"
+        ></inbox-filter-bar>
+      </div>
+    `;
+  }
+
+  private renderItems() {
+    if (this.loading) {
+      return html`<div class="loading">Loading...</div>`;
+    }
+
+    if (this.error) {
+      return html`<div class="error">${this.error}</div>`;
+    }
+
+    const filtered = this.getFilteredItems();
+
+    if (filtered.length === 0) {
+      const message =
+        this.activeTab === 'my-work'
+          ? 'No items assigned to you'
+          : 'No claimable items available';
+      return html`<div class="empty-state">${message}</div>`;
+    }
+
+    // Virtual scrolling activates for >50 items
+    const useVirtual = filtered.length > 50;
+
+    if (!useVirtual) {
+      return html`
+        <div class="items-list" role="list">
+          ${filtered.map(
+            (root) => html`
+              <div
+                class="item-row ${this.selectedItems.has(root.item.id) ? 'selected' : ''}"
+                @click="${(e: MouseEvent) => this.handleRowClick(root.item.id, e)}"
+              >
+                <work-item-row
+                  .item="${root.item}"
+                  @row-select="${this.handleRowSelect}"
+                ></work-item-row>
+              </div>
+            `,
+          )}
+        </div>
+      `;
+    }
+
+    // Virtual scrolling: only render visible window
+    const { startIndex, endIndex, offsetY } = this.getVirtualWindow(filtered);
+    const totalHeight = filtered.length * this.itemHeight;
+    const visibleItems = filtered.slice(startIndex, endIndex);
+
+    return html`
+      <div class="items-list virtual" role="list" @scroll="${this.handleScroll}">
+        <div class="virtual-spacer" style="height: ${totalHeight}px;">
+          <div class="virtual-content" style="transform: translateY(${offsetY}px);">
+            ${visibleItems.map(
+              (root) => html`
+                <div
+                  class="item-row ${this.selectedItems.has(root.item.id) ? 'selected' : ''}"
+                  @click="${(e: MouseEvent) => this.handleRowClick(root.item.id, e)}"
+                >
+                  <work-item-row
+                    .item="${root.item}"
+                    @row-select="${this.handleRowSelect}"
+                  ></work-item-row>
+                </div>
+              `,
+            )}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  private renderBatchActionBar() {
+    if (this.selectedItems.size < 2) return nothing;
+
+    return html`
+      <div class="batch-action-bar">
+        <span class="batch-count">${this.selectedItems.size} items selected</span>
+
+        ${this.activeTab === 'claimable'
+          ? html`
+              <button
+                class="batch-button primary"
+                @click="${this.handleBatchClaim}"
+                ?disabled="${this.batchProcessing}"
+              >
+                ${this.batchProcessing ? 'Claiming...' : 'Batch Claim'}
+              </button>
+            `
+          : nothing}
+        ${this.activeTab === 'my-work'
+          ? html`
+              <button
+                class="batch-button danger"
+                @click="${this.handleBatchCancel}"
+                ?disabled="${this.batchProcessing}"
+              >
+                ${this.batchProcessing ? 'Cancelling...' : 'Batch Cancel'}
+              </button>
+            `
+          : nothing}
+
+        <button
+          class="batch-button secondary"
+          @click="${this.handleClearSelection}"
+          ?disabled="${this.batchProcessing}"
+        >
+          Clear
+        </button>
+
+        ${this.batchError
+          ? html`<span style="color: var(--blocks-danger-11, #cc0000);"
+              >${this.batchError}</span
+            >`
+          : nothing}
+      </div>
+    `;
+  }
+
+  override render() {
+    return html`
+      <div class="inbox-container">
+        ${this.renderTabs()} ${this.renderSummaryBar()} ${this.renderFilterBar()}
+        ${this.renderItems()} ${this.renderBatchActionBar()}
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'work-item-inbox': WorkItemInbox;
+  }
+}
