@@ -30,10 +30,10 @@ export class InboxSummaryBar extends LitElement {
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
+      gap: var(--blocks-space-1.5, 6px);
+      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
       border-radius: 16px;
-      font-size: 13px;
+      font-size: var(--blocks-font-size-sm, 12px);
       font-weight: 500;
       border: 1px solid var(--blocks-neutral-6, #e0e0e0);
       background: var(--blocks-neutral-3, #f5f5f5);

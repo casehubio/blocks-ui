@@ -17,6 +17,7 @@ export class QueuePillBar extends LitElement {
   @property({ type: Number }) selectedQueueCount: number | null = null;
 
   private _pollTimer: number | null = null;
+  private _observer: IntersectionObserver | null = null;
 
   static override styles = css`
     :host {
@@ -90,12 +91,24 @@ export class QueuePillBar extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    this._loadQueues();
-    this._startPolling();
+    this._observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && this._observer) {
+          this._observer.disconnect();
+          this._observer = null;
+          this._loadQueues();
+          this._startPolling();
+        }
+      },
+      { threshold: 0 }
+    );
+    this._observer.observe(this);
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
+    this._observer?.disconnect();
+    this._observer = null;
     this._stopPolling();
   }
 

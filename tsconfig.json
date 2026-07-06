@@ -8,6 +8,9 @@
     { "path": "components/work-item-row" },
     { "path": "components/work-item-inbox" },
     { "path": "components/work-item-detail" },
-    { "path": "components/work-item-workbench" }
+    { "path": "components/work-item-workbench" },
+    { "path": "components/kpi-metric-row" },
+    { "path": "components/sla-indicator" },
+    { "path": "components/approval-gate" }
   ]
 }

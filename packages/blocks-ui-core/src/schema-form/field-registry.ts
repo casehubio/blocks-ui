@@ -1,11 +1,13 @@
-type FieldRenderer = typeof HTMLElement;
-const registry = new Map<string, FieldRenderer>();
+import type { FieldRendererElement } from './types.js';
 
-export function registerFieldRenderer(format: string, component: FieldRenderer): void {
+type FieldRendererConstructor = new () => FieldRendererElement;
+const registry = new Map<string, FieldRendererConstructor>();
+
+export function registerFieldRenderer(format: string, component: FieldRendererConstructor): void {
   registry.set(format, component);
 }
 
-export function getFieldRenderer(format: string): FieldRenderer | undefined {
+export function getFieldRenderer(format: string): FieldRendererConstructor | undefined {
   return registry.get(format);
 }
 

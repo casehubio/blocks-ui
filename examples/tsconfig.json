@@ -16,7 +16,10 @@
       "@casehubio/blocks-ui-work-item-inbox": ["../components/work-item-inbox/src"],
       "@casehubio/blocks-ui-work-item-detail": ["../components/work-item-detail/src"],
       "@casehubio/blocks-ui-queue-board": ["../components/queue-board/src"],
-      "@casehubio/blocks-ui-work-item-workbench": ["../components/work-item-workbench/src"]
+      "@casehubio/blocks-ui-work-item-workbench": ["../components/work-item-workbench/src"],
+      "@casehubio/blocks-ui-sla-indicator": ["../components/sla-indicator/src"],
+      "@casehubio/blocks-ui-kpi-metric-row": ["../components/kpi-metric-row/src"],
+      "@casehubio/blocks-ui-approval-gate": ["../components/approval-gate/src"]
     }
   },
   "include": ["src"]

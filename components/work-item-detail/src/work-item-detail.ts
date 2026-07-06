@@ -9,7 +9,7 @@ import type {
   EscalateRequest,
   DelegateRequest,
 } from '@casehubio/blocks-ui-core';
-import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin } from '@casehubio/blocks-ui-core';
+import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin, LiveRegionMixin } from '@casehubio/blocks-ui-core';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
 import './detail-relations-tab.js';
@@ -17,7 +17,7 @@ import './detail-relations-tab.js';
 type TabName = 'overview' | 'activity' | 'relations';
 
 @customElement('work-item-detail')
-export class WorkItemDetail extends FocusTrapMixin(LitElement) {
+export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String }) endpoint: string | null = null;
   @property({ type: String }) workItemId: string | null = null;
   @property({ type: Object }) identity: WorkIdentity | null = null;
@@ -496,9 +496,11 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
         ${tabs.map(
           tab => html`
             <button
+              id="tab-${tab.id}"
               class="tab"
               role="tab"
               aria-selected="${this._activeTab === tab.id}"
+              aria-controls="tabpanel-${tab.id}"
               @click="${() => this._setActiveTab(tab.id)}"
             >
               ${tab.label}
@@ -513,17 +515,21 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
     return html`
       <div class="tab-panels">
         <div
+          id="tabpanel-overview"
           class="tab-panel"
           role="tabpanel"
           data-tab="overview"
+          aria-labelledby="tab-overview"
           aria-hidden="${this._activeTab !== 'overview'}"
         >
           ${this._renderOverviewTab(workItem)}
         </div>
         <div
+          id="tabpanel-activity"
           class="tab-panel"
           role="tabpanel"
           data-tab="activity"
+          aria-labelledby="tab-activity"
           aria-hidden="${this._activeTab !== 'activity'}"
         >
           <detail-activity-tab
@@ -533,9 +539,11 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
           ></detail-activity-tab>
         </div>
         <div
+          id="tabpanel-relations"
           class="tab-panel"
           role="tabpanel"
           data-tab="relations"
+          aria-labelledby="tab-relations"
           aria-hidden="${this._activeTab !== 'relations'}"
         >
           <detail-relations-tab .workItem="${workItem}"></detail-relations-tab>
@@ -776,8 +784,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to claim work item');
 
       await this._loadWorkItem();
+      this.announce('Item claimed');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -792,8 +802,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to start work item');
 
       await this._loadWorkItem();
+      this.announce('Item started');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -808,8 +820,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to reject work item');
 
       await this._loadWorkItem();
+      this.announce('Item rejected');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -824,8 +838,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to suspend work item');
 
       await this._loadWorkItem();
+      this.announce('Item suspended');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -840,8 +856,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to resume work item');
 
       await this._loadWorkItem();
+      this.announce('Item resumed');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -856,8 +874,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to cancel work item');
 
       await this._loadWorkItem();
+      this.announce('Item cancelled');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -872,8 +892,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to release work item');
 
       await this._loadWorkItem();
+      this.announce('Item released');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -888,8 +910,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to accept delegation');
 
       await this._loadWorkItem();
+      this.announce('Delegation accepted');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -904,8 +928,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       if (!response.ok) throw new Error('Failed to decline delegation');
 
       await this._loadWorkItem();
+      this.announce('Delegation declined');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -932,8 +958,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
 
       this._showEscalateDialog = false;
       await this._loadWorkItem();
+      this.announce('Item escalated');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -958,8 +986,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
 
       this._showDelegateDialog = false;
       await this._loadWorkItem();
+      this.announce('Item delegated');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -990,8 +1020,10 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
 
       this._showCompleteDialog = false;
       await this._loadWorkItem();
+      this.announce('Item completed');
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
+      this.announce('Action failed: ' + this._error, 'assertive');
     }
   }
 
@@ -1009,6 +1041,7 @@ export class WorkItemDetail extends FocusTrapMixin(LitElement) {
       },
     });
     this.dispatchEvent(noteEvent);
+    this.announce('Note added');
   }
 
   private _handleDialogOverlayClick(): void {

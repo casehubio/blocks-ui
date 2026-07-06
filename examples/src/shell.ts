@@ -22,6 +22,10 @@ const NAV: NavCategory[] = [
       { id: 'detail', label: 'Work Item Detail', hash: '#components/detail' },
       { id: 'queue', label: 'Queue + Inbox', hash: '#components/queue' },
       { id: 'schema-form', label: 'Schema Form', hash: '#components/schema-form' },
+      { id: 'sla-indicator', label: 'SLA Indicator', hash: '#components/sla-indicator' },
+      { id: 'kpi-metric-row', label: 'KPI Metric Row', hash: '#components/kpi-metric-row' },
+      { id: 'approval-gate', label: 'Approval Gate', hash: '#components/approval-gate' },
+      { id: 'confirm-dialog', label: 'Confirm Dialog', hash: '#components/confirm-dialog' },
     ],
   },
   {
@@ -164,6 +168,10 @@ export class ExampleShell extends LitElement {
       case '#components/detail': return html`<detail-page></detail-page>`;
       case '#components/queue': return html`<queue-inbox-page></queue-inbox-page>`;
       case '#components/schema-form': return html`<schema-form-page></schema-form-page>`;
+      case '#components/sla-indicator': return html`<sla-indicator-page></sla-indicator-page>`;
+      case '#components/kpi-metric-row': return html`<kpi-metric-row-page></kpi-metric-row-page>`;
+      case '#components/approval-gate': return html`<approval-gate-page></approval-gate-page>`;
+      case '#components/confirm-dialog': return html`<confirm-dialog-page></confirm-dialog-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

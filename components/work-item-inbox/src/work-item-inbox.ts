@@ -22,8 +22,10 @@ import {
   isActiveStatus,
   RovingTabindexMixin,
   KeyboardShortcutMixin,
+  LiveRegionMixin,
   SSEManager,
   WorkEventType as WorkEventTypeEnum,
+  BlocksConfirmDialog,
 } from '@casehubio/blocks-ui-core';
 import type { SSEEvent } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-work-item-row';
@@ -34,7 +36,7 @@ import './scope-context-bar.js';
 import type { FilterClickDetail } from './inbox-summary-bar.js';
 import type { FilterChangeDetail } from './inbox-filter-bar.js';
 
-const WorkItemInboxBase = KeyboardShortcutMixin(RovingTabindexMixin(LitElement));
+const WorkItemInboxBase = LiveRegionMixin(KeyboardShortcutMixin(RovingTabindexMixin(LitElement)));
 
 @customElement('work-item-inbox')
 export class WorkItemInbox extends WorkItemInboxBase {
@@ -58,6 +60,9 @@ export class WorkItemInbox extends WorkItemInboxBase {
   @state() private claimBreachFilter = false;
   @state() private batchProcessing = false;
   @state() private batchError: string | null = null;
+  @state() private _claimError: string | null = null;
+  @state() private _showCancelDialog = false;
+  @state() private _pendingCancelItems: string[] = [];
 
   // Queue scope
   @state() private _queueScope: QueueScope | null = null;
@@ -332,6 +337,15 @@ export class WorkItemInbox extends WorkItemInboxBase {
       background: var(--blocks-accent-3, #e6f4ff);
       border-left: 3px solid var(--blocks-accent-9, #0080ff);
     }
+
+    .error-banner {
+      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
+      background: var(--blocks-danger-3, #fee);
+      color: var(--blocks-danger-11, #c00);
+      border-radius: var(--blocks-radius-sm, 4px);
+      margin: var(--blocks-space-2, 8px) var(--blocks-space-4, 16px);
+      font-size: var(--blocks-font-size-base, 14px);
+    }
   `;
 
   override connectedCallback() {
@@ -377,6 +391,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
     if (this.endpoint == null) return;
     const url = `${this.endpoint}/workitems/events`;
     this.sseManager.subscribe(url, this.sseHandler);
+    this.announce('Live updates connected');
   }
 
   private unsubscribeSSE() {
@@ -710,37 +725,44 @@ export class WorkItemInbox extends WorkItemInboxBase {
         // Full success
         this.selectedItems.clear();
         this.lastSelectedIndex = -1;
+        this.announce(`${succeeded.length} items claimed successfully`);
         // Items will refresh via SSE
       } else {
         // Partial failure
         const failedIds = new Set(failed.map((r) => r.id));
         this.selectedItems = new Set(Array.from(this.selectedItems).filter((id) => failedIds.has(id)));
         this.batchError = `${succeeded.length} of ${results.length} claimed — ${failed.length} failed`;
+        this.announce(`${succeeded.length} items claimed, ${failed.length} failed`, 'assertive');
       }
     } catch (e) {
       this.batchError = e instanceof Error ? e.message : 'Batch claim failed';
+      this.announce('Batch claim failed', 'assertive');
     } finally {
       this.batchProcessing = false;
       this.requestUpdate();
     }
   }
 
-  private async handleBatchCancel() {
+  private handleBatchCancel() {
     if (!this.endpoint || this.selectedItems.size === 0) return;
+    this._showCancelDialog = true;
+    this._pendingCancelItems = Array.from(this.selectedItems);
+  }
 
-    const confirmed = confirm(
-      `Cancel ${this.selectedItems.size} items? This cannot be undone.`,
-    );
-    if (!confirmed) return;
+  private async _confirmBatchCancel(e: CustomEvent) {
+    this._showCancelDialog = false;
+    if (!this.endpoint || this._pendingCancelItems.length === 0) return;
 
     this.batchProcessing = true;
     this.batchError = null;
 
     const request: BulkRequest = {
       operation: 'cancel',
-      workItemIds: Array.from(this.selectedItems),
+      workItemIds: this._pendingCancelItems,
       actorId: this.identity.userId,
+      reason: e.detail.reason,
     };
+    this._pendingCancelItems = [];
 
     try {
       const response = await fetch(`${this.endpoint}/workitems/bulk`, {
@@ -759,15 +781,18 @@ export class WorkItemInbox extends WorkItemInboxBase {
         // Full success
         this.selectedItems.clear();
         this.lastSelectedIndex = -1;
+        this.announce(`${succeeded.length} items cancelled`);
         // Items will refresh via SSE
       } else {
         // Partial failure
         const failedIds = new Set(failed.map((r) => r.id));
         this.selectedItems = new Set(Array.from(this.selectedItems).filter((id) => failedIds.has(id)));
         this.batchError = `${succeeded.length} of ${results.length} cancelled — ${failed.length} failed`;
+        this.announce(`${succeeded.length} items cancelled, ${failed.length} failed`, 'assertive');
       }
     } catch (e) {
       this.batchError = e instanceof Error ? e.message : 'Batch cancel failed';
+      this.announce('Batch cancel failed', 'assertive');
     } finally {
       this.batchProcessing = false;
       this.requestUpdate();
@@ -913,10 +938,12 @@ export class WorkItemInbox extends WorkItemInboxBase {
             }
           : item,
       );
+      this.announce('Item claimed successfully');
       this.requestUpdate();
     } catch (e) {
-      console.error('Failed to claim item:', e);
-      // TODO: Show error toast
+      this._claimError = 'Failed to claim item';
+      this.announce('Failed to claim item', 'assertive');
+      setTimeout(() => { this._claimError = null; this.requestUpdate(); }, 5000);
     }
   }
 
@@ -1280,10 +1307,22 @@ export class WorkItemInbox extends WorkItemInboxBase {
         ${this.renderTabs()}
         ${this.renderSummaryBar()}
         ${this.renderFilterBar()}
+        ${this._claimError ? html`<div class="error-banner" role="alert">${this._claimError}</div>` : nothing}
         ${this._queueLoading ? html`<div class="loading">Loading queue...</div>` : ''}
         ${this._queueError ? html`<div class="error">${this._queueError}</div>` : ''}
         ${!this._queueLoading && !this._queueError ? this.renderItems() : ''}
         ${this.renderBatchActionBar()}
+        <blocks-confirm-dialog
+          .open=${this._showCancelDialog}
+          heading="Cancel items?"
+          message="This will cancel ${this._pendingCancelItems.length} selected item(s)."
+          confirmLabel="Cancel items"
+          cancelLabel="Keep"
+          confirmVariant="danger"
+          .showReason=${true}
+          @confirm=${this._confirmBatchCancel}
+          @cancel=${() => { this._showCancelDialog = false; }}
+        ></blocks-confirm-dialog>
       </div>
     `;
   }

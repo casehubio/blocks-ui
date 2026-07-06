@@ -25,18 +25,18 @@ export class InboxFilterBar extends LitElement {
     .filter-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: var(--blocks-space-3, 12px);
       align-items: center;
     }
 
     .filter-section {
       display: flex;
-      gap: 8px;
+      gap: var(--blocks-space-2, 8px);
       align-items: center;
     }
 
     .filter-label {
-      font-size: 12px;
+      font-size: var(--blocks-font-size-sm, 12px);
       font-weight: 600;
       color: var(--blocks-neutral-11, #555555);
       text-transform: uppercase;
@@ -46,9 +46,9 @@ export class InboxFilterBar extends LitElement {
     .chip {
       display: inline-flex;
       align-items: center;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 12px;
+      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
+      border-radius: var(--blocks-radius-md, 6px);
+      font-size: var(--blocks-font-size-sm, 12px);
       font-weight: 500;
       background: var(--blocks-neutral-3, #f5f5f5);
       color: var(--blocks-neutral-11, #555555);
@@ -86,7 +86,7 @@ export class InboxFilterBar extends LitElement {
 
     .chip-count {
       color: var(--blocks-neutral-9, #888);
-      font-size: 10px;
+      font-size: var(--blocks-font-size-xs, 11px);
     }
 
     .chip.active .chip-count {
@@ -94,12 +94,12 @@ export class InboxFilterBar extends LitElement {
     }
 
     .clear-filters {
-      padding: 4px 12px;
-      font-size: 12px;
+      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
+      font-size: var(--blocks-font-size-sm, 12px);
       font-weight: 500;
       background: none;
       border: 1px solid var(--blocks-neutral-6, #e0e0e0);
-      border-radius: 12px;
+      border-radius: var(--blocks-radius-md, 6px);
       color: var(--blocks-neutral-11, #555555);
       cursor: pointer;
       transition: all 0.15s;
@@ -118,7 +118,7 @@ export class InboxFilterBar extends LitElement {
 
     .divider {
       width: 1px;
-      height: 20px;
+      height: var(--blocks-space-5, 20px);
       background: var(--blocks-neutral-6, #e0e0e0);
     }
   `;

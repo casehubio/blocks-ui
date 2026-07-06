@@ -10,6 +10,9 @@ export default defineConfig({
       '@casehubio/blocks-ui-work-item-detail': resolve(__dirname, '../components/work-item-detail/src'),
       '@casehubio/blocks-ui-queue-board': resolve(__dirname, '../components/queue-board/src'),
       '@casehubio/blocks-ui-work-item-workbench': resolve(__dirname, '../components/work-item-workbench/src'),
+      '@casehubio/blocks-ui-sla-indicator': resolve(__dirname, '../components/sla-indicator/src'),
+      '@casehubio/blocks-ui-kpi-metric-row': resolve(__dirname, '../components/kpi-metric-row/src'),
+      '@casehubio/blocks-ui-approval-gate': resolve(__dirname, '../components/approval-gate/src'),
     },
   },
   server: {

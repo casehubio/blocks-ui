@@ -5,3 +5,5 @@ export * from './mixins/index.js';
 export * from './sse/index.js';
 export * from './types/index.js';
 export * from './schema-form/index.js';
+export * from './timers/index.js';
+export * from './confirm-dialog/index.js';

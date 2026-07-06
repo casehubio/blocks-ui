@@ -21,6 +21,25 @@ describe('queue-pill-bar', () => {
   };
 
   beforeEach(async () => {
+    // Mock IntersectionObserver
+    global.IntersectionObserver = class IntersectionObserver {
+      callback: IntersectionObserverCallback;
+      constructor(callback: IntersectionObserverCallback) {
+        this.callback = callback;
+        // Immediately trigger visibility for tests
+        setTimeout(() => {
+          this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this);
+        }, 0);
+      }
+      observe() {}
+      disconnect() {}
+      unobserve() {}
+      takeRecords() { return []; }
+      root = null;
+      rootMargin = '';
+      thresholds = [];
+    } as any;
+
     el = document.createElement('queue-pill-bar') as any;
     el.queues = QUEUES;
     el.summaries = SUMMARIES;

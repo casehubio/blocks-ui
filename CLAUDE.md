@@ -104,11 +104,14 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Shared theme, dataset helpers, event contracts, a11y mixins, SSE manager |
+| `packages/blocks-ui-core/` | Shared theme, dataset helpers, event contracts, a11y mixins, SSE manager, SharedTimerController, blocks-confirm-dialog, schema-form |
 | `components/work-item-inbox/` | Work item inbox — queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers |
 | `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab |
-| `components/work-item-workbench/` | Full workbench — split-pane layout with inbox (left) and detail (right), theme/density toggle, keyboard shortcuts |
+| `components/work-item-workbench/` | Full workbench — split-pane layout with inbox (left) and detail (right), keyboard shortcuts |
+| `components/sla-indicator/` | SLA deadline indicator — countdown, breach state, escalation badge, threshold-based colour transitions |
+| `components/kpi-metric-row/` | KPI metric cards — responsive grid with sparklines, trends, status colours |
+| `components/approval-gate/` | Approval gate — structured decision point with quorum, evidence slots, SLA integration, confirmation dialog |
 | `components/case-timeline/` | Case lifecycle timeline — status progression, milestone markers, agent activity |
 | `components/trust-score-panel/` | Agent trust score visualisation — Bayesian Beta scores, trend lines, per-capability breakdown |
 | `components/channel-activity/` | Qhorus channel activity feed — message stream, commitment status, speech act badges |

@@ -65,38 +65,27 @@ describe('WorkItemWorkbench', () => {
       document.body.removeChild(element);
     });
 
-    it('should render in light theme by default', async () => {
+    it('inherits theme from document-level CSS custom properties', async () => {
+      const style = document.createElement('style');
+      style.textContent = ':root { --blocks-neutral-1: rgb(10, 10, 10); }';
+      document.head.appendChild(style);
       document.body.appendChild(element);
       await element.updateComplete;
-      const root = element.shadowRoot!;
-      expect(root.querySelector('.workbench')).toBeTruthy();
-      expect(root.querySelector('.workbench')?.classList.contains('theme-light')).toBe(true);
+      const workbench = element.shadowRoot!.querySelector('.workbench')!;
+      expect(workbench.classList.contains('theme-light')).toBe(false);
+      expect(workbench.classList.contains('theme-dark')).toBe(false);
       document.body.removeChild(element);
+      style.remove();
     });
 
-    it('should switch to dark theme', async () => {
-      element.theme = 'dark';
+    it('does not define its own theme or density CSS classes', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const root = element.shadowRoot!;
-      expect(root.querySelector('.workbench')?.classList.contains('theme-dark')).toBe(true);
-      document.body.removeChild(element);
-    });
-
-    it('should render in comfortable density by default', async () => {
-      document.body.appendChild(element);
-      await element.updateComplete;
-      const root = element.shadowRoot!;
-      expect(root.querySelector('.workbench')?.classList.contains('density-comfortable')).toBe(true);
-      document.body.removeChild(element);
-    });
-
-    it('should switch to compact density', async () => {
-      element.density = 'compact';
-      document.body.appendChild(element);
-      await element.updateComplete;
-      const root = element.shadowRoot!;
-      expect(root.querySelector('.workbench')?.classList.contains('density-compact')).toBe(true);
+      const styles = element.shadowRoot!.querySelector('style')!.textContent!;
+      expect(styles).not.toContain('.theme-light');
+      expect(styles).not.toContain('.theme-dark');
+      expect(styles).not.toContain('.density-comfortable');
+      expect(styles).not.toContain('.density-compact');
       document.body.removeChild(element);
     });
   });
@@ -216,36 +205,11 @@ describe('WorkItemWorkbench', () => {
       localStorage.clear();
     });
 
-    it('should persist theme to localStorage', async () => {
-      element.theme = 'dark';
+    it('should persist divider ratio to localStorage', async () => {
       document.body.appendChild(element);
       await new Promise(resolve => setTimeout(resolve, 0));
-      expect(localStorage.getItem('casehub-workbench-theme')).toBe('dark');
+      expect(localStorage.getItem('casehub-workbench-divider')).toBeDefined();
       document.body.removeChild(element);
-    });
-
-    it('should persist density to localStorage', async () => {
-      element.density = 'compact';
-      document.body.appendChild(element);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(localStorage.getItem('casehub-workbench-density')).toBe('compact');
-      document.body.removeChild(element);
-    });
-
-    it('should restore theme from localStorage', () => {
-      localStorage.setItem('casehub-workbench-theme', 'dark');
-      const newElement = document.createElement('work-item-workbench') as WorkItemWorkbench;
-      document.body.appendChild(newElement);
-      expect(newElement.theme).toBe('dark');
-      document.body.removeChild(newElement);
-    });
-
-    it('should restore density from localStorage', () => {
-      localStorage.setItem('casehub-workbench-density', 'compact');
-      const newElement = document.createElement('work-item-workbench') as WorkItemWorkbench;
-      document.body.appendChild(newElement);
-      expect(newElement.density).toBe('compact');
-      document.body.removeChild(newElement);
     });
   });
 
@@ -254,10 +218,8 @@ describe('WorkItemWorkbench', () => {
       element.configure({
         endpoint: 'http://test-api.com',
         identity: mockIdentity,
-        theme: 'dark',
       });
       expect(element.endpoint).toBe('http://test-api.com');
-      expect(element.theme).toBe('dark');
     });
 
     it('should support reconfigure after initial render', async () => {

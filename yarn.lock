@@ -105,6 +105,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@casehubio/blocks-ui-approval-gate@workspace:components/approval-gate":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-approval-gate@workspace:components/approval-gate"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-sla-indicator": "workspace:*"
+    "@open-wc/testing": "npm:^4.0.0"
+    jsdom: "npm:^25.0.0"
+    lit: "npm:^3.0.0"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-case-timeline@workspace:components/case-timeline":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-case-timeline@workspace:components/case-timeline"
@@ -134,6 +149,32 @@ __metadata:
     "@open-wc/testing": "npm:^4.0.0"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@vitest/browser": "npm:^2.0.0"
+    lit: "npm:^3.1.0"
+    typescript: "npm:^5.6.3"
+    vitest: "npm:^2.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-sla-indicator@workspace:*, @casehubio/blocks-ui-sla-indicator@workspace:components/sla-indicator":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-sla-indicator@workspace:components/sla-indicator"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@open-wc/testing": "npm:^4.0.0"
+    jsdom: "npm:^25.0.0"
+    lit: "npm:^3.0.0"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
@@ -1648,7 +1689,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/browser@npm:^2.0.5, @vitest/browser@npm:^2.1.8":
+"@vitest/browser@npm:^2.0.0, @vitest/browser@npm:^2.0.5, @vitest/browser@npm:^2.1.8":
   version: 2.1.9
   resolution: "@vitest/browser@npm:2.1.9"
   dependencies:
@@ -5407,7 +5448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3, typescript@npm:^5.5.0, typescript@npm:^5.6.0":
+"typescript@npm:^5.3.3, typescript@npm:^5.5.0, typescript@npm:^5.6.0, typescript@npm:^5.6.3":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -5427,7 +5468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.0#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.3#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
@@ -5761,7 +5802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^2.0.5, vitest@npm:^2.1.8":
+"vitest@npm:^2.0.0, vitest@npm:^2.0.5, vitest@npm:^2.1.8":
   version: 2.1.9
   resolution: "vitest@npm:2.1.9"
   dependencies:

@@ -11,11 +11,6 @@ import {
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';
 
-type ThemeMode = 'light' | 'dark';
-type DensityMode = 'comfortable' | 'compact';
-
-const STORAGE_KEY_THEME = 'casehub-workbench-theme';
-const STORAGE_KEY_DENSITY = 'casehub-workbench-density';
 const STORAGE_KEY_DIVIDER = 'casehub-workbench-divider';
 
 @customElement('work-item-workbench')
@@ -23,8 +18,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
   @property({ type: Object }) identity!: WorkIdentity;
   @property({ type: String }) endpoint = '';
   @property({ type: Object }) userSearchProvider: UserSearchProvider | null = null;
-  @property({ type: String }) theme: ThemeMode = 'light';
-  @property({ type: String }) density: DensityMode = 'comfortable';
 
   @state() private _selectedWorkItemId = '';
   @state() private _dividerRatio = 0.5;
@@ -41,6 +34,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       width: 100%;
       font-family: var(--blocks-font-family, system-ui);
       overflow: hidden;
+      container-type: inline-size;
     }
 
     .workbench {
@@ -49,58 +43,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       height: 100%;
       width: 100%;
       background: var(--blocks-neutral-1, #fafafa);
-    }
-
-    .theme-light {
-      --blocks-neutral-1: #fafafa;
-      --blocks-neutral-2: #f5f5f5;
-      --blocks-neutral-3: #e5e5e5;
-      --blocks-neutral-4: #d4d4d4;
-      --blocks-neutral-5: #a3a3a3;
-      --blocks-neutral-6: #737373;
-      --blocks-neutral-7: #525252;
-      --blocks-neutral-8: #404040;
-      --blocks-neutral-9: #262626;
-      --blocks-neutral-10: #171717;
-      --blocks-neutral-11: #0a0a0a;
-      --blocks-neutral-12: #000000;
-      --blocks-accent-9: #3b82f6;
-    }
-
-    .theme-dark {
-      --blocks-neutral-1: #0a0a0a;
-      --blocks-neutral-2: #171717;
-      --blocks-neutral-3: #262626;
-      --blocks-neutral-4: #404040;
-      --blocks-neutral-5: #525252;
-      --blocks-neutral-6: #737373;
-      --blocks-neutral-7: #a3a3a3;
-      --blocks-neutral-8: #d4d4d4;
-      --blocks-neutral-9: #e5e5e5;
-      --blocks-neutral-10: #f5f5f5;
-      --blocks-neutral-11: #fafafa;
-      --blocks-neutral-12: #ffffff;
-      --blocks-accent-9: #60a5fa;
-    }
-
-    .density-comfortable {
-      --blocks-space-1: 4px;
-      --blocks-space-2: 8px;
-      --blocks-space-3: 12px;
-      --blocks-space-4: 16px;
-      --blocks-font-size-sm: 12px;
-      --blocks-font-size-base: 14px;
-      --blocks-font-size-lg: 16px;
-    }
-
-    .density-compact {
-      --blocks-space-1: 2px;
-      --blocks-space-2: 4px;
-      --blocks-space-3: 8px;
-      --blocks-space-4: 12px;
-      --blocks-font-size-sm: 11px;
-      --blocks-font-size-base: 12px;
-      --blocks-font-size-lg: 14px;
     }
 
     .split-pane {
@@ -271,29 +213,15 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
     endpoint?: string;
     identity?: WorkIdentity;
     userSearchProvider?: UserSearchProvider;
-    theme?: ThemeMode;
-    density?: DensityMode;
   }): void {
     if (props.endpoint !== undefined) this.endpoint = props.endpoint;
     if (props.identity !== undefined) this.identity = props.identity;
     if (props.userSearchProvider !== undefined) this.userSearchProvider = props.userSearchProvider;
-    if (props.theme !== undefined) this.theme = props.theme;
-    if (props.density !== undefined) this.density = props.density;
     this.requestUpdate();
   }
 
   private _restorePreferences(): void {
     if (typeof localStorage === 'undefined') return;
-
-    const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      this.theme = savedTheme;
-    }
-
-    const savedDensity = localStorage.getItem(STORAGE_KEY_DENSITY);
-    if (savedDensity === 'comfortable' || savedDensity === 'compact') {
-      this.density = savedDensity;
-    }
 
     const savedDivider = localStorage.getItem(STORAGE_KEY_DIVIDER);
     if (savedDivider) {
@@ -374,24 +302,14 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
   };
 
   override updated(changedProperties: Map<string | number | symbol, unknown>): void {
-    if (typeof localStorage !== 'undefined') {
-      if (changedProperties.has('theme')) {
-        localStorage.setItem(STORAGE_KEY_THEME, this.theme);
-      }
-      if (changedProperties.has('density')) {
-        localStorage.setItem(STORAGE_KEY_DENSITY, this.density);
-      }
-    }
     if (changedProperties.has('_dividerRatio')) {
       this.style.setProperty('--divider-ratio', this._dividerRatio.toString());
     }
   }
 
   override render(): TemplateResult {
-    const workbenchClass = `workbench theme-${this.theme} density-${this.density}`;
-
     return html`
-      <div class="${workbenchClass}">
+      <div class="workbench">
         <div class="split-pane">
           <div class="left-panel">
             <div class="panel-content">

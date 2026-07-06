@@ -2,6 +2,25 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import type { WorkItemRootResponse, WorkIdentity } from '@casehubio/blocks-ui-core';
 import './work-item-inbox.js';
 
+// Mock IntersectionObserver globally for all tests
+global.IntersectionObserver = class IntersectionObserver {
+  callback: IntersectionObserverCallback;
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback;
+    // Immediately trigger visibility for tests
+    setTimeout(() => {
+      this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this);
+    }, 0);
+  }
+  observe() {}
+  disconnect() {}
+  unobserve() {}
+  takeRecords() { return []; }
+  root = null;
+  rootMargin = '';
+  thresholds = [];
+} as any;
+
 const identity: WorkIdentity = { userId: 'user-1', displayName: 'Test User', groups: ['compliance'] };
 
 const mockItems: WorkItemRootResponse[] = [

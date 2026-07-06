@@ -9,6 +9,8 @@ const SAMPLE_SCHEMA = {
     amount: { type: 'number' },
     currency: { type: 'string', enum: ['USD', 'EUR', 'GBP'] },
     flagged: { type: 'boolean' },
+    reportDate: { type: 'string', format: 'date' },
+    detectedAt: { type: 'string', format: 'date-time' },
     notes: { type: 'string', maxLength: 500 },
     parties: {
       type: 'object',
@@ -26,6 +28,8 @@ const SAMPLE_DATA = {
   amount: 125000,
   currency: 'USD',
   flagged: true,
+  reportDate: '2026-07-06',
+  detectedAt: '2026-07-06T14:30:00Z',
   notes: 'Multiple rapid transfers to newly opened accounts in high-risk jurisdictions.',
   parties: { sender: 'Acme Holdings Ltd', receiver: 'Shell Corp 42 LLC' },
 };

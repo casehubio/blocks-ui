@@ -1,12 +1,28 @@
 import { html, type TemplateResult } from 'lit';
+import type { FieldSchema } from './types.js';
 
-interface FieldSchema {
-  readonly type?: string;
-  readonly format?: string;
-  readonly enum?: readonly string[];
-  readonly maxLength?: number;
-  readonly properties?: Readonly<Record<string, FieldSchema>>;
-  readonly items?: FieldSchema;
+const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
+const dateTimeFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+
+function formatDateValue(value: unknown, format: string): string {
+  if (value === null || value === undefined || value === '') return '';
+  const date = new Date(String(value));
+  if (isNaN(date.getTime())) return String(value);
+  return format === 'date-time' ? dateTimeFormatter.format(date) : dateFormatter.format(date);
+}
+
+function toDateInputValue(value: unknown): string {
+  if (value === null || value === undefined || value === '') return '';
+  const date = new Date(String(value));
+  if (isNaN(date.getTime())) return '';
+  return date.toISOString().split('T')[0]!;
+}
+
+function toDateTimeInputValue(value: unknown): string {
+  if (value === null || value === undefined || value === '') return '';
+  const date = new Date(String(value));
+  if (isNaN(date.getTime())) return '';
+  return date.toISOString().slice(0, 16);
 }
 
 export function renderDisplayField(
@@ -16,6 +32,10 @@ export function renderDisplayField(
 ): TemplateResult {
   if (value === null || value === undefined) {
     return html`<div class="field"><span class="label">${key}</span><span class="value muted">—</span></div>`;
+  }
+
+  if (schema.format === 'date' || schema.format === 'date-time') {
+    return html`<div class="field"><span class="label">${key}</span><span class="value">${formatDateValue(value, schema.format)}</span></div>`;
   }
 
   if (schema.type === 'boolean') {
@@ -76,6 +96,22 @@ export function renderEditField(
       </div>`;
   }
 
+  if (schema.format === 'date') {
+    return html`
+      <div class="field">
+        <label for="${key}">${key}</label>
+        <input id="${key}" type="date" .value=${toDateInputValue(value)} @input=${(e: Event) => onChange(key, (e.target as HTMLInputElement).value)} />
+      </div>`;
+  }
+
+  if (schema.format === 'date-time') {
+    return html`
+      <div class="field">
+        <label for="${key}">${key}</label>
+        <input id="${key}" type="datetime-local" .value=${toDateTimeInputValue(value)} @input=${(e: Event) => onChange(key, (e.target as HTMLInputElement).value)} />
+      </div>`;
+  }
+
   if (schema.type === 'string' && (schema.maxLength ?? 0) > 200) {
     return html`
       <div class="field">
@@ -84,10 +120,11 @@ export function renderEditField(
       </div>`;
   }
 
-  // Default: text input
   return html`
     <div class="field">
       <label for="${key}">${key}</label>
       <input id="${key}" type="text" .value=${String(value ?? '')} @input=${(e: Event) => onChange(key, (e.target as HTMLInputElement).value)} />
     </div>`;
 }
+
+export type { FieldSchema };

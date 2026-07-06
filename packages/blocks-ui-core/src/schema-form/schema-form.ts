@@ -2,20 +2,11 @@ import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { renderDisplayField, renderEditField } from './field-renderers.js';
 import { getFieldRenderer, hasFieldRenderer } from './field-registry.js';
-
-interface SchemaObject {
-  readonly type?: string;
-  readonly properties?: Readonly<Record<string, SchemaObject>>;
-  readonly required?: readonly string[];
-  readonly format?: string;
-  readonly enum?: readonly string[];
-  readonly maxLength?: number;
-  readonly items?: SchemaObject;
-}
+import type { FieldSchema, FieldRendererElement } from './types.js';
 
 @customElement('schema-form')
 export class SchemaForm extends LitElement {
-  @property({ type: Object }) schema: SchemaObject | null = null;
+  @property({ type: Object }) schema: FieldSchema | null = null;
   @property({ type: Object }) data: Record<string, unknown> | null = null;
   @property({ type: String }) mode: 'display' | 'edit' = 'display';
 
@@ -56,9 +47,10 @@ export class SchemaForm extends LitElement {
           if (fieldSchema.format && hasFieldRenderer(fieldSchema.format)) {
             const Renderer = getFieldRenderer(fieldSchema.format)!;
             const el = new Renderer();
-            (el as any).value = dataSource[key];
-            (el as any).schema = fieldSchema;
-            (el as any).mode = this.mode;
+            const renderer = el as FieldRendererElement;
+            renderer.value = dataSource[key];
+            renderer.schema = fieldSchema;
+            renderer.mode = this.mode;
             return html`${el}`;
           }
           return this.mode === 'display'
