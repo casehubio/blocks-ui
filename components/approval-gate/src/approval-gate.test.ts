@@ -39,6 +39,7 @@ describe('approval-gate', () => {
   afterEach(() => {
     el.remove();
     vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('renders the prompt text', () => {
@@ -103,6 +104,21 @@ describe('approval-gate', () => {
     expect(progressbar!.getAttribute('aria-valuemax')).toBe('3');
   });
 
+  it('quorum progressbar has aria-valuemin', async () => {
+    el.quorum = {
+      required: 3,
+      total: 5,
+      voters: [
+        { id: 'user-2', name: 'Bob', status: 'voted', outcome: 'approve' },
+        { id: 'user-3', name: 'Charlie', status: 'pending' },
+        { id: 'user-1', name: 'Alice', status: 'pending' },
+      ],
+    };
+    await el.updateComplete;
+    const progressbar = el.shadowRoot!.querySelector('[role="progressbar"]');
+    expect(progressbar!.getAttribute('aria-valuemin')).toBe('0');
+  });
+
   it('shows already-decided state when current user has voted', async () => {
     el.quorum = {
       required: 2,
@@ -133,7 +149,7 @@ describe('approval-gate', () => {
     el.requireConfirmation = false;
     await el.updateComplete;
     const handler = vi.fn();
-    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => ({}) });
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => ({}) }));
     document.addEventListener('pages-event', handler);
     el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
     await el.updateComplete;
@@ -232,5 +248,60 @@ describe('approval-gate', () => {
     cancelBtn.click();
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector('.info-request-form')).toBeFalsy();
+  });
+
+  it('renders error and re-enables buttons on HTTP error', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 500 }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error).toBeTruthy();
+    expect(error!.textContent).toContain('HTTP 500');
+
+    const buttons = Array.from(el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.action-btn'));
+    for (const btn of buttons) {
+      expect(btn.disabled).toBe(false);
+    }
+
+    const liveRegion = document.body.querySelector('[aria-live]');
+    expect(liveRegion).toBeTruthy();
+    expect(liveRegion!.textContent).toBe('Decision failed: HTTP 500');
+    expect(liveRegion!.getAttribute('aria-live')).toBe('assertive');
+
+    // Verify error clears on successful retry
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => ({}) }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.error')).toBeFalsy();
+  });
+
+  it('renders error on network failure', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error).toBeTruthy();
+    expect(error!.textContent).toContain('Network error');
+
+    const buttons = Array.from(el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.action-btn'));
+    for (const btn of buttons) {
+      expect(btn.disabled).toBe(false);
+    }
+
+    const liveRegion = document.body.querySelector('[aria-live]');
+    expect(liveRegion!.textContent).toBe('Decision failed: Network error');
+    expect(liveRegion!.getAttribute('aria-live')).toBe('assertive');
   });
 });

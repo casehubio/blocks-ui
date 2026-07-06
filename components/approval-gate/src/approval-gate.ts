@@ -425,6 +425,7 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
     return html`
       <div class="quorum-section">
         <div class="quorum-bar" role="progressbar"
+             aria-valuemin="0"
              aria-valuenow="${votedCount}"
              aria-valuemax="${q.required}"
              aria-label="Quorum progress: ${votedCount} of ${q.required} required">

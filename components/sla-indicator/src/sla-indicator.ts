@@ -65,6 +65,7 @@ export class SlaIndicator extends LitElement {
 
   @state() private _remaining = 0;
   @state() private _state: SlaState = 'normal';
+  @state() private _deadlineValid = true;
 
   private _lastEmittedState: SlaState | null = null;
 
@@ -140,6 +141,16 @@ export class SlaIndicator extends LitElement {
   private _update(): void {
     if (!this.deadline) return;
     const deadlineMs = new Date(this.deadline).getTime();
+    if (isNaN(deadlineMs)) {
+      if (this._deadlineValid) {
+        console.warn(`sla-indicator: invalid deadline value "${this.deadline}"`);
+      }
+      this._deadlineValid = false;
+      this._remaining = 0;
+      this._state = 'normal';
+      return;
+    }
+    this._deadlineValid = true;
     this._remaining = deadlineMs - Date.now();
     this._state = this._computeState();
 
@@ -168,7 +179,7 @@ export class SlaIndicator extends LitElement {
   }
 
   override render() {
-    if (!this.deadline) return nothing;
+    if (!this.deadline || !this._deadlineValid) return nothing;
     const text = this._remaining > 0
       ? formatCountdown(this._remaining)
       : formatBreach(this._remaining);

@@ -26,7 +26,10 @@ describe('kpi-metric-row', () => {
     await el.updateComplete;
   });
 
-  afterEach(() => el.remove());
+  afterEach(() => {
+    el.remove();
+    vi.restoreAllMocks();
+  });
 
   it('renders empty state when no metrics', () => {
     expect(el.shadowRoot!.textContent).toContain('No metrics available');
@@ -116,5 +119,98 @@ describe('kpi-metric-row', () => {
     await el.updateComplete;
     expect(el.columns).toBe(2);
     expect(el.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(3);
+  });
+
+  describe('endpoint mode', () => {
+    it('renders loading skeleton when fetching', async () => {
+      vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})));
+      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      endpointEl.endpoint = '/api/metrics';
+      document.body.appendChild(endpointEl);
+      await endpointEl.updateComplete;
+      const skeletons = endpointEl.shadowRoot!.querySelectorAll('.skeleton-card');
+      expect(skeletons.length).toBeGreaterThan(0);
+      endpointEl.remove();
+    });
+
+    it('renders metric cards on successful fetch', async () => {
+      const mockData: MetricDefinition[] = [
+        { key: 'test', value: 42, label: 'Test Metric' },
+      ];
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockData),
+      }));
+      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      endpointEl.endpoint = '/api/metrics';
+      document.body.appendChild(endpointEl);
+      await new Promise(r => setTimeout(r, 0));
+      await endpointEl.updateComplete;
+      const cards = endpointEl.shadowRoot!.querySelectorAll('[role="listitem"]');
+      expect(cards.length).toBe(1);
+      expect(endpointEl.shadowRoot!.textContent).toContain('42');
+      endpointEl.remove();
+    });
+
+    it('renders error state on fetch failure', async () => {
+      vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
+      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      endpointEl.endpoint = '/api/metrics';
+      document.body.appendChild(endpointEl);
+      await new Promise(r => setTimeout(r, 0));
+      await endpointEl.updateComplete;
+      const error = endpointEl.shadowRoot!.querySelector('.error');
+      expect(error).toBeTruthy();
+      expect(error!.textContent).toContain('Network error');
+      endpointEl.remove();
+    });
+
+    it('refresh() re-fetches metrics', async () => {
+      const initialData: MetricDefinition[] = [
+        { key: 'a', value: 1, label: 'Initial' },
+      ];
+      const updatedData: MetricDefinition[] = [
+        { key: 'b', value: 2, label: 'Updated' },
+      ];
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(initialData),
+      }));
+      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      endpointEl.endpoint = '/api/metrics';
+      document.body.appendChild(endpointEl);
+      await new Promise(r => setTimeout(r, 0));
+      await endpointEl.updateComplete;
+      expect(endpointEl.shadowRoot!.textContent).toContain('Initial');
+
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(updatedData),
+      }));
+      await endpointEl.refresh();
+      await endpointEl.updateComplete;
+      expect(endpointEl.shadowRoot!.textContent).toContain('Updated');
+      endpointEl.remove();
+    });
+
+    it('does not re-fetch when endpoint changes after mount', async () => {
+      const mockFn = vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve([{ key: 'a', value: 1, label: 'A' }]),
+      });
+      vi.stubGlobal('fetch', mockFn);
+      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      endpointEl.endpoint = '/api/metrics';
+      document.body.appendChild(endpointEl);
+      await new Promise(r => setTimeout(r, 0));
+      await endpointEl.updateComplete;
+      expect(mockFn).toHaveBeenCalledTimes(1);
+
+      endpointEl.endpoint = '/api/other-metrics';
+      await new Promise(r => setTimeout(r, 0));
+      await endpointEl.updateComplete;
+      expect(mockFn).toHaveBeenCalledTimes(1);
+      endpointEl.remove();
+    });
   });
 });

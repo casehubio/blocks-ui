@@ -24,6 +24,7 @@ describe('sla-indicator', () => {
   afterEach(() => {
     el.remove();
     vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('renders countdown for a future deadline', async () => {
@@ -140,5 +141,41 @@ describe('sla-indicator', () => {
     await el.updateComplete;
     const after = el.shadowRoot!.textContent;
     expect(after).not.toBe(before);
+  });
+
+  it('renders nothing for an invalid deadline', async () => {
+    el.deadline = 'not-a-date';
+    await el.updateComplete;
+    const indicator = el.shadowRoot!.querySelector('.sla-indicator');
+    expect(indicator).toBeFalsy();
+  });
+
+  it('does not emit state-changed for an invalid deadline', async () => {
+    const handler = vi.fn();
+    document.addEventListener('pages-event', handler);
+    el.deadline = 'not-a-date';
+    await el.updateComplete;
+    const stateEvent = handler.mock.calls.find(
+      (c: any) => c[0].detail.topic === 'sla.state-changed'
+    );
+    expect(stateEvent).toBeFalsy();
+    document.removeEventListener('pages-event', handler);
+  });
+
+  it('transitions from valid to invalid deadline without emitting', async () => {
+    el.deadline = new Date(Date.now() + 86400000).toISOString();
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.sla-indicator')).toBeTruthy();
+
+    const handler = vi.fn();
+    document.addEventListener('pages-event', handler);
+    el.deadline = 'now-invalid';
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.sla-indicator')).toBeFalsy();
+    const stateEvent = handler.mock.calls.find(
+      (c: any) => c[0].detail.topic === 'sla.state-changed'
+    );
+    expect(stateEvent).toBeFalsy();
+    document.removeEventListener('pages-event', handler);
   });
 });
