@@ -11,7 +11,6 @@
   "references": [
     { "path": "../../packages/blocks-ui-core" },
     { "path": "../work-item-inbox" },
-    { "path": "../work-item-detail" },
-    { "path": "../queue-board" }
+    { "path": "../work-item-detail" }
   ]
 }

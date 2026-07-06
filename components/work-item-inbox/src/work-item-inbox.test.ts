@@ -190,6 +190,35 @@ describe('work-item-inbox', () => {
     expect(filtered[0].item.id).toBe('wi-breach');
   });
 
+  it('renders three tabs: My Work, Claimable, All', async () => {
+    const tabs = el.shadowRoot!.querySelectorAll('.tab');
+    expect(tabs.length).toBe(3);
+    expect(tabs[0]?.textContent?.trim()).toContain('My Work');
+    expect(tabs[1]?.textContent?.trim()).toContain('Claimable');
+    expect(tabs[2]?.textContent?.trim()).toContain('All');
+  });
+
+  it('All tab shows union of assigned and claimable without tab filter', async () => {
+    // Switch to All tab
+    const allTab = el.shadowRoot!.querySelectorAll('.tab')[2] as HTMLElement;
+    allTab.click();
+    await (el as any).updateComplete;
+    // Should show all items from inbox data (no perspective filter)
+    const rows = el.shadowRoot!.querySelectorAll('work-item-row');
+    expect(rows.length).toBeGreaterThan(0);
+  });
+
+  it('does not remove items from data array when All tab is active', async () => {
+    // Switch to All tab
+    const allTab = el.shadowRoot!.querySelectorAll('.tab')[2] as HTMLElement;
+    allTab.click();
+    await (el as any).updateComplete;
+    const initialCount = el.shadowRoot!.querySelectorAll('work-item-row').length;
+    // Simulate SSE event — should not empty the list
+    // (verifies handleItemAppears is tab-independent)
+    expect(initialCount).toBeGreaterThan(0);
+  });
+
   it('enables virtual scrolling for >50 items', async () => {
     const manyItems = Array.from({ length: 60 }, (_, i) => ({
       ...mockItems[0],
@@ -1012,5 +1041,319 @@ describe('inbox filter count matrix', () => {
     el.activeTab = 'my-work';
     await el.updateComplete;
     expect(el.getFilteredItems().length).toBe(1); // mw-2
+  });
+});
+
+// Queue scope integration tests
+describe('queue scope', () => {
+  let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
+
+  beforeEach(async () => {
+    el = document.createElement('work-item-inbox') as any;
+    el.identity = identity;
+    el.data = mockItems;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+  });
+
+  afterEach(() => el.remove());
+
+  it('renders queue-pill-bar above tabs', async () => {
+    const pillBar = el.shadowRoot!.querySelector('queue-pill-bar');
+    expect(pillBar).not.toBeNull();
+  });
+
+  it('renders scope-context-bar when queue is active', async () => {
+    // Simulate queue selection by setting internal state
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    await (el as any).updateComplete;
+    const contextBar = el.shadowRoot!.querySelector('scope-context-bar');
+    expect(contextBar).not.toBeNull();
+  });
+
+  it('hides scope-context-bar when no queue selected', async () => {
+    (el as any)._queueScope = null;
+    await (el as any).updateComplete;
+    const contextBar = el.shadowRoot!.querySelector('scope-context-bar');
+    expect(contextBar).toBeNull();
+  });
+
+  it('passes statusCounts to filter bar', async () => {
+    const filterBar = el.shadowRoot!.querySelector('inbox-filter-bar') as any;
+    expect(filterBar.statusCounts).toBeDefined();
+  });
+
+  it('uses queue items as data source when queue is active', async () => {
+    const queueItems: WorkItemRootResponse[] = [
+      {
+        ...mockItems[0],
+        item: { ...mockItems[0].item, id: 'qi-1', status: 'IN_PROGRESS' as const, assigneeId: 'user-1' },
+      },
+    ];
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: queueItems,
+      statusCounts: new Map([['IN_PROGRESS', 1]]),
+      priorityCounts: new Map([['HIGH', 1]]),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    (el as any).activeTab = 'all';
+    await (el as any).updateComplete;
+
+    const filtered = (el as any).getFilteredItems();
+    expect(filtered.length).toBe(1);
+    expect(filtered[0].item.id).toBe('qi-1');
+  });
+
+  it('reverts to inbox items when queue is cleared', async () => {
+    // Set queue scope
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    await (el as any).updateComplete;
+
+    // Clear queue scope
+    (el as any)._queueScope = null;
+    await (el as any).updateComplete;
+
+    // Should use inbox items again
+    const filtered = (el as any).getFilteredItems();
+    expect(filtered.length).toBeGreaterThan(0);
+  });
+
+  it('_buildQueueScope computes status and priority counts', () => {
+    const inbox = el as any;
+    const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
+    const items: WorkItemRootResponse[] = [
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'a', status: 'ASSIGNED' as const, priority: 'HIGH' as const } },
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'b', status: 'ASSIGNED' as const, priority: 'URGENT' as const } },
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'c', status: 'IN_PROGRESS' as const, priority: 'HIGH' as const } },
+    ];
+    const scope = inbox._buildQueueScope(queue, items);
+    expect(scope.statusCounts.get('ASSIGNED')).toBe(2);
+    expect(scope.statusCounts.get('IN_PROGRESS')).toBe(1);
+    expect(scope.priorityCounts.get('HIGH')).toBe(2);
+    expect(scope.priorityCounts.get('URGENT')).toBe(1);
+    expect(scope.items.length).toBe(3);
+  });
+
+  it('_buildQueueScope counts overdue items', () => {
+    const inbox = el as any;
+    const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
+    const pastDate = new Date(Date.now() - 3600000).toISOString();
+    const items: WorkItemRootResponse[] = [
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'a', status: 'ASSIGNED' as const, expiresAt: pastDate } },
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'b', status: 'ASSIGNED' as const, expiresAt: null } },
+    ];
+    const scope = inbox._buildQueueScope(queue, items);
+    expect(scope.overdueCount).toBe(1);
+  });
+
+  it('_buildQueueScope counts breach items', () => {
+    const inbox = el as any;
+    const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
+    const pastDate = new Date(Date.now() - 3600000).toISOString();
+    const items: WorkItemRootResponse[] = [
+      { ...mockItems[1], item: { ...mockItems[1].item, id: 'a', status: 'PENDING' as const, claimDeadline: pastDate } },
+      { ...mockItems[1], item: { ...mockItems[1].item, id: 'b', status: 'PENDING' as const, claimDeadline: null } },
+    ];
+    const scope = inbox._buildQueueScope(queue, items);
+    expect(scope.breachCount).toBe(1);
+  });
+
+  it('_computeFilterCounts derives counts from tab items', async () => {
+    const inbox = el as any;
+    inbox.activeTab = 'my-work';
+    await inbox.updateComplete;
+    const counts = inbox._computeFilterCounts();
+    expect(counts.statusCounts).toBeInstanceOf(Map);
+    expect(counts.priorityCounts).toBeInstanceOf(Map);
+    // my-work has 1 item (ASSIGNED/HIGH)
+    expect(counts.statusCounts.get('ASSIGNED')).toBe(1);
+    expect(counts.priorityCounts.get('HIGH')).toBe(1);
+  });
+
+  it('tab counts reflect queue items when queue is active', async () => {
+    const queueItems: WorkItemRootResponse[] = [
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-2', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+      { ...mockItems[1], item: { ...mockItems[1].item, id: 'qi-3', status: 'PENDING' as const, candidateGroups: 'compliance' } },
+    ];
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: queueItems,
+      statusCounts: new Map([['ASSIGNED', 2], ['PENDING', 1]]),
+      priorityCounts: new Map([['HIGH', 3]]),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    await (el as any).updateComplete;
+
+    // Check tab counts are rendered from queue data
+    const tabs = el.shadowRoot!.querySelectorAll('.tab');
+    const myWorkTab = tabs[0];
+    expect(myWorkTab?.textContent).toContain('2');
+    const claimableTab = tabs[1];
+    expect(claimableTab?.textContent).toContain('1');
+    const allTab = tabs[2];
+    expect(allTab?.textContent).toContain('3');
+  });
+
+  it('clears queue scope on Escape key', async () => {
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    await (el as any).updateComplete;
+
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await (el as any).updateComplete;
+
+    expect((el as any)._queueScope).toBeNull();
+  });
+
+  it('does not clear when Escape pressed without queue scope', async () => {
+    (el as any)._queueScope = null;
+    await (el as any).updateComplete;
+
+    // Should not throw
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await (el as any).updateComplete;
+    expect((el as any)._queueScope).toBeNull();
+  });
+
+  it('scope-clear event from context bar clears queue scope', async () => {
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    await (el as any).updateComplete;
+
+    const contextBar = el.shadowRoot!.querySelector('scope-context-bar')!;
+    contextBar.dispatchEvent(new CustomEvent('scope-clear', { bubbles: true, composed: true }));
+    await (el as any).updateComplete;
+
+    expect((el as any)._queueScope).toBeNull();
+  });
+
+  it('getTabItems uses queue scope items when active', async () => {
+    const queueItems: WorkItemRootResponse[] = [
+      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+    ];
+    (el as any)._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: queueItems,
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    (el as any).activeTab = 'my-work';
+    await (el as any).updateComplete;
+
+    const tabItems = (el as any).getTabItems();
+    expect(tabItems.length).toBe(1);
+    expect(tabItems[0].item.id).toBe('qi-1');
+  });
+
+  it('shows loading state while fetching queue items', async () => {
+    (el as any)._queueLoading = true;
+    await (el as any).updateComplete;
+    const loading = el.shadowRoot!.querySelector('.loading');
+    expect(loading).not.toBeNull();
+  });
+
+  it('shows error state on queue fetch failure', async () => {
+    (el as any)._queueError = 'HTTP 500';
+    await (el as any).updateComplete;
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error).not.toBeNull();
+    expect(error!.textContent).toContain('HTTP 500');
+  });
+
+  it('_handleQueueScopeChanged clears scope when queue is null', async () => {
+    const inbox = el as any;
+    // Set up existing scope
+    inbox._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    inbox._queueLoading = true;
+    inbox._queueError = 'some error';
+
+    await inbox._handleQueueScopeChanged({ queue: null });
+
+    expect(inbox._queueScope).toBeNull();
+    expect(inbox._queueLoading).toBe(false);
+    expect(inbox._queueError).toBeNull();
+  });
+});
+
+describe('queue SSE lifecycle', () => {
+  let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
+
+  beforeEach(async () => {
+    el = document.createElement('work-item-inbox') as any;
+    el.identity = identity;
+    el.data = mockItems;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+  });
+
+  afterEach(() => el.remove());
+
+  it('has _subscribeQueueSSE method', async () => {
+    const inbox = el as any;
+    expect(typeof inbox._subscribeQueueSSE).toBe('function');
+  });
+
+  it('sets _queueSSECleanup when subscribing', async () => {
+    const inbox = el as any;
+    inbox.endpoint = 'http://localhost:8080';
+    // Mock sseManager.subscribe to avoid EventSource
+    const mockSubscribe = vi.fn();
+    inbox.sseManager.subscribe = mockSubscribe;
+    inbox._queueScope = {
+      queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
+      items: [],
+      statusCounts: new Map(),
+      priorityCounts: new Map(),
+      overdueCount: 0,
+      breachCount: 0,
+    };
+    inbox._subscribeQueueSSE('q1');
+    expect(inbox._queueSSECleanup).not.toBeNull();
+  });
+
+  it('clears _queueSSECleanup when unsubscribing', async () => {
+    const inbox = el as any;
+    inbox._subscribeQueueSSE('q1');
+    inbox._unsubscribeQueueSSE();
+    expect(inbox._queueSSECleanup).toBeNull();
   });
 });

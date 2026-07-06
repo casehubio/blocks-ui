@@ -8,7 +8,6 @@
     { "path": "components/work-item-row" },
     { "path": "components/work-item-inbox" },
     { "path": "components/work-item-detail" },
-    { "path": "components/queue-board" },
     { "path": "components/work-item-workbench" }
   ]
 }

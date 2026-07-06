@@ -46,4 +46,54 @@ describe('inbox-filter-bar', () => {
       expect(handler).toHaveBeenCalled();
     }
   });
+
+  it('renders count next to each status chip', async () => {
+    (el as any).statusCounts = new Map([
+      ['PENDING', 5],
+      ['ASSIGNED', 3],
+      ['IN_PROGRESS', 0],
+    ]);
+    await (el as any).updateComplete;
+    const pendingChip = el.shadowRoot!.querySelector('[data-status="PENDING"]');
+    expect(pendingChip?.textContent).toContain('(5)');
+  });
+
+  it('disables chips with count = 0', async () => {
+    (el as any).statusCounts = new Map([
+      ['PENDING', 5],
+      ['ASSIGNED', 0],
+      ['IN_PROGRESS', 0],
+    ]);
+    await (el as any).updateComplete;
+    const assignedChip = el.shadowRoot!.querySelector('[data-status="ASSIGNED"]');
+    expect(assignedChip?.getAttribute('aria-disabled')).toBe('true');
+    expect(assignedChip?.classList.contains('disabled')).toBe(true);
+  });
+
+  it('does not emit filter-change for disabled chips', async () => {
+    (el as any).statusCounts = new Map([
+      ['PENDING', 5],
+      ['ASSIGNED', 0],
+    ]);
+    await (el as any).updateComplete;
+    const handler = vi.fn();
+    el.addEventListener('filter-change', handler);
+    const assignedChip = el.shadowRoot!.querySelector('[data-status="ASSIGNED"]') as HTMLElement;
+    assignedChip.click();
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('renders priority counts', async () => {
+    (el as any).priorityCounts = new Map([
+      ['URGENT', 1],
+      ['HIGH', 3],
+      ['MEDIUM', 4],
+      ['LOW', 0],
+    ]);
+    await (el as any).updateComplete;
+    const urgentChip = el.shadowRoot!.querySelector('[data-priority="URGENT"]');
+    expect(urgentChip?.textContent).toContain('(1)');
+    const lowChip = el.shadowRoot!.querySelector('[data-priority="LOW"]');
+    expect(lowChip?.getAttribute('aria-disabled')).toBe('true');
+  });
 });

@@ -140,21 +140,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-queue-board@workspace:*, @casehubio/blocks-ui-queue-board@workspace:components/queue-board":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/blocks-ui-queue-board@workspace:components/queue-board"
-  dependencies:
-    "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-work-item-row": "workspace:*"
-    "@open-wc/testing": "npm:^4.0.0"
-    "@types/node": "npm:^22.10.5"
-    jsdom: "npm:^25.0.1"
-    lit: "npm:^3.2.0"
-    typescript: "npm:^5.7.2"
-    vitest: "npm:^2.1.8"
-  languageName: unknown
-  linkType: soft
-
 "@casehubio/blocks-ui-trust-score-panel@workspace:components/trust-score-panel":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-trust-score-panel@workspace:components/trust-score-panel"
@@ -213,7 +198,6 @@ __metadata:
   resolution: "@casehubio/blocks-ui-work-item-workbench@workspace:components/work-item-workbench"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-queue-board": "workspace:*"
     "@casehubio/blocks-ui-work-item-detail": "workspace:*"
     "@casehubio/blocks-ui-work-item-inbox": "workspace:*"
     "@vitest/ui": "npm:^1.0.4"
@@ -1563,15 +1547,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~8.3.0"
   checksum: 10c0/61c22ad1ef215e24138cb8b7368fb68bab9de4c123b3f23d411749b015ba1b7d22f878ad54add26a0b69068d7e07c04af665069d8571b6c6c3b9b2fb73b7bd91
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^22.10.5":
-  version: 22.20.0
-  resolution: "@types/node@npm:22.20.0"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/55d78223205bd5f81f043d71b7a5c8d8854b9ef44ef81291680943adb27fa5ba1f092658c87183d5bc8cf6baf6a57b81dad966eb3afa452cc301a615b6d9b20e
   languageName: node
   linkType: hard
 
@@ -3783,7 +3758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdom@npm:^25.0.0, jsdom@npm:^25.0.1":
+"jsdom@npm:^25.0.0":
   version: 25.0.1
   resolution: "jsdom@npm:25.0.1"
   dependencies:
@@ -3991,7 +3966,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit@npm:^2.0.0 || ^3.0.0, lit@npm:^3.0.0, lit@npm:^3.1.0, lit@npm:^3.2.0, lit@npm:^3.2.1, lit@npm:^3.3.3":
+"lit@npm:^2.0.0 || ^3.0.0, lit@npm:^3.0.0, lit@npm:^3.1.0, lit@npm:^3.2.1, lit@npm:^3.3.3":
   version: 3.3.3
   resolution: "lit@npm:3.3.3"
   dependencies:
@@ -5432,7 +5407,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3, typescript@npm:^5.5.0, typescript@npm:^5.6.0, typescript@npm:^5.7.2":
+"typescript@npm:^5.3.3, typescript@npm:^5.5.0, typescript@npm:^5.6.0":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -5452,7 +5427,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.6.0#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
@@ -5476,13 +5451,6 @@ __metadata:
   version: 1.6.4
   resolution: "ufo@npm:1.6.4"
   checksum: 10c0/3a2b29e7e3d772fbf6893d7d23bf442981457adb2fe122828abdbda89bedcb81aafd0dcc080e41b45f9a877db00cb42cbfee9639753a19d9b9bd39b5627039cf
-  languageName: node
-  linkType: hard
-
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 

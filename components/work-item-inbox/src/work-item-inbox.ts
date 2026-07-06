@@ -9,9 +9,15 @@ import type {
   BulkItemResult,
   WorkItemLifecycleEvent,
   WorkEventType,
+  InboxMode,
+  QueueScope,
+  QueueScopeChangedPayload,
+  QueueView,
+  WorkItemQueueEvent,
 } from '@casehubio/blocks-ui-core';
 import {
   emitPagesEvent,
+  onPagesEvent,
   WorkItemEventTopics,
   isActiveStatus,
   RovingTabindexMixin,
@@ -23,10 +29,10 @@ import type { SSEEvent } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-work-item-row';
 import './inbox-summary-bar.js';
 import './inbox-filter-bar.js';
+import './queue-pill-bar.js';
+import './scope-context-bar.js';
 import type { FilterClickDetail } from './inbox-summary-bar.js';
 import type { FilterChangeDetail } from './inbox-filter-bar.js';
-
-type InboxMode = 'my-work' | 'claimable';
 
 const WorkItemInboxBase = KeyboardShortcutMixin(RovingTabindexMixin(LitElement));
 
@@ -52,6 +58,14 @@ export class WorkItemInbox extends WorkItemInboxBase {
   @state() private claimBreachFilter = false;
   @state() private batchProcessing = false;
   @state() private batchError: string | null = null;
+
+  // Queue scope
+  @state() private _queueScope: QueueScope | null = null;
+  @state() private _queueLoading = false;
+  @state() private _queueError: string | null = null;
+  private _queueFetchController: AbortController | null = null;
+  private _unsubscribeQueueScope?: () => void;
+  private _queueSSECleanup: (() => void) | null = null;
 
   private lastSelectedIndex: number = -1;
 
@@ -300,6 +314,15 @@ export class WorkItemInbox extends WorkItemInboxBase {
       cursor: not-allowed;
     }
 
+    .tab-count {
+      font-size: 11px;
+      color: var(--blocks-neutral-7, #a3a3a3);
+    }
+
+    .tab.active .tab-count {
+      color: var(--blocks-accent-9, #0080ff);
+    }
+
     .item-row {
       cursor: pointer;
       user-select: none;
@@ -326,11 +349,21 @@ export class WorkItemInbox extends WorkItemInboxBase {
       this.fetchItems();
       this.subscribeSSE();
     }
+
+    this._unsubscribeQueueScope = onPagesEvent<QueueScopeChangedPayload>(
+      this, WorkItemEventTopics.QUEUE_SCOPE_CHANGED,
+      (payload) => this._handleQueueScopeChanged(payload),
+    );
+    this.addEventListener('keydown', this._handleEscapeKey);
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.unsubscribeSSE();
+    this._unsubscribeQueueScope?.();
+    this._unsubscribeQueueSSE();
+    this._queueFetchController?.abort();
+    this.removeEventListener('keydown', this._handleEscapeKey);
   }
 
   configure(props: Partial<WorkItemInbox>) {
@@ -434,15 +467,9 @@ export class WorkItemInbox extends WorkItemInboxBase {
       const existsAlready = this.items.some((item) => item.item.id === workItemId);
 
       const shouldBeVisible =
-        (this.activeTab === 'my-work' &&
-          newItem.item.assigneeId === this.identity.userId &&
-          isActiveStatus(newItem.item.status)) ||
-        (this.activeTab === 'claimable' &&
-          newItem.item.status === 'PENDING' &&
-          newItem.item.candidateGroups &&
-          this.identity.groups.some((g) =>
-            newItem.item.candidateGroups!.split(',').includes(g),
-          ));
+        (newItem.item.assigneeId === this.identity.userId && isActiveStatus(newItem.item.status)) ||
+        (newItem.item.status === 'PENDING' && newItem.item.candidateGroups &&
+          this.identity.groups.some((g) => newItem.item.candidateGroups!.split(',').includes(g)));
 
       if (existsAlready && !shouldBeVisible) {
         this.items = this.items.filter((item) => item.item.id !== workItemId);
@@ -540,21 +567,26 @@ export class WorkItemInbox extends WorkItemInboxBase {
   }
 
   private getTabItems(): WorkItemRootResponse[] {
+    const source = this._queueScope ? this._queueScope.items : this.items;
     if (this.activeTab === 'my-work') {
-      return this.items.filter(
+      return source.filter(
         (item) =>
           item.item.assigneeId === this.identity.userId &&
           isActiveStatus(item.item.status),
       );
     }
-    return this.items.filter(
-      (item) =>
-        item.item.status === 'PENDING' &&
-        item.item.candidateGroups &&
-        this.identity.groups.some((g) =>
-          item.item.candidateGroups!.split(',').includes(g),
-        ),
-    );
+    if (this.activeTab === 'claimable') {
+      return source.filter(
+        (item) =>
+          item.item.status === 'PENDING' &&
+          item.item.candidateGroups &&
+          this.identity.groups.some((g) =>
+            item.item.candidateGroups!.split(',').includes(g),
+          ),
+      );
+    }
+    // 'all' — no perspective filter
+    return source;
   }
 
   getTabOverdueCount(): number {
@@ -572,10 +604,12 @@ export class WorkItemInbox extends WorkItemInboxBase {
   }
 
   private getFilteredItems(): WorkItemRootResponse[] {
-    let filtered = this.items;
+    let filtered = this._queueScope ? this._queueScope.items : this.items;
 
     // Mode filtering
-    if (this.activeTab === 'my-work') {
+    if (this.activeTab === 'all') {
+      // No perspective filter — full population
+    } else if (this.activeTab === 'my-work') {
       filtered = filtered.filter(
         (item) =>
           item.item.assigneeId === this.identity.userId &&
@@ -636,7 +670,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
   }
 
   override willUpdate(changed: Map<string, unknown>): void {
-    if (changed.has('activeTab') && this.activeTab === 'my-work') {
+    if (changed.has('activeTab') && this.activeTab !== 'claimable') {
       this.claimBreachFilter = false;
     }
   }
@@ -886,7 +920,181 @@ export class WorkItemInbox extends WorkItemInboxBase {
     }
   }
 
+  private async _handleQueueScopeChanged(payload: QueueScopeChangedPayload) {
+    // Abort any in-flight queue fetch
+    this._queueFetchController?.abort();
+    this._queueFetchController = null;
+
+    if (!payload.queue) {
+      this._unsubscribeQueueSSE();
+      this._queueScope = null;
+      this._queueLoading = false;
+      this._queueError = null;
+      return;
+    }
+
+    this._queueLoading = true;
+    this._queueError = null;
+    this._queueFetchController = new AbortController();
+
+    try {
+      const res = await fetch(
+        `${this.endpoint}/queues/${payload.queue.id}/items`,
+        { signal: this._queueFetchController.signal },
+      );
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const items: WorkItemResponse[] = await res.json();
+
+      const wrapped: WorkItemRootResponse[] = items.map(item => ({
+        item,
+        childCount: 0,
+        completedCount: null,
+        requiredCount: null,
+        groupStatus: null,
+      }));
+
+      this._queueScope = this._buildQueueScope(payload.queue, wrapped);
+      this._queueLoading = false;
+      this._subscribeQueueSSE(payload.queue.id);
+    } catch (e) {
+      if ((e as Error).name === 'AbortError') return;
+      this._queueError = e instanceof Error ? e.message : 'Failed to load queue';
+      this._queueLoading = false;
+      this._queueScope = null;
+    }
+  }
+
+  private _buildQueueScope(queue: QueueView, items: WorkItemRootResponse[]): QueueScope {
+    const statusCounts = new Map<string, number>();
+    const priorityCounts = new Map<string, number>();
+    let overdueCount = 0;
+    let breachCount = 0;
+    const now = Date.now();
+
+    for (const root of items) {
+      const s = root.item.status;
+      statusCounts.set(s, (statusCounts.get(s) ?? 0) + 1);
+      const p = root.item.priority;
+      priorityCounts.set(p, (priorityCounts.get(p) ?? 0) + 1);
+      if (root.item.expiresAt && new Date(root.item.expiresAt).getTime() < now && isActiveStatus(root.item.status)) {
+        overdueCount++;
+      }
+      if (root.item.claimDeadline && new Date(root.item.claimDeadline).getTime() < now && root.item.status === 'PENDING') {
+        breachCount++;
+      }
+    }
+
+    return { queue, items, statusCounts, priorityCounts, overdueCount, breachCount };
+  }
+
+  private _subscribeQueueSSE(queueId: string) {
+    this._unsubscribeQueueSSE();
+    if (!this.endpoint) return;
+    const url = `${this.endpoint}/queues/${queueId}/events`;
+    const handler = (event: SSEEvent) => this._handleQueueSSEEvent(event);
+    this.sseManager.subscribe(url, handler);
+    this._queueSSECleanup = () => {
+      this.sseManager.unsubscribe(url, handler);
+      this._queueSSECleanup = null;
+    };
+  }
+
+  private _unsubscribeQueueSSE() {
+    this._queueSSECleanup?.();
+    this._queueSSECleanup = null;
+  }
+
+  private async _handleQueueSSEEvent(event: SSEEvent) {
+    if (!this._queueScope) return;
+    const data = event.data as WorkItemQueueEvent;
+    if (data.queueViewId !== this._queueScope.queue.id) return;
+    if (data.eventType === 'ADDED') await this._handleQueueItemAdded(data.workItemId);
+    else if (data.eventType === 'REMOVED') this._handleQueueItemRemoved(data.workItemId);
+    else if (data.eventType === 'CHANGED') await this._handleQueueItemChanged(data.workItemId);
+  }
+
+  private async _handleQueueItemAdded(workItemId: string) {
+    if (!this.endpoint || !this._queueScope) return;
+    try {
+      const res = await fetch(`${this.endpoint}/workitems/${workItemId}`);
+      if (!res.ok) return;
+      const raw = await res.json() as Record<string, unknown>;
+      const newItem: WorkItemRootResponse = raw.item && typeof (raw.item as Record<string, unknown>).id === 'string'
+        ? raw as unknown as WorkItemRootResponse
+        : { item: raw as unknown as WorkItemResponse, childCount: 0, completedCount: null, requiredCount: null, groupStatus: null };
+      const items = [newItem, ...this._queueScope.items];
+      this._queueScope = this._buildQueueScope(this._queueScope.queue, items);
+      this.requestUpdate();
+    } catch { /* non-fatal */ }
+  }
+
+  private _handleQueueItemRemoved(workItemId: string) {
+    if (!this._queueScope) return;
+    const items = this._queueScope.items.filter(r => r.item.id !== workItemId);
+    this._queueScope = this._buildQueueScope(this._queueScope.queue, items);
+    this.requestUpdate();
+  }
+
+  private async _handleQueueItemChanged(workItemId: string) {
+    if (!this.endpoint || !this._queueScope) return;
+    try {
+      const res = await fetch(`${this.endpoint}/workitems/${workItemId}`);
+      if (!res.ok) return;
+      const raw = await res.json() as Record<string, unknown>;
+      const updated: WorkItemRootResponse = raw.item && typeof (raw.item as Record<string, unknown>).id === 'string'
+        ? raw as unknown as WorkItemRootResponse
+        : { item: raw as unknown as WorkItemResponse, childCount: 0, completedCount: null, requiredCount: null, groupStatus: null };
+      const items = this._queueScope.items.map(r => r.item.id === workItemId ? updated : r);
+      this._queueScope = this._buildQueueScope(this._queueScope.queue, items);
+      this.requestUpdate();
+    } catch { /* non-fatal */ }
+  }
+
+  private _computeFilterCounts(): { statusCounts: Map<string, number>; priorityCounts: Map<string, number> } {
+    const tabItems = this.getTabItems();
+    const statusCounts = new Map<string, number>();
+    const priorityCounts = new Map<string, number>();
+    for (const root of tabItems) {
+      const s = root.item.status;
+      statusCounts.set(s, (statusCounts.get(s) ?? 0) + 1);
+      const p = root.item.priority;
+      priorityCounts.set(p, (priorityCounts.get(p) ?? 0) + 1);
+    }
+    return { statusCounts, priorityCounts };
+  }
+
+  private _handleScopeClear() {
+    this._handleQueueScopeChanged({ queue: null });
+  }
+
+  private _handleEscapeKey = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && this._queueScope) {
+      e.preventDefault();
+      this._handleScopeClear();
+    }
+  };
+
+  private _renderQueuePillBar() {
+    return html`
+      <queue-pill-bar
+        .endpoint="${this.endpoint}"
+        .selectedQueueId="${this._queueScope?.queue.id ?? null}"
+        .selectedQueueCount="${this._queueScope?.items.length ?? null}"
+        @pages-event="${(e: CustomEvent) => {
+          if (e.detail.topic === 'queue.scope-changed') {
+            this._handleQueueScopeChanged(e.detail.payload);
+          }
+        }}"
+      ></queue-pill-bar>
+    `;
+  }
+
   private renderTabs() {
+    const source = this._queueScope ? this._queueScope.items : this.items;
+    const myWorkCount = source.filter(r => r.item.assigneeId === this.identity.userId && isActiveStatus(r.item.status)).length;
+    const claimableCount = source.filter(r => r.item.status === 'PENDING' && r.item.candidateGroups && this.identity.groups.some(g => r.item.candidateGroups!.split(',').includes(g))).length;
+    const allCount = source.length;
+
     return html`
       <div class="tabs">
         <button
@@ -894,14 +1102,21 @@ export class WorkItemInbox extends WorkItemInboxBase {
           @click="${() => this.handleTabClick('my-work')}"
           aria-current="${this.activeTab === 'my-work' ? 'page' : 'false'}"
         >
-          My Work
+          My Work <span class="tab-count">(${myWorkCount})</span>
         </button>
         <button
           class="tab ${this.activeTab === 'claimable' ? 'active' : ''}"
           @click="${() => this.handleTabClick('claimable')}"
           aria-current="${this.activeTab === 'claimable' ? 'page' : 'false'}"
         >
-          Claimable
+          Claimable <span class="tab-count">(${claimableCount})</span>
+        </button>
+        <button
+          class="tab ${this.activeTab === 'all' ? 'active' : ''}"
+          @click="${() => this.handleTabClick('all')}"
+          aria-current="${this.activeTab === 'all' ? 'page' : 'false'}"
+        >
+          All <span class="tab-count">(${allCount})</span>
         </button>
       </div>
     `;
@@ -917,7 +1132,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
           .visibleBreach=${this.getTabBreachCount()}
           .overdueActive=${this.overdueFilter}
           .claimBreachActive=${this.claimBreachFilter}
-          .hideClaimBreach=${this.activeTab === 'my-work'}
+          .hideClaimBreach=${this.activeTab !== 'claimable'}
           @filter-click="${this.handleSummaryFilterClick}"
         ></inbox-summary-bar>
       </div>
@@ -925,11 +1140,14 @@ export class WorkItemInbox extends WorkItemInboxBase {
   }
 
   private renderFilterBar() {
+    const { statusCounts, priorityCounts } = this._computeFilterCounts();
     return html`
       <div class="filter-bar">
         <inbox-filter-bar
           .activeStatusFilters="${this.statusFilter}"
           .activePriorityFilters="${this.priorityFilter}"
+          .statusCounts="${statusCounts}"
+          .priorityCounts="${priorityCounts}"
           @filter-change="${this.handleFilterChange}"
           @clear-filters="${this.handleClearFilters}"
         ></inbox-filter-bar>
@@ -1057,8 +1275,15 @@ export class WorkItemInbox extends WorkItemInboxBase {
   override render() {
     return html`
       <div class="inbox-container">
-        ${this.renderTabs()} ${this.renderSummaryBar()} ${this.renderFilterBar()}
-        ${this.renderItems()} ${this.renderBatchActionBar()}
+        ${this._renderQueuePillBar()}
+        ${this._queueScope ? html`<scope-context-bar .queue="${this._queueScope.queue}" @scope-clear="${this._handleScopeClear}"></scope-context-bar>` : ''}
+        ${this.renderTabs()}
+        ${this.renderSummaryBar()}
+        ${this.renderFilterBar()}
+        ${this._queueLoading ? html`<div class="loading">Loading queue...</div>` : ''}
+        ${this._queueError ? html`<div class="error">${this._queueError}</div>` : ''}
+        ${!this._queueLoading && !this._queueError ? this.renderItems() : ''}
+        ${this.renderBatchActionBar()}
       </div>
     `;
   }

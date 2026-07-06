@@ -1,3 +1,5 @@
+import type { QueueView } from './work-item.js';
+
 export interface PagesEventDetail<T = unknown> {
   readonly topic: string;
   readonly payload: T;
@@ -30,15 +32,13 @@ export function onPagesEvent<T>(
 export const WorkItemEventTopics = {
   SELECTED: 'work-item.selected',
   DESELECTED: 'work-item.deselected',
-  QUEUE_SELECTED: 'queue.selected',
-  QUEUE_DESELECTED: 'queue.deselected',
+  QUEUE_SCOPE_CHANGED: 'queue.scope-changed',
 } as const;
 
 export interface WorkItemSelectedPayload {
   readonly workItemId: string;
 }
 
-export interface QueueSelectedPayload {
-  readonly queueId: string;
-  readonly queueName: string;
+export interface QueueScopeChangedPayload {
+  readonly queue: QueueView | null;
 }

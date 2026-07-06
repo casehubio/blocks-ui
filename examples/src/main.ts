@@ -11,7 +11,7 @@ async function bootstrap() {
   await import('./pages/row-page.js');
   await import('./pages/inbox-page.js');
   await import('./pages/detail-page.js');
-  await import('./pages/queue-page.js');
+  await import('./pages/queue-inbox-page.js');
   await import('./pages/schema-form-page.js');
   await import('./pages/workbench-page.js');
 

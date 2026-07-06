@@ -7,15 +7,12 @@ import {
   WorkItemEventTopics,
   KeyboardShortcutMixin,
   type WorkItemSelectedPayload,
-  type QueueSelectedPayload,
 } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';
-import '@casehubio/blocks-ui-queue-board';
 
 type ThemeMode = 'light' | 'dark';
 type DensityMode = 'comfortable' | 'compact';
-type LeftPanelView = 'inbox' | 'queues';
 
 const STORAGE_KEY_THEME = 'casehub-workbench-theme';
 const STORAGE_KEY_DENSITY = 'casehub-workbench-density';
@@ -29,7 +26,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
   @property({ type: String }) theme: ThemeMode = 'light';
   @property({ type: String }) density: DensityMode = 'comfortable';
 
-  @state() private _leftPanel: LeftPanelView = 'inbox';
   @state() private _selectedWorkItemId = '';
   @state() private _dividerRatio = 0.5;
   @state() private _showShortcutOverlay = false;
@@ -37,8 +33,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   private _unsubscribeSelection?: () => void;
   private _unsubscribeDeselection?: () => void;
-  private _unsubscribeQueueSelection?: () => void;
-  private _unsubscribeQueueDeselection?: () => void;
 
   static override styles = css`
     :host {
@@ -124,42 +118,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       max-width: 70%;
       border-right: 1px solid var(--blocks-neutral-4, #d4d4d4);
       background: var(--blocks-neutral-2, #f5f5f5);
-    }
-
-    .tabs {
-      display: flex;
-      gap: 0;
-      border-bottom: 1px solid var(--blocks-neutral-4, #d4d4d4);
-      padding: 0 var(--blocks-space-3, 12px);
-      background: var(--blocks-neutral-2, #f5f5f5);
-    }
-
-    .tab {
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      font-size: var(--blocks-font-size-base, 14px);
-      font-weight: 500;
-      color: var(--blocks-neutral-7, #525252);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    @media (prefers-reduced-motion) {
-      .tab {
-        transition-duration: 0s;
-      }
-    }
-
-    .tab:hover {
-      color: var(--blocks-neutral-9, #262626);
-      background: var(--blocks-neutral-3, #e5e5e5);
-    }
-
-    .tab.active {
-      color: var(--blocks-accent-9, #3b82f6);
-      border-bottom-color: var(--blocks-accent-9, #3b82f6);
     }
 
     .panel-content {
@@ -362,29 +320,11 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
         this._selectedWorkItemId = '';
       }
     );
-
-    this._unsubscribeQueueSelection = onPagesEvent<QueueSelectedPayload>(
-      document,
-      WorkItemEventTopics.QUEUE_SELECTED,
-      () => {
-        this._leftPanel = 'queues';
-      }
-    );
-
-    this._unsubscribeQueueDeselection = onPagesEvent(
-      document,
-      WorkItemEventTopics.QUEUE_DESELECTED,
-      () => {
-        this._leftPanel = 'queues';
-      }
-    );
   }
 
   private _unsubscribeEvents(): void {
     this._unsubscribeSelection?.();
     this._unsubscribeDeselection?.();
-    this._unsubscribeQueueSelection?.();
-    this._unsubscribeQueueDeselection?.();
   }
 
   private _registerKeyboardShortcuts(): void {
@@ -403,10 +343,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   private _toggleShortcutOverlay(): void {
     this._showShortcutOverlay = !this._showShortcutOverlay;
-  }
-
-  private _handleTabClick(panel: LeftPanelView): void {
-    this._leftPanel = panel;
   }
 
   private _handleDividerMouseDown = (e: MouseEvent): void => {
@@ -458,22 +394,8 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       <div class="${workbenchClass}">
         <div class="split-pane">
           <div class="left-panel">
-            <div class="tabs">
-              <button
-                class="tab ${this._leftPanel === 'inbox' ? 'active' : ''}"
-                @click=${() => this._handleTabClick('inbox')}
-              >
-                Inbox
-              </button>
-              <button
-                class="tab ${this._leftPanel === 'queues' ? 'active' : ''}"
-                @click=${() => this._handleTabClick('queues')}
-              >
-                Queues
-              </button>
-            </div>
             <div class="panel-content">
-              ${this._leftPanel === 'inbox' ? this._renderInbox() : this._renderQueues()}
+              ${this._renderInbox()}
             </div>
           </div>
 
@@ -499,15 +421,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
         .endpoint=${this.endpoint}
         .identity=${this.identity}
       ></work-item-inbox>
-    `;
-  }
-
-  private _renderQueues(): TemplateResult {
-    return html`
-      <queue-board
-        .endpoint=${this.endpoint}
-        .identity=${this.identity}
-      ></queue-board>
     `;
   }
 

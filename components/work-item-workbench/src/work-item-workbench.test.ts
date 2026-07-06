@@ -121,14 +121,12 @@ describe('WorkItemWorkbench', () => {
       document.body.removeChild(element);
     });
 
-    it('should render inbox and queue tabs in left panel', async () => {
+    it('should not render tabs in left panel', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
       const root = element.shadowRoot!;
       const tabs = root.querySelectorAll('.left-panel .tab');
-      expect(tabs.length).toBe(2);
-      expect(tabs[0].textContent).toContain('Inbox');
-      expect(tabs[1].textContent).toContain('Queues');
+      expect(tabs.length).toBe(0);
       document.body.removeChild(element);
     });
 
@@ -157,34 +155,6 @@ describe('WorkItemWorkbench', () => {
     });
   });
 
-  describe('panel switching', () => {
-    it('should switch to queue board when queues tab is clicked', async () => {
-      document.body.appendChild(element);
-      await element.updateComplete;
-      const root = element.shadowRoot!;
-      const queuesTab = root.querySelectorAll('.tab')[1] as HTMLElement;
-      queuesTab.click();
-      await element.updateComplete;
-      expect(root.querySelector('queue-board')).toBeTruthy();
-      expect(root.querySelector('work-item-inbox')).toBeFalsy();
-      document.body.removeChild(element);
-    });
-
-    it('should switch back to inbox when inbox tab is clicked', async () => {
-      document.body.appendChild(element);
-      await element.updateComplete;
-      const root = element.shadowRoot!;
-      const queuesTab = root.querySelectorAll('.tab')[1] as HTMLElement;
-      queuesTab.click();
-      await element.updateComplete;
-      const inboxTab = root.querySelectorAll('.tab')[0] as HTMLElement;
-      inboxTab.click();
-      await element.updateComplete;
-      expect(root.querySelector('work-item-inbox')).toBeTruthy();
-      expect(root.querySelector('queue-board')).toBeFalsy();
-      document.body.removeChild(element);
-    });
-  });
 
   describe('work item selection', () => {
     it('should pass selected work item ID to detail panel', async () => {
@@ -299,6 +269,33 @@ describe('WorkItemWorkbench', () => {
       await new Promise(resolve => setTimeout(resolve, 0));
       expect(element.endpoint).toBe('http://new-api.com');
       expect(element.identity.userId).toBe('user-2');
+      document.body.removeChild(element);
+    });
+  });
+
+  describe('Task 8: Queue tab removal', () => {
+    it('does not render Queues tab', async () => {
+      document.body.appendChild(element);
+      await element.updateComplete;
+      const tabs = element.shadowRoot!.querySelectorAll('.tab');
+      const queueTab = Array.from(tabs).find(tab => tab.textContent?.includes('Queues'));
+      expect(queueTab).toBeUndefined();
+      document.body.removeChild(element);
+    });
+
+    it('does not render queue-board', async () => {
+      document.body.appendChild(element);
+      await element.updateComplete;
+      const queueBoard = element.shadowRoot!.querySelector('queue-board');
+      expect(queueBoard).toBeNull();
+      document.body.removeChild(element);
+    });
+
+    it('always renders work-item-inbox in left panel', async () => {
+      document.body.appendChild(element);
+      await element.updateComplete;
+      const inbox = element.shadowRoot!.querySelector('work-item-inbox');
+      expect(inbox).not.toBeNull();
       document.body.removeChild(element);
     });
   });

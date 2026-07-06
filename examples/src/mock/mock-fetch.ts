@@ -77,6 +77,11 @@ function resolveMock(
     return json({ item, childCount: 0, completedCount: null, requiredCount: null, groupStatus: null });
   }
 
+  // GET /queues/summary
+  if (method === 'GET' && path.match(/\/queues\/summary$/)) {
+    return json(state.getQueueSummaries());
+  }
+
   // GET /queues/{id}/items
   const queueItemsMatch = path.match(/\/queues\/([^/]+)\/items$/);
   if (method === 'GET' && queueItemsMatch) {

@@ -144,6 +144,23 @@ export interface QueueView {
   readonly scope: string | null;
 }
 
+export type InboxMode = 'my-work' | 'claimable' | 'all';
+
+export interface QueueScope {
+  readonly queue: QueueView;
+  readonly items: WorkItemRootResponse[];
+  readonly statusCounts: ReadonlyMap<string, number>;
+  readonly priorityCounts: ReadonlyMap<string, number>;
+  readonly overdueCount: number;
+  readonly breachCount: number;
+}
+
+export interface QueueSummaryEntry {
+  readonly queueId: string;
+  readonly count: number;
+  readonly breachCount: number;
+}
+
 export const WorkEventType = {
   CREATED: 'CREATED',
   ASSIGNED: 'ASSIGNED',

@@ -20,7 +20,7 @@ const NAV: NavCategory[] = [
       { id: 'row', label: 'Work Item Row', hash: '#components/row' },
       { id: 'inbox', label: 'Work Item Inbox', hash: '#components/inbox' },
       { id: 'detail', label: 'Work Item Detail', hash: '#components/detail' },
-      { id: 'queue', label: 'Queue Board', hash: '#components/queue' },
+      { id: 'queue', label: 'Queue + Inbox', hash: '#components/queue' },
       { id: 'schema-form', label: 'Schema Form', hash: '#components/schema-form' },
     ],
   },
@@ -162,7 +162,7 @@ export class ExampleShell extends LitElement {
       case '#components/row': return html`<row-page></row-page>`;
       case '#components/inbox': return html`<inbox-page></inbox-page>`;
       case '#components/detail': return html`<detail-page></detail-page>`;
-      case '#components/queue': return html`<queue-page></queue-page>`;
+      case '#components/queue': return html`<queue-inbox-page></queue-inbox-page>`;
       case '#components/schema-form': return html`<schema-form-page></schema-form-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;

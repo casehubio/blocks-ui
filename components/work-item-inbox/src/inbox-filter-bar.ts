@@ -14,6 +14,8 @@ const PRIORITY_FILTERS = ['URGENT', 'HIGH', 'MEDIUM', 'LOW'] as const;
 export class InboxFilterBar extends LitElement {
   @property({ type: Object }) activeStatusFilters: Set<string> = new Set();
   @property({ type: Object }) activePriorityFilters: Set<string> = new Set();
+  @property({ type: Object }) statusCounts: Map<string, number> = new Map();
+  @property({ type: Object }) priorityCounts: Map<string, number> = new Map();
 
   static override styles = css`
     :host {
@@ -74,6 +76,21 @@ export class InboxFilterBar extends LitElement {
 
     .chip.active:hover {
       background: var(--blocks-accent-10, #0066cc);
+    }
+
+    .chip.disabled {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .chip-count {
+      color: var(--blocks-neutral-9, #888);
+      font-size: 10px;
+    }
+
+    .chip.active .chip-count {
+      color: var(--blocks-accent-1, #ffffff);
     }
 
     .clear-filters {
@@ -150,40 +167,52 @@ export class InboxFilterBar extends LitElement {
       <div class="filter-container">
         <div class="filter-section">
           <span class="filter-label">Status:</span>
-          ${STATUS_FILTERS.map(
-            (status) => html`
+          ${STATUS_FILTERS.map((status) => {
+            const count = this.statusCounts.get(status);
+            const isDisabled = count !== undefined && count === 0;
+            return html`
               <button
-                class="chip status-chip ${this.activeStatusFilters.has(status) ? 'active' : ''}"
+                class="chip status-chip ${this.activeStatusFilters.has(status)
+                  ? 'active'
+                  : ''} ${isDisabled ? 'disabled' : ''}"
                 data-status="${status}"
-                @click="${() => this.handleStatusChipClick(status)}"
+                aria-disabled="${isDisabled}"
+                @click="${() => !isDisabled && this.handleStatusChipClick(status)}"
                 role="button"
                 tabindex="0"
               >
-                ${this.formatLabel(status)}
+                ${this.formatLabel(status)}${count !== undefined
+                  ? html` <span class="chip-count">(${count})</span>`
+                  : ''}
               </button>
-            `,
-          )}
+            `;
+          })}
         </div>
 
         <div class="divider"></div>
 
         <div class="filter-section">
           <span class="filter-label">Priority:</span>
-          ${PRIORITY_FILTERS.map(
-            (priority) => html`
+          ${PRIORITY_FILTERS.map((priority) => {
+            const count = this.priorityCounts.get(priority);
+            const isDisabled = count !== undefined && count === 0;
+            return html`
               <button
                 class="chip priority-chip ${this.activePriorityFilters.has(priority)
                   ? 'active'
-                  : ''}"
+                  : ''} ${isDisabled ? 'disabled' : ''}"
                 data-priority="${priority}"
-                @click="${() => this.handlePriorityChipClick(priority)}"
+                aria-disabled="${isDisabled}"
+                @click="${() => !isDisabled && this.handlePriorityChipClick(priority)}"
                 role="button"
                 tabindex="0"
               >
-                ${this.formatLabel(priority)}
+                ${this.formatLabel(priority)}${count !== undefined
+                  ? html` <span class="chip-count">(${count})</span>`
+                  : ''}
               </button>
-            `,
-          )}
+            `;
+          })}
         </div>
 
         ${hasActiveFilters

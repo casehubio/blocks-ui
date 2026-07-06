@@ -99,6 +99,17 @@ export class MockState {
     );
   }
 
+  getQueueSummaries(): Array<{ queueId: string; count: number; breachCount: number }> {
+    const now = Date.now();
+    return this.queues.map(q => {
+      const items = this.getQueueItems(q.id);
+      const breachCount = items.filter(item =>
+        item.expiresAt && new Date(item.expiresAt).getTime() < now && isActiveStatus(item.status)
+      ).length;
+      return { queueId: q.id, count: items.length, breachCount };
+    });
+  }
+
   getActivity(itemId: string): WorkItemLifecycleEvent[] {
     const item = this.items.get(itemId);
     if (!item) return [];
