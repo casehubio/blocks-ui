@@ -13,6 +13,7 @@ export default defineConfig({
       '@casehubio/blocks-ui-sla-indicator': resolve(__dirname, '../components/sla-indicator/src'),
       '@casehubio/blocks-ui-kpi-metric-row': resolve(__dirname, '../components/kpi-metric-row/src'),
       '@casehubio/blocks-ui-approval-gate': resolve(__dirname, '../components/approval-gate/src'),
+      '@casehubio/blocks-ui-data-table': resolve(__dirname, '../components/data-table/src'),
     },
   },
   server: {

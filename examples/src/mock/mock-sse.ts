@@ -6,6 +6,7 @@ export class MockSSESource {
   onmessage: ((event: MessageEvent) => void) | null = null;
   onerror: (() => void) | null = null;
   onopen: (() => void) | null = null;
+  private listeners = new Map<string, Set<EventListener>>();
 
   static readonly CONNECTING = 0;
   static readonly OPEN = 1;
@@ -27,11 +28,18 @@ export class MockSSESource {
     if (set) set.delete(this);
   }
 
-  addEventListener(_type: string, _listener: EventListener): void {
-    // Minimal implementation — onmessage is sufficient for SSEManager
+  addEventListener(type: string, listener: EventListener): void {
+    let handlers = this.listeners.get(type);
+    if (!handlers) {
+      handlers = new Set();
+      this.listeners.set(type, handlers);
+    }
+    handlers.add(listener);
   }
 
-  removeEventListener(_type: string, _listener: EventListener): void {}
+  removeEventListener(type: string, listener: EventListener): void {
+    this.listeners.get(type)?.delete(listener);
+  }
 
   dispatchEvent(_event: Event): boolean { return true; }
 
@@ -42,6 +50,20 @@ export class MockSSESource {
     for (const source of set) {
       if (source.readyState === 1 && source.onmessage) {
         source.onmessage(event);
+      }
+    }
+  }
+
+  static pushNamedEvent(url: string, name: string, data: unknown): void {
+    const set = instances.get(url);
+    if (!set) return;
+    const event = new MessageEvent(name, { data: JSON.stringify(data) });
+    for (const source of set) {
+      if (source.readyState !== 1) continue;
+      const handlers = source.listeners.get(name);
+      if (!handlers) continue;
+      for (const handler of handlers) {
+        handler(event);
       }
     }
   }

@@ -136,29 +136,30 @@ describe('work-item-inbox', () => {
   afterEach(() => el.remove());
 
   it('renders items', () => {
-    const rows = el.shadowRoot!.querySelectorAll('work-item-row');
-    expect(rows.length).toBeGreaterThan(0);
+    const table = el.shadowRoot!.querySelector('pages-data-table');
+    expect(table).not.toBeNull();
+    expect((table as any).rows.length).toBeGreaterThan(0);
   });
 
   it('my-work mode shows only assigned items', async () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
-    const rows = el.shadowRoot!.querySelectorAll('work-item-row');
-    expect(rows.length).toBe(1);
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table.rows.length).toBe(1);
   });
 
   it('claimable mode shows only pending items', async () => {
     (el as any).activeTab = 'claimable';
     await (el as any).updateComplete;
-    const rows = el.shadowRoot!.querySelectorAll('work-item-row');
-    expect(rows.length).toBe(1);
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table.rows.length).toBe(1);
   });
 
-  it('emits pages-event on row selection', async () => {
+  it('emits pages-event on row activation', async () => {
     const handler = vi.fn();
     document.addEventListener('pages-event', handler);
-    const row = el.shadowRoot!.querySelector('work-item-row')!;
-    row.dispatchEvent(new CustomEvent('row-select', { bubbles: true, composed: true, detail: { workItemId: 'wi-1' } }));
+    const table = el.shadowRoot!.querySelector('pages-data-table')!;
+    table.dispatchEvent(new CustomEvent('row-activate', { bubbles: true, composed: true, detail: { key: 'wi-1', row: mockItems[0] } }));
     expect(handler).toHaveBeenCalled();
     const eventDetail = handler.mock.calls[0][0].detail;
     expect(eventDetail.topic).toBe('work-item.selected');
@@ -223,8 +224,8 @@ describe('work-item-inbox', () => {
     allTab.click();
     await (el as any).updateComplete;
     // Should show all items from inbox data (no perspective filter)
-    const rows = el.shadowRoot!.querySelectorAll('work-item-row');
-    expect(rows.length).toBeGreaterThan(0);
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table.rows.length).toBeGreaterThan(0);
   });
 
   it('does not remove items from data array when All tab is active', async () => {
@@ -232,13 +233,14 @@ describe('work-item-inbox', () => {
     const allTab = el.shadowRoot!.querySelectorAll('.tab')[2] as HTMLElement;
     allTab.click();
     await (el as any).updateComplete;
-    const initialCount = el.shadowRoot!.querySelectorAll('work-item-row').length;
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    const initialCount = table.rows.length;
     // Simulate SSE event — should not empty the list
     // (verifies handleItemAppears is tab-independent)
     expect(initialCount).toBeGreaterThan(0);
   });
 
-  it('enables virtual scrolling for >50 items', async () => {
+  it('table handles many items with scroll mode', async () => {
     const manyItems = Array.from({ length: 60 }, (_, i) => ({
       ...mockItems[0],
       item: { ...mockItems[0].item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
@@ -249,11 +251,13 @@ describe('work-item-inbox', () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
 
-    const listElement = el.shadowRoot!.querySelector('.items-list');
-    expect(listElement?.classList.contains('virtual')).toBe(true);
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table).not.toBeNull();
+    expect(table.mode).toBe('scroll');
+    expect(table.rows.length).toBe(60);
   });
 
-  it('does not use virtual scrolling for <=50 items', async () => {
+  it('table handles few items with scroll mode', async () => {
     const fewItems = Array.from({ length: 30 }, (_, i) => ({
       ...mockItems[0],
       item: { ...mockItems[0].item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
@@ -264,8 +268,10 @@ describe('work-item-inbox', () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
 
-    const listElement = el.shadowRoot!.querySelector('.items-list');
-    expect(listElement?.classList.contains('virtual')).toBe(false);
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table).not.toBeNull();
+    expect(table.mode).toBe('scroll');
+    expect(table.rows.length).toBe(30);
   });
 
   it('shows batch action bar when 2+ items selected', async () => {
@@ -312,7 +318,9 @@ describe('work-item-inbox', () => {
     await el2.updateComplete;
     expect(el2.endpoint).toBe('');
     // With data provided directly AND endpoint set, the component should render
-    expect(el2.shadowRoot!.querySelectorAll('work-item-row').length).toBeGreaterThan(0);
+    const table = el2.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table).not.toBeNull();
+    expect(table.rows.length).toBeGreaterThan(0);
     el2.remove();
   });
 
@@ -506,6 +514,37 @@ describe('work-item-inbox', () => {
     filtered = inbox.getFilteredItems();
     expect(filtered.length).toBeGreaterThan(0);
     expect(filtered.some((r: any) => r.item.id === 'wi-breach-only')).toBe(true);
+  });
+
+  it('renders pages-data-table with correct properties', async () => {
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table).not.toBeNull();
+    expect(table.mode).toBe('scroll');
+    expect(table.selection).toBe('multi');
+    expect(table.columns).toBeDefined();
+    expect(table.columns.length).toBeGreaterThan(0);
+  });
+
+  it('passes column definitions to table', async () => {
+    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    expect(table.columns).toBeDefined();
+    const columnIds = table.columns.map((c: any) => c.id);
+    expect(columnIds).toContain('title');
+    expect(columnIds).toContain('status');
+    expect(columnIds).toContain('category');
+    expect(columnIds).toContain('created');
+  });
+
+  it('selection-change event updates selectedItems', async () => {
+    const table = el.shadowRoot!.querySelector('pages-data-table')!;
+    table.dispatchEvent(new CustomEvent('selection-change', {
+      bubbles: true,
+      composed: true,
+      detail: { selectedKeys: ['wi-1', 'wi-2'] },
+    }));
+    await (el as any).updateComplete;
+    expect((el as any).selectedItems.has('wi-1')).toBe(true);
+    expect((el as any).selectedItems.has('wi-2')).toBe(true);
   });
 
   it('does not crash when SSE fetch returns unwrapped WorkItemResponse', async () => {

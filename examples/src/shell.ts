@@ -26,6 +26,7 @@ const NAV: NavCategory[] = [
       { id: 'kpi-metric-row', label: 'KPI Metric Row', hash: '#components/kpi-metric-row' },
       { id: 'approval-gate', label: 'Approval Gate', hash: '#components/approval-gate' },
       { id: 'confirm-dialog', label: 'Confirm Dialog', hash: '#components/confirm-dialog' },
+      { id: 'data-table', label: 'Data Table', hash: '#components/data-table' },
     ],
   },
   {
@@ -172,6 +173,7 @@ export class ExampleShell extends LitElement {
       case '#components/kpi-metric-row': return html`<kpi-metric-row-page></kpi-metric-row-page>`;
       case '#components/approval-gate': return html`<approval-gate-page></approval-gate-page>`;
       case '#components/confirm-dialog': return html`<confirm-dialog-page></confirm-dialog-page>`;
+      case '#components/data-table': return html`<data-table-page></data-table-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

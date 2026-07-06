@@ -105,8 +105,9 @@ yarn typecheck
 | Path | Contents |
 |------|----------|
 | `packages/blocks-ui-core/` | Shared theme, dataset helpers, event contracts, a11y mixins, SSE manager, SharedTimerController, blocks-confirm-dialog, schema-form |
-| `components/work-item-inbox/` | Work item inbox — queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
-| `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers |
+| `components/data-table/` | Generic data table — three display modes (auto/paginated/scroll), CSS Grid rendering, virtual scroll engine, ColumnDef\<R\> data model, multi-mode selection, client-side sorting, column visibility, ARIA grid, 2D keyboard navigation, CSS ::part() row styling |
+| `components/work-item-inbox/` | Work item inbox — uses pages-data-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
+| `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
 | `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab |
 | `components/work-item-workbench/` | Full workbench — split-pane layout with inbox (left) and detail (right), keyboard shortcuts |
 | `components/sla-indicator/` | SLA deadline indicator — countdown, breach state, escalation badge, threshold-based colour transitions |

@@ -211,6 +211,7 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-work-item-row": "workspace:*"
+    "@casehubio/pages-data": "npm:^0.2.1"
     "@vitest/browser": "npm:^2.1.8"
     jsdom: "npm:^26.0.0"
     lit: "npm:^3.2.1"
@@ -249,6 +250,16 @@ __metadata:
     vitest: "npm:^1.0.4"
   languageName: unknown
   linkType: soft
+
+"@casehubio/pages-data@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@casehubio/pages-data@npm:0.2.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40casehubio%2Fpages-data%2F0.2.1%2F3915fc775cb5e22cb1d5f06e7f509538a2849676"
+  dependencies:
+    jsonata: "npm:^2.2.1"
+    zod: "npm:^3.23.0"
+  checksum: 10c0/873431f7414f7d5b83603aee3b7a2e0379e104013b7cbb12eb471838baa3da7a80640254c92b1743bd3096ee05815bb9fe0945e7731a715e75a21d997825000f
+  languageName: node
+  linkType: hard
 
 "@csstools/color-helpers@npm:^5.1.0":
   version: 5.1.0
@@ -3900,6 +3911,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonata@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "jsonata@npm:2.2.1"
+  checksum: 10c0/82848c4341b66710458f727cd9390c2c863d6b72031ea5017614d3f895062312ea21f82947cbb27c8545db366f46a93cecc09898adf1fa91b9aebcd8ee0ca38a
+  languageName: node
+  linkType: hard
+
 "keygrip@npm:~1.1.0":
   version: 1.1.0
   resolution: "keygrip@npm:1.1.0"
@@ -6129,5 +6147,12 @@ __metadata:
   version: 1.2.2
   resolution: "yocto-queue@npm:1.2.2"
   checksum: 10c0/36d4793e9cf7060f9da543baf67c55e354f4862c8d3d34de1a1b1d7c382d44171315cc54abf84d8900b8113d742b830108a1434f4898fb244f9b7e8426d4b8f5
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.23.0":
+  version: 3.25.76
+  resolution: "zod@npm:3.25.76"
+  checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
   languageName: node
   linkType: hard

@@ -23,12 +23,13 @@ import {
   RovingTabindexMixin,
   KeyboardShortcutMixin,
   LiveRegionMixin,
-  SSEManager,
   WorkEventType as WorkEventTypeEnum,
   BlocksConfirmDialog,
 } from '@casehubio/blocks-ui-core';
-import type { SSEEvent } from '@casehubio/blocks-ui-core';
-import '@casehubio/blocks-ui-work-item-row';
+import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import '@casehubio/blocks-ui-data-table';
+import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/blocks-ui-data-table';
 import './inbox-summary-bar.js';
 import './inbox-filter-bar.js';
 import './queue-pill-bar.js';
@@ -36,11 +37,10 @@ import './scope-context-bar.js';
 import type { FilterClickDetail } from './inbox-summary-bar.js';
 import type { FilterChangeDetail } from './inbox-filter-bar.js';
 
-const WorkItemInboxBase = LiveRegionMixin(KeyboardShortcutMixin(RovingTabindexMixin(LitElement)));
+const WorkItemInboxBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
 
 @customElement('work-item-inbox')
 export class WorkItemInbox extends WorkItemInboxBase {
-  override rovingSelector = 'work-item-row';
   @property({ type: Object }) identity!: WorkIdentity;
   @property({ type: String }) endpoint?: string;
   @property({ type: Array }) data?: WorkItemRootResponse[];
@@ -72,16 +72,54 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private _unsubscribeQueueScope?: () => void;
   private _queueSSECleanup: (() => void) | null = null;
 
-  private lastSelectedIndex: number = -1;
-
-  // Virtual scrolling
-  @state() private virtualScrollTop = 0;
-  private readonly itemHeight = 72; // Expected row height in pixels
-  private readonly bufferSize = 10; // Extra rows above/below viewport
-
   // SSE
   private sseManager = new SSEManager();
   private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
+
+  // Table columns
+  private _tableColumns: ColumnDef<WorkItemRootResponse>[] = [
+    {
+      id: 'title',
+      label: 'Title',
+      getValue: (row) => row.item.title,
+      width: '3fr',
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      getValue: (row) => row.item.status,
+      width: '1fr',
+      render: (value, row) => html`
+        <span class="status-pill status-${(row as WorkItemRootResponse).item.status.toLowerCase()}">${value}</span>
+      `,
+    },
+    {
+      id: 'category',
+      label: 'Category',
+      getValue: (row) => row.item.category,
+      width: '1fr',
+    },
+    {
+      id: 'created',
+      label: 'Created',
+      getValue: (row) => row.item.createdAt,
+      width: '1fr',
+      render: (value, row) => {
+        const date = new Date(value as string);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return html`<span>Just now</span>`;
+        if (diffMins < 60) return html`<span>${diffMins}m ago</span>`;
+        if (diffHours < 24) return html`<span>${diffHours}h ago</span>`;
+        if (diffDays < 7) return html`<span>${diffDays}d ago</span>`;
+        return html`<span>${date.toLocaleDateString()}</span>`;
+      },
+    },
+  ];
 
   static override readonly styles = css`
     :host {
@@ -147,25 +185,12 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
     .items-list {
       flex: 1;
-      overflow-y: auto;
-      padding: 8px;
+      overflow: hidden;
       position: relative;
     }
 
-    .items-list.virtual {
-      padding: 0;
-    }
-
-    .virtual-spacer {
-      width: 100%;
-    }
-
-    .virtual-content {
-      padding: 8px;
-    }
-
-    .item-row {
-      margin-bottom: 4px;
+    pages-data-table {
+      height: 100%;
     }
 
     .empty-state {
@@ -328,16 +353,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
       color: var(--blocks-accent-9, #0080ff);
     }
 
-    .item-row {
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .item-row.selected {
-      background: var(--blocks-accent-3, #e6f4ff);
-      border-left: 3px solid var(--blocks-accent-9, #0080ff);
-    }
-
     .error-banner {
       padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
       background: var(--blocks-danger-3, #fee);
@@ -345,6 +360,75 @@ export class WorkItemInbox extends WorkItemInboxBase {
       border-radius: var(--blocks-radius-sm, 4px);
       margin: var(--blocks-space-2, 8px) var(--blocks-space-4, 16px);
       font-size: var(--blocks-font-size-base, 14px);
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-pill.status-pending {
+      background: var(--blocks-neutral-4, #e5e5e5);
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .status-pill.status-assigned {
+      background: var(--blocks-info-4, #dbeafe);
+      color: var(--blocks-info-11, #0369a1);
+    }
+
+    .status-pill.status-in_progress {
+      background: var(--blocks-accent-4, #cce5ff);
+      color: var(--blocks-accent-11, #0066cc);
+    }
+
+    .status-pill.status-suspended {
+      background: var(--blocks-warning-4, #fef3c7);
+      color: var(--blocks-warning-11, #92400e);
+    }
+
+    .status-pill.status-delegated {
+      background: var(--blocks-accent-4, #cce5ff);
+      color: var(--blocks-accent-11, #0066cc);
+    }
+
+    .status-pill.status-completed {
+      background: var(--blocks-success-4, #d1fae5);
+      color: var(--blocks-success-11, #065f46);
+    }
+
+    .status-pill.status-rejected {
+      background: var(--blocks-danger-4, #fee2e2);
+      color: var(--blocks-danger-11, #991b1b);
+    }
+
+    .status-pill.status-faulted {
+      background: var(--blocks-danger-4, #fee2e2);
+      color: var(--blocks-danger-11, #991b1b);
+    }
+
+    .status-pill.status-cancelled {
+      background: var(--blocks-neutral-4, #e5e5e5);
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .status-pill.status-obsolete {
+      background: var(--blocks-neutral-4, #e5e5e5);
+      color: var(--blocks-neutral-11, #555555);
+    }
+
+    .status-pill.status-expired {
+      background: var(--blocks-danger-4, #fee2e2);
+      color: var(--blocks-danger-11, #991b1b);
+    }
+
+    .status-pill.status-escalated {
+      background: var(--blocks-warning-4, #fef3c7);
+      color: var(--blocks-warning-11, #92400e);
     }
   `;
 
@@ -671,18 +755,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
     return filtered;
   }
 
-  private getVirtualWindow(items: WorkItemRootResponse[]): { startIndex: number; endIndex: number; offsetY: number } {
-    const listElement = this.shadowRoot?.querySelector('.items-list') as HTMLElement | null;
-    if (!listElement) return { startIndex: 0, endIndex: items.length, offsetY: 0 };
-
-    const viewportHeight = listElement.clientHeight;
-    const startIndex = Math.max(0, Math.floor(this.virtualScrollTop / this.itemHeight) - this.bufferSize);
-    const visibleCount = Math.ceil(viewportHeight / this.itemHeight);
-    const endIndex = Math.min(items.length, startIndex + visibleCount + this.bufferSize * 2);
-    const offsetY = startIndex * this.itemHeight;
-
-    return { startIndex, endIndex, offsetY };
-  }
 
   override willUpdate(changed: Map<string, unknown>): void {
     if (changed.has('activeTab') && this.activeTab !== 'claimable') {
@@ -693,7 +765,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private handleTabClick(tab: InboxMode) {
     this.activeTab = tab;
     this.selectedItems.clear();
-    this.lastSelectedIndex = -1;
   }
 
   private async handleBatchClaim() {
@@ -724,7 +795,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
       if (failed.length === 0) {
         // Full success
         this.selectedItems.clear();
-        this.lastSelectedIndex = -1;
         this.announce(`${succeeded.length} items claimed successfully`);
         // Items will refresh via SSE
       } else {
@@ -780,7 +850,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
       if (failed.length === 0) {
         // Full success
         this.selectedItems.clear();
-        this.lastSelectedIndex = -1;
         this.announce(`${succeeded.length} items cancelled`);
         // Items will refresh via SSE
       } else {
@@ -801,66 +870,19 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
   private handleClearSelection() {
     this.selectedItems.clear();
-    this.lastSelectedIndex = -1;
     this.batchError = null;
     this.requestUpdate();
   }
 
-  private handleRowSelect(e: CustomEvent) {
-    const { workItemId } = e.detail;
-    const event = e as CustomEvent & { shiftKey?: boolean };
-
-    if (event.shiftKey) {
-      // Range selection
-      this.handleRangeSelect(workItemId);
-    } else {
-      // Single selection or toggle
-      if (this.selectedItems.has(workItemId)) {
-        this.selectedItems.delete(workItemId);
-      } else {
-        this.selectedItems.clear();
-        this.selectedItems.add(workItemId);
-        emitPagesEvent(document, WorkItemEventTopics.SELECTED, { workItemId });
-      }
-      this.requestUpdate();
-    }
-  }
-
-  private handleRangeSelect(workItemId: string) {
-    const filtered = this.getFilteredItems();
-    const clickedIndex = filtered.findIndex((item) => item.item.id === workItemId);
-
-    if (clickedIndex === -1) return;
-
-    if (this.lastSelectedIndex === -1) {
-      this.selectedItems.add(workItemId);
-      this.lastSelectedIndex = clickedIndex;
-    } else {
-      const start = Math.min(this.lastSelectedIndex, clickedIndex);
-      const end = Math.max(this.lastSelectedIndex, clickedIndex);
-
-      for (let i = start; i <= end; i++) {
-        const item = filtered[i];
-        if (item) {
-          this.selectedItems.add(item.item.id);
-        }
-      }
-    }
-
+  private _handleTableSelection(e: CustomEvent<SelectionChangeDetail>) {
+    const { selectedKeys } = e.detail;
+    this.selectedItems = new Set(selectedKeys);
     this.requestUpdate();
   }
 
-  private handleRowClick(workItemId: string, event: MouseEvent) {
-    if (event.shiftKey) {
-      this.handleRangeSelect(workItemId);
-    } else {
-      if (this.selectedItems.has(workItemId)) {
-        this.selectedItems.delete(workItemId);
-      } else {
-        this.selectedItems.add(workItemId);
-      }
-      this.requestUpdate();
-    }
+  private _handleTableActivate(e: CustomEvent<RowActivateDetail>) {
+    const { key } = e.detail;
+    emitPagesEvent(document, WorkItemEventTopics.SELECTED, { workItemId: key });
   }
 
   private handleSummaryFilterClick(e: CustomEvent<FilterClickDetail>) {
@@ -894,22 +916,15 @@ export class WorkItemInbox extends WorkItemInboxBase {
     this.claimBreachFilter = false;
   }
 
-  private handleScroll(e: Event) {
-    const target = e.target as HTMLElement;
-    this.virtualScrollTop = target.scrollTop;
-  }
 
   private handleClaimShortcut() {
-    // Get the currently focused item via roving tabindex
-    if (this.rovingIndex === -1) return;
-
-    const filtered = this.getFilteredItems();
-    const focusedItem = filtered[this.rovingIndex];
-    if (!focusedItem) return;
-
-    // Only claim in claimable mode for pending items
-    if (this.activeTab === 'claimable' && focusedItem.item.status === 'PENDING') {
-      this.claimItem(focusedItem.item.id);
+    // C4 fix: Use selectedItems instead of roving tabindex
+    if (this.activeTab !== 'claimable') return;
+    if (this.selectedItems.size !== 1) return;
+    const selectedId = this.selectedItems.values().next().value;
+    const item = this.getFilteredItems().find(r => r.item.id === selectedId);
+    if (item && item.item.status === 'PENDING') {
+      this.claimItem(item.item.id);
     }
   }
 
@@ -1201,53 +1216,19 @@ export class WorkItemInbox extends WorkItemInboxBase {
       return html`<div class="empty-state">${message}</div>`;
     }
 
-    // Virtual scrolling activates for >50 items
-    const useVirtual = filtered.length > 50;
-
-    if (!useVirtual) {
-      return html`
-        <div class="items-list" role="list">
-          ${filtered.map(
-            (root) => html`
-              <div
-                class="item-row ${this.selectedItems.has(root.item.id) ? 'selected' : ''}"
-                @click="${(e: MouseEvent) => this.handleRowClick(root.item.id, e)}"
-              >
-                <work-item-row
-                  .item="${root.item}"
-                  @row-select="${this.handleRowSelect}"
-                ></work-item-row>
-              </div>
-            `,
-          )}
-        </div>
-      `;
-    }
-
-    // Virtual scrolling: only render visible window
-    const { startIndex, endIndex, offsetY } = this.getVirtualWindow(filtered);
-    const totalHeight = filtered.length * this.itemHeight;
-    const visibleItems = filtered.slice(startIndex, endIndex);
-
     return html`
-      <div class="items-list virtual" role="list" @scroll="${this.handleScroll}">
-        <div class="virtual-spacer" style="height: ${totalHeight}px;">
-          <div class="virtual-content" style="transform: translateY(${offsetY}px);">
-            ${visibleItems.map(
-              (root) => html`
-                <div
-                  class="item-row ${this.selectedItems.has(root.item.id) ? 'selected' : ''}"
-                  @click="${(e: MouseEvent) => this.handleRowClick(root.item.id, e)}"
-                >
-                  <work-item-row
-                    .item="${root.item}"
-                    @row-select="${this.handleRowSelect}"
-                  ></work-item-row>
-                </div>
-              `,
-            )}
-          </div>
-        </div>
+      <div class="items-list">
+        <pages-data-table
+          .rows=${filtered}
+          .columns=${this._tableColumns}
+          .getRowKey=${(row: WorkItemRootResponse) => row.item.id}
+          .getRowClass=${(row: WorkItemRootResponse) => 'priority-' + row.item.priority.toLowerCase()}
+          mode="scroll"
+          selection="multi"
+          .selectedKeys=${Array.from(this.selectedItems)}
+          @selection-change=${this._handleTableSelection}
+          @row-activate=${this._handleTableActivate}
+        ></pages-data-table>
       </div>
     `;
   }
