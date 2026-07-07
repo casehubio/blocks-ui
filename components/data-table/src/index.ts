@@ -4,6 +4,7 @@ export type {
   DisplayMode,
   SelectionMode,
   SortDirection,
+  SortEntry,
   ColumnAlign,
   SortChangeDetail,
   PageChangeDetail,
@@ -13,4 +14,4 @@ export type {
   LoadMoreDetail,
 } from './types.js';
 export { computeScrollWindow, type ScrollWindow } from './virtual-scroll-engine.js';
-export { createComparator } from './sort.js';
+export { createComparator, createMultiComparator } from './sort.js';

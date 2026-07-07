@@ -1,9 +1,9 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/blocks-ui-core';
-import type { ColumnDef, DisplayMode, PageChangeDetail, LoadMoreDetail, SelectionMode, SelectionChangeDetail, RowActivateDetail, SortDirection, SortChangeDetail, ColumnChangeDetail, FilterChangeDetail } from './types.js';
+import type { ColumnDef, DisplayMode, PageChangeDetail, LoadMoreDetail, SelectionMode, SelectionChangeDetail, RowActivateDetail, SortDirection, SortChangeDetail, SortEntry, ColumnChangeDetail, FilterChangeDetail } from './types.js';
 import { computeScrollWindow } from './virtual-scroll-engine.js';
-import { createComparator } from './sort.js';
+import { createComparator, createMultiComparator } from './sort.js';
 
 const AUTO_THRESHOLD = 50;
 
@@ -24,11 +24,30 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   @property({ type: Number, attribute: 'current-page' }) currentPage = 0;
   @property({ type: Number, attribute: 'total-rows' }) totalRows?: number;
   @property({ type: Boolean, attribute: 'has-more' }) hasMore = false;
-  @property({ type: String, attribute: 'sort-column-id' }) sortColumnId?: string;
-  @property({ type: String, attribute: 'sort-direction' }) sortDirection: SortDirection = 'none';
+  @property({ type: String, attribute: 'sort-column-id' })
+  get sortColumnId(): string | undefined { return this._sortStack[0]?.columnId; }
+  set sortColumnId(id: string | undefined) {
+    if (id === undefined) {
+      this._sortStack = [];
+    } else {
+      const dir = this._sortStack[0]?.columnId === id ? this._sortStack[0].direction : 'asc';
+      this._sortStack = [{ columnId: id, direction: dir }];
+    }
+  }
+
+  @property({ type: String, attribute: 'sort-direction' })
+  get sortDirection(): SortDirection { return this._sortStack[0]?.direction ?? 'none'; }
+  set sortDirection(dir: SortDirection) {
+    const first = this._sortStack[0];
+    if (!first) return;
+    this._sortStack = [{ columnId: first.columnId, direction: dir }, ...this._sortStack.slice(1)];
+  }
+
   @property({ type: Boolean, attribute: 'client-sort' }) clientSort = false;
   @property({ type: Boolean, attribute: 'client-filter' }) clientFilter = false;
   @property({ type: String, attribute: 'filter-text' }) filterText = '';
+
+  @state() private _sortStack: SortEntry[] = [];
 
   @state() private _scrollTop = 0;
   @state() private _containerHeight = 0;
@@ -239,6 +258,14 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       font-size: 10px;
       opacity: 0.3;
       flex-shrink: 0;
+    }
+
+    .sort-priority {
+      font-size: 9px;
+      font-weight: 600;
+      margin-left: 1px;
+      vertical-align: super;
+      color: var(--pages-primary-9, #3b82f6);
     }
 
     .sort-indicator.active {
@@ -715,31 +742,30 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     this._emitSelectionChange(newSelection);
   };
 
-  private _handleHeaderClick = (column: ColumnDef): void => {
+  private _handleHeaderClick = (column: ColumnDef, event?: MouseEvent): void => {
     if (!column.sortable) return;
 
-    // Cycle: none → asc → desc → none
-    const currentDirection = this.sortColumnId === column.id ? this.sortDirection : 'none';
-    let newDirection: SortDirection;
+    const existing = this._sortStack.find(e => e.columnId === column.id);
+    const currentDirection = existing?.direction ?? 'none';
 
+    let newDirection: SortDirection;
     switch (currentDirection) {
-      case 'none':
-        newDirection = 'asc';
-        break;
-      case 'asc':
-        newDirection = 'desc';
-        break;
-      case 'desc':
-        newDirection = 'none';
-        break;
+      case 'none': newDirection = 'asc'; break;
+      case 'asc': newDirection = 'desc'; break;
+      case 'desc': newDirection = 'none'; break;
     }
 
-    this.sortColumnId = newDirection === 'none' ? undefined : column.id;
-    this.sortDirection = newDirection;
+    if (event?.shiftKey && this._sortStack.length > 0) {
+      const stack = this._sortStack.filter(e => e.columnId !== column.id);
+      this._sortStack = newDirection === 'none' ? stack : [...stack, { columnId: column.id, direction: newDirection }];
+    } else {
+      this._sortStack = newDirection === 'none' ? [] : [{ columnId: column.id, direction: newDirection }];
+    }
 
     const detail: SortChangeDetail = {
       columnId: column.id,
       direction: newDirection,
+      sortStack: [...this._sortStack],
     };
 
     this.dispatchEvent(new CustomEvent('sort-change', {
@@ -1045,16 +1071,9 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     }
 
     // Apply client-side sorting
-    if (this.clientSort && this.sortColumnId && this.sortDirection !== 'none') {
-      const column = this.columns.find(c => c.id === this.sortColumnId);
-      if (column) {
-        const comparator = createComparator(column, this.sortDirection);
-        rows = [...rows].sort((a, b) => {
-          const aVal = column.getValue(a);
-          const bVal = column.getValue(b);
-          return comparator(aVal, bVal);
-        });
-      }
+    if (this.clientSort && this._sortStack.length > 0) {
+      const comparator = createMultiComparator(this._sortStack, this.columns);
+      rows = [...rows].sort(comparator);
     }
 
     if (this._usePagination) {
@@ -1115,18 +1134,21 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
 
   private _ariaSortValue(col: ColumnDef): string | typeof nothing {
     if (!col.sortable) return nothing;
-    if (this.sortColumnId !== col.id) return 'none';
-    if (this.sortDirection === 'asc') return 'ascending';
-    if (this.sortDirection === 'desc') return 'descending';
+    const entry = this._sortStack.find(e => e.columnId === col.id);
+    if (!entry) return 'none';
+    if (entry.direction === 'asc') return 'ascending';
+    if (entry.direction === 'desc') return 'descending';
     return 'none';
   }
 
   private _renderSortIndicator(column: ColumnDef) {
     if (!column.sortable) return nothing;
-    const isSorted = this.sortColumnId === column.id;
-    const dir = isSorted ? this.sortDirection : 'none';
+    const index = this._sortStack.findIndex(e => e.columnId === column.id);
+    const entry = index >= 0 ? this._sortStack[index] : null;
+    const dir = entry?.direction ?? 'none';
     const arrow = dir === 'asc' ? '▲' : dir === 'desc' ? '▼' : '▲';
-    return html`<span class="sort-indicator ${isSorted && dir !== 'none' ? 'active' : ''}">${arrow}</span>`;
+    const priority = this._sortStack.length > 1 && index >= 0 ? html`<span class="sort-priority">${index + 1}</span>` : nothing;
+    return html`<span class="sort-indicator ${entry && dir !== 'none' ? 'active' : ''}">${arrow}${priority}</span>`;
   }
 
   private _renderHeaderCell(column: ColumnDef) {
@@ -1137,7 +1159,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
         class="header-cell ${isSortable ? 'sortable-header' : ''}"
         role="columnheader"
         aria-sort="${this._ariaSortValue(column)}"
-        @click="${isSortable ? () => this._handleHeaderClick(column) : nothing}"
+        @click="${isSortable ? (e: MouseEvent) => this._handleHeaderClick(column, e) : nothing}"
       >
         ${column.label}${this._renderSortIndicator(column)}
       </div>

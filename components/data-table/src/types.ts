@@ -21,9 +21,15 @@ export interface ColumnDef<R = unknown> {
   readonly align?: ColumnAlign;
 }
 
+export interface SortEntry {
+  readonly columnId: string;
+  readonly direction: SortDirection;
+}
+
 export interface SortChangeDetail {
   readonly columnId: string;
   readonly direction: SortDirection;
+  readonly sortStack: readonly SortEntry[];
 }
 
 export interface PageChangeDetail {
