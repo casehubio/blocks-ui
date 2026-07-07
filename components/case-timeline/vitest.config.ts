@@ -1,0 +1,27 @@
+import { defineConfig } from 'vitest/config';
+import path from 'path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@casehubio/blocks-ui-core': path.resolve(__dirname, '../../packages/blocks-ui-core/src'),
+      '@casehubio/pages-ui-tokens': path.resolve(__dirname, '../../../pages/packages/pages-ui-tokens/src'),
+      '@casehubio/pages-component': path.resolve(__dirname, '../../../pages/packages/pages-component/src'),
+      '@casehubio/pages-data/dist/sse/sse-manager.js': path.resolve(__dirname, '../../../pages/packages/pages-data/src/sse/sse-manager.ts'),
+      '@casehubio/pages-data': path.resolve(__dirname, '../../../pages/packages/pages-data/src'),
+    },
+  },
+  esbuild: {
+    target: 'es2022',
+    tsconfigRaw: {
+      compilerOptions: {
+        experimentalDecorators: true,
+        useDefineForClassFields: false,
+      },
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+  },
+});

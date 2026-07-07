@@ -894,4 +894,158 @@ describe('pages-data-table', () => {
       expect(hostMatch![0]).toContain('height');
     });
   });
+
+  describe('client filter', () => {
+    it('filters rows by text match across columns', async () => {
+      const cols: ColumnDef<{ name: string; role: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+        { id: 'role', label: 'Role', getValue: r => r.role },
+      ];
+      const rows = [
+        { name: 'Alice', role: 'Engineer' },
+        { name: 'Bob', role: 'Designer' },
+        { name: 'Charlie', role: 'Engineer' },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      (el as any).filterText = 'engineer';
+      await el.updateComplete;
+
+      const dataRows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(dataRows.length).toBe(2); // Alice and Charlie
+    });
+
+    it('matches any column — row appears if ANY column matches', async () => {
+      const cols: ColumnDef<{ name: string; role: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+        { id: 'role', label: 'Role', getValue: r => r.role },
+      ];
+      const rows = [
+        { name: 'Alice', role: 'Engineer' },
+        { name: 'Bob', role: 'Designer' },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      (el as any).filterText = 'bob';
+      await el.updateComplete;
+
+      const dataRows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(dataRows.length).toBe(1);
+    });
+
+    it('respects filterable: false on columns', async () => {
+      const cols: ColumnDef<{ name: string; code: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+        { id: 'code', label: 'Code', getValue: r => r.code, filterable: false },
+      ];
+      const rows = [
+        { name: 'Alice', code: '123' },
+        { name: 'Bob', code: '456' },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      (el as any).filterText = '123';
+      await el.updateComplete;
+
+      const dataRows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(dataRows.length).toBe(0); // code column not filterable
+    });
+
+    it('uses filterValue when provided', async () => {
+      const cols: ColumnDef<{ name: string; tags: string[] }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+        { id: 'tags', label: 'Tags', getValue: r => r.tags, filterValue: r => r.tags.join(' ') },
+      ];
+      const rows = [
+        { name: 'Alice', tags: ['eng', 'lead'] },
+        { name: 'Bob', tags: ['design'] },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      (el as any).filterText = 'lead';
+      await el.updateComplete;
+
+      const dataRows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(dataRows.length).toBe(1);
+    });
+
+    it('resets currentPage to 0 when filter changes', async () => {
+      const cols: ColumnDef<{ name: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+      ];
+      const rows = Array.from({ length: 100 }, (_, i) => ({ name: `Item ${i}` }));
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).mode = 'paginated';
+      (el as any).pageSize = 10;
+      (el as any).currentPage = 5;
+      (el as any).clientFilter = true;
+      await el.updateComplete;
+
+      (el as any).filterText = 'Item 1';
+      await el.updateComplete;
+      expect((el as any).currentPage).toBe(0);
+    });
+
+    it('is ignored when totalRows is set (server pagination)', async () => {
+      const cols: ColumnDef<{ name: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+      ];
+      const rows = [
+        { name: 'Alice' },
+        { name: 'Bob' },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      (el as any).filterText = 'alice';
+      (el as any).totalRows = 100;
+      await el.updateComplete;
+
+      const dataRows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(dataRows.length).toBe(2); // no filtering — server-paginated
+    });
+
+    it('emits filter-change event', async () => {
+      const cols: ColumnDef<{ name: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+      ];
+      const rows = [
+        { name: 'Alice' },
+        { name: 'Bob' },
+      ];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      await el.updateComplete;
+
+      const events: any[] = [];
+      el.addEventListener('filter-change', (e: any) => events.push(e.detail));
+      (el as any).filterText = 'alice';
+      await el.updateComplete;
+      await new Promise(r => setTimeout(r, 200)); // debounce
+
+      expect(events.length).toBeGreaterThan(0);
+      expect(events[0].text).toBe('alice');
+      expect(events[0].matchCount).toBe(1);
+    });
+
+    it('renders filter input when clientFilter is true', async () => {
+      const cols: ColumnDef<{ name: string }>[] = [
+        { id: 'name', label: 'Name', getValue: r => r.name },
+      ];
+      const rows = [{ name: 'A' }];
+      el.columns = cols as ColumnDef[];
+      el.rows = rows;
+      (el as any).clientFilter = true;
+      await el.updateComplete;
+
+      const input = el.shadowRoot!.querySelector('.filter-input');
+      expect(input).not.toBeNull();
+    });
+  });
 });

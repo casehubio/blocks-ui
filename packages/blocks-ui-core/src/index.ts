@@ -5,3 +5,4 @@ export * from './types/index.js';
 export * from './schema-form/index.js';
 export * from './timers/index.js';
 export * from './confirm-dialog/index.js';
+export * from './data-endpoint/index.js';

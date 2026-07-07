@@ -1,0 +1,93 @@
+[
+  {
+    "id": "entry-1",
+    "subjectId": "case-123",
+    "tenancyId": "tenant-1",
+    "sequenceNumber": 1,
+    "entryType": "COMMAND",
+    "actorId": "user-001",
+    "actorType": "USER",
+    "actorRole": "CASE_MANAGER",
+    "occurredAt": "2026-07-07T09:00:00Z",
+    "digest": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+    "traceId": "trace-001",
+    "causedByEntryId": null,
+    "payload": {
+      "command": "CREATE_CASE",
+      "caseId": "case-123",
+      "category": "FRAUD_INVESTIGATION"
+    }
+  },
+  {
+    "id": "entry-2",
+    "subjectId": "case-123",
+    "tenancyId": "tenant-1",
+    "sequenceNumber": 2,
+    "entryType": "EVENT",
+    "actorId": "system",
+    "actorType": "SYSTEM",
+    "actorRole": null,
+    "occurredAt": "2026-07-07T09:05:00Z",
+    "digest": "b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7",
+    "traceId": "trace-002",
+    "causedByEntryId": "entry-1",
+    "payload": {
+      "event": "CASE_CREATED",
+      "caseId": "case-123",
+      "timestamp": "2026-07-07T09:05:00Z"
+    }
+  },
+  {
+    "id": "entry-3",
+    "subjectId": "case-123",
+    "tenancyId": "tenant-1",
+    "sequenceNumber": 3,
+    "entryType": "COMMAND",
+    "actorId": "agent-042",
+    "actorType": "AGENT",
+    "actorRole": "INVESTIGATOR",
+    "occurredAt": "2026-07-07T10:30:00Z",
+    "digest": "c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8",
+    "traceId": "trace-003",
+    "causedByEntryId": "entry-2",
+    "payload": {
+      "command": "ASSIGN_INVESTIGATOR",
+      "agentId": "agent-042",
+      "priority": "HIGH"
+    }
+  },
+  {
+    "id": "entry-4",
+    "subjectId": "case-123",
+    "tenancyId": "tenant-1",
+    "sequenceNumber": 4,
+    "entryType": "ATTESTATION",
+    "actorId": "peer-review-001",
+    "actorType": "PEER",
+    "actorRole": "REVIEWER",
+    "occurredAt": "2026-07-07T11:00:00Z",
+    "digest": "d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9",
+    "traceId": "trace-004",
+    "causedByEntryId": "entry-3",
+    "payload": {
+      "attestation": "QUALITY_CHECK",
+      "verdict": "SOUND",
+      "confidence": 0.95
+    }
+  },
+  {
+    "id": "entry-5",
+    "subjectId": "case-123",
+    "tenancyId": "tenant-1",
+    "sequenceNumber": 5,
+    "entryType": "EVENT",
+    "actorId": null,
+    "actorType": null,
+    "actorRole": null,
+    "occurredAt": "2026-07-07T12:00:00Z",
+    "digest": "e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0",
+    "traceId": null,
+    "causedByEntryId": "entry-4",
+    "payload": null
+  }
+]

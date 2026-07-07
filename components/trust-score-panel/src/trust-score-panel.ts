@@ -1,0 +1,379 @@
+import { LitElement, html, css, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { DataEndpointMixin } from '@casehubio/blocks-ui-core/data-endpoint/data-endpoint.js';
+import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
+import type { TrustScoreResponse, TrustLevel } from './types.js';
+import { trustLevelFromScore } from './types.js';
+import '@casehubio/blocks-ui-data-table';
+import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
+
+@customElement('trust-score-panel')
+export class TrustScorePanel extends LiveRegionMixin(DataEndpointMixin(LitElement)) {
+  @property({ type: String }) actorId?: string;
+  @property({ type: String }) mode: 'full' | 'compact' = 'full';
+  @property({ type: Number }) score?: number;
+  @property({ type: String }) trustLevel?: TrustLevel;
+
+  @state() private _trustData: TrustScoreResponse | null = null;
+
+  static override styles = css`
+    :host {
+      display: block;
+      font-family: var(--font-family-base, system-ui, sans-serif);
+    }
+
+    .trust-score-panel {
+      padding: var(--spacing-md, 16px);
+    }
+
+    .error-message {
+      color: var(--color-error, #c41e3a);
+      padding: var(--spacing-md, 16px);
+      background: var(--color-error-bg, #fee);
+      border-radius: var(--border-radius-sm, 4px);
+    }
+
+    .loading-spinner {
+      text-align: center;
+      padding: var(--spacing-lg, 24px);
+      color: var(--color-text-secondary, #666);
+    }
+
+    /* Full mode layout */
+    .full-mode {
+      display: grid;
+      gap: var(--spacing-lg, 24px);
+    }
+
+    .score-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-sm, 8px);
+    }
+
+    .score-gauge {
+      width: 200px;
+      height: 200px;
+    }
+
+    .capability-section {
+      margin-top: var(--spacing-md, 16px);
+    }
+
+    .capability-section h3 {
+      margin: 0 0 var(--spacing-sm, 8px) 0;
+      font-size: var(--font-size-lg, 18px);
+      font-weight: var(--font-weight-semibold, 600);
+    }
+
+    .trend-section {
+      margin-top: var(--spacing-md, 16px);
+    }
+
+    .trend-section h3 {
+      margin: 0 0 var(--spacing-sm, 8px) 0;
+      font-size: var(--font-size-lg, 18px);
+      font-weight: var(--font-weight-semibold, 600);
+    }
+
+    .trend-placeholder {
+      padding: var(--spacing-lg, 24px);
+      text-align: center;
+      background: var(--color-surface-secondary, #f5f5f5);
+      border-radius: var(--border-radius-md, 8px);
+      color: var(--color-text-secondary, #666);
+      font-style: italic;
+    }
+
+    /* Compact mode badge */
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+      border-radius: var(--border-radius-sm, 4px);
+      font-size: var(--font-size-sm, 14px);
+      font-weight: var(--font-weight-semibold, 600);
+      min-width: 48px;
+    }
+
+    .trust-badge.high {
+      background: var(--color-success-bg, #d4edda);
+      color: var(--color-success-text, #155724);
+    }
+
+    .trust-badge.adequate {
+      background: var(--color-warning-bg, #fff3cd);
+      color: var(--color-warning-text, #856404);
+    }
+
+    .trust-badge.low {
+      background: var(--color-error-bg, #f8d7da);
+      color: var(--color-error-text, #721c24);
+    }
+
+    .trust-badge.none {
+      background: var(--color-neutral-bg, #e9ecef);
+      color: var(--color-text-secondary, #666);
+    }
+
+    .score-bar {
+      width: 100px;
+      height: 8px;
+      background: var(--color-neutral-bg, #e9ecef);
+      border-radius: var(--border-radius-sm, 4px);
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .score-bar-fill.high {
+      background: var(--color-success, #28a745);
+    }
+
+    .score-bar-fill.adequate {
+      background: var(--color-warning, #ffc107);
+    }
+
+    .score-bar-fill.low {
+      background: var(--color-error, #dc3545);
+    }
+  `;
+
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+    // Trigger fetch when actorId changes (only in modes that need it)
+    if (changed.has('actorId') && this.actorId && this.endpoint && !this._hasPreFetchedData()) {
+      this.fetchData();
+    }
+  }
+
+  async fetchData(): Promise<void> {
+    if (!this.endpoint || !this.actorId) return;
+
+    this.announce('Loading trust scores');
+    const url = `${this.endpoint}/trust/${this.actorId}`;
+    const response = await this.fetchFn(url, { signal: this.abortSignal });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch trust scores: ${response.statusText}`);
+    }
+
+    this._trustData = (await response.json()) as TrustScoreResponse;
+    this.announce(`Trust score loaded: ${this._trustData.globalScore?.toFixed(2) ?? 'no data'}`);
+  }
+
+  private _hasPreFetchedData(): boolean {
+    return this.mode === 'compact' && this.score !== undefined && this.trustLevel !== undefined;
+  }
+
+  private _getDisplayScore(): number | undefined {
+    if (this.score !== undefined) return this.score;
+    return this._trustData?.globalScore;
+  }
+
+  private _getDisplayTrustLevel(): TrustLevel {
+    if (this.trustLevel) return this.trustLevel;
+    return trustLevelFromScore(this._trustData?.globalScore);
+  }
+
+  private _renderCompactMode() {
+    const score = this._getDisplayScore();
+    const level = this._getDisplayTrustLevel();
+    const label = score !== undefined ? `Trust score ${score.toFixed(2)}, ${level} trust` : 'No trust data';
+
+    return html`
+      <div class="trust-badge ${level}" role="img" aria-label=${label}>
+        ${score !== undefined ? score.toFixed(2) : '—'}
+      </div>
+    `;
+  }
+
+  private _renderScoreGauge() {
+    const score = this._getDisplayScore();
+    const level = this._getDisplayTrustLevel();
+    const label = score !== undefined
+      ? `Trust score ${score.toFixed(2)}, ${level} trust`
+      : 'No trust data available';
+
+    if (score === undefined) {
+      return html`
+        <div class="score-gauge" role="img" aria-label="No trust data available">
+          <svg viewBox="0 0 200 200">
+            <text x="100" y="110" text-anchor="middle" font-size="24" fill="currentColor">
+              No Data
+            </text>
+          </svg>
+        </div>
+      `;
+    }
+
+    // Simple arc gauge - 270 degrees arc
+    const radius = 70;
+    const centerX = 100;
+    const centerY = 100;
+    const startAngle = -225; // Start at bottom left
+    const endAngle = startAngle + 270; // 270 degree arc
+    const scoreAngle = startAngle + (score * 270); // Map 0-1 to arc
+
+    const polarToCartesian = (angle: number) => {
+      const angleInRadians = ((angle - 90) * Math.PI) / 180;
+      return {
+        x: centerX + radius * Math.cos(angleInRadians),
+        y: centerY + radius * Math.sin(angleInRadians),
+      };
+    };
+
+    const startPoint = polarToCartesian(startAngle);
+    const endPoint = polarToCartesian(scoreAngle);
+
+    const arcPath = `M ${startPoint.x} ${startPoint.y} A ${radius} ${radius} 0 ${score > 0.5 ? 1 : 0} 1 ${endPoint.x} ${endPoint.y}`;
+
+    const colors = {
+      high: '#28a745',
+      adequate: '#ffc107',
+      low: '#dc3545',
+      none: '#ccc',
+    };
+
+    return html`
+      <div class="score-gauge" role="img" aria-label=${label}>
+        <svg viewBox="0 0 200 200">
+          <!-- Background arc -->
+          <path
+            d=${arcPath}
+            fill="none"
+            stroke="#e9ecef"
+            stroke-width="20"
+            stroke-linecap="round"
+          />
+          <!-- Score arc -->
+          <path
+            d=${arcPath}
+            fill="none"
+            stroke=${colors[level]}
+            stroke-width="20"
+            stroke-linecap="round"
+          />
+          <!-- Score text -->
+          <text x="100" y="110" text-anchor="middle" font-size="32" font-weight="600" fill="currentColor">
+            ${score.toFixed(2)}
+          </text>
+        </svg>
+      </div>
+    `;
+  }
+
+  private _renderCapabilityTable() {
+    if (!this._trustData) return html``;
+
+    const capabilities = Object.entries(this._trustData.capabilityScores).map(([tag, score]) => ({
+      tag,
+      score,
+    }));
+
+    if (capabilities.length === 0) {
+      return html`<p>No capability scores available</p>`;
+    }
+
+    const columns: ColumnDef<{ tag: string; score: number }>[] = [
+      {
+        key: 'tag',
+        header: 'Capability',
+        sortable: true,
+      },
+      {
+        key: 'score',
+        header: 'Score',
+        sortable: true,
+        render: (value) => {
+          const numValue = value as number;
+          const level = trustLevelFromScore(numValue);
+          return html`
+            <div class="score-bar">
+              <div
+                class="score-bar-fill ${level}"
+                style="width: ${numValue * 100}%"
+              ></div>
+            </div>
+            <span style="margin-left: 8px">${numValue.toFixed(2)}</span>
+          `;
+        },
+      },
+    ];
+
+    return html`
+      <pages-data-table
+        .columns=${columns}
+        .data=${capabilities}
+        @row-click=${this._handleCapabilityClick}
+      ></pages-data-table>
+    `;
+  }
+
+  private _handleCapabilityClick(e: CustomEvent) {
+    const { tag, score } = e.detail;
+    this.dispatchEvent(
+      new CustomEvent('pages-event', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          topic: 'trust.capability-selected',
+          data: { tag, score, actorId: this.actorId },
+        },
+      })
+    );
+  }
+
+  private _renderFullMode() {
+    if (this.loading) {
+      return html`<div class="loading-spinner">Loading trust scores...</div>`;
+    }
+
+    if (this.error) {
+      return html`
+        <div class="error-message" role="alert">
+          Failed to load trust scores: ${this.error}
+        </div>
+      `;
+    }
+
+    return html`
+      <div class="full-mode">
+        <section class="score-section">
+          ${this._renderScoreGauge()}
+        </section>
+
+        <section class="capability-section">
+          <h3>Per-Capability Breakdown</h3>
+          ${this._renderCapabilityTable()}
+        </section>
+
+        <section class="trend-section">
+          <h3>Trust Trend</h3>
+          <div class="trend-placeholder">
+            Trend data requires backend endpoint
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  override render() {
+    return html`
+      <div class="trust-score-panel">
+        ${this.mode === 'compact' ? this._renderCompactMode() : this._renderFullMode()}
+      </div>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'trust-score-panel': TrustScorePanel;
+  }
+}

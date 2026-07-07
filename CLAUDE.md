@@ -104,17 +104,19 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Shared theme, dataset helpers, event contracts, a11y mixins, SSE manager, SharedTimerController, blocks-confirm-dialog, schema-form |
-| `components/data-table/` | Generic data table — three display modes (auto/paginated/scroll), CSS Grid rendering, virtual scroll engine, ColumnDef\<R\> data model, multi-mode selection, client-side sorting, column visibility, ARIA grid, 2D keyboard navigation, CSS ::part() row styling |
+| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataEndpointMixin, a11y mixins, event helpers (re-exported from pages-component), domain types, SharedTimerController, blocks-confirm-dialog, schema-form |
+| `components/data-table/` | Generic data table — three display modes (auto/paginated/scroll), CSS Grid rendering, virtual scroll engine, ColumnDef\<R\> data model, multi-mode selection, client-side sorting and filtering, column visibility, ARIA grid, 2D keyboard navigation, CSS ::part() row styling |
 | `components/work-item-inbox/` | Work item inbox — uses pages-data-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
-| `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab |
+| `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab (outgoing + incoming with semantic type inverses) |
 | `components/work-item-workbench/` | Full workbench — split-pane layout with inbox (left) and detail (right), keyboard shortcuts |
+| `components/notification-inbox/` | Notification inbox — bell with unread badge, inbox with tabs/filters/SSE, subscription list CRUD |
 | `components/sla-indicator/` | SLA deadline indicator — countdown, breach state, escalation badge, threshold-based colour transitions |
-| `components/kpi-metric-row/` | KPI metric cards — responsive grid with sparklines, trends, status colours |
+| `components/kpi-metric-row/` | KPI metric cards — responsive grid with sparklines, trends, status colours, density property (comfortable/compact/dense), reactive endpoint |
 | `components/approval-gate/` | Approval gate — structured decision point with quorum, evidence slots, SLA integration, confirmation dialog |
-| `components/case-timeline/` | Case lifecycle timeline — status progression, milestone markers, agent activity |
-| `components/trust-score-panel/` | Agent trust score visualisation — Bayesian Beta scores, trend lines, per-capability breakdown |
+| `components/audit-trail-viewer/` | Audit trail viewer — ledger entries with data-table, Merkle verification banner, attestations, actor/type/date filters, GDPR erasure handling |
+| `components/case-timeline/` | Case lifecycle timeline — vertical CSS timeline with 30+ event type nodes, compact dot strip mode, stream type filter |
+| `components/trust-score-panel/` | Trust score panel — SVG gauge, per-capability breakdown table, maturity badges, compact badge mode |
 | `components/channel-activity/` | Qhorus channel activity feed — message stream, commitment status, speech act badges |
 
 ## Design Philosophy
@@ -123,7 +125,7 @@ yarn typecheck
 - Each component defines its dataset contract (what data shape it consumes)
 - Components communicate via `pages-event` CustomEvent — no direct component-to-component coupling
 - Components should work standalone in a test harness AND embedded via pages `hostPanel`
-- Visual consistency through the shared `BlocksTheme` from `blocks-ui-core`
+- Visual consistency through `--pages-*` CSS custom properties from `pages-ui-tokens`
 - Design for the full platform: trust scores from ledger, channel activity from qhorus, case timelines from engine, IoT device state from iot
 
 ## IntelliJ MCP Routing

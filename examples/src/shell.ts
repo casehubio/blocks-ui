@@ -28,6 +28,9 @@ const NAV: NavCategory[] = [
       { id: 'confirm-dialog', label: 'Confirm Dialog', hash: '#components/confirm-dialog' },
       { id: 'data-table', label: 'Data Table', hash: '#components/data-table' },
       { id: 'notifications', label: 'Notifications', hash: '#components/notifications' },
+      { id: 'audit-trail', label: 'Audit Trail Viewer', hash: '#components/audit-trail' },
+      { id: 'case-timeline', label: 'Case Timeline', hash: '#components/case-timeline' },
+      { id: 'trust-score', label: 'Trust Score Panel', hash: '#components/trust-score' },
     ],
   },
   {
@@ -176,6 +179,9 @@ export class ExampleShell extends LitElement {
       case '#components/confirm-dialog': return html`<confirm-dialog-page></confirm-dialog-page>`;
       case '#components/data-table': return html`<data-table-page></data-table-page>`;
       case '#components/notifications': return html`<notification-page></notification-page>`;
+      case '#components/audit-trail': return html`<audit-trail-page></audit-trail-page>`;
+      case '#components/case-timeline': return html`<case-timeline-page></case-timeline-page>`;
+      case '#components/trust-score': return html`<trust-score-page></trust-score-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

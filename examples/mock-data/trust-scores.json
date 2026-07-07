@@ -1,0 +1,51 @@
+{
+  "actors": [
+    {
+      "actorId": "agent-alice",
+      "globalScore": 0.87,
+      "capabilityScores": {
+        "claim-review": 0.89,
+        "fraud-detect": 0.91,
+        "risk-assessment": 0.82,
+        "document-verify": 0.85
+      },
+      "dimensionScores": {
+        "accuracy": 0.88,
+        "timeliness": 0.86,
+        "compliance": 0.87
+      }
+    },
+    {
+      "actorId": "agent-bob",
+      "globalScore": 0.52,
+      "capabilityScores": {
+        "claim-review": 0.48,
+        "fraud-detect": 0.58,
+        "risk-assessment": 0.51
+      },
+      "dimensionScores": {
+        "accuracy": 0.54,
+        "timeliness": 0.49,
+        "compliance": 0.53
+      }
+    },
+    {
+      "actorId": "agent-charlie",
+      "globalScore": 0.31,
+      "capabilityScores": {
+        "claim-review": 0.29,
+        "fraud-detect": 0.35
+      },
+      "dimensionScores": {
+        "accuracy": 0.32,
+        "timeliness": 0.28,
+        "compliance": 0.33
+      }
+    },
+    {
+      "actorId": "agent-new",
+      "capabilityScores": {},
+      "dimensionScores": {}
+    }
+  ]
+}

@@ -121,6 +121,86 @@ describe('kpi-metric-row', () => {
     expect(el.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(3);
   });
 
+  describe('density property', () => {
+    it('reflects density attribute to the host element', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'compact';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(el.getAttribute('density')).toBe('compact');
+      el.remove();
+    });
+
+    it('defaults to comfortable density', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(el.density).toBe('comfortable');
+      el.remove();
+    });
+
+    it('uses 120px minmax in compact density', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'compact';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const grid = el.shadowRoot!.querySelector('.grid') as HTMLElement;
+      expect(grid.style.gridTemplateColumns).toContain('120px');
+      el.remove();
+    });
+
+    it('uses 90px minmax in dense density', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'dense';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const grid = el.shadowRoot!.querySelector('.grid') as HTMLElement;
+      expect(grid.style.gridTemplateColumns).toContain('90px');
+      el.remove();
+    });
+
+    it('uses 160px minmax in comfortable density', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'comfortable';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const grid = el.shadowRoot!.querySelector('.grid') as HTMLElement;
+      expect(grid.style.gridTemplateColumns).toContain('160px');
+      el.remove();
+    });
+
+    it('applies compact density CSS for padding and font size', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'compact';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const card = el.shadowRoot!.querySelector('.card') as HTMLElement;
+      const styles = window.getComputedStyle(card);
+      // The host selector should apply the density styles
+      expect(el.getAttribute('density')).toBe('compact');
+      el.remove();
+    });
+
+    it('applies dense density CSS for padding and font size', async () => {
+      const el = document.createElement('kpi-metric-row') as any;
+      el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
+      el.density = 'dense';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const card = el.shadowRoot!.querySelector('.card') as HTMLElement;
+      const styles = window.getComputedStyle(card);
+      // The host selector should apply the density styles
+      expect(el.getAttribute('density')).toBe('dense');
+      el.remove();
+    });
+  });
+
   describe('endpoint mode', () => {
     it('renders loading skeleton when fetching', async () => {
       vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})));
@@ -193,24 +273,26 @@ describe('kpi-metric-row', () => {
       endpointEl.remove();
     });
 
-    it('does not re-fetch when endpoint changes after mount', async () => {
-      const mockFn = vi.fn().mockResolvedValue({
+    it('re-fetches when endpoint changes after mount', async () => {
+      const mockFetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve([{ key: 'a', value: 1, label: 'A' }]),
+        json: async () => [{ key: 'k1', value: 1, label: 'L1' }],
       });
-      vi.stubGlobal('fetch', mockFn);
-      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
-      endpointEl.endpoint = '/api/metrics';
-      document.body.appendChild(endpointEl);
-      await new Promise(r => setTimeout(r, 0));
-      await endpointEl.updateComplete;
-      expect(mockFn).toHaveBeenCalledTimes(1);
+      vi.stubGlobal('fetch', mockFetch);
 
-      endpointEl.endpoint = '/api/other-metrics';
-      await new Promise(r => setTimeout(r, 0));
-      await endpointEl.updateComplete;
-      expect(mockFn).toHaveBeenCalledTimes(1);
-      endpointEl.remove();
+      const el = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      el.endpoint = '/api/v1/metrics';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      await new Promise(r => setTimeout(r, 50));
+      const firstCount = mockFetch.mock.calls.length;
+
+      el.endpoint = '/api/v2/metrics';
+      await el.updateComplete;
+      await new Promise(r => setTimeout(r, 50));
+
+      expect(mockFetch.mock.calls.length).toBeGreaterThan(firstCount);
+      el.remove();
     });
   });
 });

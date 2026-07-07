@@ -3,6 +3,19 @@ import { customElement, property } from 'lit/decorators.js';
 import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 
+interface WorkItemRelation {
+  readonly id: string;
+  readonly sourceId: string;
+  readonly targetId: string;
+  readonly relationType: string;
+  readonly direction: 'outgoing' | 'incoming';
+  readonly createdBy: string;
+  readonly createdAt: string;
+  readonly title?: string;
+  readonly status?: string;
+}
+
+// Legacy type for backwards compatibility (can be removed if not used elsewhere)
 interface RelatedItem {
   readonly id: string;
   readonly title: string;
@@ -13,6 +26,7 @@ interface RelatedItem {
 @customElement('detail-relations-tab')
 export class DetailRelationsTab extends LitElement {
   @property({ type: Object }) workItem: WorkItemResponse | null = null;
+  @property({ type: Array }) relations: readonly WorkItemRelation[] = [];
   @property({ type: Array }) relatedItems: readonly RelatedItem[] = [];
 
   static override styles = css`
@@ -119,44 +133,56 @@ export class DetailRelationsTab extends LitElement {
       return html`<div class="empty">No work item selected</div>`;
     }
 
-    const parents = this.relatedItems.filter(item => item.relationType === 'parent');
-    const children = this.relatedItems.filter(item => item.relationType === 'child');
-    const linked = this.relatedItems.filter(item => item.relationType === 'linked');
+    // Group relations by type
+    const byType = new Map<string, WorkItemRelation[]>();
+    for (const rel of this.relations) {
+      const list = byType.get(rel.relationType) ?? [];
+      list.push(rel);
+      byType.set(rel.relationType, list);
+    }
+
+    const sections = Array.from(byType.entries()).map(([type, rels]) => ({
+      title: this._formatRelationType(type),
+      relations: rels,
+    }));
 
     return html`
-      ${parents.length > 0
-        ? html`
-            <div class="section">
-              <h3 class="section-title">Parent Work Item</h3>
-              <div class="relation-list">
-                ${parents.map(item => this._renderRelationItem(item))}
-              </div>
+      ${sections.map(
+        section => html`
+          <div class="section">
+            <h3 class="section-title">${section.title}</h3>
+            <div class="relation-list">
+              ${section.relations.map(rel => this._renderRelation(rel))}
             </div>
-          `
-        : ''}
-      ${children.length > 0
-        ? html`
-            <div class="section">
-              <h3 class="section-title">Child Tasks</h3>
-              <div class="relation-list">
-                ${children.map(item => this._renderRelationItem(item))}
-              </div>
-            </div>
-          `
-        : ''}
-      ${linked.length > 0
-        ? html`
-            <div class="section">
-              <h3 class="section-title">Linked Cases</h3>
-              <div class="relation-list">
-                ${linked.map(item => this._renderRelationItem(item))}
-              </div>
-            </div>
-          `
-        : ''}
-      ${this.relatedItems.length === 0
+          </div>
+        `
+      )}
+      ${this.relations.length === 0
         ? html`<div class="empty">No related work items</div>`
         : ''}
+    `;
+  }
+
+  private _renderRelation(rel: WorkItemRelation): TemplateResult {
+    const relatedItemId = rel.direction === 'outgoing' ? rel.targetId : rel.sourceId;
+    const title = rel.title ?? relatedItemId;
+    const status = rel.status ?? 'Unknown';
+
+    return html`
+      <div
+        class="relation-item"
+        role="button"
+        tabindex="0"
+        @click="${() => this._handleItemClick(relatedItemId)}"
+        @keydown="${(e: KeyboardEvent) => this._handleItemKeydown(e, relatedItemId)}"
+      >
+        <div class="relation-icon">${this._getRelationIcon(rel.relationType)}</div>
+        <div class="relation-content">
+          <div class="relation-title">${title}</div>
+          <div class="relation-meta">${relatedItemId}</div>
+        </div>
+        <div class="status-pill">${status}</div>
+      </div>
     `;
   }
 
@@ -179,15 +205,22 @@ export class DetailRelationsTab extends LitElement {
     `;
   }
 
-  private _getRelationIcon(type: 'parent' | 'child' | 'linked'): string {
-    switch (type) {
-      case 'parent':
-        return '↑';
-      case 'child':
-        return '↓';
-      case 'linked':
-        return '→';
-    }
+  private _formatRelationType(type: string): string {
+    return type.split('_').map(word =>
+      word.charAt(0) + word.slice(1).toLowerCase()
+    ).join(' ');
+  }
+
+  private _getRelationIcon(type: string): string {
+    // Map specific types to icons
+    if (type === 'PART_OF' || type === 'HAS_PART') return '⊂';
+    if (type === 'BLOCKS' || type === 'BLOCKED_BY') return '⊗';
+    if (type === 'RELATES_TO') return '→';
+    // Legacy types
+    if (type === 'parent') return '↑';
+    if (type === 'child') return '↓';
+    if (type === 'linked') return '→';
+    return '→'; // default
   }
 
   private _handleItemClick(workItemId: string): void {

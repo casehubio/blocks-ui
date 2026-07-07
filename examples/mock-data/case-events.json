@@ -1,0 +1,167 @@
+[
+  {
+    "eventType": "CASE_STARTED",
+    "streamType": "CASE",
+    "timestamp": "2026-07-01T10:00:00Z",
+    "payload": {
+      "caseType": "FRAUD_INVESTIGATION",
+      "priority": "HIGH",
+      "assignedTo": "fraud-team"
+    },
+    "metadata": {
+      "userId": "user-123",
+      "source": "intake-system"
+    }
+  },
+  {
+    "eventType": "TASK_CREATED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T10:05:00Z",
+    "payload": {
+      "taskId": "task-001",
+      "title": "Review transaction history",
+      "assignee": "analyst-1"
+    },
+    "metadata": {
+      "createdBy": "system"
+    }
+  },
+  {
+    "eventType": "AGENT_DISPATCHED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T10:15:00Z",
+    "payload": {
+      "agentId": "agent-42",
+      "workerId": "worker-001",
+      "capability": "DOCUMENT_ANALYSIS"
+    },
+    "metadata": {
+      "workerName": "Alice Smith",
+      "trustScore": 0.92
+    }
+  },
+  {
+    "eventType": "MILESTONE_REACHED",
+    "streamType": "CASE",
+    "timestamp": "2026-07-01T11:00:00Z",
+    "payload": {
+      "milestoneName": "Initial assessment complete",
+      "progress": 0.25
+    }
+  },
+  {
+    "eventType": "TASK_COMPLETED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T11:30:00Z",
+    "payload": {
+      "taskId": "task-001",
+      "outcome": "APPROVED",
+      "findings": "No anomalies detected in last 90 days"
+    }
+  },
+  {
+    "eventType": "ORCHESTRATION_STARTED",
+    "streamType": "ORCHESTRATION",
+    "timestamp": "2026-07-01T11:45:00Z",
+    "payload": {
+      "orchestrationId": "orch-001",
+      "stage": "risk-assessment"
+    }
+  },
+  {
+    "eventType": "ACTION_GATE_PENDING",
+    "streamType": "ORCHESTRATION",
+    "timestamp": "2026-07-01T12:00:00Z",
+    "payload": {
+      "gateId": "gate-001",
+      "decision": "ESCALATE_TO_MANAGER",
+      "reason": "Amount exceeds $10K threshold"
+    }
+  },
+  {
+    "eventType": "AGENT_COMPLETED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T12:15:00Z",
+    "payload": {
+      "agentId": "agent-42",
+      "result": "SUCCESS",
+      "confidence": 0.88
+    },
+    "metadata": {
+      "workerName": "Alice Smith",
+      "trustScore": 0.93,
+      "duration": "3600s"
+    }
+  },
+  {
+    "eventType": "ACTION_GATE_APPROVED",
+    "streamType": "ORCHESTRATION",
+    "timestamp": "2026-07-01T12:30:00Z",
+    "payload": {
+      "gateId": "gate-001",
+      "approver": "manager-jane",
+      "comments": "Approved based on supporting evidence"
+    }
+  },
+  {
+    "eventType": "MILESTONE_REACHED",
+    "streamType": "CASE",
+    "timestamp": "2026-07-01T13:00:00Z",
+    "payload": {
+      "milestoneName": "Risk assessment approved",
+      "progress": 0.75
+    }
+  },
+  {
+    "eventType": "TASK_CREATED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T13:15:00Z",
+    "payload": {
+      "taskId": "task-002",
+      "title": "Final compliance check",
+      "assignee": "compliance-officer"
+    }
+  },
+  {
+    "eventType": "TIMER_SCHEDULED",
+    "streamType": "TIMER",
+    "timestamp": "2026-07-01T13:20:00Z",
+    "payload": {
+      "timerId": "timer-001",
+      "fireAt": "2026-07-02T13:20:00Z",
+      "reason": "SLA reminder"
+    }
+  },
+  {
+    "eventType": "TASK_COMPLETED",
+    "streamType": "WORKER",
+    "timestamp": "2026-07-01T14:00:00Z",
+    "payload": {
+      "taskId": "task-002",
+      "outcome": "PASSED",
+      "findings": "All compliance checks satisfied"
+    }
+  },
+  {
+    "eventType": "ORCHESTRATION_COMPLETED",
+    "streamType": "ORCHESTRATION",
+    "timestamp": "2026-07-01T14:15:00Z",
+    "payload": {
+      "orchestrationId": "orch-001",
+      "outcome": "SUCCESS"
+    }
+  },
+  {
+    "eventType": "CASE_COMPLETED",
+    "streamType": "CASE",
+    "timestamp": "2026-07-01T14:30:00Z",
+    "payload": {
+      "resolution": "APPROVED",
+      "summary": "Investigation concluded — no fraud detected"
+    },
+    "metadata": {
+      "closedBy": "system",
+      "totalDuration": "16200s"
+    }
+  }
+]

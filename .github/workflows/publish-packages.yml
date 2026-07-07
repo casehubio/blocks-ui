@@ -1,0 +1,69 @@
+name: Publish Packages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/*/package.json'
+      - 'packages/*/src/**'
+      - 'components/*/package.json'
+      - 'components/*/src/**'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@casehubio'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Publish changed packages
+        run: |
+          for dir in packages/* components/*; do
+            if [ ! -f "$dir/package.json" ]; then
+              continue
+            fi
+
+            NAME=$(node -p "require('./$dir/package.json').name")
+            VERSION=$(node -p "require('./$dir/package.json').version")
+            PRIVATE=$(node -p "require('./$dir/package.json').private || false")
+
+            if [ "$PRIVATE" = "true" ]; then
+              echo "Skipping $NAME (private)"
+              continue
+            fi
+
+            PUBLISHED=$(npm view "$NAME@$VERSION" version 2>/dev/null || true)
+            if [ "$PUBLISHED" = "$VERSION" ]; then
+              echo "Skipping $NAME@$VERSION (already published)"
+              continue
+            fi
+
+            echo "Publishing $NAME@$VERSION..."
+            cd "$dir"
+            yarn npm publish --access restricted
+            cd "$GITHUB_WORKSPACE"
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

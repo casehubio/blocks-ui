@@ -13,6 +13,8 @@ export interface ColumnDef<R = unknown> {
   readonly render?: (value: unknown, row: R) => TemplateResult | string;
   readonly compare?: (a: unknown, b: unknown) => number;
   readonly sortable?: boolean;
+  readonly filterable?: boolean;
+  readonly filterValue?: (row: R) => string;
   readonly visible?: boolean;
   readonly width?: string;
   readonly minWidth?: string;
@@ -42,6 +44,11 @@ export interface ColumnChangeDetail {
 export interface RowActivateDetail<R = unknown> {
   readonly row: R;
   readonly key?: string;
+}
+
+export interface FilterChangeDetail {
+  readonly text: string;
+  readonly matchCount: number;
 }
 
 export interface LoadMoreDetail {}

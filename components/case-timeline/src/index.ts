@@ -1,2 +1,2 @@
-// Stub — implementation pending
-export const COMPONENT_NAME = 'case-timeline';
+export { CaseTimeline } from './case-timeline.js';
+export * from './types.js';

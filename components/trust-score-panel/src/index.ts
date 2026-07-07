@@ -1,2 +1,2 @@
-// Stub — implementation pending
-export const COMPONENT_NAME = 'trust-score-panel';
+export * from './types.js';
+export * from './trust-score-panel.js';

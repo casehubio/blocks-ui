@@ -244,4 +244,90 @@ describe('WorkItemDetail', () => {
       expect(priorityBadge?.textContent).toContain('HIGH');
     });
   });
+
+  describe('Relations', () => {
+    let mockFetch: ReturnType<typeof vi.fn>;
+
+    beforeEach(() => {
+      mockFetch = vi.fn();
+      global.fetch = mockFetch;
+    });
+
+    it('fetches and displays relations when work item loads', async () => {
+      mockFetch.mockImplementation((url: string) => {
+        if (url.includes('/relations/incoming'))
+          return Promise.resolve({
+            ok: true,
+            json: async () => [
+              {
+                id: 'r2',
+                sourceId: 'wi-other',
+                targetId: 'wi-1',
+                relationType: 'BLOCKS',
+                createdBy: 'user1',
+                createdAt: '2026-07-07T00:00:00Z'
+              }
+            ]
+          });
+        if (url.includes('/relations'))
+          return Promise.resolve({
+            ok: true,
+            json: async () => [
+              {
+                id: 'r1',
+                sourceId: 'wi-1',
+                targetId: 'wi-2',
+                relationType: 'RELATES_TO',
+                createdBy: 'user1',
+                createdAt: '2026-07-07T00:00:00Z'
+              }
+            ]
+          });
+        if (url.includes('/workitems/wi-2'))
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({
+              item: {
+                id: 'wi-2',
+                title: 'Related Item',
+                status: 'ASSIGNED'
+              }
+            })
+          });
+        if (url.includes('/workitems/wi-other'))
+          return Promise.resolve({
+            ok: true,
+            json: async () => ({
+              item: {
+                id: 'wi-other',
+                title: 'Blocking Item',
+                status: 'IN_PROGRESS'
+              }
+            })
+          });
+        if (url.includes('/events'))
+          return Promise.resolve({ ok: true, json: async () => [] });
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            item: createMockWorkItem('PENDING')
+          })
+        });
+      });
+
+      element.endpoint = 'http://localhost';
+      element.workItemId = 'wi-1';
+      element.identity = mockIdentity;
+      await element.updateComplete;
+      await new Promise(r => setTimeout(r, 100));
+
+      // Relations should be fetched
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/relations'));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/relations/incoming'));
+
+      // Related item details should be fetched
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/workitems/wi-2'));
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/workitems/wi-other'));
+    });
+  });
 });

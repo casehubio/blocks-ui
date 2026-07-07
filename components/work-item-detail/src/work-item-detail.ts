@@ -16,6 +16,26 @@ import './detail-relations-tab.js';
 
 type TabName = 'overview' | 'activity' | 'relations';
 
+interface WorkItemRelation {
+  readonly id: string;
+  readonly sourceId: string;
+  readonly targetId: string;
+  readonly relationType: string;
+  readonly direction: 'outgoing' | 'incoming';
+  readonly createdBy: string;
+  readonly createdAt: string;
+  readonly title?: string;
+  readonly status?: string;
+}
+
+const RELATION_INVERSES: Record<string, string> = {
+  'BLOCKS': 'BLOCKED_BY',
+  'BLOCKED_BY': 'BLOCKS',
+  'PART_OF': 'HAS_PART',
+  'HAS_PART': 'PART_OF',
+  'RELATES_TO': 'RELATES_TO',
+};
+
 @customElement('work-item-detail')
 export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String }) endpoint: string | null = null;
@@ -26,6 +46,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
 
   @state() private _activeTab: TabName = 'overview';
   @state() private _events: readonly WorkItemLifecycleEvent[] = [];
+  @state() private _relations: readonly WorkItemRelation[] = [];
   @state() private _loading = false;
   @state() private _error: string | null = null;
 
@@ -35,6 +56,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
   @state() private _showCompleteDialog = false;
 
   private _unsubscribeSelection?: () => void;
+  private _relatedItemCache = new Map<string, { title: string; status: string }>();
 
   static override styles = css`
     :host {
@@ -374,6 +396,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this._unsubscribeSelection?.();
+    this._relatedItemCache.clear();
   }
 
   override willUpdate(changed: Map<string, unknown>): void {
@@ -546,7 +569,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
           aria-labelledby="tab-relations"
           aria-hidden="${this._activeTab !== 'relations'}"
         >
-          <detail-relations-tab .workItem="${workItem}"></detail-relations-tab>
+          <detail-relations-tab .workItem="${workItem}" .relations="${this._relations}"></detail-relations-tab>
         </div>
       </div>
     `;
@@ -718,15 +741,84 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
         ? raw.item as WorkItemResponse
         : raw as unknown as WorkItemResponse;
 
-      // Load activity events
-      const eventsResponse = await fetch(`${this.endpoint}/workitems/${this.workItemId}/events`);
+      // Load activity events and relations in parallel
+      const [eventsResponse, outgoingResponse, incomingResponse] = await Promise.all([
+        fetch(`${this.endpoint}/workitems/${this.workItemId}/events`),
+        fetch(`${this.endpoint}/workitems/${this.workItemId}/relations`),
+        fetch(`${this.endpoint}/workitems/${this.workItemId}/relations/incoming`),
+      ]);
+
       if (eventsResponse.ok) {
         this._events = await eventsResponse.json();
       }
+
+      // Combine outgoing and incoming relations
+      const outgoing = outgoingResponse.ok ? await outgoingResponse.json() : [];
+      const incoming = incomingResponse.ok ? await incomingResponse.json() : [];
+
+      const relations: WorkItemRelation[] = [
+        ...outgoing.map((r: any) => ({ ...r, direction: 'outgoing' as const })),
+        ...incoming.map((r: any) => ({
+          ...r,
+          direction: 'incoming' as const,
+          relationType: RELATION_INVERSES[r.relationType] ?? `${r.relationType} (incoming)`,
+        })),
+      ];
+
+      // Fetch related item titles and statuses
+      await this._fetchRelatedItemDetails(relations);
+
+      this._relations = relations;
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
     } finally {
       this._loading = false;
+    }
+  }
+
+  private async _fetchRelatedItemDetails(relations: WorkItemRelation[]): Promise<void> {
+    if (!this.endpoint) return;
+
+    const itemIds = new Set<string>();
+    for (const rel of relations) {
+      const relatedId = rel.direction === 'outgoing' ? rel.targetId : rel.sourceId;
+      itemIds.add(relatedId);
+    }
+
+    const fetchPromises = Array.from(itemIds).map(async (id) => {
+      // Check cache first
+      if (this._relatedItemCache.has(id)) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${this.endpoint}/workitems/${id}`);
+        if (response.ok) {
+          const raw = await response.json() as Record<string, unknown>;
+          const item = (raw.item && typeof (raw.item as Record<string, unknown>).id === 'string')
+            ? raw.item as WorkItemResponse
+            : raw as unknown as WorkItemResponse;
+
+          this._relatedItemCache.set(id, {
+            title: item.title ?? id,
+            status: item.status ?? 'Unknown',
+          });
+        }
+      } catch {
+        // Silently fail - item will show ID instead of title
+      }
+    });
+
+    await Promise.all(fetchPromises);
+
+    // Populate title and status on relations
+    for (const rel of relations) {
+      const relatedId = rel.direction === 'outgoing' ? rel.targetId : rel.sourceId;
+      const cached = this._relatedItemCache.get(relatedId);
+      if (cached) {
+        (rel as any).title = cached.title;
+        (rel as any).status = cached.status;
+      }
     }
   }
 

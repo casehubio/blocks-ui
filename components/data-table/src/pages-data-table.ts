@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/blocks-ui-core';
-import type { ColumnDef, DisplayMode, PageChangeDetail, LoadMoreDetail, SelectionMode, SelectionChangeDetail, RowActivateDetail, SortDirection, SortChangeDetail, ColumnChangeDetail } from './types.js';
+import type { ColumnDef, DisplayMode, PageChangeDetail, LoadMoreDetail, SelectionMode, SelectionChangeDetail, RowActivateDetail, SortDirection, SortChangeDetail, ColumnChangeDetail, FilterChangeDetail } from './types.js';
 import { computeScrollWindow } from './virtual-scroll-engine.js';
 import { createComparator } from './sort.js';
 
@@ -27,6 +27,8 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   @property({ type: String, attribute: 'sort-column-id' }) sortColumnId?: string;
   @property({ type: String, attribute: 'sort-direction' }) sortDirection: SortDirection = 'none';
   @property({ type: Boolean, attribute: 'client-sort' }) clientSort = false;
+  @property({ type: Boolean, attribute: 'client-filter' }) clientFilter = false;
+  @property({ type: String, attribute: 'filter-text' }) filterText = '';
 
   @state() private _scrollTop = 0;
   @state() private _containerHeight = 0;
@@ -37,6 +39,8 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   @state() private _focusRowIndex = 0;
   @state() private _focusColIndex = 0;
   @state() private _hiddenColumnIds = new Set<string>();
+
+  private _filterDebounceTimer?: number;
 
   static override styles = css`
     :host {
@@ -242,15 +246,40 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       color: var(--pages-accent-9, #2563eb);
     }
 
-    .column-picker-wrapper {
+    .toolbar {
       position: absolute;
       top: 0;
       right: 0;
       display: flex;
       align-items: center;
+      gap: var(--pages-space-2, 8px);
       height: 100%;
       padding: 0 var(--pages-space-2, 8px);
       z-index: 2;
+    }
+
+    .filter-input {
+      padding: var(--pages-space-1, 4px) var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-5, #e0e0e0);
+      background: var(--pages-neutral-1, #ffffff);
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--pages-neutral-12, #171717);
+      width: 200px;
+    }
+
+    .filter-input::placeholder {
+      color: var(--pages-neutral-8, #8c8c8c);
+    }
+
+    .filter-input:focus {
+      outline: 2px solid var(--pages-primary-9, #3b82f6);
+      outline-offset: 0;
+      border-color: var(--pages-primary-9, #3b82f6);
+    }
+
+    .column-picker-wrapper {
+      position: relative;
     }
 
     .column-picker-trigger {
@@ -454,6 +483,12 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     if (changed.has('selectedKeys') && this.selectedKeys !== undefined) {
       this._internalSelectedKeys = new Set(this.selectedKeys);
     }
+
+    // Reset currentPage when filter changes
+    if (changed.has('filterText') && this.clientFilter) {
+      this.currentPage = 0;
+      this._emitFilterChange();
+    }
   }
 
   private _updateContainerHeight(): void {
@@ -500,6 +535,49 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       bubbles: true,
       composed: true,
     }));
+  }
+
+  private _emitFilterChange(): void {
+    // Clear existing timer
+    if (this._filterDebounceTimer !== undefined) {
+      clearTimeout(this._filterDebounceTimer);
+    }
+
+    // Debounce the event emission
+    this._filterDebounceTimer = window.setTimeout(() => {
+      const detail: FilterChangeDetail = {
+        text: this.filterText,
+        matchCount: this._getFilteredRowCount(),
+      };
+
+      this.dispatchEvent(new CustomEvent('filter-change', {
+        detail,
+        bubbles: true,
+        composed: true,
+      }));
+    }, 150);
+  }
+
+  private _getFilteredRowCount(): number {
+    if (!this.clientFilter || !this.filterText || this.totalRows !== undefined) {
+      return this.rows.length;
+    }
+
+    const text = this.filterText.toLowerCase();
+    return this.rows.filter(row =>
+      this._visibleColumns.some(col => {
+        const isFilterable = col.filterable !== undefined
+          ? col.filterable
+          : (col.type !== 'number' && col.type !== 'date');
+
+        if (!isFilterable) return false;
+
+        const val = col.filterValue
+          ? col.filterValue(row)
+          : String(col.getValue(row));
+        return val.toLowerCase().includes(text);
+      })
+    ).length;
   }
 
   private _emitRowActivate(row: unknown): void {
@@ -948,13 +1026,34 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   }
 
   private get _visibleRows(): readonly unknown[] {
-    // Apply client-side sorting first if enabled
     let rows = this.rows;
+
+    // Apply client-side filtering first (before sort/paginate)
+    if (this.clientFilter && this.filterText && this.totalRows === undefined) {
+      const text = this.filterText.toLowerCase();
+      rows = [...rows].filter(row =>
+        this._visibleColumns.some(col => {
+          // Default filterable based on column type
+          const isFilterable = col.filterable !== undefined
+            ? col.filterable
+            : (col.type !== 'number' && col.type !== 'date');
+
+          if (!isFilterable) return false;
+
+          const val = col.filterValue
+            ? col.filterValue(row)
+            : String(col.getValue(row));
+          return val.toLowerCase().includes(text);
+        })
+      );
+    }
+
+    // Apply client-side sorting
     if (this.clientSort && this.sortColumnId && this.sortDirection !== 'none') {
       const column = this.columns.find(c => c.id === this.sortColumnId);
       if (column) {
         const comparator = createComparator(column, this.sortDirection);
-        rows = [...this.rows].sort((a, b) => {
+        rows = [...rows].sort((a, b) => {
           const aVal = column.getValue(a);
           const bVal = column.getValue(b);
           return comparator(aVal, bVal);
@@ -1049,7 +1148,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     `;
   }
 
-  private _renderColumnPicker() {
+  private _renderToolbar() {
     const visibleCount = this.columns.filter(c => !this._hiddenColumnIds.has(c.id) && c.visible !== false).length;
 
     const modes: Array<{ value: DisplayMode; label: string }> = [
@@ -1058,49 +1157,69 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       { value: 'scroll', label: 'Scroll' },
     ];
 
-    return html`
-      <div class="column-picker-wrapper">
-        <button
-          class="column-picker-trigger"
-          @click="${this._toggleColumnPicker}"
-          aria-label="Table options"
-        >
-          ⋮
-        </button>
-        ${this._columnPickerOpen ? html`
-          <div class="column-picker-dropdown">
-            <div class="picker-section-label">Columns</div>
-            ${this.columns.map(col => {
-              const isVisible = !this._hiddenColumnIds.has(col.id) && col.visible !== false;
-              const isLastVisible = isVisible && visibleCount === 1;
+    // Only show filter input when clientFilter is true AND not in server-paginated mode
+    const showFilter = this.clientFilter && this.totalRows === undefined;
 
-              return html`
-                <label class="column-picker-item">
-                  <input
-                    type="checkbox"
-                    .checked="${isVisible}"
-                    ?disabled="${isLastVisible}"
-                    @change="${() => this._toggleColumnVisibility(col.id)}"
-                  />
-                  <span>${col.label || col.id}</span>
-                </label>
-              `;
-            })}
-            <div class="picker-divider"></div>
-            <div class="picker-section-label">Display</div>
-            <div class="mode-switcher" role="radiogroup" aria-label="Display mode">
-              ${modes.map(m => html`
-                <button
-                  role="radio"
-                  aria-pressed=${this.mode === m.value ? 'true' : 'false'}
-                  @click=${() => this._setMode(m.value)}
-                >${m.label}</button>
-              `)}
-            </div>
-          </div>
+    return html`
+      <div class="toolbar">
+        ${showFilter ? html`
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Filter..."
+            .value="${this.filterText}"
+            @input="${(e: Event) => {
+              this.filterText = (e.target as HTMLInputElement).value;
+            }}"
+          />
         ` : nothing}
+        <div class="column-picker-wrapper">
+          <button
+            class="column-picker-trigger"
+            @click="${this._toggleColumnPicker}"
+            aria-label="Table options"
+          >
+            ⋮
+          </button>
+          ${this._columnPickerOpen ? html`
+            <div class="column-picker-dropdown">
+              <div class="picker-section-label">Columns</div>
+              ${this.columns.map(col => {
+                const isVisible = !this._hiddenColumnIds.has(col.id) && col.visible !== false;
+                const isLastVisible = isVisible && visibleCount === 1;
+
+                return html`
+                  <label class="column-picker-item">
+                    <input
+                      type="checkbox"
+                      .checked="${isVisible}"
+                      ?disabled="${isLastVisible}"
+                      @change="${() => this._toggleColumnVisibility(col.id)}"
+                    />
+                    <span>${col.label || col.id}</span>
+                  </label>
+                `;
+              })}
+              <div class="picker-divider"></div>
+              <div class="picker-section-label">Display</div>
+              <div class="mode-switcher" role="radiogroup" aria-label="Display mode">
+                ${modes.map(m => html`
+                  <button
+                    role="radio"
+                    aria-pressed=${this.mode === m.value ? 'true' : 'false'}
+                    @click=${() => this._setMode(m.value)}
+                  >${m.label}</button>
+                `)}
+              </div>
+            </div>
+          ` : nothing}
+        </div>
       </div>
     `;
+  }
+
+  private _renderColumnPicker() {
+    return this._renderToolbar();
   }
 
   private _renderCell(row: unknown, column: ColumnDef) {

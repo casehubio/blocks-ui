@@ -1,4 +1,4 @@
-import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
+import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin, emitPagesEvent } from '@casehubio/blocks-ui-core';
 
@@ -52,6 +52,7 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   @property({ type: Array }) metrics: MetricDefinition[] = [];
   @property({ type: String }) endpoint: string | null = null;
   @property({ type: Number }) columns: number | null = null;
+  @property({ type: String, reflect: true }) density: 'comfortable' | 'compact' | 'dense' = 'comfortable';
 
   @state() private _loading = false;
   @state() private _error: string | null = null;
@@ -150,17 +151,49 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
       .card { transition: none; }
       .skeleton-card { animation: none; }
     }
+
+    :host([density="compact"]) .card {
+      padding: var(--pages-space-3, 12px);
+    }
+
+    :host([density="compact"]) .value {
+      font-size: var(--pages-font-size-xl, 20px);
+    }
+
+    :host([density="dense"]) .card {
+      padding: var(--pages-space-2, 8px);
+    }
+
+    :host([density="dense"]) .value {
+      font-size: var(--pages-font-size-lg, 16px);
+    }
   `;
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (this.endpoint) this._fetchMetrics();
+  }
+
+  private get _gridMinmax(): string {
+    switch (this.density) {
+      case 'dense':
+        return '90px';
+      case 'compact':
+        return '120px';
+      default:
+        return '160px';
+    }
+  }
+
+  override willUpdate(changed: PropertyValues): void {
+    if (changed.has('endpoint') && this.endpoint) {
+      this._fetchMetrics();
+    }
   }
 
   override render() {
     const gridStyle = this.columns
       ? `grid-template-columns: repeat(${this.columns}, 1fr)`
-      : 'grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))';
+      : `grid-template-columns: repeat(auto-fill, minmax(${this._gridMinmax}, 1fr))`;
 
     if (this._loading) {
       const count = this.columns ?? 3;
