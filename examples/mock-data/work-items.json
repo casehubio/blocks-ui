@@ -1,8 +1,11 @@
 [
   {
     "id": "WI-AML-001",
-    "title": "Review high-value transaction alert \u2014 $850K wire to Cyprus",
+    "title": "Review high-value transaction alert — $850K wire to Cyprus",
     "description": "Automated screening flagged outbound wire. Customer profile shows no prior international activity. Requires investigation and disposition.",
+    "types": [
+      "AML_INVESTIGATION"
+    ],
     "category": "AML_INVESTIGATION",
     "formKey": "aml-transaction-review",
     "status": "PENDING",
@@ -69,8 +72,11 @@
   },
   {
     "id": "WI-CLIN-001",
-    "title": "Prior authorization request \u2014 CAR-T therapy",
+    "title": "Prior authorization request — CAR-T therapy",
     "description": "Oncology prior auth for CAR-T cell therapy. Member diagnosis: relapsed B-cell lymphoma. Clinical criteria review required.",
+    "types": [
+      "PRIOR_AUTH"
+    ],
     "category": "PRIOR_AUTH",
     "formKey": "clinical-prior-auth",
     "status": "PENDING",
@@ -137,8 +143,11 @@
   },
   {
     "id": "WI-LIFE-001",
-    "title": "Underwriting review \u2014 $2M term life application",
+    "title": "Underwriting review — $2M term life application",
     "description": "New business application. Applicant age 52, elevated BMI, controlled hypertension. Medical records received, awaiting underwriter decision.",
+    "types": [
+      "UNDERWRITING"
+    ],
     "category": "UNDERWRITING",
     "formKey": "life-underwriting",
     "status": "PENDING",
@@ -205,8 +214,11 @@
   },
   {
     "id": "WI-IOT-001",
-    "title": "Device offline alert \u2014 Industrial pressure sensor P-4712",
+    "title": "Device offline alert — Industrial pressure sensor P-4712",
     "description": "Sensor has not reported telemetry for 45 minutes. Location: Refinery Unit 3, Section B. Investigate connectivity or hardware failure.",
+    "types": [
+      "IOT_ALERT"
+    ],
     "category": "IOT_ALERT",
     "formKey": "iot-device-offline",
     "status": "PENDING",
@@ -273,8 +285,11 @@
   },
   {
     "id": "WI-DT-001",
-    "title": "Code review \u2014 Feature branch feat/user-auth-refactor",
+    "title": "Code review — Feature branch feat/user-auth-refactor",
     "description": "PR #842: Refactor authentication flow to use OAuth2 PKCE. 12 files changed, +450/-320 lines. Requires security review.",
+    "types": [
+      "CODE_REVIEW"
+    ],
     "category": "CODE_REVIEW",
     "formKey": "devtown-code-review",
     "status": "PENDING",
@@ -341,8 +356,11 @@
   },
   {
     "id": "WI-AML-002",
-    "title": "Customer due diligence refresh \u2014 High-risk merchant account",
+    "title": "Customer due diligence refresh — High-risk merchant account",
     "description": "Annual CDD refresh for merchant account MER-47291. Previous risk rating: High. Review current business activity, beneficial ownership, transaction patterns.",
+    "types": [
+      "AML_CDD"
+    ],
     "category": "AML_CDD",
     "formKey": "aml-cdd-refresh",
     "status": "PENDING",
@@ -413,8 +431,11 @@
   },
   {
     "id": "WI-CLIN-002",
-    "title": "Appeal review \u2014 Denied lumbar fusion surgery",
+    "title": "Appeal review — Denied lumbar fusion surgery",
     "description": "Member appeal for L4-L5 fusion surgery. Original denial: medical necessity not met. Member submitted additional MRI results and specialist letter.",
+    "types": [
+      "APPEAL"
+    ],
     "category": "APPEAL",
     "formKey": "clinical-appeal",
     "status": "ASSIGNED",
@@ -481,8 +502,11 @@
   },
   {
     "id": "WI-AML-003",
-    "title": "Sanctions screening hit \u2014 Wire to OFAC-listed entity",
+    "title": "Sanctions screening hit — Wire to OFAC-listed entity",
     "description": "URGENT: Sanctions screening flagged beneficiary as OFAC SDN match. Transaction blocked pending investigation. Customer notified.",
+    "types": [
+      "AML_SANCTIONS"
+    ],
     "category": "AML_SANCTIONS",
     "formKey": "aml-sanctions-review",
     "status": "IN_PROGRESS",
@@ -549,8 +573,11 @@
   },
   {
     "id": "WI-IOT-002",
-    "title": "Anomaly detection \u2014 Temperature spike in cold storage unit CS-22",
-    "description": "Temperature sensor reports 12\u00b0C (target: -5\u00b0C). Pharmaceutical storage unit. Investigate cooling system failure. Product integrity at risk.",
+    "title": "Anomaly detection — Temperature spike in cold storage unit CS-22",
+    "description": "Temperature sensor reports 12°C (target: -5°C). Pharmaceutical storage unit. Investigate cooling system failure. Product integrity at risk.",
+    "types": [
+      "IOT_ANOMALY"
+    ],
     "category": "IOT_ANOMALY",
     "formKey": "iot-temperature-anomaly",
     "status": "IN_PROGRESS",
@@ -617,8 +644,11 @@
   },
   {
     "id": "WI-DT-002",
-    "title": "Build failure investigation \u2014 CI pipeline failing on main",
+    "title": "Build failure investigation — CI pipeline failing on main",
     "description": "CI build failing since commit a7b3c9d. Error: 'module not found @casehubio/engine'. Blocking all deployments.",
+    "types": [
+      "BUILD_FAILURE"
+    ],
     "category": "BUILD_FAILURE",
     "formKey": "devtown-build-failure",
     "status": "IN_PROGRESS",
@@ -685,8 +715,11 @@
   },
   {
     "id": "WI-LIFE-002",
-    "title": "Claims investigation \u2014 Suspicious death claim",
+    "title": "Claims investigation — Suspicious death claim",
     "description": "Death claim filed 8 months after policy issue. Insured age 38, cause of death: accidental drowning. Beneficiary is ex-spouse. Requires SIU review.",
+    "types": [
+      "SIU_INVESTIGATION"
+    ],
     "category": "SIU_INVESTIGATION",
     "formKey": "life-siu-investigation",
     "status": "IN_PROGRESS",
@@ -753,8 +786,11 @@
   },
   {
     "id": "WI-CLIN-003",
-    "title": "Peer-to-peer review \u2014 Denied spinal cord stimulator",
+    "title": "Peer-to-peer review — Denied spinal cord stimulator",
     "description": "Physician requested peer-to-peer discussion. Original denial: conservative treatment not exhausted. Member has chronic back pain, failed PT and medication.",
+    "types": [
+      "PEER_REVIEW"
+    ],
     "category": "PEER_REVIEW",
     "formKey": "clinical-peer-review",
     "status": "SUSPENDED",
@@ -817,8 +853,11 @@
   },
   {
     "id": "WI-AML-004",
-    "title": "Structuring investigation \u2014 Multiple cash deposits under $10K",
+    "title": "Structuring investigation — Multiple cash deposits under $10K",
     "description": "Account holder made 8 cash deposits in 10 days, all between $9,200-$9,800. Pattern suggests structuring to avoid CTR filing. Investigate.",
+    "types": [
+      "AML_INVESTIGATION"
+    ],
     "category": "AML_INVESTIGATION",
     "formKey": "aml-structuring-review",
     "status": "DELEGATED",
@@ -885,8 +924,11 @@
   },
   {
     "id": "WI-IOT-003",
-    "title": "Firmware update \u2014 Security patch for 240 gateway devices",
+    "title": "Firmware update — Security patch for 240 gateway devices",
     "description": "Critical security vulnerability CVE-2026-1847 identified in gateway firmware v2.3.1. Deploy patch v2.3.2 to all affected devices.",
+    "types": [
+      "IOT_MAINTENANCE"
+    ],
     "category": "IOT_MAINTENANCE",
     "formKey": "iot-firmware-update",
     "status": "PENDING",
@@ -953,8 +995,11 @@
   },
   {
     "id": "WI-DT-003",
-    "title": "Production incident \u2014 API rate limit exceeded on /work-items",
+    "title": "Production incident — API rate limit exceeded on /work-items",
     "description": "Endpoint /work-items returning 429 errors. Traffic spike detected from IP 203.45.67.89. Investigate and mitigate.",
+    "types": [
+      "INCIDENT"
+    ],
     "category": "INCIDENT",
     "formKey": "devtown-incident",
     "status": "PENDING",
@@ -1021,8 +1066,11 @@
   },
   {
     "id": "WI-LIFE-003",
-    "title": "Policy lapse investigation \u2014 $5M whole life policy",
+    "title": "Policy lapse investigation — $5M whole life policy",
     "description": "High-value policy lapsed due to non-payment. Premium: $18,400/year. Customer contact attempted 3 times, no response. Verify intent before policy termination.",
+    "types": [
+      "POLICY_LAPSE"
+    ],
     "category": "POLICY_LAPSE",
     "formKey": "life-lapse-review",
     "status": "COMPLETED",
@@ -1085,8 +1133,11 @@
   },
   {
     "id": "WI-AML-005",
-    "title": "PEP screening alert \u2014 New account for foreign government official",
+    "title": "PEP screening alert — New account for foreign government official",
     "description": "New business account opened for individual flagged as Politically Exposed Person (foreign government ministry official). Enhanced due diligence required.",
+    "types": [
+      "AML_EDD"
+    ],
     "category": "AML_EDD",
     "formKey": "aml-edd-pep",
     "status": "EXPIRED",
@@ -1149,8 +1200,11 @@
   },
   {
     "id": "WI-CLIN-004",
-    "title": "Concurrent review \u2014 Inpatient psychiatric hospitalization (Day 8)",
+    "title": "Concurrent review — Inpatient psychiatric hospitalization (Day 8)",
     "description": "Member admitted for major depressive disorder with suicidal ideation. Initial auth: 7 days. Facility requesting extension for additional 5 days.",
+    "types": [
+      "CONCURRENT_REVIEW"
+    ],
     "category": "CONCURRENT_REVIEW",
     "formKey": "clinical-concurrent-review",
     "status": "REJECTED",

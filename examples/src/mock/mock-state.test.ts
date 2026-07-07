@@ -7,7 +7,7 @@ const mockItems: WorkItemResponse[] = [
     id: 'wi-001', title: 'Test item 1', status: 'PENDING', priority: 'HIGH',
     assigneeId: null, candidateGroups: 'compliance', createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(), version: 1, labels: [{ name: 'domain', value: 'aml' }],
-    description: null, category: 'compliance', formKey: null, owner: null,
+    description: null, types: ['compliance'], category: 'compliance', formKey: null, owner: null,
     candidateUsers: null, requiredCapabilities: null, createdBy: 'system',
     delegationDeclineTarget: null, delegationChain: null, priorStatus: null,
     payload: null, resolution: null, claimDeadline: null, expiresAt: null,

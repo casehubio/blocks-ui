@@ -42,6 +42,7 @@ export interface WorkItemResponse {
   readonly id: string;
   readonly title: string;
   readonly description: string | null;
+  readonly types: readonly string[];
   readonly category: string | null;
   readonly formKey: string | null;
   readonly status: WorkItemStatus;

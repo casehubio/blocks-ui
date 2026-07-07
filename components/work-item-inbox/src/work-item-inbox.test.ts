@@ -44,6 +44,7 @@ const mockItems: WorkItemRootResponse[] = [
       suspendedAt: null,
       version: 1,
       labels: [],
+      types: ['review'],
       category: 'review',
       owner: 'system',
       scope: null,
@@ -92,6 +93,7 @@ const mockItems: WorkItemRootResponse[] = [
       suspendedAt: null,
       version: 1,
       labels: [],
+      types: ['investigation'],
       category: 'investigation',
       owner: 'system',
       scope: null,
@@ -615,7 +617,7 @@ describe('work-item-inbox', () => {
 describe('SSE status transition → tab membership', () => {
   const now = new Date().toISOString();
   const base = {
-    description: null, candidateUsers: null, requiredCapabilities: null,
+    description: null, types: [], candidateUsers: null, requiredCapabilities: null,
     createdBy: null, updatedAt: now, assignedAt: null, startedAt: null,
     completedAt: null, suspendedAt: null, version: 1, labels: [],
     owner: 'system', scope: null, formKey: null, templateId: null,
@@ -809,7 +811,7 @@ describe('inbox filter count matrix', () => {
   const now = new Date().toISOString();
 
   const base = {
-    description: null, candidateUsers: null, requiredCapabilities: null,
+    description: null, types: [], candidateUsers: null, requiredCapabilities: null,
     createdBy: null, updatedAt: now, assignedAt: null, startedAt: null,
     completedAt: null, suspendedAt: null, version: 1, labels: [],
     owner: 'system', scope: null, formKey: null, templateId: null,

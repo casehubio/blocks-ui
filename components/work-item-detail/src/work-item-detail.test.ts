@@ -29,6 +29,7 @@ describe('WorkItemDetail', () => {
     id: 'wi-1',
     title: 'Test Work Item',
     description: 'Test description',
+    types: ['test'],
     category: 'test',
     formKey: null,
     status: status as any,

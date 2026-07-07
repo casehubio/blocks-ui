@@ -6,6 +6,7 @@ const mockItem: WorkItemResponse = {
   id: 'wi-001',
   title: 'Review AML alert #1234',
   description: null,
+  types: ['compliance'],
   category: 'compliance',
   formKey: null,
   status: 'PENDING',
