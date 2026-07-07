@@ -9,12 +9,21 @@ import type {
   EscalateRequest,
   DelegateRequest,
 } from '@casehubio/blocks-ui-core';
-import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin, LiveRegionMixin } from '@casehubio/blocks-ui-core';
+import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin, LiveRegionMixin, SchemaForm } from '@casehubio/blocks-ui-core';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
 import './detail-relations-tab.js';
 
 type TabName = 'overview' | 'activity' | 'relations';
+
+interface RelationApiResponse {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  relationType: string;
+  createdBy: string;
+  createdAt: string;
+}
 
 interface WorkItemRelation {
   readonly id: string;
@@ -757,18 +766,15 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
       const incoming = incomingResponse.ok ? await incomingResponse.json() : [];
 
       const relations: WorkItemRelation[] = [
-        ...outgoing.map((r: any) => ({ ...r, direction: 'outgoing' as const })),
-        ...incoming.map((r: any) => ({
+        ...outgoing.map((r: RelationApiResponse) => ({ ...r, direction: 'outgoing' as const })),
+        ...incoming.map((r: RelationApiResponse) => ({
           ...r,
           direction: 'incoming' as const,
           relationType: RELATION_INVERSES[r.relationType] ?? `${r.relationType} (incoming)`,
         })),
       ];
 
-      // Fetch related item titles and statuses
-      await this._fetchRelatedItemDetails(relations);
-
-      this._relations = relations;
+      this._relations = await this._fetchRelatedItemDetails(relations);
     } catch (error) {
       this._error = error instanceof Error ? error.message : 'Unknown error';
     } finally {
@@ -776,8 +782,8 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     }
   }
 
-  private async _fetchRelatedItemDetails(relations: WorkItemRelation[]): Promise<void> {
-    if (!this.endpoint) return;
+  private async _fetchRelatedItemDetails(relations: WorkItemRelation[]): Promise<WorkItemRelation[]> {
+    if (!this.endpoint) return relations;
 
     const itemIds = new Set<string>();
     for (const rel of relations) {
@@ -786,7 +792,6 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     }
 
     const fetchPromises = Array.from(itemIds).map(async (id) => {
-      // Check cache first
       if (this._relatedItemCache.has(id)) {
         return;
       }
@@ -811,15 +816,14 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
 
     await Promise.all(fetchPromises);
 
-    // Populate title and status on relations
-    for (const rel of relations) {
+    return relations.map(rel => {
       const relatedId = rel.direction === 'outgoing' ? rel.targetId : rel.sourceId;
       const cached = this._relatedItemCache.get(relatedId);
       if (cached) {
-        (rel as any).title = cached.title;
-        (rel as any).status = cached.status;
+        return { ...rel, title: cached.title, status: cached.status };
       }
-    }
+      return rel;
+    });
   }
 
   private _handleAction(e: CustomEvent): void {
@@ -1087,7 +1091,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
 
   private async _handleCompleteSubmit(): Promise<void> {
     const outcomeSelect = this.shadowRoot?.querySelector('#complete-outcome') as HTMLSelectElement;
-    const schemaForm = this.shadowRoot?.querySelector('schema-form') as any;
+    const schemaForm = this.shadowRoot?.querySelector('schema-form') as SchemaForm | null;
 
     if (this.endpoint == null || !this.workItemId) return;
 

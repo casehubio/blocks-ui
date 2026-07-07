@@ -77,7 +77,7 @@ export class CaseTimeline extends LiveRegionMixin(DataEndpointMixin(LitElement))
         new CustomEvent('pages-event', {
           detail: {
             topic: 'work-item.selected',
-            payload: { workItemId: (event.payload as any).taskId },
+            payload: { workItemId: (event.payload as Record<string, unknown>).taskId },
           },
           bubbles: true,
           composed: true,

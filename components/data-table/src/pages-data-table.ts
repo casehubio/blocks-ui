@@ -523,12 +523,8 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     const detail: SelectionChangeDetail = {
       selectedKeys,
       selectedRows,
+      ...(this.mode === 'paginated' && this.totalRows !== undefined ? { scope: 'page' as const } : {}),
     };
-
-    // Add scope for server-side paginated mode
-    if (this.mode === 'paginated' && this.totalRows !== undefined) {
-      (detail as any).scope = 'page';
-    }
 
     this.dispatchEvent(new CustomEvent('selection-change', {
       detail,
@@ -680,7 +676,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   private _handleCheckboxClick = (row: unknown, event: MouseEvent): void => {
     event.stopPropagation();
 
-    if ((event as any).shiftKey && this._lastClickedKey) {
+    if (event.shiftKey && this._lastClickedKey) {
       this._selectRange(row);
     } else {
       this._toggleRowSelection(row);
