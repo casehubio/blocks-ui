@@ -4,6 +4,7 @@ import { LiveRegionMixin } from '@casehubio/blocks-ui-core';
 import type { ColumnDef, DisplayMode, PageChangeDetail, LoadMoreDetail, SelectionMode, SelectionChangeDetail, RowActivateDetail, SortDirection, SortChangeDetail, SortEntry, ColumnChangeDetail, FilterChangeDetail } from './types.js';
 import { computeScrollWindow } from './virtual-scroll-engine.js';
 import { createComparator, createMultiComparator } from './sort.js';
+import { flattenTree, type TreeRow } from './tree.js';
 
 const AUTO_THRESHOLD = 50;
 
@@ -16,6 +17,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   @property({ type: Array, attribute: 'selected-keys' }) selectedKeys?: readonly string[];
   @property({ attribute: false }) getRowKey?: (row: unknown) => string;
   @property({ attribute: false }) getRowClass?: (row: unknown) => string;
+  @property({ attribute: false }) getChildren?: (row: unknown) => readonly unknown[];
   @property({ type: Boolean }) loading = false;
   @property({ type: String, attribute: 'empty-message' }) emptyMessage = 'No data';
   @property({ type: Number, attribute: 'row-height' }) rowHeight = 48;
@@ -48,6 +50,8 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   @property({ type: String, attribute: 'filter-text' }) filterText = '';
 
   @state() private _sortStack: SortEntry[] = [];
+  @state() private _expandedRowIds = new Set<string>();
+  private _treeMetadata = new Map<unknown, TreeRow>();
 
   @state() private _scrollTop = 0;
   @state() private _containerHeight = 0;
@@ -258,6 +262,39 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       font-size: 10px;
       opacity: 0.3;
       flex-shrink: 0;
+    }
+
+    .tree-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      font-size: 10px;
+      color: var(--pages-neutral-9, #737373);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .tree-toggle:hover {
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-12, #171717);
+    }
+
+    .tree-spacer {
+      display: inline-block;
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .tree-cell {
+      display: flex;
+      align-items: center;
+      gap: 2px;
     }
 
     .sort-priority {
@@ -742,6 +779,19 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     this._emitSelectionChange(newSelection);
   };
 
+  private _toggleExpand = (row: unknown, event: MouseEvent): void => {
+    event.stopPropagation();
+    if (!this.getRowKey) return;
+    const id = this.getRowKey(row);
+    const next = new Set(this._expandedRowIds);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    this._expandedRowIds = next;
+  };
+
   private _handleHeaderClick = (column: ColumnDef, event?: MouseEvent): void => {
     if (!column.sortable) return;
 
@@ -1076,6 +1126,16 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       rows = [...rows].sort(comparator);
     }
 
+    // Flatten tree if getChildren is provided
+    this._treeMetadata.clear();
+    if (this.getChildren && this.getRowKey) {
+      const treeRows = flattenTree(rows, this.getChildren, this._expandedRowIds, this.getRowKey);
+      rows = treeRows.map(tr => {
+        this._treeMetadata.set(tr.row, tr);
+        return tr.row;
+      });
+    }
+
     if (this._usePagination) {
       // Server-side: totalRows is set, render all provided rows (they ARE the page)
       if (this.totalRows !== undefined) {
@@ -1240,13 +1300,27 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     return this._renderToolbar();
   }
 
-  private _renderCell(row: unknown, column: ColumnDef) {
+  private _renderCell(row: unknown, column: ColumnDef, isFirstColumn = false) {
     const value = column.getValue(row);
     const content = column.render
       ? column.render(value, row)
       : this._formatValue(value, column);
 
     const align = column.align ?? 'start';
+    const treeMeta = this._treeMetadata.get(row);
+
+    if (isFirstColumn && treeMeta) {
+      const indent = treeMeta.depth * 20;
+      const toggle = treeMeta.hasChildren
+        ? html`<button class="tree-toggle" @click="${(e: MouseEvent) => this._toggleExpand(row, e)}" aria-label="${treeMeta.expanded ? 'Collapse' : 'Expand'}">${treeMeta.expanded ? '▼' : '▶'}</button>`
+        : html`<span class="tree-spacer"></span>`;
+
+      return html`
+        <div class="cell tree-cell" role="gridcell" style="text-align: ${align}; padding-left: calc(var(--pages-space-2, 8px) + ${indent}px)">
+          ${toggle}${content}
+        </div>
+      `;
+    }
 
     return html`
       <div
@@ -1322,7 +1396,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
         @dblclick="${(e: MouseEvent) => this._handleRowDoubleClick(row, e)}"
       >
         ${this._renderCheckbox(row)}
-        ${this._visibleColumns.map(col => this._renderCell(row, col))}
+        ${this._visibleColumns.map((col, i) => this._renderCell(row, col, i === 0))}
       </div>
     `;
   }
