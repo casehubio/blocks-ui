@@ -15,3 +15,4 @@ export type {
 } from './types.js';
 export { computeScrollWindow, type ScrollWindow } from './virtual-scroll-engine.js';
 export { createComparator, createMultiComparator } from './sort.js';
+export { tableToCsv, downloadCsv, copyToClipboard } from './csv-export.js';
