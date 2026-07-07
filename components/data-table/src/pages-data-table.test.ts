@@ -132,6 +132,17 @@ describe('pages-data-table', () => {
       const rows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
       expect(rows[0]!.getAttribute('part')).toContain('priority-alice');
     });
+
+    it('alternating rows have even/odd classes for zebra striping', async () => {
+      el.columns = testColumns as ColumnDef[];
+      el.rows = testRows;
+      await el.updateComplete;
+      const rows = el.shadowRoot!.querySelectorAll('.row[role="row"]:not(.header)');
+      expect(rows.length).toBeGreaterThanOrEqual(3);
+      expect(rows[0]!.classList.contains('row-even')).toBe(true);
+      expect(rows[1]!.classList.contains('row-odd')).toBe(true);
+      expect(rows[2]!.classList.contains('row-even')).toBe(true);
+    });
   });
 
   describe('auto mode', () => {
@@ -374,7 +385,51 @@ describe('pages-data-table', () => {
       expect(events[0]!.detail.selectedKeys).toContain('1');
     });
 
-    it('multi: single-click does NOT emit row-activate', async () => {
+    it('multi: row click emits row-activate (not selection change)', async () => {
+      el.columns = keyedCols;
+      el.rows = testRows;
+      (el as any).selection = 'multi';
+      el.getRowKey = (r: unknown) => (r as TestRow).id;
+      await el.updateComplete;
+
+      const activateEvents: CustomEvent[] = [];
+      const selectionEvents: CustomEvent[] = [];
+      el.addEventListener('row-activate', e => activateEvents.push(e as CustomEvent));
+      el.addEventListener('selection-change', e => selectionEvents.push(e as CustomEvent));
+
+      const row = el.shadowRoot!.querySelector('.row[role="row"]:not(.header)') as HTMLElement;
+      row.click();
+      await el.updateComplete;
+
+      expect(activateEvents.length).toBe(1);
+      expect(selectionEvents.length).toBe(0);
+    });
+
+    it('multi: only checkbox click toggles selection (not row click)', async () => {
+      el.columns = keyedCols;
+      el.rows = testRows;
+      (el as any).selection = 'multi';
+      el.getRowKey = (r: unknown) => (r as TestRow).id;
+      await el.updateComplete;
+
+      const selectionEvents: CustomEvent[] = [];
+      el.addEventListener('selection-change', e => selectionEvents.push(e as CustomEvent));
+
+      // Click the row body — should NOT change selection
+      const row = el.shadowRoot!.querySelector('.row[role="row"]:not(.header)') as HTMLElement;
+      row.click();
+      await el.updateComplete;
+      expect(selectionEvents.length).toBe(0);
+
+      // Click the checkbox — SHOULD change selection
+      const checkbox = el.shadowRoot!.querySelector('.row[role="row"]:not(.header) .checkbox') as HTMLElement;
+      checkbox.click();
+      await el.updateComplete;
+      expect(selectionEvents.length).toBe(1);
+      expect(selectionEvents[0]!.detail.selectedKeys.length).toBe(1);
+    });
+
+    it('multi: single-click emits row-activate', async () => {
       el.columns = keyedCols;
       el.rows = testRows;
       (el as any).selection = 'multi';
@@ -388,27 +443,10 @@ describe('pages-data-table', () => {
       row.click();
       await el.updateComplete;
 
-      expect(events.length).toBe(0);
-    });
-
-    it('multi: double-click emits row-activate', async () => {
-      el.columns = keyedCols;
-      el.rows = testRows;
-      (el as any).selection = 'multi';
-      el.getRowKey = (r: unknown) => (r as TestRow).id;
-      await el.updateComplete;
-
-      const events: CustomEvent[] = [];
-      el.addEventListener('row-activate', e => events.push(e as CustomEvent));
-
-      const row = el.shadowRoot!.querySelector('.row[role="row"]:not(.header)') as HTMLElement;
-      row.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
-      await el.updateComplete;
-
       expect(events.length).toBe(1);
     });
 
-    it('none: row-activate fires without getRowKey (key is undefined)', async () => {
+    it('none: row-activate fires on click without getRowKey (key is undefined)', async () => {
       el.columns = keyedCols;
       el.rows = testRows;
       await el.updateComplete;
@@ -417,7 +455,7 @@ describe('pages-data-table', () => {
       el.addEventListener('row-activate', e => events.push(e as CustomEvent));
 
       const row = el.shadowRoot!.querySelector('.row[role="row"]:not(.header)') as HTMLElement;
-      row.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+      row.click();
       await el.updateComplete;
 
       expect(events[0]!.detail.key).toBeUndefined();

@@ -22,9 +22,9 @@ export class QueuePillBar extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
-      border-bottom: 1px solid var(--blocks-neutral-4, #e5e5e5);
-      background: var(--pages-neutral-2, var(--blocks-neutral-2, #f5f5f5));
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      border-bottom: 1px solid var(--pages-neutral-4, #e5e5e5);
+      background: var(--pages-neutral-2, var(--pages-neutral-2, #f5f5f5));
       overflow-x: auto;
     }
 
@@ -36,7 +36,7 @@ export class QueuePillBar extends LitElement {
 
     .label {
       font-size: 10px;
-      color: var(--blocks-neutral-9, #888);
+      color: var(--pages-neutral-9, #888);
       font-weight: 600;
       text-transform: uppercase;
       margin-right: 4px;
@@ -49,9 +49,9 @@ export class QueuePillBar extends LitElement {
       gap: 4px;
       padding: 4px 10px;
       border-radius: 14px;
-      border: 1px solid var(--blocks-neutral-4, #e5e5e5);
-      background: var(--blocks-neutral-1, #fafafa);
-      color: var(--blocks-neutral-12, #111);
+      border: 1px solid var(--pages-neutral-4, #e5e5e5);
+      background: var(--pages-neutral-1, #fafafa);
+      color: var(--pages-neutral-12, #111);
       font-size: 11px;
       cursor: pointer;
       white-space: nowrap;
@@ -59,18 +59,18 @@ export class QueuePillBar extends LitElement {
     }
 
     [role="radio"]:focus-visible {
-      box-shadow: 0 0 0 2px var(--blocks-accent-9, #2563eb);
+      box-shadow: 0 0 0 2px var(--pages-accent-9, #2563eb);
     }
 
     [role="radio"][aria-checked="true"] {
-      background: var(--blocks-accent-9, #2563eb);
-      border-color: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
+      border-color: var(--pages-accent-9, #2563eb);
       color: white;
     }
 
     .pill-count {
       font-weight: 600;
-      color: var(--blocks-accent-9, #2563eb);
+      color: var(--pages-accent-9, #2563eb);
     }
 
     [role="radio"][aria-checked="true"] .pill-count {
@@ -81,7 +81,7 @@ export class QueuePillBar extends LitElement {
       display: inline-flex;
       padding: 0 5px;
       border-radius: 8px;
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: white;
       font-size: 9px;
       font-weight: 700;

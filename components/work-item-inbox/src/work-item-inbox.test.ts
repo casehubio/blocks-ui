@@ -253,7 +253,7 @@ describe('work-item-inbox', () => {
 
     const table = el.shadowRoot!.querySelector('pages-data-table') as any;
     expect(table).not.toBeNull();
-    expect(table.mode).toBe('scroll');
+    expect(table.mode).toBe('auto');
     expect(table.rows.length).toBe(60);
   });
 
@@ -270,7 +270,7 @@ describe('work-item-inbox', () => {
 
     const table = el.shadowRoot!.querySelector('pages-data-table') as any;
     expect(table).not.toBeNull();
-    expect(table.mode).toBe('scroll');
+    expect(table.mode).toBe('auto');
     expect(table.rows.length).toBe(30);
   });
 
@@ -519,7 +519,7 @@ describe('work-item-inbox', () => {
   it('renders pages-data-table with correct properties', async () => {
     const table = el.shadowRoot!.querySelector('pages-data-table') as any;
     expect(table).not.toBeNull();
-    expect(table.mode).toBe('scroll');
+    expect(table.mode).toBe('auto');
     expect(table.selection).toBe('multi');
     expect(table.columns).toBeDefined();
     expect(table.columns.length).toBeGreaterThan(0);

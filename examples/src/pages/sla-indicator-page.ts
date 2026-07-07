@@ -16,9 +16,9 @@ export class SlaIndicatorPage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 24px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
-    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 24px; color: var(--pages-neutral-11, #555); font-size: 14px; }
+    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--pages-neutral-12, #111); }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -26,14 +26,14 @@ export class SlaIndicatorPage extends LitElement {
       max-width: 900px;
     }
     .card {
-      border: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      border: 1px solid var(--pages-neutral-5, #e0e0e0);
       border-radius: 6px;
       padding: 16px;
-      background: var(--blocks-neutral-1, #fff);
+      background: var(--pages-neutral-1, #fff);
     }
     .card-label {
       font-size: 12px;
-      color: var(--blocks-neutral-9, #888);
+      color: var(--pages-neutral-9, #888);
       margin-bottom: 8px;
       font-weight: 500;
       text-transform: uppercase;
@@ -43,15 +43,15 @@ export class SlaIndicatorPage extends LitElement {
     .controls { margin-bottom: 24px; display: flex; gap: 8px; }
     .btn {
       padding: 6px 14px;
-      border: 1px solid var(--blocks-neutral-6, #ccc);
+      border: 1px solid var(--pages-neutral-6, #ccc);
       border-radius: 4px;
-      background: var(--blocks-neutral-1, #fff);
+      background: var(--pages-neutral-1, #fff);
       cursor: pointer;
       font-size: 13px;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
     }
-    .btn:hover { background: var(--blocks-neutral-3, #f0f0f0); }
-    .shift-label { font-size: 13px; color: var(--blocks-neutral-9, #888); line-height: 32px; }
+    .btn:hover { background: var(--pages-neutral-3, #f0f0f0); }
+    .shift-label { font-size: 13px; color: var(--pages-neutral-9, #888); line-height: 32px; }
   `;
 
   override render() {

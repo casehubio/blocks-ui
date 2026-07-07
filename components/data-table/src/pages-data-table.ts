@@ -42,7 +42,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     :host {
       display: block;
       height: 100%;
-      font-family: var(--blocks-font-family, system-ui);
+      font-family: var(--pages-font-family, system-ui);
     }
 
     .data-table {
@@ -53,24 +53,22 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     }
 
     .header-container {
-      display: flex;
-      align-items: stretch;
-      border-bottom: 1px solid var(--blocks-neutral-6, #d4d4d4);
-      background: var(--blocks-neutral-2, #fafafa);
+      position: relative;
+      border-bottom: 1px solid var(--pages-neutral-6, #d4d4d4);
+      background: var(--pages-neutral-2, #fafafa);
       flex-shrink: 0;
     }
 
     .header {
       display: grid;
-      flex: 1;
-      min-width: 0;
+      padding-right: 36px;
     }
 
     .header-cell {
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-2, 8px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-12, #171717);
+      padding: var(--pages-space-3, 12px) var(--pages-space-2, 8px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-12, #171717);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -79,16 +77,16 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-2, 8px);
+      padding: var(--pages-space-3, 12px) var(--pages-space-2, 8px);
     }
 
     .checkbox {
       width: 16px;
       height: 16px;
-      border: 2px solid var(--blocks-neutral-7, #a3a3a3);
+      border: 2px solid var(--pages-neutral-7, #a3a3a3);
       border-radius: 3px;
       cursor: pointer;
-      background: var(--blocks-neutral-1, #ffffff);
+      background: var(--pages-neutral-1, #ffffff);
       position: relative;
     }
 
@@ -100,15 +98,15 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       top: 1px;
       width: 4px;
       height: 8px;
-      border: solid var(--blocks-neutral-1, #ffffff);
+      border: solid var(--pages-neutral-1, #ffffff);
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
 
     .checkbox[aria-checked="true"],
     .checkbox[aria-checked="mixed"] {
-      background: var(--blocks-primary-9, #3b82f6);
-      border-color: var(--blocks-primary-9, #3b82f6);
+      background: var(--pages-primary-9, #3b82f6);
+      border-color: var(--pages-primary-9, #3b82f6);
     }
 
     .checkbox[aria-checked="mixed"]::after {
@@ -133,30 +131,35 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
 
     .row {
       display: grid;
-      border-bottom: 1px solid var(--blocks-neutral-4, #e5e5e5);
+      border-bottom: 1px solid var(--pages-neutral-4, #e5e5e5);
+      padding-right: 36px;
+    }
+
+    .row-odd {
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .row:hover {
-      background: var(--blocks-neutral-3, #f5f5f5);
+      background: var(--pages-neutral-3, #f5f5f5);
     }
 
     .row:focus {
-      outline: 2px solid var(--blocks-primary-9, #3b82f6);
+      outline: 2px solid var(--pages-primary-9, #3b82f6);
       outline-offset: -2px;
     }
 
     .row[aria-selected="true"] {
-      background: var(--blocks-primary-3, #dbeafe);
+      background: var(--pages-primary-3, #dbeafe);
     }
 
     .row[aria-selected="true"]:hover {
-      background: var(--blocks-primary-4, #bfdbfe);
+      background: var(--pages-primary-4, #bfdbfe);
     }
 
     .cell {
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-2, 8px);
-      font-size: var(--blocks-font-size-base, 14px);
-      color: var(--blocks-neutral-11, #404040);
+      padding: var(--pages-space-3, 12px) var(--pages-space-2, 8px);
+      font-size: var(--pages-font-size-base, 14px);
+      color: var(--pages-neutral-11, #404040);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -167,48 +170,48 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: var(--blocks-space-8, 32px);
-      color: var(--blocks-neutral-9, #737373);
-      font-size: var(--blocks-font-size-base, 14px);
+      padding: var(--pages-space-8, 32px);
+      color: var(--pages-neutral-9, #737373);
+      font-size: var(--pages-font-size-base, 14px);
     }
 
     .pagination {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
-      border-top: 1px solid var(--blocks-neutral-4, #e5e5e5);
-      background: var(--blocks-neutral-1, #ffffff);
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
+      border-top: 1px solid var(--pages-neutral-4, #e5e5e5);
+      background: var(--pages-neutral-1, #ffffff);
     }
 
     .pagination-info {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-4, 16px);
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-11, #404040);
+      gap: var(--pages-space-4, 16px);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-11, #404040);
     }
 
     .pagination-controls {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .pagination-button {
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
-      border: 1px solid var(--blocks-neutral-6, #d4d4d4);
-      background: var(--blocks-neutral-1, #ffffff);
-      color: var(--blocks-neutral-11, #404040);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      border: 1px solid var(--pages-neutral-6, #d4d4d4);
+      background: var(--pages-neutral-1, #ffffff);
+      color: var(--pages-neutral-11, #404040);
+      font-size: var(--pages-font-size-sm, 12px);
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.15s;
     }
 
     .pagination-button:hover:not(:disabled) {
-      background: var(--blocks-neutral-2, #fafafa);
-      border-color: var(--blocks-neutral-7, #a3a3a3);
+      background: var(--pages-neutral-2, #fafafa);
+      border-color: var(--pages-neutral-7, #a3a3a3);
     }
 
     .pagination-button:disabled {
@@ -225,7 +228,7 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     }
 
     .sortable-header:hover {
-      background: var(--blocks-neutral-3, #f5f5f5);
+      background: var(--pages-neutral-3, #f5f5f5);
     }
 
     .sort-indicator {
@@ -236,34 +239,44 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
 
     .sort-indicator.active {
       opacity: 1;
-      color: var(--blocks-accent-9, #2563eb);
+      color: var(--pages-accent-9, #2563eb);
     }
 
     .column-picker-wrapper {
-      position: relative;
+      position: absolute;
+      top: 0;
+      right: 0;
       display: flex;
       align-items: center;
-      flex-shrink: 0;
-      padding: 0 var(--blocks-space-2, 8px);
+      height: 100%;
+      padding: 0 var(--pages-space-2, 8px);
+      z-index: 2;
     }
 
     .column-picker-trigger {
-      padding: var(--blocks-space-1, 4px) var(--blocks-space-2, 8px);
-      border: 1px solid var(--blocks-neutral-6, #d4d4d4);
-      background: var(--blocks-neutral-1, #ffffff);
+      padding: var(--pages-space-1, 4px) var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-5, #e0e0e0);
+      background: var(--pages-neutral-2, #fafafa);
       cursor: pointer;
       border-radius: 4px;
       font-size: 14px;
       line-height: 1;
+      color: var(--pages-neutral-9, #737373);
+    }
+
+    .column-picker-trigger:hover {
+      background: var(--pages-neutral-3, #f5f5f5);
+      border-color: var(--pages-neutral-7, #a3a3a3);
+      color: var(--pages-neutral-12, #171717);
     }
 
     .column-picker-dropdown {
       position: absolute;
       top: 100%;
-      right: var(--blocks-space-2, 8px);
-      margin-top: var(--blocks-space-1, 4px);
-      background: var(--blocks-neutral-1, #ffffff);
-      border: 1px solid var(--blocks-neutral-6, #d4d4d4);
+      right: 0;
+      margin-top: var(--pages-space-1, 4px);
+      background: var(--pages-neutral-1, #ffffff);
+      border: 1px solid var(--pages-neutral-6, #d4d4d4);
       border-radius: 4px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       z-index: 10;
@@ -273,13 +286,13 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     .column-picker-item {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-2, 8px);
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
+      gap: var(--pages-space-2, 8px);
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
       cursor: pointer;
     }
 
     .column-picker-item:hover {
-      background: var(--blocks-neutral-2, #fafafa);
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .column-picker-item input[type="checkbox"] {
@@ -288,6 +301,54 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
 
     .column-picker-item input[type="checkbox"]:disabled {
       cursor: not-allowed;
+    }
+
+    .picker-section-label {
+      padding: 6px 12px 2px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--pages-neutral-9, #737373);
+    }
+
+    .picker-divider {
+      height: 1px;
+      background: var(--pages-neutral-4, #e5e5e5);
+      margin: 4px 0;
+    }
+
+    .mode-switcher {
+      display: flex;
+      margin: 4px 8px 6px;
+      border: 1px solid var(--pages-neutral-6, #d4d4d4);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .mode-switcher button {
+      flex: 1;
+      padding: 4px 8px;
+      border: none;
+      border-right: 1px solid var(--pages-neutral-6, #d4d4d4);
+      background: var(--pages-neutral-1, #ffffff);
+      color: var(--pages-neutral-9, #737373);
+      font-size: 11px;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+
+    .mode-switcher button:last-child {
+      border-right: none;
+    }
+
+    .mode-switcher button:hover {
+      background: var(--pages-neutral-3, #f5f5f5);
+    }
+
+    .mode-switcher button[aria-pressed="true"] {
+      background: var(--pages-neutral-12, #171717);
+      color: var(--pages-neutral-1, #ffffff);
     }
   `;
 
@@ -525,21 +586,17 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     event.stopPropagation();
 
     if (this.selection === 'single') {
-      // Single mode: click selects exclusively and activates
       this._selectRow(row, true);
       this._emitRowActivate(row);
     } else if (this.selection === 'multi') {
-      // Multi mode: single click selects exclusively (no activate)
-      this._selectRow(row, true);
+      this._emitRowActivate(row);
+    } else {
+      this._emitRowActivate(row);
     }
   };
 
-  private _handleRowDoubleClick = (row: unknown, event: MouseEvent): void => {
-    event.stopPropagation();
-
-    if (this.selection === 'multi' || this.selection === 'none') {
-      this._emitRowActivate(row);
-    }
+  private _handleRowDoubleClick = (_row: unknown, _event: MouseEvent): void => {
+    // Row activation is handled by single click. Double-click is a no-op.
   };
 
   private _handleCheckboxClick = (row: unknown, event: MouseEvent): void => {
@@ -616,6 +673,12 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       bubbles: true,
       composed: true,
     }));
+  };
+
+  private _setMode = (newMode: DisplayMode): void => {
+    this.mode = newMode;
+    this.currentPage = 0;
+    this._scrollTop = 0;
   };
 
   private _toggleColumnPicker = (): void => {
@@ -914,9 +977,10 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       return rows;
     }
 
+    const containerH = this._containerHeight > 0 ? this._containerHeight : 500;
     const window = computeScrollWindow(
       this._scrollTop,
-      this._containerHeight,
+      containerH,
       this.rowHeight,
       rows.length,
       this.bufferSize,
@@ -930,9 +994,10 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
       return null;
     }
 
+    const containerH = this._containerHeight > 0 ? this._containerHeight : 500;
     return computeScrollWindow(
       this._scrollTop,
-      this._containerHeight,
+      containerH,
       this.rowHeight,
       this.rows.length,
       this.bufferSize,
@@ -987,17 +1052,24 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
   private _renderColumnPicker() {
     const visibleCount = this.columns.filter(c => !this._hiddenColumnIds.has(c.id) && c.visible !== false).length;
 
+    const modes: Array<{ value: DisplayMode; label: string }> = [
+      { value: 'auto', label: 'Auto' },
+      { value: 'paginated', label: 'Pages' },
+      { value: 'scroll', label: 'Scroll' },
+    ];
+
     return html`
       <div class="column-picker-wrapper">
         <button
           class="column-picker-trigger"
           @click="${this._toggleColumnPicker}"
-          aria-label="Column picker"
+          aria-label="Table options"
         >
           ⋮
         </button>
         ${this._columnPickerOpen ? html`
           <div class="column-picker-dropdown">
+            <div class="picker-section-label">Columns</div>
             ${this.columns.map(col => {
               const isVisible = !this._hiddenColumnIds.has(col.id) && col.visible !== false;
               const isLastVisible = isVisible && visibleCount === 1;
@@ -1010,10 +1082,21 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
                     ?disabled="${isLastVisible}"
                     @change="${() => this._toggleColumnVisibility(col.id)}"
                   />
-                  <span>${col.label}</span>
+                  <span>${col.label || col.id}</span>
                 </label>
               `;
             })}
+            <div class="picker-divider"></div>
+            <div class="picker-section-label">Display</div>
+            <div class="mode-switcher" role="radiogroup" aria-label="Display mode">
+              ${modes.map(m => html`
+                <button
+                  role="radio"
+                  aria-pressed=${this.mode === m.value ? 'true' : 'false'}
+                  @click=${() => this._setMode(m.value)}
+                >${m.label}</button>
+              `)}
+            </div>
           </div>
         ` : nothing}
       </div>
@@ -1087,9 +1170,11 @@ export class PagesDataTable extends LiveRegionMixin(LitElement) {
     // C3 fix: tabindex comparison uses actualIndex
     const tabindex = actualIndex === this._focusRowIndex ? '0' : '-1';
 
+    const stripe = actualIndex % 2 === 0 ? 'row-even' : 'row-odd';
+
     return html`
       <div
-        class="row"
+        class="row ${stripe}"
         role="row"
         part="${part}"
         aria-rowindex="${ariaRowIndex}"

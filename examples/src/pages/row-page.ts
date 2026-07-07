@@ -9,9 +9,9 @@ export class RowPage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 16px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 16px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
-    .rows { max-width: 800px; border: 1px solid var(--blocks-neutral-5, #e0e0e0); border-radius: 6px; overflow: hidden; }
+    h2 { margin-bottom: 16px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 16px; color: var(--pages-neutral-11, #555); font-size: 14px; }
+    .rows { max-width: 800px; border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 6px; overflow: hidden; }
   `;
 
   override async connectedCallback() {

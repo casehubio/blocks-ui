@@ -43,6 +43,13 @@ export function FocusTrapMixin<T extends Constructor<LitElement>>(Base: T) {
         first.focus();
       }
     };
+
+    override disconnectedCallback(): void {
+      super.disconnectedCallback();
+      if (this._trapContainer) {
+        this.releaseFocus();
+      }
+    }
   }
 
   return FocusTrapHost as unknown as Constructor<{

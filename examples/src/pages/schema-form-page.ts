@@ -40,12 +40,12 @@ export class SchemaFormPage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 16px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 16px; color: var(--pages-neutral-11, #555); font-size: 14px; }
     .controls { margin-bottom: 16px; display: flex; gap: 8px; }
-    .mode-btn { padding: 6px 14px; border: 1px solid var(--blocks-neutral-6); border-radius: 4px; background: var(--blocks-neutral-1); cursor: pointer; font-size: 13px; color: var(--blocks-neutral-11); }
-    .mode-btn.active { background: var(--blocks-accent-9); color: white; border-color: var(--blocks-accent-9); }
-    schema-form { display: block; max-width: 600px; border: 1px solid var(--blocks-neutral-5); border-radius: 6px; padding: 16px; background: var(--blocks-neutral-1); }
+    .mode-btn { padding: 6px 14px; border: 1px solid var(--pages-neutral-6); border-radius: 4px; background: var(--pages-neutral-1); cursor: pointer; font-size: 13px; color: var(--pages-neutral-11); }
+    .mode-btn.active { background: var(--pages-accent-9); color: white; border-color: var(--pages-accent-9); }
+    schema-form { display: block; max-width: 600px; border: 1px solid var(--pages-neutral-5); border-radius: 6px; padding: 16px; background: var(--pages-neutral-1); }
   `;
 
   override render() {

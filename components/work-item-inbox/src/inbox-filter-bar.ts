@@ -25,20 +25,20 @@ export class InboxFilterBar extends LitElement {
     .filter-container {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--blocks-space-3, 12px);
+      gap: var(--pages-space-3, 12px);
       align-items: center;
     }
 
     .filter-section {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
       align-items: center;
     }
 
     .filter-label {
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       font-weight: 600;
-      color: var(--blocks-neutral-11, #555555);
+      color: var(--pages-neutral-11, #555555);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -46,14 +46,14 @@ export class InboxFilterBar extends LitElement {
     .chip {
       display: inline-flex;
       align-items: center;
-      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
-      border-radius: var(--blocks-radius-md, 6px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-1, 4px) var(--pages-space-3, 12px);
+      border-radius: var(--pages-radius-md, 6px);
+      font-size: var(--pages-font-size-sm, 12px);
       font-weight: 500;
-      background: var(--blocks-neutral-3, #f5f5f5);
-      color: var(--blocks-neutral-11, #555555);
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-11, #555555);
       cursor: pointer;
-      border: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      border: 1px solid var(--pages-neutral-6, #e0e0e0);
       transition: all 0.15s;
     }
 
@@ -64,18 +64,18 @@ export class InboxFilterBar extends LitElement {
     }
 
     .chip:hover {
-      background: var(--blocks-neutral-4, #eeeeee);
-      border-color: var(--blocks-neutral-7, #cccccc);
+      background: var(--pages-neutral-4, #eeeeee);
+      border-color: var(--pages-neutral-7, #cccccc);
     }
 
     .chip.active {
-      background: var(--blocks-accent-9, #0080ff);
-      color: var(--blocks-accent-1, #ffffff);
-      border-color: var(--blocks-accent-10, #0066cc);
+      background: var(--pages-accent-9, #0080ff);
+      color: var(--pages-accent-1, #ffffff);
+      border-color: var(--pages-accent-10, #0066cc);
     }
 
     .chip.active:hover {
-      background: var(--blocks-accent-10, #0066cc);
+      background: var(--pages-accent-10, #0066cc);
     }
 
     .chip.disabled {
@@ -85,22 +85,22 @@ export class InboxFilterBar extends LitElement {
     }
 
     .chip-count {
-      color: var(--blocks-neutral-9, #888);
-      font-size: var(--blocks-font-size-xs, 11px);
+      color: var(--pages-neutral-9, #888);
+      font-size: var(--pages-font-size-xs, 11px);
     }
 
     .chip.active .chip-count {
-      color: var(--blocks-accent-1, #ffffff);
+      color: var(--pages-accent-1, #ffffff);
     }
 
     .clear-filters {
-      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-1, 4px) var(--pages-space-3, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       font-weight: 500;
       background: none;
-      border: 1px solid var(--blocks-neutral-6, #e0e0e0);
-      border-radius: var(--blocks-radius-md, 6px);
-      color: var(--blocks-neutral-11, #555555);
+      border: 1px solid var(--pages-neutral-6, #e0e0e0);
+      border-radius: var(--pages-radius-md, 6px);
+      color: var(--pages-neutral-11, #555555);
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -112,14 +112,14 @@ export class InboxFilterBar extends LitElement {
     }
 
     .clear-filters:hover {
-      background: var(--blocks-neutral-3, #f5f5f5);
-      border-color: var(--blocks-neutral-7, #cccccc);
+      background: var(--pages-neutral-3, #f5f5f5);
+      border-color: var(--pages-neutral-7, #cccccc);
     }
 
     .divider {
       width: 1px;
-      height: var(--blocks-space-5, 20px);
-      background: var(--blocks-neutral-6, #e0e0e0);
+      height: var(--pages-space-5, 20px);
+      background: var(--pages-neutral-6, #e0e0e0);
     }
   `;
 

@@ -49,30 +49,30 @@ export class ApprovalGatePage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 24px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
-    h3 { margin: 32px 0 12px; font-size: 16px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 24px; color: var(--pages-neutral-11, #555); font-size: 14px; }
+    h3 { margin: 32px 0 12px; font-size: 16px; font-weight: 600; color: var(--pages-neutral-12, #111); }
     .scenario {
       max-width: 700px;
-      border: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      border: 1px solid var(--pages-neutral-5, #e0e0e0);
       border-radius: 6px;
       padding: 20px;
       margin-bottom: 24px;
-      background: var(--blocks-neutral-1, #fff);
+      background: var(--pages-neutral-1, #fff);
     }
     .event-log {
       margin-top: 16px;
       padding: 12px;
-      background: var(--blocks-neutral-2, #f5f5f5);
+      background: var(--pages-neutral-2, #f5f5f5);
       border-radius: 4px;
       font-size: 12px;
       font-family: monospace;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
       max-height: 120px;
       overflow-y: auto;
     }
     .event-log-item { padding: 2px 0; }
-    .event-log-empty { color: var(--blocks-neutral-8, #999); font-style: italic; }
+    .event-log-empty { color: var(--pages-neutral-8, #999); font-style: italic; }
   `;
 
   private _mockFetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
@@ -184,7 +184,7 @@ export class ApprovalGatePage extends LitElement {
           .identity=${CURRENT_USER}
           prompt="Approve contractor quote for roof repair?"
         >
-          <div slot="evidence" style="padding: 12px; background: var(--blocks-neutral-2); border-radius: 4px; font-size: 14px;">
+          <div slot="evidence" style="padding: 12px; background: var(--pages-neutral-2); border-radius: 4px; font-size: 14px;">
             <strong>Contractor:</strong> ABC Roofing Inc.<br/>
             <strong>Quote:</strong> $18,500<br/>
             <strong>Timeline:</strong> 2 weeks<br/>

@@ -41,8 +41,8 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
       display: block;
       height: 100%;
       overflow-y: auto;
-      font-family: var(--blocks-font-family, system-ui);
-      background: var(--blocks-neutral-1, #fff);
+      font-family: var(--pages-font-family, system-ui);
+      background: var(--pages-neutral-1, #fff);
     }
 
     .empty-state {
@@ -50,49 +50,49 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--blocks-space-10, 40px);
+      padding: var(--pages-space-10, 40px);
       text-align: center;
-      color: var(--blocks-neutral-9, #888);
+      color: var(--pages-neutral-9, #888);
       min-height: 400px;
     }
 
     .empty-icon {
       width: 48px;
       height: 48px;
-      margin-bottom: var(--blocks-space-3, 12px);
-      color: var(--blocks-neutral-6, #ccc);
+      margin-bottom: var(--pages-space-3, 12px);
+      color: var(--pages-neutral-6, #ccc);
     }
 
     .empty-text {
-      font-size: var(--blocks-font-size-base, 14px);
-      margin-bottom: var(--blocks-space-1, 4px);
+      font-size: var(--pages-font-size-base, 14px);
+      margin-bottom: var(--pages-space-1, 4px);
     }
 
     .empty-hint {
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-8, #999);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-8, #999);
     }
 
     .sticky-header {
       position: sticky;
       top: 0;
-      background: var(--blocks-neutral-1, #fff);
-      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
+      background: var(--pages-neutral-1, #fff);
+      border-bottom: 1px solid var(--pages-neutral-5, #e0e0e0);
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
       z-index: 20;
     }
 
     .header-row {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-2, 8px);
-      margin-bottom: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
+      margin-bottom: var(--pages-space-2, 8px);
     }
 
     .title {
-      font-size: var(--blocks-font-size-lg, 16px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-lg, 16px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      color: var(--pages-neutral-12, #111);
       flex: 1;
       min-width: 0;
       overflow: hidden;
@@ -102,89 +102,89 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
 
     .status-pill {
       padding: 4px 8px;
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-medium, 500);
       text-transform: uppercase;
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-11, #444);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-11, #444);
     }
 
     .status-pill.active {
-      background: var(--blocks-accent-3, #dbeafe);
-      color: var(--blocks-accent-11, #1e40af);
+      background: var(--pages-accent-3, #dbeafe);
+      color: var(--pages-accent-11, #1e40af);
     }
 
     .status-pill.terminal {
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-9, #888);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-9, #888);
     }
 
     .priority-badge {
       padding: 4px 8px;
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-medium, 500);
       text-transform: uppercase;
     }
 
     .priority-badge.urgent {
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: #fff;
     }
 
     .priority-badge.high {
-      background: var(--blocks-warning-9, #f59e0b);
+      background: var(--pages-warning-9, #f59e0b);
       color: #fff;
     }
 
     .priority-badge.medium {
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
     }
 
     .priority-badge.low {
-      background: var(--blocks-neutral-7, #aaa);
+      background: var(--pages-neutral-7, #aaa);
       color: #fff;
     }
 
     .terminal-banner {
-      background: var(--blocks-neutral-2, #fafafa);
-      border-left: 4px solid var(--blocks-neutral-7, #aaa);
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
-      margin: var(--blocks-space-4, 16px);
-      border-radius: var(--blocks-radius-sm, 4px);
+      background: var(--pages-neutral-2, #fafafa);
+      border-left: 4px solid var(--pages-neutral-7, #aaa);
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
+      margin: var(--pages-space-4, 16px);
+      border-radius: var(--pages-radius-sm, 4px);
     }
 
     .terminal-banner.faulted {
-      background: var(--blocks-danger-2, #fee);
-      border-left-color: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-2, #fee);
+      border-left-color: var(--pages-danger-9, #dc2626);
     }
 
     .terminal-banner-title {
-      font-weight: var(--blocks-font-weight-medium, 500);
-      font-size: var(--blocks-font-size-base, 14px);
-      color: var(--blocks-neutral-12, #111);
-      margin-bottom: var(--blocks-space-1, 4px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      font-size: var(--pages-font-size-base, 14px);
+      color: var(--pages-neutral-12, #111);
+      margin-bottom: var(--pages-space-1, 4px);
     }
 
     .terminal-banner-meta {
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-10, #666);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-10, #666);
     }
 
     .tabs {
       display: flex;
-      gap: var(--blocks-space-1, 4px);
-      padding: 0 var(--blocks-space-4, 16px);
-      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      gap: var(--pages-space-1, 4px);
+      padding: 0 var(--pages-space-4, 16px);
+      border-bottom: 1px solid var(--pages-neutral-5, #e0e0e0);
     }
 
     .tab {
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      color: var(--blocks-neutral-10, #666);
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      color: var(--pages-neutral-10, #666);
       cursor: pointer;
       border: none;
       background: none;
@@ -193,21 +193,21 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     }
 
     .tab:hover {
-      color: var(--blocks-neutral-12, #111);
+      color: var(--pages-neutral-12, #111);
     }
 
     .tab[aria-selected="true"] {
-      color: var(--blocks-accent-11, #1e40af);
-      border-bottom-color: var(--blocks-accent-9, #2563eb);
+      color: var(--pages-accent-11, #1e40af);
+      border-bottom-color: var(--pages-accent-9, #2563eb);
     }
 
     .tab:focus-visible {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: -2px;
     }
 
     .tab-panels {
-      padding: var(--blocks-space-4, 16px);
+      padding: var(--pages-space-4, 16px);
     }
 
     .tab-panel {
@@ -221,43 +221,43 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     .overview-content {
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-4, 16px);
+      gap: var(--pages-space-4, 16px);
     }
 
     .metadata-section {
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .metadata-item {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      gap: var(--pages-space-2, 8px);
+      font-size: var(--pages-font-size-sm, 12px);
     }
 
     .metadata-label {
-      color: var(--blocks-neutral-9, #888);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      color: var(--pages-neutral-9, #888);
+      font-weight: var(--pages-font-weight-medium, 500);
       min-width: 120px;
     }
 
     .metadata-value {
-      color: var(--blocks-neutral-12, #111);
+      color: var(--pages-neutral-12, #111);
     }
 
     .loading {
       text-align: center;
-      padding: var(--blocks-space-10, 40px);
-      color: var(--blocks-neutral-9, #888);
+      padding: var(--pages-space-10, 40px);
+      color: var(--pages-neutral-9, #888);
     }
 
     .error {
-      background: var(--blocks-danger-2, #fee);
-      color: var(--blocks-danger-11, #991b1b);
-      padding: var(--blocks-space-3, 12px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      margin: var(--blocks-space-4, 16px);
+      background: var(--pages-danger-2, #fee);
+      color: var(--pages-danger-11, #991b1b);
+      padding: var(--pages-space-3, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
+      margin: var(--pages-space-4, 16px);
     }
 
     /* Dialog styles */
@@ -272,84 +272,84 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     }
 
     .dialog {
-      background: var(--blocks-neutral-1, #fff);
-      border-radius: var(--blocks-radius-md, 6px);
-      padding: var(--blocks-space-4, 16px);
+      background: var(--pages-neutral-1, #fff);
+      border-radius: var(--pages-radius-md, 6px);
+      padding: var(--pages-space-4, 16px);
       max-width: 500px;
       width: 90%;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     .dialog-title {
-      font-size: var(--blocks-font-size-lg, 16px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
-      margin: 0 0 var(--blocks-space-3, 12px) 0;
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-lg, 16px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      margin: 0 0 var(--pages-space-3, 12px) 0;
+      color: var(--pages-neutral-12, #111);
     }
 
     .dialog-content {
-      margin-bottom: var(--blocks-space-4, 16px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .dialog-actions {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
       justify-content: flex-end;
     }
 
     .form-field {
-      margin-bottom: var(--blocks-space-3, 12px);
+      margin-bottom: var(--pages-space-3, 12px);
     }
 
     label {
       display: block;
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      margin-bottom: var(--blocks-space-1, 4px);
-      color: var(--blocks-neutral-11, #444);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      margin-bottom: var(--pages-space-1, 4px);
+      color: var(--pages-neutral-11, #444);
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      padding: var(--blocks-space-2, 8px);
-      border: 1px solid var(--blocks-neutral-6, #ccc);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-6, #ccc);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: -1px;
-      border-color: var(--blocks-accent-9, #2563eb);
+      border-color: var(--pages-accent-9, #2563eb);
     }
 
     button {
-      padding: var(--blocks-space-1-5, 6px) var(--blocks-space-3, 12px);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-1-5, 6px) var(--pages-space-3, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
       cursor: pointer;
       border: none;
     }
 
     .btn-primary {
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
     }
 
     .btn-secondary {
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-12, #111);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-12, #111);
     }
 
     .btn-danger {
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: #fff;
     }
   `;

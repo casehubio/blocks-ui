@@ -75,33 +75,33 @@ export class SlaIndicator extends LitElement {
     .sla-indicator {
       display: inline-flex;
       align-items: center;
-      gap: var(--blocks-space-1.5, 6px);
-      font-family: var(--blocks-font-family, system-ui);
+      gap: var(--pages-space-1-5, 6px);
+      font-family: var(--pages-font-family, system-ui);
       font-variant-numeric: tabular-nums;
     }
 
     .countdown {
-      font-weight: var(--blocks-font-weight-medium, 500);
+      font-weight: var(--pages-font-weight-medium, 500);
     }
 
-    .compact .countdown { font-size: var(--blocks-font-size-sm, 12px); }
-    .expanded .countdown { font-size: var(--blocks-font-size-base, 14px); }
+    .compact .countdown { font-size: var(--pages-font-size-sm, 12px); }
+    .expanded .countdown { font-size: var(--pages-font-size-base, 14px); }
 
-    .normal .countdown { color: var(--blocks-success-9, #16a34a); }
-    .warning .countdown { color: var(--blocks-warning-9, #d97706); }
-    .critical .countdown { color: var(--blocks-danger-9, #dc2626); }
+    .normal .countdown { color: var(--pages-success-9, #16a34a); }
+    .warning .countdown { color: var(--pages-warning-9, #d97706); }
+    .critical .countdown { color: var(--pages-danger-9, #dc2626); }
     .breached .countdown {
-      color: var(--blocks-danger-9, #dc2626);
+      color: var(--pages-danger-9, #dc2626);
       animation: pulse 2s ease-in-out infinite;
     }
 
     .escalation-badge {
-      font-size: var(--blocks-font-size-xs, 11px);
-      padding: 1px var(--blocks-space-1.5, 6px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      background: var(--blocks-neutral-4, #e5e5e5);
-      color: var(--blocks-danger-9, #dc2626);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      font-size: var(--pages-font-size-xs, 11px);
+      padding: 1px var(--pages-space-1-5, 6px);
+      border-radius: var(--pages-radius-sm, 4px);
+      background: var(--pages-neutral-4, #e5e5e5);
+      color: var(--pages-danger-9, #dc2626);
+      font-weight: var(--pages-font-weight-medium, 500);
     }
 
     @keyframes pulse {

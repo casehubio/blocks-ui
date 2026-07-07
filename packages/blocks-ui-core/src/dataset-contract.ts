@@ -1,5 +1,2 @@
-export interface DatasetContract<T = unknown> {
-  readonly name: string;
-  readonly description: string;
-  readonly shape: T;
-}
+// Canonical definition lives in @casehubio/pages-data
+export type { DatasetContract } from '@casehubio/pages-data';

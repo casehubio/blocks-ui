@@ -22,7 +22,7 @@ export class InboxSummaryBar extends LitElement {
 
     .summary-container {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
       flex-wrap: wrap;
       align-items: center;
     }
@@ -30,14 +30,14 @@ export class InboxSummaryBar extends LitElement {
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: var(--blocks-space-1.5, 6px);
-      padding: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
+      gap: var(--pages-space-1-5, 6px);
+      padding: var(--pages-space-1, 4px) var(--pages-space-3, 12px);
       border-radius: 16px;
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       font-weight: 500;
-      border: 1px solid var(--blocks-neutral-6, #e0e0e0);
-      background: var(--blocks-neutral-3, #f5f5f5);
-      color: var(--blocks-neutral-11, #555);
+      border: 1px solid var(--pages-neutral-6, #e0e0e0);
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-11, #555);
     }
 
     button.badge {
@@ -49,36 +49,36 @@ export class InboxSummaryBar extends LitElement {
     }
 
     button.badge:hover {
-      background: var(--blocks-neutral-4, #eee);
-      border-color: var(--blocks-neutral-7, #ccc);
+      background: var(--pages-neutral-4, #eee);
+      border-color: var(--pages-neutral-7, #ccc);
     }
 
     .badge.total {
-      background: var(--blocks-accent-3, #e6f4ff);
-      color: var(--blocks-accent-11, #0066cc);
-      border-color: var(--blocks-accent-6, #99d6ff);
+      background: var(--pages-accent-3, #e6f4ff);
+      color: var(--pages-accent-11, #0066cc);
+      border-color: var(--pages-accent-6, #99d6ff);
     }
 
     .badge.overdue,
     .badge.claim-breach {
-      background: var(--blocks-danger-3, #ffe6e6);
-      color: var(--blocks-danger-11, #cc0000);
-      border-color: var(--blocks-danger-6, #ff9999);
+      background: var(--pages-danger-3, #ffe6e6);
+      color: var(--pages-danger-11, #cc0000);
+      border-color: var(--pages-danger-6, #ff9999);
     }
 
     button.badge.overdue:hover,
     button.badge.claim-breach:hover {
-      background: var(--blocks-danger-4, #ffcccc);
+      background: var(--pages-danger-4, #ffcccc);
     }
 
     button.badge.active {
-      background: var(--blocks-accent-9, #2563eb);
-      color: var(--blocks-accent-1, #fff);
-      border-color: var(--blocks-accent-10, #1d4ed8);
+      background: var(--pages-accent-9, #2563eb);
+      color: var(--pages-accent-1, #fff);
+      border-color: var(--pages-accent-10, #1d4ed8);
     }
 
     button.badge.active:hover {
-      background: var(--blocks-accent-10, #1d4ed8);
+      background: var(--pages-accent-10, #1d4ed8);
     }
 
     .badge-label { color: inherit; }

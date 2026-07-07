@@ -1,6 +1,15 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@casehubio/pages-ui-tokens': path.resolve(__dirname, '../../../pages/packages/pages-ui-tokens/src'),
+      '@casehubio/pages-component': path.resolve(__dirname, '../../../pages/packages/pages-component/src'),
+      '@casehubio/pages-data/dist/sse/sse-manager.js': path.resolve(__dirname, '../../../pages/packages/pages-data/src/sse/sse-manager.ts'),
+      '@casehubio/pages-data': path.resolve(__dirname, '../../../pages/packages/pages-data/src'),
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

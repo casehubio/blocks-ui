@@ -27,6 +27,7 @@ const NAV: NavCategory[] = [
       { id: 'approval-gate', label: 'Approval Gate', hash: '#components/approval-gate' },
       { id: 'confirm-dialog', label: 'Confirm Dialog', hash: '#components/confirm-dialog' },
       { id: 'data-table', label: 'Data Table', hash: '#components/data-table' },
+      { id: 'notifications', label: 'Notifications', hash: '#components/notifications' },
     ],
   },
   {
@@ -51,12 +52,12 @@ export class ExampleShell extends LitElement {
   @state() private density: 'comfortable' | 'compact' = 'comfortable';
 
   static override styles = css`
-    :host { display: flex; height: 100vh; font-family: var(--blocks-font-family, system-ui); }
+    :host { display: flex; height: 100vh; font-family: var(--pages-font-family, system-ui); }
 
     .sidebar {
       width: 240px;
-      background: var(--blocks-neutral-2, #f5f5f5);
-      border-right: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      background: var(--pages-neutral-2, #f5f5f5);
+      border-right: 1px solid var(--pages-neutral-5, #e0e0e0);
       overflow-y: auto;
       flex-shrink: 0;
       display: flex;
@@ -67,17 +68,17 @@ export class ExampleShell extends LitElement {
       padding: 16px;
       font-size: 16px;
       font-weight: 600;
-      color: var(--blocks-neutral-12, #111);
-      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      color: var(--pages-neutral-12, #111);
+      border-bottom: 1px solid var(--pages-neutral-5, #e0e0e0);
     }
 
-    .category { padding: 12px 0 4px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blocks-neutral-9, #888); }
+    .category { padding: 12px 0 4px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pages-neutral-9, #888); }
 
     .nav-item {
       display: block;
       padding: 8px 16px 8px 24px;
       font-size: 14px;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
       text-decoration: none;
       cursor: pointer;
       border: none;
@@ -85,14 +86,14 @@ export class ExampleShell extends LitElement {
       width: 100%;
       text-align: left;
     }
-    .nav-item:hover { background: var(--blocks-neutral-3, #eee); color: var(--blocks-neutral-12, #111); }
-    .nav-item.active { background: var(--blocks-accent-3, #e0e7ff); color: var(--blocks-accent-11, #1e40af); font-weight: 500; }
+    .nav-item:hover { background: var(--pages-neutral-3, #eee); color: var(--pages-neutral-12, #111); }
+    .nav-item.active { background: var(--pages-accent-3, #e0e7ff); color: var(--pages-accent-11, #1e40af); font-weight: 500; }
 
-    .controls { margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--blocks-neutral-5, #e0e0e0); display: flex; gap: 8px; }
-    .toggle { padding: 4px 10px; border-radius: 4px; border: 1px solid var(--blocks-neutral-6, #ccc); background: var(--blocks-neutral-1, #fff); cursor: pointer; font-size: 12px; color: var(--blocks-neutral-11, #555); }
-    .toggle.active { background: var(--blocks-accent-9, #2563eb); color: white; border-color: var(--blocks-accent-9, #2563eb); }
+    .controls { margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--pages-neutral-5, #e0e0e0); display: flex; gap: 8px; }
+    .toggle { padding: 4px 10px; border-radius: 4px; border: 1px solid var(--pages-neutral-6, #ccc); background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px; color: var(--pages-neutral-11, #555); }
+    .toggle.active { background: var(--pages-accent-9, #2563eb); color: white; border-color: var(--pages-accent-9, #2563eb); }
 
-    .content { flex: 1; overflow: auto; background: var(--blocks-neutral-1, #fafafa); }
+    .content { flex: 1; overflow: auto; background: var(--pages-neutral-1, #fafafa); }
   `;
 
   override connectedCallback(): void {
@@ -113,14 +114,14 @@ export class ExampleShell extends LitElement {
 
   private applyTheme(): void {
     const css = generateThemeCSS(THEME_CONFIG);
-    let style = document.querySelector('style[data-blocks-theme]') as HTMLStyleElement | null;
+    let style = document.querySelector('style[data-pages-theme]') as HTMLStyleElement | null;
     if (!style) {
       style = document.createElement('style');
-      style.setAttribute('data-blocks-theme', '');
+      style.setAttribute('data-pages-theme', '');
       document.head.appendChild(style);
     }
     style.textContent = css;
-    document.documentElement.className = `blocks-theme-${this.theme}${this.density === 'compact' ? ' blocks-density-compact' : ''}`;
+    document.documentElement.className = `pages-theme-${this.theme}${this.density === 'compact' ? ' pages-density-compact' : ''}`;
   }
 
   private toggleTheme(): void {
@@ -174,6 +175,7 @@ export class ExampleShell extends LitElement {
       case '#components/approval-gate': return html`<approval-gate-page></approval-gate-page>`;
       case '#components/confirm-dialog': return html`<confirm-dialog-page></confirm-dialog-page>`;
       case '#components/data-table': return html`<data-table-page></data-table-page>`;
+      case '#components/notifications': return html`<notification-page></notification-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

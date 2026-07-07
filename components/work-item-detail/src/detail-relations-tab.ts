@@ -18,33 +18,33 @@ export class DetailRelationsTab extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      padding: var(--blocks-space-4, 16px);
+      padding: var(--pages-space-4, 16px);
     }
 
     .section {
-      margin-bottom: var(--blocks-space-4, 16px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .section-title {
-      font-size: var(--blocks-font-size-base, 14px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      margin: 0 0 var(--blocks-space-2, 8px) 0;
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-base, 14px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      margin: 0 0 var(--pages-space-2, 8px) 0;
+      color: var(--pages-neutral-12, #111);
     }
 
     .relation-list {
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .relation-item {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-2, 8px);
-      padding: var(--blocks-space-2, 8px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      background: var(--blocks-neutral-2, #fafafa);
+      gap: var(--pages-space-2, 8px);
+      padding: var(--pages-space-2, 8px);
+      border-radius: var(--pages-radius-sm, 4px);
+      background: var(--pages-neutral-2, #fafafa);
       cursor: pointer;
     }
 
@@ -55,11 +55,11 @@ export class DetailRelationsTab extends LitElement {
     }
 
     .relation-item:hover {
-      background: var(--blocks-neutral-3, #f3f3f3);
+      background: var(--pages-neutral-3, #f3f3f3);
     }
 
     .relation-item:focus-visible {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: 2px;
     }
 
@@ -67,13 +67,13 @@ export class DetailRelationsTab extends LitElement {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-semibold, 600);
       flex-shrink: 0;
     }
 
@@ -83,34 +83,34 @@ export class DetailRelationsTab extends LitElement {
     }
 
     .relation-title {
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      color: var(--pages-neutral-12, #111);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .relation-meta {
-      font-size: var(--blocks-font-size-xs, 11px);
-      color: var(--blocks-neutral-9, #888);
+      font-size: var(--pages-font-size-xs, 11px);
+      color: var(--pages-neutral-9, #888);
     }
 
     .status-pill {
       padding: 2px 6px;
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-11, #444);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-11, #444);
       flex-shrink: 0;
     }
 
     .empty {
       text-align: center;
-      padding: var(--blocks-space-4, 16px);
-      color: var(--blocks-neutral-9, #888);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-4, 16px);
+      color: var(--pages-neutral-9, #888);
+      font-size: var(--pages-font-size-sm, 12px);
     }
   `;
 

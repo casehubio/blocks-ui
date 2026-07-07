@@ -10,34 +10,34 @@ export class DetailActivityTab extends LitElement {
   static override styles = css`
     :host {
       display: block;
-      padding: var(--blocks-space-4, 16px);
+      padding: var(--pages-space-4, 16px);
     }
 
     .timeline {
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-3, 12px);
+      gap: var(--pages-space-3, 12px);
     }
 
     .event {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
-      padding: var(--blocks-space-2, 8px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      background: var(--blocks-neutral-2, #fafafa);
+      gap: var(--pages-space-2, 8px);
+      padding: var(--pages-space-2, 8px);
+      border-radius: var(--pages-radius-sm, 4px);
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .event-icon {
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-semibold, 600);
       flex-shrink: 0;
     }
 
@@ -49,92 +49,92 @@ export class DetailActivityTab extends LitElement {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: var(--blocks-space-1, 4px);
+      margin-bottom: var(--pages-space-1, 4px);
     }
 
     .event-type {
-      font-weight: var(--blocks-font-weight-medium, 500);
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-12, #111);
+      font-weight: var(--pages-font-weight-medium, 500);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-12, #111);
     }
 
     .event-time {
-      font-size: var(--blocks-font-size-xs, 11px);
-      color: var(--blocks-neutral-9, #888);
+      font-size: var(--pages-font-size-xs, 11px);
+      color: var(--pages-neutral-9, #888);
     }
 
     .event-actor {
-      font-size: var(--blocks-font-size-xs, 11px);
-      color: var(--blocks-neutral-10, #666);
+      font-size: var(--pages-font-size-xs, 11px);
+      color: var(--pages-neutral-10, #666);
     }
 
     .event-detail {
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-11, #444);
-      margin-top: var(--blocks-space-0-5, 2px);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-11, #444);
+      margin-top: var(--pages-space-0-5, 2px);
     }
 
     .add-note {
-      margin-top: var(--blocks-space-4, 16px);
-      padding-top: var(--blocks-space-4, 16px);
-      border-top: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      margin-top: var(--pages-space-4, 16px);
+      padding-top: var(--pages-space-4, 16px);
+      border-top: 1px solid var(--pages-neutral-5, #e0e0e0);
     }
 
     .add-note h3 {
-      font-size: var(--blocks-font-size-base, 14px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      margin: 0 0 var(--blocks-space-2, 8px) 0;
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-base, 14px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      margin: 0 0 var(--pages-space-2, 8px) 0;
+      color: var(--pages-neutral-12, #111);
     }
 
     textarea {
       width: 100%;
       min-height: 80px;
-      padding: var(--blocks-space-2, 8px);
-      border: 1px solid var(--blocks-neutral-6, #ccc);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-6, #ccc);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       resize: vertical;
     }
 
     textarea:focus {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: -1px;
-      border-color: var(--blocks-accent-9, #2563eb);
+      border-color: var(--pages-accent-9, #2563eb);
     }
 
     .note-actions {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
-      margin-top: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
+      margin-top: var(--pages-space-2, 8px);
     }
 
     button {
-      padding: var(--blocks-space-1-5, 6px) var(--blocks-space-3, 12px);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-1-5, 6px) var(--pages-space-3, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
       cursor: pointer;
       border: none;
     }
 
     .primary {
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
     }
 
     .secondary {
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-12, #111);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-12, #111);
     }
 
     .empty {
       text-align: center;
-      padding: var(--blocks-space-8, 32px);
-      color: var(--blocks-neutral-9, #888);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-8, 32px);
+      color: var(--pages-neutral-9, #888);
+      font-size: var(--pages-font-size-sm, 12px);
     }
   `;
 

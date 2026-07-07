@@ -67,7 +67,7 @@ describe('WorkItemWorkbench', () => {
 
     it('inherits theme from document-level CSS custom properties', async () => {
       const style = document.createElement('style');
-      style.textContent = ':root { --blocks-neutral-1: rgb(10, 10, 10); }';
+      style.textContent = ':root { --pages-neutral-1: rgb(10, 10, 10); }';
       document.head.appendChild(style);
       document.body.appendChild(element);
       await element.updateComplete;

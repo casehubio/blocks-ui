@@ -12,24 +12,24 @@ export class DetailActionBar extends LitElement {
       display: block;
       position: sticky;
       top: 60px;
-      background: var(--blocks-neutral-1, #fff);
-      border-bottom: 1px solid var(--blocks-neutral-5, #e0e0e0);
-      padding: var(--blocks-space-2, 8px);
+      background: var(--pages-neutral-1, #fff);
+      border-bottom: 1px solid var(--pages-neutral-5, #e0e0e0);
+      padding: var(--pages-space-2, 8px);
       z-index: 10;
     }
 
     .actions {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
       flex-wrap: wrap;
     }
 
     button {
-      padding: var(--blocks-space-1-5, 6px) var(--blocks-space-3, 12px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-family: var(--blocks-font-family, system-ui);
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      padding: var(--pages-space-1-5, 6px) var(--pages-space-3, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-family: var(--pages-font-family, system-ui);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
       cursor: pointer;
       border: none;
     }
@@ -45,27 +45,27 @@ export class DetailActionBar extends LitElement {
     }
 
     button:focus-visible {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: 2px;
     }
 
     .primary {
-      background: var(--blocks-accent-9, #2563eb);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
     }
 
     .secondary {
-      background: var(--blocks-neutral-3, #f3f3f3);
-      color: var(--blocks-neutral-12, #111);
+      background: var(--pages-neutral-3, #f3f3f3);
+      color: var(--pages-neutral-12, #111);
     }
 
     .danger {
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: #fff;
     }
 
     .success {
-      background: var(--blocks-success-9, #16a34a);
+      background: var(--pages-success-9, #16a34a);
       color: #fff;
     }
   `;

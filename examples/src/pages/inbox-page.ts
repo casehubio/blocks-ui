@@ -13,8 +13,8 @@ const IDENTITY: WorkIdentity = {
 export class InboxPage extends LitElement {
   static override styles = css`
     :host { display: block; height: 100%; }
-    h2 { padding: 24px 24px 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { padding: 0 24px 16px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
+    h2 { padding: 24px 24px 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { padding: 0 24px 16px; color: var(--pages-neutral-11, #555); font-size: 14px; }
     work-item-inbox { display: block; height: calc(100% - 80px); }
   `;
 

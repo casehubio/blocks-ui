@@ -11,8 +11,8 @@ export class ScopeContextBar extends LitElement {
 
     .scope-bar {
       padding: 4px 12px;
-      background: var(--blocks-accent-3, #eff6ff);
-      border-bottom: 1px solid var(--blocks-accent-6, #bfdbfe);
+      background: var(--pages-accent-3, #eff6ff);
+      border-bottom: 1px solid var(--pages-accent-6, #bfdbfe);
       display: flex;
       gap: 6px;
       align-items: center;
@@ -20,17 +20,17 @@ export class ScopeContextBar extends LitElement {
 
     .scope-label {
       font-size: 10px;
-      color: var(--blocks-accent-11, #1e40af);
+      color: var(--pages-accent-11, #1e40af);
       font-weight: 600;
     }
 
     .scope-tag {
-      background: var(--blocks-accent-2, #dbeafe);
+      background: var(--pages-accent-2, #dbeafe);
       padding: 2px 8px;
       border-radius: 4px;
       font-size: 10px;
-      color: var(--blocks-accent-11, #1e40af);
-      border: 1px solid var(--blocks-accent-6, #bfdbfe);
+      color: var(--pages-accent-11, #1e40af);
+      border: 1px solid var(--pages-accent-6, #bfdbfe);
     }
 
     .scope-tag.raw {
@@ -40,7 +40,7 @@ export class ScopeContextBar extends LitElement {
     .clear-btn {
       margin-left: auto;
       font-size: 10px;
-      color: var(--blocks-accent-9, #3b82f6);
+      color: var(--pages-accent-9, #3b82f6);
       cursor: pointer;
       background: none;
       border: none;
@@ -49,7 +49,7 @@ export class ScopeContextBar extends LitElement {
     }
 
     .clear-btn:focus-visible {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: 2px;
     }
   `;

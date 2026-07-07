@@ -27,6 +27,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "@casehubio/pages-component": "^0.2.1",
+    "@casehubio/pages-data": "^0.2.1",
+    "@casehubio/pages-ui-tokens": "^0.2.1",
     "lit": "^3.3.3"
   }
 }

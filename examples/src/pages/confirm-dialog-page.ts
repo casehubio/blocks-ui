@@ -12,33 +12,33 @@ export class ConfirmDialogPage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 24px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
-    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 24px; color: var(--pages-neutral-11, #555); font-size: 14px; }
+    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--pages-neutral-12, #111); }
     .demos { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
     .btn {
       padding: 8px 16px;
-      border: 1px solid var(--blocks-neutral-6, #ccc);
+      border: 1px solid var(--pages-neutral-6, #ccc);
       border-radius: 4px;
-      background: var(--blocks-neutral-1, #fff);
+      background: var(--pages-neutral-1, #fff);
       cursor: pointer;
       font-size: 14px;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
     }
-    .btn:hover { background: var(--blocks-neutral-3, #f0f0f0); }
-    .btn.danger { border-color: var(--blocks-danger-9, #dc2626); color: var(--blocks-danger-9, #dc2626); }
-    .btn.success { border-color: var(--blocks-success-9, #16a34a); color: var(--blocks-success-9, #16a34a); }
+    .btn:hover { background: var(--pages-neutral-3, #f0f0f0); }
+    .btn.danger { border-color: var(--pages-danger-9, #dc2626); color: var(--pages-danger-9, #dc2626); }
+    .btn.success { border-color: var(--pages-success-9, #16a34a); color: var(--pages-success-9, #16a34a); }
     .result {
       margin-top: 16px;
       padding: 12px;
-      background: var(--blocks-neutral-2, #f5f5f5);
+      background: var(--pages-neutral-2, #f5f5f5);
       border-radius: 4px;
       font-size: 13px;
       font-family: monospace;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
       min-height: 40px;
     }
-    .result-empty { color: var(--blocks-neutral-8, #999); font-style: italic; }
+    .result-empty { color: var(--pages-neutral-8, #999); font-style: italic; }
   `;
 
   override render() {

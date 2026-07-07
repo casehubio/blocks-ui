@@ -3,9 +3,12 @@ import { state } from 'lit/decorators.js';
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
+export type RovingDirection = 'horizontal' | 'vertical' | 'both';
+
 export function RovingTabindexMixin<T extends Constructor<LitElement>>(Base: T) {
   abstract class RovingTabindexHost extends Base {
     abstract rovingSelector: string;
+    abstract rovingDirection: RovingDirection;
 
     @state() rovingIndex = -1;
 
@@ -57,11 +60,41 @@ export function RovingTabindexMixin<T extends Constructor<LitElement>>(Base: T) 
     }
 
     private _handleRovingKeydown = (e: KeyboardEvent): void => {
+      const dir = this.rovingDirection;
+
       switch (e.key) {
-        case 'ArrowDown': e.preventDefault(); this.navigateRoving('next'); break;
-        case 'ArrowUp': e.preventDefault(); this.navigateRoving('prev'); break;
-        case 'Home': e.preventDefault(); this.navigateRoving('first'); break;
-        case 'End': e.preventDefault(); this.navigateRoving('last'); break;
+        case 'ArrowDown':
+          if (dir === 'vertical' || dir === 'both') {
+            e.preventDefault();
+            this.navigateRoving('next');
+          }
+          break;
+        case 'ArrowUp':
+          if (dir === 'vertical' || dir === 'both') {
+            e.preventDefault();
+            this.navigateRoving('prev');
+          }
+          break;
+        case 'ArrowRight':
+          if (dir === 'horizontal' || dir === 'both') {
+            e.preventDefault();
+            this.navigateRoving('next');
+          }
+          break;
+        case 'ArrowLeft':
+          if (dir === 'horizontal' || dir === 'both') {
+            e.preventDefault();
+            this.navigateRoving('prev');
+          }
+          break;
+        case 'Home':
+          e.preventDefault();
+          this.navigateRoving('first');
+          break;
+        case 'End':
+          e.preventDefault();
+          this.navigateRoving('last');
+          break;
       }
     };
 
@@ -75,6 +108,7 @@ export function RovingTabindexMixin<T extends Constructor<LitElement>>(Base: T) 
 
   return RovingTabindexHost as unknown as Constructor<{
     rovingSelector: string;
+    rovingDirection: RovingDirection;
     rovingIndex: number;
     navigateRoving(direction: 'next' | 'prev' | 'first' | 'last'): void;
   }> & T;

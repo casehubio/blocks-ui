@@ -19,6 +19,7 @@ async function bootstrap() {
   await import('./pages/approval-gate-page.js');
   await import('./pages/confirm-dialog-page.js');
   await import('./pages/data-table-page.js');
+  await import('./pages/notification-page.js');
 
   app.textContent = '';
   app.appendChild(document.createElement('example-shell'));

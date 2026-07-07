@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateScale } from './colours.js';
+import { generateScale } from './index.js';
 
 describe('generateScale', () => {
   it('produces 12 steps keyed 1-12', () => {

@@ -64,147 +64,147 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   static override styles = css`
     :host {
       display: block;
-      font-family: var(--blocks-font-family, system-ui);
-      color: var(--blocks-neutral-12, #111);
+      font-family: var(--pages-font-family, system-ui);
+      color: var(--pages-neutral-12, #111);
     }
 
     .gate {
-      border: 1px solid var(--blocks-neutral-6, #ccc);
-      border-radius: var(--blocks-radius-lg, 8px);
-      padding: var(--blocks-space-5, 20px);
-      background: var(--blocks-neutral-1, #fff);
+      border: 1px solid var(--pages-neutral-6, #ccc);
+      border-radius: var(--pages-radius-lg, 8px);
+      padding: var(--pages-space-5, 20px);
+      background: var(--pages-neutral-1, #fff);
     }
 
     .header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: var(--blocks-space-3, 12px);
-      margin-bottom: var(--blocks-space-4, 16px);
+      gap: var(--pages-space-3, 12px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .prompt {
-      font-size: var(--blocks-font-size-lg, 16px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
-      line-height: var(--blocks-line-height-relaxed, 1.6);
+      font-size: var(--pages-font-size-lg, 16px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      line-height: var(--pages-line-height-relaxed, 1.6);
       margin: 0;
     }
 
     .context {
-      color: var(--blocks-neutral-11, #666);
-      font-size: var(--blocks-font-size-base, 14px);
-      line-height: var(--blocks-line-height-relaxed, 1.6);
-      margin: 0 0 var(--blocks-space-4, 16px);
+      color: var(--pages-neutral-11, #666);
+      font-size: var(--pages-font-size-base, 14px);
+      line-height: var(--pages-line-height-relaxed, 1.6);
+      margin: 0 0 var(--pages-space-4, 16px);
     }
 
     .evidence-kv {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: var(--blocks-space-1, 4px) var(--blocks-space-3, 12px);
-      font-size: var(--blocks-font-size-sm, 12px);
-      padding: var(--blocks-space-3, 12px);
-      background: var(--blocks-neutral-2, #fafafa);
-      border-radius: var(--blocks-radius-sm, 4px);
-      margin-bottom: var(--blocks-space-4, 16px);
+      gap: var(--pages-space-1, 4px) var(--pages-space-3, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
+      padding: var(--pages-space-3, 12px);
+      background: var(--pages-neutral-2, #fafafa);
+      border-radius: var(--pages-radius-sm, 4px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .evidence-key {
-      font-weight: var(--blocks-font-weight-medium, 500);
-      color: var(--blocks-neutral-11, #666);
+      font-weight: var(--pages-font-weight-medium, 500);
+      color: var(--pages-neutral-11, #666);
     }
 
     .evidence-value {
-      color: var(--blocks-neutral-12, #111);
+      color: var(--pages-neutral-12, #111);
     }
 
     .quorum-section {
-      margin-bottom: var(--blocks-space-4, 16px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .quorum-bar {
-      height: var(--blocks-space-2, 8px);
-      background: var(--blocks-neutral-4, #e5e5e5);
-      border-radius: var(--blocks-radius-sm, 4px);
+      height: var(--pages-space-2, 8px);
+      background: var(--pages-neutral-4, #e5e5e5);
+      border-radius: var(--pages-radius-sm, 4px);
       overflow: hidden;
-      margin-bottom: var(--blocks-space-2, 8px);
+      margin-bottom: var(--pages-space-2, 8px);
     }
 
     .quorum-fill {
       height: 100%;
-      background: var(--blocks-accent-9, #2563eb);
-      border-radius: var(--blocks-radius-sm, 4px);
-      transition: width var(--blocks-duration-normal, 200ms) var(--blocks-ease-out);
+      background: var(--pages-accent-9, #2563eb);
+      border-radius: var(--pages-radius-sm, 4px);
+      transition: width var(--pages-duration-normal, 200ms) var(--pages-ease-out);
     }
 
     .voter-list {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--blocks-space-2, 8px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      gap: var(--pages-space-2, 8px);
+      font-size: var(--pages-font-size-sm, 12px);
     }
 
     .voter {
       display: inline-flex;
       align-items: center;
-      gap: var(--blocks-space-1, 4px);
-      padding: var(--blocks-space-1, 4px) var(--blocks-space-2, 8px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      background: var(--blocks-neutral-3, #f5f5f5);
+      gap: var(--pages-space-1, 4px);
+      padding: var(--pages-space-1, 4px) var(--pages-space-2, 8px);
+      border-radius: var(--pages-radius-sm, 4px);
+      background: var(--pages-neutral-3, #f5f5f5);
     }
 
     .voter.voted {
-      background: var(--blocks-success-3, #dcfce7);
-      color: var(--blocks-success-11, #166534);
+      background: var(--pages-success-3, #dcfce7);
+      color: var(--pages-success-11, #166534);
     }
 
     .voter.current {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: 1px;
     }
 
     .voter-badge {
-      font-size: var(--blocks-font-size-xs, 11px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: var(--pages-font-weight-medium, 500);
     }
 
     .history-section {
-      margin-bottom: var(--blocks-space-4, 16px);
+      margin-bottom: var(--pages-space-4, 16px);
     }
 
     .history-section summary {
       cursor: pointer;
-      font-size: var(--blocks-font-size-sm, 12px);
-      font-weight: var(--blocks-font-weight-medium, 500);
-      color: var(--blocks-neutral-11, #666);
+      font-size: var(--pages-font-size-sm, 12px);
+      font-weight: var(--pages-font-weight-medium, 500);
+      color: var(--pages-neutral-11, #666);
     }
 
     .history-list {
       list-style: none;
       padding: 0;
-      margin: var(--blocks-space-2, 8px) 0 0;
-      font-size: var(--blocks-font-size-sm, 12px);
+      margin: var(--pages-space-2, 8px) 0 0;
+      font-size: var(--pages-font-size-sm, 12px);
     }
 
     .history-list li {
-      padding: var(--blocks-space-1, 4px) 0;
-      color: var(--blocks-neutral-11, #666);
+      padding: var(--pages-space-1, 4px) 0;
+      color: var(--pages-neutral-11, #666);
     }
 
     .actions {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
       flex-wrap: wrap;
     }
 
     .action-btn {
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-4, 16px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-base, 14px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      padding: var(--pages-space-2, 8px) var(--pages-space-4, 16px);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-base, 14px);
+      font-weight: var(--pages-font-weight-medium, 500);
       cursor: pointer;
       border: 1px solid transparent;
-      transition: background var(--blocks-duration-fast, 120ms) var(--blocks-ease-out);
+      transition: background var(--pages-duration-fast, 120ms) var(--pages-ease-out);
     }
 
     .action-btn:disabled {
@@ -213,51 +213,51 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
     }
 
     .action-btn.variant-success {
-      background: var(--blocks-success-9, #16a34a);
+      background: var(--pages-success-9, #16a34a);
       color: #fff;
     }
 
     .action-btn.variant-success:hover:not(:disabled) {
-      background: var(--blocks-success-10, #15803d);
+      background: var(--pages-success-10, #15803d);
     }
 
     .action-btn.variant-danger {
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: #fff;
     }
 
     .action-btn.variant-danger:hover:not(:disabled) {
-      background: var(--blocks-danger-10, #b91c1c);
+      background: var(--pages-danger-10, #b91c1c);
     }
 
     .action-btn.variant-neutral {
-      background: var(--blocks-neutral-9, #888);
+      background: var(--pages-neutral-9, #888);
       color: #fff;
     }
 
     .action-btn.variant-neutral:hover:not(:disabled) {
-      background: var(--blocks-neutral-10, #666);
+      background: var(--pages-neutral-10, #666);
     }
 
     .voted-banner {
-      padding: var(--blocks-space-3, 12px);
-      background: var(--blocks-accent-3, #dbeafe);
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-accent-11, #1e40af);
-      margin-bottom: var(--blocks-space-3, 12px);
+      padding: var(--pages-space-3, 12px);
+      background: var(--pages-accent-3, #dbeafe);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-accent-11, #1e40af);
+      margin-bottom: var(--pages-space-3, 12px);
     }
 
     .error {
-      color: var(--blocks-danger-9, #dc2626);
-      font-size: var(--blocks-font-size-sm, 12px);
-      margin-top: var(--blocks-space-2, 8px);
+      color: var(--pages-danger-9, #dc2626);
+      font-size: var(--pages-font-size-sm, 12px);
+      margin-top: var(--pages-space-2, 8px);
     }
 
     .info-request-link {
-      color: var(--blocks-accent-9, #2563eb);
+      color: var(--pages-accent-9, #2563eb);
       cursor: pointer;
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       text-decoration: underline;
       border: none;
       background: transparent;
@@ -266,7 +266,7 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
     }
 
     .info-request-link:hover:not(:disabled) {
-      color: var(--blocks-accent-10, #1e40af);
+      color: var(--pages-accent-10, #1e40af);
     }
 
     .info-request-link:disabled {
@@ -275,54 +275,54 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
     }
 
     .info-request-form {
-      margin-top: var(--blocks-space-3, 12px);
+      margin-top: var(--pages-space-3, 12px);
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .info-request-textarea {
       width: 100%;
       min-height: 80px;
-      padding: var(--blocks-space-2, 8px);
-      border: 1px solid var(--blocks-neutral-6, #ccc);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-6, #ccc);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-sm, 12px);
+      font-size: var(--pages-font-size-sm, 12px);
       resize: vertical;
     }
 
     .info-request-actions {
       display: flex;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .info-request-submit {
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
-      background: var(--blocks-accent-9, #2563eb);
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      background: var(--pages-accent-9, #2563eb);
       color: #fff;
       border: none;
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-sm, 12px);
       cursor: pointer;
     }
 
     .info-request-submit:hover {
-      background: var(--blocks-accent-10, #1e40af);
+      background: var(--pages-accent-10, #1e40af);
     }
 
     .info-request-cancel {
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-3, 12px);
-      background: var(--blocks-neutral-4, #e5e5e5);
-      color: var(--blocks-neutral-12, #111);
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      background: var(--pages-neutral-4, #e5e5e5);
+      color: var(--pages-neutral-12, #111);
       border: none;
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-sm, 12px);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-sm, 12px);
       cursor: pointer;
     }
 
     .info-request-cancel:hover {
-      background: var(--blocks-neutral-5, #d4d4d4);
+      background: var(--pages-neutral-5, #d4d4d4);
     }
 
     @media (prefers-reduced-motion: reduce) {

@@ -62,25 +62,25 @@ export class KpiMetricRowPage extends LitElement {
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 24px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
-    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 24px; color: var(--pages-neutral-11, #555); font-size: 14px; }
+    h3 { margin: 24px 0 12px; font-size: 16px; font-weight: 600; color: var(--pages-neutral-12, #111); }
     .controls { margin-bottom: 16px; display: flex; gap: 8px; align-items: center; }
     .btn {
       padding: 6px 14px;
-      border: 1px solid var(--blocks-neutral-6, #ccc);
+      border: 1px solid var(--pages-neutral-6, #ccc);
       border-radius: 4px;
-      background: var(--blocks-neutral-1, #fff);
+      background: var(--pages-neutral-1, #fff);
       cursor: pointer;
       font-size: 13px;
-      color: var(--blocks-neutral-11, #555);
+      color: var(--pages-neutral-11, #555);
     }
-    .btn.active { background: var(--blocks-accent-9, #2563eb); color: white; border-color: var(--blocks-accent-9); }
+    .btn.active { background: var(--pages-accent-9, #2563eb); color: white; border-color: var(--pages-accent-9); }
     .section { max-width: 900px; margin-bottom: 32px; }
     .event-log {
       margin-top: 8px;
       font-size: 12px;
-      color: var(--blocks-neutral-9, #888);
+      color: var(--pages-neutral-9, #888);
       min-height: 20px;
     }
   `;
@@ -108,7 +108,7 @@ export class KpiMetricRowPage extends LitElement {
       <p>Responsive metric card grid with sparklines, trends, and status indicators. Click a card to see the event.</p>
 
       <div class="controls">
-        <span style="font-size: 13px; color: var(--blocks-neutral-9);">Columns:</span>
+        <span style="font-size: 13px; color: var(--pages-neutral-9);">Columns:</span>
         <button class="btn ${this._columns === null ? 'active' : ''}" @click=${() => { this._columns = null; }}>Auto</button>
         <button class="btn ${this._columns === 2 ? 'active' : ''}" @click=${() => { this._columns = 2; }}>2</button>
         <button class="btn ${this._columns === 3 ? 'active' : ''}" @click=${() => { this._columns = 3; }}>3</button>

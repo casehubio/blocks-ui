@@ -20,7 +20,6 @@ import {
   onPagesEvent,
   WorkItemEventTopics,
   isActiveStatus,
-  RovingTabindexMixin,
   KeyboardShortcutMixin,
   LiveRegionMixin,
   WorkEventType as WorkEventTypeEnum,
@@ -81,12 +80,14 @@ export class WorkItemInbox extends WorkItemInboxBase {
     {
       id: 'title',
       label: 'Title',
+      sortable: true,
       getValue: (row) => row.item.title,
       width: '3fr',
     },
     {
       id: 'status',
       label: 'Status',
+      sortable: true,
       getValue: (row) => row.item.status,
       width: '1fr',
       render: (value, row) => html`
@@ -96,12 +97,15 @@ export class WorkItemInbox extends WorkItemInboxBase {
     {
       id: 'category',
       label: 'Category',
+      sortable: true,
       getValue: (row) => row.item.category,
       width: '1fr',
     },
     {
       id: 'created',
       label: 'Created',
+      sortable: true,
+      type: 'date',
       getValue: (row) => row.item.createdAt,
       width: '1fr',
       render: (value, row) => {
@@ -125,7 +129,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
     :host {
       display: block;
       container-type: inline-size;
-      background: var(--blocks-neutral-1, #ffffff);
+      background: var(--pages-neutral-1, #ffffff);
       border-radius: 8px;
       overflow: hidden;
     }
@@ -139,9 +143,9 @@ export class WorkItemInbox extends WorkItemInboxBase {
     .tabs {
       display: flex;
       gap: 0;
-      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      border-bottom: 1px solid var(--pages-neutral-6, #e0e0e0);
       padding: 0 16px;
-      background: var(--blocks-neutral-2, #fafafa);
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .tab {
@@ -151,7 +155,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       border-bottom: 2px solid transparent;
       font-size: 14px;
       font-weight: 500;
-      color: var(--blocks-neutral-11, #555555);
+      color: var(--pages-neutral-11, #555555);
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -163,24 +167,24 @@ export class WorkItemInbox extends WorkItemInboxBase {
     }
 
     .tab:hover {
-      color: var(--blocks-neutral-12, #000000);
+      color: var(--pages-neutral-12, #000000);
     }
 
     .tab.active {
-      color: var(--blocks-accent-11, #0066cc);
-      border-bottom-color: var(--blocks-accent-9, #0080ff);
+      color: var(--pages-accent-11, #0066cc);
+      border-bottom-color: var(--pages-accent-9, #0080ff);
     }
 
     .summary-bar {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
-      background: var(--blocks-neutral-2, #fafafa);
+      border-bottom: 1px solid var(--pages-neutral-6, #e0e0e0);
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .filter-bar {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--blocks-neutral-6, #e0e0e0);
-      background: var(--blocks-neutral-2, #fafafa);
+      border-bottom: 1px solid var(--pages-neutral-6, #e0e0e0);
+      background: var(--pages-neutral-2, #fafafa);
     }
 
     .items-list {
@@ -198,7 +202,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       align-items: center;
       justify-content: center;
       padding: 48px 24px;
-      color: var(--blocks-neutral-11, #555555);
+      color: var(--pages-neutral-11, #555555);
       font-size: 14px;
       text-align: center;
     }
@@ -208,13 +212,13 @@ export class WorkItemInbox extends WorkItemInboxBase {
       align-items: center;
       justify-content: center;
       padding: 48px 24px;
-      color: var(--blocks-neutral-11, #555555);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .error {
       padding: 16px;
-      background: var(--blocks-danger-3, #fee);
-      color: var(--blocks-danger-11, #c00);
+      background: var(--pages-danger-3, #fee);
+      color: var(--pages-danger-11, #c00);
       border-radius: 4px;
       margin: 16px;
     }
@@ -271,8 +275,8 @@ export class WorkItemInbox extends WorkItemInboxBase {
       bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--blocks-neutral-1, #ffffff);
-      border: 1px solid var(--blocks-neutral-6, #e0e0e0);
+      background: var(--pages-neutral-1, #ffffff);
+      border: 1px solid var(--pages-neutral-6, #e0e0e0);
       border-radius: 8px;
       padding: 12px 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -285,7 +289,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
     .batch-count {
       font-size: 14px;
       font-weight: 500;
-      color: var(--blocks-neutral-11, #555555);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .batch-button {
@@ -313,30 +317,30 @@ export class WorkItemInbox extends WorkItemInboxBase {
     }
 
     .batch-button.primary {
-      background: var(--blocks-accent-9, #0080ff);
+      background: var(--pages-accent-9, #0080ff);
       color: white;
     }
 
     .batch-button.primary:hover {
-      background: var(--blocks-accent-10, #0066cc);
+      background: var(--pages-accent-10, #0066cc);
     }
 
     .batch-button.danger {
-      background: var(--blocks-danger-9, #ff3333);
+      background: var(--pages-danger-9, #ff3333);
       color: white;
     }
 
     .batch-button.danger:hover {
-      background: var(--blocks-danger-10, #cc0000);
+      background: var(--pages-danger-10, #cc0000);
     }
 
     .batch-button.secondary {
-      background: var(--blocks-neutral-3, #f5f5f5);
-      color: var(--blocks-neutral-11, #555555);
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .batch-button.secondary:hover {
-      background: var(--blocks-neutral-4, #eeeeee);
+      background: var(--pages-neutral-4, #eeeeee);
     }
 
     .batch-button:disabled {
@@ -346,20 +350,20 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
     .tab-count {
       font-size: 11px;
-      color: var(--blocks-neutral-7, #a3a3a3);
+      color: var(--pages-neutral-7, #a3a3a3);
     }
 
     .tab.active .tab-count {
-      color: var(--blocks-accent-9, #0080ff);
+      color: var(--pages-accent-9, #0080ff);
     }
 
     .error-banner {
-      padding: var(--blocks-space-3, 12px) var(--blocks-space-4, 16px);
-      background: var(--blocks-danger-3, #fee);
-      color: var(--blocks-danger-11, #c00);
-      border-radius: var(--blocks-radius-sm, 4px);
-      margin: var(--blocks-space-2, 8px) var(--blocks-space-4, 16px);
-      font-size: var(--blocks-font-size-base, 14px);
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
+      background: var(--pages-danger-3, #fee);
+      color: var(--pages-danger-11, #c00);
+      border-radius: var(--pages-radius-sm, 4px);
+      margin: var(--pages-space-2, 8px) var(--pages-space-4, 16px);
+      font-size: var(--pages-font-size-base, 14px);
     }
 
     .status-pill {
@@ -372,63 +376,63 @@ export class WorkItemInbox extends WorkItemInboxBase {
     }
 
     .status-pill.status-pending {
-      background: var(--blocks-neutral-4, #e5e5e5);
-      color: var(--blocks-neutral-11, #555555);
+      background: var(--pages-neutral-4, #e5e5e5);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .status-pill.status-assigned {
-      background: var(--blocks-info-4, #dbeafe);
-      color: var(--blocks-info-11, #0369a1);
+      background: var(--pages-info-4, #dbeafe);
+      color: var(--pages-info-11, #0369a1);
     }
 
     .status-pill.status-in_progress {
-      background: var(--blocks-accent-4, #cce5ff);
-      color: var(--blocks-accent-11, #0066cc);
+      background: var(--pages-accent-4, #cce5ff);
+      color: var(--pages-accent-11, #0066cc);
     }
 
     .status-pill.status-suspended {
-      background: var(--blocks-warning-4, #fef3c7);
-      color: var(--blocks-warning-11, #92400e);
+      background: var(--pages-warning-4, #fef3c7);
+      color: var(--pages-warning-11, #92400e);
     }
 
     .status-pill.status-delegated {
-      background: var(--blocks-accent-4, #cce5ff);
-      color: var(--blocks-accent-11, #0066cc);
+      background: var(--pages-accent-4, #cce5ff);
+      color: var(--pages-accent-11, #0066cc);
     }
 
     .status-pill.status-completed {
-      background: var(--blocks-success-4, #d1fae5);
-      color: var(--blocks-success-11, #065f46);
+      background: var(--pages-success-4, #d1fae5);
+      color: var(--pages-success-11, #065f46);
     }
 
     .status-pill.status-rejected {
-      background: var(--blocks-danger-4, #fee2e2);
-      color: var(--blocks-danger-11, #991b1b);
+      background: var(--pages-danger-4, #fee2e2);
+      color: var(--pages-danger-11, #991b1b);
     }
 
     .status-pill.status-faulted {
-      background: var(--blocks-danger-4, #fee2e2);
-      color: var(--blocks-danger-11, #991b1b);
+      background: var(--pages-danger-4, #fee2e2);
+      color: var(--pages-danger-11, #991b1b);
     }
 
     .status-pill.status-cancelled {
-      background: var(--blocks-neutral-4, #e5e5e5);
-      color: var(--blocks-neutral-11, #555555);
+      background: var(--pages-neutral-4, #e5e5e5);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .status-pill.status-obsolete {
-      background: var(--blocks-neutral-4, #e5e5e5);
-      color: var(--blocks-neutral-11, #555555);
+      background: var(--pages-neutral-4, #e5e5e5);
+      color: var(--pages-neutral-11, #555555);
     }
 
     .status-pill.status-expired {
-      background: var(--blocks-danger-4, #fee2e2);
-      color: var(--blocks-danger-11, #991b1b);
+      background: var(--pages-danger-4, #fee2e2);
+      color: var(--pages-danger-11, #991b1b);
     }
 
     .status-pill.status-escalated {
-      background: var(--blocks-warning-4, #fef3c7);
-      color: var(--blocks-warning-11, #92400e);
+      background: var(--pages-warning-4, #fef3c7);
+      color: var(--pages-warning-11, #92400e);
     }
   `;
 
@@ -1223,8 +1227,9 @@ export class WorkItemInbox extends WorkItemInboxBase {
           .columns=${this._tableColumns}
           .getRowKey=${(row: WorkItemRootResponse) => row.item.id}
           .getRowClass=${(row: WorkItemRootResponse) => 'priority-' + row.item.priority.toLowerCase()}
-          mode="scroll"
+          mode="auto"
           selection="multi"
+          client-sort
           .selectedKeys=${Array.from(this.selectedItems)}
           @selection-change=${this._handleTableSelection}
           @row-activate=${this._handleTableActivate}
@@ -1272,7 +1277,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
         </button>
 
         ${this.batchError
-          ? html`<span style="color: var(--blocks-danger-11, #cc0000);"
+          ? html`<span style="color: var(--pages-danger-11, #cc0000);"
               >${this.batchError}</span
             >`
           : nothing}

@@ -26,7 +26,6 @@ export class DataTablePage extends LitElement {
   @state() private items: WorkItemRootResponse[] = [];
   @state() private selectedKeys: string[] = [];
   @state() private lastActivated: string = '';
-  @state() private currentMode: 'auto' | 'paginated' | 'scroll' = 'auto';
 
   private columns: ColumnDef<WorkItemRootResponse>[] = [
     { id: 'title', label: 'Title', sortable: true, width: '2fr',
@@ -36,55 +35,48 @@ export class DataTablePage extends LitElement {
       render: (v) => html`<span style="
         display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px;
         font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em;
-        background: var(--blocks-neutral-4, #e5e5e5); color: var(--blocks-neutral-11, #666);
+        background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #666);
       ">${v}</span>` },
     { id: 'priority', label: 'Priority', sortable: true, width: '100px',
       getValue: r => r.item.priority },
     { id: 'category', label: 'Category', sortable: true, width: '140px',
       getValue: r => r.item.category ?? '—' },
-    { id: 'assignee', label: 'Assignee', width: '120px',
+    { id: 'assignee', label: 'Assignee', sortable: true, width: '120px',
       getValue: r => r.item.assigneeId ?? 'Unassigned' },
-    { id: 'created', label: 'Age', type: 'date' as const, width: '80px',
+    { id: 'created', label: 'Age', type: 'date' as const, sortable: true, width: '80px',
       getValue: r => r.item.createdAt,
       render: (v) => relativeTime(v as string) },
   ];
 
   static override styles = css`
     :host { display: block; padding: 24px; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--blocks-neutral-12, #111); }
-    p { margin-bottom: 16px; color: var(--blocks-neutral-11, #555); font-size: 14px; }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin-bottom: 16px; color: var(--pages-neutral-11, #555); font-size: 14px; }
     .demo-section { margin-bottom: 32px; }
-    .demo-section h3 { margin-bottom: 8px; font-size: 16px; font-weight: 500; color: var(--blocks-neutral-12, #111); }
-    .mode-buttons { display: flex; gap: 8px; margin-bottom: 16px; }
-    .mode-btn {
-      padding: 6px 14px; border-radius: 4px; border: 1px solid var(--blocks-neutral-6, #ccc);
-      background: var(--blocks-neutral-1, #fff); cursor: pointer; font-size: 13px;
-      color: var(--blocks-neutral-11, #555);
-    }
-    .mode-btn.active { background: var(--blocks-accent-9, #2563eb); color: white; border-color: var(--blocks-accent-9); }
+    .demo-section h3 { margin-bottom: 8px; font-size: 16px; font-weight: 500; color: var(--pages-neutral-12, #111); }
     .table-container {
-      border: 1px solid var(--blocks-neutral-5, #e0e0e0);
+      border: 1px solid var(--pages-neutral-5, #e0e0e0);
       border-radius: 8px; overflow: hidden; height: 500px;
     }
     .status-bar {
-      padding: 8px 16px; font-size: 12px; color: var(--blocks-neutral-9, #888);
-      border-top: 1px solid var(--blocks-neutral-5, #e0e0e0);
-      background: var(--blocks-neutral-2, #fafafa);
+      padding: 8px 16px; font-size: 12px; color: var(--pages-neutral-9, #888);
+      border-top: 1px solid var(--pages-neutral-5, #e0e0e0);
+      background: var(--pages-neutral-2, #fafafa);
     }
     pages-data-table::part(row) {
       border-left: 3px solid transparent;
     }
     pages-data-table::part(priority-urgent) {
-      border-left-color: var(--blocks-danger-9, #dc2626);
+      border-left-color: var(--pages-danger-9, #dc2626);
     }
     pages-data-table::part(priority-high) {
-      border-left-color: var(--blocks-warning-9, #d97706);
+      border-left-color: var(--pages-warning-9, #d97706);
     }
     pages-data-table::part(priority-medium) {
-      border-left-color: var(--blocks-accent-9, #2563eb);
+      border-left-color: var(--pages-accent-9, #2563eb);
     }
     pages-data-table::part(priority-low) {
-      border-left-color: var(--blocks-neutral-7, #a3a3a3);
+      border-left-color: var(--pages-neutral-7, #a3a3a3);
     }
   `;
 
@@ -111,27 +103,17 @@ export class DataTablePage extends LitElement {
          Uses CSS Grid rendering and virtual scrolling. Keyboard navigable (arrows, Enter, Space, Escape).</p>
 
       <div class="demo-section">
-        <h3>Display Mode</h3>
-        <div class="mode-buttons">
-          <button class="mode-btn ${this.currentMode === 'auto' ? 'active' : ''}"
-            @click=${() => { this.currentMode = 'auto'; }}>Auto</button>
-          <button class="mode-btn ${this.currentMode === 'paginated' ? 'active' : ''}"
-            @click=${() => { this.currentMode = 'paginated'; }}>Paginated</button>
-          <button class="mode-btn ${this.currentMode === 'scroll' ? 'active' : ''}"
-            @click=${() => { this.currentMode = 'scroll'; }}>Scroll</button>
-        </div>
-
         <div class="table-container">
           <pages-data-table
             .rows=${this.items}
             .columns=${this.columns as ColumnDef[]}
             .getRowKey=${(r: unknown) => (r as WorkItemRootResponse).item.id}
             .getRowClass=${(r: unknown) => 'priority-' + (r as WorkItemRootResponse).item.priority.toLowerCase()}
-            .mode=${this.currentMode}
+            mode="auto"
             .pageSize=${10}
             selection="multi"
             .selectedKeys=${this.selectedKeys}
-            .clientSort=${true}
+            client-sort
             @selection-change=${this.handleSelection}
             @row-activate=${this.handleActivate}
           ></pages-data-table>

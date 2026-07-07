@@ -57,86 +57,86 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   @state() private _error: string | null = null;
 
   static override styles = css`
-    :host { display: block; font-family: var(--blocks-font-family, system-ui); }
+    :host { display: block; font-family: var(--pages-font-family, system-ui); }
 
     .grid {
       display: grid;
-      gap: var(--blocks-space-3, 12px);
+      gap: var(--pages-space-3, 12px);
     }
 
     .empty {
       text-align: center;
-      padding: var(--blocks-space-6, 24px);
-      color: var(--blocks-neutral-9, #888);
-      font-size: var(--blocks-font-size-base, 14px);
+      padding: var(--pages-space-6, 24px);
+      color: var(--pages-neutral-9, #888);
+      font-size: var(--pages-font-size-base, 14px);
     }
 
     .error {
       text-align: center;
-      padding: var(--blocks-space-4, 16px);
-      color: var(--blocks-danger-9, #dc2626);
-      font-size: var(--blocks-font-size-sm, 12px);
+      padding: var(--pages-space-4, 16px);
+      color: var(--pages-danger-9, #dc2626);
+      font-size: var(--pages-font-size-sm, 12px);
     }
 
     .card {
-      background: var(--blocks-neutral-2, #fafafa);
-      border-radius: var(--blocks-radius-md, 6px);
-      padding: var(--blocks-space-4, 16px);
+      background: var(--pages-neutral-2, #fafafa);
+      border-radius: var(--pages-radius-md, 6px);
+      padding: var(--pages-space-4, 16px);
       border-left: 3px solid transparent;
       cursor: pointer;
-      transition: background var(--blocks-duration-fast, 120ms) var(--blocks-ease-out);
+      transition: background var(--pages-duration-fast, 120ms) var(--pages-ease-out);
       outline: none;
     }
 
-    .card:hover { background: var(--blocks-neutral-3, #f5f5f5); }
-    .card:focus-visible { outline: 2px solid var(--blocks-accent-9, #2563eb); outline-offset: 2px; }
+    .card:hover { background: var(--pages-neutral-3, #f5f5f5); }
+    .card:focus-visible { outline: 2px solid var(--pages-accent-9, #2563eb); outline-offset: 2px; }
 
-    .card.status-normal { border-left-color: var(--blocks-success-9, #16a34a); }
-    .card.status-warning { border-left-color: var(--blocks-warning-9, #d97706); }
-    .card.status-critical { border-left-color: var(--blocks-danger-9, #dc2626); }
+    .card.status-normal { border-left-color: var(--pages-success-9, #16a34a); }
+    .card.status-warning { border-left-color: var(--pages-warning-9, #d97706); }
+    .card.status-critical { border-left-color: var(--pages-danger-9, #dc2626); }
 
-    .value-row { display: flex; align-items: baseline; gap: var(--blocks-space-1, 4px); }
+    .value-row { display: flex; align-items: baseline; gap: var(--pages-space-1, 4px); }
 
     .value {
-      font-size: var(--blocks-font-size-2xl, 24px);
-      font-weight: var(--blocks-font-weight-bold, 700);
-      color: var(--blocks-neutral-12, #111);
+      font-size: var(--pages-font-size-2xl, 24px);
+      font-weight: var(--pages-font-weight-bold, 700);
+      color: var(--pages-neutral-12, #111);
       font-variant-numeric: tabular-nums;
     }
 
     .unit {
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-9, #888);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-9, #888);
     }
 
     .label {
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-9, #888);
-      margin-top: var(--blocks-space-1, 4px);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-9, #888);
+      margin-top: var(--pages-space-1, 4px);
     }
 
     .trend {
       display: inline-flex;
       align-items: center;
-      gap: var(--blocks-space-0.5, 2px);
-      font-size: var(--blocks-font-size-xs, 11px);
-      margin-top: var(--blocks-space-1, 4px);
+      gap: var(--pages-space-0-5, 2px);
+      font-size: var(--pages-font-size-xs, 11px);
+      margin-top: var(--pages-space-1, 4px);
     }
 
-    .trend.up { color: var(--blocks-success-9, #16a34a); }
-    .trend.down { color: var(--blocks-danger-9, #dc2626); }
-    .trend.stable { color: var(--blocks-neutral-9, #888); }
+    .trend.up { color: var(--pages-success-9, #16a34a); }
+    .trend.down { color: var(--pages-danger-9, #dc2626); }
+    .trend.stable { color: var(--pages-neutral-9, #888); }
 
-    .sparkline { margin-top: var(--blocks-space-2, 8px); }
-    .card.status-warning .sparkline { color: var(--blocks-warning-9, #d97706); }
-    .card.status-critical .sparkline { color: var(--blocks-danger-9, #dc2626); }
-    .card.status-normal .sparkline { color: var(--blocks-success-9, #16a34a); }
-    .sparkline { color: var(--blocks-accent-9, #2563eb); }
+    .sparkline { margin-top: var(--pages-space-2, 8px); }
+    .card.status-warning .sparkline { color: var(--pages-warning-9, #d97706); }
+    .card.status-critical .sparkline { color: var(--pages-danger-9, #dc2626); }
+    .card.status-normal .sparkline { color: var(--pages-success-9, #16a34a); }
+    .sparkline { color: var(--pages-accent-9, #2563eb); }
 
     .skeleton-card {
-      background: var(--blocks-neutral-3, #f5f5f5);
-      border-radius: var(--blocks-radius-md, 6px);
-      padding: var(--blocks-space-4, 16px);
+      background: var(--pages-neutral-3, #f5f5f5);
+      border-radius: var(--pages-radius-md, 6px);
+      padding: var(--pages-space-4, 16px);
       min-height: 80px;
       animation: shimmer 1.5s ease-in-out infinite;
     }

@@ -28,97 +28,97 @@ export class BlocksConfirmDialog extends FocusTrapMixin(LitElement) {
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      animation: fade-in var(--blocks-duration-fast, 120ms) var(--blocks-ease-out);
+      animation: fade-in var(--pages-duration-fast, 120ms) var(--pages-ease-out);
     }
 
     .dialog {
-      background: var(--blocks-neutral-1, #fff);
-      border-radius: var(--blocks-radius-lg, 8px);
-      box-shadow: var(--blocks-elevation-3, 0 8px 30px oklch(0 0 0 / 0.12));
-      padding: var(--blocks-space-6, 24px);
+      background: var(--pages-neutral-1, #fff);
+      border-radius: var(--pages-radius-lg, 8px);
+      box-shadow: var(--pages-elevation-3, 0 8px 30px oklch(0 0 0 / 0.12));
+      padding: var(--pages-space-6, 24px);
       min-width: 320px;
       max-width: 480px;
-      animation: scale-in var(--blocks-duration-normal, 200ms) var(--blocks-ease-out);
+      animation: scale-in var(--pages-duration-normal, 200ms) var(--pages-ease-out);
     }
 
     .heading {
-      margin: 0 0 var(--blocks-space-2, 8px);
-      font-size: var(--blocks-font-size-lg, 16px);
-      font-weight: var(--blocks-font-weight-semibold, 600);
-      color: var(--blocks-neutral-12, #111);
+      margin: 0 0 var(--pages-space-2, 8px);
+      font-size: var(--pages-font-size-lg, 16px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      color: var(--pages-neutral-12, #111);
     }
 
     .message {
-      color: var(--blocks-neutral-11, #666);
-      font-size: var(--blocks-font-size-base, 14px);
-      line-height: var(--blocks-line-height-relaxed, 1.6);
-      margin-bottom: var(--blocks-space-5, 20px);
+      color: var(--pages-neutral-11, #666);
+      font-size: var(--pages-font-size-base, 14px);
+      line-height: var(--pages-line-height-relaxed, 1.6);
+      margin-bottom: var(--pages-space-5, 20px);
     }
 
     textarea {
       width: 100%;
       min-height: 60px;
-      padding: var(--blocks-space-2, 8px);
-      border: 1px solid var(--blocks-neutral-6, #ccc);
-      border-radius: var(--blocks-radius-sm, 4px);
+      padding: var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-6, #ccc);
+      border-radius: var(--pages-radius-sm, 4px);
       font-family: inherit;
-      font-size: var(--blocks-font-size-base, 14px);
+      font-size: var(--pages-font-size-base, 14px);
       resize: vertical;
-      margin-bottom: var(--blocks-space-4, 16px);
-      background: var(--blocks-neutral-1, #fff);
-      color: var(--blocks-neutral-12, #111);
+      margin-bottom: var(--pages-space-4, 16px);
+      background: var(--pages-neutral-1, #fff);
+      color: var(--pages-neutral-12, #111);
     }
 
     textarea:focus {
-      outline: 2px solid var(--blocks-accent-9, #2563eb);
+      outline: 2px solid var(--pages-accent-9, #2563eb);
       outline-offset: -1px;
-      border-color: var(--blocks-accent-9, #2563eb);
+      border-color: var(--pages-accent-9, #2563eb);
     }
 
     .actions {
       display: flex;
       justify-content: flex-end;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     button {
-      padding: var(--blocks-space-1.5, 6px) var(--blocks-space-4, 16px);
-      border-radius: var(--blocks-radius-sm, 4px);
-      font-size: var(--blocks-font-size-base, 14px);
-      font-weight: var(--blocks-font-weight-medium, 500);
+      padding: var(--pages-space-1-5, 6px) var(--pages-space-4, 16px);
+      border-radius: var(--pages-radius-sm, 4px);
+      font-size: var(--pages-font-size-base, 14px);
+      font-weight: var(--pages-font-weight-medium, 500);
       cursor: pointer;
       border: 1px solid transparent;
-      transition: background var(--blocks-duration-fast, 120ms) var(--blocks-ease-out);
+      transition: background var(--pages-duration-fast, 120ms) var(--pages-ease-out);
     }
 
     .btn-cancel {
-      background: var(--blocks-neutral-3, #f5f5f5);
-      color: var(--blocks-neutral-11, #666);
-      border-color: var(--blocks-neutral-6, #ccc);
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-11, #666);
+      border-color: var(--pages-neutral-6, #ccc);
     }
 
-    .btn-cancel:hover { background: var(--blocks-neutral-4, #e5e5e5); }
+    .btn-cancel:hover { background: var(--pages-neutral-4, #e5e5e5); }
 
     .btn-confirm.variant-danger {
-      background: var(--blocks-danger-9, #dc2626);
+      background: var(--pages-danger-9, #dc2626);
       color: #fff;
     }
 
-    .btn-confirm.variant-danger:hover { background: var(--blocks-danger-10, #b91c1c); }
+    .btn-confirm.variant-danger:hover { background: var(--pages-danger-10, #b91c1c); }
 
     .btn-confirm.variant-success {
-      background: var(--blocks-success-9, #16a34a);
+      background: var(--pages-success-9, #16a34a);
       color: #fff;
     }
 
-    .btn-confirm.variant-success:hover { background: var(--blocks-success-10, #15803d); }
+    .btn-confirm.variant-success:hover { background: var(--pages-success-10, #15803d); }
 
     .btn-confirm.variant-neutral {
-      background: var(--blocks-neutral-9, #888);
+      background: var(--pages-neutral-9, #888);
       color: #fff;
     }
 
-    .btn-confirm.variant-neutral:hover { background: var(--blocks-neutral-10, #666); }
+    .btn-confirm.variant-neutral:hover { background: var(--pages-neutral-10, #666); }
 
     @keyframes fade-in { from { opacity: 0; } }
     @keyframes scale-in { from { transform: scale(0.95); opacity: 0; } }

@@ -32,7 +32,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       display: block;
       height: 100%;
       width: 100%;
-      font-family: var(--blocks-font-family, system-ui);
+      font-family: var(--pages-font-family, system-ui);
       overflow: hidden;
       container-type: inline-size;
     }
@@ -42,7 +42,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       flex-direction: column;
       height: 100%;
       width: 100%;
-      background: var(--blocks-neutral-1, #fafafa);
+      background: var(--pages-neutral-1, #fafafa);
     }
 
     .split-pane {
@@ -58,8 +58,8 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
       width: calc(var(--divider-ratio, 50%) * 100%);
       min-width: 320px;
       max-width: 70%;
-      border-right: 1px solid var(--blocks-neutral-4, #d4d4d4);
-      background: var(--blocks-neutral-2, #f5f5f5);
+      border-right: 1px solid var(--pages-neutral-4, #d4d4d4);
+      background: var(--pages-neutral-2, #f5f5f5);
     }
 
     .panel-content {
@@ -69,7 +69,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
     .divider {
       width: 4px;
-      background: var(--blocks-neutral-3, #e5e5e5);
+      background: var(--pages-neutral-3, #e5e5e5);
       cursor: col-resize;
       flex-shrink: 0;
       position: relative;
@@ -77,38 +77,38 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
     .divider:hover,
     .divider.dragging {
-      background: var(--blocks-accent-9, #3b82f6);
+      background: var(--pages-accent-9, #3b82f6);
     }
 
     .right-panel {
       flex: 1;
       overflow: hidden;
-      background: var(--blocks-neutral-1, #fafafa);
+      background: var(--pages-neutral-1, #fafafa);
     }
 
     .keyboard-hints {
       display: flex;
-      gap: var(--blocks-space-4, 16px);
-      padding: var(--blocks-space-2, 8px) var(--blocks-space-4, 16px);
-      background: var(--blocks-neutral-2, #f5f5f5);
-      border-top: 1px solid var(--blocks-neutral-4, #d4d4d4);
-      font-size: var(--blocks-font-size-sm, 12px);
-      color: var(--blocks-neutral-7, #525252);
+      gap: var(--pages-space-4, 16px);
+      padding: var(--pages-space-2, 8px) var(--pages-space-4, 16px);
+      background: var(--pages-neutral-2, #f5f5f5);
+      border-top: 1px solid var(--pages-neutral-4, #d4d4d4);
+      font-size: var(--pages-font-size-sm, 12px);
+      color: var(--pages-neutral-7, #525252);
       overflow-x: auto;
     }
 
     .hint {
       display: flex;
       align-items: center;
-      gap: var(--blocks-space-1, 4px);
+      gap: var(--pages-space-1, 4px);
       white-space: nowrap;
     }
 
     .key {
       display: inline-block;
       padding: 2px 6px;
-      background: var(--blocks-neutral-3, #e5e5e5);
-      border: 1px solid var(--blocks-neutral-5, #a3a3a3);
+      background: var(--pages-neutral-3, #e5e5e5);
+      border: 1px solid var(--pages-neutral-5, #a3a3a3);
       border-radius: 3px;
       font-family: monospace;
       font-size: 11px;
@@ -129,39 +129,39 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
     }
 
     .shortcut-panel {
-      background: var(--blocks-neutral-1, #fafafa);
-      border: 1px solid var(--blocks-neutral-4, #d4d4d4);
+      background: var(--pages-neutral-1, #fafafa);
+      border: 1px solid var(--pages-neutral-4, #d4d4d4);
       border-radius: 8px;
-      padding: var(--blocks-space-4, 16px);
+      padding: var(--pages-space-4, 16px);
       max-width: 600px;
       max-height: 80vh;
       overflow-y: auto;
     }
 
     .shortcut-title {
-      font-size: var(--blocks-font-size-lg, 16px);
+      font-size: var(--pages-font-size-lg, 16px);
       font-weight: 600;
-      margin-bottom: var(--blocks-space-3, 12px);
-      color: var(--blocks-neutral-11, #0a0a0a);
+      margin-bottom: var(--pages-space-3, 12px);
+      color: var(--pages-neutral-11, #0a0a0a);
     }
 
     .shortcut-list {
       display: flex;
       flex-direction: column;
-      gap: var(--blocks-space-2, 8px);
+      gap: var(--pages-space-2, 8px);
     }
 
     .shortcut-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--blocks-space-2, 8px);
-      background: var(--blocks-neutral-2, #f5f5f5);
+      padding: var(--pages-space-2, 8px);
+      background: var(--pages-neutral-2, #f5f5f5);
       border-radius: 4px;
     }
 
     .shortcut-desc {
-      color: var(--blocks-neutral-9, #262626);
+      color: var(--pages-neutral-9, #262626);
     }
 
     /* Responsive breakpoints */
@@ -180,7 +180,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
         width: 100%;
         max-width: none;
         border-right: none;
-        border-bottom: 1px solid var(--blocks-neutral-4, #d4d4d4);
+        border-bottom: 1px solid var(--pages-neutral-4, #d4d4d4);
       }
 
       .divider {
