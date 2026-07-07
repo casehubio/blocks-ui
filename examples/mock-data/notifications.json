@@ -1,0 +1,362 @@
+[
+  {
+    "id": "notif-001",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-2847 assigned to you",
+    "body": "High-value transaction review requiring L2 investigation",
+    "category": "assignment.changed",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-2847",
+    "source": {
+      "eventId": "evt-a001",
+      "entityType": "work-item",
+      "entityId": "WI-2847",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T08:15:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-002",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "SLA breach on case CS-1205",
+    "body": "Response deadline exceeded by 2 hours. Escalation triggered.",
+    "category": "sla.breached",
+    "severity": "URGENT",
+    "actionUrl": "/workitems/CS-1205",
+    "source": {
+      "eventId": "evt-a002",
+      "entityType": "work-item",
+      "entityId": "CS-1205",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T07:45:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-003",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Comment on WI-3102: review findings",
+    "body": "Sarah Chen: \"Identified additional risk factors in the counterparty analysis\"",
+    "category": "comment.added",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-3102",
+    "source": {
+      "eventId": "evt-a003",
+      "entityType": "work-item",
+      "entityId": "WI-3102",
+      "actorId": "analyst-sarah-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T07:30:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-004",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-4501 created in compliance queue",
+    "body": null,
+    "category": "work-item.created",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-4501",
+    "source": {
+      "eventId": "evt-a004",
+      "entityType": "work-item",
+      "entityId": "WI-4501",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T07:00:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-005",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Critical SLA breach: WI-1890 overdue by 4 hours",
+    "body": "Clinical review has exceeded maximum response time. Patient safety protocol activated.",
+    "category": "sla.breached",
+    "severity": "URGENT",
+    "actionUrl": "/workitems/WI-1890",
+    "source": {
+      "eventId": "evt-a005",
+      "entityType": "work-item",
+      "entityId": "WI-1890",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T06:30:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-006",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "WI-3205 reassigned from Mike Chen to you",
+    "body": "AML investigation requires your L2 clearance",
+    "category": "assignment.changed",
+    "severity": "WARNING",
+    "actionUrl": "/workitems/WI-3205",
+    "source": {
+      "eventId": "evt-a006",
+      "entityType": "work-item",
+      "entityId": "WI-3205",
+      "actorId": "analyst-mike-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T06:00:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-007",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-2103 completed",
+    "body": "Transaction review closed with disposition: no further action",
+    "category": "work-item.completed",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-2103",
+    "source": {
+      "eventId": "evt-a007",
+      "entityType": "work-item",
+      "entityId": "WI-2103",
+      "actorId": "analyst-sarah-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T05:45:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-008",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Comment on WI-2847: additional documents uploaded",
+    "body": null,
+    "category": "comment.added",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-2847",
+    "source": {
+      "eventId": "evt-a008",
+      "entityType": "work-item",
+      "entityId": "WI-2847",
+      "actorId": "analyst-mike-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T05:15:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-009",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Urgent work item created: WI-5002",
+    "body": "Suspicious activity report filed by branch manager — requires immediate triage",
+    "category": "work-item.created",
+    "severity": "WARNING",
+    "actionUrl": "/workitems/WI-5002",
+    "source": {
+      "eventId": "evt-a009",
+      "entityType": "work-item",
+      "entityId": "WI-5002",
+      "actorId": "branch-mgr-jones"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T04:30:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-010",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "SLA warning: WI-3102 approaching deadline",
+    "body": "2 hours remaining before SLA breach",
+    "category": "sla.breached",
+    "severity": "WARNING",
+    "actionUrl": "/workitems/WI-3102",
+    "source": {
+      "eventId": "evt-a010",
+      "entityType": "work-item",
+      "entityId": "WI-3102",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T04:00:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-011",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-1650 assigned to you",
+    "body": "Device calibration check — quarterly maintenance cycle",
+    "category": "assignment.changed",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-1650",
+    "source": {
+      "eventId": "evt-a011",
+      "entityType": "work-item",
+      "entityId": "WI-1650",
+      "actorId": "system"
+    },
+    "status": "READ",
+    "createdAt": "2026-07-06T03:00:00Z",
+    "readAt": "2026-07-06T03:15:00Z",
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-012",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Comment on WI-4501: clarification needed",
+    "body": "Dr. Patel: \"Can you confirm the dosage threshold for this alert?\"",
+    "category": "comment.added",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-4501",
+    "source": {
+      "eventId": "evt-a012",
+      "entityType": "work-item",
+      "entityId": "WI-4501",
+      "actorId": "physician-dr-patel"
+    },
+    "status": "READ",
+    "createdAt": "2026-07-06T02:30:00Z",
+    "readAt": "2026-07-06T02:45:00Z",
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-013",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-0987 completed",
+    "body": null,
+    "category": "work-item.completed",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-0987",
+    "source": {
+      "eventId": "evt-a013",
+      "entityType": "work-item",
+      "entityId": "WI-0987",
+      "actorId": "demo-user"
+    },
+    "status": "READ",
+    "createdAt": "2026-07-06T01:00:00Z",
+    "readAt": "2026-07-06T01:30:00Z",
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-014",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "WI-2201 reassigned to compliance team",
+    "body": "Investigation scope expanded — additional team members required",
+    "category": "assignment.changed",
+    "severity": "WARNING",
+    "actionUrl": "/workitems/WI-2201",
+    "source": {
+      "eventId": "evt-a014",
+      "entityType": "work-item",
+      "entityId": "WI-2201",
+      "actorId": "analyst-susan-lee"
+    },
+    "status": "DISMISSED",
+    "createdAt": "2026-07-05T22:00:00Z",
+    "readAt": "2026-07-05T22:10:00Z",
+    "dismissedAt": "2026-07-05T22:15:00Z"
+  },
+  {
+    "id": "notif-015",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-1102 created in clinical queue",
+    "body": null,
+    "category": "work-item.created",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-1102",
+    "source": {
+      "eventId": "evt-a015",
+      "entityType": "work-item",
+      "entityId": "WI-1102",
+      "actorId": "system"
+    },
+    "status": "DISMISSED",
+    "createdAt": "2026-07-05T20:00:00Z",
+    "readAt": "2026-07-05T20:30:00Z",
+    "dismissedAt": "2026-07-05T21:00:00Z"
+  },
+  {
+    "id": "notif-016",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "New urgent work item WI-5100 requires triage",
+    "body": "Regulatory filing deadline in 48 hours — compliance review required",
+    "category": "work-item.created",
+    "severity": "URGENT",
+    "actionUrl": "/workitems/WI-5100",
+    "source": {
+      "eventId": "evt-a016",
+      "entityType": "work-item",
+      "entityId": "WI-5100",
+      "actorId": "system"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T03:30:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-017",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Work item WI-3890 completed successfully",
+    "body": "Quarterly audit report submitted and approved",
+    "category": "work-item.completed",
+    "severity": "INFO",
+    "actionUrl": "/workitems/WI-3890",
+    "source": {
+      "eventId": "evt-a017",
+      "entityType": "work-item",
+      "entityId": "WI-3890",
+      "actorId": "analyst-sarah-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T02:00:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  },
+  {
+    "id": "notif-018",
+    "userId": "demo-user",
+    "tenancyId": "tenant-001",
+    "title": "Comment on WI-5002: risk assessment attached",
+    "body": null,
+    "category": "comment.added",
+    "severity": "WARNING",
+    "actionUrl": "/workitems/WI-5002",
+    "source": {
+      "eventId": "evt-a018",
+      "entityType": "work-item",
+      "entityId": "WI-5002",
+      "actorId": "analyst-mike-chen"
+    },
+    "status": "UNREAD",
+    "createdAt": "2026-07-06T01:30:00Z",
+    "readAt": null,
+    "dismissedAt": null
+  }
+]

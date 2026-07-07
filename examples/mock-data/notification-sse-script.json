@@ -1,0 +1,177 @@
+[
+  {
+    "delaySeconds": 3,
+    "eventName": "notification",
+    "data": {
+      "id": "notif-sse-001",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "SLA breach on case CS-2210",
+      "body": "Response deadline exceeded. Immediate attention required.",
+      "category": "sla.breached",
+      "severity": "URGENT",
+      "actionUrl": "/workitems/CS-2210",
+      "source": {
+        "eventId": "evt-sse-001",
+        "entityType": "work-item",
+        "entityId": "CS-2210",
+        "actorId": "system"
+      },
+      "status": "UNREAD",
+      "createdAt": "2026-07-06T09:00:00Z",
+      "readAt": null,
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 7,
+    "eventName": "notification",
+    "data": {
+      "id": "notif-sse-002",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "Comment on WI-2847: investigation update",
+      "body": "Mike Chen: \"Found matching patterns in prior cases\"",
+      "category": "comment.added",
+      "severity": "INFO",
+      "actionUrl": "/workitems/WI-2847",
+      "source": {
+        "eventId": "evt-sse-002",
+        "entityType": "work-item",
+        "entityId": "WI-2847",
+        "actorId": "analyst-mike-chen"
+      },
+      "status": "UNREAD",
+      "createdAt": "2026-07-06T09:05:00Z",
+      "readAt": null,
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 12,
+    "eventName": "notification-updated",
+    "data": {
+      "id": "notif-004",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "Work item WI-4501 created in compliance queue",
+      "body": null,
+      "category": "work-item.created",
+      "severity": "INFO",
+      "actionUrl": "/workitems/WI-4501",
+      "source": {
+        "eventId": "evt-a004",
+        "entityType": "work-item",
+        "entityId": "WI-4501",
+        "actorId": "system"
+      },
+      "status": "READ",
+      "createdAt": "2026-07-06T07:00:00Z",
+      "readAt": "2026-07-06T09:10:00Z",
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 18,
+    "eventName": "notification",
+    "data": {
+      "id": "notif-sse-003",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "WI-6001 reassigned from compliance to you",
+      "body": "Requires your specific domain expertise",
+      "category": "assignment.changed",
+      "severity": "WARNING",
+      "actionUrl": "/workitems/WI-6001",
+      "source": {
+        "eventId": "evt-sse-003",
+        "entityType": "work-item",
+        "entityId": "WI-6001",
+        "actorId": "analyst-susan-lee"
+      },
+      "status": "UNREAD",
+      "createdAt": "2026-07-06T09:15:00Z",
+      "readAt": null,
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 25,
+    "eventName": "unread-count",
+    "data": {
+      "count": 15
+    }
+  },
+  {
+    "delaySeconds": 30,
+    "eventName": "notification",
+    "data": {
+      "id": "notif-sse-004",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "Work item WI-7200 created: regulatory filing",
+      "body": "Annual compliance report due — 5 business days remaining",
+      "category": "work-item.created",
+      "severity": "INFO",
+      "actionUrl": "/workitems/WI-7200",
+      "source": {
+        "eventId": "evt-sse-004",
+        "entityType": "work-item",
+        "entityId": "WI-7200",
+        "actorId": "system"
+      },
+      "status": "UNREAD",
+      "createdAt": "2026-07-06T09:25:00Z",
+      "readAt": null,
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 38,
+    "eventName": "notification-updated",
+    "data": {
+      "id": "notif-002",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "SLA breach on case CS-1205",
+      "body": "Response deadline exceeded by 2 hours. Escalation triggered.",
+      "category": "sla.breached",
+      "severity": "URGENT",
+      "actionUrl": "/workitems/CS-1205",
+      "source": {
+        "eventId": "evt-a002",
+        "entityType": "work-item",
+        "entityId": "CS-1205",
+        "actorId": "system"
+      },
+      "status": "READ",
+      "createdAt": "2026-07-06T07:45:00Z",
+      "readAt": "2026-07-06T09:30:00Z",
+      "dismissedAt": null
+    }
+  },
+  {
+    "delaySeconds": 45,
+    "eventName": "notification",
+    "data": {
+      "id": "notif-sse-005",
+      "userId": "demo-user",
+      "tenancyId": "tenant-001",
+      "title": "Critical: SLA breach on WI-8100",
+      "body": "Patient discharge review overdue — clinical safety protocol triggered",
+      "category": "sla.breached",
+      "severity": "URGENT",
+      "actionUrl": "/workitems/WI-8100",
+      "source": {
+        "eventId": "evt-sse-005",
+        "entityType": "work-item",
+        "entityId": "WI-8100",
+        "actorId": "system"
+      },
+      "status": "UNREAD",
+      "createdAt": "2026-07-06T09:40:00Z",
+      "readAt": null,
+      "dismissedAt": null
+    }
+  }
+]

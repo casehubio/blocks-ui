@@ -1,0 +1,134 @@
+[
+  {
+    "id": "sub-001",
+    "ownerId": "demo-user",
+    "tenancyId": "tenant-001",
+    "name": "My assignments",
+    "eventType": "io.casehub.work.workitem.assigned",
+    "constraints": [
+      { "field": "assigneeId", "op": "EQ", "value": "$me" }
+    ],
+    "targets": [
+      { "type": "USER", "id": "demo-user" }
+    ],
+    "includeActor": false,
+    "template": {
+      "titlePattern": "Work item ${entityId} assigned to you",
+      "bodyPattern": null,
+      "severity": "INFO",
+      "category": "assignment.changed",
+      "actionUrlPattern": "/workitems/${entityId}",
+      "entityType": "work-item",
+      "entityIdField": "workItemId",
+      "actorIdField": "actorId"
+    },
+    "enabled": true,
+    "createdAt": "2026-06-01T10:00:00Z",
+    "updatedAt": "2026-06-15T14:30:00Z"
+  },
+  {
+    "id": "sub-002",
+    "ownerId": "demo-user",
+    "tenancyId": "tenant-001",
+    "name": "SLA breaches",
+    "eventType": "io.casehub.work.sla.breached",
+    "constraints": [],
+    "targets": [
+      { "type": "USER", "id": "demo-user" }
+    ],
+    "includeActor": true,
+    "template": {
+      "titlePattern": "SLA breach on ${entityId}",
+      "bodyPattern": "Response deadline exceeded. Escalation triggered.",
+      "severity": "URGENT",
+      "category": "sla.breached",
+      "actionUrlPattern": "/workitems/${entityId}",
+      "entityType": "work-item",
+      "entityIdField": "workItemId",
+      "actorIdField": "actorId"
+    },
+    "enabled": true,
+    "createdAt": "2026-06-01T10:05:00Z",
+    "updatedAt": "2026-06-01T10:05:00Z"
+  },
+  {
+    "id": "sub-003",
+    "ownerId": "demo-user",
+    "tenancyId": "tenant-001",
+    "name": "Team comments",
+    "eventType": "io.casehub.work.comment.added",
+    "constraints": [
+      { "field": "groupId", "op": "IN", "value": "compliance,clinical-safety" }
+    ],
+    "targets": [
+      { "type": "GROUP", "id": "compliance" },
+      { "type": "GROUP", "id": "clinical-safety" }
+    ],
+    "includeActor": false,
+    "template": {
+      "titlePattern": "Comment on ${entityId}",
+      "bodyPattern": "${actorName}: \"${commentPreview}\"",
+      "severity": "INFO",
+      "category": "comment.added",
+      "actionUrlPattern": "/workitems/${entityId}",
+      "entityType": "work-item",
+      "entityIdField": "workItemId",
+      "actorIdField": "actorId"
+    },
+    "enabled": true,
+    "createdAt": "2026-06-05T09:00:00Z",
+    "updatedAt": "2026-06-20T11:15:00Z"
+  },
+  {
+    "id": "sub-004",
+    "ownerId": "demo-user",
+    "tenancyId": "tenant-001",
+    "name": "Urgent work items",
+    "eventType": "io.casehub.work.workitem.created",
+    "constraints": [
+      { "field": "priority", "op": "EQ", "value": "URGENT" }
+    ],
+    "targets": [
+      { "type": "USER", "id": "demo-user" }
+    ],
+    "includeActor": true,
+    "template": {
+      "titlePattern": "New urgent work item ${entityId} requires triage",
+      "bodyPattern": "${description}",
+      "severity": "URGENT",
+      "category": "work-item.created",
+      "actionUrlPattern": "/workitems/${entityId}",
+      "entityType": "work-item",
+      "entityIdField": "workItemId",
+      "actorIdField": "actorId"
+    },
+    "enabled": true,
+    "createdAt": "2026-06-10T16:00:00Z",
+    "updatedAt": "2026-06-10T16:00:00Z"
+  },
+  {
+    "id": "sub-005",
+    "ownerId": "demo-user",
+    "tenancyId": "tenant-001",
+    "name": "Completed work items (paused)",
+    "eventType": "io.casehub.work.workitem.completed",
+    "constraints": [],
+    "targets": [
+      { "type": "USER", "id": "demo-user" }
+    ],
+    "includeActor": false,
+    "template": {
+      "titlePattern": "Work item ${entityId} completed",
+      "bodyPattern": null,
+      "severity": "INFO",
+      "category": "work-item.completed",
+      "actionUrlPattern": "/workitems/${entityId}",
+      "entityType": "work-item",
+      "entityIdField": "workItemId",
+      "actorIdField": "actorId"
+    },
+    "enabled": false,
+    "createdAt": "2026-06-12T08:00:00Z",
+    "updatedAt": "2026-06-25T09:30:00Z"
+  }
+]

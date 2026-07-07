@@ -1,0 +1,57 @@
+[
+  {
+    "eventType": "io.casehub.work.workitem.created",
+    "displayName": "Work Item Created",
+    "description": "Fired when a new work item is created in any queue",
+    "fields": [
+      { "name": "workItemId", "type": "string", "description": "Work item identifier", "enumValues": null },
+      { "name": "category", "type": "string", "description": "Work item category", "enumValues": ["AML_INVESTIGATION", "CLINICAL_REVIEW", "DEVICE_MAINTENANCE", "REGULATORY_FILING", "CODE_REVIEW"] },
+      { "name": "priority", "type": "string", "description": "Priority level", "enumValues": ["LOW", "NORMAL", "HIGH", "URGENT"] },
+      { "name": "candidateGroups", "type": "string", "description": "Comma-separated group identifiers", "enumValues": null },
+      { "name": "description", "type": "string", "description": "Work item description text", "enumValues": null }
+    ]
+  },
+  {
+    "eventType": "io.casehub.work.workitem.completed",
+    "displayName": "Work Item Completed",
+    "description": "Fired when a work item reaches terminal state",
+    "fields": [
+      { "name": "workItemId", "type": "string", "description": "Work item identifier", "enumValues": null },
+      { "name": "resolution", "type": "string", "description": "Resolution summary", "enumValues": null },
+      { "name": "outcome", "type": "string", "description": "Outcome disposition", "enumValues": ["APPROVED", "REJECTED", "ESCALATED", "NO_ACTION"] }
+    ]
+  },
+  {
+    "eventType": "io.casehub.work.workitem.assigned",
+    "displayName": "Work Item Assigned",
+    "description": "Fired when a work item is claimed or assigned to a user",
+    "fields": [
+      { "name": "workItemId", "type": "string", "description": "Work item identifier", "enumValues": null },
+      { "name": "assigneeId", "type": "string", "description": "User ID of the assignee", "enumValues": null },
+      { "name": "previousAssigneeId", "type": "string", "description": "User ID of the previous assignee, if reassignment", "enumValues": null },
+      { "name": "candidateGroups", "type": "string", "description": "Groups the item was available to", "enumValues": null }
+    ]
+  },
+  {
+    "eventType": "io.casehub.work.comment.added",
+    "displayName": "Comment Added",
+    "description": "Fired when a comment is added to a work item",
+    "fields": [
+      { "name": "workItemId", "type": "string", "description": "Work item identifier", "enumValues": null },
+      { "name": "commentPreview", "type": "string", "description": "First 200 characters of the comment", "enumValues": null },
+      { "name": "actorName", "type": "string", "description": "Display name of the commenter", "enumValues": null },
+      { "name": "groupId", "type": "string", "description": "Group context where comment was posted", "enumValues": null }
+    ]
+  },
+  {
+    "eventType": "io.casehub.work.sla.breached",
+    "displayName": "SLA Breached",
+    "description": "Fired when a work item exceeds its SLA deadline",
+    "fields": [
+      { "name": "workItemId", "type": "string", "description": "Work item identifier", "enumValues": null },
+      { "name": "slaType", "type": "string", "description": "Type of SLA that was breached", "enumValues": ["RESPONSE", "RESOLUTION", "CLAIM"] },
+      { "name": "breachDuration", "type": "string", "description": "ISO 8601 duration of breach", "enumValues": null },
+      { "name": "severity", "type": "string", "description": "Breach severity", "enumValues": ["WARNING", "CRITICAL"] }
+    ]
+  }
+]
