@@ -149,13 +149,44 @@ describe('approval-gate', () => {
     el.requireConfirmation = false;
     await el.updateComplete;
     const handler = vi.fn();
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => ({}) }));
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) }));
     document.addEventListener('pages-event', handler);
     el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
     await el.updateComplete;
     await vi.runAllTimersAsync();
     const event = handler.mock.calls.find((c: any) => c[0].detail.topic === 'gate.decided');
     expect(event).toBeTruthy();
+    document.removeEventListener('pages-event', handler);
+  });
+
+  it('includes serverData in gate.decided event on success', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    const serverResponse = { trustScore: { before: 72, after: 85 }, status: 'completed' };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve(serverResponse) }));
+    const handler = vi.fn();
+    document.addEventListener('pages-event', handler);
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    const event = handler.mock.calls.find((c: any) => c[0].detail.topic === 'gate.decided');
+    expect(event).toBeTruthy();
+    expect(event![0].detail.payload.serverData).toEqual(serverResponse);
+    document.removeEventListener('pages-event', handler);
+  });
+
+  it('sets serverData to null when response body cannot be parsed', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.reject(new SyntaxError('Unexpected end of JSON input')) }));
+    const handler = vi.fn();
+    document.addEventListener('pages-event', handler);
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    const event = handler.mock.calls.find((c: any) => c[0].detail.topic === 'gate.decided');
+    expect(event).toBeTruthy();
+    expect(event![0].detail.payload.serverData).toBeNull();
     document.removeEventListener('pages-event', handler);
   });
 
@@ -274,7 +305,7 @@ describe('approval-gate', () => {
     expect(liveRegion!.getAttribute('aria-live')).toBe('assertive');
 
     // Verify error clears on successful retry
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => ({}) }));
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) }));
     el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
     await el.updateComplete;
     await vi.runAllTimersAsync();
@@ -303,5 +334,90 @@ describe('approval-gate', () => {
     const liveRegion = document.body.querySelector('[aria-live]');
     expect(liveRegion!.textContent).toBe('Decision failed: Network error');
     expect(liveRegion!.getAttribute('aria-live')).toBe('assertive');
+  });
+
+  it('shows server error message from response body error field', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 409,
+      json: () => Promise.resolve({ error: 'Gate already completed by another voter' }),
+    }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error!.textContent).toContain('Gate already completed by another voter');
+  });
+
+  it('shows server error message from response body message field', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 422,
+      json: () => Promise.resolve({ message: 'Outcome not allowed for this gate type' }),
+    }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error!.textContent).toContain('Outcome not allowed for this gate type');
+  });
+
+  it('falls back to HTTP status when error body is not parseable', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: () => Promise.reject(new SyntaxError('Unexpected token')),
+    }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error!.textContent).toContain('HTTP 500');
+  });
+
+  it('falls back to HTTP status when error body is a JSON array', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: () => Promise.resolve(['validation error 1', 'validation error 2']),
+    }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error!.textContent).toContain('HTTP 400');
+  });
+
+  it('falls back to HTTP status when error field is empty string', async () => {
+    el.requireConfirmation = false;
+    await el.updateComplete;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 403,
+      json: () => Promise.resolve({ error: '' }),
+    }));
+    el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
+    await el.updateComplete;
+    await vi.runAllTimersAsync();
+    await el.updateComplete;
+
+    const error = el.shadowRoot!.querySelector('.error');
+    expect(error!.textContent).toContain('HTTP 403');
   });
 });

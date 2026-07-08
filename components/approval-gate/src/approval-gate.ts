@@ -9,6 +9,13 @@ export const ApprovalGateTopics = {
   INFO_REQUESTED: 'gate.info-requested',
 } as const;
 
+export interface GateDecidedPayload {
+  readonly gateId: string;
+  readonly outcome: string;
+  readonly resolution?: string | undefined;
+  readonly serverData: unknown;
+}
+
 export interface OutcomeDefinition {
   key: string;
   label: string;
@@ -518,15 +525,28 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        let errorBody: unknown = null;
+        try { errorBody = await response.json(); } catch { /* non-JSON or missing body */ }
+        const serverMessage =
+          errorBody !== null && typeof errorBody === 'object' && !Array.isArray(errorBody)
+            ? (errorBody as Record<string, unknown>).error ?? (errorBody as Record<string, unknown>).message
+            : null;
+        throw new Error(
+          typeof serverMessage === 'string' && serverMessage
+            ? serverMessage
+            : `HTTP ${response.status}`
+        );
       }
+
+      const serverData: unknown = await response.json().catch(() => null);
 
       const outcomeLabel = this.outcomes.find(o => o.key === outcomeKey)?.label ?? outcomeKey;
       emitPagesEvent(this, ApprovalGateTopics.DECIDED, {
         gateId: this.gateId,
         outcome: outcomeKey,
         resolution,
-      });
+        serverData,
+      } satisfies GateDecidedPayload);
       this.announce(`Decision submitted: ${outcomeLabel}`);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
