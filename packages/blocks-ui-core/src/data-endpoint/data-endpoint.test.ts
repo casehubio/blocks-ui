@@ -116,6 +116,25 @@ describe('DataEndpointMixin', () => {
     expect(abortSignals[0]?.aborted).toBe(true);
   });
 
+  it('fetches when endpoint is empty string', async () => {
+    el = document.createElement('test-data-endpoint') as TestComponent;
+    el.fetchFn = mockFetch;
+    el.endpoint = '';
+    document.body.appendChild(el);
+    await el.updateComplete;
+    await new Promise(r => setTimeout(r, 10));
+    expect(el.fetchCount).toBe(1);
+  });
+
+  it('does not fetch when endpoint is not set', async () => {
+    el = document.createElement('test-data-endpoint') as TestComponent;
+    el.fetchFn = mockFetch;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    await new Promise(r => setTimeout(r, 10));
+    expect(el.fetchCount).toBe(0);
+  });
+
   it('configure() sets identity', async () => {
     el = document.createElement('test-data-endpoint') as TestComponent;
     el.fetchFn = mockFetch;

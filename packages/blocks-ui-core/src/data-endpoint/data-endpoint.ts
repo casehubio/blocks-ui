@@ -42,7 +42,7 @@ export function DataEndpointMixin<T extends Constructor<LitElement>>(Base: T) {
 
     override willUpdate(changed: PropertyValues): void {
       super.willUpdate(changed);
-      if (!this._configurePending && changed.has('endpoint') && this.endpoint) {
+      if (!this._configurePending && changed.has('endpoint') && this.endpoint != null) {
         this._doFetch();
         this._resubscribeSSE();
       }
@@ -56,7 +56,7 @@ export function DataEndpointMixin<T extends Constructor<LitElement>>(Base: T) {
     }
 
     private async _doFetch(): Promise<void> {
-      if (!this.endpoint) return;
+      if (this.endpoint == null) return;
       this._abortController?.abort();
       this._abortController = new AbortController();
       this.loading = true;

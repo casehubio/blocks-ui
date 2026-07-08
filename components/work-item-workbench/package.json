@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
+    "@casehubio/blocks-ui-split-workbench": "workspace:*",
     "@casehubio/blocks-ui-work-item-detail": "workspace:*",
     "@casehubio/blocks-ui-work-item-inbox": "workspace:*",
     "lit": "^3.1.0"

@@ -8,11 +8,10 @@ export default defineConfig({
       '@casehubio/pages-component': path.resolve(__dirname, '../../../pages/packages/pages-component/src'),
       '@casehubio/pages-data/dist/sse/sse-manager.js': path.resolve(__dirname, '../../../pages/packages/pages-data/src/sse/sse-manager.ts'),
       '@casehubio/pages-data': path.resolve(__dirname, '../../../pages/packages/pages-data/src'),
-      '@casehubio/blocks-ui-split-workbench': path.resolve(__dirname, '../split-workbench/src'),
     },
   },
   test: {
-    globals: true,
     environment: 'jsdom',
+    globals: true,
   },
 });
