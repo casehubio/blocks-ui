@@ -1,38 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { html } from 'lit';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import './trust-score-panel.js';
 import type { TrustScorePanel } from './trust-score-panel.js';
 import type { TrustScoreResponse } from './types.js';
 
-async function fixture<T extends HTMLElement>(template: any): Promise<T> {
-  const container = document.createElement('div');
-  container.innerHTML = '';
-  document.body.appendChild(container);
-
-  // Render the Lit template
-  const element = document.createElement(template.strings[0].match(/<([a-z-]+)/)?.[1] || 'div') as T;
-
-  // Extract attributes from template
-  const attrsMatch = template.strings[0].match(/<[a-z-]+(.*?)>/s);
-  if (attrsMatch) {
-    const attrs = attrsMatch[1];
-    const attrMatches = attrs.matchAll(/(\w+)="([^"]*)"/g);
-    for (const [, name, value] of attrMatches) {
-      element.setAttribute(name, value);
-    }
-  }
-
-  container.appendChild(element);
-  await (element as any).updateComplete;
-  return element;
-}
+let originalFetch: typeof globalThis.fetch;
 
 describe('trust-score-panel', () => {
   let mockFetch: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    originalFetch = globalThis.fetch;
     mockFetch = vi.fn();
+    globalThis.fetch = mockFetch as unknown as typeof fetch;
     document.body.innerHTML = '';
+  });
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
   });
 
   describe('Types and Helpers', () => {
@@ -66,18 +50,14 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-
-      // Wait a tick for fetch to trigger
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(el.loading).toBe(true);
       const container = el.shadowRoot!.querySelector('.trust-score-panel');
       expect(container).toBeTruthy();
 
-      // Cleanup
       resolveFetch!({ ok: true, json: async () => ({ actorId: 'agent-123', capabilityScores: {}, dimensionScores: {} }) });
     });
 
@@ -95,13 +75,12 @@ describe('trust-score-panel', () => {
 
       const el = document.createElement('trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
 
       el.endpoint = 'http://test.local/api/v1/ledger';
       el.actorId = 'agent-123';
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
 
       expect(mockFetch).toHaveBeenCalledWith(
         'http://test.local/api/v1/ledger/trust/agent-123',
@@ -125,10 +104,10 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       const gauge = el.shadowRoot!.querySelector('.score-gauge');
       expect(gauge).toBeTruthy();
@@ -152,10 +131,10 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       const table = el.shadowRoot!.querySelector('pages-data-table');
       expect(table).toBeTruthy();
@@ -177,10 +156,10 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       const placeholder = el.shadowRoot!.querySelector('.trend-placeholder');
       expect(placeholder).toBeTruthy();
@@ -194,10 +173,10 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       expect(el.error).toContain('Network error');
       const errorMsg = el.shadowRoot!.querySelector('.error-message');
@@ -211,7 +190,6 @@ describe('trust-score-panel', () => {
       el.mode = 'compact';
       el.score = 0.85;
       el.trustLevel = 'high';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
 
@@ -274,10 +252,10 @@ describe('trust-score-panel', () => {
       el.mode = 'compact';
       el.actorId = 'agent-456';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       expect(mockFetch).toHaveBeenCalledWith(
         'http://test.local/api/v1/ledger/trust/agent-456',
@@ -305,10 +283,10 @@ describe('trust-score-panel', () => {
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
-      el.fetchFn = mockFetch;
       document.body.appendChild(el);
       await el.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
 
       let eventFired = false;
       let eventDetail: any;
@@ -319,7 +297,6 @@ describe('trust-score-panel', () => {
         }
       }) as EventListener);
 
-      // Simulate capability row click
       const table = el.shadowRoot!.querySelector('pages-data-table') as any;
       if (table) {
         table.dispatchEvent(

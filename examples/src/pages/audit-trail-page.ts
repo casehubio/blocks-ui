@@ -95,7 +95,6 @@ export class AuditTrailPage extends LitElement {
   protected override firstUpdated(): void {
     const viewer = this.shadowRoot?.querySelector('audit-trail-viewer') as any;
     if (viewer) {
-      viewer.fetchFn = this._mockFetch;
       viewer.configure({
         endpoint: this._mockEndpoint,
         identity: {

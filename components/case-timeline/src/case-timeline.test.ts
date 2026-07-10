@@ -16,8 +16,14 @@ async function fixture<T extends HTMLElement>(template: ReturnType<typeof html>)
 describe('CaseTimeline', () => {
   let element: CaseTimeline;
   let mockFetch: ReturnType<typeof vi.fn>;
+  let originalFetch: typeof globalThis.fetch;
+
+  beforeEach(() => {
+    originalFetch = globalThis.fetch;
+  });
 
   afterEach(() => {
+    globalThis.fetch = originalFetch;
     document.body.innerHTML = '';
   });
 
@@ -96,7 +102,7 @@ describe('CaseTimeline', () => {
 
     it('should fetch events on configure()', async () => {
       element = await fixture(html`<case-timeline></case-timeline>`);
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
 
       element.configure({
         endpoint: '/api/v1',
@@ -135,7 +141,7 @@ describe('CaseTimeline', () => {
   describe('Full mode rendering', () => {
     beforeEach(async () => {
       element = await fixture(html`<case-timeline mode="full"></case-timeline>`);
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: '/api/v1',
         identity: { userId: 'user-1', tenancyId: 'tenant-1', roles: [] },
@@ -242,7 +248,7 @@ describe('CaseTimeline', () => {
   describe('Compact mode rendering', () => {
     beforeEach(async () => {
       element = await fixture(html`<case-timeline mode="compact"></case-timeline>`);
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: '/api/v1',
         identity: { userId: 'user-1', tenancyId: 'tenant-1', roles: [] },
@@ -338,7 +344,7 @@ describe('CaseTimeline', () => {
   describe('Filter bar', () => {
     beforeEach(async () => {
       element = await fixture(html`<case-timeline mode="full"></case-timeline>`);
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: '/api/v1',
         identity: { userId: 'user-1', tenancyId: 'tenant-1', roles: [] },
@@ -393,7 +399,7 @@ describe('CaseTimeline', () => {
   describe('Accessibility', () => {
     beforeEach(async () => {
       element = await fixture(html`<case-timeline mode="full"></case-timeline>`);
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: '/api/v1',
         identity: { userId: 'user-1', tenancyId: 'tenant-1', roles: [] },

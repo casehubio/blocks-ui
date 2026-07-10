@@ -25,8 +25,14 @@ function cleanupFixtures(): void {
 describe('AuditTrailViewer', () => {
   let element: AuditTrailViewer;
   let mockFetch: ReturnType<typeof vi.fn>;
+  let originalFetch: typeof globalThis.fetch;
+
+  beforeEach(() => {
+    originalFetch = globalThis.fetch;
+  });
 
   afterEach(() => {
+    globalThis.fetch = originalFetch;
     cleanupFixtures();
   });
 
@@ -125,7 +131,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
     });
 
     it('should fetch entries and verification on configure', async () => {
@@ -174,8 +180,8 @@ describe('AuditTrailViewer', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(element.error).toBe('Network error');
-      expect(element.loading).toBe(false);
+      expect(element.entries.error).toContain('Network error');
+      expect(element.entries.loading).toBe(false);
     });
   });
 
@@ -200,7 +206,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -269,7 +275,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -303,7 +309,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -336,7 +342,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -377,7 +383,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -424,8 +430,7 @@ describe('AuditTrailViewer', () => {
       await element.updateComplete;
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/ledger/entries/e1/attestations'),
-        expect.anything()
+        expect.stringContaining('/ledger/entries/e1/attestations')
       );
 
       const text = element.shadowRoot?.textContent || '';
@@ -467,7 +472,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },
@@ -518,7 +523,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.renderEntryPayload = customRenderer;
       element.configure({
         endpoint: 'http://localhost/api',
@@ -563,7 +568,7 @@ describe('AuditTrailViewer', () => {
       element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
         'subject-id': 'case-123',
       });
-      element.fetchFn = mockFetch;
+      globalThis.fetch = mockFetch as unknown as typeof fetch;
       element.configure({
         endpoint: 'http://localhost/api',
         identity: { userId: 'u1', tenancyId: 't1', roles: [] },

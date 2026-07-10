@@ -11,7 +11,7 @@ Domain-aware Web Components that multiple CaseHub applications reuse. Each compo
 | Component | Tag | Package | Description |
 |-----------|-----|---------|-------------|
 | Split Workbench | `<split-workbench>` | `@casehubio/blocks-ui-split-workbench` | Generic split-pane layout shell — draggable divider, responsive collapse, selection-topic event coordination, ARIA regions. Accepts any children via named slots (`list`, `detail`, `header`) |
-| List Pane | `<list-pane>` | `@casehubio/blocks-ui-list-pane` | Generic data-table wrapper — DataEndpointMixin data fetching, single-selection, paginated mode, client-sort/filter, `{topic}:selected` events, `{topic}:refresh` listener |
+| List Pane | `<list-pane>` | `@casehubio/blocks-ui-list-pane` | Generic data-table wrapper — DataSourceMixin data fetching, single-selection, paginated mode, client-sort/filter, `{topic}:selected` events, `{topic}:refresh` listener |
 | Detail Pane | `<detail-pane>` | `@casehubio/blocks-ui-detail-pane` | Generic tabbed detail container — tabs via `TabDefinition[]` property, single `item` property contract, lazy element creation with caching, ARIA tablist, keyboard navigation, badges |
 | Data Table | `<pages-data-table>` | `@casehubio/blocks-ui-data-table` | Generic table — 3 display modes (auto/paginated/scroll), CSS Grid, virtual scroll, ColumnDef\<R\> data model, multi-mode selection, client-side sort and filter, column visibility, ARIA grid, 2D keyboard nav |
 
@@ -60,7 +60,8 @@ Domain-aware Web Components that multiple CaseHub applications reuse. Each compo
 | Module | What it provides |
 |--------|-----------------|
 | Tokens | CSS custom properties via `--pages-*` — re-exported from `@casehubio/pages-ui-tokens` |
-| Mixins | `FocusTrapMixin`, `KeyboardShortcutMixin`, `LiveRegionMixin`, `RovingTabindexMixin` (with direction support), `DataEndpointMixin` |
+| Mixins | `FocusTrapMixin`, `KeyboardShortcutMixin`, `LiveRegionMixin`, `RovingTabindexMixin` (with direction support), `DataSourceMixin` |
+| Data Source | `DataSourceAdapter` (Lit ReactiveController wrapping `DataSourceController`), `DataSourceMixin` (convenience mixin), `fetchSource` (raw JSON DataSource) |
 | Events | `emitPagesEvent`, `onPagesEvent` — re-exported from `@casehubio/pages-component`. Domain topics: `WorkItemEventTopics`, `NotificationEventTopics` |
 | Types | `WorkIdentity`, `WorkItemResponse`, `DatasetContract` (re-exported from `@casehubio/pages-data`) |
 | Timers | `SharedTimerController` — singleton 1-second tick for SLA countdowns |

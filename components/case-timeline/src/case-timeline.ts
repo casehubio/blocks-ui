@@ -1,6 +1,7 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataEndpointMixin, LiveRegionMixin, type WorkIdentity } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, LiveRegionMixin, fetchSource, renderPropertyTree, propertyTreeStyles, type WorkIdentity } from '@casehubio/blocks-ui-core';
+import type { SourceFactory } from '@casehubio/pages-component';
 import {
   type CaseEvent,
   type EventStreamType,
@@ -12,50 +13,50 @@ import {
 } from './types.js';
 
 @customElement('case-timeline')
-export class CaseTimeline extends LiveRegionMixin(DataEndpointMixin(LitElement)) {
+export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   @property({ type: String, attribute: 'case-id' }) caseId?: string;
   @property({ type: String }) mode: 'full' | 'compact' = 'full';
+  @property({ type: Object }) identity?: WorkIdentity;
 
   @state() private _events: CaseEvent[] = [];
   @state() private _expandedIds = new Set<number>();
   @state() private _activeStreamTypes = new Set<EventStreamType>(['CASE', 'WORKER', 'TIMER', 'SYSTEM', 'ORCHESTRATION']);
   @state() private _focusedIndex = -1;
+  private _lastDataSet: unknown = undefined;
 
-  override async fetchData(): Promise<void> {
-    if (!this.endpoint || !this.caseId) return;
-
-    const url = `${this.endpoint}/cases/${this.caseId}/events`;
-    const response = await this.fetchFn(url, {
-      signal: this.abortSignal,
-      headers: {
+  override createSourceFactory(): SourceFactory {
+    return (url, _id) => fetchSource(url, {
+      headers: () => ({
         'Content-Type': 'application/json',
         ...(this.identity?.tenancyId && { 'X-Tenancy-ID': this.identity.tenancyId }),
-      },
+      }),
     });
+  }
 
-    if (!response.ok) throw new Error(`Failed to fetch events: ${response.statusText}`);
-
-    const data: PagedResponse<EventLogEntryResponse> = await response.json();
-    this._events = data.content.map(entry => ({
-      eventType: entry.eventType,
-      streamType: entry.streamType,
-      timestamp: entry.timestamp,
-      payload: entry.payload,
-      metadata: entry.metadata,
-    }));
-
-    this.announce(`Timeline loaded with ${this._events.length} events`);
+  override resolveEndpoint(): string | undefined {
+    if (!this.endpoint || !this.caseId) return undefined;
+    return `${this.endpoint}/cases/${this.caseId}/events`;
   }
 
   override configure(props: Record<string, unknown>): void {
     if (props.caseId !== undefined) this.caseId = props.caseId as string;
+    if (props.identity !== undefined) this.identity = props.identity as WorkIdentity;
     super.configure(props);
   }
 
-  override willUpdate(changed: Map<string, unknown>): void {
+  override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    if (changed.has('caseId') && this.caseId && this.endpoint) {
-      this.fetchData();
+    if (changed.has('caseId')) this.syncEndpoint();
+    if (this.dataSet !== this._lastDataSet && this.dataSet) {
+      this._lastDataSet = this.dataSet;
+      const data = this.dataSet as PagedResponse<EventLogEntryResponse>;
+      this._events = (data.content ?? []).map(entry => ({
+        eventType: entry.eventType,
+        streamType: entry.streamType,
+        timestamp: entry.timestamp,
+        payload: entry.payload,
+        metadata: entry.metadata,
+      }));
     }
   }
 
@@ -233,7 +234,7 @@ export class CaseTimeline extends LiveRegionMixin(DataEndpointMixin(LitElement))
                 ${isExpanded
                   ? html`
                       <div class="payload-detail" role="region">
-                        <pre>${JSON.stringify(event.payload, null, 2)}</pre>
+                        ${renderPropertyTree(event.payload)}
                       </div>
                     `
                   : nothing}
@@ -522,16 +523,12 @@ export class CaseTimeline extends LiveRegionMixin(DataEndpointMixin(LitElement))
       padding: 12px;
       background: var(--pages-neutral-2, #f9fafb);
       border-radius: 4px;
-      font-size: 12px;
+      font-size: 13px;
       max-height: 200px;
       overflow-y: auto;
     }
 
-    .payload-detail pre {
-      margin: 0;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+    ${propertyTreeStyles}
 
     /* Compact mode: horizontal strip */
     .compact-strip {

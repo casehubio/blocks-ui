@@ -1,16 +1,26 @@
 import { LitElement, html, css, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataEndpointMixin } from '@casehubio/blocks-ui-core/data-endpoint/data-endpoint.js';
+import { DataSourceAdapter, fetchSource, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
+import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
 import type { LedgerEntry, VerificationResult, Attestation, EntryTypeFilter } from './types.js';
 import '@casehubio/blocks-ui-data-table';
 
 @customElement('audit-trail-viewer')
-export class AuditTrailViewer extends LiveRegionMixin(DataEndpointMixin(LitElement)) {
+export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
+  @property({ type: String }) endpoint?: string;
+  @property({ type: Object }) identity?: WorkIdentity;
   @property({ type: String, attribute: 'subject-id' }) subjectId?: string;
   @property({ type: String, attribute: 'actor-id' }) actorId?: string;
   @property({ type: Object }) renderEntryPayload?: (entry: LedgerEntry) => TemplateResult | undefined;
+
+  readonly entries = new DataSourceAdapter(this, {
+    sourceFactory: (url, _id) => fetchSource(url),
+  });
+  readonly verify = new DataSourceAdapter(this, {
+    sourceFactory: (url, _id) => fetchSource(url),
+  });
 
   @state() private _entries: LedgerEntry[] = [];
   @state() private _verification: VerificationResult | null = null;
@@ -62,50 +72,55 @@ export class AuditTrailViewer extends LiveRegionMixin(DataEndpointMixin(LitEleme
     },
   ];
 
-  override async fetchData(): Promise<void> {
-    if (!this.endpoint || !this.subjectId || !this.identity) return;
-
-    this.announce('Loading audit trail');
-
-    const entriesUrl = new URL(`${this.endpoint}/api/v1/ledger/entries`);
-    entriesUrl.searchParams.set('subjectId', this.subjectId);
-    entriesUrl.searchParams.set('tenancyId', this.identity.tenancyId);
-
-    if (this._dateFrom) entriesUrl.searchParams.set('from', this._dateFrom);
-    if (this._dateTo) entriesUrl.searchParams.set('to', this._dateTo);
-
-    const verifyUrl = new URL(`${this.endpoint}/api/v1/ledger/verify`);
-    verifyUrl.searchParams.set('subjectId', this.subjectId);
-
-    const [entriesResponse, verifyResponse] = await Promise.all([
-      this.fetchFn(entriesUrl.toString(), { signal: this.abortSignal }),
-      this.fetchFn(verifyUrl.toString(), { signal: this.abortSignal }),
-    ]);
-
-    if (!entriesResponse.ok) throw new Error('Failed to fetch entries');
-    if (!verifyResponse.ok) throw new Error('Failed to fetch verification');
-
-    this._entries = await entriesResponse.json();
-    this._verification = await verifyResponse.json();
-
-    this.announce(`${this._entries.length} entries loaded`);
-  }
-
   override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
-    if (
-      (changed.has('subjectId') || changed.has('_dateFrom') || changed.has('_dateTo')) &&
-      this.subjectId &&
-      this.endpoint
-    ) {
-      this.fetchData();
+    if (changed.has('endpoint') || changed.has('subjectId') ||
+        changed.has('identity') || changed.has('_dateFrom') ||
+        changed.has('_dateTo')) {
+      this._updateEndpoints();
+    }
+    if (this.entries.dataSet !== this._entries) {
+      const data = this.entries.dataSet;
+      if (Array.isArray(data)) {
+        this._entries = data as LedgerEntry[];
+      }
+    }
+    if (this.verify.dataSet !== this._verification) {
+      this._verification = (this.verify.dataSet as VerificationResult) ?? null;
     }
   }
 
-  override configure(props: Record<string, unknown>): void {
-    super.configure(props);
+  private _updateEndpoints(): void {
+    if (!this.endpoint || !this.subjectId || !this.identity) {
+      this.entries.endpoint = undefined;
+      this.verify.endpoint = undefined;
+      return;
+    }
+
+    const base = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
+    const entriesUrl = new URL(`${this.endpoint}/api/v1/ledger/entries`, base);
+    entriesUrl.searchParams.set('subjectId', this.subjectId);
+    entriesUrl.searchParams.set('tenancyId', this.identity.tenancyId);
+    if (this._dateFrom) entriesUrl.searchParams.set('from', this._dateFrom);
+    if (this._dateTo) entriesUrl.searchParams.set('to', this._dateTo);
+
+    const verifyUrl = new URL(`${this.endpoint}/api/v1/ledger/verify`, base);
+    verifyUrl.searchParams.set('subjectId', this.subjectId);
+
+    this.entries.endpoint = entriesUrl.toString();
+    this.verify.endpoint = verifyUrl.toString();
+  }
+
+  configure(props: Record<string, unknown>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
     if (props.subjectId !== undefined) this.subjectId = props.subjectId as string;
     if (props.actorId !== undefined) this.actorId = props.actorId as string;
+    if (props.identity !== undefined) this.identity = props.identity as WorkIdentity;
+    queueMicrotask(() => {
+      this._updateEndpoints();
+      this.entries.refresh();
+      this.verify.refresh();
+    });
   }
 
   private async _handleRowActivate(e: CustomEvent): Promise<void> {
@@ -126,7 +141,7 @@ export class AuditTrailViewer extends LiveRegionMixin(DataEndpointMixin(LitEleme
     if (!this.endpoint) return;
 
     const url = `${this.endpoint}/api/v1/ledger/entries/${entryId}/attestations`;
-    const response = await this.fetchFn(url, { signal: this.abortSignal });
+    const response = await globalThis.fetch(url);
     if (!response.ok) return;
 
     const attestations = await response.json();
@@ -316,25 +331,34 @@ export class AuditTrailViewer extends LiveRegionMixin(DataEndpointMixin(LitEleme
       const customResult = this.renderEntryPayload(entry);
       if (customResult !== undefined) return customResult;
     }
-    return html`<pre>${JSON.stringify(entry.payload, null, 2)}</pre>`;
+    return renderPropertyTree(entry.payload);
   }
 
   override render(): TemplateResult {
-    if (this.loading) {
+    if (this.entries.loading) {
       return html`<div class="loading">Loading audit trail...</div>`;
     }
 
-    if (this.error) {
+    if (this.entries.error) {
       return html`
         <div class="error" role="alert">
-          <p>Failed to load audit trail: ${this.error}</p>
-          <button @click=${() => this.fetchData()}>Retry</button>
+          <p>Failed to load audit trail: ${this.entries.error}</p>
+          <button @click=${() => this._updateEndpoints()}>Retry</button>
         </div>
       `;
     }
 
+    const verifyBanner = this.verify.error
+      ? html`<div class="verification-banner failed" role="status" aria-live="polite">
+          <span class="status-icon">⚠</span>
+          <span>Verification unavailable: ${this.verify.error}</span>
+        </div>`
+      : this.verify.loading
+        ? html`<div class="verification-banner" role="status" aria-live="polite">Verifying chain integrity...</div>`
+        : this._renderVerificationBanner();
+
     return html`
-      ${this._renderVerificationBanner()} ${this._renderFilterControls()}
+      ${verifyBanner} ${this._renderFilterControls()}
       <pages-data-table
         .columns=${this._columns}
         .data=${this._filteredEntries}
@@ -591,15 +615,7 @@ export class AuditTrailViewer extends LiveRegionMixin(DataEndpointMixin(LitEleme
       background: var(--pages-accent-10, #2563eb);
     }
 
-    pre {
-      font-family: var(--pages-font-mono, monospace);
-      font-size: 12px;
-      background: white;
-      padding: 12px;
-      border-radius: 4px;
-      overflow-x: auto;
-      margin: 0;
-    }
+    ${propertyTreeStyles}
   `;
 }
 

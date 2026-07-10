@@ -1,20 +1,19 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataEndpointMixin } from '@casehubio/blocks-ui-core/data-endpoint/data-endpoint.js';
+import { DataSourceMixin } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
 import '@casehubio/blocks-ui-data-table';
 import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
+import type { SourceFactory } from '@casehubio/pages-component';
 
 @customElement('trust-score-panel')
-export class TrustScorePanel extends LiveRegionMixin(DataEndpointMixin(LitElement)) {
-  @property({ type: String }) actorId?: string;
+export class TrustScorePanel extends DataSourceMixin(LiveRegionMixin(LitElement)) {
+  @property({ type: String, attribute: 'actor-id' }) actorId?: string;
   @property({ type: String }) mode: 'full' | 'compact' = 'full';
   @property({ type: Number }) score?: number;
   @property({ type: String }) trustLevel?: TrustLevel;
-
-  @state() private _trustData: TrustScoreResponse | null = null;
 
   static override styles = css`
     :host {
@@ -144,31 +143,23 @@ export class TrustScorePanel extends LiveRegionMixin(DataEndpointMixin(LitElemen
     }
   `;
 
-  override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-    // Trigger fetch when actorId changes (only in modes that need it)
-    if (changed.has('actorId') && this.actorId && this.endpoint && !this._hasPreFetchedData()) {
-      this.fetchData();
-    }
+  override resolveEndpoint(): string | undefined {
+    if (this._hasPreFetchedData()) return undefined;
+    if (!this.endpoint || !this.actorId) return undefined;
+    return `${this.endpoint}/trust/${this.actorId}`;
   }
 
-  async fetchData(): Promise<void> {
-    if (!this.endpoint || !this.actorId) return;
-
-    this.announce('Loading trust scores');
-    const url = `${this.endpoint}/trust/${this.actorId}`;
-    const response = await this.fetchFn(url, { signal: this.abortSignal });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch trust scores: ${response.statusText}`);
-    }
-
-    this._trustData = (await response.json()) as TrustScoreResponse;
-    this.announce(`Trust score loaded: ${this._trustData.globalScore?.toFixed(2) ?? 'no data'}`);
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+    if (changed.has('actorId')) this.syncEndpoint();
   }
 
   private _hasPreFetchedData(): boolean {
     return this.mode === 'compact' && this.score !== undefined && this.trustLevel !== undefined;
+  }
+
+  private get _trustData(): TrustScoreResponse | null {
+    return this.dataSet as TrustScoreResponse | null;
   }
 
   private _getDisplayScore(): number | undefined {

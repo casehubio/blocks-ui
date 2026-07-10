@@ -1,4 +1,7 @@
 import type { MockState } from './mock-state.js';
+import caseEvents from '../../mock-data/case-events.json';
+import ledgerEntries from '../../mock-data/ledger-entries.json';
+import trustScores from '../../mock-data/trust-scores.json';
 
 const realFetch = window.fetch.bind(window);
 
@@ -63,10 +66,30 @@ function resolveMock(
     return json(state.getActivity(eventsMatch[1]!));
   }
 
-  // GET /workitems/{id}/relations
+  // GET /workitems/{id}/relations/incoming
+  const relIncomingMatch = path.match(/\/workitems\/([^/]+)\/relations\/incoming$/);
+  if (method === 'GET' && relIncomingMatch) {
+    const raw = state.getRelations(relIncomingMatch[1]!) as any;
+    const parents = raw?.parents ?? [];
+    return json(parents.map((id: string) => ({
+      workItemId: relIncomingMatch[1], relatedWorkItemId: id, relationType: 'CHILD_OF',
+    })));
+  }
+
+  // GET /workitems/{id}/relations (outgoing)
   const relMatch = path.match(/\/workitems\/([^/]+)\/relations$/);
   if (method === 'GET' && relMatch) {
-    return json(state.getRelations(relMatch[1]!) ?? { parent: null, children: [], linked: [] });
+    const raw = state.getRelations(relMatch[1]!) as any;
+    const children = raw?.children ?? [];
+    const linked = raw?.linked ?? [];
+    return json([
+      ...children.map((id: string) => ({
+        workItemId: relMatch[1], relatedWorkItemId: id, relationType: 'PARENT_OF',
+      })),
+      ...linked.map((id: string) => ({
+        workItemId: relMatch[1], relatedWorkItemId: id, relationType: 'RELATED_TO',
+      })),
+    ]);
   }
 
   // GET /workitems/{id}
@@ -97,6 +120,42 @@ function resolveMock(
   // GET /queues
   if (method === 'GET' && path.match(/\/queues$/)) {
     return json(state.getQueues());
+  }
+
+  // GET /cases/{id}/events (case-timeline)
+  const caseEventsMatch = path.match(/\/cases\/[^/]+\/events$/);
+  if (method === 'GET' && caseEventsMatch) {
+    return json({ content: caseEvents, page: 0, size: 20, totalElements: caseEvents.length, totalPages: 1 });
+  }
+
+  // GET /api/v1/ledger/entries/{id}/attestations (audit-trail-viewer)
+  const attestMatch = path.match(/\/ledger\/entries\/([^/]+)\/attestations$/);
+  if (method === 'GET' && attestMatch) {
+    return json([{
+      id: `att-${attestMatch[1]}-1`, ledgerEntryId: attestMatch[1], subjectId: 'case-123',
+      attestorId: 'attestor-001', attestorType: 'PEER', verdict: 'SOUND',
+      evidence: { score: 0.95 }, confidence: 0.9, capabilityTag: 'FRAUD_ANALYSIS',
+      occurredAt: new Date().toISOString(),
+    }]);
+  }
+
+  // GET /api/v1/ledger/entries (audit-trail-viewer)
+  if (method === 'GET' && path.match(/\/ledger\/entries/)) {
+    return json(ledgerEntries);
+  }
+
+  // GET /api/v1/ledger/verify (audit-trail-viewer)
+  if (method === 'GET' && path.match(/\/ledger\/verify/)) {
+    return json({ subjectId: 'case-123', treeRoot: 'f7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2', verified: true, redactedCount: 1 });
+  }
+
+  // GET /trust/{actorId} (trust-score-panel)
+  const trustMatch = path.match(/\/trust\/([^/?]+)/);
+  if (method === 'GET' && trustMatch) {
+    const actors = (trustScores as any).actors as any[];
+    const actor = actors.find((a: any) => a.actorId === trustMatch[1]);
+    if (actor) return json(actor);
+    return new Response(JSON.stringify({ error: 'Actor not found' }), { status: 404 });
   }
 
   return null;

@@ -1,11 +1,11 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataEndpointMixin, emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
 import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
 import '@casehubio/blocks-ui-data-table';
 
 @customElement('list-pane')
-export class ListPane extends DataEndpointMixin(LitElement) {
+export class ListPane extends DataSourceMixin(LitElement) {
   @property({ type: Array }) columns: ColumnDef<any>[] = [];
   @property({ attribute: false }) getRowKey?: (row: unknown) => string;
   @property({ attribute: false }) getRowClass?: (row: unknown) => string;
@@ -18,6 +18,7 @@ export class ListPane extends DataEndpointMixin(LitElement) {
 
   private _refreshUnsub?: () => void;
   private _lastActivatedIndex = -1;
+  private _lastDataSet: unknown = undefined;
 
   static override styles = css`
     :host {
@@ -56,27 +57,26 @@ export class ListPane extends DataEndpointMixin(LitElement) {
     this._refreshUnsub?.();
   }
 
-  override async fetchData(): Promise<void> {
-    const init: RequestInit = {};
-    if (this.abortSignal) init.signal = this.abortSignal;
-    const resp = await this.fetchFn(this.endpoint!, init);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-
-    if (Array.isArray(data)) {
-      this._rows = data;
-      this._totalRows = null;
-    } else if (data && Array.isArray(data.items)) {
-      this._rows = data.items;
-      this._totalRows = data.total;
-    } else {
-      this._rows = [];
-      this._totalRows = null;
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+    if (this.dataSet !== this._lastDataSet) {
+      this._lastDataSet = this.dataSet;
+      const data = this.dataSet as any;
+      if (Array.isArray(data)) {
+        this._rows = data;
+        this._totalRows = null;
+      } else if (data && Array.isArray(data.items)) {
+        this._rows = data.items;
+        this._totalRows = data.total;
+      } else {
+        this._rows = [];
+        this._totalRows = null;
+      }
     }
   }
 
   refresh(): void {
-    this.configure({ endpoint: this.endpoint });
+    this.dataSource.refresh();
   }
 
   override focus(): void {

@@ -33,7 +33,6 @@ export class CaseTimelinePage extends LitElement {
   protected override firstUpdated(): void {
     const timeline = this.shadowRoot?.querySelector('case-timeline') as any;
     if (timeline) {
-      timeline.fetchFn = this._mockFetch;
       timeline.configure({
         endpoint: this._mockEndpoint,
         identity: {

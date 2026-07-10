@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
 import './list-pane.js';
@@ -11,9 +11,9 @@ type ListPaneEl = HTMLElement & {
   selectionTopic: string;
   emptyMessage: string;
   pageSize: number;
-  fetchFn: typeof fetch;
   loading: boolean;
-  error: string | null;
+  error: string;
+  dataSet: unknown;
   refresh(): void;
   updateComplete: Promise<boolean>;
 };
@@ -28,39 +28,55 @@ const testRows = [
   { id: '2', name: 'Case B', status: 'closed' },
 ];
 
-function mockFetch(data: unknown = testRows): typeof fetch {
+function mockFetch(data: unknown = testRows): ReturnType<typeof vi.fn> {
   return vi.fn().mockResolvedValue({
     ok: true,
     json: () => Promise.resolve(data),
-  }) as unknown as typeof fetch;
+  });
 }
 
-function createElement(opts: Partial<{ endpoint: string; topic: string; fetchFn: typeof fetch }> = {}): ListPaneEl {
+function mockFetchFail(status: number): ReturnType<typeof vi.fn> {
+  return vi.fn().mockResolvedValue({
+    ok: false,
+    status,
+  });
+}
+
+let originalFetch: typeof globalThis.fetch;
+
+function createElement(opts: Partial<{ endpoint: string; topic: string }> = {}): ListPaneEl {
   const el = document.createElement('list-pane') as ListPaneEl;
-  el.endpoint = opts.endpoint ?? '/api/items';
+  if (opts.endpoint !== undefined) el.endpoint = opts.endpoint;
+  else el.endpoint = '/api/items';
   el.selectionTopic = opts.topic ?? 'test';
   el.columns = testColumns;
   el.getRowKey = (row: any) => row.id;
-  el.fetchFn = opts.fetchFn ?? mockFetch();
   return el;
 }
 
 async function flush(): Promise<void> {
-  await new Promise(r => setTimeout(r, 10));
+  await new Promise(r => setTimeout(r, 20));
 }
 
 describe('list-pane', () => {
   let el: ListPaneEl;
 
+  beforeEach(() => {
+    originalFetch = globalThis.fetch;
+    globalThis.fetch = mockFetch() as unknown as typeof fetch;
+  });
+
   afterEach(() => {
     el?.remove();
+    globalThis.fetch = originalFetch;
     vi.restoreAllMocks();
   });
 
   describe('data fetching', () => {
     it('fetches from endpoint on connect', async () => {
       const fetchFn = mockFetch();
-      el = createElement({ fetchFn });
+      globalThis.fetch = fetchFn as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -68,7 +84,8 @@ describe('list-pane', () => {
     });
 
     it('handles array response', async () => {
-      el = createElement({ fetchFn: mockFetch(testRows) });
+      globalThis.fetch = mockFetch(testRows) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -78,7 +95,8 @@ describe('list-pane', () => {
     });
 
     it('handles { items, total } response', async () => {
-      el = createElement({ fetchFn: mockFetch({ items: testRows, total: 100 }) });
+      globalThis.fetch = mockFetch({ items: testRows, total: 100 }) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -90,10 +108,10 @@ describe('list-pane', () => {
 
     it('does not fetch when endpoint is not set', async () => {
       const fetchFn = mockFetch();
+      globalThis.fetch = fetchFn as unknown as typeof fetch;
       el = document.createElement('list-pane') as ListPaneEl;
       el.columns = testColumns;
       el.getRowKey = (row: any) => row.id;
-      el.fetchFn = fetchFn;
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -101,7 +119,8 @@ describe('list-pane', () => {
     });
 
     it('shows empty message when no data', async () => {
-      el = createElement({ fetchFn: mockFetch([]) });
+      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -110,7 +129,8 @@ describe('list-pane', () => {
     });
 
     it('shows custom empty message', async () => {
-      el = createElement({ fetchFn: mockFetch([]) });
+      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
+      el = createElement();
       el.emptyMessage = 'Nothing here';
       document.body.appendChild(el);
       await el.updateComplete;
@@ -120,8 +140,8 @@ describe('list-pane', () => {
     });
 
     it('sets error on fetch failure', async () => {
-      const failFetch = vi.fn().mockRejectedValue(new Error('network down')) as unknown as typeof fetch;
-      el = createElement({ fetchFn: failFetch });
+      globalThis.fetch = vi.fn().mockRejectedValue(new Error('network down')) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -129,8 +149,8 @@ describe('list-pane', () => {
     });
 
     it('sets error on non-ok response', async () => {
-      const failFetch = vi.fn().mockResolvedValue({ ok: false, status: 500 }) as unknown as typeof fetch;
-      el = createElement({ fetchFn: failFetch });
+      globalThis.fetch = mockFetchFail(500) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -140,7 +160,8 @@ describe('list-pane', () => {
 
   describe('selection events', () => {
     it('emits topic:selected on row activation', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -162,7 +183,8 @@ describe('list-pane', () => {
     });
 
     it('does not emit when no selection-topic is set', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       el.selectionTopic = '';
       document.body.appendChild(el);
       await el.updateComplete;
@@ -187,12 +209,13 @@ describe('list-pane', () => {
   describe('refresh', () => {
     it('refresh() re-fetches data', async () => {
       const fetchFn = mockFetch();
-      el = createElement({ fetchFn });
+      globalThis.fetch = fetchFn as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
 
-      (fetchFn as ReturnType<typeof vi.fn>).mockClear();
+      fetchFn.mockClear();
       el.refresh();
       await flush();
       expect(fetchFn).toHaveBeenCalled();
@@ -200,12 +223,13 @@ describe('list-pane', () => {
 
     it('responds to topic:refresh event', async () => {
       const fetchFn = mockFetch();
-      el = createElement({ fetchFn });
+      globalThis.fetch = fetchFn as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
 
-      (fetchFn as ReturnType<typeof vi.fn>).mockClear();
+      fetchFn.mockClear();
       emitPagesEvent(document, 'test:refresh', {});
       await flush();
       expect(fetchFn).toHaveBeenCalled();
@@ -214,7 +238,8 @@ describe('list-pane', () => {
 
   describe('table configuration', () => {
     it('configures data-table with selection=single and mode=paginated', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -226,7 +251,8 @@ describe('list-pane', () => {
     });
 
     it('enables client-sort and client-filter on data-table', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -238,7 +264,8 @@ describe('list-pane', () => {
     });
 
     it('passes page-size to data-table', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       el.pageSize = 10;
       document.body.appendChild(el);
       await el.updateComplete;
@@ -250,7 +277,8 @@ describe('list-pane', () => {
     });
 
     it('passes columns and row key to data-table', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -264,14 +292,16 @@ describe('list-pane', () => {
 
   describe('accessibility', () => {
     it('host has tabindex -1 for programmatic focus', async () => {
-      el = createElement({ fetchFn: mockFetch() });
+      globalThis.fetch = mockFetch() as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       expect(el.getAttribute('tabindex')).toBe('-1');
     });
 
     it('empty state has role=status', async () => {
-      el = createElement({ fetchFn: mockFetch([]) });
+      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -284,12 +314,13 @@ describe('list-pane', () => {
   describe('re-fetch on endpoint change', () => {
     it('re-fetches when endpoint property changes', async () => {
       const fetchFn = mockFetch();
-      el = createElement({ fetchFn });
+      globalThis.fetch = fetchFn as unknown as typeof fetch;
+      el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
 
-      (fetchFn as ReturnType<typeof vi.fn>).mockClear();
+      fetchFn.mockClear();
       el.endpoint = '/api/other';
       await el.updateComplete;
       await flush();

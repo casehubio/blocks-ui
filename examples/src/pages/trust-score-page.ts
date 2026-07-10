@@ -188,7 +188,6 @@ export class TrustScorePage extends LitElement {
           .mode=${this._mode}
           .actorId=${this._selectedActorId}
           endpoint="http://mock.local/api/v1/ledger"
-          .fetchFn=${this._mockFetch}
         ></trust-score-panel>
       </div>
 
