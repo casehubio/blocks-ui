@@ -1,6 +1,6 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, TrendSourceMixin, renderSparkline } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
@@ -8,8 +8,15 @@ import '@casehubio/blocks-ui-data-table';
 import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
 import type { SourceFactory } from '@casehubio/pages-component';
 
+const TRUST_LEVEL_COLORS: Record<string, string> = {
+  high: 'var(--color-success, #28a745)',
+  adequate: 'var(--color-warning, #ffc107)',
+  low: 'var(--color-error, #dc3545)',
+  none: 'var(--color-neutral, #ccc)',
+};
+
 @customElement('trust-score-panel')
-export class TrustScorePanel extends DataSourceMixin(LiveRegionMixin(LitElement)) {
+export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegionMixin(LitElement))) {
   @property({ type: String, attribute: 'actor-id' }) actorId?: string;
   @property({ type: String }) mode: 'full' | 'compact' = 'full';
   @property({ type: Number }) score?: number;
@@ -320,6 +327,35 @@ export class TrustScorePanel extends DataSourceMixin(LiveRegionMixin(LitElement)
     );
   }
 
+  private _renderTrendSection() {
+    if (this.trendLoading) {
+      return html`<div class="loading-spinner">Loading trend data...</div>`;
+    }
+    if (this.trendError) {
+      return html`<div class="error-message" role="alert">
+        Failed to load trend data: ${this.trendError}
+      </div>`;
+    }
+    const points = this.trendPoints;
+    if (points.length < 2) {
+      return html`<div class="trend-placeholder">
+        Trend data requires backend endpoint
+      </div>`;
+    }
+    const scores = points.map(p => p.score);
+    const level = this._getDisplayTrustLevel();
+    const color = TRUST_LEVEL_COLORS[level];
+    const currentScore = this._getDisplayScore();
+    const label = `Trust score trend: ${points.length} data points${
+      currentScore !== undefined ? `, current ${currentScore.toFixed(2)}` : ''
+    }`;
+    return html`
+      <div role="img" aria-label=${label}>
+        ${renderSparkline(scores, { width: 200, height: 48, color, domain: [0, 1] })}
+      </div>
+    `;
+  }
+
   private _renderFullMode() {
     if (this.loading) {
       return html`<div class="loading-spinner">Loading trust scores...</div>`;
@@ -346,9 +382,7 @@ export class TrustScorePanel extends DataSourceMixin(LiveRegionMixin(LitElement)
 
         <section class="trend-section">
           <h3>Trust Trend</h3>
-          <div class="trend-placeholder">
-            Trend data requires backend endpoint
-          </div>
+          ${this._renderTrendSection()}
         </section>
       </div>
     `;

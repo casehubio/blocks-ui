@@ -311,4 +311,107 @@ describe('trust-score-panel', () => {
       expect(eventDetail?.tag).toBe('claim-review');
     });
   });
+
+  describe('Trend Section', () => {
+    it('shows placeholder when no trend data', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({
+          actorId: 'agent-123',
+          globalScore: 0.87,
+          capabilityScores: {},
+          dimensionScores: {},
+        }),
+      });
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.actorId = 'agent-123';
+      el.endpoint = 'http://test.local/api/v1/ledger';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      await new Promise(r => setTimeout(r, 50));
+      await el.updateComplete;
+      const placeholder = el.shadowRoot!.querySelector('.trend-placeholder');
+      expect(placeholder).toBeTruthy();
+      expect(placeholder!.textContent).toContain('Trend data requires backend endpoint');
+    });
+
+    it('renders sparkline when trendData is provided', async () => {
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.score = 0.87;
+      el.trustLevel = 'high';
+      (el as any).trendData = [
+        { timestamp: 1000, score: 0.8 },
+        { timestamp: 2000, score: 0.85 },
+        { timestamp: 3000, score: 0.87 },
+      ];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const sparkline = el.shadowRoot!.querySelector('.sparkline');
+      expect(sparkline).toBeTruthy();
+      expect(sparkline!.tagName.toLowerCase()).toBe('svg');
+    });
+
+    it('uses trust-level color for sparkline', async () => {
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.score = 0.87;
+      el.trustLevel = 'high';
+      (el as any).trendData = [
+        { timestamp: 1000, score: 0.8 },
+        { timestamp: 2000, score: 0.87 },
+      ];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const polyline = el.shadowRoot!.querySelector('polyline');
+      expect(polyline).toBeTruthy();
+      const stroke = polyline!.getAttribute('stroke');
+      expect(stroke).toContain('--color-success');
+    });
+
+    it('renders ARIA label on sparkline', async () => {
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.score = 0.87;
+      el.trustLevel = 'high';
+      (el as any).trendData = [
+        { timestamp: 1000, score: 0.8 },
+        { timestamp: 2000, score: 0.87 },
+      ];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const wrapper = el.shadowRoot!.querySelector('.trend-section [role="img"]');
+      expect(wrapper).toBeTruthy();
+      const label = wrapper!.getAttribute('aria-label');
+      expect(label).toContain('Trust score trend');
+    });
+
+    it('does not show trend section in compact mode', async () => {
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'compact';
+      el.score = 0.87;
+      el.trustLevel = 'high';
+      (el as any).trendData = [
+        { timestamp: 1000, score: 0.8 },
+        { timestamp: 2000, score: 0.87 },
+      ];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const trendSection = el.shadowRoot!.querySelector('.trend-section');
+      expect(trendSection).toBeFalsy();
+    });
+
+    it('shows single point as placeholder (graceful degradation)', async () => {
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.score = 0.87;
+      el.trustLevel = 'high';
+      (el as any).trendData = [{ timestamp: 1000, score: 0.87 }];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const placeholder = el.shadowRoot!.querySelector('.trend-placeholder');
+      expect(placeholder).toBeTruthy();
+    });
+  });
 });

@@ -105,7 +105,7 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController), a11y mixins, event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
+| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), a11y mixins, event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
 | `components/data-table/` | Generic data table — three display modes (auto/paginated/scroll), CSS Grid rendering, virtual scroll engine, ColumnDef\<R\> data model, multi-mode selection, multi-column sort (Shift+click), client-side sorting and filtering, column visibility, tree/expandable rows, CSV export, ARIA grid, 2D keyboard navigation, CSS ::part() row styling |
 | `components/work-item-inbox/` | Work item inbox — uses pages-data-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
@@ -120,7 +120,7 @@ yarn typecheck
 | `components/approval-gate/` | Approval gate — structured decision point with quorum, evidence slots, SLA integration, confirmation dialog |
 | `components/audit-trail-viewer/` | Audit trail viewer — ledger entries with data-table, Merkle verification banner, attestations, actor/type/date filters, GDPR erasure handling |
 | `components/case-timeline/` | Case lifecycle timeline — vertical CSS timeline with 30+ event type nodes, compact dot strip mode, stream type filter |
-| `components/trust-score-panel/` | Trust score panel — SVG gauge, per-capability breakdown table, maturity badges, compact badge mode |
+| `components/trust-score-panel/` | Trust score panel — SVG gauge, per-capability breakdown table, trend sparkline (via TrendSourceMixin, supports simulated/inline/direct data), maturity badges, compact badge mode |
 | `components/channel-activity/` | Qhorus channel activity feed — message stream, commitment status, speech act badges |
 
 ## Design Philosophy

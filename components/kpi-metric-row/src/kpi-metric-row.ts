@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { LiveRegionMixin, emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin, emitPagesEvent, renderSparkline } from '@casehubio/blocks-ui-core';
 
 export const KpiMetricRowTopics = {
   CARD_CLICKED: 'kpi.card-clicked',
@@ -17,35 +17,6 @@ export interface MetricDefinition {
 }
 
 const TREND_ARROWS: Record<string, string> = { up: '▲', down: '▼', stable: '—' };
-
-function renderSparkline(data: readonly number[]): TemplateResult {
-  if (data.length < 2) return html``;
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const range = max - min || 1;
-  const w = 48;
-  const h = 20;
-  const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * w;
-    const y = h - ((v - min) / range) * h;
-    return `${x},${y}`;
-  }).join(' ');
-
-  const polygonPoints = `0,${h} ${points} ${w},${h}`;
-
-  return html`
-    <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true" class="sparkline">
-      <defs>
-        <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="currentColor" stop-opacity="0.2" />
-          <stop offset="100%" stop-color="currentColor" stop-opacity="0.02" />
-        </linearGradient>
-      </defs>
-      <polygon points="${polygonPoints}" fill="url(#spark-fill)" />
-      <polyline points="${points}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-    </svg>
-  `;
-}
 
 @customElement('kpi-metric-row')
 export class KpiMetricRow extends LiveRegionMixin(LitElement) {
@@ -243,7 +214,7 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
             ${TREND_ARROWS[m.trend.direction]} ${m.trend.delta}
           </span>
         ` : nothing}
-        ${m.sparkline ? renderSparkline(m.sparkline) : nothing}
+        ${m.sparkline ? renderSparkline(m.sparkline, { width: 48, height: 20 }) : nothing}
       </div>
     `;
   }
