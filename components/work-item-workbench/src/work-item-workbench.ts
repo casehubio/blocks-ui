@@ -1,10 +1,7 @@
 import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import {
-  type WorkIdentity,
-  type UserSearchProvider,
-  KeyboardShortcutMixin,
-} from '@casehubio/blocks-ui-core';
+import type { WorkIdentity, UserSearchProvider } from '@casehubio/blocks-ui-core';
+import { KeyboardShortcutMixin } from '@casehubio/pages-primitives';
 import '@casehubio/blocks-ui-split-workbench';
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';

@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { onPagesEvent, emitPagesEvent, LiveRegionMixin } from '@casehubio/blocks-ui-core';
+import { onPagesEvent, emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
 
 @customElement('split-workbench')
 export class SplitWorkbench extends LiveRegionMixin(LitElement) {

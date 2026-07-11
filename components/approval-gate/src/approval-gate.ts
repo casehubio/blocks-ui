@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { FocusTrapMixin, LiveRegionMixin, emitPagesEvent, BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent, BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { FocusTrapMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-sla-indicator';
 

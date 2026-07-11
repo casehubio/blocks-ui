@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { LiveRegionMixin, emitPagesEvent, renderSparkline } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent, renderSparkline } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
 
 export const KpiMetricRowTopics = {
   CARD_CLICKED: 'kpi.card-clicked',

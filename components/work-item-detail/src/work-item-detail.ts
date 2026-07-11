@@ -9,7 +9,8 @@ import type {
   EscalateRequest,
   DelegateRequest,
 } from '@casehubio/blocks-ui-core';
-import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, FocusTrapMixin, LiveRegionMixin, SchemaForm } from '@casehubio/blocks-ui-core';
+import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, SchemaForm } from '@casehubio/blocks-ui-core';
+import { FocusTrapMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
 import './detail-relations-tab.js';

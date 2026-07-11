@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin, LiveRegionMixin, fetchSource, renderPropertyTree, propertyTreeStyles, type WorkIdentity } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, fetchSource, renderPropertyTree, propertyTreeStyles, type WorkIdentity } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { SourceFactory } from '@casehubio/pages-component';
 import {
   type CaseEvent,

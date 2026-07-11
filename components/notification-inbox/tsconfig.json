@@ -9,7 +9,6 @@
   },
   "include": ["src/**/*"],
   "references": [
-    { "path": "../../packages/blocks-ui-core" },
-    { "path": "../data-table" }
+    { "path": "../../packages/blocks-ui-core" }
   ]
 }

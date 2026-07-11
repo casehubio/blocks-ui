@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
+import type { ColumnDef } from '@casehubio/pages-data-table';
 import './list-pane.js';
 
 type ListPaneEl = HTMLElement & {

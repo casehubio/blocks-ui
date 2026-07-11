@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/blocks-ui-data-table';
-import '@casehubio/blocks-ui-data-table';
+import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
+import '@casehubio/pages-data-table';
 
 interface WorkItemRootResponse {
   item: WorkItemResponse;

@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { FocusTrapMixin } from '../mixins/focus-trap.js';
+import { FocusTrapMixin } from '@casehubio/pages-primitives';
 
 @customElement('blocks-confirm-dialog')
 export class BlocksConfirmDialog extends FocusTrapMixin(LitElement) {

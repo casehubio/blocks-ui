@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
+    "@casehubio/pages-primitives": "^0.2.0",
     "lit": "^3.1.0"
   },
   "devDependencies": {

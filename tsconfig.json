@@ -12,7 +12,6 @@
     { "path": "components/kpi-metric-row" },
     { "path": "components/sla-indicator" },
     { "path": "components/approval-gate" },
-    { "path": "components/data-table" },
     { "path": "components/notification-inbox" },
     { "path": "components/split-workbench" },
     { "path": "components/list-pane" },

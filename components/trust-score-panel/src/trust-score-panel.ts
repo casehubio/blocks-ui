@@ -1,11 +1,11 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin, TrendSourceMixin, renderSparkline } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
-import '@casehubio/blocks-ui-data-table';
-import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
+import '@casehubio/pages-data-table';
+import type { ColumnDef } from '@casehubio/pages-data-table';
 import type { SourceFactory } from '@casehubio/pages-component';
 
 const TRUST_LEVEL_COLORS: Record<string, string> = {

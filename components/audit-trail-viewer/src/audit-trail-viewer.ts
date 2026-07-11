@@ -1,11 +1,11 @@
 import { LitElement, html, css, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceAdapter, fetchSource, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/blocks-ui-core/mixins/live-region.js';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
+import type { ColumnDef } from '@casehubio/pages-data-table';
 import type { LedgerEntry, VerificationResult, Attestation, EntryTypeFilter } from './types.js';
-import '@casehubio/blocks-ui-data-table';
+import '@casehubio/pages-data-table';
 
 @customElement('audit-trail-viewer')
 export class AuditTrailViewer extends LiveRegionMixin(LitElement) {

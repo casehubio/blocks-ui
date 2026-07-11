@@ -105,8 +105,7 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), a11y mixins, event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
-| `components/data-table/` | Generic data table — three display modes (auto/paginated/scroll), CSS Grid rendering, virtual scroll engine, ColumnDef\<R\> data model, multi-mode selection, multi-column sort (Shift+click), client-side sorting and filtering, column visibility, tree/expandable rows, CSV export, ARIA grid, 2D keyboard navigation, CSS ::part() row styling |
+| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
 | `components/work-item-inbox/` | Work item inbox — uses pages-data-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
 | `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab (outgoing + incoming with semantic type inverses) |

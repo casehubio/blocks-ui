@@ -1,15 +1,12 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import {
-  KeyboardShortcutMixin,
-  LiveRegionMixin,
-  BlocksConfirmDialog,
-} from '@casehubio/blocks-ui-core';
+import { BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import '@casehubio/blocks-ui-data-table';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/blocks-ui-data-table';
+import '@casehubio/pages-data-table';
+import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
 import type { Notification, NotificationPage } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';

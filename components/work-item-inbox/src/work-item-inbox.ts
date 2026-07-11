@@ -20,15 +20,14 @@ import {
   onPagesEvent,
   WorkItemEventTopics,
   isActiveStatus,
-  KeyboardShortcutMixin,
-  LiveRegionMixin,
   WorkEventType as WorkEventTypeEnum,
   BlocksConfirmDialog,
 } from '@casehubio/blocks-ui-core';
+import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import '@casehubio/blocks-ui-data-table';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/blocks-ui-data-table';
+import '@casehubio/pages-data-table';
+import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
 import './inbox-summary-bar.js';
 import './inbox-filter-bar.js';
 import './queue-pill-bar.js';

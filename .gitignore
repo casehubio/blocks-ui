@@ -6,3 +6,4 @@ wksp
 *.tsbuildinfo
 target/
 .yarn/install-state.gz
+.playwright-mcp/

@@ -1,8 +1,8 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin, emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/blocks-ui-data-table';
-import '@casehubio/blocks-ui-data-table';
+import type { ColumnDef } from '@casehubio/pages-data-table';
+import '@casehubio/pages-data-table';
 
 @customElement('list-pane')
 export class ListPane extends DataSourceMixin(LitElement) {

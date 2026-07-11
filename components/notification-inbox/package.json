@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/blocks-ui-data-table": "workspace:*",
+    "@casehubio/pages-primitives": "^0.2.0",
+    "@casehubio/pages-data-table": "^0.2.0",
     "@casehubio/pages-data": "^0.2.1",
     "lit": "^3.2.1"
   },
