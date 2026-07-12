@@ -138,33 +138,33 @@ describe('work-item-inbox', () => {
   afterEach(() => el.remove());
 
   it('renders items', () => {
-    const table = el.shadowRoot!.querySelector('pages-data-table');
+    const table = el.shadowRoot!.querySelector('pages-table');
     expect(table).not.toBeNull();
-    expect((table as any).rows.length).toBeGreaterThan(0);
+    expect((table as any).dataSet?.rows.length).toBeGreaterThan(0);
   });
 
   it('my-work mode shows only assigned items', async () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-    expect(table.rows.length).toBe(1);
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table.dataSet?.rows.length).toBe(1);
   });
 
   it('claimable mode shows only pending items', async () => {
     (el as any).activeTab = 'claimable';
     await (el as any).updateComplete;
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-    expect(table.rows.length).toBe(1);
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table.dataSet?.rows.length).toBe(1);
   });
 
   it('emits pages-event on row activation', async () => {
     const handler = vi.fn();
     document.addEventListener('pages-event', handler);
-    const table = el.shadowRoot!.querySelector('pages-data-table')!;
+    const table = el.shadowRoot!.querySelector('pages-table')!;
     table.dispatchEvent(new CustomEvent('row-activate', { bubbles: true, composed: true, detail: { key: 'wi-1', row: mockItems[0] } }));
     expect(handler).toHaveBeenCalled();
     const eventDetail = handler.mock.calls[0][0].detail;
-    expect(eventDetail.topic).toBe('work-item.selected');
+    expect(eventDetail.topic).toBe('work-item:selected');
     expect(eventDetail.payload.workItemId).toBe('wi-1');
     document.removeEventListener('pages-event', handler);
   });
@@ -226,8 +226,8 @@ describe('work-item-inbox', () => {
     allTab.click();
     await (el as any).updateComplete;
     // Should show all items from inbox data (no perspective filter)
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-    expect(table.rows.length).toBeGreaterThan(0);
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table.dataSet?.rows.length).toBeGreaterThan(0);
   });
 
   it('does not remove items from data array when All tab is active', async () => {
@@ -235,8 +235,8 @@ describe('work-item-inbox', () => {
     const allTab = el.shadowRoot!.querySelectorAll('.tab')[2] as HTMLElement;
     allTab.click();
     await (el as any).updateComplete;
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-    const initialCount = table.rows.length;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const initialCount = table.dataSet?.rows.length;
     // Simulate SSE event — should not empty the list
     // (verifies handleItemAppears is tab-independent)
     expect(initialCount).toBeGreaterThan(0);
@@ -253,10 +253,10 @@ describe('work-item-inbox', () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
 
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
     expect(table.mode).toBe('auto');
-    expect(table.rows.length).toBe(60);
+    expect(table.dataSet?.rows.length).toBe(60);
   });
 
   it('table handles few items with scroll mode', async () => {
@@ -270,10 +270,10 @@ describe('work-item-inbox', () => {
     (el as any).activeTab = 'my-work';
     await (el as any).updateComplete;
 
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
     expect(table.mode).toBe('auto');
-    expect(table.rows.length).toBe(30);
+    expect(table.dataSet?.rows.length).toBe(30);
   });
 
   it('shows batch action bar when 2+ items selected', async () => {
@@ -320,9 +320,9 @@ describe('work-item-inbox', () => {
     await el2.updateComplete;
     expect(el2.endpoint).toBe('');
     // With data provided directly AND endpoint set, the component should render
-    const table = el2.shadowRoot!.querySelector('pages-data-table') as any;
+    const table = el2.shadowRoot!.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
-    expect(table.rows.length).toBeGreaterThan(0);
+    expect(table.dataSet?.rows.length).toBeGreaterThan(0);
     el2.remove();
   });
 
@@ -518,19 +518,18 @@ describe('work-item-inbox', () => {
     expect(filtered.some((r: any) => r.item.id === 'wi-breach-only')).toBe(true);
   });
 
-  it('renders pages-data-table with correct properties', async () => {
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+  it('renders pages-table with correct properties', async () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
     expect(table.mode).toBe('auto');
     expect(table.selection).toBe('multi');
-    expect(table.columns).toBeDefined();
-    expect(table.columns.length).toBeGreaterThan(0);
+    expect(table.dataSet).toBeDefined();
   });
 
-  it('passes column definitions to table', async () => {
-    const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-    expect(table.columns).toBeDefined();
-    const columnIds = table.columns.map((c: any) => c.id);
+  it('passes dataSet with columns to table', async () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table.dataSet).toBeDefined();
+    const columnIds = table.dataSet.columns.map((c: any) => c.id);
     expect(columnIds).toContain('title');
     expect(columnIds).toContain('status');
     expect(columnIds).toContain('category');
@@ -538,7 +537,7 @@ describe('work-item-inbox', () => {
   });
 
   it('selection-change event updates selectedItems', async () => {
-    const table = el.shadowRoot!.querySelector('pages-data-table')!;
+    const table = el.shadowRoot!.querySelector('pages-table')!;
     table.dispatchEvent(new CustomEvent('selection-change', {
       bubbles: true,
       composed: true,

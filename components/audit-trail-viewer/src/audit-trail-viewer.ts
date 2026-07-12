@@ -1,11 +1,70 @@
 import { LitElement, html, css, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceAdapter, fetchSource, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
+import { DataSourceAdapter, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/pages-data-table';
+import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { LedgerEntry, VerificationResult, Attestation, EntryTypeFilter } from './types.js';
-import '@casehubio/pages-data-table';
+import '@casehubio/pages-table';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { DataSource, DataSink } from '@casehubio/pages-data/dist/datasource/types.js';
+
+const ID_COL = columnId('id');
+const OCCURRED_AT_COL = columnId('occurredAt');
+const ACTOR_ID_COL = columnId('actorId');
+const ACTOR_TYPE_COL = columnId('actorType');
+const ENTRY_TYPE_COL = columnId('entryType');
+const DIGEST_COL = columnId('digest');
+
+const ENTRY_COL_DEFS = [
+  { id: ID_COL, type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.id },
+  { id: OCCURRED_AT_COL, name: 'Timestamp', type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.occurredAt },
+  { id: ACTOR_ID_COL, name: 'Actor', type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.actorId ?? '' },
+  { id: ACTOR_TYPE_COL, type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.actorType ?? '' },
+  { id: ENTRY_TYPE_COL, name: 'Type', type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.entryType },
+  { id: DIGEST_COL, name: 'Digest', type: ColumnType.TEXT, getValue: (e: LedgerEntry) => e.digest },
+] as const;
+
+const ENTRY_COL_CONFIG: readonly TableColumnConfig[] = [
+  { id: ID_COL, visible: false },
+  { id: OCCURRED_AT_COL, sortable: true },
+  { id: ACTOR_ID_COL, sortable: true },
+  { id: ACTOR_TYPE_COL, visible: false },
+  { id: ENTRY_TYPE_COL, sortable: true },
+  { id: DIGEST_COL, sortable: false },
+];
+
+const ENTRY_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+  [OCCURRED_AT_COL, (cell: CellValue) => {
+    if (cell.type === 'NULL') return '';
+    const date = new Date((cell as { value: string }).value);
+    return html`<span>${date.toLocaleTimeString()}</span>`;
+  }],
+  [ACTOR_ID_COL, (cell: CellValue, row: TypedRow) => {
+    if (cell.type === 'NULL' || !(cell as { value: string }).value) return html`<span class="redacted">Redacted</span>`;
+    const actorId = (cell as { value: string }).value;
+    const actorTypeCell = row.cell(ACTOR_TYPE_COL);
+    const actorType = actorTypeCell.type !== 'NULL' && (actorTypeCell as { value: string }).value
+      ? (actorTypeCell as { value: string }).value : null;
+    return html`
+      <div class="actor-cell">
+        <span>${actorId}</span>
+        ${actorType ? html`<span class="badge actor-type">${actorType}</span>` : ''}
+      </div>
+    `;
+  }],
+  [ENTRY_TYPE_COL, (cell: CellValue) => {
+    if (cell.type === 'NULL') return '';
+    return html`<span class="entry-type">${(cell as { value: string }).value}</span>`;
+  }],
+  [DIGEST_COL, (cell: CellValue) => {
+    if (cell.type === 'NULL') return '';
+    const digest = (cell as { value: string }).value;
+    return html`<code class="digest">${digest.substring(0, 8)}...</code>`;
+  }],
+]);
 
 @customElement('audit-trail-viewer')
 export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
@@ -16,10 +75,10 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
   @property({ type: Object }) renderEntryPayload?: (entry: LedgerEntry) => TemplateResult | undefined;
 
   readonly entries = new DataSourceAdapter(this, {
-    sourceFactory: (url, _id) => fetchSource(url),
+    sourceFactory: (url) => this._createEntriesSource(url),
   });
   readonly verify = new DataSourceAdapter(this, {
-    sourceFactory: (url, _id) => fetchSource(url),
+    sourceFactory: (url) => this._createVerifySource(url),
   });
 
   @state() private _entries: LedgerEntry[] = [];
@@ -31,46 +90,49 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
   @state() private _dateFrom: string = '';
   @state() private _dateTo: string = '';
 
-  private _columns: ColumnDef<LedgerEntry>[] = [
-    {
-      id: 'occurredAt',
-      label: 'Timestamp',
-      sortable: true,
-      render: (value) => {
-        const date = new Date(value as string);
-        return html`<span>${date.toLocaleTimeString()}</span>`;
+  private _createEntriesSource(url: string): DataSource {
+    let abort: AbortController | undefined;
+    return {
+      connect: (sink: DataSink) => {
+        abort = new AbortController();
+        const signal = abort.signal;
+        globalThis.fetch(url, { signal })
+          .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+          .then((data: LedgerEntry[]) => {
+            if (signal.aborted) return;
+            this._entries = data;
+            sink.apply({ type: 'snapshot', dataset: { columns: [], rows: [] } });
+          })
+          .catch(err => {
+            if (signal.aborted || err.name === 'AbortError') return;
+            sink.error({ message: err instanceof Error ? err.message : String(err), permanent: true });
+          });
       },
-    },
-    {
-      id: 'actorId',
-      label: 'Actor',
-      sortable: true,
-      render: (value, row) => {
-        if (!value) return html`<span class="redacted">Redacted</span>`;
-        return html`
-          <div class="actor-cell">
-            <span>${value as string}</span>
-            ${row.actorType ? html`<span class="badge actor-type">${row.actorType}</span>` : ''}
-          </div>
-        `;
+      disconnect: () => { abort?.abort(); abort = undefined; },
+    };
+  }
+
+  private _createVerifySource(url: string): DataSource {
+    let abort: AbortController | undefined;
+    return {
+      connect: (sink: DataSink) => {
+        abort = new AbortController();
+        const signal = abort.signal;
+        globalThis.fetch(url, { signal })
+          .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+          .then((data: VerificationResult) => {
+            if (signal.aborted) return;
+            this._verification = data;
+            sink.apply({ type: 'snapshot', dataset: { columns: [], rows: [] } });
+          })
+          .catch(err => {
+            if (signal.aborted || err.name === 'AbortError') return;
+            sink.error({ message: err instanceof Error ? err.message : String(err), permanent: true });
+          });
       },
-    },
-    {
-      id: 'entryType',
-      label: 'Type',
-      sortable: true,
-      render: (value) => html`<span class="entry-type">${value as string}</span>`,
-    },
-    {
-      id: 'digest',
-      label: 'Digest',
-      sortable: false,
-      render: (value) => {
-        const digest = value as string;
-        return html`<code class="digest">${digest.substring(0, 8)}...</code>`;
-      },
-    },
-  ];
+      disconnect: () => { abort?.abort(); abort = undefined; },
+    };
+  }
 
   override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
@@ -78,15 +140,6 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
         changed.has('identity') || changed.has('_dateFrom') ||
         changed.has('_dateTo')) {
       this._updateEndpoints();
-    }
-    if (this.entries.dataSet !== this._entries) {
-      const data = this.entries.dataSet;
-      if (Array.isArray(data)) {
-        this._entries = data as LedgerEntry[];
-      }
-    }
-    if (this.verify.dataSet !== this._verification) {
-      this._verification = (this.verify.dataSet as VerificationResult) ?? null;
     }
   }
 
@@ -124,16 +177,18 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
   }
 
   private async _handleRowActivate(e: CustomEvent): Promise<void> {
-    const entry = e.detail.row as LedgerEntry;
-    if (this._expandedEntryId === entry.id) {
+    const entryId = e.detail.key as string;
+    if (!entryId) return;
+
+    if (this._expandedEntryId === entryId) {
       this._expandedEntryId = null;
       return;
     }
 
-    this._expandedEntryId = entry.id;
+    this._expandedEntryId = entryId;
 
-    if (!this._attestations.has(entry.id)) {
-      await this._fetchAttestations(entry.id);
+    if (!this._attestations.has(entryId)) {
+      await this._fetchAttestations(entryId);
     }
   }
 
@@ -357,16 +412,19 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
         ? html`<div class="verification-banner" role="status" aria-live="polite">Verifying chain integrity...</div>`
         : this._renderVerificationBanner();
 
+    const filteredDataSet = fromRows(this._filteredEntries, ENTRY_COL_DEFS);
+
     return html`
       ${verifyBanner} ${this._renderFilterControls()}
-      <pages-data-table
-        .columns=${this._columns}
-        .data=${this._filteredEntries}
+      <pages-table
+        .dataSet=${filteredDataSet}
+        .columnConfig=${ENTRY_COL_CONFIG}
+        .columnRenderers=${ENTRY_RENDERERS}
+        .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
         client-filter
         @row-activate=${this._handleRowActivate}
-      >
-        ${this._filteredEntries.map((entry) => this._renderExpandedDetail(entry))}
-      </pages-data-table>
+      ></pages-table>
+      ${this._filteredEntries.map((entry) => this._renderExpandedDetail(entry))}
     `;
   }
 

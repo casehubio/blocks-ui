@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import './trust-score-panel.js';
 import type { TrustScorePanel } from './trust-score-panel.js';
 import type { TrustScoreResponse } from './types.js';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 
 let originalFetch: typeof globalThis.fetch;
 
@@ -136,7 +138,7 @@ describe('trust-score-panel', () => {
       await new Promise((resolve) => setTimeout(resolve, 20));
       await el.updateComplete;
 
-      const table = el.shadowRoot!.querySelector('pages-data-table');
+      const table = el.shadowRoot!.querySelector('pages-table');
       expect(table).toBeTruthy();
     });
 
@@ -297,11 +299,15 @@ describe('trust-score-panel', () => {
         }
       }) as EventListener);
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
       if (table) {
+        const dataset = fromRows([{ tag: 'claim-review', score: 0.82 }], [
+          { id: columnId('tag'), type: ColumnType.TEXT, getValue: (c: { tag: string; score: number }) => c.tag },
+          { id: columnId('score'), type: ColumnType.NUMBER, getValue: (c: { tag: string; score: number }) => c.score },
+        ]);
         table.dispatchEvent(
-          new CustomEvent('row-click', {
-            detail: { tag: 'claim-review', score: 0.82 },
+          new CustomEvent('row-activate', {
+            detail: { row: dataset.rows[0], key: 'claim-review' },
           })
         );
       }

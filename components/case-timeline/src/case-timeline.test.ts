@@ -318,8 +318,8 @@ describe('CaseTimeline', () => {
     });
 
     it('should show CSS tooltip on dot hover', () => {
-      const firstDot = element.shadowRoot!.querySelector('.event-dot') as HTMLElement;
-      expect(firstDot.getAttribute('data-tooltip')).toBeTruthy();
+      const firstEvent = element.shadowRoot!.querySelector('.compact-event') as HTMLElement;
+      expect(firstEvent.getAttribute('data-tooltip')).toBeTruthy();
     });
 
     it('should emit timeline.expand-requested on strip click', async () => {

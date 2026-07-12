@@ -2,97 +2,40 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import { BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
-import '@casehubio/pages-data-table';
-import type { ColumnDef } from '@casehubio/pages-data-table';
+import '@casehubio/pages-table';
+import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { Subscription, SubscriptionPage } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';
 
 // --- Column definitions ---
 
-const subscriptionColumns: ColumnDef<Subscription>[] = [
-  {
-    id: 'name',
-    label: 'Name',
-    sortable: true,
-    width: '1fr',
-    getValue: (s: Subscription) => s.name,
-  },
-  {
-    id: 'eventType',
-    label: 'Event Type',
-    sortable: true,
-    width: '200px',
-    getValue: (s: Subscription) => s.eventType,
-    render: (val: unknown) => html`<span class="event-type-pill">${val as string}</span>`,
-  },
-  {
-    id: 'constraints',
-    label: 'Filters',
-    sortable: false,
-    width: '100px',
-    getValue: (s: Subscription) => s.constraints.length,
-    render: (val: unknown) => {
-      const count = val as number;
-      return count > 0
-        ? html`<span class="constraint-count">${count} filter${count === 1 ? '' : 's'}</span>`
-        : html`<span class="constraint-count">—</span>`;
-    },
-  },
-  {
-    id: 'enabled',
-    label: 'Enabled',
-    sortable: true,
-    width: '80px',
-    getValue: (s: Subscription) => s.enabled,
-    render: (_val: unknown, s: Subscription) => html`
-      <input
-        type="checkbox"
-        class="enabled-toggle"
-        .checked=${s.enabled}
-        @change=${(e: Event) => {
-          const target = e.target as HTMLInputElement;
-          const row = target.closest('tr');
-          const id = row?.dataset.id;
-          if (id) {
-            const list = target.closest('subscription-list') as SubscriptionList | null;
-            list?.toggleEnabled(id);
-          }
-        }}
-      />
-    `,
-  },
-  {
-    id: 'actions',
-    label: '',
-    sortable: false,
-    width: '120px',
-    getValue: () => '',
-    render: (_val: unknown, s: Subscription) => html`
-      <div class="actions">
-        <button
-          class="btn-edit"
-          @click=${(e: Event) => {
-            e.stopPropagation();
-            const list = (e.target as HTMLElement).closest('subscription-list') as SubscriptionList | null;
-            list?.handleEdit(s.id);
-          }}
-        >
-          Edit
-        </button>
-        <button
-          class="btn-delete"
-          @click=${(e: Event) => {
-            e.stopPropagation();
-            const list = (e.target as HTMLElement).closest('subscription-list') as SubscriptionList | null;
-            list?.handleDelete(s.id);
-          }}
-        >
-          Delete
-        </button>
-      </div>
-    `,
-  },
+const S_ID_COL = columnId('id');
+const S_NAME_COL = columnId('name');
+const S_EVENT_TYPE_COL = columnId('eventType');
+const S_CONSTRAINTS_COL = columnId('constraints');
+const S_ENABLED_COL = columnId('enabled');
+const S_ACTIONS_COL = columnId('actions');
+
+const SUB_COL_DEFS = [
+  { id: S_ID_COL, type: ColumnType.TEXT, getValue: (s: Subscription) => s.id },
+  { id: S_NAME_COL, name: 'Name', type: ColumnType.TEXT, getValue: (s: Subscription) => s.name },
+  { id: S_EVENT_TYPE_COL, name: 'Event Type', type: ColumnType.TEXT, getValue: (s: Subscription) => s.eventType },
+  { id: S_CONSTRAINTS_COL, name: 'Filters', type: ColumnType.NUMBER, getValue: (s: Subscription) => s.constraints.length },
+  { id: S_ENABLED_COL, name: 'Enabled', type: ColumnType.TEXT, getValue: (s: Subscription) => String(s.enabled) },
+  { id: S_ACTIONS_COL, type: ColumnType.TEXT, getValue: () => '' },
+] as const;
+
+const SUB_COL_CONFIG: readonly TableColumnConfig[] = [
+  { id: S_ID_COL, visible: false },
+  { id: S_NAME_COL, sortable: true, width: '1fr' },
+  { id: S_EVENT_TYPE_COL, sortable: true, width: '200px' },
+  { id: S_CONSTRAINTS_COL, sortable: false, width: '100px' },
+  { id: S_ENABLED_COL, sortable: true, width: '80px' },
+  { id: S_ACTIONS_COL, sortable: false, width: '120px' },
 ];
 
 // --- Component ---
@@ -115,8 +58,40 @@ export class SubscriptionList extends LitElement {
   @state() private _showDeleteDialog = false;
   @state() private _pendingDeleteId: string | null = null;
 
-  // Table columns
-  private _tableColumns = subscriptionColumns as unknown as ColumnDef[];
+  private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+    [S_EVENT_TYPE_COL, (cell: CellValue) => {
+      if (cell.type === 'NULL') return '';
+      return html`<span class="event-type-pill">${(cell as { value: string }).value}</span>`;
+    }],
+    [S_CONSTRAINTS_COL, (cell: CellValue) => {
+      if (cell.type === 'NULL') return html`<span class="constraint-count">—</span>`;
+      const count = (cell as { value: number }).value;
+      return count > 0
+        ? html`<span class="constraint-count">${count} filter${count === 1 ? '' : 's'}</span>`
+        : html`<span class="constraint-count">—</span>`;
+    }],
+    [S_ENABLED_COL, (_cell: CellValue, row: TypedRow) => {
+      const enabled = row.text(S_ENABLED_COL) === 'true';
+      const id = row.text(S_ID_COL);
+      return html`
+        <input
+          type="checkbox"
+          class="enabled-toggle"
+          .checked=${enabled}
+          @change=${() => this.toggleEnabled(id)}
+        />
+      `;
+    }],
+    [S_ACTIONS_COL, (_cell: CellValue, row: TypedRow) => {
+      const id = row.text(S_ID_COL);
+      return html`
+        <div class="actions">
+          <button class="btn-edit" @click=${(e: Event) => { e.stopPropagation(); this.handleEdit(id); }}>Edit</button>
+          <button class="btn-delete" @click=${(e: Event) => { e.stopPropagation(); this.handleDelete(id); }}>Delete</button>
+        </div>
+      `;
+    }],
+  ]);
 
   static override readonly styles = css`
     :host {
@@ -172,7 +147,7 @@ export class SubscriptionList extends LitElement {
       overflow: hidden;
     }
 
-    pages-data-table {
+    pages-table {
       height: 100%;
     }
 
@@ -421,16 +396,18 @@ export class SubscriptionList extends LitElement {
       `;
     }
 
+    const dataSet = fromRows(this.subscriptions, SUB_COL_DEFS);
+
     return html`
       <div class="list-area">
-        <pages-data-table
-          .rows=${this.subscriptions}
-          .columns=${this._tableColumns}
-          .getRowKey=${(row: Subscription) => row.id}
-          .getRowData=${(row: Subscription) => ({ id: row.id })}
+        <pages-table
+          .dataSet=${dataSet}
+          .columnConfig=${SUB_COL_CONFIG}
+          .columnRenderers=${this._columnRenderers}
+          .getRowKey=${(row: TypedRow) => row.text(S_ID_COL)}
           mode="scroll"
           selection="none"
-        ></pages-data-table>
+        ></pages-table>
       </div>
     `;
   }

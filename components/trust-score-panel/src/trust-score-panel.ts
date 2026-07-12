@@ -1,12 +1,18 @@
-import { LitElement, html, css, type PropertyValues } from 'lit';
+import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin, TrendSourceMixin, renderSparkline } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
-import '@casehubio/pages-data-table';
-import type { ColumnDef } from '@casehubio/pages-data-table';
+import '@casehubio/pages-table';
+import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { SourceFactory } from '@casehubio/pages-component';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+
+const TAG_COL = columnId('tag');
+const SCORE_COL = columnId('score');
 
 const TRUST_LEVEL_COLORS: Record<string, string> = {
   high: 'var(--color-success, #28a745)',
@@ -21,6 +27,8 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
   @property({ type: String }) mode: 'full' | 'compact' = 'full';
   @property({ type: Number }) score?: number;
   @property({ type: String }) trustLevel?: TrustLevel;
+
+  @state() private _rawTrustData: TrustScoreResponse | null = null;
 
   static override styles = css`
     :host {
@@ -93,6 +101,16 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     }
 
     /* Compact mode badge */
+    .compact-with-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .compact-with-trend svg {
+      display: block;
+    }
+
     .trust-badge {
       display: inline-flex;
       align-items: center;
@@ -150,6 +168,35 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     }
   `;
 
+  override createSourceFactory(): SourceFactory {
+    return (url) => {
+      let abort: AbortController | undefined;
+      return {
+        connect: (sink) => {
+          abort = new AbortController();
+          const signal = abort.signal;
+          globalThis.fetch(url, { signal })
+            .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+            .then((data: TrustScoreResponse) => {
+              if (signal.aborted) return;
+              this._rawTrustData = data;
+              const capabilities = Object.entries(data.capabilityScores ?? {}).map(([tag, score]) => ({ tag, score }));
+              const dataset = fromRows(capabilities, [
+                { id: TAG_COL, name: 'Capability', type: ColumnType.TEXT, getValue: (c: { tag: string; score: number }) => c.tag },
+                { id: SCORE_COL, name: 'Score', type: ColumnType.NUMBER, getValue: (c: { tag: string; score: number }) => c.score },
+              ]);
+              sink.apply({ type: 'snapshot', dataset });
+            })
+            .catch(err => {
+              if (signal.aborted || err.name === 'AbortError') return;
+              sink.error({ message: err instanceof Error ? err.message : String(err), permanent: true });
+            });
+        },
+        disconnect: () => { abort?.abort(); abort = undefined; },
+      };
+    };
+  }
+
   override resolveEndpoint(): string | undefined {
     if (this._hasPreFetchedData()) return undefined;
     if (!this.endpoint || !this.actorId) return undefined;
@@ -166,7 +213,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
   }
 
   private get _trustData(): TrustScoreResponse | null {
-    return this.dataSet as TrustScoreResponse | null;
+    return this._rawTrustData;
   }
 
   private _getDisplayScore(): number | undefined {
@@ -182,11 +229,22 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
   private _renderCompactMode() {
     const score = this._getDisplayScore();
     const level = this._getDisplayTrustLevel();
-    const label = score !== undefined ? `Trust score ${score.toFixed(2)}, ${level} trust` : 'No trust data';
+    const points = this.trendPoints;
+    const hasTrend = points.length >= 2;
+    const label = score !== undefined
+      ? `Trust score ${score.toFixed(2)}, ${level} trust${hasTrend ? `, ${points.length} trend points` : ''}`
+      : 'No trust data';
+
+    const color = TRUST_LEVEL_COLORS[level];
 
     return html`
-      <div class="trust-badge ${level}" role="img" aria-label=${label}>
-        ${score !== undefined ? score.toFixed(2) : '—'}
+      <div class="compact-with-trend" role="img" aria-label=${label}>
+        <div class="trust-badge ${level}">
+          ${score !== undefined ? score.toFixed(2) : '—'}
+        </div>
+        ${hasTrend
+          ? renderSparkline(points.map(p => p.score), { width: 80, height: 24, color, domain: [0, 1] })
+          : nothing}
       </div>
     `;
   }
@@ -278,43 +336,46 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
       return html`<p>No capability scores available</p>`;
     }
 
-    const columns: ColumnDef<{ tag: string; score: number }>[] = [
-      {
-        key: 'tag',
-        header: 'Capability',
-        sortable: true,
-      },
-      {
-        key: 'score',
-        header: 'Score',
-        sortable: true,
-        render: (value) => {
-          const numValue = value as number;
-          const level = trustLevelFromScore(numValue);
-          return html`
-            <div class="score-bar">
-              <div
-                class="score-bar-fill ${level}"
-                style="width: ${numValue * 100}%"
-              ></div>
-            </div>
-            <span style="margin-left: 8px">${numValue.toFixed(2)}</span>
-          `;
-        },
-      },
+    const dataset = fromRows(capabilities, [
+      { id: TAG_COL, name: 'Capability', type: ColumnType.TEXT, getValue: (c: { tag: string; score: number }) => c.tag },
+      { id: SCORE_COL, name: 'Score', type: ColumnType.NUMBER, getValue: (c: { tag: string; score: number }) => c.score },
+    ]);
+
+    const renderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+      [SCORE_COL, (cell: CellValue) => {
+        const numValue = cell.type === 'NULL' ? 0 : (cell as { value: number }).value;
+        const level = trustLevelFromScore(numValue);
+        return html`
+          <div class="score-bar">
+            <div
+              class="score-bar-fill ${level}"
+              style="width: ${numValue * 100}%"
+            ></div>
+          </div>
+          <span style="margin-left: 8px">${numValue.toFixed(2)}</span>
+        `;
+      }],
+    ]);
+
+    const config: readonly TableColumnConfig[] = [
+      { id: TAG_COL, sortable: true },
+      { id: SCORE_COL, sortable: true },
     ];
 
     return html`
-      <pages-data-table
-        .columns=${columns}
-        .data=${capabilities}
-        @row-click=${this._handleCapabilityClick}
-      ></pages-data-table>
+      <pages-table
+        .dataSet=${dataset}
+        .columnConfig=${config}
+        .columnRenderers=${renderers}
+        @row-activate=${this._handleCapabilityClick}
+      ></pages-table>
     `;
   }
 
   private _handleCapabilityClick(e: CustomEvent) {
-    const { tag, score } = e.detail;
+    const row = e.detail.row as TypedRow;
+    const tag = row.text(TAG_COL);
+    const score = row.number(SCORE_COL);
     this.dispatchEvent(
       new CustomEvent('pages-event', {
         bubbles: true,

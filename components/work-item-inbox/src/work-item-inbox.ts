@@ -26,14 +26,42 @@ import {
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import '@casehubio/pages-data-table';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
+import '@casehubio/pages-table';
+import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import './inbox-summary-bar.js';
 import './inbox-filter-bar.js';
 import './queue-pill-bar.js';
 import './scope-context-bar.js';
 import type { FilterClickDetail } from './inbox-summary-bar.js';
 import type { FilterChangeDetail } from './inbox-filter-bar.js';
+
+const ITEM_ID_COL = columnId('id');
+const TITLE_COL = columnId('title');
+const STATUS_COL = columnId('status');
+const CATEGORY_COL = columnId('category');
+const CREATED_COL = columnId('created');
+const PRIORITY_COL = columnId('priority');
+
+const INBOX_COL_DEFS = [
+  { id: ITEM_ID_COL, type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.id },
+  { id: TITLE_COL, name: 'Title', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.title },
+  { id: STATUS_COL, name: 'Status', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.status },
+  { id: CATEGORY_COL, name: 'Category', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.category },
+  { id: CREATED_COL, name: 'Created', type: ColumnType.DATE, getValue: (row: WorkItemRootResponse) => row.item.createdAt },
+  { id: PRIORITY_COL, type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.priority },
+] as const;
+
+const INBOX_COL_CONFIG: readonly TableColumnConfig[] = [
+  { id: ITEM_ID_COL, visible: false },
+  { id: TITLE_COL, sortable: true, width: '3fr' },
+  { id: STATUS_COL, sortable: true, width: '1fr' },
+  { id: CATEGORY_COL, sortable: true, width: '1fr' },
+  { id: CREATED_COL, sortable: true, width: '1fr' },
+  { id: PRIORITY_COL, visible: false },
+];
 
 const WorkItemInboxBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
 
@@ -74,55 +102,27 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private sseManager = new SSEManager();
   private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
 
-  // Table columns
-  private _tableColumns: ColumnDef<WorkItemRootResponse>[] = [
-    {
-      id: 'title',
-      label: 'Title',
-      sortable: true,
-      getValue: (row) => row.item.title,
-      width: '3fr',
-    },
-    {
-      id: 'status',
-      label: 'Status',
-      sortable: true,
-      getValue: (row) => row.item.status,
-      width: '1fr',
-      render: (value, row) => html`
-        <span class="status-pill status-${(row as WorkItemRootResponse).item.status.toLowerCase()}">${value}</span>
-      `,
-    },
-    {
-      id: 'category',
-      label: 'Category',
-      sortable: true,
-      getValue: (row) => row.item.category,
-      width: '1fr',
-    },
-    {
-      id: 'created',
-      label: 'Created',
-      sortable: true,
-      type: 'date',
-      getValue: (row) => row.item.createdAt,
-      width: '1fr',
-      render: (value, row) => {
-        const date = new Date(value as string);
-        const now = new Date();
-        const diffMs = now.getTime() - date.getTime();
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
+  private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+    [STATUS_COL, (cell: CellValue) => {
+      const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
+      return html`<span class="status-pill status-${status.toLowerCase()}">${status}</span>`;
+    }],
+    [CREATED_COL, (cell: CellValue) => {
+      if (cell.type === 'NULL') return html`<span>—</span>`;
+      const date = (cell as { value: Date }).value;
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffMins < 1) return html`<span>Just now</span>`;
-        if (diffMins < 60) return html`<span>${diffMins}m ago</span>`;
-        if (diffHours < 24) return html`<span>${diffHours}h ago</span>`;
-        if (diffDays < 7) return html`<span>${diffDays}d ago</span>`;
-        return html`<span>${date.toLocaleDateString()}</span>`;
-      },
-    },
-  ];
+      if (diffMins < 1) return html`<span>Just now</span>`;
+      if (diffMins < 60) return html`<span>${diffMins}m ago</span>`;
+      if (diffHours < 24) return html`<span>${diffHours}h ago</span>`;
+      if (diffDays < 7) return html`<span>${diffDays}d ago</span>`;
+      return html`<span>${date.toLocaleDateString()}</span>`;
+    }],
+  ]);
 
   static override readonly styles = css`
     :host {
@@ -192,7 +192,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       position: relative;
     }
 
-    pages-data-table {
+    pages-table {
       height: 100%;
     }
 
@@ -1219,20 +1219,23 @@ export class WorkItemInbox extends WorkItemInboxBase {
       return html`<div class="empty-state">${message}</div>`;
     }
 
+    const dataSet = fromRows(filtered, INBOX_COL_DEFS);
+
     return html`
       <div class="items-list">
-        <pages-data-table
-          .rows=${filtered}
-          .columns=${this._tableColumns}
-          .getRowKey=${(row: WorkItemRootResponse) => row.item.id}
-          .getRowClass=${(row: WorkItemRootResponse) => 'priority-' + row.item.priority.toLowerCase()}
+        <pages-table
+          .dataSet=${dataSet}
+          .columnConfig=${INBOX_COL_CONFIG}
+          .columnRenderers=${this._columnRenderers}
+          .getRowKey=${(row: TypedRow) => row.text(ITEM_ID_COL)}
+          .getRowClass=${(row: TypedRow) => 'priority-' + row.text(PRIORITY_COL).toLowerCase()}
           mode="auto"
           selection="multi"
           client-sort
           .selectedKeys=${Array.from(this.selectedItems)}
           @selection-change=${this._handleTableSelection}
           @row-activate=${this._handleTableActivate}
-        ></pages-data-table>
+        ></pages-table>
       </div>
     `;
   }

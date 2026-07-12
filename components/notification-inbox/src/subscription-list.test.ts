@@ -147,14 +147,12 @@ describe('subscription-list', () => {
     await el.updateComplete;
     await waitUntil(() => el.subscriptions.length > 0, 'subscriptions loaded');
 
-    const table = el.shadowRoot!.querySelector('pages-data-table');
+    const table = el.shadowRoot!.querySelector('pages-table');
     expect(table).toBeTruthy();
 
-    // Verify columns render expected data (inspection via rows property)
-    const rows = table!.rows as Subscription[];
-    expect(rows[0].name).toBe('Issue Updates');
-    expect(rows[0].eventType).toBe('issue.updated');
-    expect(rows[0].constraints).toHaveLength(2);
+    const dataSet = (table as any)!.dataSet;
+    expect(dataSet).toBeTruthy();
+    expect(dataSet.rows.length).toBe(2);
   });
 
   it('toggles subscription enabled state via API', async () => {

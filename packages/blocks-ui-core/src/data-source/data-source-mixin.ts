@@ -3,13 +3,18 @@ import { property } from "lit/decorators.js";
 import { DataSourceAdapter } from "./data-source-adapter.js";
 import { fetchSource } from "./fetch-source.js";
 import type { SourceFactory } from "@casehubio/pages-component";
+import type { TypedDataSet } from "@casehubio/pages-data/dist/dataset/types.js";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 export function DataSourceMixin<T extends Constructor<LitElement>>(Base: T) {
   class DataSourceHost extends Base {
     createSourceFactory(): SourceFactory {
-      return (url, _id) => fetchSource(url);
+      return (url, _id, options) => fetchSource(url, {
+        columns: options?.columns,
+        dataPath: options?.dataPath,
+        totalPath: options?.totalPath,
+      });
     }
 
     readonly dataSource: DataSourceAdapter = new DataSourceAdapter(this, {
@@ -22,8 +27,8 @@ export function DataSourceMixin<T extends Constructor<LitElement>>(Base: T) {
     set loading(v: boolean) { this.dataSource.loading = v; }
     get error(): string { return this.dataSource.error; }
     set error(v: string) { this.dataSource.error = v; }
-    get dataSet(): unknown { return this.dataSource.dataSet; }
-    set dataSet(v: unknown) { this.dataSource.dataSet = v; }
+    get dataSet(): TypedDataSet | undefined { return this.dataSource.dataSet; }
+    set dataSet(v: TypedDataSet | undefined) { this.dataSource.dataSet = v; }
 
     resolveEndpoint(): string | undefined {
       return this.endpoint;
@@ -58,7 +63,7 @@ export function DataSourceMixin<T extends Constructor<LitElement>>(Base: T) {
     endpoint?: string;
     loading: boolean;
     error: string;
-    dataSet: unknown;
+    dataSet: TypedDataSet | undefined;
     dataSource: DataSourceAdapter;
     createSourceFactory(): SourceFactory;
     resolveEndpoint(): string | undefined;

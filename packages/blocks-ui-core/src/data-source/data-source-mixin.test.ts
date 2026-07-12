@@ -4,10 +4,13 @@ import { customElement, property } from 'lit/decorators.js';
 import { DataSourceMixin } from './data-source-mixin.js';
 import { fetchSource } from './fetch-source.js';
 import type { SourceFactory } from '@casehubio/pages-component';
+import { toTypedDataSet } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 
 function mockFetchOk(data: unknown): typeof globalThis.fetch {
   return vi.fn().mockResolvedValue({
     ok: true,
+    headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   }) as unknown as typeof globalThis.fetch;
 }
@@ -71,7 +74,9 @@ describe('DataSourceMixin', () => {
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
-      expect(el.dataSet).toEqual([{ id: 1 }]);
+      expect(el.dataSet).toBeDefined();
+      expect(el.dataSet!.rows).toHaveLength(1);
+      expect(el.dataSet!.columns.length).toBeGreaterThan(0);
     });
 
     it('does not fetch when endpoint is undefined', async () => {
@@ -137,9 +142,10 @@ describe('DataSourceMixin', () => {
       el.error = 'something broke';
       expect(el.error).toBe('something broke');
 
-      el.dataSet = { items: [] };
+      const ds = toTypedDataSet({ columns: [{ id: columnId('x'), name: 'x', type: ColumnType.TEXT }], data: [] });
+      el.dataSet = ds;
       expect(el.error).toBe('');
-      expect(el.dataSet).toEqual({ items: [] });
+      expect(el.dataSet).toBe(ds);
     });
 
     it('DataReceiver setters delegate to controller', async () => {
@@ -150,8 +156,9 @@ describe('DataSourceMixin', () => {
       el.loading = true;
       expect(el.dataSource.controller.loading).toBe(true);
 
-      el.dataSet = 'pushed-data';
-      expect(el.dataSource.controller.dataSet).toBe('pushed-data');
+      const ds = toTypedDataSet({ columns: [{ id: columnId('a'), name: 'a', type: ColumnType.TEXT }], data: [['v']] });
+      el.dataSet = ds;
+      expect(el.dataSource.controller.dataSet).toBe(ds);
       expect(el.loading).toBe(false);
 
       el.error = 'push-error';

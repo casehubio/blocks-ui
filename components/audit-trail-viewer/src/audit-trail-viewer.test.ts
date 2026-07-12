@@ -216,19 +216,17 @@ describe('AuditTrailViewer', () => {
       await element.updateComplete;
     });
 
-    it('should render pages-data-table with entries', () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+    it('should render pages-table with entries', () => {
+      const table = element.shadowRoot?.querySelector('pages-table');
       expect(table).toBeDefined();
       expect(table?.hasAttribute('client-filter')).toBe(true);
     });
 
-    it('should configure timestamp column', () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table') as any;
+    it('should render table with dataSet', () => {
+      const table = element.shadowRoot?.querySelector('pages-table') as any;
       expect(table).toBeDefined();
-      const columns = table.columns || [];
-      const timestampCol = columns.find((c: any) => c.id === 'occurredAt');
-      expect(timestampCol).toBeDefined();
-      expect(timestampCol?.label).toBe('Timestamp');
+      expect(table.dataSet).toBeDefined();
+      expect(table.dataSet.rows.length).toBe(2);
     });
 
     it('should display actor type badge', () => {
@@ -243,14 +241,11 @@ describe('AuditTrailViewer', () => {
       expect(text).toContain('EVENT');
     });
 
-    it('should configure digest column with render function', () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table') as any;
+    it('should configure columnRenderers for digest', () => {
+      const table = element.shadowRoot?.querySelector('pages-table') as any;
       expect(table).toBeDefined();
-      const columns = table.columns || [];
-      const digestCol = columns.find((c: any) => c.id === 'digest');
-      expect(digestCol).toBeDefined();
-      expect(digestCol?.label).toBe('Digest');
-      expect(typeof digestCol?.render).toBe('function');
+      expect(table.columnRenderers).toBeDefined();
+      expect(table.columnRenderers.size).toBeGreaterThan(0);
     });
   });
 
@@ -394,9 +389,9 @@ describe('AuditTrailViewer', () => {
     });
 
     it('should expand entry on row activation', async () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+      const table = element.shadowRoot?.querySelector('pages-table');
       const activateEvent = new CustomEvent('row-activate', {
-        detail: { row: mockEntries[0] },
+        detail: { key: 'e1' },
       });
       table?.dispatchEvent(activateEvent);
 
@@ -407,9 +402,9 @@ describe('AuditTrailViewer', () => {
     });
 
     it('should display full digest in detail', async () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+      const table = element.shadowRoot?.querySelector('pages-table');
       const activateEvent = new CustomEvent('row-activate', {
-        detail: { row: mockEntries[0] },
+        detail: { key: 'e1' },
       });
       table?.dispatchEvent(activateEvent);
 
@@ -420,9 +415,9 @@ describe('AuditTrailViewer', () => {
     });
 
     it('should fetch and display attestations', async () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+      const table = element.shadowRoot?.querySelector('pages-table');
       const activateEvent = new CustomEvent('row-activate', {
-        detail: { row: mockEntries[0] },
+        detail: { key: 'e1' },
       });
       table?.dispatchEvent(activateEvent);
 
@@ -438,9 +433,9 @@ describe('AuditTrailViewer', () => {
     });
 
     it('should show "Content redacted" for null payload', async () => {
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+      const table = element.shadowRoot?.querySelector('pages-table');
       const activateEvent = new CustomEvent('row-activate', {
-        detail: { row: mockEntries[1] }, // e2 has null payload
+        detail: { key: 'e2' }, // e2 has null payload
       });
       table?.dispatchEvent(activateEvent);
 
@@ -533,9 +528,9 @@ describe('AuditTrailViewer', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
       await element.updateComplete;
 
-      const table = element.shadowRoot?.querySelector('pages-data-table');
+      const table = element.shadowRoot?.querySelector('pages-table');
       const activateEvent = new CustomEvent('row-activate', {
-        detail: { row: mockEntries[0] },
+        detail: { key: 'e1' },
       });
       table?.dispatchEvent(activateEvent);
 

@@ -79,7 +79,7 @@ describe('queue-pill-bar', () => {
     pill.click();
     expect(handler).toHaveBeenCalled();
     const detail = handler.mock.calls[0][0].detail;
-    expect(detail.topic).toBe('queue.scope-changed');
+    expect(detail.topic).toBe('queue:scope-changed');
     expect(detail.payload.queue.id).toBe('q1');
   });
 

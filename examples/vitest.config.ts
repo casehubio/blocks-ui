@@ -5,7 +5,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@casehubio/blocks-ui-core': resolve(__dirname, '../packages/blocks-ui-core/src'),
-      '@casehubio/pages-data-table': resolve(__dirname, '../../pages/packages/pages-data-table/src'),
+      '@casehubio/pages-table': resolve(__dirname, '../../pages/packages/pages-table/src'),
       '@casehubio/pages-primitives': resolve(__dirname, '../../pages/packages/pages-primitives/src'),
       '@casehubio/blocks-ui-notification-inbox': resolve(__dirname, '../components/notification-inbox/src'),
       '@casehubio/pages-ui-tokens': resolve(__dirname, '../../pages/packages/pages-ui-tokens/src'),

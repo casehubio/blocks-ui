@@ -105,12 +105,12 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
-| `components/work-item-inbox/` | Work item inbox — uses pages-data-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
+| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource (wrapping pages' DataSourceController, producing TypedDataSet via extraction pipeline), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), event helpers (re-exported from pages-component), domain types, SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form |
+| `components/work-item-inbox/` | Work item inbox — uses pages-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
 | `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab (outgoing + incoming with semantic type inverses) |
 | `components/split-workbench/` | Generic split-pane layout shell — draggable divider, responsive collapse, selection-topic event coordination, ARIA regions. Accepts any children via named slots (list, detail, header). |
-| `components/list-pane/` | Generic list wrapping pages-data-table — DataSourceMixin data fetching, single-selection, paginated mode, client-sort/filter, selection-topic events, refresh event |
+| `components/list-pane/` | Generic list wrapping pages-table — DataSourceMixin data fetching, single-selection, paginated mode, client-sort/filter, selection-topic events, refresh event |
 | `components/detail-pane/` | Generic tabbed detail container — tabs via property array (TabDefinition[]), item property contract, lazy element creation, ARIA tablist, keyboard navigation, badges |
 | `components/work-item-workbench/` | Work item workbench — uses split-workbench internally, slots inbox (left) and detail (right), keyboard shortcuts and overlay |
 | `components/notification-inbox/` | Notification inbox — bell with unread badge, inbox with tabs/filters/SSE, subscription list CRUD |

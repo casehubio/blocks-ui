@@ -304,7 +304,7 @@ describe('notification-page', () => {
     await flush(200);
     await flush(200);
 
-    const table = inbox.shadowRoot?.querySelector('pages-data-table') as any;
+    const table = inbox.shadowRoot?.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
 
     const tableShadow = table?.shadowRoot;
@@ -338,7 +338,7 @@ describe('notification-page', () => {
     const inboxShadow = inbox?.shadowRoot;
     expect(inboxShadow).not.toBeNull();
 
-    const table = inboxShadow?.querySelector('pages-data-table') as any;
+    const table = inboxShadow?.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
 
     const tableShadow = table?.shadowRoot;
@@ -367,11 +367,11 @@ describe('notification-page', () => {
     await flush(200);
 
     const inboxShadow = inbox.shadowRoot!;
-    const table = inboxShadow.querySelector('pages-data-table') as any;
+    const table = inboxShadow.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
 
     // Count initial rows in the table
-    const initialRowCount = table.rows?.length ?? 0;
+    const initialRowCount = table.dataSet?.rows?.length ?? 0;
 
     // Click simulate notification
     const simBtn = Array.from(shadow.querySelectorAll('.demo-btn'))
@@ -383,7 +383,7 @@ describe('notification-page', () => {
     await flush(200);
 
     // The table should now have more rows
-    const newRowCount = table.rows?.length ?? 0;
+    const newRowCount = table.dataSet?.rows?.length ?? 0;
     expect(newRowCount).toBeGreaterThan(initialRowCount);
 
     // Also check the inbox component's internal items array grew
@@ -407,10 +407,10 @@ describe('notification-page', () => {
     await flush(200);
     await flush(200);
 
-    const table = inbox.shadowRoot!.querySelector('pages-data-table') as any;
+    const table = inbox.shadowRoot!.querySelector('pages-table') as any;
     expect(table).not.toBeNull();
 
-    const initialRowCount = table.rows?.length ?? 0;
+    const initialRowCount = table.dataSet?.rows?.length ?? 0;
     expect(initialRowCount).toBeGreaterThan(0);
 
     // Add two notifications via simulate buttons
@@ -421,7 +421,7 @@ describe('notification-page', () => {
     simBtn.click();
     await flush(200);
 
-    const afterAddCount = table.rows?.length ?? 0;
+    const afterAddCount = table.dataSet?.rows?.length ?? 0;
     expect(afterAddCount).toBeGreaterThan(initialRowCount);
 
     // Verify mock state has the extra notifications
@@ -438,7 +438,7 @@ describe('notification-page', () => {
     // Wait for fetchItems() → mock fetch → Lit re-render
     for (let i = 0; i < 10; i++) {
       await flush(100);
-      if ((table.rows?.length ?? 0) <= initialRowCount) break;
+      if ((table.dataSet?.rows?.length ?? 0) <= initialRowCount) break;
     }
 
     // After reset + refresh, inbox should have re-fetched from mock state
@@ -446,14 +446,14 @@ describe('notification-page', () => {
     expect(inbox.error).toBeNull();
     expect(inbox.items.length).toBe(initialRowCount);
 
-    // Wait for Lit to propagate inbox.items → inbox re-render → table.rows → table re-render
+    // Wait for Lit to propagate inbox.items → inbox re-render → table.dataSet?.rows → table re-render
     await inbox.updateComplete;
     await table.updateComplete;
     await flush(50);
 
     // Re-query table rows after render propagation
-    const finalTable = inbox.shadowRoot!.querySelector('pages-data-table') as any;
-    expect(finalTable.rows?.length).toBe(initialRowCount);
+    const finalTable = inbox.shadowRoot!.querySelector('pages-table') as any;
+    expect(finalTable.dataSet?.rows?.length).toBe(initialRowCount);
   });
 
   it('simulate button fires exactly one event — no background script interference', async () => {

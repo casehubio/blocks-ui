@@ -1,8 +1,11 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
-import '@casehubio/pages-data-table';
+import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
+import '@casehubio/pages-table';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 
 interface WorkItemRootResponse {
   item: WorkItemResponse;
@@ -27,26 +30,40 @@ export class DataTablePage extends LitElement {
   @state() private selectedKeys: string[] = [];
   @state() private lastActivated: string = '';
 
-  private columns: ColumnDef<WorkItemRootResponse>[] = [
-    { id: 'title', label: 'Title', sortable: true, width: '2fr',
-      getValue: r => r.item.title },
-    { id: 'status', label: 'Status', sortable: true, width: '120px',
-      getValue: r => r.item.status,
-      render: (v) => html`<span style="
+  private colDefs = [
+    { id: columnId('id'), type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.id },
+    { id: columnId('title'), name: 'Title', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.title },
+    { id: columnId('status'), name: 'Status', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.status },
+    { id: columnId('priority'), name: 'Priority', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.priority },
+    { id: columnId('category'), name: 'Category', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.category ?? '—' },
+    { id: columnId('assignee'), name: 'Assignee', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.assigneeId ?? 'Unassigned' },
+    { id: columnId('created'), name: 'Age', type: ColumnType.TEXT, getValue: (r: WorkItemRootResponse) => r.item.createdAt },
+  ] as const;
+
+  private colConfig: readonly TableColumnConfig[] = [
+    { id: columnId('id'), visible: false },
+    { id: columnId('title'), sortable: true, width: '2fr' },
+    { id: columnId('status'), sortable: true, width: '120px' },
+    { id: columnId('priority'), sortable: true, width: '100px' },
+    { id: columnId('category'), sortable: true, width: '140px' },
+    { id: columnId('assignee'), sortable: true, width: '120px' },
+    { id: columnId('created'), sortable: true, width: '80px' },
+  ];
+
+  private renderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+    [columnId('status'), (cell: CellValue) => {
+      const v = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
+      return html`<span style="
         display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px;
         font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em;
         background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #666);
-      ">${v}</span>` },
-    { id: 'priority', label: 'Priority', sortable: true, width: '100px',
-      getValue: r => r.item.priority },
-    { id: 'category', label: 'Category', sortable: true, width: '140px',
-      getValue: r => r.item.category ?? '—' },
-    { id: 'assignee', label: 'Assignee', sortable: true, width: '120px',
-      getValue: r => r.item.assigneeId ?? 'Unassigned' },
-    { id: 'created', label: 'Age', type: 'date' as const, sortable: true, width: '80px',
-      getValue: r => r.item.createdAt,
-      render: (v) => relativeTime(v as string) },
-  ];
+      ">${v}</span>`;
+    }],
+    [columnId('created'), (cell: CellValue) => {
+      if (cell.type === 'NULL') return '';
+      return relativeTime((cell as { value: string }).value);
+    }],
+  ]);
 
   static override styles = css`
     :host { display: block; padding: 24px; }
@@ -63,19 +80,19 @@ export class DataTablePage extends LitElement {
       border-top: 1px solid var(--pages-neutral-5, #e0e0e0);
       background: var(--pages-neutral-2, #fafafa);
     }
-    pages-data-table::part(row) {
+    pages-table::part(row) {
       border-left: 3px solid transparent;
     }
-    pages-data-table::part(priority-urgent) {
+    pages-table::part(priority-urgent) {
       border-left-color: var(--pages-danger-9, #dc2626);
     }
-    pages-data-table::part(priority-high) {
+    pages-table::part(priority-high) {
       border-left-color: var(--pages-warning-9, #d97706);
     }
-    pages-data-table::part(priority-medium) {
+    pages-table::part(priority-medium) {
       border-left-color: var(--pages-accent-9, #2563eb);
     }
-    pages-data-table::part(priority-low) {
+    pages-table::part(priority-low) {
       border-left-color: var(--pages-neutral-7, #a3a3a3);
     }
   `;
@@ -92,8 +109,8 @@ export class DataTablePage extends LitElement {
   }
 
   private handleActivate(e: CustomEvent<RowActivateDetail>) {
-    const row = e.detail.row as WorkItemRootResponse;
-    this.lastActivated = row.item.title;
+    const row = e.detail.row;
+    this.lastActivated = row.text(columnId('title'));
   }
 
   override render() {
@@ -104,11 +121,12 @@ export class DataTablePage extends LitElement {
 
       <div class="demo-section">
         <div class="table-container">
-          <pages-data-table
-            .rows=${this.items}
-            .columns=${this.columns as ColumnDef[]}
-            .getRowKey=${(r: unknown) => (r as WorkItemRootResponse).item.id}
-            .getRowClass=${(r: unknown) => 'priority-' + (r as WorkItemRootResponse).item.priority.toLowerCase()}
+          <pages-table
+            .dataSet=${fromRows(this.items, this.colDefs)}
+            .columnConfig=${this.colConfig}
+            .columnRenderers=${this.renderers}
+            .getRowKey=${(r: TypedRow) => r.text(columnId('id'))}
+            .getRowClass=${(r: TypedRow) => 'priority-' + r.text(columnId('priority')).toLowerCase()}
             mode="auto"
             .pageSize=${10}
             selection="multi"
@@ -116,7 +134,7 @@ export class DataTablePage extends LitElement {
             client-sort
             @selection-change=${this.handleSelection}
             @row-activate=${this.handleActivate}
-          ></pages-data-table>
+          ></pages-table>
         </div>
 
         <div class="status-bar">

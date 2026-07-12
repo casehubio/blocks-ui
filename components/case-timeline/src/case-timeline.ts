@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin, fetchSource, renderPropertyTree, propertyTreeStyles, type WorkIdentity } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, renderPropertyTree, propertyTreeStyles, type WorkIdentity } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { SourceFactory } from '@casehubio/pages-component';
 import {
@@ -23,15 +23,36 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   @state() private _expandedIds = new Set<number>();
   @state() private _activeStreamTypes = new Set<EventStreamType>(['CASE', 'WORKER', 'TIMER', 'SYSTEM', 'ORCHESTRATION']);
   @state() private _focusedIndex = -1;
-  private _lastDataSet: unknown = undefined;
-
   override createSourceFactory(): SourceFactory {
-    return (url, _id) => fetchSource(url, {
-      headers: () => ({
-        'Content-Type': 'application/json',
-        ...(this.identity?.tenancyId && { 'X-Tenancy-ID': this.identity.tenancyId }),
-      }),
-    });
+    return (url) => {
+      let abort: AbortController | undefined;
+      return {
+        connect: (sink) => {
+          abort = new AbortController();
+          const signal = abort.signal;
+          const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+          if (this.identity?.tenancyId) headers['X-Tenancy-ID'] = this.identity.tenancyId;
+          globalThis.fetch(url, { signal, headers })
+            .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+            .then((data: PagedResponse<EventLogEntryResponse>) => {
+              if (signal.aborted) return;
+              this._events = (data.content ?? []).map(entry => ({
+                eventType: entry.eventType,
+                streamType: entry.streamType,
+                timestamp: entry.timestamp,
+                payload: entry.payload,
+                metadata: entry.metadata,
+              }));
+              sink.apply({ type: 'snapshot', dataset: { columns: [], rows: [] } });
+            })
+            .catch(err => {
+              if (signal.aborted || err.name === 'AbortError') return;
+              sink.error({ message: err instanceof Error ? err.message : String(err), permanent: true });
+            });
+        },
+        disconnect: () => { abort?.abort(); abort = undefined; },
+      };
+    };
   }
 
   override resolveEndpoint(): string | undefined {
@@ -48,17 +69,6 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
     if (changed.has('caseId')) this.syncEndpoint();
-    if (this.dataSet !== this._lastDataSet && this.dataSet) {
-      this._lastDataSet = this.dataSet;
-      const data = this.dataSet as PagedResponse<EventLogEntryResponse>;
-      this._events = (data.content ?? []).map(entry => ({
-        eventType: entry.eventType,
-        streamType: entry.streamType,
-        timestamp: entry.timestamp,
-        payload: entry.payload,
-        metadata: entry.metadata,
-      }));
-    }
   }
 
   private _toggleExpand(index: number): void {
@@ -247,10 +257,20 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
     `;
   }
 
+  private _temporalWeights(events: CaseEvent[]): number[] {
+    if (events.length < 2) return events.map(() => 1);
+    const times = events.map(e => new Date(e.timestamp).getTime());
+    const totalSpan = times[times.length - 1]! - times[0]!;
+    if (totalSpan === 0) return events.map(() => 1);
+    return events.map((_, i) => {
+      if (i === 0) return 0;
+      return (times[i]! - times[i - 1]!) / totalSpan;
+    });
+  }
+
   private _renderCompactMode(): unknown {
     const compactEvents = this._events.filter(event => isCompactModeEvent(event.eventType));
 
-    // Truncation: first 3 + last 2 when > 7
     let displayEvents = compactEvents;
     let hiddenCount = 0;
 
@@ -261,6 +281,7 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       hiddenCount = compactEvents.length - 5;
     }
 
+    const weights = this._temporalWeights(displayEvents);
     const summaryLabel = `Case timeline: ${compactEvents.length} events`;
 
     return html`
@@ -277,25 +298,39 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
           }
         }}"
       >
-        ${displayEvents.slice(0, 3).map(event => this._renderCompactDot(event))}
-        ${hiddenCount > 0
-          ? html`<span class="ellipsis" aria-hidden="true">...+${hiddenCount}</span>`
-          : nothing}
-        ${displayEvents.length > 3 ? displayEvents.slice(3).map(event => this._renderCompactDot(event)) : nothing}
+        ${displayEvents.map((event, i) => this._renderCompactDot(event, weights[i]!))}
       </div>
     `;
   }
 
-  private _renderCompactDot(event: CaseEvent): unknown {
+  private _compactLabel(eventType: string): string {
+    const labels: Record<string, string> = {
+      CASE_STARTED: 'Started',
+      CASE_COMPLETED: 'Completed',
+      CASE_FAULTED: 'Faulted',
+      CASE_CANCELLED: 'Cancelled',
+      CASE_SUSPENDED: 'Suspended',
+      CASE_RESUMED: 'Resumed',
+      MILESTONE_REACHED: 'Milestone',
+      MILESTONE_ACTIVATED: 'Milestone',
+      SLA_VIOLATED: 'SLA Breach',
+    };
+    return labels[eventType] ?? eventType.replace(/_/g, ' ').toLowerCase();
+  }
+
+  private _renderCompactDot(event: CaseEvent, weight: number): unknown {
     const category = categorizeEvent(event.eventType);
     const tooltip = `${event.eventType.replace(/_/g, ' ')} - ${this._formatTimestamp(event.timestamp)}`;
+    const label = this._compactLabel(event.eventType);
+    const time = this._formatTimestamp(event.timestamp);
+    const flexStyle = weight > 0 ? `flex: ${weight}` : 'flex: 0 0 auto';
 
     return html`
-      <div
-        class="event-dot ${category}"
-        data-tooltip="${tooltip}"
-        aria-hidden="true"
-      ></div>
+      <div class="compact-event" data-tooltip="${tooltip}" style="${flexStyle}">
+        <div class="event-dot ${category}" aria-hidden="true"></div>
+        <span class="compact-label ${category}">${label}</span>
+        <span class="compact-time">${time}</span>
+      </div>
     `;
   }
 
@@ -435,6 +470,10 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       background: var(--pages-neutral-9, #6b7280);
     }
 
+    .timeline-node.timer .node-dot {
+      background: var(--pages-warning-7, #d97706);
+    }
+
     .node-content {
       background: var(--pages-neutral-1, #fff);
       border: 1px solid var(--pages-neutral-5, #e5e7eb);
@@ -493,6 +532,11 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       color: var(--pages-neutral-11, #374151);
     }
 
+    .event-type-badge.timer {
+      background: var(--pages-warning-3, #fef3c7);
+      color: var(--pages-warning-11, #92400e);
+    }
+
     .timestamp {
       font-size: 12px;
       color: var(--pages-neutral-10, #6b7280);
@@ -534,15 +578,34 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
     /* Compact mode: horizontal strip */
     .compact-strip {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+      align-items: flex-start;
+      gap: 0;
+      padding: 16px 24px;
       background: var(--pages-neutral-1, #fff);
       border: 1px solid var(--pages-neutral-5, #e5e7eb);
-      border-radius: 24px;
+      border-radius: 12px;
       min-width: 200px;
       cursor: pointer;
       outline: none;
+      position: relative;
+    }
+
+    .compact-strip::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 22px;
+      height: 2px;
+      background: var(--pages-neutral-6, #9ca3af);
+    }
+
+    .compact-event:first-child {
+      align-items: flex-start;
+    }
+
+    .compact-event:last-child {
+      align-items: flex-end;
     }
 
     .compact-strip:hover {
@@ -555,12 +618,22 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       outline-offset: 2px;
     }
 
+    .compact-event {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      min-width: 0;
+    }
+
     .event-dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
       flex-shrink: 0;
       position: relative;
+      z-index: 1;
     }
 
     .event-dot.lifecycle {
@@ -569,10 +642,31 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
 
     .event-dot.milestone {
       background: var(--pages-accent-9, #2563eb);
-      transform: rotate(45deg);
     }
 
-    .event-dot[data-tooltip]:hover::after {
+    .compact-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--pages-neutral-10, #6b7280);
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .compact-label.lifecycle {
+      color: var(--pages-success-11, #065f46);
+    }
+
+    .compact-label.milestone {
+      color: var(--pages-accent-11, #1e3a8a);
+    }
+
+    .compact-time {
+      font-size: 10px;
+      color: var(--pages-neutral-8, #a3a3a3);
+      white-space: nowrap;
+    }
+
+    .compact-event[data-tooltip]:hover::after {
       content: attr(data-tooltip);
       position: absolute;
       bottom: calc(100% + 8px);
@@ -588,7 +682,7 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       pointer-events: none;
     }
 
-    .event-dot[data-tooltip]:hover::before {
+    .compact-event[data-tooltip]:hover::before {
       content: '';
       position: absolute;
       bottom: calc(100% + 2px);
@@ -604,6 +698,7 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       font-size: 13px;
       color: var(--pages-neutral-9, #6b7280);
       font-weight: 500;
+      align-self: center;
     }
   `;
 }

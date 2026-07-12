@@ -5,8 +5,11 @@ import { BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import '@casehubio/pages-data-table';
-import type { ColumnDef, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-data-table';
+import '@casehubio/pages-table';
+import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { Notification, NotificationPage } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';
@@ -34,46 +37,58 @@ type InboxTab = 'inbox' | 'archive';
 
 // --- Column definitions ---
 
-const notificationColumns: ColumnDef<Notification>[] = [
-  {
-    id: 'title',
-    label: 'Notification',
-    sortable: true,
-    width: '1fr',
-    getValue: (n: Notification) => n.title,
-    render: (_val: unknown, n: Notification) => html`
-      <div style="display:flex;flex-direction:column;gap:2px">
-        <span style="font-weight:500;color:var(--pages-neutral-12,#111)">${n.title}</span>
-        ${n.body ? html`<span style="font-size:12px;color:var(--pages-neutral-9,#737373);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${n.body}</span>` : nothing}
-      </div>`,
-  },
-  {
-    id: 'category',
-    label: 'Category',
-    sortable: true,
-    width: '140px',
-    getValue: (n: Notification) => n.category,
-  },
-  {
-    id: 'status',
-    label: '',
-    sortable: false,
-    width: '24px',
-    getValue: (n: Notification) => n.status,
-    render: (status: unknown) => status === 'UNREAD'
-      ? html`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pages-accent-9,#2563eb)" aria-label="Unread"></span>`
-      : nothing,
-  },
-  {
-    id: 'createdAt',
-    label: 'Age',
-    sortable: true,
-    width: '50px',
-    type: 'date',
-    getValue: (n: Notification) => n.createdAt,
-    render: (val: unknown) => html`${relativeTime(val as string)}`,
-  },
+const N_ID_COL = columnId('id');
+const N_TITLE_COL = columnId('title');
+const N_BODY_COL = columnId('body');
+const N_CATEGORY_COL = columnId('category');
+const N_STATUS_COL = columnId('status');
+const N_CREATED_COL = columnId('createdAt');
+const N_SEVERITY_COL = columnId('severity');
+const N_ACTION_URL_COL = columnId('actionUrl');
+
+const NOTIFICATION_COL_DEFS = [
+  { id: N_ID_COL, type: ColumnType.TEXT, getValue: (n: Notification) => n.id },
+  { id: N_TITLE_COL, name: 'Notification', type: ColumnType.TEXT, getValue: (n: Notification) => n.title },
+  { id: N_BODY_COL, type: ColumnType.TEXT, getValue: (n: Notification) => n.body ?? '' },
+  { id: N_CATEGORY_COL, name: 'Category', type: ColumnType.TEXT, getValue: (n: Notification) => n.category },
+  { id: N_STATUS_COL, type: ColumnType.TEXT, getValue: (n: Notification) => n.status },
+  { id: N_CREATED_COL, name: 'Age', type: ColumnType.TEXT, getValue: (n: Notification) => n.createdAt },
+  { id: N_SEVERITY_COL, type: ColumnType.TEXT, getValue: (n: Notification) => n.severity },
+  { id: N_ACTION_URL_COL, type: ColumnType.TEXT, getValue: (n: Notification) => n.actionUrl ?? '' },
+] as const;
+
+const NOTIFICATION_COL_CONFIG: readonly TableColumnConfig[] = [
+  { id: N_ID_COL, visible: false },
+  { id: N_TITLE_COL, sortable: true, width: '1fr' },
+  { id: N_BODY_COL, visible: false },
+  { id: N_CATEGORY_COL, sortable: true, width: '140px' },
+  { id: N_STATUS_COL, sortable: false, width: '24px' },
+  { id: N_CREATED_COL, sortable: true, width: '50px' },
+  { id: N_SEVERITY_COL, visible: false },
+  { id: N_ACTION_URL_COL, visible: false },
 ];
+
+const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+  [N_TITLE_COL, (_cell: CellValue, row: TypedRow) => {
+    const title = row.text(N_TITLE_COL);
+    const body = row.text(N_BODY_COL);
+    return html`
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <span style="font-weight:500;color:var(--pages-neutral-12,#111)">${title}</span>
+        ${body ? html`<span style="font-size:12px;color:var(--pages-neutral-9,#737373);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${body}</span>` : nothing}
+      </div>`;
+  }],
+  [N_STATUS_COL, (cell: CellValue) => {
+    const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
+    return status === 'UNREAD'
+      ? html`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pages-accent-9,#2563eb)" aria-label="Unread"></span>`
+      : nothing;
+  }],
+  [N_CREATED_COL, (cell: CellValue) => {
+    if (cell.type === 'NULL') return html``;
+    return html`${relativeTime((cell as { value: string }).value)}`;
+  }],
+]);
 
 // --- Component ---
 
@@ -118,8 +133,8 @@ export class NotificationInbox extends NotificationInboxBase {
   private api?: NotificationApi;
   private sseHandler?: ((event: SSEEvent) => void) | undefined;
 
-  // Table columns (typed cast for pages-data-table)
-  private _tableColumns = notificationColumns as unknown as ColumnDef[];
+  // Column renderers for pages-table
+  private _columnRenderers = NOTIFICATION_RENDERERS;
 
   static override readonly styles = css`
     :host {
@@ -228,20 +243,20 @@ export class NotificationInbox extends NotificationInboxBase {
       position: relative;
     }
 
-    pages-data-table {
+    pages-table {
       height: 100%;
     }
 
     /* Severity row borders */
-    pages-data-table::part(severity-urgent) {
+    pages-table::part(severity-urgent) {
       border-left: 3px solid var(--pages-danger-9, #dc2626);
     }
 
-    pages-data-table::part(severity-warning) {
+    pages-table::part(severity-warning) {
       border-left: 3px solid var(--pages-warning-9, #d97706);
     }
 
-    pages-data-table::part(severity-info) {
+    pages-table::part(severity-info) {
       border-left: 3px solid var(--pages-accent-9, #2563eb);
     }
 
@@ -642,17 +657,17 @@ export class NotificationInbox extends NotificationInboxBase {
 
   private _handleTableActivate(e: CustomEvent<RowActivateDetail>): void {
     const detail = e.detail;
-    const row = detail.row as Notification;
-    const key = detail.key ?? row.id;
+    const key = detail.key!;
+    const row = detail.row;
+    const actionUrl = row.text(N_ACTION_URL_COL);
+    const status = row.text(N_STATUS_COL);
 
-    // Emit notification.selected
     emitNotificationEvent(this, NotificationEventTopics.SELECTED, {
       notificationId: key,
-      actionUrl: row.actionUrl,
+      actionUrl: actionUrl || undefined,
     });
 
-    // Auto-mark read if UNREAD
-    if (row.status === 'UNREAD' && this.endpoint != null) {
+    if (status === 'UNREAD' && this.endpoint != null) {
       this.markRead(key);
     }
   }
@@ -946,13 +961,16 @@ export class NotificationInbox extends NotificationInboxBase {
       return html`<div class="empty-state">${message}</div>`;
     }
 
+    const dataSet = fromRows(filtered, NOTIFICATION_COL_DEFS);
+
     return html`
       <div class="items-list">
-        <pages-data-table
-          .rows=${filtered}
-          .columns=${this._tableColumns}
-          .getRowKey=${(row: Notification) => row.id}
-          .getRowClass=${(row: Notification) => `severity-${row.severity.toLowerCase()}`}
+        <pages-table
+          .dataSet=${dataSet}
+          .columnConfig=${NOTIFICATION_COL_CONFIG}
+          .columnRenderers=${this._columnRenderers}
+          .getRowKey=${(row: TypedRow) => row.text(N_ID_COL)}
+          .getRowClass=${(row: TypedRow) => `severity-${row.text(N_SEVERITY_COL).toLowerCase()}`}
           mode="auto"
           selection="multi"
           client-sort
@@ -961,7 +979,7 @@ export class NotificationInbox extends NotificationInboxBase {
           @selection-change=${this._handleTableSelection}
           @row-activate=${this._handleTableActivate}
           @load-more=${this._handleLoadMore}
-        ></pages-data-table>
+        ></pages-table>
       </div>
     `;
   }

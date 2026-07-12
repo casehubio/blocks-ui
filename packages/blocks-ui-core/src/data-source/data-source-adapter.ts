@@ -3,6 +3,7 @@ import {
   DataSourceController,
   type DataSourceControllerOptions,
 } from "@casehubio/pages-component";
+import type { TypedDataSet } from "@casehubio/pages-data/dist/dataset/types.js";
 
 export class DataSourceAdapter implements ReactiveController {
   readonly controller: DataSourceController;
@@ -28,8 +29,8 @@ export class DataSourceAdapter implements ReactiveController {
   set loading(v: boolean) { this.controller.loading = v; }
   get error(): string { return this.controller.error; }
   set error(v: string) { this.controller.error = v; }
-  get dataSet(): unknown { return this.controller.dataSet; }
-  set dataSet(v: unknown) { this.controller.dataSet = v; }
+  get dataSet(): TypedDataSet | undefined { return this.controller.dataSet; }
+  set dataSet(v: TypedDataSet | undefined) { this.controller.dataSet = v; }
 
   get source() { return this.controller.source; }
   set source(s) { this.controller.source = s; }

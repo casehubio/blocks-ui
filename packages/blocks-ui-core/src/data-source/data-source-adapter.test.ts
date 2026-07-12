@@ -7,6 +7,7 @@ import { fetchSource } from './fetch-source.js';
 function mockFetchOk(data: unknown): typeof globalThis.fetch {
   return vi.fn().mockResolvedValue({
     ok: true,
+    headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   }) as unknown as typeof globalThis.fetch;
 }
@@ -45,7 +46,8 @@ describe('DataSourceAdapter', () => {
 
     el.dataSource.endpoint = '/api/items';
     await flush();
-    expect(el.dataSource.dataSet).toEqual([{ id: 1 }]);
+    expect(el.dataSource.dataSet).toBeDefined();
+    expect(el.dataSource.dataSet!.rows).toHaveLength(1);
   });
 
   it('disconnects on removal from DOM', async () => {

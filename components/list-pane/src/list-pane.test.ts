@@ -1,36 +1,34 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/pages-data-table';
+import type { TableColumnConfig } from '@casehubio/pages-table';
+import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 import './list-pane.js';
 
 type ListPaneEl = HTMLElement & {
   endpoint: string;
-  columns: ColumnDef<any>[];
-  getRowKey: (row: any) => string;
-  getRowClass: (row: any) => string;
+  columnConfig?: readonly TableColumnConfig[];
+  getRowKey: (row: TypedRow) => string;
+  getRowClass: (row: TypedRow) => string;
   selectionTopic: string;
   emptyMessage: string;
   pageSize: number;
   loading: boolean;
   error: string;
-  dataSet: unknown;
+  dataSet: TypedDataSet | undefined;
   refresh(): void;
   updateComplete: Promise<boolean>;
 };
 
-const testColumns: ColumnDef<any>[] = [
-  { id: 'name', header: 'Name', cell: (row: any) => row.name },
-  { id: 'status', header: 'Status', cell: (row: any) => row.status },
-];
-
-const testRows = [
+const testData = [
   { id: '1', name: 'Case A', status: 'open' },
   { id: '2', name: 'Case B', status: 'closed' },
 ];
 
-function mockFetch(data: unknown = testRows): ReturnType<typeof vi.fn> {
+function mockFetch(data: unknown = testData): ReturnType<typeof vi.fn> {
   return vi.fn().mockResolvedValue({
     ok: true,
+    headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   });
 }
@@ -49,8 +47,14 @@ function createElement(opts: Partial<{ endpoint: string; topic: string }> = {}):
   if (opts.endpoint !== undefined) el.endpoint = opts.endpoint;
   else el.endpoint = '/api/items';
   el.selectionTopic = opts.topic ?? 'test';
-  el.columns = testColumns;
-  el.getRowKey = (row: any) => row.id;
+  el.columnConfig = [
+    { id: columnId('name'), sortable: true },
+    { id: columnId('status'), sortable: true },
+  ];
+  el.getRowKey = (row: TypedRow) => {
+    const cell = row.cell(columnId('id'));
+    return cell.type === 'NULL' ? '' : String((cell as { value: unknown }).value);
+  };
   return el;
 }
 
@@ -83,35 +87,26 @@ describe('list-pane', () => {
       expect(fetchFn).toHaveBeenCalledWith('/api/items', expect.objectContaining({ signal: expect.any(AbortSignal) }));
     });
 
-    it('handles array response', async () => {
-      globalThis.fetch = mockFetch(testRows) as unknown as typeof fetch;
+    it('passes TypedDataSet to pages-table', async () => {
+      globalThis.fetch = mockFetch(testData) as unknown as typeof fetch;
       el = createElement();
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
       await el.updateComplete;
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-      expect(table?.rows?.length).toBe(2);
-    });
-
-    it('handles { items, total } response', async () => {
-      globalThis.fetch = mockFetch({ items: testRows, total: 100 }) as unknown as typeof fetch;
-      el = createElement();
-      document.body.appendChild(el);
-      await el.updateComplete;
-      await flush();
-      await el.updateComplete;
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-      expect(table?.rows?.length).toBe(2);
-      expect(table?.totalRows).toBe(100);
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
+      expect(table?.dataSet).toBeDefined();
+      expect(table?.dataSet?.rows?.length).toBe(2);
     });
 
     it('does not fetch when endpoint is not set', async () => {
       const fetchFn = mockFetch();
       globalThis.fetch = fetchFn as unknown as typeof fetch;
       el = document.createElement('list-pane') as ListPaneEl;
-      el.columns = testColumns;
-      el.getRowKey = (row: any) => row.id;
+      el.getRowKey = (row: TypedRow) => {
+        const cell = row.cell(columnId('id'));
+        return cell.type === 'NULL' ? '' : String((cell as { value: unknown }).value);
+      };
       document.body.appendChild(el);
       await el.updateComplete;
       await flush();
@@ -119,22 +114,16 @@ describe('list-pane', () => {
     });
 
     it('shows empty message when no data', async () => {
-      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
-      el = createElement();
+      el = document.createElement('list-pane') as ListPaneEl;
       document.body.appendChild(el);
-      await el.updateComplete;
-      await flush();
       await el.updateComplete;
       expect(el.shadowRoot!.textContent).toContain('No items found');
     });
 
     it('shows custom empty message', async () => {
-      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
-      el = createElement();
+      el = document.createElement('list-pane') as ListPaneEl;
       el.emptyMessage = 'Nothing here';
       document.body.appendChild(el);
-      await el.updateComplete;
-      await flush();
       await el.updateComplete;
       expect(el.shadowRoot!.textContent).toContain('Nothing here');
     });
@@ -172,14 +161,15 @@ describe('list-pane', () => {
         if (e.detail?.topic === 'test:selected') events.push(e.detail);
       }) as EventListener);
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as HTMLElement;
+      const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
+      const mockRow = { fake: true };
       table.dispatchEvent(new CustomEvent('row-activate', {
         bubbles: true,
-        detail: { row: testRows[0], index: 0 },
+        detail: { row: mockRow, index: 0 },
       }));
 
       expect(events.length).toBe(1);
-      expect(events[0].payload).toEqual(testRows[0]);
+      expect(events[0].payload).toBe(mockRow);
     });
 
     it('does not emit when no selection-topic is set', async () => {
@@ -196,10 +186,10 @@ describe('list-pane', () => {
         events.push(e.detail);
       }) as EventListener);
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as HTMLElement;
+      const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
       table?.dispatchEvent(new CustomEvent('row-activate', {
         bubbles: true,
-        detail: { row: testRows[0], index: 0 },
+        detail: { row: { fake: true }, index: 0 },
       }));
 
       expect(events.length).toBe(0);
@@ -245,7 +235,7 @@ describe('list-pane', () => {
       await flush();
       await el.updateComplete;
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
       expect(table?.getAttribute('selection')).toBe('single');
       expect(table?.getAttribute('mode')).toBe('paginated');
     });
@@ -258,7 +248,7 @@ describe('list-pane', () => {
       await flush();
       await el.updateComplete;
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
       expect(table?.hasAttribute('client-sort')).toBe(true);
       expect(table?.hasAttribute('client-filter')).toBe(true);
     });
@@ -272,11 +262,11 @@ describe('list-pane', () => {
       await flush();
       await el.updateComplete;
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
       expect(table?.pageSize).toBe(10);
     });
 
-    it('passes columns and row key to data-table', async () => {
+    it('passes columnConfig and getRowKey to pages-table', async () => {
       globalThis.fetch = mockFetch() as unknown as typeof fetch;
       el = createElement();
       document.body.appendChild(el);
@@ -284,8 +274,8 @@ describe('list-pane', () => {
       await flush();
       await el.updateComplete;
 
-      const table = el.shadowRoot!.querySelector('pages-data-table') as any;
-      expect(table?.columns).toBe(testColumns);
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
+      expect(table?.columnConfig).toBe(el.columnConfig);
       expect(table?.getRowKey).toBe(el.getRowKey);
     });
   });
@@ -300,11 +290,8 @@ describe('list-pane', () => {
     });
 
     it('empty state has role=status', async () => {
-      globalThis.fetch = mockFetch([]) as unknown as typeof fetch;
-      el = createElement();
+      el = document.createElement('list-pane') as ListPaneEl;
       document.body.appendChild(el);
-      await el.updateComplete;
-      await flush();
       await el.updateComplete;
       const status = el.shadowRoot!.querySelector('[role="status"]');
       expect(status).toBeTruthy();

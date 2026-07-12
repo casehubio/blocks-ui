@@ -96,7 +96,8 @@ export type NodeCategory =
   | 'agent'
   | 'milestone'
   | 'action-gate'
-  | 'orchestration';
+  | 'orchestration'
+  | 'timer';
 
 /**
  * Map event type to node category
@@ -108,7 +109,8 @@ export function categorizeEvent(eventType: CaseHubEventType): NodeCategory {
   if (eventType.startsWith('MILESTONE_') || eventType === 'SLA_VIOLATED') return 'milestone';
   if (eventType.startsWith('ACTION_GATE_')) return 'action-gate';
   if (eventType.startsWith('ORCHESTRATION_')) return 'orchestration';
-  return 'lifecycle'; // fallback
+  if (eventType.startsWith('TIMER_')) return 'timer';
+  return 'lifecycle';
 }
 
 /**

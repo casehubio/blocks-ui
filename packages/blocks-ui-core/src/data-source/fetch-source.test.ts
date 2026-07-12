@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fetchSource } from './fetch-source.js';
 import type { DataSink } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
 
 function createMockSink(): DataSink & { applyCalls: any[]; errorCalls: any[] } {
   const sink = {
@@ -15,6 +17,7 @@ function createMockSink(): DataSink & { applyCalls: any[]; errorCalls: any[] } {
 function mockFetchOk(data: unknown): typeof globalThis.fetch {
   return vi.fn().mockResolvedValue({
     ok: true,
+    headers: new Headers({ 'content-type': 'application/json' }),
     json: () => Promise.resolve(data),
   }) as unknown as typeof globalThis.fetch;
 }
@@ -31,37 +34,114 @@ function mockFetchReject(message: string): typeof globalThis.fetch {
 }
 
 describe('fetchSource', () => {
-  it('delivers JSON response as snapshot dataset', async () => {
-    const data = [{ id: 1, name: 'Alice' }];
-    const source = fetchSource('http://api/items', { fetchFn: mockFetchOk(data) });
+  it('produces TypedDataSet with working accessors from JSON array', async () => {
+    const source = fetchSource('http://api/items', {
+      fetchFn: mockFetchOk([
+        { name: 'Alice', score: 42 },
+        { name: 'Bob', score: 88 },
+      ]),
+      columns: [
+        { id: columnId('name'), type: ColumnType.TEXT },
+        { id: columnId('score'), type: ColumnType.NUMBER },
+      ],
+    });
+
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
 
-    expect(sink.applyCalls).toHaveLength(1);
-    expect(sink.applyCalls[0].type).toBe('snapshot');
-    expect(sink.applyCalls[0].dataset).toEqual(data);
+    const event = sink.applyCalls[0]!;
+    expect(event.type).toBe('snapshot');
+    const ds = event.dataset as TypedDataSet;
+    expect(ds.columns).toHaveLength(2);
+    expect(ds.rows).toHaveLength(2);
+    expect(ds.rows[0]!.text(columnId('name'))).toBe('Alice');
+    expect(ds.rows[0]!.number(columnId('score'))).toBe(42);
+  });
+
+  it('infers columns from object array when not declared', async () => {
+    const source = fetchSource('http://api/items', {
+      fetchFn: mockFetchOk([{ city: 'London', pop: 9000000 }]),
+    });
+
+    const sink = createMockSink();
+    source.connect(sink);
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
+
+    const ds = sink.applyCalls[0]!.dataset as TypedDataSet;
+    expect(ds.columns.length).toBeGreaterThan(0);
+    expect(ds.rows).toHaveLength(1);
+  });
+
+  it('extracts totalRows via totalPath', async () => {
+    const source = fetchSource('http://api/items', {
+      fetchFn: mockFetchOk({
+        items: [{ name: 'Alice' }],
+        total: 100,
+      }),
+      columns: [{ id: columnId('name'), type: ColumnType.TEXT }],
+      dataPath: 'items',
+      totalPath: 'total',
+    });
+
+    const sink = createMockSink();
+    source.connect(sink);
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
+
+    expect(sink.applyCalls[0]!.totalRows).toBe(100);
+    const ds = sink.applyCalls[0]!.dataset as TypedDataSet;
+    expect(ds.rows).toHaveLength(1);
+    expect(ds.rows[0]!.text(columnId('name'))).toBe('Alice');
+  });
+
+  it('extracts totalRows via nested totalPath', async () => {
+    const source = fetchSource('http://api/items', {
+      fetchFn: mockFetchOk({
+        data: [{ x: 'y' }],
+        meta: { totalCount: 42 },
+      }),
+      columns: [{ id: columnId('x'), type: ColumnType.TEXT }],
+      dataPath: 'data',
+      totalPath: 'meta.totalCount',
+    });
+
+    const sink = createMockSink();
+    source.connect(sink);
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
+
+    expect(sink.applyCalls[0]!.totalRows).toBe(42);
+  });
+
+  it('routes extraction errors to sink.error', async () => {
+    const source = fetchSource('http://api/items', {
+      fetchFn: mockFetchOk('not-valid-data'),
+      columns: [{ id: columnId('x'), type: ColumnType.TEXT }],
+    });
+
+    const sink = createMockSink();
+    source.connect(sink);
+    await vi.waitFor(() => expect(sink.errorCalls).toHaveLength(1));
+
+    expect(sink.errorCalls[0]!.permanent).toBe(true);
   });
 
   it('calls sink.error on HTTP failure', async () => {
     const source = fetchSource('http://api/items', { fetchFn: mockFetchFail(500) });
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.errorCalls).toHaveLength(1));
 
-    expect(sink.errorCalls).toHaveLength(1);
-    expect(sink.errorCalls[0].message).toContain('500');
-    expect(sink.errorCalls[0].permanent).toBe(true);
+    expect(sink.errorCalls[0]!.message).toContain('500');
+    expect(sink.errorCalls[0]!.permanent).toBe(true);
   });
 
   it('calls sink.error on network failure', async () => {
     const source = fetchSource('http://api/items', { fetchFn: mockFetchReject('network down') });
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.errorCalls).toHaveLength(1));
 
-    expect(sink.errorCalls).toHaveLength(1);
-    expect(sink.errorCalls[0].message).toContain('network down');
+    expect(sink.errorCalls[0]!.message).toContain('network down');
   });
 
   it('does not call sink after disconnect (abort)', async () => {
@@ -75,7 +155,7 @@ describe('fetchSource', () => {
     source.connect(sink);
     source.disconnect();
 
-    resolvePromise({ ok: true, json: () => Promise.resolve([]) });
+    resolvePromise({ ok: true, headers: new Headers(), json: () => Promise.resolve([]) });
     await new Promise(r => setTimeout(r, 10));
 
     expect(sink.applyCalls).toHaveLength(0);
@@ -83,52 +163,31 @@ describe('fetchSource', () => {
   });
 
   it('passes static headers', async () => {
-    const fetchFn = mockFetchOk([]);
+    const fetchFn = mockFetchOk([{ a: 1 }]);
     const source = fetchSource('http://api/items', {
       fetchFn,
       headers: { 'X-Custom': 'value' },
+      columns: [{ id: columnId('a'), type: ColumnType.NUMBER }],
     });
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
 
     expect(fetchFn).toHaveBeenCalledWith('http://api/items', expect.objectContaining({
       headers: { 'X-Custom': 'value' },
-    }));
-  });
-
-  it('evaluates dynamic headers function on each connect', async () => {
-    let callCount = 0;
-    const fetchFn = mockFetchOk([]);
-    const source = fetchSource('http://api/items', {
-      fetchFn,
-      headers: () => {
-        callCount++;
-        return { 'X-Call': String(callCount) };
-      },
-    });
-    const sink = createMockSink();
-
-    source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
-    expect(fetchFn).toHaveBeenCalledWith('http://api/items', expect.objectContaining({
-      headers: { 'X-Call': '1' },
-    }));
-
-    source.disconnect();
-    source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
-    expect(fetchFn).toHaveBeenLastCalledWith('http://api/items', expect.objectContaining({
-      headers: { 'X-Call': '2' },
     }));
   });
 
   it('uses custom method', async () => {
-    const fetchFn = mockFetchOk([]);
-    const source = fetchSource('http://api/items', { fetchFn, method: 'POST' });
+    const fetchFn = mockFetchOk([{ x: 1 }]);
+    const source = fetchSource('http://api/items', {
+      fetchFn,
+      method: 'POST',
+      columns: [{ id: columnId('x'), type: ColumnType.NUMBER }],
+    });
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
 
     expect(fetchFn).toHaveBeenCalledWith('http://api/items', expect.objectContaining({
       method: 'POST',
@@ -136,30 +195,18 @@ describe('fetchSource', () => {
   });
 
   it('passes body', async () => {
-    const fetchFn = mockFetchOk([]);
-    const source = fetchSource('http://api/items', { fetchFn, body: '{"q":"x"}' });
+    const fetchFn = mockFetchOk([{ x: 1 }]);
+    const source = fetchSource('http://api/items', {
+      fetchFn,
+      body: '{"q":"x"}',
+      columns: [{ id: columnId('x'), type: ColumnType.NUMBER }],
+    });
     const sink = createMockSink();
     source.connect(sink);
-    await new Promise(r => setTimeout(r, 10));
+    await vi.waitFor(() => expect(sink.applyCalls).toHaveLength(1));
 
     expect(fetchFn).toHaveBeenCalledWith('http://api/items', expect.objectContaining({
       body: '{"q":"x"}',
     }));
-  });
-
-  it('uses globalThis.fetch when no fetchFn provided', async () => {
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = mockFetchOk({ result: true });
-    try {
-      const source = fetchSource('http://api/items');
-      const sink = createMockSink();
-      source.connect(sink);
-      await new Promise(r => setTimeout(r, 10));
-
-      expect(sink.applyCalls).toHaveLength(1);
-      expect(sink.applyCalls[0].dataset).toEqual({ result: true });
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
   });
 });

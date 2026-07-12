@@ -1,24 +1,22 @@
-import { LitElement, html, css, type PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { DataSourceMixin, emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
-import type { ColumnDef } from '@casehubio/pages-data-table';
-import '@casehubio/pages-data-table';
+import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
+import '@casehubio/pages-table';
+import type { TypedRow, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
 
 @customElement('list-pane')
 export class ListPane extends DataSourceMixin(LitElement) {
-  @property({ type: Array }) columns: ColumnDef<any>[] = [];
-  @property({ attribute: false }) getRowKey?: (row: unknown) => string;
-  @property({ attribute: false }) getRowClass?: (row: unknown) => string;
+  @property({ attribute: false }) columnConfig?: readonly TableColumnConfig[];
+  @property({ attribute: false }) columnRenderers?: ReadonlyMap<ColumnId, ColumnRenderer>;
+  @property({ attribute: false }) getRowKey?: (row: TypedRow) => string;
+  @property({ attribute: false }) getRowClass?: (row: TypedRow) => string;
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
   @property({ type: String, attribute: 'empty-message' }) emptyMessage = 'No items found';
   @property({ type: Number, attribute: 'page-size' }) pageSize = 25;
 
-  @state() private _rows: readonly unknown[] = [];
-  @state() private _totalRows: number | null = null;
-
   private _refreshUnsub?: () => void;
   private _lastActivatedIndex = -1;
-  private _lastDataSet: unknown = undefined;
 
   static override styles = css`
     :host {
@@ -37,7 +35,7 @@ export class ListPane extends DataSourceMixin(LitElement) {
       font-size: var(--pages-font-size-sm, 12px);
     }
 
-    pages-data-table {
+    pages-table {
       flex: 1;
     }
   `;
@@ -57,30 +55,12 @@ export class ListPane extends DataSourceMixin(LitElement) {
     this._refreshUnsub?.();
   }
 
-  override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-    if (this.dataSet !== this._lastDataSet) {
-      this._lastDataSet = this.dataSet;
-      const data = this.dataSet as any;
-      if (Array.isArray(data)) {
-        this._rows = data;
-        this._totalRows = null;
-      } else if (data && Array.isArray(data.items)) {
-        this._rows = data.items;
-        this._totalRows = data.total;
-      } else {
-        this._rows = [];
-        this._totalRows = null;
-      }
-    }
-  }
-
   refresh(): void {
     this.dataSource.refresh();
   }
 
   override focus(): void {
-    const table = this.shadowRoot?.querySelector('pages-data-table') as HTMLElement | undefined;
+    const table = this.shadowRoot?.querySelector('pages-table') as HTMLElement | undefined;
     table?.focus();
   }
 
@@ -93,17 +73,18 @@ export class ListPane extends DataSourceMixin(LitElement) {
   };
 
   override render() {
-    if (!this.loading && this._rows.length === 0 && !this.error) {
+    if (!this.loading && (!this.dataSet || this.dataSet.rows.length === 0) && !this.error) {
       return html`<div class="empty" role="status">${this.emptyMessage}</div>`;
     }
 
     return html`
-      <pages-data-table
-        .rows=${this._rows}
-        .columns=${this.columns}
+      <pages-table
+        .dataSet=${this.dataSet}
+        .columnConfig=${this.columnConfig}
+        .columnRenderers=${this.columnRenderers}
         .getRowKey=${this.getRowKey}
         .getRowClass=${this.getRowClass}
-        .totalRows=${this._totalRows}
+        .totalRows=${this.dataSource.controller.totalRows > 0 ? this.dataSource.controller.totalRows : undefined}
         .pageSize=${this.pageSize}
         .loading=${this.loading}
         .emptyMessage=${this.emptyMessage}
@@ -112,7 +93,7 @@ export class ListPane extends DataSourceMixin(LitElement) {
         client-sort
         client-filter
         @row-activate=${this._handleRowActivate}
-      ></pages-data-table>
+      ></pages-table>
     `;
   }
 }
