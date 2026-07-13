@@ -1,24 +1,8 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-audit-trail-viewer';
 import mockEntries from '../../mock-data/ledger-entries.json';
-
-interface LedgerEntry {
-  id: string;
-  subjectId: string;
-  tenancyId: string;
-  sequenceNumber: number;
-  entryType: string;
-  actorId: string | null;
-  actorType: string | null;
-  actorRole: string | null;
-  occurredAt: string;
-  digest: string;
-  traceId: string | null;
-  causedByEntryId: string | null;
-  payload: unknown | null;
-}
 
 interface Attestation {
   id: string;
@@ -42,13 +26,14 @@ interface VerificationResult {
 
 @customElement('audit-trail-page')
 export class AuditTrailPage extends LitElement {
-  @state() private _mockEndpoint = '/api/mock';
+  private _originalFetch: typeof globalThis.fetch | null = null;
 
-  private _mockFetch = async (url: string): Promise<Response> => {
+  private _mockFetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
     const urlObj = new URL(url, window.location.href);
 
     if (urlObj.pathname.includes('/ledger/entries/') && urlObj.pathname.endsWith('/attestations')) {
-      const entryId = urlObj.pathname.split('/').slice(-2)[0];
+      const entryId = urlObj.pathname.split('/').slice(-2)[0] ?? '';
       const attestations: Attestation[] = [
         {
           id: `att-${entryId}-1`,
@@ -60,7 +45,19 @@ export class AuditTrailPage extends LitElement {
           evidence: { score: 0.95 },
           confidence: 0.9,
           capabilityTag: 'FRAUD_ANALYSIS',
-          occurredAt: new Date().toISOString(),
+          occurredAt: '2026-07-07T11:30:00Z',
+        },
+        {
+          id: `att-${entryId}-2`,
+          ledgerEntryId: entryId,
+          subjectId: 'case-123',
+          attestorId: 'attestor-002',
+          attestorType: 'PEER',
+          verdict: 'ENDORSED',
+          evidence: { score: 0.88 },
+          confidence: 0.85,
+          capabilityTag: 'RISK_ASSESSMENT',
+          occurredAt: '2026-07-07T12:00:00Z',
         },
       ];
       return new Response(JSON.stringify(attestations), {
@@ -89,14 +86,28 @@ export class AuditTrailPage extends LitElement {
       });
     }
 
-    return new Response('Not found', { status: 404 });
+    return this._originalFetch!.call(globalThis, input, init);
   };
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this._originalFetch = globalThis.fetch;
+    globalThis.fetch = this._mockFetch as typeof globalThis.fetch;
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this._originalFetch) {
+      globalThis.fetch = this._originalFetch;
+      this._originalFetch = null;
+    }
+  }
 
   protected override firstUpdated(): void {
     const viewer = this.shadowRoot?.querySelector('audit-trail-viewer') as any;
     if (viewer) {
       viewer.configure({
-        endpoint: this._mockEndpoint,
+        endpoint: '/api/mock',
         identity: {
           userId: 'demo-user',
           tenancyId: 'tenant-1',
@@ -124,10 +135,10 @@ export class AuditTrailPage extends LitElement {
         <div class="info-panel">
           <h2>Component Features</h2>
           <ul>
+            <li><strong>Row Detail Expansion:</strong> Click any row to expand inline detail via pages-table's getRowDetail callback — shows full digest, trace ID, causal chain, payload, and attestations</li>
             <li><strong>Verification Banner:</strong> Shows chain integrity status with redaction count</li>
             <li><strong>Filter Controls:</strong> Actor dropdown, entry type chips, date range inputs</li>
             <li><strong>Entry List:</strong> Timestamp, actor with type badge, entry type, truncated digest</li>
-            <li><strong>Expandable Detail:</strong> Full digest, trace ID, causal chain, attestations</li>
             <li><strong>GDPR Compliance:</strong> Null payloads show "Content redacted" placeholder</li>
             <li><strong>Accessibility:</strong> ARIA roles, keyboard navigation, live region announcements</li>
           </ul>
@@ -136,16 +147,18 @@ export class AuditTrailPage extends LitElement {
           <p>
             This example uses ${mockEntries.length} mock ledger entries with various entry types (COMMAND, EVENT,
             ATTESTATION) and actors (USER, SYSTEM, AGENT, PEER). Entry #5 has a redacted payload to demonstrate GDPR
-            handling.
+            handling. Each expanded row shows mock attestations with SOUND and ENDORSED verdicts.
           </p>
 
           <h3>Try It</h3>
           <ul>
-            <li>Click a row to expand and see full details</li>
+            <li>Click any row to expand — the detail panel renders inline via getRowDetail, showing full digest, trace ID, causal chain, and payload</li>
+            <li>Expand entry #4 (ATTESTATION type) to see attestation verdicts and confidence scores</li>
+            <li>Expand entry #5 to see the "Content redacted" GDPR placeholder</li>
+            <li>Click an expanded row again to collapse it (single-expand mode — only one row open at a time)</li>
             <li>Filter by actor using the dropdown</li>
             <li>Toggle entry type chips to filter by COMMAND/EVENT/ATTESTATION</li>
             <li>Note the verification banner showing 1 redacted entry</li>
-            <li>Expand entry #5 to see the "Content redacted" message</li>
           </ul>
         </div>
       </div>
