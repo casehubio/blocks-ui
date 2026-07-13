@@ -24,6 +24,10 @@ on:
       - 'tsconfig*.json'
       - '.github/workflows/ci.yml'
 
+permissions:
+  contents: read
+  packages: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -47,6 +51,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --immutable
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build packages
         run: yarn build
