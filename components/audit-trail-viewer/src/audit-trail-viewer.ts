@@ -36,7 +36,7 @@ const ENTRY_COL_CONFIG: readonly TableColumnConfig[] = [
   { id: DIGEST_COL, sortable: false },
 ];
 
-const ENTRY_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+const ENTRY_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<ColumnId, ColumnRenderer>([
   [OCCURRED_AT_COL, (cell: CellValue) => {
     if (cell.type === 'NULL') return '';
     const date = new Date((cell as { value: string }).value);
@@ -153,7 +153,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     const base = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
     const entriesUrl = new URL(`${this.endpoint}/api/v1/ledger/entries`, base);
     entriesUrl.searchParams.set('subjectId', this.subjectId);
-    entriesUrl.searchParams.set('tenancyId', this.identity.tenancyId);
+    if (this.identity.tenancyId) entriesUrl.searchParams.set('tenancyId', this.identity.tenancyId);
     if (this._dateFrom) entriesUrl.searchParams.set('from', this._dateFrom);
     if (this._dateTo) entriesUrl.searchParams.set('to', this._dateTo);
 
@@ -176,21 +176,23 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     });
   }
 
-  private async _handleRowActivate(e: CustomEvent): Promise<void> {
-    const entryId = e.detail.key as string;
-    if (!entryId) return;
+  private async _handleDetailChange(e: CustomEvent): Promise<void> {
+    const { key, expanded } = e.detail as { key: string; expanded: boolean };
+    if (!key) return;
 
-    if (this._expandedEntryId === entryId) {
-      this._expandedEntryId = null;
-      return;
-    }
+    this._expandedEntryId = expanded ? key : null;
 
-    this._expandedEntryId = entryId;
-
-    if (!this._attestations.has(entryId)) {
-      await this._fetchAttestations(entryId);
+    if (expanded && !this._attestations.has(key)) {
+      await this._fetchAttestations(key);
     }
   }
+
+  private _getRowDetail = (row: TypedRow): TemplateResult | undefined => {
+    const entryId = row.text(ID_COL);
+    const entry = this._entries.find(e => e.id === entryId);
+    if (!entry) return undefined;
+    return this._renderExpandedDetailContent(entry);
+  };
 
   private async _fetchAttestations(entryId: string): Promise<void> {
     if (!this.endpoint) return;
@@ -322,9 +324,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     `;
   }
 
-  private _renderExpandedDetail(entry: LedgerEntry): TemplateResult {
-    if (this._expandedEntryId !== entry.id) return html``;
-
+  private _renderExpandedDetailContent(entry: LedgerEntry): TemplateResult {
     const attestations = this._attestations.get(entry.id) || [];
 
     return html`
@@ -421,10 +421,12 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
         .columnConfig=${ENTRY_COL_CONFIG}
         .columnRenderers=${ENTRY_RENDERERS}
         .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
+        .getRowDetail=${this._getRowDetail}
+        detailMode="single"
+        .expandedDetailKeys=${this._expandedEntryId ? [this._expandedEntryId] : []}
         client-filter
-        @row-activate=${this._handleRowActivate}
+        @detail-change=${this._handleDetailChange}
       ></pages-table>
-      ${this._filteredEntries.map((entry) => this._renderExpandedDetail(entry))}
     `;
   }
 

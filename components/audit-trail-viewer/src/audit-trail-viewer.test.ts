@@ -390,58 +390,62 @@ describe('AuditTrailViewer', () => {
 
     it('should expand entry on row activation', async () => {
       const table = element.shadowRoot?.querySelector('pages-table');
-      const activateEvent = new CustomEvent('row-activate', {
-        detail: { key: 'e1' },
+      const activateEvent = new CustomEvent('detail-change', {
+        detail: { key: 'e1', expanded: true },
       });
       table?.dispatchEvent(activateEvent);
 
       await element.updateComplete;
+      await (table as any)?.updateComplete;
 
-      const detail = element.shadowRoot?.querySelector('[role="region"]');
+      const detail = table?.shadowRoot?.querySelector('.detail-panel');
       expect(detail).toBeDefined();
     });
 
     it('should display full digest in detail', async () => {
       const table = element.shadowRoot?.querySelector('pages-table');
-      const activateEvent = new CustomEvent('row-activate', {
-        detail: { key: 'e1' },
+      const activateEvent = new CustomEvent('detail-change', {
+        detail: { key: 'e1', expanded: true },
       });
       table?.dispatchEvent(activateEvent);
 
       await element.updateComplete;
+      await (table as any)?.updateComplete;
 
-      const text = element.shadowRoot?.textContent || '';
+      const text = table?.shadowRoot?.textContent || '';
       expect(text).toContain('abc123def456');
     });
 
     it('should fetch and display attestations', async () => {
       const table = element.shadowRoot?.querySelector('pages-table');
-      const activateEvent = new CustomEvent('row-activate', {
-        detail: { key: 'e1' },
+      const activateEvent = new CustomEvent('detail-change', {
+        detail: { key: 'e1', expanded: true },
       });
       table?.dispatchEvent(activateEvent);
 
       await new Promise((resolve) => setTimeout(resolve, 10));
       await element.updateComplete;
+      await (table as any)?.updateComplete;
 
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining('/ledger/entries/e1/attestations')
       );
 
-      const text = element.shadowRoot?.textContent || '';
+      const text = table?.shadowRoot?.textContent || '';
       expect(text).toContain('SOUND');
     });
 
     it('should show "Content redacted" for null payload', async () => {
       const table = element.shadowRoot?.querySelector('pages-table');
-      const activateEvent = new CustomEvent('row-activate', {
-        detail: { key: 'e2' }, // e2 has null payload
+      const activateEvent = new CustomEvent('detail-change', {
+        detail: { key: 'e2', expanded: true }, // e2 has null payload
       });
       table?.dispatchEvent(activateEvent);
 
       await element.updateComplete;
+      await (table as any)?.updateComplete;
 
-      const text = element.shadowRoot?.textContent || '';
+      const text = table?.shadowRoot?.textContent || '';
       expect(text).toContain('Content redacted');
     });
   });
@@ -529,15 +533,16 @@ describe('AuditTrailViewer', () => {
       await element.updateComplete;
 
       const table = element.shadowRoot?.querySelector('pages-table');
-      const activateEvent = new CustomEvent('row-activate', {
-        detail: { key: 'e1' },
+      const activateEvent = new CustomEvent('detail-change', {
+        detail: { key: 'e1', expanded: true },
       });
       table?.dispatchEvent(activateEvent);
 
       await element.updateComplete;
+      await (table as any)?.updateComplete;
 
-      expect(customRenderer).toHaveBeenCalledWith(mockEntries[0]);
-      const text = element.shadowRoot?.textContent || '';
+      expect(customRenderer).toHaveBeenCalledWith(mockEntries[0]!);
+      const text = table?.shadowRoot?.textContent || '';
       expect(text).toContain('Custom render');
     });
   });
