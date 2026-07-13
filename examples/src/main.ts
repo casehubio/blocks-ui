@@ -23,6 +23,7 @@ async function bootstrap() {
   await import('./pages/audit-trail-page.js');
   await import('./pages/case-timeline-page.js');
   await import('./pages/trust-score-page.js');
+  await import('./pages/channel-activity-page.js');
 
   app.textContent = '';
   app.appendChild(document.createElement('example-shell'));

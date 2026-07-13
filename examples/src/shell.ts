@@ -31,6 +31,7 @@ const NAV: NavCategory[] = [
       { id: 'audit-trail', label: 'Audit Trail Viewer', hash: '#components/audit-trail' },
       { id: 'case-timeline', label: 'Case Timeline', hash: '#components/case-timeline' },
       { id: 'trust-score', label: 'Trust Score Panel', hash: '#components/trust-score' },
+      { id: 'channel-activity', label: 'Channel Activity', hash: '#components/channel-activity' },
     ],
   },
   {
@@ -182,6 +183,7 @@ export class ExampleShell extends LitElement {
       case '#components/audit-trail': return html`<audit-trail-page></audit-trail-page>`;
       case '#components/case-timeline': return html`<case-timeline-page></case-timeline-page>`;
       case '#components/trust-score': return html`<trust-score-page></trust-score-page>`;
+      case '#components/channel-activity': return html`<channel-activity-page></channel-activity-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }
