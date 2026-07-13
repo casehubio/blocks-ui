@@ -1,2 +1,11 @@
-// Stub — implementation pending
-export const COMPONENT_NAME = 'channel-activity';
+export * from './types.js';
+export * from './events.js';
+export { renderMarkdown } from './markdown.js';
+export { ChannelMessageElement } from './channel-message.js';
+export { ChannelReactionBarElement } from './channel-reaction-bar.js';
+export { ChannelInputElement } from './channel-input.js';
+export { ChannelEmojiPickerElement } from './channel-emoji-picker.js';
+export { ChannelThreadElement } from './channel-thread.js';
+export { ChannelFeedElement } from './channel-feed.js';
+export { ChannelNavElement } from './channel-nav.js';
+export { ChannelMemberPanelElement } from './channel-member-panel.js';
