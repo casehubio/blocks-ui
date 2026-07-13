@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { nothing } from 'lit';
-import type { SSEHandler, SSEEvent, SSESubscribeOptions } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { Notification, NotificationPage } from './types.js';
 import './notification-inbox.js';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
@@ -67,7 +67,7 @@ class MockSSEManager {
     if (!this.subscribers.has(url)) {
       this.subscribers.set(url, []);
     }
-    this.subscribers.get(url)!.push({ handler, options });
+    this.subscribers.get(url)!.push({ handler, ...(options != null ? { options } : {}) });
   }
 
   unsubscribe(url: string, handler: SSEHandler): void {
@@ -134,7 +134,7 @@ async function createElement(opts: {
   if (opts.data) el.data = opts.data;
   if (opts.endpoint) el.endpoint = opts.endpoint;
   if (opts.mockFetch) el.fetchFn = opts.mockFetch;
-  if (opts.sseManager) el.sseManager = opts.sseManager;
+  if (opts.sseManager) el.sseManager = opts.sseManager as unknown as SSEManager;
   el.identity = { userId: 'user-1', displayName: 'Test User', groups: [] };
   fixture(el);
   await el.updateComplete;
@@ -290,8 +290,8 @@ describe('notification-inbox', () => {
     }));
 
     expect(events.length).toBe(1);
-    expect(events[0].detail.topic).toBe('notification.selected');
-    expect(events[0].detail.payload.notificationId).toBe('n1');
+    expect(events[0]!.detail.topic).toBe('notification.selected');
+    expect(events[0]!.detail.payload.notificationId).toBe('n1');
   });
 
   // --- 9. Marks notification read via API on row activate (optimistic) ---
@@ -587,7 +587,7 @@ describe('notification-inbox', () => {
     });
 
     expect(announceSpy).toHaveBeenCalled();
-    const message = announceSpy.mock.calls[0][0];
+    const message = announceSpy.mock.calls[0]![0];
     expect(message).toContain('notification');
   });
 });

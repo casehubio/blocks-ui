@@ -3,6 +3,7 @@ import { LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { DataSourceAdapter } from './data-source-adapter.js';
 import { fetchSource } from './fetch-source.js';
+import type { TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
 
 function mockFetchOk(data: unknown): typeof globalThis.fetch {
   return vi.fn().mockResolvedValue({
@@ -86,8 +87,9 @@ describe('DataSourceAdapter', () => {
     expect(el.dataSource.error).toBe('fail');
     expect(el.dataSource.loading).toBe(false);
 
-    el.dataSource.dataSet = { items: [] };
-    expect(el.dataSource.dataSet).toEqual({ items: [] });
+    const emptyDataSet: TypedDataSet = { columns: [], rows: [] };
+    el.dataSource.dataSet = emptyDataSet;
+    expect(el.dataSource.dataSet).toEqual(emptyDataSet);
     expect(el.dataSource.error).toBe('');
   });
 
@@ -112,10 +114,12 @@ describe('DataSourceAdapter', () => {
     document.body.appendChild(dual);
     await dual.updateComplete;
 
-    dual.primary.dataSet = 'primary-data';
-    dual.secondary.dataSet = 'secondary-data';
-    expect(dual.primary.dataSet).toBe('primary-data');
-    expect(dual.secondary.dataSet).toBe('secondary-data');
+    const primaryData: TypedDataSet = { columns: [], rows: [] };
+    const secondaryData: TypedDataSet = { columns: [], rows: [] };
+    dual.primary.dataSet = primaryData;
+    dual.secondary.dataSet = secondaryData;
+    expect(dual.primary.dataSet).toEqual(primaryData);
+    expect(dual.secondary.dataSet).toEqual(secondaryData);
 
     dual.remove();
   });

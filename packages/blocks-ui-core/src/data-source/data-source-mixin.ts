@@ -11,9 +11,9 @@ export function DataSourceMixin<T extends Constructor<LitElement>>(Base: T) {
   class DataSourceHost extends Base {
     createSourceFactory(): SourceFactory {
       return (url, _id, options) => fetchSource(url, {
-        columns: options?.columns,
-        dataPath: options?.dataPath,
-        totalPath: options?.totalPath,
+        ...(options?.columns != null ? { columns: options.columns } : {}),
+        ...(options?.dataPath != null ? { dataPath: options.dataPath } : {}),
+        ...(options?.totalPath != null ? { totalPath: options.totalPath } : {}),
       });
     }
 

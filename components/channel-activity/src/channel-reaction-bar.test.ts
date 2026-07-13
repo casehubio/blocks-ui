@@ -52,8 +52,8 @@ describe('channel-reaction-bar', () => {
     el.shadowRoot!.querySelector('.reaction-pill')!.click();
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.REACT);
-    expect(handler.mock.calls[0][0].detail.payload).toEqual({ messageId: 'msg-1', emoji: '👍' });
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.REACT);
+    expect(handler.mock.calls[0]![0]!.detail.payload).toEqual({ messageId: 'msg-1', emoji: '👍' });
   });
 
   it('emits channel:unreact on click when already reacted', async () => {
@@ -68,7 +68,7 @@ describe('channel-reaction-bar', () => {
     el.addEventListener('pages-event', handler);
     el.shadowRoot!.querySelector('.reaction-pill')!.click();
 
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.UNREACT);
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.UNREACT);
   });
 
   it('renders add button when reactions array is empty', async () => {
@@ -121,8 +121,8 @@ describe('channel-reaction-bar', () => {
     await el.updateComplete;
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.REACT);
-    expect(handler.mock.calls[0][0].detail.payload).toEqual({ messageId: 'msg-1', emoji: '🎉' });
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.REACT);
+    expect(handler.mock.calls[0]![0]!.detail.payload).toEqual({ messageId: 'msg-1', emoji: '🎉' });
     expect(el.shadowRoot!.querySelector('channel-emoji-picker')).toBeNull();
   });
 

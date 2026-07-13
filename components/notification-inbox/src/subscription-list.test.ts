@@ -136,7 +136,7 @@ describe('subscription-list', () => {
     await waitUntil(() => el.subscriptions.length > 0, 'subscriptions loaded');
 
     expect(el.subscriptions).toHaveLength(2);
-    expect(el.subscriptions[0].name).toBe('Issue Updates');
+    expect(el.subscriptions[0]!.name).toBe('Issue Updates');
   });
 
   it('shows subscription name, event type pill, constraint count per row', async () => {
@@ -204,7 +204,7 @@ describe('subscription-list', () => {
 
     const editor = el.shadowRoot!.querySelector('subscription-editor');
     expect(editor).toBeTruthy();
-    expect(editor!.subscription).toBeUndefined();
+    expect((editor as any)!.subscription).toBeUndefined();
   });
 
   it('opens subscription-editor in edit mode on Edit button', async () => {
@@ -223,7 +223,7 @@ describe('subscription-list', () => {
 
     const editor = el.shadowRoot!.querySelector('subscription-editor');
     expect(editor).toBeTruthy();
-    expect(editor!.subscription?.id).toBe('sub-1');
+    expect((editor as any)!.subscription?.id).toBe('sub-1');
   });
 
   it('shows BlocksConfirmDialog before delete', async () => {

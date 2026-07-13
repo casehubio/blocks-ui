@@ -58,7 +58,7 @@ export class SubscriptionList extends LitElement {
   @state() private _showDeleteDialog = false;
   @state() private _pendingDeleteId: string | null = null;
 
-  private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+  private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<ColumnId, ColumnRenderer>([
     [S_EVENT_TYPE_COL, (cell: CellValue) => {
       if (cell.type === 'NULL') return '';
       return html`<span class="event-type-pill">${(cell as { value: string }).value}</span>`;

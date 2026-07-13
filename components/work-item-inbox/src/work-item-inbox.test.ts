@@ -161,9 +161,9 @@ describe('work-item-inbox', () => {
     const handler = vi.fn();
     document.addEventListener('pages-event', handler);
     const table = el.shadowRoot!.querySelector('pages-table')!;
-    table.dispatchEvent(new CustomEvent('row-activate', { bubbles: true, composed: true, detail: { key: 'wi-1', row: mockItems[0] } }));
+    table.dispatchEvent(new CustomEvent('row-activate', { bubbles: true, composed: true, detail: { key: 'wi-1', row: mockItems[0]! } }));
     expect(handler).toHaveBeenCalled();
-    const eventDetail = handler.mock.calls[0][0].detail;
+    const eventDetail = handler.mock.calls[0]![0].detail;
     expect(eventDetail.topic).toBe('work-item:selected');
     expect(eventDetail.payload.workItemId).toBe('wi-1');
     document.removeEventListener('pages-event', handler);
@@ -171,9 +171,9 @@ describe('work-item-inbox', () => {
 
   it('filters by overdue items', async () => {
     const overdueItem: WorkItemRootResponse = {
-      ...mockItems[0],
+      ...mockItems[0]!,
       item: {
-        ...mockItems[0].item,
+        ...mockItems[0]!.item,
         id: 'wi-overdue',
         status: 'ASSIGNED',
         expiresAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
@@ -192,9 +192,9 @@ describe('work-item-inbox', () => {
 
   it('filters by claim deadline breached', async () => {
     const breachedItem: WorkItemRootResponse = {
-      ...mockItems[1],
+      ...mockItems[1]!,
       item: {
-        ...mockItems[1].item,
+        ...mockItems[1]!.item,
         id: 'wi-breach',
         status: 'PENDING',
         claimDeadline: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
@@ -244,8 +244,8 @@ describe('work-item-inbox', () => {
 
   it('table handles many items with scroll mode', async () => {
     const manyItems = Array.from({ length: 60 }, (_, i) => ({
-      ...mockItems[0],
-      item: { ...mockItems[0].item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
+      ...mockItems[0]!,
+      item: { ...mockItems[0]!.item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
     }));
 
     // Set items through internal state
@@ -261,8 +261,8 @@ describe('work-item-inbox', () => {
 
   it('table handles few items with scroll mode', async () => {
     const fewItems = Array.from({ length: 30 }, (_, i) => ({
-      ...mockItems[0],
-      item: { ...mockItems[0].item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
+      ...mockItems[0]!,
+      item: { ...mockItems[0]!.item, id: `wi-${i}`, status: 'ASSIGNED' as const, assigneeId: 'user-1' },
     }));
 
     // Set items through internal state
@@ -1152,8 +1152,8 @@ describe('queue scope', () => {
   it('uses queue items as data source when queue is active', async () => {
     const queueItems: WorkItemRootResponse[] = [
       {
-        ...mockItems[0],
-        item: { ...mockItems[0].item, id: 'qi-1', status: 'IN_PROGRESS' as const, assigneeId: 'user-1' },
+        ...mockItems[0]!,
+        item: { ...mockItems[0]!.item, id: 'qi-1', status: 'IN_PROGRESS' as const, assigneeId: 'user-1' },
       },
     ];
     (el as any)._queueScope = {
@@ -1197,9 +1197,9 @@ describe('queue scope', () => {
     const inbox = el as any;
     const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
     const items: WorkItemRootResponse[] = [
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'a', status: 'ASSIGNED' as const, priority: 'HIGH' as const } },
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'b', status: 'ASSIGNED' as const, priority: 'URGENT' as const } },
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'c', status: 'IN_PROGRESS' as const, priority: 'HIGH' as const } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'a', status: 'ASSIGNED' as const, priority: 'HIGH' as const } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'b', status: 'ASSIGNED' as const, priority: 'URGENT' as const } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'c', status: 'IN_PROGRESS' as const, priority: 'HIGH' as const } },
     ];
     const scope = inbox._buildQueueScope(queue, items);
     expect(scope.statusCounts.get('ASSIGNED')).toBe(2);
@@ -1214,8 +1214,8 @@ describe('queue scope', () => {
     const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
     const pastDate = new Date(Date.now() - 3600000).toISOString();
     const items: WorkItemRootResponse[] = [
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'a', status: 'ASSIGNED' as const, expiresAt: pastDate } },
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'b', status: 'ASSIGNED' as const, expiresAt: null } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'a', status: 'ASSIGNED' as const, expiresAt: pastDate } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'b', status: 'ASSIGNED' as const, expiresAt: null } },
     ];
     const scope = inbox._buildQueueScope(queue, items);
     expect(scope.overdueCount).toBe(1);
@@ -1226,8 +1226,8 @@ describe('queue scope', () => {
     const queue = { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null };
     const pastDate = new Date(Date.now() - 3600000).toISOString();
     const items: WorkItemRootResponse[] = [
-      { ...mockItems[1], item: { ...mockItems[1].item, id: 'a', status: 'PENDING' as const, claimDeadline: pastDate } },
-      { ...mockItems[1], item: { ...mockItems[1].item, id: 'b', status: 'PENDING' as const, claimDeadline: null } },
+      { ...mockItems[1]!, item: { ...mockItems[1]!.item, id: 'a', status: 'PENDING' as const, claimDeadline: pastDate } },
+      { ...mockItems[1]!, item: { ...mockItems[1]!.item, id: 'b', status: 'PENDING' as const, claimDeadline: null } },
     ];
     const scope = inbox._buildQueueScope(queue, items);
     expect(scope.breachCount).toBe(1);
@@ -1247,9 +1247,9 @@ describe('queue scope', () => {
 
   it('tab counts reflect queue items when queue is active', async () => {
     const queueItems: WorkItemRootResponse[] = [
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-2', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
-      { ...mockItems[1], item: { ...mockItems[1].item, id: 'qi-3', status: 'PENDING' as const, candidateGroups: 'compliance' } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'qi-2', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+      { ...mockItems[1]!, item: { ...mockItems[1]!.item, id: 'qi-3', status: 'PENDING' as const, candidateGroups: 'compliance' } },
     ];
     (el as any)._queueScope = {
       queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
@@ -1318,7 +1318,7 @@ describe('queue scope', () => {
 
   it('getTabItems uses queue scope items when active', async () => {
     const queueItems: WorkItemRootResponse[] = [
-      { ...mockItems[0], item: { ...mockItems[0].item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
+      { ...mockItems[0]!, item: { ...mockItems[0]!.item, id: 'qi-1', status: 'ASSIGNED' as const, assigneeId: 'user-1' } },
     ];
     (el as any)._queueScope = {
       queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },

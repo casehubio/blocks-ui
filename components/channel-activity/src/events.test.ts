@@ -41,7 +41,7 @@ describe('emitPagesEvent integration', () => {
     emitPagesEvent(target, ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
 
     expect(handler).toHaveBeenCalledOnce();
-    const event = handler.mock.calls[0][0] as CustomEvent;
+    const event = handler.mock.calls[0]![0]! as CustomEvent;
     expect(event.detail.topic).toBe('channel:selected');
     expect(event.detail.payload).toEqual({ channelId: 'ch-1' });
   });
@@ -55,7 +55,7 @@ describe('emitPagesEvent integration', () => {
     emitPagesEvent(target, ChannelEventTopics.SEND_MESSAGE, { channelId: 'ch-1', content: 'hello' });
 
     expect(handler).toHaveBeenCalledOnce();
-    const event = handler.mock.calls[0][0] as CustomEvent;
+    const event = handler.mock.calls[0]![0]! as CustomEvent;
     expect(event.bubbles).toBe(true);
     expect(event.composed).toBe(true);
 
@@ -70,7 +70,7 @@ describe('emitPagesEvent integration', () => {
 
     emitPagesEvent(target, ChannelEventTopics.CURSOR_CATCHUP, { channelId: 'ch-1', cursorId: 'cur-42' });
 
-    const event = handler.mock.calls[0][0] as CustomEvent;
+    const event = handler.mock.calls[0]![0]! as CustomEvent;
     expect(event.detail.topic).toBe('channel:cursor-catchup');
     expect(event.detail.payload).toEqual({ channelId: 'ch-1', cursorId: 'cur-42' });
   });
@@ -82,7 +82,7 @@ describe('emitPagesEvent integration', () => {
 
     emitPagesEvent(target, ChannelEventTopics.CURSOR_RELOAD, { channelId: 'ch-1' });
 
-    const event = handler.mock.calls[0][0] as CustomEvent;
+    const event = handler.mock.calls[0]![0]! as CustomEvent;
     expect(event.detail.topic).toBe('channel:cursor-reload');
     expect(event.detail.payload).toEqual({ channelId: 'ch-1' });
   });

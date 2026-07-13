@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import type { SSEHandler, SSEEvent, SSESubscribeOptions } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import './notification-bell.js';
 import type { NotificationBell } from './notification-bell.js';
 
@@ -16,7 +16,7 @@ class MockSSEManager {
     if (!this.subscribers.has(url)) {
       this.subscribers.set(url, []);
     }
-    this.subscribers.get(url)!.push({ handler, options });
+    this.subscribers.get(url)!.push({ handler, ...(options != null ? { options } : {}) });
   }
 
   unsubscribe(url: string, handler: SSEHandler): void {
@@ -71,7 +71,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button');
@@ -90,7 +90,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -108,7 +108,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -126,7 +126,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button')!;
@@ -157,7 +157,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     el.open = true;
     await el.updateComplete;
 
@@ -180,12 +180,12 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
 
     const subs = mockSSEManager.getSubscriptions('http://localhost:8080/notifications/stream');
     expect(subs.length).toBe(1);
-    expect(subs[0].options?.eventNames).toEqual(['notification', 'notification-updated', 'unread-count']);
+    expect(subs[0]!.options?.eventNames).toEqual(['notification', 'notification-updated', 'unread-count']);
   });
 
   it('updates unreadCount from SSE unread-count event', async () => {
@@ -197,7 +197,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -224,7 +224,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -251,7 +251,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -268,7 +268,7 @@ describe('notification-bell', () => {
     const el = fixture(document.createElement('notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager;
+    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button')!;

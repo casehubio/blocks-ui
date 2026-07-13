@@ -1,4 +1,5 @@
 import type { DataSource, DataSink } from "@casehubio/pages-data";
+import type { SnapshotEvent } from "@casehubio/pages-data/dist/dataset/events.js";
 import type { ExternalColumnDef, ExtractionDef, FetchResult, PresetRegistry } from "@casehubio/pages-data/dist/dataset/external/types.js";
 import { extractDataSet } from "@casehubio/pages-data/dist/dataset/external/extraction.js";
 
@@ -50,16 +51,19 @@ export function fetchSource(url: string, options?: FetchSourceOptions): DataSour
             totalRows = navigatePath(data, options.totalPath);
           }
 
-          const result: FetchResult = { data, contentType: undefined };
+          const result: FetchResult = { data };
           const def: ExtractionDef = {
-            columns: options?.columns,
-            dataPath: options?.dataPath,
+            ...(options?.columns != null ? { columns: options.columns } : {}),
+            ...(options?.dataPath != null ? { dataPath: options.dataPath } : {}),
           };
 
           try {
             const { dataset } = await extractDataSet(result, def, emptyPresetRegistry);
             if (!signal.aborted) {
-              sink.apply({ type: "snapshot", dataset, totalRows });
+              const event: SnapshotEvent = totalRows != null
+                ? { type: "snapshot", dataset, totalRows }
+                : { type: "snapshot", dataset };
+              sink.apply(event);
             }
           } catch (err) {
             if (!signal.aborted) {

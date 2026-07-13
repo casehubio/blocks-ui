@@ -127,8 +127,9 @@ export class ChannelNavElement extends LitElement {
         break;
       case 'Enter':
         event.preventDefault();
-        if (this.channels[this._focusedIndex]) {
-          this.handleChannelClick(this.channels[this._focusedIndex].id);
+        const focused = this.channels[this._focusedIndex];
+        if (focused) {
+          this.handleChannelClick(focused.id);
         }
         break;
     }

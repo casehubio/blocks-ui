@@ -154,7 +154,7 @@ export class ChannelFeedElement extends LitElement {
     for (const msg of messages) {
       const last = groups[groups.length - 1];
       if (last && last.sender === msg.sender) {
-        const lastTime = new Date(last.messages[last.messages.length - 1].createdAt).getTime();
+        const lastTime = new Date(last.messages[last.messages.length - 1]!.createdAt).getTime();
         const thisTime = new Date(msg.createdAt).getTime();
         if (thisTime - lastTime < TWO_MINUTES) {
           last.messages = [...last.messages, msg];

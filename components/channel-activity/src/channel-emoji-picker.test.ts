@@ -27,7 +27,7 @@ describe('channel-emoji-picker', () => {
     }));
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.emoji).toBe('😀');
+    expect(handler.mock.calls[0]![0]!.detail.emoji).toBe('😀');
   });
 
   it('passes skinToneEmoji attribute to inner picker', async () => {

@@ -10,7 +10,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function TrendSourceMixin<T extends Constructor<LitElement>>(Base: T) {
   class TrendSourceHost extends Base {
     @property({ attribute: false }) trendSource?: DataSource;
-    @property({ attribute: false }) trendData?: TrendPoint[];
+    @property({ attribute: false }) trendData?: TrendPoint[] | undefined;
     @property({ type: Number, attribute: 'max-trend-points' }) maxTrendPoints = 30;
 
     @state() private _adapterTrendPoints: TrendPoint[] = [];
@@ -60,7 +60,7 @@ export function TrendSourceMixin<T extends Constructor<LitElement>>(Base: T) {
 
   return TrendSourceHost as unknown as Constructor<{
     trendSource?: DataSource;
-    trendData?: TrendPoint[];
+    trendData?: TrendPoint[] | undefined;
     maxTrendPoints: number;
     readonly trendPoints: TrendPoint[];
     readonly trendLoading: boolean;

@@ -7,7 +7,7 @@ import { MESSAGE_TYPES, type MessageType } from './types.js';
 @customElement('channel-input')
 export class ChannelInputElement extends LitElement {
   @property({ type: String }) channelId = '';
-  @property({ type: Object }) replyTo?: { messageId: string; senderName: string };
+  @property({ type: Object }) replyTo?: { messageId: string; senderName: string } | undefined;
   @property({ type: Boolean }) showTypeSelector = false;
   @property({ attribute: false }) messageTypes: MessageType[] = [...MESSAGE_TYPES];
   @property({ attribute: false }) allowedTypes?: MessageType[];

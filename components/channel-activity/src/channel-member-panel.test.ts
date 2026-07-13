@@ -43,9 +43,9 @@ describe('channel-member-panel', () => {
     await (element as any).updateComplete;
 
     const dots = element.shadowRoot!.querySelectorAll('.presence-dot');
-    expect(dots[0].classList.contains('dot-online')).toBe(true);
-    expect(dots[1].classList.contains('dot-away')).toBe(true);
-    expect(dots[2].classList.contains('dot-offline')).toBe(true);
+    expect(dots[0]!.classList.contains('dot-online')).toBe(true);
+    expect(dots[1]!.classList.contains('dot-away')).toBe(true);
+    expect(dots[2]!.classList.contains('dot-offline')).toBe(true);
   });
 
   it('shows role badges for MODERATOR and OBSERVER', async () => {
@@ -64,9 +64,9 @@ describe('channel-member-panel', () => {
     await (element as any).updateComplete;
 
     const badges = element.shadowRoot!.querySelectorAll('.role-badge');
-    expect(badges[0].textContent).toBe('🛡️');
-    expect(badges[1].textContent).toBe('👁️');
-    expect(badges[2].textContent).toBe('');
+    expect(badges[0]!.textContent).toBe('🛡️');
+    expect(badges[1]!.textContent).toBe('👁️');
+    expect(badges[2]!.textContent).toBe('');
   });
 
   it('groups under section headers', async () => {
@@ -86,9 +86,9 @@ describe('channel-member-panel', () => {
 
     const headers = element.shadowRoot!.querySelectorAll('.section-header');
     expect(headers.length).toBe(3);
-    expect(headers[0].textContent?.trim()).toBe('Online');
-    expect(headers[1].textContent?.trim()).toBe('Away');
-    expect(headers[2].textContent?.trim()).toBe('Offline');
+    expect(headers[0]!.textContent?.trim()).toBe('Online');
+    expect(headers[1]!.textContent?.trim()).toBe('Away');
+    expect(headers[2]!.textContent?.trim()).toBe('Offline');
   });
 
   it('handles empty member list', async () => {
@@ -117,8 +117,8 @@ describe('channel-member-panel', () => {
     expect(names).toEqual(['Alice', 'Bob']);
 
     const dots = element.shadowRoot!.querySelectorAll('.presence-dot');
-    expect(dots[0].classList.contains('dot-online')).toBe(true);
-    expect(dots[1].classList.contains('dot-offline')).toBe(true);
+    expect(dots[0]!.classList.contains('dot-online')).toBe(true);
+    expect(dots[1]!.classList.contains('dot-offline')).toBe(true);
   });
 
   it('shows status message when present', async () => {

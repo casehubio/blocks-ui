@@ -243,7 +243,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
           ${score !== undefined ? score.toFixed(2) : '—'}
         </div>
         ${hasTrend
-          ? renderSparkline(points.map(p => p.score), { width: 80, height: 24, color, domain: [0, 1] })
+          ? renderSparkline(points.map(p => p.score), { width: 80, height: 24, ...(color != null ? { color } : {}), domain: [0, 1] })
           : nothing}
       </div>
     `;
@@ -412,7 +412,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     }`;
     return html`
       <div role="img" aria-label=${label}>
-        ${renderSparkline(scores, { width: 200, height: 48, color, domain: [0, 1] })}
+        ${renderSparkline(scores, { width: 200, height: 48, ...(color != null ? { color } : {}), domain: [0, 1] })}
       </div>
     `;
   }

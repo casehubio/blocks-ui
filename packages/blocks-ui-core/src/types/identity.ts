@@ -2,6 +2,7 @@ export interface WorkIdentity {
   readonly userId: string;
   readonly displayName: string;
   readonly groups: readonly string[];
+  readonly tenancyId?: string;
 }
 
 export type UserSearchProvider = (

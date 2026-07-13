@@ -41,7 +41,7 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
                 streamType: entry.streamType,
                 timestamp: entry.timestamp,
                 payload: entry.payload,
-                metadata: entry.metadata,
+                ...(entry.metadata != null ? { metadata: entry.metadata } : {}),
               }));
               sink.apply({ type: 'snapshot', dataset: { columns: [], rows: [] } });
             })
@@ -343,7 +343,7 @@ export class CaseTimeline extends DataSourceMixin(LiveRegionMixin(LitElement)) {
       return html`
         <div class="timeline-container">
           <div class="error-message">Failed to load timeline: ${this.error}</div>
-          <button @click="${() => this.fetchData()}">Retry</button>
+          <button @click="${() => this.dataSource.refresh()}">Retry</button>
         </div>
       `;
     }

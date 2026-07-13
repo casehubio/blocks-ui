@@ -78,7 +78,7 @@ describe('queue-pill-bar', () => {
     const pill = el.shadowRoot!.querySelector('[data-id="q1"]') as HTMLElement;
     pill.click();
     expect(handler).toHaveBeenCalled();
-    const detail = handler.mock.calls[0][0].detail;
+    const detail = handler.mock.calls[0]![0].detail;
     expect(detail.topic).toBe('queue:scope-changed');
     expect(detail.payload.queue.id).toBe('q1');
   });
@@ -90,7 +90,7 @@ describe('queue-pill-bar', () => {
     el.addEventListener('pages-event', handler);
     const pill = el.shadowRoot!.querySelector('[data-id="q1"]') as HTMLElement;
     pill.click();
-    expect(handler.mock.calls[0][0].detail.payload.queue).toBeNull();
+    expect(handler.mock.calls[0]![0].detail.payload.queue).toBeNull();
   });
 
   it('loads queues when endpoint is empty string (mock-fetch pattern)', async () => {

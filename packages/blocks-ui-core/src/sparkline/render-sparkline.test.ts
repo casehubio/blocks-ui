@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { renderSparkline } from './render-sparkline.js';
 
-function renderToString(result: ReturnType<typeof html>): string {
+function renderToString(result: TemplateResult): string {
   if (!result || !('strings' in result)) return '';
   const strings = (result as any).strings as readonly string[];
   const values = (result as any).values as readonly unknown[];

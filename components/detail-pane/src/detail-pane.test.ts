@@ -134,14 +134,14 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]') as NodeListOf<HTMLElement>;
-      expect(tabs[0].getAttribute('aria-selected')).toBe('true');
-      expect(tabs[1].getAttribute('aria-selected')).toBe('false');
+      expect(tabs[0]!.getAttribute('aria-selected')).toBe('true');
+      expect(tabs[1]!.getAttribute('aria-selected')).toBe('false');
 
-      tabs[1].click();
+      tabs[1]!.click();
       await el.updateComplete;
 
-      expect(tabs[0].getAttribute('aria-selected')).toBe('false');
-      expect(tabs[1].getAttribute('aria-selected')).toBe('true');
+      expect(tabs[0]!.getAttribute('aria-selected')).toBe('false');
+      expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
     });
 
     it('passes item to newly active tab', async () => {
@@ -154,7 +154,7 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]') as NodeListOf<HTMLElement>;
-      tabs[1].click();
+      tabs[1]!.click();
       await el.updateComplete;
 
       const panel = el.shadowRoot!.querySelector('[role="tabpanel"] test-tab-panel') as any;
@@ -176,8 +176,8 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]');
-      expect(tabs[0].textContent!.trim()).toBe('First');
-      expect(tabs[1].textContent!.trim()).toBe('Second');
+      expect(tabs[0]!.textContent!.trim()).toBe('First');
+      expect(tabs[1]!.textContent!.trim()).toBe('Second');
     });
 
     it('uses array order when no order property specified', async () => {
@@ -193,8 +193,8 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]');
-      expect(tabs[0].textContent!.trim()).toBe('Zebra');
-      expect(tabs[1].textContent!.trim()).toBe('Apple');
+      expect(tabs[0]!.textContent!.trim()).toBe('Zebra');
+      expect(tabs[1]!.textContent!.trim()).toBe('Apple');
     });
   });
 
@@ -267,10 +267,10 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]') as NodeListOf<HTMLElement>;
-      tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      tabs[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
       await el.updateComplete;
 
-      expect(tabs[1].getAttribute('aria-selected')).toBe('true');
+      expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
     });
 
     it('navigates tabs with ArrowLeft (wraps)', async () => {
@@ -282,10 +282,10 @@ describe('detail-pane', () => {
       await el.updateComplete;
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]') as NodeListOf<HTMLElement>;
-      tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+      tabs[0]!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
       await el.updateComplete;
 
-      expect(tabs[1].getAttribute('aria-selected')).toBe('true');
+      expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
     });
   });
 
@@ -314,9 +314,9 @@ describe('detail-pane', () => {
       const firstPanel = el.shadowRoot!.querySelector('test-tab-panel');
 
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]') as NodeListOf<HTMLElement>;
-      tabs[1].click();
+      tabs[1]!.click();
       await el.updateComplete;
-      tabs[0].click();
+      tabs[0]!.click();
       await el.updateComplete;
 
       const samePanel = el.shadowRoot!.querySelector('test-tab-panel');

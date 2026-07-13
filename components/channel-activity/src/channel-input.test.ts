@@ -28,7 +28,7 @@ describe('channel-input', () => {
     textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
     expect(handler).toHaveBeenCalledOnce();
-    const detail = handler.mock.calls[0][0].detail;
+    const detail = handler.mock.calls[0]![0]!.detail;
     expect(detail.topic).toBe(ChannelEventTopics.SEND_MESSAGE);
     expect(detail.payload.content).toBe('hello world');
     expect(detail.payload.channelId).toBe('ch-1');
@@ -106,7 +106,7 @@ describe('channel-input', () => {
     textarea.dispatchEvent(new Event('input'));
     textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
-    expect(handler.mock.calls[0][0].detail.payload.inReplyTo).toBe('msg-1');
+    expect(handler.mock.calls[0]![0]!.detail.payload.inReplyTo).toBe('msg-1');
   });
 
   it('clears replyTo banner on cancel click', async () => {
@@ -200,7 +200,7 @@ describe('channel-input', () => {
     textarea.dispatchEvent(new Event('input'));
     textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
-    expect(handler.mock.calls[0][0].detail.payload.speechAct).toBeTruthy();
+    expect(handler.mock.calls[0]![0]!.detail.payload.speechAct).toBeTruthy();
   });
 
   it('speechAct not included when type selector is hidden', async () => {
@@ -216,7 +216,7 @@ describe('channel-input', () => {
     textarea.dispatchEvent(new Event('input'));
     textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
 
-    expect(handler.mock.calls[0][0].detail.payload.speechAct).toBeUndefined();
+    expect(handler.mock.calls[0]![0]!.detail.payload.speechAct).toBeUndefined();
   });
 
   // --- Error Feedback (Gap #4) ---

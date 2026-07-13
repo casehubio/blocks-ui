@@ -93,7 +93,7 @@ describe('channel-message', () => {
 
   it('renders commitment state badge for COMMAND messages', async () => {
     const el = await renderMessage({ message: { messageType: 'COMMAND', commitmentId: 'c-1' } });
-    el.commitmentState = 'OPEN';
+    (el as any).commitmentState = 'OPEN';
     await (el as any).updateComplete;
     const badge = el.shadowRoot!.querySelector('.commitment-badge');
     expect(badge).toBeTruthy();
@@ -158,8 +158,8 @@ describe('channel-message', () => {
     replyBtn.click();
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.MESSAGE_SELECTED);
-    expect(handler.mock.calls[0][0].detail.payload.message.id).toBe('msg-1');
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.MESSAGE_SELECTED);
+    expect(handler.mock.calls[0]![0]!.detail.payload.message.id).toBe('msg-1');
   });
 
   it('collapses on Escape key', async () => {

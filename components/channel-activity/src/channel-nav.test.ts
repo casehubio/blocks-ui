@@ -23,8 +23,8 @@ describe('channel-nav', () => {
 
     const items = el.shadowRoot!.querySelectorAll('.channel-item');
     expect(items.length).toBe(2);
-    expect(items[0].textContent).toContain('General');
-    expect(items[1].textContent).toContain('Urgent');
+    expect(items[0]!.textContent).toContain('General');
+    expect(items[1]!.textContent).toContain('Urgent');
   });
 
   it('highlights selected channel', async () => {
@@ -38,9 +38,9 @@ describe('channel-nav', () => {
     await (el as any).updateComplete;
 
     const items = el.shadowRoot!.querySelectorAll('.channel-item');
-    expect(items[0].classList.contains('selected')).toBe(true);
-    expect(items[1].classList.contains('selected')).toBe(false);
-    expect(items[0].getAttribute('aria-selected')).toBe('true');
+    expect(items[0]!.classList.contains('selected')).toBe(true);
+    expect(items[1]!.classList.contains('selected')).toBe(false);
+    expect(items[0]!.getAttribute('aria-selected')).toBe('true');
   });
 
   it('emits channel:selected on channel click', async () => {
@@ -54,8 +54,8 @@ describe('channel-nav', () => {
     (el.shadowRoot!.querySelector('.channel-item') as HTMLElement).click();
 
     expect(listener).toHaveBeenCalledOnce();
-    expect(listener.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.SELECT_CHANNEL);
-    expect(listener.mock.calls[0][0].detail.payload).toEqual({ channelId: 'ch1' });
+    expect(listener.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.SELECT_CHANNEL);
+    expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch1' });
   });
 
   it('emits channel:create with name from prompt', async () => {
@@ -69,8 +69,8 @@ describe('channel-nav', () => {
 
     (el.shadowRoot!.querySelector('.create-channel-btn') as HTMLElement).click();
     expect(listener).toHaveBeenCalledOnce();
-    expect(listener.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.CREATE_CHANNEL);
-    expect(listener.mock.calls[0][0].detail.payload).toEqual({ name: 'New Channel' });
+    expect(listener.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.CREATE_CHANNEL);
+    expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ name: 'New Channel' });
   });
 
   it('does not emit create when prompt cancelled', async () => {
@@ -98,8 +98,8 @@ describe('channel-nav', () => {
 
     (el.shadowRoot!.querySelector('.delete-btn') as HTMLElement).click();
     expect(listener).toHaveBeenCalledOnce();
-    expect(listener.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.DELETE_CHANNEL);
-    expect(listener.mock.calls[0][0].detail.payload).toEqual({ channelId: 'ch1' });
+    expect(listener.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.DELETE_CHANNEL);
+    expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch1' });
   });
 
   it('does not emit delete when confirm cancelled', async () => {
@@ -128,18 +128,18 @@ describe('channel-nav', () => {
 
     const list = el.shadowRoot!.querySelector('.channel-list') as HTMLElement;
     let items = el.shadowRoot!.querySelectorAll('.channel-item');
-    expect(items[0].classList.contains('focused')).toBe(true);
+    expect(items[0]!.classList.contains('focused')).toBe(true);
 
     list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
     await (el as any).updateComplete;
     items = el.shadowRoot!.querySelectorAll('.channel-item');
-    expect(items[1].classList.contains('focused')).toBe(true);
+    expect(items[1]!.classList.contains('focused')).toBe(true);
 
     const listener = vi.fn();
     el.addEventListener('pages-event', listener);
     list.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
     expect(listener).toHaveBeenCalledOnce();
-    expect(listener.mock.calls[0][0].detail.payload).toEqual({ channelId: 'ch2' });
+    expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch2' });
   });
 
   it('handles empty channel list without crashing', async () => {

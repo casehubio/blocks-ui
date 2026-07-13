@@ -243,8 +243,8 @@ describe('channel-feed', () => {
     catchupBtn.click();
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.CURSOR_CATCHUP);
-    expect(handler.mock.calls[0][0].detail.payload).toEqual({ channelId: 'ch-1', cursorId: 'cur-42' });
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.CURSOR_CATCHUP);
+    expect(handler.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch-1', cursorId: 'cur-42' });
 
     sessionStorage.removeItem('channel-activity.cursors');
   });
@@ -268,8 +268,8 @@ describe('channel-feed', () => {
     reloadBtn.click();
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler.mock.calls[0][0].detail.topic).toBe(ChannelEventTopics.CURSOR_RELOAD);
-    expect(handler.mock.calls[0][0].detail.payload).toEqual({ channelId: 'ch-1' });
+    expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.CURSOR_RELOAD);
+    expect(handler.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch-1' });
 
     sessionStorage.removeItem('channel-activity.cursors');
   });

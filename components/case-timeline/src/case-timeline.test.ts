@@ -4,7 +4,7 @@ import './case-timeline.js';
 import type { CaseTimeline } from './case-timeline.js';
 import type { CaseEvent, PagedResponse, EventLogEntryResponse } from './types.js';
 
-async function fixture<T extends HTMLElement>(template: ReturnType<typeof html>): Promise<T> {
+async function fixture<T extends HTMLElement & { updateComplete: Promise<boolean> }>(template: ReturnType<typeof html>): Promise<T> {
   const container = document.createElement('div');
   document.body.appendChild(container);
   render(template, container);

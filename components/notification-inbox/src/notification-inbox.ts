@@ -68,7 +68,7 @@ const NOTIFICATION_COL_CONFIG: readonly TableColumnConfig[] = [
   { id: N_ACTION_URL_COL, visible: false },
 ];
 
-const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<ColumnId, ColumnRenderer>([
   [N_TITLE_COL, (_cell: CellValue, row: TypedRow) => {
     const title = row.text(N_TITLE_COL);
     const body = row.text(N_BODY_COL);
@@ -82,7 +82,7 @@ const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
     return status === 'UNREAD'
       ? html`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pages-accent-9,#2563eb)" aria-label="Unread"></span>`
-      : nothing;
+      : html``;
   }],
   [N_CREATED_COL, (cell: CellValue) => {
     if (cell.type === 'NULL') return html``;
@@ -793,7 +793,7 @@ export class NotificationInbox extends NotificationInboxBase {
         this.announce(`${succeeded.length} notifications marked as read`);
       } else {
         // Partial failure: restore failed items from snapshot
-        const failedIds = new Set(ids.filter((_, i) => results[i].status === 'rejected'));
+        const failedIds = new Set(ids.filter((_, i) => results[i]?.status === 'rejected'));
         // Restore only the failed items
         this.items = this.items.map(n => {
           if (failedIds.has(n.id)) {
@@ -851,7 +851,7 @@ export class NotificationInbox extends NotificationInboxBase {
         this.selectedItems = new Set();
         this.announce(`${succeeded.length} notifications dismissed`);
       } else {
-        const failedIds = new Set(ids.filter((_, i) => results[i].status === 'rejected'));
+        const failedIds = new Set(ids.filter((_, i) => results[i]?.status === 'rejected'));
         this.items = this.items.map(n => {
           if (failedIds.has(n.id)) {
             const original = snapshot.find(s => s.id === n.id);

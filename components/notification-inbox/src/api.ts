@@ -52,7 +52,7 @@ export class NotificationApi {
   }): Promise<NotificationPage> {
     const url = this.buildUrl('/notifications', params);
     return this.get<NotificationPage>(url, (data) => {
-      if (!Array.isArray(data.notifications)) {
+      if (!Array.isArray((data as Record<string, unknown>).notifications)) {
         throw new ApiError(200, 'Invalid response: notifications must be an array');
       }
       return true;
@@ -65,7 +65,7 @@ export class NotificationApi {
   async unreadCount(): Promise<number> {
     const url = this.buildUrl('/notifications/unread-count');
     const data = await this.get<{ count: number }>(url, (data) => {
-      if (typeof data.count !== 'number') {
+      if (typeof (data as Record<string, unknown>).count !== 'number') {
         throw new ApiError(200, 'Invalid response: count must be a number');
       }
       return true;
@@ -95,7 +95,7 @@ export class NotificationApi {
   async markAllRead(): Promise<number> {
     const url = this.buildUrl('/notifications/mark-all-read');
     const data = await this.post<{ count: number }>(url, undefined, (data) => {
-      if (typeof data.count !== 'number') {
+      if (typeof (data as Record<string, unknown>).count !== 'number') {
         throw new ApiError(200, 'Invalid response: count must be a number');
       }
       return true;
@@ -113,7 +113,7 @@ export class NotificationApi {
   }): Promise<SubscriptionPage> {
     const url = this.buildUrl('/subscriptions', params || {});
     return this.get<SubscriptionPage>(url, (data) => {
-      if (!Array.isArray(data.subscriptions)) {
+      if (!Array.isArray((data as Record<string, unknown>).subscriptions)) {
         throw new ApiError(200, 'Invalid response: subscriptions must be an array');
       }
       return true;
@@ -288,7 +288,7 @@ export class NotificationApi {
     const response = await this.fetchFn(url, {
       method: 'POST',
       headers: body !== undefined ? { 'Content-Type': 'application/json' } : {},
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : null,
     });
     return this.handleResponse<T>(response, validate);
   }
@@ -301,7 +301,7 @@ export class NotificationApi {
     const response = await this.fetchFn(url, {
       method: 'PATCH',
       headers: body !== undefined ? { 'Content-Type': 'application/json' } : {},
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : null,
     });
     return this.handleResponse<T>(response, validate);
   }
