@@ -22,11 +22,10 @@ describe('queue-pill-bar', () => {
 
   beforeEach(async () => {
     // Mock IntersectionObserver
-    global.IntersectionObserver = class IntersectionObserver {
+    global.IntersectionObserver = class MockIntersectionObserver {
       callback: IntersectionObserverCallback;
       constructor(callback: IntersectionObserverCallback) {
         this.callback = callback;
-        // Immediately trigger visibility for tests
         setTimeout(() => {
           this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
         }, 0);
