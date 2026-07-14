@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-core",
-  "version": "0.2.0",
-  "description": "Core utilities for CaseHub UI blocks — theme, dataset helpers, event contracts",
+  "version": "0.2.2",
+  "description": "Core utilities for CaseHub UI blocks \u2014 theme, dataset helpers, event contracts",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -27,10 +27,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@casehubio/pages-component": "^0.2.1",
-    "@casehubio/pages-primitives": "^0.2.0",
-    "@casehubio/pages-data": "^0.2.1",
-    "@casehubio/pages-ui-tokens": "^0.2.1",
+    "@casehubio/pages-component": "^0.2.2",
+    "@casehubio/pages-primitives": "^0.2.2",
+    "@casehubio/pages-data": "^0.2.2",
+    "@casehubio/pages-ui-tokens": "^0.2.2",
     "lit": "^3.3.3"
   }
 }

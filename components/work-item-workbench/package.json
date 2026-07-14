@@ -1,6 +1,6 @@
 {
   "name": "@casehubio/blocks-ui-work-item-workbench",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-primitives": "^0.2.0",
+    "@casehubio/pages-primitives": "^0.2.2",
     "@casehubio/blocks-ui-split-workbench": "workspace:*",
     "@casehubio/blocks-ui-work-item-detail": "workspace:*",
     "@casehubio/blocks-ui-work-item-inbox": "workspace:*",

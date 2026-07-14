@@ -1,6 +1,6 @@
 {
   "name": "@casehubio/blocks-ui-work-item-inbox",
-  "version": "0.0.1",
+  "version": "0.2.2",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-primitives": "^0.2.0",
-    "@casehubio/pages-table": "^0.2.0",
-    "@casehubio/pages-data": "^0.2.1",
+    "@casehubio/pages-primitives": "^0.2.2",
+    "@casehubio/pages-table": "^0.2.2",
+    "@casehubio/pages-data": "^0.2.2",
     "lit": "^3.2.1"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-trust-score-panel",
-  "version": "0.2.0",
-  "description": "Agent trust score visualisation — Bayesian Beta scores, trend lines, per-capability breakdown",
+  "version": "0.2.2",
+  "description": "Agent trust score visualisation \u2014 Bayesian Beta scores, trend lines, per-capability breakdown",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-primitives": "^0.2.0",
-    "@casehubio/pages-table": "^0.2.0",
-    "@casehubio/pages-data": "^0.2.0",
+    "@casehubio/pages-primitives": "^0.2.2",
+    "@casehubio/pages-table": "^0.2.2",
+    "@casehubio/pages-data": "^0.2.2",
     "lit": "^3.2.1"
   },
   "devDependencies": {
