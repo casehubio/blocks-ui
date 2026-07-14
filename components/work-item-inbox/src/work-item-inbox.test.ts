@@ -9,7 +9,7 @@ global.IntersectionObserver = class IntersectionObserver {
     this.callback = callback;
     // Immediately trigger visibility for tests
     setTimeout(() => {
-      this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this);
+      this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
     }, 0);
   }
   observe() {}
