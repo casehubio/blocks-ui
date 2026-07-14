@@ -1,7 +1,7 @@
 {
-  "name": "@casehubio/blocks-ui-case-timeline",
-  "version": "0.2.0",
-  "description": "Case lifecycle timeline — status progression, milestone markers, agent activity",
+  "name": "@casehubio/blocks-ui-blocks-timeline",
+  "version": "0.1.0",
+  "description": "Pluggable timeline — vertical, horizontal, compact layouts with strategy-based content",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -21,8 +21,8 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/pages-primitives": "^0.2.0",
-    "lit": "^3.2.0",
-    "@casehubio/pages-data": "^0.2.1"
+    "@casehubio/pages-data": "^0.2.1",
+    "lit": "^3.2.0"
   },
   "devDependencies": {
     "rimraf": "^6.1.0",

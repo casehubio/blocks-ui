@@ -29,7 +29,9 @@ const NAV: NavCategory[] = [
       { id: 'data-table', label: 'Data Table', hash: '#components/data-table' },
       { id: 'notifications', label: 'Notifications', hash: '#components/notifications' },
       { id: 'audit-trail', label: 'Audit Trail Viewer', hash: '#components/audit-trail' },
-      { id: 'case-timeline', label: 'Case Timeline', hash: '#components/case-timeline' },
+      { id: 'timeline-events', label: 'Timeline (Events)', hash: '#components/timeline-events' },
+      { id: 'timeline-commitment', label: 'Timeline (Commitment)', hash: '#components/timeline-commitment' },
+      { id: 'timeline-custom', label: 'Timeline (Custom)', hash: '#components/timeline-custom' },
       { id: 'trust-score', label: 'Trust Score Panel', hash: '#components/trust-score' },
       { id: 'channel-activity', label: 'Channel Activity', hash: '#components/channel-activity' },
     ],
@@ -181,7 +183,9 @@ export class ExampleShell extends LitElement {
       case '#components/data-table': return html`<data-table-page></data-table-page>`;
       case '#components/notifications': return html`<notification-page></notification-page>`;
       case '#components/audit-trail': return html`<audit-trail-page></audit-trail-page>`;
-      case '#components/case-timeline': return html`<case-timeline-page></case-timeline-page>`;
+      case '#components/timeline-events': return html`<timeline-events-page></timeline-events-page>`;
+      case '#components/timeline-commitment': return html`<timeline-commitment-page></timeline-commitment-page>`;
+      case '#components/timeline-custom': return html`<timeline-custom-page></timeline-custom-page>`;
       case '#components/trust-score': return html`<trust-score-page></trust-score-page>`;
       case '#components/channel-activity': return html`<channel-activity-page></channel-activity-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;

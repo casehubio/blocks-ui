@@ -19,7 +19,7 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-notification-inbox', replacement: resolve(__dirname, '../components/notification-inbox/src') },
       { find: '@casehubio/blocks-ui-audit-trail-viewer', replacement: resolve(__dirname, '../components/audit-trail-viewer/src') },
       { find: '@casehubio/blocks-ui-trust-score-panel', replacement: resolve(__dirname, '../components/trust-score-panel/src') },
-      { find: '@casehubio/blocks-ui-case-timeline', replacement: resolve(__dirname, '../components/case-timeline/src') },
+      { find: '@casehubio/blocks-ui-blocks-timeline', replacement: resolve(__dirname, '../components/blocks-timeline/src') },
       { find: '@casehubio/blocks-ui-channel-activity', replacement: resolve(__dirname, '../components/channel-activity/src') },
       { find: '@casehubio/blocks-ui-split-workbench', replacement: resolve(__dirname, '../components/split-workbench/src') },
       { find: '@casehubio/blocks-ui-list-pane', replacement: resolve(__dirname, '../components/list-pane/src') },
