@@ -1,21 +1,21 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/blocks-ui-core" },
-    { "path": "components/approval-gate" },
-    { "path": "components/audit-trail-viewer" },
-    { "path": "components/blocks-timeline" },
-    { "path": "components/channel-activity" },
-    { "path": "components/detail-pane" },
-    { "path": "components/kpi-metric-row" },
-    { "path": "components/list-pane" },
-    { "path": "components/notification-inbox" },
-    { "path": "components/sla-indicator" },
-    { "path": "components/split-workbench" },
-    { "path": "components/trust-score-panel" },
-    { "path": "components/work-item-detail" },
-    { "path": "components/work-item-inbox" },
-    { "path": "components/work-item-row" },
-    { "path": "components/work-item-workbench" }
+    { "path": "packages/blocks-ui-core/tsconfig.build.json" },
+    { "path": "components/approval-gate/tsconfig.build.json" },
+    { "path": "components/audit-trail-viewer/tsconfig.build.json" },
+    { "path": "components/blocks-timeline/tsconfig.build.json" },
+    { "path": "components/channel-activity/tsconfig.build.json" },
+    { "path": "components/detail-pane/tsconfig.build.json" },
+    { "path": "components/kpi-metric-row/tsconfig.build.json" },
+    { "path": "components/list-pane/tsconfig.build.json" },
+    { "path": "components/notification-inbox/tsconfig.build.json" },
+    { "path": "components/sla-indicator/tsconfig.build.json" },
+    { "path": "components/split-workbench/tsconfig.build.json" },
+    { "path": "components/trust-score-panel/tsconfig.build.json" },
+    { "path": "components/work-item-detail/tsconfig.build.json" },
+    { "path": "components/work-item-inbox/tsconfig.build.json" },
+    { "path": "components/work-item-row/tsconfig.build.json" },
+    { "path": "components/work-item-workbench/tsconfig.build.json" }
   ]
 }
