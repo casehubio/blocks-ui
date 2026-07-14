@@ -26,5 +26,8 @@
     "happy-dom": "^15.7.4",
     "typescript": "^5.5.0",
     "vitest": "^2.0.5"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
