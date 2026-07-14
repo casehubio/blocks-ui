@@ -1,4 +1,4 @@
-import { LitElement, html, css, type TemplateResult, type PropertyValues } from 'lit';
+import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceAdapter, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
