@@ -369,7 +369,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
                         <span class="verdict ${(att.verdict ?? '').toLowerCase()}">${att.verdict ?? ''}</span>
                         <span class="attestor">${att.attestorId}</span>
                         ${att.capabilityTag ? html`<span class="capability">${att.capabilityTag}</span>` : ''}
-                        <span class="confidence">Confidence: ${att.confidence.toFixed(2)}</span>
+                        ${att.confidence != null ? html`<span class="confidence">Confidence: ${att.confidence.toFixed(2)}</span>` : nothing}
                       </div>
                     `
                   )}
