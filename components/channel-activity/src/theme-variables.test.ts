@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { resolve, join } from 'path';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { resolve, join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const SRC_DIR = resolve(__dirname);
+const SRC_DIR = dirname(fileURLToPath(import.meta.url));
 
 const INVALID_PAGES_VARS = /var\(--pages-(?:bg|text|white|border|font(?!-))[^)]*\)/g;
 
