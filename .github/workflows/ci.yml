@@ -35,6 +35,8 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
@@ -51,8 +53,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --immutable
-        env:
-          GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build packages
         run: yarn build
