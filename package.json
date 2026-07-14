@@ -1,7 +1,7 @@
 {
   "name": "casehub-blocks-ui",
   "version": "0.0.0",
-  "description": "Shared UI components for CaseHub applications \u2014 composed from casehub-pages primitives",
+  "description": "Shared UI components for CaseHub applications — composed from casehub-pages primitives",
   "repository": "https://github.com/casehubio/blocks-ui",
   "author": "Mark Proctor",
   "license": "Apache-2.0",

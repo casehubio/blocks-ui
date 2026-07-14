@@ -19,7 +19,7 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
   @property({ attribute: false }) renderNode?: (node: TimelineNode) => TemplateResult;
   @property({ attribute: false }) renderDetail?: (node: TimelineNode) => TemplateResult;
   @property({ attribute: false }) activeFilters?: Set<string> | string[];
-  @property({ attribute: false }) headers?: Record<string, string> | (() => Record<string, string>);
+  @property({ attribute: false }) headers?: Record<string, string> | (() => Record<string, string>) | undefined;
 
   @state() private _nodes: TimelineNode[] = [];
   @state() private _expandedKeys = new Set<string>();

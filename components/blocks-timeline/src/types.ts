@@ -6,21 +6,21 @@ export interface TimelineNode {
   key: string;
   label: string;
   status: NodeStatus;
-  timestamp?: string;
-  actor?: string;
-  detail?: unknown;
-  category?: string;
+  timestamp?: string | undefined;
+  actor?: string | undefined;
+  detail?: unknown | undefined;
+  category?: string | undefined;
 }
 
 export type Layout = 'vertical' | 'horizontal' | 'compact';
 
 export interface TimelineStrategy<T = unknown> {
   toNodes(data: T): TimelineNode[];
-  transformData?: (raw: unknown) => T;
+  transformData?: ((raw: unknown) => T) | undefined;
   defaultLayout: Layout;
-  renderNode?: (node: TimelineNode) => TemplateResult;
-  renderDetail?: (node: TimelineNode) => TemplateResult;
-  filterCategories?: string[];
+  renderNode?: ((node: TimelineNode) => TemplateResult) | undefined;
+  renderDetail?: ((node: TimelineNode) => TemplateResult) | undefined;
+  filterCategories?: string[] | undefined;
 }
 
 export interface StageConfig {

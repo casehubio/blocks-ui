@@ -8,8 +8,8 @@ export interface VerticalOptions {
   onNodeClick: (node: TimelineNode, index: number) => void;
   onToggleExpand: (key: string) => void;
   onKeyDown: (e: KeyboardEvent, index: number) => void;
-  renderNode?: (node: TimelineNode) => TemplateResult;
-  renderDetail?: (node: TimelineNode) => TemplateResult;
+  renderNode?: ((node: TimelineNode) => TemplateResult) | undefined;
+  renderDetail?: ((node: TimelineNode) => TemplateResult) | undefined;
 }
 
 function formatTimestamp(ts: string): string {

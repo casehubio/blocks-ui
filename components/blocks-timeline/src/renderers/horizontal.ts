@@ -5,7 +5,7 @@ import type { TimelineNode } from '../types.js';
 export interface HorizontalOptions {
   onNodeClick: (node: TimelineNode, index: number) => void;
   onKeyDown: (e: KeyboardEvent, index: number) => void;
-  renderNode?: (node: TimelineNode) => TemplateResult;
+  renderNode?: ((node: TimelineNode) => TemplateResult) | undefined;
 }
 
 function formatTimestamp(ts: string): string {
