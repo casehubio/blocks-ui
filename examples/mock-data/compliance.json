@@ -1,0 +1,10 @@
+{
+  "requirements": [
+    { "regulation": "GDPR Art.5", "requirement": "Data minimisation", "mechanism": "Auto-purge after retention", "status": "MET", "evidenceUrl": "https://evidence.local/gdpr-5" },
+    { "regulation": "GDPR Art.17", "requirement": "Right to erasure", "mechanism": "Erasure API endpoint", "status": "MET", "evidenceUrl": "https://evidence.local/gdpr-17" },
+    { "regulation": "ICH E6 R2", "requirement": "Audit trail integrity", "mechanism": "Merkle chain verification", "status": "PARTIAL" },
+    { "regulation": "FDA 21 CFR 11", "requirement": "Electronic signatures", "mechanism": "PKI signing with attestation", "status": "GAP" },
+    { "regulation": "EU CTR Art.37", "requirement": "Safety reporting timeline", "mechanism": "SLA-driven workflow", "status": "BREACHED", "evidenceUrl": "https://evidence.local/ctr-37" },
+    { "regulation": "GDPR Art.32", "requirement": "Security of processing", "mechanism": "Encryption at rest + transit", "status": "MET", "evidenceUrl": "https://evidence.local/gdpr-32" }
+  ]
+}

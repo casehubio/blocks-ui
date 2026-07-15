@@ -172,6 +172,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-compliance-summary@workspace:components/compliance-summary":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-compliance-summary@workspace:components/compliance-summary"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-data": "npm:^0.2.2"
+    "@casehubio/pages-table": "npm:^0.2.2"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-core@workspace:*, @casehubio/blocks-ui-core@workspace:packages/blocks-ui-core":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-core@workspace:packages/blocks-ui-core"
@@ -198,6 +212,18 @@ __metadata:
     "@open-wc/testing": "npm:^4.0.0"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.0.0"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
@@ -250,6 +276,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-similarity-panel@workspace:components/similarity-panel":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-similarity-panel@workspace:components/similarity-panel"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-data": "npm:^0.2.2"
+    "@casehubio/pages-table": "npm:^0.2.2"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-sla-breach-policy@workspace:components/sla-breach-policy":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-sla-breach-policy@workspace:components/sla-breach-policy"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-sla-indicator": "workspace:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-sla-indicator@workspace:*, @casehubio/blocks-ui-sla-indicator@workspace:components/sla-indicator":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-sla-indicator@workspace:components/sla-indicator"
@@ -273,6 +326,18 @@ __metadata:
     "@open-wc/testing": "npm:^4.0.0"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.0.0"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-trust-feedback-display@workspace:components/trust-feedback-display":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-trust-feedback-display@workspace:components/trust-feedback-display"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"

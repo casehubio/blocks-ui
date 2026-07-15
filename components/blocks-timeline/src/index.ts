@@ -12,3 +12,8 @@ export {
   type EventLogEntryResponse,
   type PagedResponse,
 } from './strategies/event-chronology.js';
+export {
+  commitmentLifecycleStrategy,
+  COMMITMENT_STAGES,
+  type CommitmentState,
+} from './strategies/commitment-lifecycle.js';

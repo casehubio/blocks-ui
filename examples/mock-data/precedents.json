@@ -1,0 +1,9 @@
+{
+  "precedents": [
+    { "caseId": "CASE-2024-1847", "similarity": 94, "outcome": "Resolved", "resolutionTime": "2 days" },
+    { "caseId": "CASE-2024-1623", "similarity": 87, "outcome": "Resolved", "resolutionTime": "4 days" },
+    { "caseId": "CASE-2025-0312", "similarity": 78, "outcome": "Escalated", "resolutionTime": "7 days" },
+    { "caseId": "CASE-2025-0891", "similarity": 65, "outcome": "Pending", "resolutionTime": "—" },
+    { "caseId": "CASE-2024-0455", "similarity": 52, "outcome": "Resolved", "resolutionTime": "1 day" }
+  ]
+}

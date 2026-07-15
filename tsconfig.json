@@ -16,6 +16,11 @@
     { "path": "components/work-item-detail/tsconfig.build.json" },
     { "path": "components/work-item-inbox/tsconfig.build.json" },
     { "path": "components/work-item-row/tsconfig.build.json" },
-    { "path": "components/work-item-workbench/tsconfig.build.json" }
+    { "path": "components/work-item-workbench/tsconfig.build.json" },
+    { "path": "components/similarity-panel/tsconfig.build.json" },
+    { "path": "components/compliance-summary/tsconfig.build.json" },
+    { "path": "components/trust-feedback-display/tsconfig.build.json" },
+    { "path": "components/sla-breach-policy/tsconfig.build.json" },
+    { "path": "components/gdpr-erasure-action/tsconfig.build.json" }
   ]
 }

@@ -8,3 +8,4 @@ export * from './data-source/index.js';
 export * from './event-stream/index.js';
 export * from './render/index.js';
 export * from './sparkline/index.js';
+export * from './styles/index.js';

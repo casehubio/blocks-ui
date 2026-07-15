@@ -1,11 +1,4 @@
-/**
- * Trust score types for casehub-ledger integration
- */
-
-/**
- * Trust level categories
- */
-export type TrustLevel = 'high' | 'adequate' | 'low' | 'none';
+export { type TrustLevel, trustLevelFromScore } from '@casehubio/blocks-ui-core';
 
 /**
  * Maturity phase based on observation count
@@ -33,15 +26,7 @@ export interface CapabilityScoreResponse {
   qualityScores: Record<string, number>;
 }
 
-/**
- * Convert numeric score to trust level category
- */
-export function trustLevelFromScore(score: number | undefined): TrustLevel {
-  if (score === undefined || score === null) return 'none';
-  if (score >= 0.7) return 'high';
-  if (score >= 0.4) return 'adequate';
-  return 'low';
-}
+
 
 /**
  * Determine maturity phase from observation count

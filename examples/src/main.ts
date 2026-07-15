@@ -28,6 +28,13 @@ async function bootstrap() {
   await import('./pages/trust-score-page.js');
   await import('./pages/channel-activity-page.js');
 
+  await import('./pages/commitment-lifecycle-page.js');
+  await import('./pages/similarity-panel-page.js');
+  await import('./pages/trust-feedback-page.js');
+  await import('./pages/compliance-summary-page.js');
+  await import('./pages/gdpr-erasure-page.js');
+  await import('./pages/sla-breach-policy-page.js');
+
   app.textContent = '';
   app.appendChild(document.createElement('example-shell'));
 }

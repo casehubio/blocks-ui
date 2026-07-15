@@ -1,0 +1,33 @@
+{
+  "name": "@casehubio/blocks-ui-similarity-panel",
+  "version": "0.2.2",
+  "description": "Similar past cases — similarity scores, outcomes, resolution times via pages-table",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@casehubio/blocks-ui-core": "workspace:*",
+    "@casehubio/pages-data": "^0.2.2",
+    "@casehubio/pages-table": "^0.2.2",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "rimraf": "^6.1.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "Apache-2.0"
+}

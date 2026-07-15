@@ -34,6 +34,12 @@ const NAV: NavCategory[] = [
       { id: 'timeline-custom', label: 'Timeline (Custom)', hash: '#components/timeline-custom' },
       { id: 'trust-score', label: 'Trust Score Panel', hash: '#components/trust-score' },
       { id: 'channel-activity', label: 'Channel Activity', hash: '#components/channel-activity' },
+      { id: 'commitment-lifecycle', label: 'Commitment Lifecycle', hash: '#components/commitment-lifecycle' },
+      { id: 'similarity-panel', label: 'Similarity Panel', hash: '#components/similarity-panel' },
+      { id: 'trust-feedback', label: 'Trust Feedback', hash: '#components/trust-feedback' },
+      { id: 'compliance-summary', label: 'Compliance Summary', hash: '#components/compliance-summary' },
+      { id: 'gdpr-erasure', label: 'GDPR Erasure', hash: '#components/gdpr-erasure' },
+      { id: 'sla-breach-policy', label: 'SLA Breach Policy', hash: '#components/sla-breach-policy' },
     ],
   },
   {
@@ -188,6 +194,12 @@ export class ExampleShell extends LitElement {
       case '#components/timeline-custom': return html`<timeline-custom-page></timeline-custom-page>`;
       case '#components/trust-score': return html`<trust-score-page></trust-score-page>`;
       case '#components/channel-activity': return html`<channel-activity-page></channel-activity-page>`;
+      case '#components/commitment-lifecycle': return html`<commitment-lifecycle-page></commitment-lifecycle-page>`;
+      case '#components/similarity-panel': return html`<similarity-panel-page></similarity-panel-page>`;
+      case '#components/trust-feedback': return html`<trust-feedback-page></trust-feedback-page>`;
+      case '#components/compliance-summary': return html`<compliance-summary-page></compliance-summary-page>`;
+      case '#components/gdpr-erasure': return html`<gdpr-erasure-page></gdpr-erasure-page>`;
+      case '#components/sla-breach-policy': return html`<sla-breach-policy-page></sla-breach-policy-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

@@ -1,0 +1,32 @@
+{
+  "name": "@casehubio/blocks-ui-sla-breach-policy",
+  "version": "0.2.2",
+  "description": "SLA breach escalation tiers — active tier highlighting, optional live countdown via sla-indicator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@casehubio/blocks-ui-core": "workspace:*",
+    "@casehubio/blocks-ui-sla-indicator": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "rimraf": "^6.1.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "license": "Apache-2.0"
+}

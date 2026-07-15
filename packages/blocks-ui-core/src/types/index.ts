@@ -1,6 +1,7 @@
 export * from './work-item.js';
 export * from './events.js';
 export * from './identity.js';
+export * from './trust.js';
 
 export type { QueueScopeChangedPayload } from './events.js';
 export type { InboxMode, QueueScope, QueueSummaryEntry } from './work-item.js';

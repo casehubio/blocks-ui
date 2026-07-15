@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
