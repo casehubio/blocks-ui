@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { QhorusMessage, CommitmentState } from './types.js';
+import type { QhorusMessage, CommitmentState, Reaction } from './types.js';
 import { commitmentStateCategory } from './types.js';
 import './channel-message.js';
 
@@ -8,6 +8,7 @@ import './channel-message.js';
 export class ChannelThreadElement extends LitElement {
   @property({ type: Object }) rootMessage!: QhorusMessage;
   @property({ type: Array }) replies: QhorusMessage[] = [];
+  @property({ type: Array }) reactions: Reaction[] = [];
   @property({ type: Boolean }) collapsed = true;
   @property({ type: String }) commitmentState?: CommitmentState;
 
@@ -64,6 +65,7 @@ export class ChannelThreadElement extends LitElement {
 
     return html`
       <channel-message .message=${this.rootMessage}
+                      .reactions=${this.reactions}
                       .commitmentState=${this.commitmentState}></channel-message>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">

@@ -240,7 +240,12 @@ export class ChannelFeedElement extends LitElement {
         <div class="message-group-header">
           <span class="group-sender">${group.sender}</span>
         </div>
-        ${group.messages.map(msg => html`
+        ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
+          <channel-thread .rootMessage=${msg}
+                         .replies=${repliesByParent.get(msg.id)!}
+                         .reactions=${reactionIndex.get(msg.id) ?? []}>
+          </channel-thread>
+        ` : html`
           <div class="${this._messageItemClasses(msg)}">
             <channel-message .message=${msg}
                             .reactions=${reactionIndex.get(msg.id) ?? []}
@@ -249,11 +254,6 @@ export class ChannelFeedElement extends LitElement {
                             .parentMessage=${msg.inReplyTo ? this.messages.find(m => m.id === msg.inReplyTo) : undefined}>
             </channel-message>
           </div>
-          ${repliesByParent.has(msg.id) ? html`
-            <channel-thread .rootMessage=${msg}
-                           .replies=${repliesByParent.get(msg.id)!}>
-            </channel-thread>
-          ` : nothing}
         `)}
       </div>
     `);
