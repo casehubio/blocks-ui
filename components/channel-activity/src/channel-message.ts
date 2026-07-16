@@ -1,4 +1,4 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { QhorusMessage, Reaction, CommitmentState, ActorType } from './types.js';
@@ -16,7 +16,12 @@ export class ChannelMessageElement extends LitElement {
   @property({ type: String }) commitmentState?: CommitmentState;
   @property({ type: Object }) parentMessage?: QhorusMessage;
   @property({ type: String }) channelName?: string;
-  @property({ attribute: false }) formatSender: (sender: string, actorType: ActorType) => string = (s) => s;
+  @property({ attribute: false }) formatSender?: (sender: string, actorType: ActorType) => string;
+
+  private _displaySender(sender: string, actorType: ActorType): string {
+    return this.formatSender ? this.formatSender(sender, actorType) : sender;
+  }
+  @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
 
   @state() private _expanded = false;
 
@@ -213,7 +218,7 @@ export class ChannelMessageElement extends LitElement {
       <div class="expanded-section">
         ${this.parentMessage ? html`
           <div class="correlation-context">
-            In reply to <span class="parent-sender">${this.formatSender(this.parentMessage.sender, this.parentMessage.actorType)}</span>:
+            In reply to <span class="parent-sender">${this._displaySender(this.parentMessage.sender, this.parentMessage.actorType)}</span>:
             ${this._truncate(this.parentMessage.content, 80)}
           </div>
         ` : nothing}
@@ -267,7 +272,7 @@ export class ChannelMessageElement extends LitElement {
     if (!this.message) return nothing;
     const m = this.message;
     const category = messageTypeCategory(m.messageType);
-    const displaySender = this.formatSender(m.sender, m.actorType);
+    const displaySender = this._displaySender(m.sender, m.actorType);
 
     return html`
       <div class="message-header">
@@ -286,7 +291,7 @@ export class ChannelMessageElement extends LitElement {
           ${this._expanded ? '▼' : '▶'}
         </button>
       </div>
-      <div class="content">${unsafeHTML(renderMarkdown(m.content))}</div>
+      <div class="content">${this.renderContent?.(m) ?? unsafeHTML(renderMarkdown(m.content))}</div>
       ${m.messageType === 'HANDOFF' && m.target ? html`
         <div class="delegation-indicator">
           ↳ Delegated to <strong>${m.target}</strong>

@@ -337,4 +337,47 @@ describe('channel-feed', () => {
     const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
     expect(msgEl.channelName).toBe('general');
   });
+
+  // --- renderContent passthrough ---
+
+  it('passes renderContent to channel-message elements', async () => {
+    const renderContent = vi.fn((m: QhorusMessage) => html`<span class="custom">${m.content}</span>`);
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [msg('m1', { sender: 'alice' })];
+    el.renderContent = renderContent;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    expect(msgEl.renderContent).toBe(renderContent);
+  });
+
+  it('passes renderContent to channel-thread elements', async () => {
+    const renderContent = vi.fn(() => undefined);
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [
+      msg('root', { sender: 'alice' }),
+      msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
+    ];
+    el.renderContent = renderContent;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    expect(thread.renderContent).toBe(renderContent);
+  });
+
+  // --- formatSender passthrough ---
+
+  it('passes formatSender to channel-message elements', async () => {
+    const formatSender = vi.fn((s: string) => s.toUpperCase());
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [msg('m1', { sender: 'alice' })];
+    el.formatSender = formatSender;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    expect(msgEl.formatSender).toBe(formatSender);
+  });
 });

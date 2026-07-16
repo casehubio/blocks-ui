@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { html } from 'lit';
 import './channel-thread.js';
 import './channel-message.js';
 import type { QhorusMessage } from './types.js';
@@ -113,5 +114,51 @@ describe('channel-thread', () => {
 
     const badge = el.shadowRoot!.querySelector('.thread-commitment');
     expect(badge!.classList.contains('commitment-success')).toBe(true);
+  });
+
+  // --- renderContent passthrough ---
+
+  it('passes renderContent to root channel-message', async () => {
+    const renderContent = vi.fn(() => html`<span class="custom">custom</span>`);
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('1', 'COMMAND', 'Task');
+    el.replies = [];
+    el.renderContent = renderContent;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    expect(msgEl.renderContent).toBe(renderContent);
+  });
+
+  it('passes renderContent to reply channel-messages', async () => {
+    const renderContent = vi.fn(() => undefined);
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('1', 'COMMAND', 'Task');
+    el.replies = [msg('2', 'DONE', 'Done')];
+    el.renderContent = renderContent;
+    el.collapsed = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    expect((messages[1] as any).renderContent).toBe(renderContent);
+  });
+
+  // --- formatSender passthrough ---
+
+  it('passes formatSender to channel-message elements', async () => {
+    const formatSender = vi.fn((s: string) => s.toUpperCase());
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('1', 'COMMAND', 'Task');
+    el.replies = [msg('2', 'DONE', 'Done')];
+    el.formatSender = formatSender;
+    el.collapsed = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    expect((messages[0] as any).formatSender).toBe(formatSender);
+    expect((messages[1] as any).formatSender).toBe(formatSender);
   });
 });

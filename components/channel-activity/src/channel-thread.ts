@@ -1,6 +1,6 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { QhorusMessage, CommitmentState, Reaction } from './types.js';
+import type { QhorusMessage, CommitmentState, Reaction, ActorType } from './types.js';
 import { commitmentStateCategory } from './types.js';
 import './channel-message.js';
 
@@ -11,6 +11,8 @@ export class ChannelThreadElement extends LitElement {
   @property({ type: Array }) reactions: Reaction[] = [];
   @property({ type: Boolean }) collapsed = true;
   @property({ type: String }) commitmentState?: CommitmentState;
+  @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
+  @property({ attribute: false }) formatSender: (sender: string, actorType: ActorType) => string = (s) => s;
 
   static override readonly styles = css`
     :host {
@@ -66,7 +68,9 @@ export class ChannelThreadElement extends LitElement {
     return html`
       <channel-message .message=${this.rootMessage}
                       .reactions=${this.reactions.filter(r => r.messageId === this.rootMessage.id)}
-                      .commitmentState=${this.commitmentState}></channel-message>
+                      .commitmentState=${this.commitmentState}
+                      .renderContent=${this.renderContent}
+                      .formatSender=${this.formatSender}></channel-message>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">
           <button class="thread-toggle"
@@ -84,7 +88,9 @@ export class ChannelThreadElement extends LitElement {
           ${this.replies.map(r => html`
             <div class="reply">
               <channel-message .message=${r}
-                              .reactions=${this.reactions.filter(rx => rx.messageId === r.id)}></channel-message>
+                              .reactions=${this.reactions.filter(rx => rx.messageId === r.id)}
+                              .renderContent=${this.renderContent}
+                              .formatSender=${this.formatSender}></channel-message>
             </div>
           `)}
         ` : nothing}
