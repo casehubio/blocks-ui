@@ -78,7 +78,7 @@ export class ChannelNavElement extends LitElement {
       margin-top: var(--pages-space-3, 12px);
       width: 100%;
       padding: var(--pages-space-2, 8px);
-      background: var(--pages-accent-1, #0ea5e9);
+      background: var(--pages-accent-9, #0ea5e9);
       color: #fff;
       border: none;
       border-radius: var(--pages-radius-1, 4px);
@@ -87,7 +87,7 @@ export class ChannelNavElement extends LitElement {
       font-weight: 500;
       transition: background 0.2s;
     }
-    .create-channel-btn:hover { background: var(--pages-accent-2, #0284c7); }
+    .create-channel-btn:hover { background: var(--pages-accent-10, #0284c7); }
   `;
 
   private getChannelIcon(_semantic: ChannelSemantic): string {
