@@ -30,6 +30,7 @@ async function renderMessage(props: Record<string, unknown> = {}): Promise<HTMLE
   if (props.channelName) el.channelName = props.channelName;
   if (props.commitmentState) el.commitmentState = props.commitmentState;
   if (props.formatSender) el.formatSender = props.formatSender;
+  if (props.renderContent) el.renderContent = props.renderContent;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -201,5 +202,41 @@ describe('channel-message', () => {
     await (el as any).updateComplete;
     const ctx = el.shadowRoot!.querySelector('.correlation-context .parent-sender');
     expect(ctx!.textContent).toBe('bob');
+  });
+
+  // --- renderContent extension point ---
+
+  it('uses renderContent callback when it returns a TemplateResult', async () => {
+    const { html: litHtml } = await import('lit');
+    const renderContent = vi.fn((m: QhorusMessage) =>
+      litHtml`<span class="custom">${m.messageType}: ${m.content}</span>`
+    );
+    const el = await renderMessage({ renderContent });
+    const custom = el.shadowRoot!.querySelector('.custom');
+    expect(custom).toBeTruthy();
+    expect(custom!.textContent).toBe('EVENT: Hello world');
+    expect(renderContent).toHaveBeenCalledOnce();
+  });
+
+  it('falls back to markdown when renderContent returns undefined', async () => {
+    const renderContent = vi.fn(() => undefined);
+    const el = await renderMessage({ message: { content: '**bold** text' }, renderContent });
+    expect(el.shadowRoot!.innerHTML).toContain('<strong>bold</strong>');
+    expect(renderContent).toHaveBeenCalledOnce();
+  });
+
+  it('uses default markdown rendering when renderContent is not set', async () => {
+    const el = await renderMessage({ message: { content: '**bold** text' } });
+    expect(el.shadowRoot!.innerHTML).toContain('<strong>bold</strong>');
+  });
+
+  it('passes full message object to renderContent', async () => {
+    const { html: litHtml } = await import('lit');
+    const renderContent = vi.fn((m: QhorusMessage) =>
+      litHtml`<span class="custom">${m.sender}-${m.channelId}</span>`
+    );
+    const el = await renderMessage({ renderContent });
+    const custom = el.shadowRoot!.querySelector('.custom');
+    expect(custom!.textContent).toBe('agent-alpha-ch-1');
   });
 });

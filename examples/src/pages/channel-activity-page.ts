@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/blocks-ui-channel-activity';
 import type { QhorusMessage, QhorusChannel, ChannelMember, Reaction } from '@casehubio/blocks-ui-channel-activity';
@@ -38,6 +38,25 @@ function mockMessages(channelId: string): QhorusMessage[] {
 
 const REACTIONS: Reaction[] = [];
 
+const MESSAGE_COUNTS: Record<string, number> = { 'ch-1': 14, 'ch-2': 3 };
+
+function renderContent(message: QhorusMessage): TemplateResult | undefined {
+  if (message.messageType === 'INFORM') {
+    const parts = message.content.split('. ');
+    return html`<div style="font-size:13px;">
+      <strong style="color:var(--pages-accent-11,#3730a3);">${parts[0]}</strong>
+      ${parts.slice(1).map(p => html`<div style="color:var(--pages-neutral-10,#666);margin-top:2px;">${p}</div>`)}
+    </div>`;
+  }
+  return undefined;
+}
+
+function formatSender(sender: string, actorType: string): string {
+  if (actorType === 'AGENT') return `🤖 ${sender}`;
+  if (actorType === 'SYSTEM') return `⚙ ${sender}`;
+  return sender;
+}
+
 @customElement('channel-activity-page')
 export class ChannelActivityPage extends LitElement {
   @state() private _selectedChannelId = 'ch-1';
@@ -45,8 +64,11 @@ export class ChannelActivityPage extends LitElement {
   static override styles = css`
     :host { display: block; padding: 24px; }
     h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; color: var(--pages-neutral-12, #111); }
-    p { margin: 0 0 24px; font-size: 14px; color: var(--pages-neutral-10, #666); }
+    h3 { margin: 24px 0 8px; font-size: 15px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    p { margin: 0 0 16px; font-size: 14px; color: var(--pages-neutral-10, #666); }
     .demo-container { display: grid; grid-template-columns: 200px 1fr 180px; gap: 16px; height: 480px; border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 8px; overflow: hidden; }
+    .claudony-container { display: grid; grid-template-columns: 180px 1fr; gap: 16px; height: 360px; border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 8px; overflow: hidden; }
+    .claudony-sidebar { display: flex; flex-direction: column; gap: 12px; padding: 12px; border-right: 1px solid var(--pages-neutral-5, #e0e0e0); }
   `;
 
   override render() {
@@ -55,18 +77,23 @@ export class ChannelActivityPage extends LitElement {
 
     return html`
       <h2>Channel Activity</h2>
-      <p>Qhorus channel messaging — nav, feed, input, member panel. Promoted from connectors chat-demo.</p>
+      <p>Qhorus channel messaging — nav, feed, input, member panel.</p>
+
+      <h3>Standard (sidebar nav, message counts, renderContent, formatSender)</h3>
+      <p>INFORM messages get structured rendering via renderContent. Sender names are prefixed by actor type via formatSender. Message counts shown as badges.</p>
       <div class="demo-container">
         <channel-nav
           .channels=${CHANNELS}
           .selectedChannelId=${this._selectedChannelId}
+          .messageCounts=${MESSAGE_COUNTS}
           @channel-select=${(e: CustomEvent) => { this._selectedChannelId = e.detail.channelId; }}
         ></channel-nav>
         <div style="display:flex;flex-direction:column;overflow:hidden;">
           <channel-feed
             .messages=${channelMessages}
             .reactions=${REACTIONS}
-            .currentUserId=${'user-1'}
+            .renderContent=${renderContent}
+            .formatSender=${formatSender}
           ></channel-feed>
           <channel-input
             .channelId=${this._selectedChannelId}
@@ -75,6 +102,33 @@ export class ChannelActivityPage extends LitElement {
         <channel-member-panel
           .members=${channelMembers}
         ></channel-member-panel>
+      </div>
+
+      <h3>Claudony mode (dropdown nav, no create/delete, message counts)</h3>
+      <p>Compact dropdown layout for narrow panels. Create/delete disabled — channel lifecycle managed externally.</p>
+      <div class="claudony-container">
+        <div class="claudony-sidebar">
+          <channel-nav
+            layout="dropdown"
+            .channels=${CHANNELS}
+            .selectedChannelId=${this._selectedChannelId}
+            .messageCounts=${MESSAGE_COUNTS}
+            .showCreate=${false}
+            .showDelete=${false}
+            @channel-select=${(e: CustomEvent) => { this._selectedChannelId = e.detail.channelId; }}
+          ></channel-nav>
+        </div>
+        <div style="display:flex;flex-direction:column;overflow:hidden;">
+          <channel-feed
+            .messages=${channelMessages}
+            .reactions=${REACTIONS}
+            .renderContent=${renderContent}
+            .formatSender=${formatSender}
+          ></channel-feed>
+          <channel-input
+            .channelId=${this._selectedChannelId}
+          ></channel-input>
+        </div>
       </div>
     `;
   }

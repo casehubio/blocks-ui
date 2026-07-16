@@ -154,4 +154,196 @@ describe('channel-nav', () => {
     await (el as any).updateComplete;
     expect((el as any)._focusedIndex).toBe(0);
   });
+
+  // --- showCreate / showDelete toggles (#64) ---
+
+  it('hides create button when showCreate=false', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).showCreate = false;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.create-channel-btn')).toBeNull();
+  });
+
+  it('shows create button by default', async () => {
+    el = document.createElement('channel-nav');
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.create-channel-btn')).toBeTruthy();
+  });
+
+  it('hides delete buttons when showDelete=false', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+    (el as any).showDelete = false;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.delete-btn')).toBeNull();
+  });
+
+  it('shows delete buttons by default', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.delete-btn')).toBeTruthy();
+  });
+
+  // --- messageCounts (#64) ---
+
+  it('displays message count badge in sidebar mode', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
+    ];
+    (el as any).messageCounts = { ch1: 42, ch2: 0 };
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const badges = el.shadowRoot!.querySelectorAll('.message-count');
+    expect(badges.length).toBe(1);
+    expect(badges[0]!.textContent!.trim()).toBe('42');
+  });
+
+  it('does not display count badge when count is zero or absent', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+    ];
+    (el as any).messageCounts = {};
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.message-count')).toBeNull();
+  });
+
+  // --- layout: dropdown (#64) ---
+
+  it('renders as custom dropdown in dropdown mode', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
+    ];
+    (el as any).layout = 'dropdown';
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const trigger = el.shadowRoot!.querySelector('.dropdown-trigger') as HTMLElement;
+    expect(trigger).toBeTruthy();
+    expect(trigger.textContent).toContain('General');
+    expect(el.shadowRoot!.querySelector('.channel-list')).toBeNull();
+
+    trigger.click();
+    await (el as any).updateComplete;
+
+    const options = el.shadowRoot!.querySelectorAll('.dropdown-option');
+    expect(options.length).toBe(2);
+    expect(options[0]!.textContent).toContain('General');
+    expect(options[1]!.textContent).toContain('Urgent');
+  });
+
+  it('emits channel:selected on dropdown option click', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
+    ];
+    (el as any).layout = 'dropdown';
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    (el.shadowRoot!.querySelector('.dropdown-trigger') as HTMLElement).click();
+    await (el as any).updateComplete;
+
+    const listener = vi.fn();
+    el.addEventListener('pages-event', listener);
+
+    const options = el.shadowRoot!.querySelectorAll('.dropdown-option');
+    (options[1] as HTMLElement).click();
+
+    expect(listener).toHaveBeenCalledOnce();
+    expect(listener.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.SELECT_CHANNEL);
+    expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch2' });
+  });
+
+  it('reflects selectedChannelId in dropdown trigger', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
+    ];
+    (el as any).layout = 'dropdown';
+    (el as any).selectedChannelId = 'ch2';
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const trigger = el.shadowRoot!.querySelector('.dropdown-trigger') as HTMLElement;
+    expect(trigger.textContent).toContain('Urgent');
+  });
+
+  it('shows message counts in dropdown options', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+    ];
+    (el as any).layout = 'dropdown';
+    (el as any).messageCounts = { ch1: 7 };
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const trigger = el.shadowRoot!.querySelector('.dropdown-trigger') as HTMLElement;
+    expect(trigger.textContent).toContain('(7)');
+
+    trigger.click();
+    await (el as any).updateComplete;
+    const option = el.shadowRoot!.querySelector('.dropdown-option .dropdown-count');
+    expect(option).toBeTruthy();
+    expect(option!.textContent!.trim()).toBe('7');
+  });
+
+  it('closes dropdown on Escape', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+    (el as any).layout = 'dropdown';
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    const trigger = el.shadowRoot!.querySelector('.dropdown-trigger') as HTMLElement;
+    trigger.click();
+    await (el as any).updateComplete;
+    expect(el.shadowRoot!.querySelector('.dropdown-panel')).toBeTruthy();
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await (el as any).updateComplete;
+    expect(el.shadowRoot!.querySelector('.dropdown-panel')).toBeNull();
+  });
+
+  it('hides create and delete in dropdown mode regardless of toggle values', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+    (el as any).layout = 'dropdown';
+    (el as any).showCreate = true;
+    (el as any).showDelete = true;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.create-channel-btn')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.delete-btn')).toBeNull();
+  });
+
+  it('renders sidebar by default', async () => {
+    el = document.createElement('channel-nav');
+    (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.channel-list')).toBeTruthy();
+    expect(el.shadowRoot!.querySelector('.dropdown-trigger')).toBeNull();
+  });
 });

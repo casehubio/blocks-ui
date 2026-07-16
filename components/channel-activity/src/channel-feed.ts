@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { QhorusMessage, Reaction, CommitmentState } from './types.js';
+import type { QhorusMessage, Reaction, CommitmentState, ActorType } from './types.js';
 import { isTerminalMessageType } from './types.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
@@ -27,6 +27,8 @@ export class ChannelFeedElement extends LitElement {
   @property({ type: Boolean }) autoScroll = true;
   @property({ type: Number }) staleCursorMinutes = 30;
   @property({ attribute: false }) renderContextHeader?: () => TemplateResult;
+  @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
+  @property({ attribute: false }) formatSender?: (sender: string, actorType: ActorType) => string;
 
   @state() private _prevMessageCount = 0;
   @state() private _showStalePrompt = false;
@@ -254,7 +256,9 @@ export class ChannelFeedElement extends LitElement {
         ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
           <channel-thread .rootMessage=${msg}
                          .replies=${repliesByParent.get(msg.id)!}
-                         .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}>
+                         .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
+                         .renderContent=${this.renderContent}
+                         .formatSender=${this.formatSender}>
           </channel-thread>
         ` : html`
           <div class="${this._messageItemClasses(msg)}">
@@ -262,7 +266,9 @@ export class ChannelFeedElement extends LitElement {
                             .reactions=${reactionIndex.get(msg.id) ?? []}
                             .showActorBadge=${group.messages.indexOf(msg) === 0}
                             .channelName=${this.channelName}
-                            .parentMessage=${msg.inReplyTo ? this.messages.find(m => m.id === msg.inReplyTo) : undefined}>
+                            .parentMessage=${msg.inReplyTo ? this.messages.find(m => m.id === msg.inReplyTo) : undefined}
+                            .renderContent=${this.renderContent}
+                            .formatSender=${this.formatSender}>
             </channel-message>
           </div>
         `)}
