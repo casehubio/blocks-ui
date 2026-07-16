@@ -34,6 +34,7 @@ async function bootstrap() {
   await import('./pages/compliance-summary-page.js');
   await import('./pages/gdpr-erasure-page.js');
   await import('./pages/sla-breach-policy-page.js');
+  await import('./pages/grouped-data-view-page.js');
 
   app.textContent = '';
   app.appendChild(document.createElement('example-shell'));

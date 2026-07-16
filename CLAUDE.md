@@ -122,6 +122,7 @@ yarn typecheck
 | `components/trust-score-panel/` | Trust score panel — SVG gauge, per-capability breakdown table, trend sparkline (via TrendSourceMixin, supports simulated/inline/direct data), maturity badges, compact badge mode |
 | `components/similarity-panel/` | Similar past cases — similarity scores, outcomes, resolution times via pages-table. Column renderers for similarity bar and outcome badge. Dual data mode (property or endpoint). Promoted from clinical. |
 | `components/compliance-summary/` | Regulation compliance grid — status badges (MET/PARTIAL/GAP/BREACHED), evidence links via pages-table. Dual data mode. Promoted from clinical. |
+| `components/grouped-data-view/` | Grouped data view — items grouped by column key with per-group pages-table rendering, DataSourceMixin, group styling. Thin wrapper over pages-grouped-view. |
 | `components/trust-feedback-display/` | Post-gate trust score delta — decision/attestation badges, trust before→after with directional arrow, full card and compact inline modes. Complements trust-score-panel. Promoted from clinical. |
 | `components/sla-breach-policy/` | SLA breach escalation tiers — active tier highlighting, optional embedded sla-indicator countdown via deadline prop, shared pulseAnimation. Complements sla-indicator. Promoted from clinical. |
 | `components/gdpr-erasure-action/` | GDPR data erasure form — three-phase (input → blocks-confirm-dialog confirmation → receipt), customisable subjectLabel and reasonOptions. Extends LitElement directly (no DataSourceMixin). Promoted from clinical. |

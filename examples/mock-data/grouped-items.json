@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "lane": "CRITICAL", "title": "Fix auth bypass in login flow", "author": "alice", "waitTime": "2h 15m", "trustScore": 95 },
+    { "lane": "CRITICAL", "title": "Patch SQL injection in search", "author": "bob", "waitTime": "1h 30m", "trustScore": 88 },
+    { "lane": "HIGH", "title": "Upgrade TLS certificates", "author": "carol", "waitTime": "4h 10m", "trustScore": 82 },
+    { "lane": "HIGH", "title": "Fix race condition in batch processor", "author": "dave", "waitTime": "3h 45m", "trustScore": 76 },
+    { "lane": "HIGH", "title": "Add retry logic for webhook delivery", "author": "eve", "waitTime": "5h 20m", "trustScore": 71 },
+    { "lane": "NORMAL", "title": "Update README with new API docs", "author": "frank", "waitTime": "8h 00m", "trustScore": 90 },
+    { "lane": "NORMAL", "title": "Refactor date formatting utils", "author": "grace", "waitTime": "6h 30m", "trustScore": 85 },
+    { "lane": "NORMAL", "title": "Add unit tests for config parser", "author": "hank", "waitTime": "7h 15m", "trustScore": 79 },
+    { "lane": "NORMAL", "title": "Migrate deprecated API calls", "author": "iris", "waitTime": "10h 00m", "trustScore": 73 }
+  ]
+}

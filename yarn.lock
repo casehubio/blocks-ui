@@ -230,6 +230,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-grouped-data-view@workspace:components/grouped-data-view":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-grouped-data-view@workspace:components/grouped-data-view"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-component": "npm:^0.2.2"
+    "@casehubio/pages-data": "npm:^0.2.2"
+    "@casehubio/pages-table": "npm:^0.2.2"
+    "@casehubio/pages-viz": "npm:^0.2.2"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row"
@@ -466,6 +482,17 @@ __metadata:
   version: 0.2.2
   resolution: "@casehubio/pages-ui-tokens@npm:0.2.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40casehubio%2Fpages-ui-tokens%2F0.2.2%2Fed36d3a626ab12e33a4b0c55a9898689cd8374dc"
   checksum: 10c0/d697e1291d7d6d2f4e178233fa11e424c618a165c3ce0dc5e3d7ccb7df05330b08d968ceac238ca9caa04af23fc8c45b525b854f7a67f79542f31c102cbcb916
+  languageName: node
+  linkType: hard
+
+"@casehubio/pages-viz@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@casehubio/pages-viz@npm:0.2.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40casehubio%2Fpages-viz%2F0.2.2%2Fccf6fe4a9758a99b2afdf820d698b84e8ee083c6"
+  dependencies:
+    "@casehubio/pages-component": "npm:0.2.2"
+    "@casehubio/pages-data": "npm:0.2.2"
+    echarts: "npm:^5.6.0"
+  checksum: 10c0/7a16de3dc9b210b3eb4720859526666b30a5e4dbf051f0d4a94c3c15512c6e30bd792ace731075f63a0fdafb8445ca16e4e5ec41bb012fe02ff5e37c7092e41c
   languageName: node
   linkType: hard
 
@@ -3198,6 +3225,16 @@ __metadata:
     es-errors: "npm:^1.3.0"
     gopd: "npm:^1.2.0"
   checksum: 10c0/199f2a0c1c16593ca0a145dbf76a962f8033ce3129f01284d48c45ed4e14fea9bbacd7b3610b6cdc33486cef20385ac054948fefc6272fcce645c09468f93031
+  languageName: node
+  linkType: hard
+
+"echarts@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "echarts@npm:5.6.0"
+  dependencies:
+    tslib: "npm:2.3.0"
+    zrender: "npm:5.6.1"
+  checksum: 10c0/6d6a2ee88534d1ff0433e935c542237b9896de1c94959f47ebc7e0e9da26f59bf11c91ed6fc135b62ad2786c779ee12bc536fa481e60532dad5b6a2f5167e9ea
   languageName: node
   linkType: hard
 
@@ -6186,6 +6223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 10c0/a845aed84e7e7dbb4c774582da60d7030ea39d67307250442d35c4c5dd77e4b44007098c37dd079e100029c76055f2a362734b8442ba828f8cc934f15ed9be61
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^2.4.0":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
@@ -7053,5 +7097,14 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.6.1":
+  version: 5.6.1
+  resolution: "zrender@npm:5.6.1"
+  dependencies:
+    tslib: "npm:2.3.0"
+  checksum: 10c0/dc1cc570054640cbd8fbb7b92e6252f225319522bfe3e8dc8bf02cc02d414e00a4c8d0a6f89bfc9d96e5e9511fdca94dd3d06bf53690df2b2f12b0fc560ac307
   languageName: node
   linkType: hard
