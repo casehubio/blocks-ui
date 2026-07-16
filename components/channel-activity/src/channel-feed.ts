@@ -176,6 +176,17 @@ export class ChannelFeedElement extends LitElement {
     return index;
   }
 
+  private _threadReactions(rootId: string, replies: QhorusMessage[], index: Map<string, Reaction[]>): Reaction[] {
+    const result: Reaction[] = [];
+    const rootReactions = index.get(rootId);
+    if (rootReactions) result.push(...rootReactions);
+    for (const r of replies) {
+      const replyReactions = index.get(r.id);
+      if (replyReactions) result.push(...replyReactions);
+    }
+    return result;
+  }
+
   private _messageItemClasses(msg: QhorusMessage): string {
     const classes = ['message-item'];
     if (this.terminalDimming && isTerminalMessageType(msg.messageType)) {
@@ -243,7 +254,7 @@ export class ChannelFeedElement extends LitElement {
         ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
           <channel-thread .rootMessage=${msg}
                          .replies=${repliesByParent.get(msg.id)!}
-                         .reactions=${reactionIndex.get(msg.id) ?? []}>
+                         .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}>
           </channel-thread>
         ` : html`
           <div class="${this._messageItemClasses(msg)}">

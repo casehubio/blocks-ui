@@ -65,7 +65,7 @@ export class ChannelThreadElement extends LitElement {
 
     return html`
       <channel-message .message=${this.rootMessage}
-                      .reactions=${this.reactions}
+                      .reactions=${this.reactions.filter(r => r.messageId === this.rootMessage.id)}
                       .commitmentState=${this.commitmentState}></channel-message>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">
@@ -83,7 +83,8 @@ export class ChannelThreadElement extends LitElement {
         ${!this.collapsed ? html`
           ${this.replies.map(r => html`
             <div class="reply">
-              <channel-message .message=${r}></channel-message>
+              <channel-message .message=${r}
+                              .reactions=${this.reactions.filter(rx => rx.messageId === r.id)}></channel-message>
             </div>
           `)}
         ` : nothing}
