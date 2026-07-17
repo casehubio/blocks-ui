@@ -464,6 +464,199 @@ describe('BlocksTimeline', () => {
     });
   });
 
+  // === PAGINATION ===
+  describe('pagination (endpoint mode)', () => {
+    let origFetch: typeof globalThis.fetch;
+    let mockFetch: ReturnType<typeof vi.fn>;
+
+    function pagedResponse(page: number, totalPages: number, perPage = 2): PagedResponse<CaseEvent> {
+      const events: CaseEvent[] = Array.from({ length: perPage }, (_, i) => ({
+        eventType: i % 2 === 0 ? 'CASE_STARTED' : 'TASK_CREATED',
+        streamType: i % 2 === 0 ? 'CASE' : 'WORKER',
+        timestamp: `2026-01-01T${10 + page}:${String(i * 5).padStart(2, '0')}:00Z`,
+        payload: { page, index: i },
+      } as CaseEvent));
+      return { content: events, page, size: perPage, totalElements: totalPages * perPage, totalPages };
+    }
+
+    beforeEach(() => {
+      origFetch = globalThis.fetch;
+      mockFetch = vi.fn();
+      globalThis.fetch = mockFetch as any;
+    });
+
+    afterEach(() => {
+      globalThis.fetch = origFetch;
+    });
+
+    it('fetches first page with page and size params', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      const url = mockFetch.mock.calls[0]![0] as string;
+      expect(url).toContain('page=0');
+      expect(url).toContain('size=2');
+    });
+
+    it('renders nodes from first page', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(2);
+    });
+
+    it('shows Load more button when more pages exist', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeTruthy();
+    });
+
+    it('hides Load more button on last page', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 1))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('shows progress text with loaded and total counts', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.textContent).toContain('2 of 6');
+    });
+
+    it('appends nodes on Load more click', async () => {
+      mockFetch
+        .mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 2))))
+        .mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(1, 2))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(2);
+
+      (element.shadowRoot!.querySelector('.load-more-button') as HTMLElement).click();
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(4);
+    });
+
+    it('hides Load more after loading last page', async () => {
+      mockFetch
+        .mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 2))))
+        .mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(1, 2))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+
+      (element.shadowRoot!.querySelector('.load-more-button') as HTMLElement).click();
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('no Load more for non-paginating strategies', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify({ currentState: 'OPEN' })));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${stateProgressionStrategy()} endpoint="/api/case" layout="horizontal"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 100));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('no Load more in horizontal layout', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="horizontal"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('no Load more in compact layout', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 3))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="compact"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('passes headers to paginated fetch', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 1))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} .headers=${{ 'X-Tenancy-ID': 't-1' }} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({ headers: expect.objectContaining({ 'X-Tenancy-ID': 't-1' }) }),
+      );
+    });
+
+    it('pageSize defaults to 20', async () => {
+      mockFetch.mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 1))));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      const url = mockFetch.mock.calls[0]![0] as string;
+      expect(url).toContain('size=20');
+    });
+
+    it('data property bypasses paginated fetch', async () => {
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} .data=${mockEvents} endpoint="/api/events" layout="vertical"></blocks-timeline>
+      `);
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(5);
+      expect(element.shadowRoot!.querySelector('.load-more-button')).toBeNull();
+    });
+
+    it('shows loading state during Load more', async () => {
+      let resolveSecond: (value: Response) => void;
+      mockFetch
+        .mockResolvedValueOnce(new Response(JSON.stringify(pagedResponse(0, 2))))
+        .mockReturnValueOnce(new Promise(r => { resolveSecond = r as any; }));
+      element = await fixture(html`
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" .pageSize=${2} layout="vertical"></blocks-timeline>
+      `);
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+
+      (element.shadowRoot!.querySelector('.load-more-button') as HTMLElement).click();
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelector('.load-more-button')!.hasAttribute('disabled')).toBe(true);
+
+      resolveSecond!(new Response(JSON.stringify(pagedResponse(1, 2))));
+      await new Promise(r => setTimeout(r, 50));
+      await element.updateComplete;
+      expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(4);
+    });
+  });
+
   // === LOADING / ERROR STATES ===
   describe('loading and error states', () => {
     it('shows loading message when no inline data', async () => {

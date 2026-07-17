@@ -6,7 +6,7 @@ import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import { emitPagesEvent } from '@casehubio/pages-component';
 import type { SourceFactory } from '@casehubio/pages-component';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import type { TimelineNode, Layout, TimelineStrategy } from './types.js';
+import type { TimelineNode, Layout, TimelineStrategy, PaginationMeta } from './types.js';
 import { renderVertical, verticalStyles } from './renderers/vertical.js';
 import { renderHorizontal, horizontalStyles } from './renderers/horizontal.js';
 import { renderCompact, compactStyles } from './renderers/compact.js';
@@ -20,12 +20,17 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
   @property({ attribute: false }) renderDetail?: (node: TimelineNode) => TemplateResult;
   @property({ attribute: false }) activeFilters?: Set<string> | string[];
   @property({ attribute: false }) headers?: Record<string, string> | (() => Record<string, string>) | undefined;
+  @property({ type: Number }) pageSize = 20;
 
   @state() private _nodes: TimelineNode[] = [];
   @state() private _expandedKeys = new Set<string>();
   @state() private _internalFilters: Set<string> | null = null;
+  @state() private _paginationMeta: PaginationMeta | undefined = undefined;
+  @state() private _loadingMore = false;
 
   private _lastDataSet: unknown = undefined;
+  private _paginatedEndpoint: string | undefined = undefined;
+  private _paginatedPageSize = 0;
 
   override createSourceFactory(): SourceFactory {
     return (url) => fetchSource(url, {
@@ -44,13 +49,79 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
     super.configure(props);
   }
 
+  private get _isPaginated(): boolean {
+    return !!this.strategy?.supportsPagination && !!this.endpoint && this.data == null;
+  }
+
+  override resolveEndpoint(): string | undefined {
+    if (this.data != null) return undefined;
+    if (this._isPaginated) return undefined;
+    return this.endpoint;
+  }
+
+  private _buildPagedUrl(page: number): string {
+    const base = this.endpoint!;
+    const separator = base.includes('?') ? '&' : '?';
+    return `${base}${separator}page=${page}&size=${this.pageSize}`;
+  }
+
+  private _resolveHeaders(): Record<string, string> {
+    const h = typeof this.headers === 'function' ? this.headers() : this.headers;
+    return h ?? {};
+  }
+
+  private async _fetchPage(page: number): Promise<void> {
+    const url = this._buildPagedUrl(page);
+    const headers = this._resolveHeaders();
+    try {
+      const response = await fetch(url, { headers });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const raw = await response.json();
+
+      const transformed = this.strategy.transformData
+        ? this.strategy.transformData(raw)
+        : raw;
+      const newNodes = this.strategy.toNodes(transformed);
+
+      if (page === 0) {
+        this._nodes = newNodes;
+      } else {
+        this._nodes = [...this._nodes, ...newNodes];
+      }
+
+      if (this.strategy.extractPaginationMeta) {
+        this._paginationMeta = this.strategy.extractPaginationMeta(raw);
+      }
+    } catch (err) {
+      this.error = err instanceof Error ? err.message : String(err);
+    }
+  }
+
+  private async _loadMore(): Promise<void> {
+    if (!this._paginationMeta || this._loadingMore) return;
+    const nextPage = this._paginationMeta.page + 1;
+    if (nextPage >= this._paginationMeta.totalPages) return;
+
+    this._loadingMore = true;
+    await this._fetchPage(nextPage);
+    this._loadingMore = false;
+  }
+
   override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+
+    if (this._isPaginated && (changed.has('endpoint') || changed.has('strategy') || changed.has('pageSize'))
+        && (this.endpoint !== this._paginatedEndpoint || this.pageSize !== this._paginatedPageSize)) {
+      this._paginatedEndpoint = this.endpoint;
+      this._paginatedPageSize = this.pageSize;
+      this._paginationMeta = undefined;
+      this._fetchPage(0);
+    }
 
     const dataChanged = changed.has('data') || changed.has('strategy') || this.dataSet !== this._lastDataSet;
     this._lastDataSet = this.dataSet;
 
-    if (dataChanged && this.strategy) {
+    if (dataChanged && this.strategy && !this._isPaginated) {
       const raw = this.data ?? this.dataSet;
       if (raw != null) {
         const transformed = this.strategy.transformData
@@ -158,6 +229,26 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
     `;
   }
 
+  private _renderPaginationFooter(): TemplateResult | typeof nothing {
+    if (!this._paginationMeta || this._activeLayout !== 'vertical') return nothing;
+    const { page, totalPages, totalElements } = this._paginationMeta;
+    const hasMore = page + 1 < totalPages;
+    if (!hasMore && this._nodes.length >= totalElements) return nothing;
+
+    return html`
+      <div class="pagination-footer">
+        <span class="pagination-progress">Showing ${this._nodes.length} of ${totalElements} events</span>
+        ${hasMore ? html`
+          <button class="load-more-button"
+                  ?disabled=${this._loadingMore}
+                  @click=${() => this._loadMore()}>
+            ${this._loadingMore ? 'Loading…' : 'Load more'}
+          </button>
+        ` : nothing}
+      </div>
+    `;
+  }
+
   override render(): TemplateResult {
     if (!this.data && this.loading) {
       return html`<div class="timeline-container">Loading timeline...</div>`;
@@ -195,6 +286,7 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
           onExpandRequested: () => this._handleExpandRequested(),
           onKeyDown: () => {},
         })}
+        ${this._renderPaginationFooter()}
       </div>
     `;
   }
@@ -234,6 +326,35 @@ export class BlocksTimeline extends DataSourceMixin(LiveRegionMixin(LitElement))
     }
 
     .filter-chip:hover { border-color: var(--pages-accent-7, #3b82f6); }
+
+    .pagination-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    .pagination-progress {
+      font-size: 13px;
+      color: var(--pages-neutral-9, #6b7280);
+    }
+
+    .load-more-button {
+      padding: 8px 16px;
+      border: 1px solid var(--pages-accent-7, #3b82f6);
+      background: var(--pages-neutral-1, #fff);
+      color: var(--pages-accent-9, #2563eb);
+      border-radius: var(--pages-radius-sm, 4px);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .load-more-button:hover { background: var(--pages-accent-3, #dbeafe); }
+    .load-more-button:disabled { cursor: default; opacity: 0.6; }
 
     ${verticalStyles}
     ${horizontalStyles}

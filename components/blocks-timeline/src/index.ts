@@ -1,5 +1,5 @@
 export { BlocksTimeline } from './blocks-timeline.js';
-export type { TimelineNode, NodeStatus, Layout, TimelineStrategy, StageConfig } from './types.js';
+export type { TimelineNode, NodeStatus, Layout, TimelineStrategy, StageConfig, PaginationMeta } from './types.js';
 export { stateProgressionStrategy, linearResolveStatus, QHORUS_STAGES } from './strategies/state-progression.js';
 export {
   eventChronologyStrategy,

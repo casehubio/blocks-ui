@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { TimelineNode, TimelineStrategy, StageConfig, Layout, NodeStatus } from './types.js';
+import type { TimelineNode, TimelineStrategy, StageConfig, Layout, NodeStatus, PaginationMeta } from './types.js';
 
 describe('types', () => {
   it('TimelineNode accepts all valid statuses', () => {
@@ -40,6 +40,37 @@ describe('types', () => {
     const nodes = strategy.toNodes(['a', 'b']);
     expect(nodes).toHaveLength(2);
     expect(nodes[0]!.label).toBe('a');
+  });
+
+  it('PaginationMeta holds page state', () => {
+    const meta: PaginationMeta = { page: 0, totalPages: 5, totalElements: 100 };
+    expect(meta.page).toBe(0);
+    expect(meta.totalPages).toBe(5);
+    expect(meta.totalElements).toBe(100);
+  });
+
+  it('TimelineStrategy pagination fields are optional', () => {
+    const strategy: TimelineStrategy<string[]> = {
+      toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
+      defaultLayout: 'vertical',
+    };
+    expect(strategy.supportsPagination).toBeUndefined();
+    expect(strategy.extractPaginationMeta).toBeUndefined();
+  });
+
+  it('TimelineStrategy with pagination extracts meta', () => {
+    const strategy: TimelineStrategy<string[]> = {
+      toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
+      defaultLayout: 'vertical',
+      supportsPagination: true,
+      extractPaginationMeta: (raw) => {
+        const r = raw as { page: number; totalPages: number; totalElements: number };
+        return r.page != null ? { page: r.page, totalPages: r.totalPages, totalElements: r.totalElements } : undefined;
+      },
+    };
+    expect(strategy.supportsPagination).toBe(true);
+    expect(strategy.extractPaginationMeta!({ page: 1, totalPages: 3, totalElements: 60 }))
+      .toEqual({ page: 1, totalPages: 3, totalElements: 60 });
   });
 
   it('TimelineStrategy with transformData processes raw input', () => {
