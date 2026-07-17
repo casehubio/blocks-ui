@@ -1,6 +1,6 @@
 import { html, nothing } from 'lit';
 import { renderPropertyTree } from '@casehubio/blocks-ui-core';
-import type { TimelineNode, TimelineStrategy } from '../types.js';
+import type { TimelineNode, TimelineStrategy, PaginationMeta } from '../types.js';
 
 export type CaseHubEventType =
   | 'CASE_STARTED' | 'CASE_COMPLETED' | 'CASE_FAULTED' | 'CASE_CANCELLED' | 'CASE_SUSPENDED' | 'CASE_RESUMED'
@@ -94,5 +94,12 @@ export function eventChronologyStrategy(options?: {
     },
     defaultLayout: 'vertical',
     filterCategories: options?.streamTypes ?? DEFAULT_STREAM_TYPES,
+    supportsPagination: true,
+    extractPaginationMeta(raw: unknown): PaginationMeta | undefined {
+      if (isPagedResponse(raw)) {
+        return { page: raw.page, totalPages: raw.totalPages, totalElements: raw.totalElements };
+      }
+      return undefined;
+    },
   };
 }

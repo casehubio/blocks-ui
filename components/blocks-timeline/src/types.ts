@@ -21,6 +21,14 @@ export interface TimelineStrategy<T = unknown> {
   renderNode?: ((node: TimelineNode) => TemplateResult) | undefined;
   renderDetail?: ((node: TimelineNode) => TemplateResult) | undefined;
   filterCategories?: string[] | undefined;
+  supportsPagination?: boolean | undefined;
+  extractPaginationMeta?: ((raw: unknown) => PaginationMeta | undefined) | undefined;
+}
+
+export interface PaginationMeta {
+  page: number;
+  totalPages: number;
+  totalElements: number;
 }
 
 export interface StageConfig {

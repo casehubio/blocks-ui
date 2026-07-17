@@ -150,6 +150,35 @@ describe('eventChronologyStrategy', () => {
     });
   });
 
+  describe('pagination support', () => {
+    it('declares supportsPagination as true', () => {
+      expect(eventChronologyStrategy().supportsPagination).toBe(true);
+    });
+
+    it('extractPaginationMeta returns meta from PagedResponse', () => {
+      const paged: PagedResponse<EventLogEntryResponse> = {
+        content: events as EventLogEntryResponse[],
+        page: 2,
+        size: 10,
+        totalElements: 50,
+        totalPages: 5,
+      };
+      const strategy = eventChronologyStrategy();
+      const meta = strategy.extractPaginationMeta!(paged);
+      expect(meta).toEqual({ page: 2, totalPages: 5, totalElements: 50 });
+    });
+
+    it('extractPaginationMeta returns undefined for plain array', () => {
+      const strategy = eventChronologyStrategy();
+      expect(strategy.extractPaginationMeta!(events)).toBeUndefined();
+    });
+
+    it('extractPaginationMeta returns undefined for null', () => {
+      const strategy = eventChronologyStrategy();
+      expect(strategy.extractPaginationMeta!(null)).toBeUndefined();
+    });
+  });
+
   describe('filterCategories', () => {
     it('defaults to standard stream types', () => {
       expect(eventChronologyStrategy().filterCategories).toEqual(['CASE', 'WORKER', 'ORCHESTRATION', 'TIMER', 'SYSTEM']);
