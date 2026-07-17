@@ -35,11 +35,11 @@ const TABLE_CONFIG: readonly TableColumnConfig[] = [
   { id: EVIDENCE_COL },
 ];
 
-const STATUS_CLASSES: Record<string, string> = {
-  MET: 'status--met',
-  PARTIAL: 'status--partial',
-  GAP: 'status--gap',
-  BREACHED: 'status--breached',
+const STATUS_COLORS: Record<string, string> = {
+  MET: 'background: var(--pages-success-3, #d4edda); color: var(--pages-success-11, #155724);',
+  PARTIAL: 'background: var(--pages-warning-3, #fff3cd); color: var(--pages-warning-11, #856404);',
+  GAP: 'background: var(--pages-orange-3, #ffe5d0); color: var(--pages-orange-11, #8a4000);',
+  BREACHED: 'background: var(--pages-danger-3, #f8d7da); color: var(--pages-danger-11, #721c24);',
 };
 
 @customElement('compliance-summary')
@@ -49,28 +49,20 @@ export class ComplianceSummary extends DataSourceMixin(LitElement) {
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
     .empty { color: var(--pages-neutral-9, #888); font-style: italic; padding: var(--pages-space-4, 1rem); }
-    .status-badge { display: inline-block; padding: 4px 12px; border-radius: var(--pages-radius-2, 4px); font-weight: 600; font-size: 12px; }
-    .status--met { background: var(--pages-success-3, #d4edda); color: var(--pages-success-11, #155724); }
-    .status--partial { background: var(--pages-warning-3, #fff3cd); color: var(--pages-warning-11, #856404); }
-    .status--gap { background: var(--pages-orange-3, #ffe5d0); color: var(--pages-orange-11, #8a4000); }
-    .status--breached { background: var(--pages-danger-3, #f8d7da); color: var(--pages-danger-11, #721c24); }
-    .evidence-link { color: var(--pages-accent-9, #3b82f6); text-decoration: none; font-size: 13px; }
-    .evidence-link:hover { text-decoration: underline; }
-    .evidence-dash { color: var(--pages-neutral-9, #888); }
   `;
 
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const value = cell.type === 'NULL' ? '' : String((cell as { value: string }).value);
-      const cls = STATUS_CLASSES[value] ?? '';
-      return html`<span class="status-badge ${cls}">${value}</span>`;
+      const colors = STATUS_COLORS[value] ?? '';
+      return html`<span style="display: inline-block; padding: 4px 12px; border-radius: var(--pages-radius-2, 4px); font-weight: 600; font-size: 12px; ${colors}">${value}</span>`;
     }],
     [EVIDENCE_COL, (cell: CellValue) => {
       const url = cell.type === 'NULL' ? '' : String((cell as { value: string }).value);
       if (url) {
-        return html`<a href="${url}" class="evidence-link" target="_blank" rel="noopener">View</a>`;
+        return html`<a href="${url}" style="color: var(--pages-accent-9, #3b82f6); text-decoration: none; font-size: 13px;" target="_blank" rel="noopener">View</a>`;
       }
-      return html`<span class="evidence-dash">—</span>`;
+      return html`<span style="color: var(--pages-neutral-9, #888);">—</span>`;
     }],
   ]);
 

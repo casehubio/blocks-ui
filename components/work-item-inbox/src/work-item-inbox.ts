@@ -102,10 +102,23 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private sseManager = new SSEManager();
   private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
 
+  private static _statusColors: Record<string, string> = {
+    pending: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
+    assigned: 'background: var(--pages-info-4, #dbeafe); color: var(--pages-info-11, #0369a1);',
+    in_progress: 'background: var(--pages-accent-4, #cce5ff); color: var(--pages-accent-11, #0066cc);',
+    suspended: 'background: var(--pages-warning-4, #fef3c7); color: var(--pages-warning-11, #92400e);',
+    delegated: 'background: var(--pages-accent-4, #cce5ff); color: var(--pages-accent-11, #0066cc);',
+    completed: 'background: var(--pages-success-4, #d1fae5); color: var(--pages-success-11, #065f46);',
+    rejected: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
+    faulted: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
+    cancelled: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
+  };
+
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-      return html`<span class="status-pill status-${status.toLowerCase()}">${status}</span>`;
+      const colors = WorkItemInbox._statusColors[status.toLowerCase()] ?? '';
+      return html`<span style="display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; ${colors}">${status}</span>`;
     }],
     [CREATED_COL, (cell: CellValue) => {
       if (cell.type === 'NULL') return html`<span>—</span>`;
@@ -365,59 +378,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       font-size: var(--pages-font-size-base, 14px);
     }
 
-    .status-pill {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
 
-    .status-pill.status-pending {
-      background: var(--pages-neutral-4, #e5e5e5);
-      color: var(--pages-neutral-11, #555555);
-    }
-
-    .status-pill.status-assigned {
-      background: var(--pages-info-4, #dbeafe);
-      color: var(--pages-info-11, #0369a1);
-    }
-
-    .status-pill.status-in_progress {
-      background: var(--pages-accent-4, #cce5ff);
-      color: var(--pages-accent-11, #0066cc);
-    }
-
-    .status-pill.status-suspended {
-      background: var(--pages-warning-4, #fef3c7);
-      color: var(--pages-warning-11, #92400e);
-    }
-
-    .status-pill.status-delegated {
-      background: var(--pages-accent-4, #cce5ff);
-      color: var(--pages-accent-11, #0066cc);
-    }
-
-    .status-pill.status-completed {
-      background: var(--pages-success-4, #d1fae5);
-      color: var(--pages-success-11, #065f46);
-    }
-
-    .status-pill.status-rejected {
-      background: var(--pages-danger-4, #fee2e2);
-      color: var(--pages-danger-11, #991b1b);
-    }
-
-    .status-pill.status-faulted {
-      background: var(--pages-danger-4, #fee2e2);
-      color: var(--pages-danger-11, #991b1b);
-    }
-
-    .status-pill.status-cancelled {
-      background: var(--pages-neutral-4, #e5e5e5);
-      color: var(--pages-neutral-11, #555555);
-    }
 
     .status-pill.status-obsolete {
       background: var(--pages-neutral-4, #e5e5e5);

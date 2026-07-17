@@ -32,11 +32,11 @@ const TABLE_CONFIG: readonly TableColumnConfig[] = [
   { id: RESOLUTION_COL, sortable: true },
 ];
 
-function getOutcomeClass(outcome: string): string {
+function getOutcomeColors(outcome: string): string {
   const lower = outcome.toLowerCase();
-  if (lower.includes('resolved')) return 'outcome--resolved';
-  if (lower.includes('pending')) return 'outcome--pending';
-  if (lower.includes('escalated')) return 'outcome--escalated';
+  if (lower.includes('resolved')) return 'background: var(--pages-success-3, #d4edda); color: var(--pages-success-11, #155724);';
+  if (lower.includes('pending')) return 'background: var(--pages-warning-3, #fff3cd); color: var(--pages-warning-11, #856404);';
+  if (lower.includes('escalated')) return 'background: var(--pages-orange-3, #ffe5d0); color: var(--pages-orange-11, #8a4000);';
   return '';
 }
 
@@ -48,31 +48,24 @@ export class SimilarityPanel extends DataSourceMixin(LitElement) {
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
     .empty { color: var(--pages-neutral-9, #888); font-style: italic; padding: var(--pages-space-4, 1rem); }
-    .similarity-bar { display: flex; align-items: center; gap: var(--pages-space-2, 0.5rem); }
-    .bar-bg { flex: 1; height: 8px; background: var(--pages-neutral-4, #e5e5e5); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--pages-accent-9, #3b82f6); }
-    .percentage { font-weight: 600; min-width: 45px; font-size: 13px; }
-    .outcome-badge { display: inline-block; padding: 4px 8px; border-radius: var(--pages-radius-2, 4px); font-size: 12px; font-weight: 500; }
-    .outcome--resolved { background: var(--pages-success-3, #d4edda); color: var(--pages-success-11, #155724); }
-    .outcome--pending { background: var(--pages-warning-3, #fff3cd); color: var(--pages-warning-11, #856404); }
-    .outcome--escalated { background: var(--pages-orange-3, #ffe5d0); color: var(--pages-orange-11, #8a4000); }
   `;
 
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [SIMILARITY_COL, (cell: CellValue) => {
       const value = cell.type === 'NULL' ? 0 : (cell as { value: number }).value;
       return html`
-        <div class="similarity-bar">
-          <div class="bar-bg">
-            <div class="bar-fill" style="width: ${value}%"></div>
+        <div style="display: flex; align-items: center; gap: var(--pages-space-2, 0.5rem);">
+          <div style="flex: 1; height: 8px; background: var(--pages-neutral-4, #e5e5e5); border-radius: 4px; overflow: hidden;">
+            <div style="height: 100%; width: ${value}%; background: var(--pages-accent-9, #3b82f6);"></div>
           </div>
-          <span class="percentage">${value}%</span>
+          <span style="font-weight: 600; min-width: 45px; font-size: 13px;">${value}%</span>
         </div>
       `;
     }],
     [OUTCOME_COL, (cell: CellValue) => {
       const value = cell.type === 'NULL' ? '' : String((cell as { value: string }).value);
-      return html`<span class="outcome-badge ${getOutcomeClass(value)}">${value}</span>`;
+      const colors = getOutcomeColors(value);
+      return html`<span style="display: inline-block; padding: 4px 8px; border-radius: var(--pages-radius-2, 4px); font-size: 12px; font-weight: 500; ${colors}">${value}</span>`;
     }],
   ]);
 

@@ -29,3 +29,9 @@ Components customise through three mechanisms, applied in order of preference:
 Slots are reserved for **layout shells only** (e.g. `split-workbench` projecting
 `list`/`detail`/`header` slots). Content components never use slots for domain
 customisation — they accept typed properties and callbacks instead.
+
+4. **Render callbacks use inline styles** — callback output (e.g. `columnRenderers`,
+   `renderCandidate`) is rendered inside the consuming component's shadow DOM, not
+   the defining component's. CSS classes from the defining component's `static styles`
+   have no effect across this shadow boundary. All render callback output must use
+   inline styles to be self-contained. Ref: GE-20260717-4618a1, #67.

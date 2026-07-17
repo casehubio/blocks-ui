@@ -50,6 +50,34 @@ describe('similarity-panel', () => {
     expect(table).toBeTruthy();
   });
 
+  it('similarity renderer output is self-contained (inline styles for cross-shadow-DOM)', async () => {
+    el.data = SAMPLE_DATA;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
+    expect(table).toBeTruthy();
+    await (table as unknown as { updateComplete: Promise<boolean> }).updateComplete;
+    const cells = table.shadowRoot!.querySelectorAll('[role="gridcell"]');
+    const cellContents = Array.from(cells).map(c => c.innerHTML);
+    const similarityCell = cellContents.find(h => h.includes('92%'));
+    expect(similarityCell).toBeDefined();
+    expect(similarityCell).toContain('style=');
+    expect(similarityCell).not.toMatch(/class="[^"]*bar-fill/);
+  });
+
+  it('outcome renderer output is self-contained (inline styles for cross-shadow-DOM)', async () => {
+    el.data = SAMPLE_DATA;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
+    expect(table).toBeTruthy();
+    await (table as unknown as { updateComplete: Promise<boolean> }).updateComplete;
+    const cells = table.shadowRoot!.querySelectorAll('[role="gridcell"]');
+    const cellContents = Array.from(cells).map(c => c.innerHTML);
+    const outcomeCell = cellContents.find(h => h.includes('Resolved'));
+    expect(outcomeCell).toBeDefined();
+    expect(outcomeCell).toContain('style=');
+    expect(outcomeCell).not.toMatch(/class="[^"]*outcome-badge/);
+  });
+
   it('suppresses fetch when data prop is set', async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch as unknown as typeof fetch;

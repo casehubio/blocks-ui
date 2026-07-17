@@ -44,6 +44,34 @@ describe('compliance-summary', () => {
     expect(table).toBeTruthy();
   });
 
+  it('status renderer output is self-contained (inline styles for cross-shadow-DOM)', async () => {
+    el.requirements = SAMPLE_REQUIREMENTS;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
+    expect(table).toBeTruthy();
+    await (table as unknown as { updateComplete: Promise<boolean> }).updateComplete;
+    const cells = table.shadowRoot!.querySelectorAll('[role="gridcell"]');
+    const cellContents = Array.from(cells).map(c => c.innerHTML);
+    const statusCell = cellContents.find(h => h.includes('>MET<'));
+    expect(statusCell).toBeDefined();
+    expect(statusCell).toContain('style=');
+    expect(statusCell).not.toMatch(/class="[^"]*status-badge/);
+  });
+
+  it('evidence renderer output is self-contained (inline styles for cross-shadow-DOM)', async () => {
+    el.requirements = SAMPLE_REQUIREMENTS;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
+    expect(table).toBeTruthy();
+    await (table as unknown as { updateComplete: Promise<boolean> }).updateComplete;
+    const cells = table.shadowRoot!.querySelectorAll('[role="gridcell"]');
+    const cellContents = Array.from(cells).map(c => c.innerHTML);
+    const evidenceCell = cellContents.find(h => h.includes('View'));
+    expect(evidenceCell).toBeDefined();
+    expect(evidenceCell).toContain('style=');
+    expect(evidenceCell).not.toMatch(/class="[^"]*evidence-link/);
+  });
+
   it('suppresses fetch when requirements prop is set', async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch as unknown as typeof fetch;
