@@ -161,4 +161,17 @@ describe('channel-thread', () => {
     expect((messages[0] as any).formatSender).toBe(formatSender);
     expect((messages[1] as any).formatSender).toBe(formatSender);
   });
+
+  it('uses identity formatSender by default when none is set', async () => {
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('1', 'COMMAND', 'Task');
+    el.replies = [msg('2', 'DONE', 'Done')];
+    el.collapsed = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    expect((messages[0] as any).formatSender('alice', 'AGENT')).toBe('alice');
+    expect((messages[1] as any).formatSender('bob', 'HUMAN')).toBe('bob');
+  });
 });
