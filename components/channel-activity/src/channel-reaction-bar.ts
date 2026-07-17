@@ -19,6 +19,11 @@ export class ChannelReactionBarElement extends LitElement {
   @property({ type: String }) currentActorId?: string;
 
   @state() private _showPicker = false;
+  @state() private _flipVertical = false;
+  @state() private _flipHorizontal = false;
+
+  private static readonly PICKER_WIDTH = 353;
+  private static readonly PICKER_HEIGHT = 400;
 
   static override readonly styles = css`
     :host { display: flex; gap: var(--pages-space-1, 4px); flex-wrap: wrap; margin-top: var(--pages-space-1, 4px); }
@@ -66,6 +71,10 @@ export class ChannelReactionBarElement extends LitElement {
       margin-bottom: 0;
       margin-top: var(--pages-space-1, 4px);
     }
+    .picker-popover.align-right {
+      left: auto;
+      right: 0;
+    }
   `;
 
   private _grouped(): GroupedReaction[] {
@@ -89,7 +98,18 @@ export class ChannelReactionBarElement extends LitElement {
   }
 
   private _togglePicker() {
+    if (!this._showPicker) {
+      this._computePickerPosition();
+    }
     this._showPicker = !this._showPicker;
+  }
+
+  private _computePickerPosition() {
+    const container = this.shadowRoot?.querySelector('.picker-container');
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    this._flipVertical = rect.top < ChannelReactionBarElement.PICKER_HEIGHT;
+    this._flipHorizontal = rect.left + ChannelReactionBarElement.PICKER_WIDTH > window.innerWidth;
   }
 
   private _onEmojiSelected(e: Event) {
@@ -111,7 +131,7 @@ export class ChannelReactionBarElement extends LitElement {
       <div class="picker-container">
         <button class="add-reaction-btn" @click=${this._togglePicker} title="Add reaction">+</button>
         ${this._showPicker ? html`
-          <div class="picker-popover">
+          <div class="picker-popover ${this._flipVertical ? 'flip' : ''} ${this._flipHorizontal ? 'align-right' : ''}">
             <channel-emoji-picker @emoji-selected=${this._onEmojiSelected}></channel-emoji-picker>
           </div>
         ` : nothing}

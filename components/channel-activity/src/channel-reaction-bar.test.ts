@@ -142,4 +142,90 @@ describe('channel-reaction-bar', () => {
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector('channel-emoji-picker')).toBeNull();
   });
+
+  describe('viewport-aware positioning', () => {
+    function stubContainerRect(el: any, rect: Partial<DOMRect>) {
+      const container = el.shadowRoot!.querySelector('.picker-container')!;
+      vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
+        top: 400, bottom: 424, left: 100, right: 128, width: 28, height: 24,
+        x: 100, y: 400, toJSON: () => ({}),
+        ...rect,
+      } as DOMRect);
+    }
+
+    function setViewport(width: number, height: number) {
+      Object.defineProperty(window, 'innerWidth', { value: width, configurable: true });
+      Object.defineProperty(window, 'innerHeight', { value: height, configurable: true });
+    }
+
+    it('applies flip class when insufficient space above', async () => {
+      setViewport(1024, 800);
+      const el = document.createElement('channel-reaction-bar') as any;
+      el.reactions = [];
+      el.messageId = 'msg-1';
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      stubContainerRect(el, { top: 50, bottom: 74 });
+
+      el.shadowRoot!.querySelector('.add-reaction-btn')!.click();
+      await el.updateComplete;
+
+      const popover = el.shadowRoot!.querySelector('.picker-popover')!;
+      expect(popover.classList.contains('flip')).toBe(true);
+    });
+
+    it('applies align-right class when insufficient space on right', async () => {
+      setViewport(400, 800);
+      const el = document.createElement('channel-reaction-bar') as any;
+      el.reactions = [];
+      el.messageId = 'msg-1';
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      stubContainerRect(el, { left: 200, right: 228 });
+
+      el.shadowRoot!.querySelector('.add-reaction-btn')!.click();
+      await el.updateComplete;
+
+      const popover = el.shadowRoot!.querySelector('.picker-popover')!;
+      expect(popover.classList.contains('align-right')).toBe(true);
+    });
+
+    it('no flip or align-right when sufficient space', async () => {
+      setViewport(1024, 800);
+      const el = document.createElement('channel-reaction-bar') as any;
+      el.reactions = [];
+      el.messageId = 'msg-1';
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      stubContainerRect(el, { top: 500, left: 100 });
+
+      el.shadowRoot!.querySelector('.add-reaction-btn')!.click();
+      await el.updateComplete;
+
+      const popover = el.shadowRoot!.querySelector('.picker-popover')!;
+      expect(popover.classList.contains('flip')).toBe(false);
+      expect(popover.classList.contains('align-right')).toBe(false);
+    });
+
+    it('applies both flip and align-right in top-right corner', async () => {
+      setViewport(400, 800);
+      const el = document.createElement('channel-reaction-bar') as any;
+      el.reactions = [];
+      el.messageId = 'msg-1';
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      stubContainerRect(el, { top: 50, left: 300 });
+
+      el.shadowRoot!.querySelector('.add-reaction-btn')!.click();
+      await el.updateComplete;
+
+      const popover = el.shadowRoot!.querySelector('.picker-popover')!;
+      expect(popover.classList.contains('flip')).toBe(true);
+      expect(popover.classList.contains('align-right')).toBe(true);
+    });
+  });
 });
