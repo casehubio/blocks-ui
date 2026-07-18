@@ -105,7 +105,7 @@ yarn typecheck
 
 | Path | Contents |
 |------|----------|
-| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource + createTypedFetchSource + EMPTY_DATASET (wrapping pages' DataSourceController, producing TypedDataSet via extraction pipeline), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), event helpers (re-exported from pages-component), domain types (TrustLevel, trustLevelFromScore), SharedTimerController, EventStreamController, blocks-confirm-dialog, schema-form, pulseAnimation |
+| `packages/blocks-ui-core/` | Tokens (re-exported from pages-ui-tokens), DataSourceMixin + DataSourceAdapter + fetchSource + createTypedFetchSource + EMPTY_DATASET (wrapping pages' DataSourceController, producing TypedDataSet via extraction pipeline), TrendSourceMixin + TrendPoint + extractTrendPoints (time-series trend data pattern), renderSparkline (shared SVG sparkline renderer), event helpers (re-exported from pages-component), domain types (TrustLevel, trustLevelFromScore), SharedTimerController, EventStreamController, blocks-confirm-dialog, pulseAnimation |
 | `components/work-item-inbox/` | Work item inbox — uses pages-table for rendering, queue pill bar, scope context bar, filter bar with counts, summary bar, three-tab perspective (My Work / Claimable / All), queue scope integration, SSE lifecycle |
 | `components/work-item-row/` | Single work item row — priority badge, status indicator, overdue/breach markers (legacy — inbox now uses data-table) |
 | `components/work-item-detail/` | Work item detail panel — action bar, activity tab, relations tab (outgoing + incoming with semantic type inverses) |

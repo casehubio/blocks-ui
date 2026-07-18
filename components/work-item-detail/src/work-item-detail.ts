@@ -9,7 +9,8 @@ import type {
   EscalateRequest,
   DelegateRequest,
 } from '@casehubio/blocks-ui-core';
-import { isTerminalStatus, onPagesEvent, WorkItemEventTopics, SchemaForm } from '@casehubio/blocks-ui-core';
+import { isTerminalStatus, onPagesEvent, WorkItemEventTopics } from '@casehubio/blocks-ui-core';
+interface SchemaFormElement extends HTMLElement { submit(): Record<string, unknown> | null; }
 import { FocusTrapMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
@@ -633,11 +634,11 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
           </div>
         </div>
         ${workItem.inputDataSchema && workItem.payload
-          ? html`<schema-form
+          ? html`<pages-schema-form
               mode="display"
               .schema="${JSON.parse(workItem.inputDataSchema)}"
               .data="${JSON.parse(workItem.payload)}"
-            ></schema-form>`
+            ></pages-schema-form>`
           : ''}
         <slot name="payload-renderer"></slot>
       </div>
@@ -713,11 +714,11 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
                 `
               : ''}
             ${this.data?.outputDataSchema
-              ? html`<schema-form
+              ? html`<pages-schema-form
                   mode="edit"
                   .schema="${JSON.parse(this.data.outputDataSchema)}"
                   .data="${{}}"
-                ></schema-form>`
+                ></pages-schema-form>`
               : ''}
           </div>
           <div class="dialog-actions">
@@ -1092,7 +1093,7 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
 
   private async _handleCompleteSubmit(): Promise<void> {
     const outcomeSelect = this.shadowRoot?.querySelector('#complete-outcome') as HTMLSelectElement;
-    const schemaForm = this.shadowRoot?.querySelector('schema-form') as SchemaForm | null;
+    const schemaForm = this.shadowRoot?.querySelector('pages-schema-form') as SchemaFormElement | null;
 
     if (this.endpoint == null || !this.workItemId) return;
 

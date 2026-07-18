@@ -12,7 +12,6 @@ async function bootstrap() {
   await import('./pages/inbox-page.js');
   await import('./pages/detail-page.js');
   await import('./pages/queue-inbox-page.js');
-  await import('./pages/schema-form-page.js');
   await import('./pages/workbench-page.js');
   await import('./pages/sla-indicator-page.js');
   await import('./pages/kpi-metric-row-page.js');
