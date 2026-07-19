@@ -3,6 +3,7 @@ import {
   isTerminalMessageType, isObligationCreating,
   messageTypeCategory, commitmentStateCategory,
   MESSAGE_TYPES, ACTOR_TYPES, COMMITMENT_STATES, CHANNEL_SEMANTICS, ARTEFACT_TYPES,
+  TOPIC_STATES,
 } from './types.js';
 
 describe('MessageType helpers', () => {
@@ -64,5 +65,13 @@ describe('MessageType helpers', () => {
     expect(COMMITMENT_STATES.length).toBe(7);
     expect(CHANNEL_SEMANTICS.length).toBe(5);
     expect(ARTEFACT_TYPES.length).toBe(8);
+    expect(TOPIC_STATES.length).toBe(4);
+  });
+
+  it('TOPIC_STATES contains all lifecycle states', () => {
+    expect(TOPIC_STATES).toContain('ACTIVE');
+    expect(TOPIC_STATES).toContain('RESOLVED');
+    expect(TOPIC_STATES).toContain('ARCHIVED');
+    expect(TOPIC_STATES).toContain('MERGED');
   });
 });

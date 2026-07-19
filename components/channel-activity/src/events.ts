@@ -10,15 +10,55 @@ export const ChannelEventTopics = {
   MESSAGE_SELECTED: 'channel:message-selected',
   CURSOR_CATCHUP: 'channel:cursor-catchup',
   CURSOR_RELOAD: 'channel:cursor-reload',
+  SELECT_TOPIC: 'channel:select-topic',
+  VIEW_MODE: 'channel:view-mode',
+  CREATE_TOPIC: 'channel:create-topic',
+  RESOLVE_TOPIC: 'channel:resolve-topic',
+  REOPEN_TOPIC: 'channel:reopen-topic',
+  ARCHIVE_TOPIC: 'channel:archive-topic',
+  RENAME_TOPIC: 'channel:rename-topic',
+  MERGE_TOPIC: 'channel:merge-topic',
 } as const;
 
 export interface SendMessagePayload {
   readonly channelId: string;
   readonly content: string;
   readonly topic?: string;
+  readonly topicId?: string;
   readonly inReplyTo?: string;
   readonly speechAct?: MessageType;
   readonly artefactRefs?: readonly ArtefactRef[];
+}
+
+export interface SelectTopicPayload {
+  readonly channelId: string;
+  readonly topicId: string | null;
+}
+
+export interface ViewModePayload {
+  readonly mode: 'flat' | 'threaded' | 'topics';
+}
+
+export interface TopicActionPayload {
+  readonly channelId: string;
+  readonly topicId: string;
+}
+
+export interface RenameTopicPayload {
+  readonly channelId: string;
+  readonly topicId: string;
+  readonly newName: string;
+}
+
+export interface MergeTopicPayload {
+  readonly channelId: string;
+  readonly sourceTopicId: string;
+  readonly targetTopicId: string;
+}
+
+export interface CreateTopicPayload {
+  readonly channelId: string;
+  readonly name: string;
 }
 
 export interface ReactPayload {

@@ -21,14 +21,19 @@ describe('ChannelEventTopics', () => {
     expect(ChannelEventTopics.CURSOR_RELOAD).toBe('channel:cursor-reload');
   });
 
-  it('does not include removed topics (SELECT_TOPIC, RESOLVE_TOPIC)', () => {
-    const keys = Object.keys(ChannelEventTopics);
-    expect(keys).not.toContain('SELECT_TOPIC');
-    expect(keys).not.toContain('RESOLVE_TOPIC');
+  it('has exactly 17 topics', () => {
+    expect(Object.keys(ChannelEventTopics).length).toBe(17);
   });
 
-  it('has exactly 9 topics', () => {
-    expect(Object.keys(ChannelEventTopics).length).toBe(9);
+  it('topic event constants have channel: prefix', () => {
+    expect(ChannelEventTopics.SELECT_TOPIC).toBe('channel:select-topic');
+    expect(ChannelEventTopics.VIEW_MODE).toBe('channel:view-mode');
+    expect(ChannelEventTopics.CREATE_TOPIC).toBe('channel:create-topic');
+    expect(ChannelEventTopics.RESOLVE_TOPIC).toBe('channel:resolve-topic');
+    expect(ChannelEventTopics.REOPEN_TOPIC).toBe('channel:reopen-topic');
+    expect(ChannelEventTopics.ARCHIVE_TOPIC).toBe('channel:archive-topic');
+    expect(ChannelEventTopics.RENAME_TOPIC).toBe('channel:rename-topic');
+    expect(ChannelEventTopics.MERGE_TOPIC).toBe('channel:merge-topic');
   });
 });
 

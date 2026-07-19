@@ -52,6 +52,7 @@ export interface QhorusMessage {
   readonly actorType: ActorType;
   readonly content: string;
   readonly topic: string;
+  readonly topicId: string;
   readonly correlationId?: string;
   readonly inReplyTo?: string;
   readonly parentRef?: ChatMessageRef;
@@ -94,6 +95,19 @@ export interface PresenceState {
   readonly status: 'ONLINE' | 'AVAILABLE' | 'BUSY' | 'AWAY' | 'OFFLINE';
   readonly lastSeenAt?: string;
   readonly statusMessage?: string;
+}
+
+export const TOPIC_STATES = ['ACTIVE', 'RESOLVED', 'ARCHIVED', 'MERGED'] as const;
+export type TopicState = typeof TOPIC_STATES[number];
+
+export interface QhorusTopic {
+  readonly id: string;
+  readonly channelId: string;
+  readonly name: string;
+  readonly state: TopicState;
+  readonly messageCount: number;
+  readonly latestActivityTs?: string;
+  readonly createdAt: string;
 }
 
 export function isTerminalMessageType(type: MessageType): boolean {
