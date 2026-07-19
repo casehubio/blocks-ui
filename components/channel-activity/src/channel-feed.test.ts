@@ -7,11 +7,20 @@ import './channel-reaction-bar.js';
 import type { QhorusMessage } from './types.js';
 import { ChannelEventTopics } from './events.js';
 
+import type { QhorusTopic } from './types.js';
+
 function msg(id: string, overrides: Partial<QhorusMessage> = {}): QhorusMessage {
   return {
     id, channelId: 'ch-1', sender: 'agent-a', messageType: 'EVENT',
-    actorType: 'AGENT', content: `Message ${id}`, topic: 'General', replyCount: 0,
-    artefactRefs: [], createdAt: '2026-07-07T12:00:00Z', ...overrides,
+    actorType: 'AGENT', content: `Message ${id}`, topic: 'General', topicId: 't-default',
+    replyCount: 0, artefactRefs: [], createdAt: '2026-07-07T12:00:00Z', ...overrides,
+  };
+}
+
+function topic(id: string, name: string, overrides: Partial<QhorusTopic> = {}): QhorusTopic {
+  return {
+    id, channelId: 'ch-1', name, state: 'ACTIVE', messageCount: 0,
+    createdAt: '2026-01-01T00:00:00Z', ...overrides,
   };
 }
 
@@ -379,5 +388,78 @@ describe('channel-feed', () => {
 
     const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
     expect(msgEl.formatSender).toBe(formatSender);
+  });
+
+  // --- View modes ---
+
+  it('defaults viewMode to flat', async () => {
+    const el = document.createElement('channel-feed') as any;
+    expect(el.viewMode).toBe('flat');
+  });
+
+  it('threaded mode: renders each root-with-replies as independent thread', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.viewMode = 'threaded';
+    el.messages = [
+      msg('root1', { sender: 'alice', createdAt: '2026-01-01T00:00:00Z' }),
+      msg('reply1', { sender: 'alice', inReplyTo: 'root1', createdAt: '2026-01-01T00:00:30Z' }),
+      msg('root2', { sender: 'alice', createdAt: '2026-01-01T00:01:00Z' }),
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const threads = el.shadowRoot!.querySelectorAll('channel-thread');
+    expect(threads.length).toBe(1);
+    const standalones = el.shadowRoot!.querySelectorAll('.threaded-entry > channel-message');
+    expect(standalones.length).toBe(1);
+  });
+
+  it('threaded mode: no sender grouping', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.viewMode = 'threaded';
+    el.messages = [
+      msg('m1', { sender: 'alice', createdAt: '2026-01-01T00:00:00Z' }),
+      msg('m2', { sender: 'alice', createdAt: '2026-01-01T00:00:10Z' }),
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const groups = el.shadowRoot!.querySelectorAll('.message-group-header');
+    expect(groups.length).toBe(0);
+  });
+
+  it('topics mode: renders topic section headers', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.viewMode = 'topics';
+    el.topics = [
+      topic('t1', 'General'),
+      topic('t2', 'deployment'),
+    ];
+    el.messages = [
+      msg('m1', { topicId: 't1', topic: 'General', createdAt: '2026-01-01T00:00:00Z' }),
+      msg('m2', { topicId: 't2', topic: 'deployment', sender: 'bob', createdAt: '2026-01-01T00:01:00Z' }),
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const headers = el.shadowRoot!.querySelectorAll('.topic-section-header');
+    expect(headers.length).toBe(2);
+  });
+
+  it('topics mode: does not render empty topic sections', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.viewMode = 'topics';
+    el.topics = [
+      topic('t1', 'General'),
+      topic('t2', 'empty-topic'),
+    ];
+    el.messages = [
+      msg('m1', { topicId: 't1', topic: 'General' }),
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const headers = el.shadowRoot!.querySelectorAll('.topic-section-header');
+    expect(headers.length).toBe(1);
   });
 });

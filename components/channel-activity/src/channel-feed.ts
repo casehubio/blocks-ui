@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { QhorusMessage, Reaction, CommitmentState, ActorType } from './types.js';
+import type { QhorusMessage, QhorusTopic, Reaction, CommitmentState, ActorType } from './types.js';
 import { isTerminalMessageType } from './types.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
@@ -27,6 +27,8 @@ export class ChannelFeedElement extends LitElement {
   @property({ type: Boolean }) autoScroll = true;
   @property({ type: Number }) staleCursorMinutes = 30;
   @property({ attribute: false }) renderContextHeader?: () => TemplateResult;
+  @property({ type: String }) viewMode: 'flat' | 'threaded' | 'topics' = 'flat';
+  @property({ type: Array }) topics: QhorusTopic[] = [];
   @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
   @property({ attribute: false }) formatSender?: (sender: string, actorType: ActorType) => string;
 
@@ -89,6 +91,25 @@ export class ChannelFeedElement extends LitElement {
       text-align: left;
     }
     .stale-prompt button:hover { background: var(--pages-neutral-3, #e5e5e5); }
+    .topic-section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--pages-space-2, 8px);
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px) var(--pages-space-1, 4px);
+      font-size: var(--pages-font-size-sm, 13px);
+      font-weight: var(--pages-font-weight-semibold, 600);
+      color: var(--pages-neutral-10, #555);
+      border-top: 1px solid var(--pages-neutral-3, #e5e5e5);
+    }
+    .topic-section-header:first-child { border-top: none; }
+    .topic-section-header .state-badge {
+      font-size: var(--pages-font-size-xs, 11px);
+      font-weight: normal;
+      opacity: 0.7;
+    }
+    .topic-section.resolved .topic-section-header { opacity: 0.6; }
+    .topic-section.archived .topic-section-header { opacity: 0.5; font-style: italic; }
+    .threaded-entry { padding: var(--pages-space-1, 4px) 0; }
   `;
 
   private _loadCursors(): Record<string, { id: string; ts: number }> {
@@ -246,6 +267,85 @@ export class ChannelFeedElement extends LitElement {
   }
 
   private _renderFeed() {
+    switch (this.viewMode) {
+      case 'threaded': return this._renderThreaded();
+      case 'topics': return this._renderTopics();
+      default: return this._renderFlat();
+    }
+  }
+
+  private _renderThreaded() {
+    const { roots, repliesByParent } = this._separateRootsAndReplies();
+    const reactionIndex = this._buildReactionIndex();
+    return roots.map(msg => repliesByParent.has(msg.id) ? html`
+      <div class="threaded-entry">
+        <channel-thread .rootMessage=${msg}
+                       .replies=${repliesByParent.get(msg.id)!}
+                       .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
+                       .renderContent=${this.renderContent}
+                       .formatSender=${this.formatSender}>
+        </channel-thread>
+      </div>
+    ` : html`
+      <div class="threaded-entry">
+        <channel-message .message=${msg}
+                        .reactions=${reactionIndex.get(msg.id) ?? []}
+                        .showActorBadge=${true}
+                        .channelName=${this.channelName}
+                        .renderContent=${this.renderContent}
+                        .formatSender=${this.formatSender}>
+        </channel-message>
+      </div>
+    `);
+  }
+
+  private _renderTopics() {
+    const reactionIndex = this._buildReactionIndex();
+    const byTopic = new Map<string, QhorusMessage[]>();
+    for (const m of this.messages) {
+      const key = m.topicId ?? '';
+      const list = byTopic.get(key) ?? [];
+      list.push(m);
+      byTopic.set(key, list);
+    }
+    const stateOrder = (s: string) => s === 'ACTIVE' ? 0 : s === 'RESOLVED' ? 1 : 2;
+    const sortedTopics = this.topics
+      .filter(t => byTopic.has(t.id))
+      .sort((a, b) => stateOrder(a.state) - stateOrder(b.state));
+
+    return sortedTopics.map(t => {
+      const msgs = byTopic.get(t.id) ?? [];
+      const stateClass = t.state === 'RESOLVED' ? 'resolved' : t.state === 'ARCHIVED' ? 'archived' : '';
+      return html`
+        <div class="topic-section ${stateClass}">
+          <div class="topic-section-header">
+            <span>${t.name}</span>
+            ${t.state !== 'ACTIVE' ? html`<span class="state-badge">${t.state}</span>` : nothing}
+          </div>
+          ${this._groupFlat(msgs).map(group => html`
+            <div class="message-group">
+              <div class="message-group-header">
+                <span class="group-sender">${group.sender}</span>
+              </div>
+              ${group.messages.map(msg => html`
+                <div class="${this._messageItemClasses(msg)}">
+                  <channel-message .message=${msg}
+                                  .reactions=${reactionIndex.get(msg.id) ?? []}
+                                  .showActorBadge=${group.messages.indexOf(msg) === 0}
+                                  .channelName=${this.channelName}
+                                  .renderContent=${this.renderContent}
+                                  .formatSender=${this.formatSender}>
+                  </channel-message>
+                </div>
+              `)}
+            </div>
+          `)}
+        </div>
+      `;
+    });
+  }
+
+  private _renderFlat() {
     const { roots, repliesByParent } = this._separateRootsAndReplies();
     const reactionIndex = this._buildReactionIndex();
     return this._groupFlat(roots).map(group => html`
