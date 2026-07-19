@@ -281,4 +281,86 @@ describe('channel-input', () => {
     const select = el.shadowRoot!.querySelector('.type-selector select') as HTMLSelectElement;
     expect(select.options.length).toBe(9);
   });
+
+  // --- Topic Selector ---
+
+  const TOPICS = [
+    { id: 't1', channelId: 'ch-1', name: 'General', state: 'ACTIVE' as const, messageCount: 5, createdAt: '2026-01-01T00:00:00Z' },
+    { id: 't2', channelId: 'ch-1', name: 'deployment', state: 'ACTIVE' as const, messageCount: 3, createdAt: '2026-01-01T00:00:00Z' },
+  ];
+
+  it('shows topic pill when showTopicSelector is true', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = true;
+    el.topic = 'General';
+    el.topicId = 't1';
+    el.topics = TOPICS;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const pill = el.shadowRoot!.querySelector('.topic-pill');
+    expect(pill).not.toBeNull();
+    expect(pill?.textContent).toContain('General');
+  });
+
+  it('hides topic pill when showTopicSelector is false', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.topic-pill')).toBeNull();
+  });
+
+  it('shows escape hatch + button when showTopicSelector is false', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.new-topic-btn')).not.toBeNull();
+  });
+
+  it('hides escape hatch + button when showTopicSelector is true', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = true;
+    el.topics = TOPICS;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.new-topic-btn')).toBeNull();
+  });
+
+  it('includes topicId in send payload when topic selector is active', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = true;
+    el.topicId = 't2';
+    el.topic = 'deployment';
+    el.topics = TOPICS;
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const handler = vi.fn();
+    el.addEventListener('pages-event', handler);
+    const textarea = el.shadowRoot!.querySelector('textarea')!;
+    textarea.value = 'test message';
+    textarea.dispatchEvent(new Event('input'));
+    textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    const payload = handler.mock.calls[0]![0]!.detail.payload;
+    expect(payload.topicId).toBe('t2');
+  });
+
+  it('shows read-only topic pill when replying', async () => {
+    const el = document.createElement('channel-input') as any;
+    el.channelId = 'ch-1';
+    el.showTopicSelector = true;
+    el.topic = 'deployment';
+    el.topicId = 't2';
+    el.topics = TOPICS;
+    el.replyTo = { messageId: 'm1', senderName: 'alice' };
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const pill = el.shadowRoot!.querySelector('.topic-pill');
+    expect(pill?.classList.contains('read-only')).toBe(true);
+  });
 });

@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
-import { MESSAGE_TYPES, type MessageType } from './types.js';
+import { MESSAGE_TYPES, type MessageType, type QhorusTopic } from './types.js';
 
 @customElement('channel-input')
 export class ChannelInputElement extends LitElement {
@@ -13,6 +13,10 @@ export class ChannelInputElement extends LitElement {
   @property({ attribute: false }) allowedTypes?: MessageType[];
   @property({ attribute: false }) deniedTypes?: MessageType[];
   @property({ attribute: false }) renderError?: (error: string) => TemplateResult;
+  @property({ type: String }) topic = '';
+  @property({ type: String }) topicId = '';
+  @property({ type: Array }) topics: QhorusTopic[] = [];
+  @property({ type: Boolean }) showTopicSelector = false;
 
   @state() private _text = '';
   @state() private _error = '';
@@ -82,6 +86,38 @@ export class ChannelInputElement extends LitElement {
       color: var(--pages-danger-11, #991b1b);
       margin-top: var(--pages-space-1, 4px);
     }
+    .topic-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--pages-space-1, 4px);
+      padding: var(--pages-space-1, 4px) var(--pages-space-2, 8px);
+      border-radius: var(--pages-radius-full, 9999px);
+      border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      background: var(--pages-accent-2, #eef2ff);
+      color: var(--pages-accent-11, #3730a3);
+      font-size: var(--pages-font-size-xs, 11px);
+      cursor: pointer;
+      margin-bottom: var(--pages-space-2, 8px);
+    }
+    .topic-pill.read-only {
+      cursor: default;
+      opacity: 0.7;
+    }
+    .new-topic-btn {
+      background: none;
+      border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-full, 9999px);
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--pages-neutral-8, #888);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--pages-space-2, 8px);
+    }
+    .new-topic-btn:hover { background: var(--pages-neutral-3, #e5e5e5); }
   `;
 
   computeAvailableTypes(): MessageType[] {
@@ -123,6 +159,7 @@ export class ChannelInputElement extends LitElement {
       content,
       ...(this.replyTo ? { inReplyTo: this.replyTo.messageId } : {}),
       ...(this.showTypeSelector ? { speechAct: this._selectedType } : {}),
+      ...(this.showTopicSelector && this.topicId ? { topicId: this.topicId } : {}),
     });
 
     this._text = '';
@@ -153,6 +190,11 @@ export class ChannelInputElement extends LitElement {
           <button class="reply-cancel" aria-label="Cancel reply" @click=${this._cancelReply}>✕</button>
         </div>
       ` : nothing}
+      ${this.showTopicSelector ? html`
+        <span class="topic-pill ${this.replyTo ? 'read-only' : ''}">${this.topic || 'General'}</span>
+      ` : html`
+        <button class="new-topic-btn" aria-label="New topic">+</button>
+      `}
       ${this.showTypeSelector ? html`
         <div class="type-selector">
           <select @change=${this._onTypeChange} .value=${this._selectedType}>
