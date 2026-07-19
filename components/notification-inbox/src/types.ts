@@ -188,6 +188,20 @@ export interface DeliveryChannelDescriptor {
   readonly defaultDigestSchedule: DigestSchedule | null;
 }
 
+// Event type descriptors (for subscription editor's event type picker)
+export interface EventFieldDescriptor {
+  readonly name: string;
+  readonly type: string;
+  readonly description: string;
+}
+
+export interface EventTypeDescriptor {
+  readonly eventType: string;
+  readonly displayName: string;
+  readonly description: string;
+  readonly fields: readonly EventFieldDescriptor[];
+}
+
 // SSE event types
 export type SSENotificationEventType = 'notification' | 'notification-updated' | 'unread-count';
 

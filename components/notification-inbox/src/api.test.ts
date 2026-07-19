@@ -9,6 +9,7 @@ import type {
   Snooze,
   NotificationPreferences,
   DeliveryChannelDescriptor,
+  EventTypeDescriptor,
 } from './types.js';
 
 describe('NotificationApi', () => {
@@ -574,6 +575,43 @@ describe('NotificationApi', () => {
       await api.getChannels();
 
       expect(mockFetch).toHaveBeenCalledWith('https://api.test/channels');
+    });
+  });
+
+  describe('getEventTypes', () => {
+    it('lists event types', async () => {
+      const mockTypes: EventTypeDescriptor[] = [
+        {
+          eventType: 'case.created',
+          displayName: 'Case Created',
+          description: 'Fired when a new case is created',
+          fields: [
+            { name: 'caseId', type: 'string', description: 'The case identifier' },
+          ],
+        },
+      ];
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => mockTypes,
+      });
+
+      const result = await api.getEventTypes();
+
+      expect(result).toEqual(mockTypes);
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.test/subscriptions/event-types',
+      );
+    });
+
+    it('validates response is an array', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ invalid: 'shape' }),
+      });
+
+      await expect(api.getEventTypes()).rejects.toThrow(ApiError);
     });
   });
 

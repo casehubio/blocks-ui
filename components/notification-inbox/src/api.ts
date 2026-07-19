@@ -15,6 +15,7 @@ import type {
   NotificationPreferences,
   NotificationPreferenceUpdate,
   DeliveryChannelDescriptor,
+  EventTypeDescriptor,
 } from './types.js';
 
 /**
@@ -251,6 +252,16 @@ export class NotificationApi {
     return this.get<DeliveryChannelDescriptor[]>(url, (data) => {
       if (!Array.isArray(data)) {
         throw new ApiError(200, 'Invalid response: expected array of channels');
+      }
+      return true;
+    });
+  }
+
+  async getEventTypes(): Promise<readonly EventTypeDescriptor[]> {
+    const url = this.buildUrl('/subscriptions/event-types');
+    return this.get<EventTypeDescriptor[]>(url, (data) => {
+      if (!Array.isArray(data)) {
+        throw new ApiError(200, 'Invalid response: expected array of event types');
       }
       return true;
     });
