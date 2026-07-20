@@ -1,0 +1,284 @@
+import { LitElement, html, css, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { ColumnType, columnId as toColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { TypedDataSet, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import '@casehubio/blocks-ui-list-pane';
+import type { TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { EntityTypeRegistration, EntityListResponse, EntityInstance, EntitySelection, FilterDescriptor } from './types.js';
+
+const ENTITY_ID_COLUMN = toColumnId('_entityId');
+
+export const EntityListTopics = {
+  ENTITY_SELECTED: 'entity.selected',
+} as const;
+
+@customElement('entity-list')
+export class EntityList extends LiveRegionMixin(LitElement) {
+  @property({ attribute: false }) registration?: EntityTypeRegistration;
+  @property({ type: String }) endpoint = '';
+  @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
+  @property({ attribute: false }) fetchFn: typeof fetch = fetch;
+  @property({ type: Number, attribute: 'page-size' }) pageSize = 25;
+
+  @state() _loading = false;
+  @state() _error: string | null = null;
+  @state() private _entities: EntityInstance[] = [];
+  @state() private _nextCursor: string | null = null;
+  @state() private _dataSet: TypedDataSet | undefined;
+  @state() private _filters: Record<string, string> = {};
+
+  static override styles = css`
+    :host { display: block; }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--pages-border-color, #ccc);
+    }
+
+    .filter-bar label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8125rem;
+    }
+
+    .filter-bar select, .filter-bar input {
+      padding: 4px 8px;
+      border: 1px solid var(--pages-border-color, #ccc);
+      border-radius: 4px;
+      font-size: 0.8125rem;
+    }
+
+    .load-more {
+      display: flex;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .load-more button {
+      padding: 6px 16px;
+      border: 1px solid var(--pages-border-color, #ccc);
+      border-radius: 4px;
+      background: var(--pages-surface-color, #fff);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .load-more button:hover { background: var(--pages-hover-color, #f0f0f0); }
+
+    .error {
+      padding: 16px;
+      color: var(--pages-danger-color, #dc3545);
+      text-align: center;
+    }
+
+    .error button {
+      margin-left: 8px;
+      padding: 4px 12px;
+      border: 1px solid var(--pages-border-color, #ccc);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  `;
+
+  private _prevRegistrationType: string | undefined;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this._prevRegistrationType = this.registration?.type;
+    this._fetchEntities();
+  }
+
+  override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+    if (changed.has('registration') && this.registration) {
+      const newType = this.registration.type;
+      if (this._prevRegistrationType !== undefined && this._prevRegistrationType !== newType) {
+        this._resetAndFetch();
+      }
+      this._prevRegistrationType = newType;
+    }
+  }
+
+  override render(): TemplateResult {
+    const reg = this.registration;
+    if (!reg) return html``;
+
+    return html`
+      ${this._renderFilters(reg.filters)}
+      ${this._error ? html`
+        <div class="error" role="alert">
+          ${this._error}
+          <button @click=${() => this._fetchEntities()}>Retry</button>
+        </div>
+      ` : nothing}
+      <list-pane
+        .dataSet=${this._dataSet}
+        .columnConfig=${[{ id: ENTITY_ID_COLUMN, visible: false }, ...reg.columnConfig]}
+        .columnRenderers=${reg.columnRenderers ? new Map(Object.entries(reg.columnRenderers)) : undefined}
+        .getRowKey=${this._getRowKey}
+        .loading=${this._loading}
+        .pageSize=${this.pageSize}
+        selection-topic=${this.selectionTopic ? `${this.selectionTopic}:_internal` : ''}
+        @row-activate=${this._onRowActivate}
+      ></list-pane>
+      ${this._nextCursor ? html`
+        <div class="load-more">
+          <button @click=${() => this._loadMore()} ?disabled=${this._loading}>Load more</button>
+        </div>
+      ` : nothing}
+    `;
+  }
+
+  private _renderFilters(filters?: readonly FilterDescriptor[]): TemplateResult | typeof nothing {
+    if (!filters || filters.length === 0) return nothing;
+    return html`
+      <div class="filter-bar">
+        ${filters.map(f => this._renderFilter(f))}
+      </div>
+    `;
+  }
+
+  private _renderFilter(filter: FilterDescriptor): TemplateResult {
+    switch (filter.type) {
+      case 'select':
+        return html`
+          <label>
+            ${filter.label}
+            <select @change=${(e: Event) => this._onFilterChange(filter.field, (e.target as HTMLSelectElement).value)}>
+              <option value="">All</option>
+              ${(filter.options ?? []).map(o => html`<option value=${o.value}>${o.label}</option>`)}
+            </select>
+          </label>
+        `;
+      case 'text':
+        return html`
+          <label>
+            ${filter.label}
+            <input type="text" @input=${(e: Event) => this._onFilterChange(filter.field, (e.target as HTMLInputElement).value)} />
+          </label>
+        `;
+      default:
+        return html``;
+    }
+  }
+
+  private _getRowKey = (row: TypedRow): string => {
+    return row.text(ENTITY_ID_COLUMN);
+  };
+
+  private _onFilterChange(field: string, value: string): void {
+    if (value) {
+      this._filters = { ...this._filters, [field]: value };
+    } else {
+      const next = { ...this._filters };
+      delete next[field];
+      this._filters = next;
+    }
+    this._resetAndFetch();
+  }
+
+  private _resetAndFetch(): void {
+    this._entities = [];
+    this._nextCursor = null;
+    this._dataSet = undefined;
+    this._fetchEntities();
+  }
+
+  private _onRowActivate = (e: Event): void => {
+    const detail = (e as CustomEvent).detail;
+    const index = detail?.index ?? 0;
+    const entity = this._entities[index];
+    if (entity) {
+      this._handleRowActivation({ id: entity.id, type: entity.type });
+    }
+  };
+
+  _handleRowActivation(selection: EntitySelection): void {
+    if (this.selectionTopic) {
+      emitPagesEvent(document, `${this.selectionTopic}:selected`, selection);
+    }
+  }
+
+  private async _fetchEntities(cursor?: string): Promise<void> {
+    const reg = this.registration;
+    if (!reg) return;
+
+    const endpoint = reg.listEndpoint ?? this.endpoint;
+    if (!endpoint) return;
+
+    this._loading = true;
+    this._error = null;
+
+    try {
+      const url = new URL(endpoint, window.location.origin);
+      url.searchParams.set('limit', String(this.pageSize));
+      if (cursor) url.searchParams.set('cursor', cursor);
+      for (const [key, value] of Object.entries(this._filters)) {
+        url.searchParams.set(key, value);
+      }
+
+      const response = await this.fetchFn(url.toString(), {
+        headers: { 'Accept': 'application/json' },
+      });
+
+      if (!response.ok) {
+        this._error = `Failed to load: ${response.statusText}`;
+        this.announce(`Error loading ${reg.label}: ${response.statusText}`);
+        return;
+      }
+
+      const data: EntityListResponse = await response.json();
+
+      if (cursor) {
+        this._entities = [...this._entities, ...data.entities];
+      } else {
+        this._entities = [...data.entities];
+      }
+
+      this._nextCursor = data.nextCursor ?? null;
+      this._dataSet = this._buildDataSet(this._entities, reg);
+      this.announce(`Loaded ${String(this._entities.length)} ${reg.label.toLowerCase()}`);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      this._error = `Failed to load: ${message}`;
+      this.announce(`Error loading ${reg.label}: ${message}`);
+    } finally {
+      this._loading = false;
+    }
+  }
+
+  private _loadMore(): void {
+    if (this._nextCursor) {
+      this._fetchEntities(this._nextCursor);
+    }
+  }
+
+  private _buildDataSet(entities: readonly EntityInstance[], reg: EntityTypeRegistration): TypedDataSet {
+    const idColumn = {
+      id: ENTITY_ID_COLUMN,
+      name: '_entityId',
+      type: ColumnType.TEXT,
+      getValue: (entity: EntityInstance): unknown => entity.id,
+    };
+
+    const dataColumns = reg.columnConfig.map(col => ({
+      id: col.id,
+      name: col.label ?? String(col.id),
+      type: ColumnType.TEXT,
+      getValue: (entity: EntityInstance): unknown => {
+        const key = String(col.id);
+        if (key in entity) return (entity as unknown as Record<string, unknown>)[key];
+        return entity.state[key];
+      },
+    }));
+
+    return fromRows(entities, [idColumn, ...dataColumns]);
+  }
+}

@@ -1,0 +1,19 @@
+import { LitElement, html, type TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import type { ColumnRenderer, FilterDescriptor } from '../types.js';
+import { caseInstanceType } from '../presets.js';
+import '../entity-list.js';
+
+@customElement('case-instance-list')
+export class CaseInstanceList extends LitElement {
+  @property({ type: String }) endpoint = '';
+  @property({ attribute: false }) columnRenderers?: Record<string, ColumnRenderer>;
+  @property({ attribute: false }) filters?: readonly FilterDescriptor[];
+  @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'case';
+  @property({ attribute: false }) fetchFn: typeof fetch = fetch;
+
+  override render(): TemplateResult {
+    const reg = { ...caseInstanceType({ listEndpoint: this.endpoint }), columnRenderers: this.columnRenderers, filters: this.filters };
+    return html`<entity-list .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></entity-list>`;
+  }
+}

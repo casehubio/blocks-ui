@@ -24,6 +24,7 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-split-workbench', replacement: resolve(__dirname, '../components/split-workbench/src') },
       { find: '@casehubio/blocks-ui-list-pane', replacement: resolve(__dirname, '../components/list-pane/src') },
       { find: '@casehubio/blocks-ui-detail-pane', replacement: resolve(__dirname, '../components/detail-pane/src') },
+      { find: '@casehubio/blocks-ui-case-explorer', replacement: resolve(__dirname, '../components/case-explorer/src') },
       { find: '@casehubio/pages-ui-tokens', replacement: resolve(__dirname, '../../pages/packages/pages-ui-tokens/src') },
       { find: /^@casehubio\/pages-component\/dist\/(.*)/, replacement: resolve(__dirname, '../../pages/packages/pages-component/src/$1') },
       { find: '@casehubio/pages-component', replacement: resolve(__dirname, '../../pages/packages/pages-component/src') },

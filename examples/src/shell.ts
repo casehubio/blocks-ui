@@ -40,6 +40,7 @@ const NAV: NavCategory[] = [
       { id: 'gdpr-erasure', label: 'GDPR Erasure', hash: '#components/gdpr-erasure' },
       { id: 'sla-breach-policy', label: 'SLA Breach Policy', hash: '#components/sla-breach-policy' },
       { id: 'grouped-data-view', label: 'Grouped Data View', hash: '#components/grouped-data-view' },
+      { id: 'case-explorer', label: 'Case Explorer', hash: '#components/case-explorer' },
     ],
   },
   {
@@ -200,6 +201,7 @@ export class ExampleShell extends LitElement {
       case '#components/gdpr-erasure': return html`<gdpr-erasure-page></gdpr-erasure-page>`;
       case '#components/sla-breach-policy': return html`<sla-breach-policy-page></sla-breach-policy-page>`;
       case '#components/grouped-data-view': return html`<grouped-data-view-page></grouped-data-view-page>`;
+      case '#components/case-explorer': return html`<case-explorer-page></case-explorer-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }

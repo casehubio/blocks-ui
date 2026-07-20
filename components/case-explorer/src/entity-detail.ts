@@ -1,0 +1,317 @@
+import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
+import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import './entity-command-bar.js';
+import type { EntityTypeRegistration, EntityInstance, EntitySelection, DetailRenderer } from './types.js';
+
+@customElement('entity-detail')
+export class EntityDetail extends LiveRegionMixin(LitElement) {
+  @property({ attribute: false }) registration: EntityTypeRegistration | undefined;
+  @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
+  @property({ attribute: false }) fetchFn: typeof fetch = fetch;
+
+  @state() private _entity: EntityInstance | null = null;
+  @state() _loading = false;
+  @state() _error: string | null = null;
+  @state() private _activeTab = 0;
+
+  private _unsubs: Array<() => void> = [];
+
+  static override styles = css`
+    :host { display: block; height: 100%; overflow-y: auto; }
+
+    .empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--pages-muted-color, #999);
+      font-size: 0.875rem;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      color: var(--pages-muted-color, #999);
+    }
+
+    .error {
+      padding: 16px;
+      color: var(--pages-danger-color, #dc3545);
+      text-align: center;
+    }
+
+    .error button {
+      margin-left: 8px;
+      padding: 4px 12px;
+      border: 1px solid var(--pages-border-color, #ccc);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--pages-border-color, #ccc);
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .header .status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--pages-surface-color, #f0f0f0);
+      margin-left: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--pages-border-color, #ccc);
+    }
+
+    .tabs button {
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      border-bottom: 2px solid transparent;
+      color: var(--pages-muted-color, #999);
+    }
+
+    .tabs button[aria-selected="true"] {
+      color: var(--pages-text-color, #333);
+      border-bottom-color: var(--pages-primary-color, #0066cc);
+    }
+
+    .tabs button:hover {
+      color: var(--pages-text-color, #333);
+    }
+
+    .tab-content { padding: 16px; }
+
+    .state-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .state-table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--pages-border-color, #eee);
+    }
+
+    .state-table td:first-child {
+      font-weight: 500;
+      color: var(--pages-muted-color, #666);
+      width: 30%;
+    }
+
+    .command-section {
+      padding: 12px 16px;
+      border-top: 1px solid var(--pages-border-color, #ccc);
+    }
+  `;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (this.selectionTopic) {
+      this._unsubs.push(
+        onPagesEvent(document, `${this.selectionTopic}:selected`, (payload: unknown) => {
+          this.handleSelection(payload as EntitySelection);
+        }),
+      );
+    }
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._unsubs.forEach(fn => fn());
+    this._unsubs = [];
+  }
+
+  handleSelection(selection: EntitySelection): void {
+    this._fetchEntity(selection.id);
+  }
+
+  override render(): TemplateResult {
+    if (this._loading) {
+      return html`<div class="loading" role="status">Loading...</div>`;
+    }
+
+    if (this._error) {
+      return html`
+        <div class="error" role="alert">
+          ${this._error}
+          <button @click=${() => { if (this._entity) this._fetchEntity(this._entity.id); }}>Retry</button>
+        </div>
+      `;
+    }
+
+    if (!this._entity) {
+      return html`<div class="empty">Select an item to view details</div>`;
+    }
+
+    const tabs = this._buildTabs();
+
+    return html`
+      <div class="header">
+        <h2>${this._entity.summary}<span class="status">${this._entity.status}</span></h2>
+      </div>
+      ${tabs.length > 1 ? html`
+        <div class="tabs" role="tablist">
+          ${tabs.map((tab, i) => html`
+            <button
+              role="tab"
+              aria-selected=${i === this._activeTab ? 'true' : 'false'}
+              @click=${() => { this._activeTab = i; }}
+              @keydown=${(e: KeyboardEvent) => this._handleTabKeydown(e, i, tabs.length)}
+            >${tab.label}</button>
+          `)}
+        </div>
+      ` : nothing}
+      <div class="tab-content" role="tabpanel">
+        ${tabs[this._activeTab]?.render() ?? nothing}
+      </div>
+      ${this._entity.availableCommands.length > 0 ? html`
+        <div class="command-section">
+          <entity-command-bar
+            .commands=${this._entity.availableCommands}
+            entity-id=${this._entity.id}
+            entity-type=${this._entity.type}
+            .fetchFn=${this.fetchFn}
+          ></entity-command-bar>
+        </div>
+      ` : nothing}
+    `;
+  }
+
+  private _buildTabs(): Array<{ label: string; render: () => TemplateResult }> {
+    const entity = this._entity!;
+    const reg = this.registration;
+    const tabs: Array<{ label: string; render: () => TemplateResult }> = [];
+
+    tabs.push({
+      label: 'Overview',
+      render: () => this._renderOverview(entity),
+    });
+
+    if (reg?.relationships) {
+      for (const rel of reg.relationships) {
+        tabs.push({
+          label: rel.label,
+          render: () => this._renderRelationship(rel, entity.id),
+        });
+      }
+    }
+
+    return tabs;
+  }
+
+  private _renderOverview(entity: EntityInstance): TemplateResult {
+    const renderer = this._resolveRenderer(entity);
+    if (renderer) {
+      return renderer(entity);
+    }
+    return this._renderDefaultState(entity);
+  }
+
+  private _resolveRenderer(entity: EntityInstance): DetailRenderer | undefined {
+    const reg = this.registration;
+    if (!reg) return undefined;
+
+    if (reg.detailRendererMap) {
+      const subTypeRenderer = reg.detailRendererMap[entity.type];
+      if (typeof subTypeRenderer === 'function') {
+        return subTypeRenderer as DetailRenderer;
+      }
+    }
+
+    if (reg.detailRenderer) {
+      return reg.detailRenderer;
+    }
+
+    return undefined;
+  }
+
+  private _renderDefaultState(entity: EntityInstance): TemplateResult {
+    const entries = Object.entries(entity.state);
+    if (entries.length === 0) {
+      return html`<p>No state data available.</p>`;
+    }
+    return html`
+      <table class="state-table">
+        <tbody>
+          ${entries.map(([key, value]) => html`
+            <tr>
+              <td>${key}</td>
+              <td>${typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
+            </tr>
+          `)}
+        </tbody>
+      </table>
+    `;
+  }
+
+  private _renderRelationship(rel: { childType: string; label: string; endpointTemplate: string }, parentId: string): TemplateResult {
+    const endpoint = rel.endpointTemplate.replace('{parentId}', parentId);
+    return html`<entity-list .endpoint=${endpoint} .registration=${this._getChildRegistration(rel.childType)} .fetchFn=${this.fetchFn}></entity-list>`;
+  }
+
+  private _getChildRegistration(childType: string): EntityTypeRegistration | undefined {
+    return undefined;
+  }
+
+  private _handleTabKeydown(e: KeyboardEvent, index: number, total: number): void {
+    let target = index;
+    if (e.key === 'ArrowRight') target = (index + 1) % total;
+    else if (e.key === 'ArrowLeft') target = (index - 1 + total) % total;
+    else return;
+
+    e.preventDefault();
+    this._activeTab = target;
+    const tabs = this.shadowRoot!.querySelectorAll('[role="tab"]');
+    (tabs[target] as HTMLElement)?.focus();
+  }
+
+  private async _fetchEntity(id: string): Promise<void> {
+    const reg = this.registration;
+    if (!reg) return;
+
+    this._loading = true;
+    this._error = null;
+    this._activeTab = 0;
+
+    try {
+      const url = reg.detailEndpoint(id);
+      const fullUrl = url.startsWith('http') ? url : new URL(url, window.location.origin).toString();
+      const response = await this.fetchFn(fullUrl, {
+        headers: { 'Accept': 'application/json' },
+      });
+
+      if (!response.ok) {
+        this._error = `Failed to load: ${response.statusText}`;
+        this.announce(`Error loading detail: ${response.statusText}`);
+        return;
+      }
+
+      this._entity = await response.json();
+      this.announce(`Loaded ${this._entity!.summary}`);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      this._error = `Failed to load: ${message}`;
+      this.announce(`Error loading detail: ${message}`);
+    } finally {
+      this._loading = false;
+    }
+  }
+}
