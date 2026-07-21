@@ -79,11 +79,11 @@ export class TrustWorkbenchPage extends LitElement {
   @state() private _eventLog: string[] = [];
 
   static override styles = css`
-    :host { display: block; padding: 24px; height: calc(100vh - 48px); }
-    h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
-    p { margin: 0 0 16px; color: var(--pages-neutral-11, #555); font-size: 14px; }
-    .workbench-container { height: calc(100% - 100px); border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 6px; overflow: hidden; }
-    .event-log { margin-top: 12px; padding: 8px 12px; background: var(--pages-neutral-2, #f5f5f5); border-radius: 4px; max-height: 80px; overflow-y: auto; font-size: 12px; font-family: monospace; color: var(--pages-neutral-11, #555); }
+    :host { display: flex; flex-direction: column; padding: 24px; height: calc(100vh - 48px); }
+    h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); flex-shrink: 0; }
+    p { margin: 0 0 16px; color: var(--pages-neutral-11, #555); font-size: 14px; flex-shrink: 0; }
+    .workbench-container { flex: 1; min-height: 0; border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 6px; overflow: hidden; }
+    .event-log { flex-shrink: 0; margin-top: 12px; padding: 8px 12px; background: var(--pages-neutral-2, #f5f5f5); border-radius: 4px; max-height: 80px; overflow-y: auto; font-size: 12px; font-family: monospace; color: var(--pages-neutral-11, #555); }
   `;
 
   override connectedCallback(): void {
