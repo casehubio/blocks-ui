@@ -39,6 +39,11 @@ export interface ArtefactRef {
   readonly scope?: SelectionScope;
 }
 
+export interface ResolvedArtifact {
+  readonly content: string;
+  readonly language?: string;
+}
+
 export interface ChatMessageRef {
   readonly platform: string;
   readonly externalId: string;
@@ -52,7 +57,7 @@ export interface QhorusMessage {
   readonly actorType: ActorType;
   readonly content: string;
   readonly topic: string;
-  readonly topicId: string;
+  readonly topicId?: string;
   readonly correlationId?: string;
   readonly inReplyTo?: string;
   readonly parentRef?: ChatMessageRef;
