@@ -1,6 +1,6 @@
 {
   "name": "@casehubio/blocks-ui-channel-activity",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Qhorus channel activity — message feed, channel nav, member panel, speech-act badges",
   "repository": {
     "type": "git",

@@ -29,8 +29,8 @@ export function toCommitmentRecord(raw: RawCommitment): CommitmentRecord {
 
   return {
     state: raw.state as CommitmentState,
-    deadline: raw.expiresAt ?? undefined,
-    acknowledgedAt: raw.acknowledgedAt ?? undefined,
+    ...(raw.expiresAt != null ? { deadline: raw.expiresAt } : {}),
+    ...(raw.acknowledgedAt != null ? { acknowledgedAt: raw.acknowledgedAt } : {}),
     createdAt: raw.createdAt ?? new Date().toISOString(),
     updatedAt,
   };

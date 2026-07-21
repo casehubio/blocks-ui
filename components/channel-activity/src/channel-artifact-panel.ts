@@ -9,8 +9,8 @@ export class ChannelArtifactPanelElement extends LitElement {
 
   @state() private _history: ArtefactRef[] = [];
   @state() private _historyIndex = -1;
-  @state() private _content?: string;
-  @state() private _language?: string;
+  @state() private _content?: string | undefined;
+  @state() private _language?: string | undefined;
 
   static override readonly styles = css`
     :host {

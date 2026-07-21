@@ -10,3 +10,7 @@ export { ChannelFeedElement } from './channel-feed.js';
 export { ChannelNavElement } from './channel-nav.js';
 export { ChannelMemberPanelElement } from './channel-member-panel.js';
 export { ChannelTopicBarElement } from './channel-topic-bar.js';
+export * from './commitment.js';
+export { ChannelTaskPanelElement } from './channel-task-panel.js';
+export { ChannelCorrelationPanelElement } from './channel-correlation-panel.js';
+export { ChannelArtifactPanelElement } from './channel-artifact-panel.js';
