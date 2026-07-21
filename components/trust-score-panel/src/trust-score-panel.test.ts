@@ -269,7 +269,7 @@ describe('trust-score-panel', () => {
   });
 
   describe('Events', () => {
-    it('emits trust.capability-selected on capability row click', async () => {
+    it('emits trust:capability-selected on capability row click', async () => {
       const mockResponse: TrustScoreResponse = {
         actorId: 'agent-123',
         globalScore: 0.85,
@@ -293,9 +293,9 @@ describe('trust-score-panel', () => {
       let eventFired = false;
       let eventDetail: any;
       el.addEventListener('pages-event', ((e: CustomEvent) => {
-        if (e.detail.topic === 'trust.capability-selected') {
+        if (e.detail.topic === 'trust:capability-selected') {
           eventFired = true;
-          eventDetail = e.detail.data;
+          eventDetail = e.detail.payload;
         }
       }) as EventListener);
 

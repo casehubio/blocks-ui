@@ -42,7 +42,7 @@ const TABLE_CONFIG: readonly TableColumnConfig[] = [
   { id: STATUS_COL, sortable: false },
 ];
 
-const PHASE_STYLES: Record<string, string> = {
+export const PHASE_STYLES: Record<string, string> = {
   BOOTSTRAP: 'background: var(--pages-neutral-3, #e9ecef); color: var(--pages-neutral-11, #495057);',
   QUALIFIED: 'background: var(--pages-success-3, #d4edda); color: var(--pages-success-11, #155724);',
   BORDERLINE: 'background: var(--pages-warning-3, #fff3cd); color: var(--pages-warning-11, #856404);',

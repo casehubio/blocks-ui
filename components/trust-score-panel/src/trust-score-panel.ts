@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin, TrendSourceMixin, renderSparkline } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, TrendSourceMixin, renderSparkline, emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
@@ -376,16 +376,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     const row = e.detail.row as TypedRow;
     const tag = row.text(TAG_COL);
     const score = row.number(SCORE_COL);
-    this.dispatchEvent(
-      new CustomEvent('pages-event', {
-        bubbles: true,
-        composed: true,
-        detail: {
-          topic: 'trust.capability-selected',
-          data: { tag, score, actorId: this.actorId },
-        },
-      })
-    );
+    emitPagesEvent(this, 'trust:capability-selected', { tag, score, actorId: this.actorId });
   }
 
   private _renderTrendSection() {
