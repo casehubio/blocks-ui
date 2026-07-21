@@ -125,23 +125,23 @@ describe('ChannelTopicBarElement', () => {
     expect(allPill?.classList.contains('active')).toBe(true);
   });
 
-  it('emits channel:view-mode on mode toggle click', async () => {
+  it('emits channel:view-mode on Topics toggle click', async () => {
     const el = await createElement([makeTopic()]);
     const handler = vi.fn();
     el.addEventListener('pages-event', handler);
-    const threadedBtn = el.shadowRoot!.querySelector('[data-mode="threaded"]');
-    threadedBtn?.dispatchEvent(new Event('click', { bubbles: true }));
+    const topicsBtn = el.shadowRoot!.querySelector('.mode-btn');
+    topicsBtn?.dispatchEvent(new Event('click', { bubbles: true }));
     await el.updateComplete;
     expect(handler).toHaveBeenCalled();
     const event = handler.mock.calls[0]![0]! as CustomEvent;
     expect(event.detail.topic).toBe('channel:view-mode');
-    expect(event.detail.payload.mode).toBe('threaded');
+    expect(event.detail.payload.mode).toBe('topics');
   });
 
-  it('highlights the current view mode button', async () => {
-    const el = await createElement([makeTopic()], null, 'threaded');
-    const threadedBtn = el.shadowRoot!.querySelector('[data-mode="threaded"]');
-    expect(threadedBtn?.classList.contains('active')).toBe(true);
+  it('highlights Topics button when active', async () => {
+    const el = await createElement([makeTopic()], null, 'topics');
+    const topicsBtn = el.shadowRoot!.querySelector('.mode-btn');
+    expect(topicsBtn?.classList.contains('active')).toBe(true);
   });
 
   it('dims RESOLVED topic pills', async () => {

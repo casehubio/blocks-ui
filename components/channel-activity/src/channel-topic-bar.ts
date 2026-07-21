@@ -76,22 +76,16 @@ export class ChannelTopicBarElement extends LitElement {
       background: var(--pages-neutral-4, #e5e5e5);
       flex-shrink: 0;
     }
-    .mode-toggle {
-      display: flex;
-      gap: 2px;
-      flex-shrink: 0;
-    }
     .mode-btn {
       padding: var(--pages-space-1, 4px) var(--pages-space-2, 8px);
       border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-full, 9999px);
       background: var(--pages-neutral-1, #fafafa);
       color: var(--pages-neutral-11, #333);
       font-size: var(--pages-font-size-xs, 11px);
       cursor: pointer;
+      flex-shrink: 0;
     }
-    .mode-btn:first-child { border-radius: var(--pages-radius-sm, 4px) 0 0 var(--pages-radius-sm, 4px); }
-    .mode-btn:last-child { border-radius: 0 var(--pages-radius-sm, 4px) var(--pages-radius-sm, 4px) 0; }
-    .mode-btn:not(:first-child) { border-left: none; }
     .mode-btn.active {
       background: var(--pages-accent-3, #e0e7ff);
       border-color: var(--pages-accent-7, #818cf8);
@@ -174,18 +168,9 @@ export class ChannelTopicBarElement extends LitElement {
           </button>
         ` : nothing}
       </div>
-      <div class="separator"></div>
-      <div class="mode-toggle" role="radiogroup" aria-label="View mode">
-        <button class="mode-btn ${this.viewMode === 'flat' ? 'active' : ''}"
-                data-mode="flat" role="radio" aria-checked=${this.viewMode === 'flat' ? 'true' : 'false'}
-                @click=${() => this._onModeClick('flat')}>Flat</button>
-        <button class="mode-btn ${this.viewMode === 'threaded' ? 'active' : ''}"
-                data-mode="threaded" role="radio" aria-checked=${this.viewMode === 'threaded' ? 'true' : 'false'}
-                @click=${() => this._onModeClick('threaded')}>Threaded</button>
-        <button class="mode-btn ${this.viewMode === 'topics' ? 'active' : ''}"
-                data-mode="topics" role="radio" aria-checked=${this.viewMode === 'topics' ? 'true' : 'false'}
-                @click=${() => this._onModeClick('topics')}>Topics</button>
-      </div>
+      <button class="mode-btn ${this.viewMode === 'topics' ? 'active' : ''}"
+              @click=${() => this._onModeClick(this.viewMode === 'topics' ? 'flat' : 'topics')}
+              aria-pressed=${this.viewMode === 'topics' ? 'true' : 'false'}>Topics</button>
     `;
   }
 }

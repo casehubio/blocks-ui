@@ -120,7 +120,6 @@ export class ChannelFeedElement extends LitElement {
     }
     .topic-section.resolved .topic-section-header { opacity: 0.6; }
     .topic-section.archived .topic-section-header { opacity: 0.5; font-style: italic; }
-    .threaded-entry { padding: var(--pages-space-1, 4px) 0; }
   `;
 
   private _loadCursors(): Record<string, { id: string; ts: number }> {
@@ -299,40 +298,7 @@ export class ChannelFeedElement extends LitElement {
   }
 
   private _renderFeed() {
-    switch (this.viewMode) {
-      case 'threaded': return this._renderThreaded();
-      case 'topics': return this._renderTopics();
-      default: return this._renderFlat();
-    }
-  }
-
-  private _renderThreaded() {
-    const { roots, repliesByParent } = this._separateRootsAndReplies();
-    const reactionIndex = this._buildReactionIndex();
-    return roots.map(msg => repliesByParent.has(msg.id) ? html`
-      <div class="threaded-entry" data-message-id=${msg.id}>
-        <channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
-                       .rootMessage=${msg}
-                       .replies=${repliesByParent.get(msg.id)!}
-                       .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
-                       .collapsed=${false}
-                       .selectedMessageId=${this.selectedMessageId}
-                       .renderContent=${this.renderContent}
-                       .formatSender=${this.formatSender}
-                       data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
-        </channel-thread>
-      </div>
-    ` : html`
-      <div class="threaded-entry" data-message-id=${msg.id}>
-        <channel-message .message=${msg}
-                        .reactions=${reactionIndex.get(msg.id) ?? []}
-                        .showActorBadge=${true}
-                        .channelName=${this.channelName}
-                        .renderContent=${this.renderContent}
-                        .formatSender=${this.formatSender}>
-        </channel-message>
-      </div>
-    `);
+    return this.viewMode === 'topics' ? this._renderTopics() : this._renderFlat();
   }
 
   private _renderTopics() {

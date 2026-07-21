@@ -397,37 +397,6 @@ describe('channel-feed', () => {
     expect(el.viewMode).toBe('flat');
   });
 
-  it('threaded mode: renders each root-with-replies as independent thread', async () => {
-    const el = document.createElement('channel-feed') as any;
-    el.viewMode = 'threaded';
-    el.messages = [
-      msg('root1', { sender: 'alice', createdAt: '2026-01-01T00:00:00Z' }),
-      msg('reply1', { sender: 'alice', inReplyTo: 'root1', createdAt: '2026-01-01T00:00:30Z' }),
-      msg('root2', { sender: 'alice', createdAt: '2026-01-01T00:01:00Z' }),
-    ];
-    document.body.appendChild(el);
-    await el.updateComplete;
-
-    const threads = el.shadowRoot!.querySelectorAll('channel-thread');
-    expect(threads.length).toBe(1);
-    const standalones = el.shadowRoot!.querySelectorAll('.threaded-entry > channel-message');
-    expect(standalones.length).toBe(1);
-  });
-
-  it('threaded mode: no sender grouping', async () => {
-    const el = document.createElement('channel-feed') as any;
-    el.viewMode = 'threaded';
-    el.messages = [
-      msg('m1', { sender: 'alice', createdAt: '2026-01-01T00:00:00Z' }),
-      msg('m2', { sender: 'alice', createdAt: '2026-01-01T00:00:10Z' }),
-    ];
-    document.body.appendChild(el);
-    await el.updateComplete;
-
-    const groups = el.shadowRoot!.querySelectorAll('.message-group-header');
-    expect(groups.length).toBe(0);
-  });
-
   it('topics mode: renders topic section headers', async () => {
     const el = document.createElement('channel-feed') as any;
     el.viewMode = 'topics';
