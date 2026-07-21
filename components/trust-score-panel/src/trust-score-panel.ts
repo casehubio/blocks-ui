@@ -37,7 +37,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     }
 
     .trust-score-panel {
-      padding: var(--spacing-md, 16px);
+      padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
     }
 
     .error-message {
@@ -55,49 +55,27 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
 
     /* Full mode layout */
     .full-mode {
-      display: grid;
-      gap: var(--spacing-lg, 24px);
-    }
-
-    .score-section {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: var(--spacing-sm, 8px);
-    }
-
-    .score-gauge {
-      width: 200px;
-      height: 200px;
-    }
-
-    .capability-section {
-      margin-top: var(--spacing-md, 16px);
+      gap: var(--spacing-xs, 4px);
     }
 
     .capability-section h3 {
-      margin: 0 0 var(--spacing-sm, 8px) 0;
-      font-size: var(--font-size-lg, 18px);
+      margin: 0 0 var(--spacing-xs, 4px) 0;
+      font-size: var(--font-size-sm, 13px);
       font-weight: var(--font-weight-semibold, 600);
-    }
-
-    .trend-section {
-      margin-top: var(--spacing-md, 16px);
+      color: var(--color-text-secondary, #666);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .trend-section h3 {
-      margin: 0 0 var(--spacing-sm, 8px) 0;
-      font-size: var(--font-size-lg, 18px);
+      margin: 0 0 var(--spacing-xs, 4px) 0;
+      font-size: var(--font-size-sm, 13px);
       font-weight: var(--font-weight-semibold, 600);
-    }
-
-    .trend-placeholder {
-      padding: var(--spacing-lg, 24px);
-      text-align: center;
-      background: var(--color-surface-secondary, #f5f5f5);
-      border-radius: var(--border-radius-md, 8px);
       color: var(--color-text-secondary, #666);
-      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     /* Compact mode badge */
@@ -249,7 +227,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     `;
   }
 
-  private _renderScoreGauge() {
+  private _renderScoreHeader() {
     const score = this._getDisplayScore();
     const level = this._getDisplayTrustLevel();
     const label = score !== undefined
@@ -257,69 +235,40 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
       : 'No trust data available';
 
     if (score === undefined) {
-      return html`
-        <div class="score-gauge" role="img" aria-label="No trust data available">
-          <svg viewBox="0 0 200 200">
-            <text x="100" y="110" text-anchor="middle" font-size="24" fill="currentColor">
-              No Data
-            </text>
-          </svg>
-        </div>
-      `;
+      return html`<div class="score-header" role="img" aria-label="No trust data available">
+        <span class="score-value" style="color: var(--color-text-secondary, #666);">—</span>
+        <span class="score-level none">No data</span>
+      </div>`;
     }
 
-    // Simple arc gauge - 270 degrees arc
-    const radius = 70;
-    const centerX = 100;
-    const centerY = 100;
-    const startAngle = -225; // Start at bottom left
-    const endAngle = startAngle + 270; // 270 degree arc
-    const scoreAngle = startAngle + (score * 270); // Map 0-1 to arc
-
-    const polarToCartesian = (angle: number) => {
-      const angleInRadians = ((angle - 90) * Math.PI) / 180;
-      return {
-        x: centerX + radius * Math.cos(angleInRadians),
-        y: centerY + radius * Math.sin(angleInRadians),
-      };
+    const colors: Record<string, string> = {
+      high: 'var(--color-success, #28a745)',
+      adequate: 'var(--color-warning, #ffc107)',
+      low: 'var(--color-error, #dc3545)',
+      none: 'var(--color-neutral, #ccc)',
     };
 
-    const startPoint = polarToCartesian(startAngle);
-    const endPoint = polarToCartesian(scoreAngle);
+    const bgColors: Record<string, string> = {
+      high: 'var(--color-success-bg, #d4edda)',
+      adequate: 'var(--color-warning-bg, #fff3cd)',
+      low: 'var(--color-error-bg, #f8d7da)',
+      none: 'var(--color-neutral-bg, #e9ecef)',
+    };
 
-    const arcPath = `M ${startPoint.x} ${startPoint.y} A ${radius} ${radius} 0 ${score > 0.5 ? 1 : 0} 1 ${endPoint.x} ${endPoint.y}`;
-
-    const colors = {
-      high: '#28a745',
-      adequate: '#ffc107',
-      low: '#dc3545',
-      none: '#ccc',
+    const textColors: Record<string, string> = {
+      high: 'var(--color-success-text, #155724)',
+      adequate: 'var(--color-warning-text, #856404)',
+      low: 'var(--color-error-text, #721c24)',
+      none: 'var(--color-text-secondary, #666)',
     };
 
     return html`
-      <div class="score-gauge" role="img" aria-label=${label}>
-        <svg viewBox="0 0 200 200">
-          <!-- Background arc -->
-          <path
-            d=${arcPath}
-            fill="none"
-            stroke="#e9ecef"
-            stroke-width="20"
-            stroke-linecap="round"
-          />
-          <!-- Score arc -->
-          <path
-            d=${arcPath}
-            fill="none"
-            stroke=${colors[level]}
-            stroke-width="20"
-            stroke-linecap="round"
-          />
-          <!-- Score text -->
-          <text x="100" y="110" text-anchor="middle" font-size="32" font-weight="600" fill="currentColor">
-            ${score.toFixed(2)}
-          </text>
-        </svg>
+      <div class="score-header" role="img" aria-label=${label}>
+        <span class="score-value">${score.toFixed(2)}</span>
+        <span class="score-level" style="background: ${bgColors[level]}; color: ${textColors[level]};">${level}</span>
+        <div class="score-bar-track">
+          <div class="fill" style="width: ${Math.round(score * 100)}%; background: ${colors[level]};"></div>
+        </div>
       </div>
     `;
   }
@@ -390,9 +339,7 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     }
     const points = this.trendPoints;
     if (points.length < 2) {
-      return html`<div class="trend-placeholder">
-        Trend data requires backend endpoint
-      </div>`;
+      return nothing;
     }
     const scores = points.map(p => p.score);
     const level = this._getDisplayTrustLevel();
@@ -423,19 +370,19 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
 
     return html`
       <div class="full-mode">
-        <section class="score-section">
-          ${this._renderScoreGauge()}
-        </section>
+        ${this._renderScoreHeader()}
 
         <section class="capability-section">
           <h3>Per-Capability Breakdown</h3>
           ${this._renderCapabilityTable()}
         </section>
 
-        <section class="trend-section">
-          <h3>Trust Trend</h3>
-          ${this._renderTrendSection()}
-        </section>
+        ${this.trendPoints.length >= 2 ? html`
+          <section class="trend-section">
+            <h3>Trend</h3>
+            ${this._renderTrendSection()}
+          </section>
+        ` : nothing}
       </div>
     `;
   }
