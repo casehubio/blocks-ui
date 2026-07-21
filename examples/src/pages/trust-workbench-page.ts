@@ -8,7 +8,7 @@ export class TrustWorkbenchPage extends LitElement {
   @state() private _eventLog: string[] = [];
 
   static override styles = css`
-    :host { display: flex; flex-direction: column; padding: 24px; height: calc(100vh - 48px); }
+    :host { display: flex; flex-direction: column; padding: 24px; height: 100%; box-sizing: border-box; }
     h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); flex-shrink: 0; }
     .controls { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-shrink: 0; }
     .controls label { font-size: 13px; color: var(--pages-neutral-11, #555); font-weight: 600; }

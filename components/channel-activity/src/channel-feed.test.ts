@@ -446,6 +446,97 @@ describe('channel-feed', () => {
     expect(headers.length).toBe(2);
   });
 
+  // --- selectedMessageId ---
+
+  it('highlights the selected message with a selected class', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [msg('m1', { sender: 'alice' }), msg('m2', { sender: 'bob' })];
+    el.selectedMessageId = 'm2';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const items = el.shadowRoot!.querySelectorAll('.message-item');
+    expect(items[0].classList.contains('selected')).toBe(false);
+    expect(items[1].classList.contains('selected')).toBe(true);
+  });
+
+  it('highlights a thread root with selected class when selectedMessageId matches', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [
+      msg('root', { sender: 'alice' }),
+      msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
+    ];
+    el.selectedMessageId = 'root';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const thread = el.shadowRoot!.querySelector('channel-thread') as HTMLElement;
+    expect(thread.classList.contains('selected')).toBe(true);
+  });
+
+  it('does not highlight thread when a different message is selected', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [
+      msg('root', { sender: 'alice' }),
+      msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
+      msg('other', { sender: 'carol' }),
+    ];
+    el.selectedMessageId = 'other';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const thread = el.shadowRoot!.querySelector('channel-thread') as HTMLElement;
+    expect(thread.classList.contains('selected')).toBe(false);
+  });
+
+  it('expands and highlights thread when selectedMessageId is a reply inside it', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [
+      msg('root', { sender: 'mark', messageType: 'COMMAND' }),
+      msg('reply1', { sender: 'agent-atlas', messageType: 'STATUS', inReplyTo: 'root' }),
+      msg('reply2', { sender: 'agent-atlas', messageType: 'DONE', inReplyTo: 'root' }),
+    ];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    expect(thread.collapsed).toBe(true);
+    expect(thread.classList.contains('selected')).toBe(false);
+
+    el.selectedMessageId = 'reply2';
+    await el.updateComplete;
+    await thread.updateComplete;
+
+    expect(thread.collapsed).toBe(false);
+    expect(thread.classList.contains('selected')).toBe(true);
+    expect(thread.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(2);
+  });
+
+  it('adds data-message-id to message-item wrappers', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [msg('m1', { sender: 'alice' }), msg('m2', { sender: 'bob' })];
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const items = el.shadowRoot!.querySelectorAll('.message-item');
+    expect(items[0].getAttribute('data-message-id')).toBe('m1');
+    expect(items[1].getAttribute('data-message-id')).toBe('m2');
+  });
+
+  it('passes selectedMessageId to channel-thread components', async () => {
+    const el = document.createElement('channel-feed') as any;
+    el.messages = [
+      msg('root', { sender: 'alice' }),
+      msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
+    ];
+    el.selectedMessageId = 'reply1';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    expect(thread.selectedMessageId).toBe('reply1');
+  });
+
   it('topics mode: does not render empty topic sections', async () => {
     const el = document.createElement('channel-feed') as any;
     el.viewMode = 'topics';

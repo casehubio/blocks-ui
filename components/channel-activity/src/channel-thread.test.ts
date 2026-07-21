@@ -162,6 +162,68 @@ describe('channel-thread', () => {
     expect((messages[1] as any).formatSender).toBe(formatSender);
   });
 
+  // --- selectedMessageId auto-expand ---
+
+  it('auto-expands when selectedMessageId matches a reply', async () => {
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('root', 'COMMAND', 'Task');
+    el.replies = [msg('reply1', 'STATUS', 'Working'), msg('reply2', 'DONE', 'Done')];
+    el.collapsed = true;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    expect(el.collapsed).toBe(true);
+    expect(el.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(0);
+
+    el.selectedMessageId = 'reply1';
+    await el.updateComplete;
+
+    expect(el.collapsed).toBe(false);
+    expect(el.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(2);
+  });
+
+  it('highlights the selected reply within the thread', async () => {
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('root', 'COMMAND', 'Task');
+    el.replies = [msg('reply1', 'STATUS', 'Working'), msg('reply2', 'DONE', 'Done')];
+    el.collapsed = false;
+    el.selectedMessageId = 'reply2';
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const replyDivs = el.shadowRoot!.querySelectorAll('.reply');
+    expect(replyDivs[0].classList.contains('selected')).toBe(false);
+    expect(replyDivs[1].classList.contains('selected')).toBe(true);
+  });
+
+  it('highlights the root message when selectedMessageId matches root', async () => {
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('root', 'COMMAND', 'Task');
+    el.replies = [msg('reply1', 'DONE', 'Done')];
+    el.selectedMessageId = 'root';
+    el.collapsed = false;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    const rootMsg = el.shadowRoot!.querySelector('.root-message');
+    expect(rootMsg).toBeTruthy();
+    expect(rootMsg.classList.contains('selected')).toBe(true);
+  });
+
+  it('does not auto-expand when selectedMessageId matches root', async () => {
+    const el = document.createElement('channel-thread') as any;
+    el.rootMessage = msg('root', 'COMMAND', 'Task');
+    el.replies = [msg('reply1', 'DONE', 'Done')];
+    el.collapsed = true;
+    document.body.appendChild(el);
+    await el.updateComplete;
+
+    el.selectedMessageId = 'root';
+    await el.updateComplete;
+
+    expect(el.collapsed).toBe(true);
+  });
+
   it('uses identity formatSender by default when none is set', async () => {
     const el = document.createElement('channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');

@@ -29,6 +29,7 @@ export class ChannelFeedElement extends LitElement {
   @property({ attribute: false }) renderContextHeader?: () => TemplateResult;
   @property({ type: String }) viewMode: 'flat' | 'threaded' | 'topics' = 'flat';
   @property({ type: Array }) topics: QhorusTopic[] = [];
+  @property({ type: String }) selectedMessageId?: string;
   @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
   @property({ attribute: false }) formatSender?: (sender: string, actorType: ActorType) => string;
 
@@ -64,6 +65,16 @@ export class ChannelFeedElement extends LitElement {
     .message-item.terminal-dimmed { opacity: 0.8; }
     .message-item.event-dimmed { opacity: 0.55; }
     .message-item.event-dimmed channel-message { font-style: italic; }
+    .message-item.selected {
+      background: var(--pages-accent-3, #e0e7ff);
+      border-left: 3px solid var(--pages-accent-9, #6366f1);
+      border-radius: var(--pages-radius-sm, 4px);
+    }
+    channel-thread.selected {
+      display: block;
+      border-left: 3px solid var(--pages-accent-9, #6366f1);
+      border-radius: var(--pages-radius-sm, 4px);
+    }
     .empty {
       display: flex;
       align-items: center;
@@ -218,6 +229,9 @@ export class ChannelFeedElement extends LitElement {
     if (this.eventStyling && msg.messageType === 'EVENT') {
       classes.push('event-dimmed');
     }
+    if (this.selectedMessageId === msg.id) {
+      classes.push('selected');
+    }
     return classes.join(' ');
   }
 
@@ -241,6 +255,24 @@ export class ChannelFeedElement extends LitElement {
       }
     }
     this._prevMessageCount = this.messages.length;
+    if (changed.has('selectedMessageId') && this.selectedMessageId) {
+      requestAnimationFrame(() => this._scrollToSelected());
+    }
+  }
+
+  private _scrollToSelected() {
+    if (!this.selectedMessageId) return;
+    const feed = this.renderRoot.querySelector('.feed');
+    if (!feed) return;
+    const target = feed.querySelector(`[data-message-id="${this.selectedMessageId}"]`) as HTMLElement | null;
+    if (target) {
+      target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      return;
+    }
+    const thread = feed.querySelector(`channel-thread[data-contains~="${this.selectedMessageId}"]`) as HTMLElement | null;
+    if (thread) {
+      thread.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   }
 
   override connectedCallback() {
@@ -278,16 +310,20 @@ export class ChannelFeedElement extends LitElement {
     const { roots, repliesByParent } = this._separateRootsAndReplies();
     const reactionIndex = this._buildReactionIndex();
     return roots.map(msg => repliesByParent.has(msg.id) ? html`
-      <div class="threaded-entry">
-        <channel-thread .rootMessage=${msg}
+      <div class="threaded-entry" data-message-id=${msg.id}>
+        <channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
+                       .rootMessage=${msg}
                        .replies=${repliesByParent.get(msg.id)!}
                        .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
+                       .collapsed=${false}
+                       .selectedMessageId=${this.selectedMessageId}
                        .renderContent=${this.renderContent}
-                       .formatSender=${this.formatSender}>
+                       .formatSender=${this.formatSender}
+                       data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
         </channel-thread>
       </div>
     ` : html`
-      <div class="threaded-entry">
+      <div class="threaded-entry" data-message-id=${msg.id}>
         <channel-message .message=${msg}
                         .reactions=${reactionIndex.get(msg.id) ?? []}
                         .showActorBadge=${true}
@@ -328,7 +364,7 @@ export class ChannelFeedElement extends LitElement {
                 <span class="group-sender">${group.sender}</span>
               </div>
               ${group.messages.map(msg => html`
-                <div class="${this._messageItemClasses(msg)}">
+                <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id}>
                   <channel-message .message=${msg}
                                   .reactions=${reactionIndex.get(msg.id) ?? []}
                                   .showActorBadge=${group.messages.indexOf(msg) === 0}
@@ -354,14 +390,18 @@ export class ChannelFeedElement extends LitElement {
           <span class="group-sender">${group.sender}</span>
         </div>
         ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
-          <channel-thread .rootMessage=${msg}
+          <channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
+                         .rootMessage=${msg}
                          .replies=${repliesByParent.get(msg.id)!}
                          .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
+                         .selectedMessageId=${this.selectedMessageId}
                          .renderContent=${this.renderContent}
-                         .formatSender=${this.formatSender}>
+                         .formatSender=${this.formatSender}
+                         data-message-id=${msg.id}
+                         data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
           </channel-thread>
         ` : html`
-          <div class="${this._messageItemClasses(msg)}">
+          <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id}>
             <channel-message .message=${msg}
                             .reactions=${reactionIndex.get(msg.id) ?? []}
                             .showActorBadge=${group.messages.indexOf(msg) === 0}

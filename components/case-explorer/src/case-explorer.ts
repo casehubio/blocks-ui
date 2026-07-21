@@ -214,7 +214,9 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
     if (navState.viewMode === 'list') {
       this._treeRootId = null;
       this._lastTreeFetchId = null;
-      this._treeNodes = [];
+      if (this._treeNodes.length > 0) {
+        this._treeNodes = [];
+      }
     }
   }
 
