@@ -47,6 +47,7 @@ const NAV: NavCategory[] = [
     label: 'Composed',
     items: [
       { id: 'workbench', label: 'Full Workbench', hash: '#composed/workbench' },
+      { id: 'trust-workbench', label: 'Trust Workbench', hash: '#composed/trust-workbench' },
     ],
   },
 ];
@@ -203,6 +204,7 @@ export class ExampleShell extends LitElement {
       case '#components/grouped-data-view': return html`<grouped-data-view-page></grouped-data-view-page>`;
       case '#components/case-explorer': return html`<case-explorer-page></case-explorer-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
+      case '#composed/trust-workbench': return html`<trust-workbench-page></trust-workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;
     }
   }
