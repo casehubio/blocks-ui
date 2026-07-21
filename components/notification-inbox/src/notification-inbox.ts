@@ -16,7 +16,7 @@ import { emitNotificationEvent, NotificationEventTopics } from './events.js';
 
 // --- Relative time helper ---
 
-function relativeTime(isoDate: string): string {
+export function relativeTime(isoDate: string): string {
   const date = new Date(isoDate);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -28,7 +28,13 @@ function relativeTime(isoDate: string): string {
   if (diffMins < 60) return `${diffMins}m`;
   if (diffHours < 24) return `${diffHours}h`;
   if (diffDays < 7) return `${diffDays}d`;
-  return date.toLocaleDateString();
+  const weeks = Math.floor(diffDays / 7);
+  const remainDays = diffDays % 7;
+  if (diffDays < 30) return remainDays > 0 ? `${weeks}w${remainDays}d` : `${weeks}w`;
+  const months = Math.floor(diffDays / 30);
+  if (diffDays < 365) return `${months}mo`;
+  const years = Math.floor(diffDays / 365);
+  return `${years}y`;
 }
 
 // --- Tab type ---

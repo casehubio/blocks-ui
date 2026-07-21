@@ -591,6 +591,54 @@ describe('notification-inbox', () => {
     expect(message).toContain('notification');
   });
 
+  describe('relativeTime formatting', () => {
+    let relativeTimeFn: (iso: string) => string;
+
+    beforeEach(async () => {
+      const mod = await import('./notification-inbox.js');
+      relativeTimeFn = mod.relativeTime;
+    });
+
+    it('shows "now" for < 1 minute', () => {
+      expect(relativeTimeFn(new Date().toISOString())).toBe('now');
+    });
+
+    it('shows minutes for < 1 hour', () => {
+      const fiveMinAgo = new Date(Date.now() - 5 * 60000).toISOString();
+      expect(relativeTimeFn(fiveMinAgo)).toBe('5m');
+    });
+
+    it('shows hours for < 1 day', () => {
+      const threeHoursAgo = new Date(Date.now() - 3 * 3600000).toISOString();
+      expect(relativeTimeFn(threeHoursAgo)).toBe('3h');
+    });
+
+    it('shows days for < 1 week', () => {
+      const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString();
+      expect(relativeTimeFn(twoDaysAgo)).toBe('2d');
+    });
+
+    it('shows weeks for 7-30 days', () => {
+      const fourteenDaysAgo = new Date(Date.now() - 14 * 86400000).toISOString();
+      expect(relativeTimeFn(fourteenDaysAgo)).toBe('2w');
+    });
+
+    it('shows weeks+days for non-even weeks', () => {
+      const tenDaysAgo = new Date(Date.now() - 10 * 86400000).toISOString();
+      expect(relativeTimeFn(tenDaysAgo)).toBe('1w3d');
+    });
+
+    it('shows months for 30-365 days', () => {
+      const sixtyDaysAgo = new Date(Date.now() - 60 * 86400000).toISOString();
+      expect(relativeTimeFn(sixtyDaysAgo)).toBe('2mo');
+    });
+
+    it('shows years for 365+ days', () => {
+      const fourHundredDaysAgo = new Date(Date.now() - 400 * 86400000).toISOString();
+      expect(relativeTimeFn(fourHundredDaysAgo)).toBe('1y');
+    });
+  });
+
   describe('column layout', () => {
     it('status column width accommodates its header or hides it', async () => {
       const el = document.createElement('notification-inbox') as NotificationInbox;

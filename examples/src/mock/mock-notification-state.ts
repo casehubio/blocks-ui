@@ -40,6 +40,20 @@ export class MockNotificationState {
   private script: SSEScriptEntry[];
   private scriptTimers: ReturnType<typeof setTimeout>[] = [];
   private snooze: Snooze | null = null;
+  private mutes: MuteRule[] = [];
+  private preferences: NotificationPreferences = {
+    userId: 'demo-user', tenancyId: 'tenant-001',
+    channelDefaults: {
+      in_app: { enabled: true, minSeverity: 'INFO', digestSchedule: null },
+      email: { enabled: true, minSeverity: 'WARNING', digestSchedule: { type: 'daily_at', time: '09:00', timezone: 'Europe/London' } },
+    },
+    quietHours: null, updatedAt: '2026-06-15T14:30:00Z',
+  };
+  private channels: DeliveryChannelDescriptor[] = [
+    { channelId: 'in_app', displayName: 'In-App', external: false, defaultEnabled: true, defaultMinSeverity: 'INFO', defaultDigestSchedule: null },
+    { channelId: 'email', displayName: 'Email', external: false, defaultEnabled: true, defaultMinSeverity: 'WARNING', defaultDigestSchedule: { type: 'daily_at', time: '09:00', timezone: 'Europe/London' } },
+    { channelId: 'slack', displayName: 'Slack', external: true, defaultEnabled: false, defaultMinSeverity: 'INFO', defaultDigestSchedule: null },
+  ];
   private restoreFetch: (() => void) | null = null;
   private originalEventSource: typeof EventSource | null = null;
 
@@ -207,14 +221,14 @@ export class MockNotificationState {
 
     // --- Snooze routes ---
 
-    // DELETE /notifications/snooze (must be before GET /snooze to avoid path conflicts)
-    if (method === 'DELETE' && /\/notifications\/snooze$/.test(path)) {
+    // DELETE /snooze
+    if (method === 'DELETE' && /\/snooze$/.test(path)) {
       this.snooze = null;
       return new Response(null, { status: 204 });
     }
 
-    // POST /notifications/snooze
-    if (method === 'POST' && /\/notifications\/snooze$/.test(path)) {
+    // POST /snooze
+    if (method === 'POST' && /\/snooze$/.test(path)) {
       if (body == null) return new Response(null, { status: 400 });
       this.snooze = {
         userId: 'demo-user',
@@ -225,38 +239,76 @@ export class MockNotificationState {
       return json(this.snooze);
     }
 
-    // GET /notifications/snooze
-    if (method === 'GET' && /\/notifications\/snooze$/.test(path)) {
+    // GET /snooze
+    if (method === 'GET' && /\/snooze$/.test(path)) {
       if (this.snooze == null) return notFound();
       return json(this.snooze);
     }
 
-    // GET /notifications/mute
-    if (method === 'GET' && /\/notifications\/mute$/.test(path)) {
-      return json([]);
+    // --- Mute routes ---
+
+    // DELETE /mutes/{id}
+    const deleteMuteMatch = path.match(/\/mutes\/([^/?]+)$/);
+    if (method === 'DELETE' && deleteMuteMatch) {
+      const id = deleteMuteMatch[1]!;
+      const idx = this.mutes.findIndex(m => m.id === id);
+      if (idx === -1) return notFound();
+      this.mutes = [...this.mutes.slice(0, idx), ...this.mutes.slice(idx + 1)];
+      return new Response(null, { status: 204 });
     }
 
-    // GET /notifications/preferences
-    if (method === 'GET' && /\/notifications\/preferences$/.test(path)) {
-      const prefs: NotificationPreferences = {
-        userId: 'demo-user',
-        tenancyId: 'tenant-001',
-        channelDefaults: {
-          in_app: {
-            enabled: true,
-            minSeverity: 'INFO',
-            digestSchedule: null,
-          },
-          email: {
-            enabled: true,
-            minSeverity: 'WARNING',
-            digestSchedule: { type: 'daily_at', time: '09:00', timezone: 'Europe/London' },
-          },
-        },
-        quietHours: null,
-        updatedAt: '2026-06-15T14:30:00Z',
+    // POST /mutes
+    if (method === 'POST' && /\/mutes(\?|$)/.test(path) && !/\/mutes\//.test(path)) {
+      if (body == null) return new Response(null, { status: 400 });
+      const input = body as unknown as MuteRuleInput;
+      const rule: MuteRule = {
+        id: `mute-${Date.now()}`,
+        userId: input.userId,
+        tenancyId: input.tenancyId,
+        scope: input.scope,
+        scopeId: input.scopeId,
+        entityType: input.entityType ?? null,
+        createdAt: new Date().toISOString(),
+        expiresAt: input.expiresAt ?? null,
       };
-      return json(prefs);
+      this.mutes = [...this.mutes, rule];
+      return json(rule);
+    }
+
+    // GET /mutes
+    if (method === 'GET' && /\/mutes(\?|$)/.test(path) && !/\/mutes\//.test(path)) {
+      return json(this.mutes);
+    }
+
+    // --- Channel routes ---
+
+    // GET /channels
+    if (method === 'GET' && /\/channels(\?|$)/.test(path)) {
+      return json(this.channels);
+    }
+
+    // --- Preferences routes ---
+
+    // PATCH /preferences
+    if (method === 'PATCH' && /\/preferences$/.test(path)) {
+      if (body == null) return new Response(null, { status: 400 });
+      const update = body as unknown as NotificationPreferenceUpdate;
+      if (update.clearQuietHours) {
+        this.preferences = { ...this.preferences, quietHours: null, updatedAt: new Date().toISOString() };
+      } else {
+        this.preferences = {
+          ...this.preferences,
+          ...(update.channelDefaults ? { channelDefaults: { ...this.preferences.channelDefaults, ...update.channelDefaults } } : {}),
+          ...(update.quietHours !== undefined ? { quietHours: update.quietHours } : {}),
+          updatedAt: new Date().toISOString(),
+        };
+      }
+      return json(this.preferences);
+    }
+
+    // GET /preferences
+    if (method === 'GET' && /\/preferences$/.test(path)) {
+      return json(this.preferences);
     }
 
     // --- Subscription routes ---
