@@ -1,0 +1,109 @@
+{
+  "summaries": {
+    "agent-alice": [
+      { "id": "dec-1", "timestamp": "2026-07-20T14:55:00Z", "capabilityTag": "code-review", "selectedWorkerId": "agent-alice", "finalScore": 0.79, "phase": "QUALIFIED" },
+      { "id": "dec-2", "timestamp": "2026-07-20T14:35:00Z", "capabilityTag": "triage", "selectedWorkerId": "agent-bob", "finalScore": 0.77, "phase": "QUALIFIED" },
+      { "id": "dec-3", "timestamp": "2026-07-20T13:00:00Z", "capabilityTag": "code-review", "selectedWorkerId": "agent-alice", "finalScore": 0.81, "phase": "QUALIFIED" },
+      { "id": "dec-4", "timestamp": "2026-07-20T10:00:00Z", "capabilityTag": "escalation", "selectedWorkerId": "agent-alice", "finalScore": 0.74, "phase": "QUALIFIED" },
+      { "id": "dec-5", "timestamp": "2026-07-19T15:00:00Z", "capabilityTag": "triage", "selectedWorkerId": "agent-bob", "finalScore": 0.75, "phase": "QUALIFIED" },
+      { "id": "dec-6", "timestamp": "2026-07-18T12:00:00Z", "capabilityTag": "code-review", "selectedWorkerId": "agent-alice", "finalScore": 0.76, "phase": "QUALIFIED" }
+    ],
+    "agent-bob": [
+      { "id": "dec-10", "timestamp": "2026-07-20T14:00:00Z", "capabilityTag": "triage", "selectedWorkerId": "agent-bob", "finalScore": 0.82, "phase": "QUALIFIED" },
+      { "id": "dec-11", "timestamp": "2026-07-19T09:00:00Z", "capabilityTag": "code-review", "selectedWorkerId": "agent-alice", "finalScore": 0.85, "phase": "QUALIFIED" }
+    ]
+  },
+  "details": {
+    "dec-1": {
+      "rationale": {
+        "capabilityTag": "code-review", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-alice", "trustScore": 0.88, "workloadScore": 0.65, "phase": "QUALIFIED", "observations": 42, "finalScore": 0.79, "rationale": "Highest trust-weighted composite" },
+        "alternatives": [
+          { "workerId": "agent-bob", "trustScore": 0.71, "workloadScore": 0.90, "phase": "BORDERLINE", "observations": 28, "finalScore": 0.78, "exclusionReason": "Within borderline margin" },
+          { "workerId": "agent-carol", "trustScore": 0.45, "workloadScore": 0.95, "phase": "EXCLUDED_PHASE2B", "observations": 15, "finalScore": 0, "exclusionReason": "Below threshold" },
+          { "workerId": "agent-dave", "trustScore": null, "workloadScore": 1.0, "phase": "BOOTSTRAP", "observations": 3, "finalScore": 1.0 }
+        ],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": { "accuracy": 0.6 }, "cbrWeight": 0.15, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "APPROVED", "actor": "agent-alice", "attestation": "ENDORSED", "trustScoreBefore": 0.85, "trustScoreAfter": 0.88, "dimension": "code-review" }
+      ]
+    },
+    "dec-2": {
+      "rationale": {
+        "capabilityTag": "triage", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-bob", "trustScore": 0.82, "workloadScore": 0.70, "phase": "QUALIFIED", "observations": 35, "finalScore": 0.77 },
+        "alternatives": [
+          { "workerId": "agent-alice", "trustScore": 0.75, "workloadScore": 0.60, "phase": "QUALIFIED", "observations": 20, "finalScore": 0.69 }
+        ],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "APPROVED", "actor": "agent-bob", "attestation": "ENDORSED", "trustScoreBefore": 0.78, "trustScoreAfter": 0.82, "dimension": "triage" },
+        { "decision": "APPROVED", "actor": "agent-bob", "attestation": "OVERRULED", "trustScoreBefore": 0.82, "trustScoreAfter": 0.80, "dimension": "triage" }
+      ]
+    },
+    "dec-3": {
+      "rationale": {
+        "capabilityTag": "code-review", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-alice", "trustScore": 0.86, "workloadScore": 0.55, "phase": "QUALIFIED", "observations": 40, "finalScore": 0.81 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "REJECTED", "actor": "agent-alice", "attestation": "ENDORSED", "trustScoreBefore": 0.83, "trustScoreAfter": 0.81, "dimension": "code-review" }
+      ]
+    },
+    "dec-4": {
+      "rationale": {
+        "capabilityTag": "escalation", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-alice", "trustScore": 0.91, "workloadScore": 0.50, "phase": "QUALIFIED", "observations": 55, "finalScore": 0.74 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "APPROVED", "actor": "agent-alice", "attestation": "ENDORSED", "trustScoreBefore": 0.89, "trustScoreAfter": 0.91, "dimension": "escalation" }
+      ]
+    },
+    "dec-5": {
+      "rationale": {
+        "capabilityTag": "triage", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-bob", "trustScore": 0.79, "workloadScore": 0.75, "phase": "QUALIFIED", "observations": 30, "finalScore": 0.75 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": []
+    },
+    "dec-6": {
+      "rationale": {
+        "capabilityTag": "code-review", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-alice", "trustScore": 0.84, "workloadScore": 0.60, "phase": "QUALIFIED", "observations": 38, "finalScore": 0.76 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "APPROVED", "actor": "agent-alice", "attestation": "ENDORSED", "trustScoreBefore": 0.73, "trustScoreAfter": 0.76, "dimension": "code-review" }
+      ]
+    },
+    "dec-10": {
+      "rationale": {
+        "capabilityTag": "triage", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-bob", "trustScore": 0.82, "workloadScore": 0.70, "phase": "QUALIFIED", "observations": 36, "finalScore": 0.82 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": [
+        { "decision": "APPROVED", "actor": "agent-bob", "attestation": "ENDORSED", "trustScoreBefore": 0.80, "trustScoreAfter": 0.82, "dimension": "triage" }
+      ]
+    },
+    "dec-11": {
+      "rationale": {
+        "capabilityTag": "code-review", "strategyId": "trust-weighted",
+        "selected": { "workerId": "agent-alice", "trustScore": 0.87, "workloadScore": 0.60, "phase": "QUALIFIED", "observations": 41, "finalScore": 0.85 },
+        "alternatives": [],
+        "policy": { "threshold": 0.7, "borderlineMargin": 0.1, "blendFactor": 0.6, "minimumObservations": 10, "qualityFloors": {}, "cbrWeight": 0, "bootstrapEscalationRequired": false }
+      },
+      "feedback": []
+    }
+  }
+}

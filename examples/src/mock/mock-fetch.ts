@@ -2,6 +2,7 @@ import type { MockState } from './mock-state.js';
 import caseEvents from '../../mock-data/case-events.json';
 import ledgerEntries from '../../mock-data/ledger-entries.json';
 import trustScores from '../../mock-data/trust-scores.json';
+import routingHistory from '../../mock-data/routing-history.json';
 
 const realFetch = window.fetch.bind(window);
 
@@ -149,8 +150,26 @@ function resolveMock(
     return json({ subjectId: 'case-123', treeRoot: 'f7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2', verified: true, redactedCount: 1 });
   }
 
+  // GET /trust/{actorId}/routing-history/{decisionId} (trust-workbench detail)
+  const routingDetailMatch = path.match(/\/trust\/([^/]+)\/routing-history\/([^/?]+)/);
+  if (method === 'GET' && routingDetailMatch) {
+    const detail = (routingHistory as any).details[routingDetailMatch[2]!];
+    if (detail) return json(detail);
+    return new Response(JSON.stringify({ error: 'Decision not found' }), { status: 404 });
+  }
+
+  // GET /trust/{actorId}/routing-history (trust-workbench list)
+  const routingListMatch = path.match(/\/trust\/([^/]+)\/routing-history(?:\?|$)/);
+  if (method === 'GET' && routingListMatch) {
+    const actorId = routingListMatch[1]!;
+    const summaries = (routingHistory as any).summaries[actorId] ?? [];
+    const capParam = new URLSearchParams(url.split('?')[1] ?? '').get('capability');
+    const filtered = capParam ? summaries.filter((s: any) => s.capabilityTag === capParam) : summaries;
+    return json(filtered);
+  }
+
   // GET /trust/{actorId} (trust-score-panel)
-  const trustMatch = path.match(/\/trust\/([^/?]+)/);
+  const trustMatch = path.match(/\/trust\/([^/?]+)$/);
   if (method === 'GET' && trustMatch) {
     const actors = (trustScores as any).actors as any[];
     const actor = actors.find((a: any) => a.actorId === trustMatch[1]);

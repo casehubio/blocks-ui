@@ -29,8 +29,8 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-trust-feedback-display', replacement: resolve(__dirname, '../components/trust-feedback-display/src') },
       { find: '@casehubio/blocks-ui-trust-workbench', replacement: resolve(__dirname, '../components/trust-workbench/src') },
       { find: '@casehubio/pages-ui-tokens', replacement: resolve(__dirname, '../../pages/packages/pages-ui-tokens/src') },
-      { find: /^@casehubio\/pages-component\/dist\/(.*)/, replacement: resolve(__dirname, '../../pages/packages/pages-component/src/$1') },
-      { find: '@casehubio/pages-component', replacement: resolve(__dirname, '../../pages/packages/pages-component/src') },
+      // pages-component: use dist (not source) — source has refactored SourceConnector API
+      // incompatible with DataSourceAdapter's connect()/disconnect() calls
       { find: /^@casehubio\/pages-data\/dist\/(.*)/, replacement: resolve(__dirname, '../../pages/packages/pages-data/src/$1') },
       { find: '@casehubio/pages-data', replacement: resolve(__dirname, '../../pages/packages/pages-data/src') },
       { find: 'lit', replacement: resolve(__dirname, '../node_modules/lit') },
