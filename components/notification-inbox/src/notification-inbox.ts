@@ -62,8 +62,8 @@ const NOTIFICATION_COL_CONFIG: readonly TableColumnConfig[] = [
   { id: N_TITLE_COL, sortable: true, width: '1fr' },
   { id: N_BODY_COL, visible: false },
   { id: N_CATEGORY_COL, sortable: true, width: '140px' },
-  { id: N_STATUS_COL, sortable: false, width: '24px' },
-  { id: N_CREATED_COL, sortable: true, width: '50px' },
+  { id: N_STATUS_COL, visible: false },
+  { id: N_CREATED_COL, sortable: true, width: '70px' },
   { id: N_SEVERITY_COL, visible: false },
   { id: N_ACTION_URL_COL, visible: false },
 ];
@@ -72,17 +72,18 @@ const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<Co
   [N_TITLE_COL, (_cell: CellValue, row: TypedRow) => {
     const title = row.text(N_TITLE_COL);
     const body = row.text(N_BODY_COL);
+    const status = row.text(N_STATUS_COL);
+    const unreadDot = status === 'UNREAD'
+      ? html`<span style="display:inline-block;flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--pages-accent-9,#2563eb);margin-top:6px" aria-label="Unread"></span>`
+      : html`<span style="display:inline-block;width:8px;flex-shrink:0"></span>`;
     return html`
-      <div style="display:flex;flex-direction:column;gap:2px">
-        <span style="font-weight:500;color:var(--pages-neutral-12,#111)">${title}</span>
-        ${body ? html`<span style="font-size:12px;color:var(--pages-neutral-9,#737373);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${body}</span>` : nothing}
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        ${unreadDot}
+        <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+          <span style="font-weight:500;color:var(--pages-neutral-12,#111)">${title}</span>
+          ${body ? html`<span style="font-size:12px;color:var(--pages-neutral-9,#737373);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${body}</span>` : nothing}
+        </div>
       </div>`;
-  }],
-  [N_STATUS_COL, (cell: CellValue) => {
-    const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-    return status === 'UNREAD'
-      ? html`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pages-accent-9,#2563eb)" aria-label="Unread"></span>`
-      : html``;
   }],
   [N_CREATED_COL, (cell: CellValue) => {
     if (cell.type === 'NULL') return html``;

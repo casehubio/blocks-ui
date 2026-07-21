@@ -17,6 +17,7 @@ let notificationCounter = 100;
 export class NotificationPage extends LitElement {
   @state() private mockState: MockNotificationState | null = null;
   @state() private showSubscriptions = false;
+  @state() private showPreferences = false;
   @state() private initError: string | null = null;
 
   static override styles = css`
@@ -345,6 +346,9 @@ export class NotificationPage extends LitElement {
           <button class="demo-btn subscriptions" @click=${() => { this.showSubscriptions = true; }}>
             Subscriptions
           </button>
+          <button class="demo-btn subscriptions" @click=${() => { this.showPreferences = true; }}>
+            Preferences
+          </button>
         </div>
 
         <div class="main-content">
@@ -366,6 +370,22 @@ export class NotificationPage extends LitElement {
                 endpoint=""
                 .identity=${IDENTITY}
               ></subscription-list>
+            </div>
+          </div>
+        ` : nothing}
+
+        ${this.showPreferences ? html`
+          <div class="dialog-backdrop" @click=${() => { this.showPreferences = false; }}></div>
+          <div class="dialog-panel">
+            <div class="dialog-header">
+              <span class="dialog-title">Notification Preferences</span>
+              <button class="dialog-close" @click=${() => { this.showPreferences = false; }} aria-label="Close">✕</button>
+            </div>
+            <div class="dialog-body" style="padding: 16px; overflow: auto;">
+              <notification-preferences
+                endpoint=""
+                .identity=${IDENTITY}
+              ></notification-preferences>
             </div>
           </div>
         ` : nothing}

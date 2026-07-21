@@ -590,4 +590,42 @@ describe('notification-inbox', () => {
     const message = announceSpy.mock.calls[0]![0];
     expect(message).toContain('notification');
   });
+
+  describe('column layout', () => {
+    it('status column width accommodates its header or hides it', async () => {
+      const el = document.createElement('notification-inbox') as NotificationInbox;
+      el.data = [makeNotification()];
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
+      const colConfig = table?.columnConfig as Array<{ id: string; width?: string; visible?: boolean }>;
+      const statusCol = colConfig?.find((c: any) => c.id === 'status');
+      expect(statusCol).toBeTruthy();
+
+      const widthPx = parseInt(statusCol!.width ?? '0');
+      if (widthPx < 60) {
+        expect(statusCol!.visible).toBe(false);
+      }
+
+      el.remove();
+    });
+
+    it('age column width fits short date text without overflow', async () => {
+      const el = document.createElement('notification-inbox') as NotificationInbox;
+      el.data = [makeNotification()];
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
+      const colConfig = table?.columnConfig as Array<{ id: string; width?: string }>;
+      const ageCol = colConfig?.find((c: any) => c.id === 'createdAt');
+      expect(ageCol).toBeTruthy();
+
+      const widthPx = parseInt(ageCol!.width ?? '0');
+      expect(widthPx).toBeGreaterThanOrEqual(70);
+
+      el.remove();
+    });
+  });
 });

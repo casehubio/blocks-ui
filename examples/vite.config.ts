@@ -28,6 +28,7 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-routing-rationale', replacement: resolve(__dirname, '../components/routing-rationale/src') },
       { find: '@casehubio/blocks-ui-trust-feedback-display', replacement: resolve(__dirname, '../components/trust-feedback-display/src') },
       { find: '@casehubio/blocks-ui-trust-workbench', replacement: resolve(__dirname, '../components/trust-workbench/src') },
+      { find: '@casehubio/pages-form', replacement: resolve(__dirname, '../../pages/packages/pages-form/src') },
       { find: '@casehubio/pages-ui-tokens', replacement: resolve(__dirname, '../../pages/packages/pages-ui-tokens/src') },
       // pages-component: use dist (not source) — source has refactored SourceConnector API
       // incompatible with DataSourceAdapter's connect()/disconnect() calls
