@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-grouped-data-view",
   "version": "0.2.2",
-  "description": "Grouped data view — items grouped by column key with per-group pages-table rendering",
+  "description": "Grouped data view \u2014 items grouped by column key with per-group pages-table rendering",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-component": "^0.2.2",
-    "@casehubio/pages-data": "^0.2.2",
-    "@casehubio/pages-table": "^0.2.2",
-    "@casehubio/pages-viz": "^0.2.2",
+    "@casehubio/pages-component": "file:../../../pages/packages/pages-component",
+    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
+    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
+    "@casehubio/pages-viz": "file:../../../pages/packages/pages-viz",
     "lit": "^3.2.1"
   },
   "devDependencies": {

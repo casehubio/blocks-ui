@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-blocks-timeline",
   "version": "0.2.2",
-  "description": "Pluggable timeline — vertical, horizontal, compact layouts with strategy-based content",
+  "description": "Pluggable timeline \u2014 vertical, horizontal, compact layouts with strategy-based content",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-data": "^0.2.2",
-    "@casehubio/pages-primitives": "^0.2.2",
+    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
+    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
     "lit": "^3.2.0"
   },
   "devDependencies": {

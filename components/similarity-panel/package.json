@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-similarity-panel",
   "version": "0.2.2",
-  "description": "Similar past cases — similarity scores, outcomes, resolution times via pages-table",
+  "description": "Similar past cases \u2014 similarity scores, outcomes, resolution times via pages-table",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-data": "^0.2.2",
-    "@casehubio/pages-table": "^0.2.2",
+    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
+    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
     "lit": "^3.2.1"
   },
   "devDependencies": {

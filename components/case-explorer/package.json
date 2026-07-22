@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-case-explorer",
   "version": "0.1.0",
-  "description": "Composable case explorer — universal entity browser with registration, state/command SPI, and management actions",
+  "description": "Composable case explorer \u2014 universal entity browser with registration, state/command SPI, and management actions",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -22,10 +22,10 @@
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-list-pane": "workspace:*",
     "@casehubio/blocks-ui-split-workbench": "workspace:*",
-    "@casehubio/pages-component": "^0.2.2",
-    "@casehubio/pages-data": "^0.2.2",
-    "@casehubio/pages-primitives": "^0.2.2",
-    "@casehubio/pages-table": "^0.2.2",
+    "@casehubio/pages-component": "file:../../../pages/packages/pages-component",
+    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
+    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
+    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
     "lit": "^3.2.1"
   },
   "devDependencies": {

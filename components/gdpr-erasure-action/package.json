@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-gdpr-erasure-action",
   "version": "0.2.2",
-  "description": "GDPR data erasure form — subject lookup, reason selection, confirmation dialog, receipt",
+  "description": "GDPR data erasure form \u2014 subject lookup, reason selection, confirmation dialog, receipt",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-form": "npm:^0.1.0",
+    "@casehubio/pages-form": "file:../../../pages/packages/pages-form",
     "lit": "^3.2.1"
   },
   "devDependencies": {

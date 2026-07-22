@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-routing-rationale",
   "version": "0.2.2",
-  "description": "Trust-weighted routing decision explanation — score vs threshold, alternatives, phases",
+  "description": "Trust-weighted routing decision explanation \u2014 score vs threshold, alternatives, phases",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-component": "^0.2.2",
-    "@casehubio/pages-data": "^0.2.2",
-    "@casehubio/pages-primitives": "^0.2.2",
-    "@casehubio/pages-table": "^0.2.2",
+    "@casehubio/pages-component": "file:../../../pages/packages/pages-component",
+    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
+    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
+    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
     "lit": "^3.2.1"
   },
   "devDependencies": {
