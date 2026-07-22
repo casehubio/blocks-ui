@@ -208,7 +208,10 @@ describe('CaseExplorer', () => {
       state: { step: 'done' }, availableCommands: [], createdAt: '2026-01-01T00:00:00Z',
     })});
 
-    el._nav.selectEntity({ id: 'w1', type: 'worker' });
+    document.dispatchEvent(new CustomEvent('pages-event', {
+      detail: { topic: 'case-explorer:selected', payload: { id: 'w1', type: 'worker' } },
+      bubbles: true, composed: true,
+    }));
     await el.updateComplete;
     await new Promise(r => setTimeout(r, 50));
     await el.updateComplete;
