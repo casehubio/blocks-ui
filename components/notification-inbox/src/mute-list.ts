@@ -203,9 +203,9 @@ export class MuteList extends LitElement {
         userId: this.identity?.userId ?? '',
         tenancyId: this.identity?.tenancyId ?? '',
         scope: this.addFormData.scope as 'ENTITY' | 'CATEGORY',
-        scopeId: this.addFormData.scopeId,
-        entityType: this.addFormData.entityType || undefined,
-        expiresAt: this.addFormData.expiresAt || undefined,
+        scopeId: this.addFormData.scopeId ?? '',
+        ...(this.addFormData.entityType ? { entityType: this.addFormData.entityType } : {}),
+        ...(this.addFormData.expiresAt ? { expiresAt: this.addFormData.expiresAt } : {}),
       };
       const rule = await this.api.addMuteRule(input);
       this.rules = [...this.rules, rule as MuteRule];

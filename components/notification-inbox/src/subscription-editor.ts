@@ -203,7 +203,7 @@ export class SubscriptionEditor extends LitElement {
           items: {
             type: 'object',
             properties: {
-              field: { type: 'string', title: 'Field', oneOf: fieldOptions.length > 0 ? fieldOptions : undefined },
+              field: { type: 'string', title: 'Field', ...(fieldOptions.length > 0 ? { oneOf: fieldOptions } : {}) },
               op: { type: 'string', title: 'Operator', oneOf: OP_OPTIONS as { const: string; title: string }[] },
               value: { type: 'string', title: 'Value' },
             },
@@ -236,12 +236,12 @@ export class SubscriptionEditor extends LitElement {
             entityIdField: {
               type: 'string',
               title: 'Entity ID Field',
-              oneOf: fieldOptions.length > 0 ? fieldOptions : undefined,
+              ...(fieldOptions.length > 0 ? { oneOf: fieldOptions } : {}),
             },
             actorIdField: {
               type: 'string',
               title: 'Actor ID Field',
-              oneOf: fieldOptions.length > 0 ? fieldOptions : undefined,
+              ...(fieldOptions.length > 0 ? { oneOf: fieldOptions } : {}),
             },
           },
           required: ['titlePattern', 'severity', 'category', 'entityType', 'entityIdField', 'actorIdField'],

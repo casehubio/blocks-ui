@@ -2,8 +2,13 @@
   "name": "@casehubio/blocks-ui-case-explorer",
   "version": "0.1.0",
   "description": "Composable case explorer — universal entity browser with registration, state/command SPI, and management actions",
-  "repository": { "type": "git", "url": "https://github.com/casehubio/blocks-ui.git" },
-  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

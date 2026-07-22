@@ -241,7 +241,7 @@ __metadata:
   resolution: "@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/pages-form": "portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form"
+    "@casehubio/pages-form": "npm:^0.1.0"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -300,7 +300,7 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/pages-data": "npm:^0.2.2"
-    "@casehubio/pages-form": "portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form"
+    "@casehubio/pages-form": "npm:^0.1.0"
     "@casehubio/pages-primitives": "npm:^0.2.2"
     "@casehubio/pages-table": "npm:^0.2.2"
     "@vitest/browser": "npm:^2.1.8"
@@ -513,21 +513,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@casehubio/pages-form@portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form::locator=%40casehubio%2Fblocks-ui-gdpr-erasure-action%40workspace%3Acomponents%2Fgdpr-erasure-action":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/pages-form@portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form::locator=%40casehubio%2Fblocks-ui-gdpr-erasure-action%40workspace%3Acomponents%2Fgdpr-erasure-action"
+"@casehubio/pages-form@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@casehubio/pages-form@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40casehubio%2Fpages-form%2F0.1.0%2F2399dd81fc421471cb24b2e216e3d91756ef758a"
   dependencies:
     lit: "npm:^3.0.0"
+  checksum: 10c0/7cad567b245848f5571cc0bbf030dce6e9fc0d0fd6bfec2d814d5ccce125243b18283b56a5c9f49e62865a53c876a0712ca0066eaee49104ae073b232a68049e
   languageName: node
-  linkType: soft
-
-"@casehubio/pages-form@portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form::locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/pages-form@portal:/Users/mdproctor/claude/casehub/pages/packages/pages-form::locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
-  dependencies:
-    lit: "npm:^3.0.0"
-  languageName: node
-  linkType: soft
+  linkType: hard
 
 "@casehubio/pages-primitives@npm:0.2.2, @casehubio/pages-primitives@npm:^0.2.2":
   version: 0.2.2

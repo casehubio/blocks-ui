@@ -276,19 +276,19 @@ export class ChannelPreferences extends LitElement {
           enabled: chData.enabled,
           minSeverity: chData.minSeverity as 'INFO' | 'WARNING' | 'URGENT',
           digestSchedule,
-          groupBy: chData.deliveryMode === 'DIGEST' ? chData.groupBy as 'FLAT' | 'CATEGORY' | 'ENTITY' : undefined,
+          ...(chData.deliveryMode === 'DIGEST' && chData.groupBy ? { groupBy: chData.groupBy as 'FLAT' | 'CATEGORY' | 'ENTITY' } : {}),
         };
       }
 
       const qh = this._formData.quietHours as { start: string; end: string; timezone: string; action: string };
-      const update: NotificationPreferenceUpdate = {
+      const update = {
         channelDefaults,
-        quietHours: qh.start && qh.end ? {
+        ...(qh.start && qh.end ? { quietHours: {
           start: qh.start,
           end: qh.end,
           timezone: qh.timezone,
           action: qh.action as 'SUPPRESS' | 'BUFFER_FOR_DIGEST',
-        } : undefined,
+        } } : {}),
       };
 
       const result = await this.api.updatePreferences(update);
