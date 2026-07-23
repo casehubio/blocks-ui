@@ -28,7 +28,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: casehubio/casehub-pages
-          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           path: .sibling-pages
 
       - name: Symlink pages as sibling
