@@ -24,6 +24,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout casehub-pages (sibling)
+        uses: actions/checkout@v4
+        with:
+          repository: casehubio/casehub-pages
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          path: ../pages
+
+      - name: Build pages packages
+        working-directory: ../pages
+        run: |
+          corepack enable
+          yarn install --immutable
+          yarn build
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
