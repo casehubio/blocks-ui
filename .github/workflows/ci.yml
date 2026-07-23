@@ -47,10 +47,13 @@ jobs:
         with:
           repository: casehubio/casehub-pages
           token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
-          path: ../pages
+          path: .sibling-pages
+
+      - name: Symlink pages as sibling
+        run: ln -s "$GITHUB_WORKSPACE/.sibling-pages" ../pages
 
       - name: Build pages packages
-        working-directory: ../pages
+        working-directory: .sibling-pages
         run: |
           corepack enable
           yarn install --immutable
