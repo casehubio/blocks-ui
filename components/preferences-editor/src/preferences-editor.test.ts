@@ -74,7 +74,7 @@ describe('PreferencesEditor', () => {
     mockFetchResponses();
     const el = create();
     await waitForLoad(el);
-    const ds = el._dataSet;
+    const ds = el.dataSet;
     expect(ds).toBeTruthy();
     expect(ds.rows.length).toBeGreaterThan(0);
   });

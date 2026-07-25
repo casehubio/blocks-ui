@@ -1,8 +1,10 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { DataSourceAdapter } from '@casehubio/blocks-ui-core';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { ColumnType, columnId } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { DataSink } from '@casehubio/pages-data/dist/datasource/types.js';
 import '@casehubio/pages-table';
 import './value-editor.js';
 import { PreferencesApi } from './api.js';
@@ -28,13 +30,19 @@ export class PreferencesEditor extends LitElement {
   @property({ type: String }) endpoint = '/preferences';
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
 
-  @state() _dataSet: TypedDataSet | undefined;
-  @state() _loading = false;
-  @state() _error: string | null = null;
+  @state() _saveError: string | null = null;
+
+  private readonly _dataSource = new DataSourceAdapter(this, {
+    sourceFactory: (url) => this._createPreferencesSource(url),
+  });
 
   private _api!: PreferencesApi;
   private _schema: PreferenceSchemaDescriptor[] = [];
   private _records: PreferenceRecord[] = [];
+
+  get loading(): boolean { return this._dataSource.loading; }
+  get error(): string { return this._dataSource.error; }
+  get dataSet(): TypedDataSet | undefined { return this._dataSource.dataSet; }
 
   static override styles = css`
     :host { display: block; height: 100%; }
@@ -49,18 +57,46 @@ export class PreferencesEditor extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this._api = new PreferencesApi(this.endpoint, this.fetchFn);
-    this._loadData();
+    this._dataSource.endpoint = this.endpoint;
+  }
+
+  private _createPreferencesSource(url: string) {
+    let abort: AbortController | undefined;
+    return {
+      connect: (sink: DataSink) => {
+        abort = new AbortController();
+        this._fetchPreferences(url, sink, abort.signal);
+      },
+      disconnect: () => { abort?.abort(); },
+    };
+  }
+
+  private async _fetchPreferences(url: string, sink: DataSink, signal: AbortSignal): Promise<void> {
+    try {
+      this._api = new PreferencesApi(url, this.fetchFn);
+      const [schema, records] = await Promise.all([
+        this._api.fetchSchema(),
+        this._api.fetchAll(),
+      ]);
+      if (signal.aborted) return;
+      this._schema = schema;
+      this._records = records;
+      const dataset = this._buildDataSet();
+      sink.apply({ type: 'snapshot', dataset });
+    } catch (err) {
+      if (signal.aborted) return;
+      sink.error({ message: err instanceof Error ? err.message : String(err), permanent: true });
+    }
   }
 
   override render() {
-    if (this._loading) return html`<div class="loading">Loading preferences...</div>`;
-    if (this._error) return html`<div class="error">${this._error}</div>`;
-    if (!this._dataSet) return nothing;
+    if (this._dataSource.loading) return html`<div class="loading">Loading preferences...</div>`;
+    if (this._dataSource.error || this._saveError) return html`<div class="error">${this._dataSource.error || this._saveError}</div>`;
+    if (!this._dataSource.dataSet) return nothing;
 
     return html`
       <pages-data-table
-        .dataSet=${this._dataSet}
+        .dataSet=${this._dataSource.dataSet}
         .columnConfig=${[
           { id: ID_COL, label: 'Name' },
           { id: PARENT_COL, label: '' },
@@ -118,27 +154,29 @@ export class PreferencesEditor extends LitElement {
   async handleSave(scope: string, namespace: string, name: string, subKey: string, newValue: string): Promise<void> {
     const oldValue = this._findRecordValue(scope, namespace, name, subKey);
     try {
+      this._saveError = null;
       await this._api.set(scope, { namespace, name, subKey, value: newValue });
       this.dispatchEvent(new CustomEvent('preference-changed', {
         detail: { scope, qualifiedName: `${namespace}.${name}`, oldValue, newValue },
         bubbles: true, composed: true,
       }));
-      await this._loadData();
+      this._dataSource.refresh();
     } catch (e) {
-      this._error = e instanceof Error ? e.message : String(e);
+      this._saveError = e instanceof Error ? e.message : String(e);
     }
   }
 
   async handleDelete(scope: string, namespace: string, name: string, subKey: string): Promise<void> {
     try {
+      this._saveError = null;
       await this._api.deleteOne(scope, namespace, name, subKey);
       this.dispatchEvent(new CustomEvent('preference-deleted', {
         detail: { scope, qualifiedName: `${namespace}.${name}` },
         bubbles: true, composed: true,
       }));
-      await this._loadData();
+      this._dataSource.refresh();
     } catch (e) {
-      this._error = e instanceof Error ? e.message : String(e);
+      this._saveError = e instanceof Error ? e.message : String(e);
     }
   }
 
@@ -146,24 +184,6 @@ export class PreferencesEditor extends LitElement {
     return this._records.find(r =>
       r.scope === scope && r.namespace === namespace && r.name === name && r.subKey === subKey
     )?.value;
-  }
-
-  private async _loadData(): Promise<void> {
-    this._loading = true;
-    this._error = null;
-    try {
-      const [schema, records] = await Promise.all([
-        this._api.fetchSchema(),
-        this._api.fetchAll(),
-      ]);
-      this._schema = schema;
-      this._records = records;
-      this._dataSet = this._buildDataSet();
-    } catch (e) {
-      this._error = e instanceof Error ? e.message : String(e);
-    } finally {
-      this._loading = false;
-    }
   }
 
   private _buildDataSet(): TypedDataSet {

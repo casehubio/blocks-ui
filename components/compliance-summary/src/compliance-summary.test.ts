@@ -125,6 +125,14 @@ describe('compliance-summary', () => {
     document.removeEventListener('pages-event', handler);
   });
 
+  it('renders table with client-sort enabled', async () => {
+    el.requirements = SAMPLE_REQUIREMENTS;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table).toBeTruthy();
+    expect(table.clientSort).toBe(true);
+  });
+
   it('renders loading state during fetch', async () => {
     const mockFetch = vi.fn(() => new Promise(() => {}));
     globalThis.fetch = mockFetch as unknown as typeof fetch;

@@ -89,6 +89,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
   @state() private _claimError: string | null = null;
   @state() private _showCancelDialog = false;
   @state() private _pendingCancelItems: string[] = [];
+  @state() private _tableDataSet: import('@casehubio/pages-data/dist/dataset/types.js').TypedDataSet | undefined;
 
   // Queue scope
   @state() private _queueScope: QueueScope | null = null;
@@ -724,6 +725,17 @@ export class WorkItemInbox extends WorkItemInboxBase {
     if (changed.has('activeTab') && this.activeTab !== 'claimable') {
       this.claimBreachFilter = false;
     }
+    if (changed.has('items') || changed.has('activeTab') ||
+        changed.has('statusFilter') || changed.has('priorityFilter') ||
+        changed.has('overdueFilter') || changed.has('claimBreachFilter') ||
+        changed.has('_queueScope')) {
+      this._rebuildTableDataSet();
+    }
+  }
+
+  private _rebuildTableDataSet(): void {
+    const filtered = this.getFilteredItems();
+    this._tableDataSet = filtered.length > 0 ? fromRows(filtered, INBOX_COL_DEFS) : undefined;
   }
 
   private handleTabClick(tab: InboxMode) {
@@ -1170,9 +1182,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       return html`<div class="error">${this.error}</div>`;
     }
 
-    const filtered = this.getFilteredItems();
-
-    if (filtered.length === 0) {
+    if (!this._tableDataSet) {
       const message =
         this.activeTab === 'my-work'
           ? 'No items assigned to you'
@@ -1180,12 +1190,10 @@ export class WorkItemInbox extends WorkItemInboxBase {
       return html`<div class="empty-state">${message}</div>`;
     }
 
-    const dataSet = fromRows(filtered, INBOX_COL_DEFS);
-
     return html`
       <div class="items-list">
         <pages-table
-          .dataSet=${dataSet}
+          .dataSet=${this._tableDataSet}
           .columnConfig=${INBOX_COL_CONFIG}
           .columnRenderers=${this._columnRenderers}
           .getRowKey=${(row: TypedRow) => row.text(ITEM_ID_COL)}

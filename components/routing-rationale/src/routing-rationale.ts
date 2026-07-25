@@ -132,6 +132,7 @@ export class RoutingRationale extends DataSourceMixin(LiveRegionMixin(LitElement
   override createSourceFactory(): SourceFactory {
     return (url) => createTypedFetchSource<RoutingRationaleData>(url, (data, sink) => {
       this._rawData = data;
+      this._renderers = buildColumnRenderers(data.policy, data.selected.workerId);
       const allCandidates = [data.selected, ...data.alternatives];
       const dataset = fromRows(allCandidates, CANDIDATE_COLUMNS(data.selected.workerId));
       sink.apply({ type: 'snapshot', dataset });
@@ -247,6 +248,7 @@ export class RoutingRationale extends DataSourceMixin(LiveRegionMixin(LitElement
         .dataSet=${this.dataSet}
         .columnConfig=${TABLE_CONFIG}
         .columnRenderers=${this._renderers}
+        client-sort
         @row-activate=${this._handleRowActivate}
       ></pages-table>
       ${this._renderPolicySummary()}

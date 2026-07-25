@@ -273,49 +273,38 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
     `;
   }
 
+  private _capabilityRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
+    [SCORE_COL, (cell: CellValue) => {
+      const numValue = cell.type === 'NULL' ? 0 : (cell as { value: number }).value;
+      const level = trustLevelFromScore(numValue);
+      return html`
+        <div class="score-bar">
+          <div
+            class="score-bar-fill ${level}"
+            style="width: ${numValue * 100}%"
+          ></div>
+        </div>
+        <span style="margin-left: 8px">${numValue.toFixed(2)}</span>
+      `;
+    }],
+  ]);
+
+  private _capabilityConfig: readonly TableColumnConfig[] = [
+    { id: TAG_COL, sortable: true },
+    { id: SCORE_COL, sortable: true },
+  ];
+
   private _renderCapabilityTable() {
-    if (!this._trustData) return html``;
-
-    const capabilities = Object.entries(this._trustData.capabilityScores).map(([tag, score]) => ({
-      tag,
-      score,
-    }));
-
-    if (capabilities.length === 0) {
+    if (!this.dataSet || this.dataSet.rows.length === 0) {
       return html`<p>No capability scores available</p>`;
     }
 
-    const dataset = fromRows(capabilities, [
-      { id: TAG_COL, name: 'Capability', type: ColumnType.TEXT, getValue: (c: { tag: string; score: number }) => c.tag },
-      { id: SCORE_COL, name: 'Score', type: ColumnType.NUMBER, getValue: (c: { tag: string; score: number }) => c.score },
-    ]);
-
-    const renderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
-      [SCORE_COL, (cell: CellValue) => {
-        const numValue = cell.type === 'NULL' ? 0 : (cell as { value: number }).value;
-        const level = trustLevelFromScore(numValue);
-        return html`
-          <div class="score-bar">
-            <div
-              class="score-bar-fill ${level}"
-              style="width: ${numValue * 100}%"
-            ></div>
-          </div>
-          <span style="margin-left: 8px">${numValue.toFixed(2)}</span>
-        `;
-      }],
-    ]);
-
-    const config: readonly TableColumnConfig[] = [
-      { id: TAG_COL, sortable: true },
-      { id: SCORE_COL, sortable: true },
-    ];
-
     return html`
       <pages-table
-        .dataSet=${dataset}
-        .columnConfig=${config}
-        .columnRenderers=${renderers}
+        .dataSet=${this.dataSet}
+        .columnConfig=${this._capabilityConfig}
+        .columnRenderers=${this._capabilityRenderers}
+        client-sort
         @row-activate=${this._handleCapabilityClick}
       ></pages-table>
     `;

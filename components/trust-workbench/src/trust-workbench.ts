@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import { onPagesEvent } from '@casehubio/blocks-ui-core';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
-import type { ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { ColumnId, TypedRow, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CandidateScore } from '@casehubio/blocks-ui-routing-rationale';
 import type { GateDecision } from '@casehubio/blocks-ui-trust-feedback-display';
 import type { RoutingRationaleData } from '@casehubio/blocks-ui-routing-rationale';
@@ -29,6 +29,7 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) routingDetailResolver?: (id: string) => Promise<RoutingDecisionDetail>;
 
   @state() _selectedCapability: string | null = null;
+  @state() private _listDataSet: TypedDataSet | undefined;
   @state() _selectedDecisionId: string | null = null;
   @state() _routingDetail: RoutingRationaleData | null = null;
   @state() _feedbackEntries: readonly GateDecision[] = [];
@@ -101,12 +102,8 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
     if (changed.has('actorId') && changed.get('actorId') !== undefined) {
       this._resetAllState();
     }
-  }
-
-  override updated(changed: PropertyValues): void {
-    super.updated(changed);
-    if (changed.has('routingHistory') || changed.has('_selectedCapability') || changed.has('endpoint') || changed.has('actorId')) {
-      this._syncListPane();
+    if (changed.has('routingHistory') || changed.has('_selectedCapability')) {
+      this._listDataSet = this._computeListDataSet();
     }
   }
 
@@ -177,22 +174,17 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
     }
   }
 
-  private _syncListPane(): void {
-    const listPane = this.shadowRoot?.querySelector('list-pane') as any;
-    if (!listPane) return;
+  private _computeListDataSet(): TypedDataSet | undefined {
+    if (!this.routingHistory) return undefined;
+    const source = this._selectedCapability
+      ? this.routingHistory.filter(s => s.capabilityTag === this._selectedCapability)
+      : this.routingHistory;
+    return fromRows([...source], ROUTING_HISTORY_COLUMNS);
+  }
 
-    if (this.routingHistory) {
-      listPane.endpoint = undefined;
-      const source = this.routingHistory;
-      const filtered = this._selectedCapability
-        ? source.filter(s => s.capabilityTag === this._selectedCapability)
-        : source;
-      listPane.dataSet = fromRows(filtered, ROUTING_HISTORY_COLUMNS);
-    } else {
-      listPane.endpoint = this._routingEndpoint;
-    }
-    listPane.columnConfig = this.routingColumns ?? ROUTING_HISTORY_TABLE_CONFIG;
-    listPane.columnRenderers = this.routingColumnRenderers ?? DEFAULT_ROUTING_RENDERERS;
+  private get _listEndpoint(): string | undefined {
+    if (this.routingHistory) return undefined;
+    return this._routingEndpoint;
   }
 
   private _retryDetail(): void {
@@ -219,6 +211,10 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
           ></trust-score-panel>
           <list-pane
             selection-topic="trust-routing"
+            .endpoint=${this._listEndpoint}
+            .dataSet=${this._listDataSet}
+            .columnConfig=${this.routingColumns ?? ROUTING_HISTORY_TABLE_CONFIG}
+            .columnRenderers=${this.routingColumnRenderers ?? DEFAULT_ROUTING_RENDERERS}
             .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
             empty-message="No routing decisions"
           ></list-pane>

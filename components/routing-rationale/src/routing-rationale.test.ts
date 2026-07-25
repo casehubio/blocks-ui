@@ -205,6 +205,28 @@ describe('routing-rationale', () => {
     expect(header!.textContent).toContain('0.78');
   });
 
+  it('renders table with client-sort enabled', async () => {
+    el.data = SAMPLE_DATA;
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table).toBeTruthy();
+    expect(table.clientSort).toBe(true);
+  });
+
+  it('builds column renderers when data arrives via endpoint', async () => {
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(SAMPLE_DATA), { status: 200 })
+    ) as unknown as typeof fetch;
+    el.endpoint = 'http://test.local/api/routing';
+    await el.updateComplete;
+    await vi.waitFor(() => expect(el.loading).toBe(false));
+    await el.updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    expect(table).toBeTruthy();
+    expect(table.columnRenderers).toBeDefined();
+    expect(table.columnRenderers!.size).toBeGreaterThan(0);
+  });
+
   it('suppresses fetch when data prop is set', async () => {
     const mockFetch = vi.fn();
     globalThis.fetch = mockFetch as unknown as typeof fetch;

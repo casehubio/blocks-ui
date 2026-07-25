@@ -220,6 +220,12 @@ describe('AuditTrailViewer', () => {
       const table = element.shadowRoot?.querySelector('pages-table');
       expect(table).toBeDefined();
       expect(table?.hasAttribute('client-filter')).toBe(true);
+      expect(table?.hasAttribute('client-sort')).toBe(true);
+    });
+
+    it('pipeline delivers real dataset to entries adapter', () => {
+      expect(element.entries.dataSet).toBeDefined();
+      expect(element.entries.dataSet!.rows.length).toBe(2);
     });
 
     it('should render table with dataSet', () => {

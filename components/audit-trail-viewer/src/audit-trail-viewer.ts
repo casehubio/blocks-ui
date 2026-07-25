@@ -101,7 +101,8 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
           .then((data: LedgerEntry[]) => {
             if (signal.aborted) return;
             this._entries = data;
-            sink.apply({ type: 'snapshot', dataset: { columns: [], rows: [] } });
+            const dataset = fromRows(data, ENTRY_COL_DEFS);
+            sink.apply({ type: 'snapshot', dataset });
           })
           .catch(err => {
             if (signal.aborted || err.name === 'AbortError') return;
@@ -412,18 +413,22 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
         ? html`<div class="verification-banner" role="status" aria-live="polite">Verifying chain integrity...</div>`
         : this._renderVerificationBanner();
 
-    const filteredDataSet = fromRows(this._filteredEntries, ENTRY_COL_DEFS);
+    const hasActiveFilters = this._selectedActorId !== null || this._selectedTypes.size > 0;
+    const tableDataSet = hasActiveFilters
+      ? fromRows(this._filteredEntries, ENTRY_COL_DEFS)
+      : this.entries.dataSet;
 
     return html`
       ${verifyBanner} ${this._renderFilterControls()}
       <pages-table
-        .dataSet=${filteredDataSet}
+        .dataSet=${tableDataSet}
         .columnConfig=${ENTRY_COL_CONFIG}
         .columnRenderers=${ENTRY_RENDERERS}
         .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
         .getRowDetail=${this._getRowDetail}
         detailMode="single"
         .expandedDetailKeys=${this._expandedEntryId ? [this._expandedEntryId] : []}
+        client-sort
         client-filter
         @detail-change=${this._handleDetailChange}
       ></pages-table>

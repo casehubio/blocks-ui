@@ -142,6 +142,33 @@ describe('trust-score-panel', () => {
       expect(table).toBeTruthy();
     });
 
+    it('capability table uses pipeline dataSet with client-sort', async () => {
+      const mockResponse: TrustScoreResponse = {
+        actorId: 'agent-123',
+        globalScore: 0.85,
+        capabilityScores: { 'claim-review': 0.82, 'fraud-detect': 0.91 },
+        dimensionScores: {},
+      };
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => mockResponse,
+      });
+
+      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      el.mode = 'full';
+      el.actorId = 'agent-123';
+      el.endpoint = 'http://test.local/api/v1/ledger';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      await el.updateComplete;
+
+      const table = el.shadowRoot!.querySelector('pages-table') as any;
+      expect(table).toBeTruthy();
+      expect(table.dataSet).toBe((el as any).dataSet);
+      expect(table.clientSort).toBe(true);
+    });
+
     it('hides trend section when no trend data available', async () => {
       const mockResponse: TrustScoreResponse = {
         actorId: 'agent-123',

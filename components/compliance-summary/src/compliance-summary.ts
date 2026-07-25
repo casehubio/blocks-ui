@@ -104,6 +104,7 @@ export class ComplianceSummary extends DataSourceMixin(LitElement) {
         .dataSet=${this.dataSet}
         .columnConfig=${TABLE_CONFIG}
         .columnRenderers=${this._columnRenderers}
+        client-sort
         @row-activate=${this._handleRowActivate}
       ></pages-table>
     `;
