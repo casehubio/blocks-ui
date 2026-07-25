@@ -2,6 +2,5 @@
 export {
   generateScale,
   SPACING_SCALE, TYPOGRAPHY, MOTION, RADIUS, ELEVATION_LIGHT, ELEVATION_DARK, DENSITY_COMPACT_OVERRIDES,
-  generateThemeCSS, injectTheme, applyThemeMode, DEFAULT_THEME,
-  type ThemeConfig,
+  applyTheme, registerTheme, getTheme, listThemes,
 } from '@casehubio/pages-ui-tokens';

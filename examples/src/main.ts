@@ -36,6 +36,7 @@ async function bootstrap() {
   await import('./pages/grouped-data-view-page.js');
   await import('./pages/case-explorer-page.js');
   await import('./pages/trust-workbench-page.js');
+  await import('./pages/preferences-editor-page.js');
 
   app.textContent = '';
   app.appendChild(document.createElement('example-shell'));

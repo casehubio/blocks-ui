@@ -6,7 +6,7 @@ import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
-import type { SourceFactory } from '@casehubio/pages-component';
+import type { SourceFactory } from '@casehubio/pages-data';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';

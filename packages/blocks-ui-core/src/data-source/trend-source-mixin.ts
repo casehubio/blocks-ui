@@ -47,8 +47,8 @@ export function TrendSourceMixin<T extends Constructor<LitElement>>(Base: T) {
 
     override willUpdate(changed: PropertyValues): void {
       super.willUpdate(changed);
-      if (changed.has('trendSource')) {
-        this._trendAdapter.source = this.trendSource;
+      if (changed.has('trendSource') && this.trendSource) {
+        this._trendAdapter.endpoint = undefined;
       }
       if (changed.has('trendData') && this.trendData !== undefined) {
         this._directTrendPoints = [...this.trendData].sort(

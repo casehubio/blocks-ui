@@ -1,8 +1,8 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import '@casehubio/pages-form';
-import type { FieldSchema } from '@casehubio/pages-form';
+import '@casehubio/pages-viz';
+import type { FieldSchema } from '@casehubio/pages-viz';
 import type { Snooze } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';

@@ -1,6 +1,7 @@
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import {
   DataSourceController,
+  createStandaloneConnector,
   type DataSourceControllerOptions,
 } from "@casehubio/pages-component";
 import type { TypedDataSet } from "@casehubio/pages-data/dist/dataset/types.js";
@@ -32,11 +33,13 @@ export class DataSourceAdapter implements ReactiveController {
   get dataSet(): TypedDataSet | undefined { return this.controller.dataSet; }
   set dataSet(v: TypedDataSet | undefined) { this.controller.dataSet = v; }
 
-  get source() { return this.controller.source; }
-  set source(s) { this.controller.source = s; }
+  hostConnected(): void {
+    this.controller.connector = createStandaloneConnector(this.controller);
+  }
 
-  hostConnected(): void { this.controller.connect(); }
-  hostDisconnected(): void { this.controller.disconnect(); }
+  hostDisconnected(): void {
+    this.controller.connector = undefined;
+  }
 
   refresh(): void { this.controller.refresh(); }
   dispose(): void { this.controller.dispose(); }

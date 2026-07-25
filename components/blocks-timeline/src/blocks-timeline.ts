@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin, fetchSource } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 import { emitPagesEvent } from '@casehubio/pages-component';
-import type { SourceFactory } from '@casehubio/pages-component';
+import type { SourceFactory } from '@casehubio/pages-data';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import type { TimelineNode, Layout, TimelineStrategy, PaginationMeta } from './types.js';
 import { renderVertical, verticalStyles } from './renderers/vertical.js';

@@ -2,8 +2,8 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-core';
-import '@casehubio/pages-form';
-import type { FieldSchema } from '@casehubio/pages-form';
+import '@casehubio/pages-viz';
+import type { FieldSchema } from '@casehubio/pages-viz';
 import type { ErasureReceipt } from './types.js';
 
 export const GdprErasureTopics = {

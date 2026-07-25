@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-trust-workbench",
   "version": "0.1.0",
-  "description": "Composite trust visibility \u2014 score panel, routing history, feedback display",
+  "description": "Composite trust visibility — score panel, routing history, feedback display",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"

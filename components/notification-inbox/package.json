@@ -14,9 +14,9 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
-    "@casehubio/pages-form": "file:../../../pages/packages/pages-form",
     "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
     "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
+    "@casehubio/pages-viz": "file:../../../pages/packages/pages-viz",
     "lit": "^3.2.1"
   },
   "devDependencies": {

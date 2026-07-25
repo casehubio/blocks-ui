@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { generateThemeCSS, type ThemeConfig } from '@casehubio/blocks-ui-core';
+import '@casehubio/pages-ui-tokens/dist/init.js';
+import '@casehubio/pages-ui-tokens/dist/theme-picker.js';
+import { applyTheme } from '@casehubio/blocks-ui-core';
 
 interface NavItem {
   id: string;
@@ -41,6 +43,7 @@ const NAV: NavCategory[] = [
       { id: 'sla-breach-policy', label: 'SLA Breach Policy', hash: '#components/sla-breach-policy' },
       { id: 'grouped-data-view', label: 'Grouped Data View', hash: '#components/grouped-data-view' },
       { id: 'case-explorer', label: 'Case Explorer', hash: '#components/case-explorer' },
+      { id: 'preferences-editor', label: 'Preferences Editor', hash: '#components/preferences-editor' },
     ],
   },
   {
@@ -52,12 +55,6 @@ const NAV: NavCategory[] = [
   },
 ];
 
-const THEME_CONFIG: ThemeConfig = {
-  baseHue: 220,
-  accentHue: 250,
-  chroma: 0.12,
-  contrast: 0.5,
-};
 
 @customElement('example-shell')
 export class ExampleShell extends LitElement {
@@ -112,7 +109,7 @@ export class ExampleShell extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.applyTheme();
+    this.applyCurrentTheme();
     this.currentPage = location.hash || '#composed/workbench';
     window.addEventListener('hashchange', this.onHashChange);
   }
@@ -126,26 +123,24 @@ export class ExampleShell extends LitElement {
     this.currentPage = location.hash;
   };
 
-  private applyTheme(): void {
-    const css = generateThemeCSS(THEME_CONFIG);
-    let style = document.querySelector('style[data-pages-theme]') as HTMLStyleElement | null;
-    if (!style) {
-      style = document.createElement('style');
-      style.setAttribute('data-pages-theme', '');
-      document.head.appendChild(style);
+  private applyCurrentTheme(): void {
+    const name = this.theme === 'dark' ? 'default-dark' : 'default-light';
+    applyTheme(name);
+    if (this.density === 'compact') {
+      document.documentElement.classList.add('pages-density-compact');
+    } else {
+      document.documentElement.classList.remove('pages-density-compact');
     }
-    style.textContent = css;
-    document.documentElement.className = `pages-theme-${this.theme}${this.density === 'compact' ? ' pages-density-compact' : ''}`;
   }
 
   private toggleTheme(): void {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
-    this.applyTheme();
+    this.applyCurrentTheme();
   }
 
   private toggleDensity(): void {
     this.density = this.density === 'comfortable' ? 'compact' : 'comfortable';
-    this.applyTheme();
+    this.applyCurrentTheme();
   }
 
   override render() {
@@ -162,9 +157,7 @@ export class ExampleShell extends LitElement {
           `)}
         `)}
         <div class="controls">
-          <button class="toggle ${this.theme === 'dark' ? 'active' : ''}" @click=${() => this.toggleTheme()}>
-            ${this.theme === 'dark' ? 'Dark' : 'Light'}
-          </button>
+          <pages-theme-picker></pages-theme-picker>
           <button class="toggle ${this.density === 'compact' ? 'active' : ''}" @click=${() => this.toggleDensity()}>
             ${this.density === 'compact' ? 'Compact' : 'Comfortable'}
           </button>
@@ -203,6 +196,7 @@ export class ExampleShell extends LitElement {
       case '#components/sla-breach-policy': return html`<sla-breach-policy-page></sla-breach-policy-page>`;
       case '#components/grouped-data-view': return html`<grouped-data-view-page></grouped-data-view-page>`;
       case '#components/case-explorer': return html`<case-explorer-page></case-explorer-page>`;
+      case '#components/preferences-editor': return html`<preferences-editor-page></preferences-editor-page>`;
       case '#composed/workbench': return html`<workbench-page></workbench-page>`;
       case '#composed/trust-workbench': return html`<trust-workbench-page></trust-workbench-page>`;
       default: return html`<workbench-page></workbench-page>`;

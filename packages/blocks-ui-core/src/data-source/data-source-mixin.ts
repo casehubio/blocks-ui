@@ -2,8 +2,8 @@ import type { LitElement, PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 import { DataSourceAdapter } from "./data-source-adapter.js";
 import { fetchSource } from "./fetch-source.js";
-import type { SourceFactory } from "@casehubio/pages-component";
 import type { TypedDataSet } from "@casehubio/pages-data/dist/dataset/types.js";
+import type { SourceFactory } from "@casehubio/pages-data";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 

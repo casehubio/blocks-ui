@@ -1,7 +1,7 @@
 {
   "name": "@casehubio/blocks-ui-trust-score-panel",
   "version": "0.2.2",
-  "description": "Agent trust score visualisation \u2014 Bayesian Beta scores, trend lines, per-capability breakdown",
+  "description": "Agent trust score visualisation — Bayesian Beta scores, trend lines, per-capability breakdown",
   "repository": {
     "type": "git",
     "url": "https://github.com/casehubio/blocks-ui.git"
