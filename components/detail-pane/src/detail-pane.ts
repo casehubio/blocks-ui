@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { TabDefinition } from './types.js';
 
 @customElement('detail-pane')

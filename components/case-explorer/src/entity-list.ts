@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { ColumnType, columnId as toColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { TypedDataSet, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';

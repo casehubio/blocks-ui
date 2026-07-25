@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceAdapter, renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { LedgerEntry, VerificationResult, Attestation, EntryTypeFilter } from './types.js';

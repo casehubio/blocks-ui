@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import { BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
-import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
+import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import '@casehubio/pages-table';

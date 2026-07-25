@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin, TrendSourceMixin, renderSparkline, emitPagesEvent } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { TrustScoreResponse, TrustLevel } from './types.js';
 import { trustLevelFromScore } from './types.js';
 import '@casehubio/pages-table';

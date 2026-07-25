@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent, BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
-import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 void BlocksConfirmDialog;
 import type { CommandDescriptor } from './types.js';
 

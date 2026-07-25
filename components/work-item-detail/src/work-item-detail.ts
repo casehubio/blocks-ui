@@ -11,7 +11,7 @@ import type {
 } from '@casehubio/blocks-ui-core';
 import { isTerminalStatus, onPagesEvent, WorkItemEventTopics } from '@casehubio/blocks-ui-core';
 interface SchemaFormElement extends HTMLElement { submit(): Record<string, unknown> | null; }
-import { FocusTrapMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
+import { FocusTrapMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
 import './detail-relations-tab.js';
