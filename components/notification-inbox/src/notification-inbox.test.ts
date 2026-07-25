@@ -130,7 +130,7 @@ async function createElement(opts: {
   mockFetch?: typeof fetch;
   sseManager?: MockSSEManager;
 }): Promise<NotificationInbox> {
-  const el = document.createElement('notification-inbox') as NotificationInbox;
+  const el = document.createElement('blocks-notification-inbox') as NotificationInbox;
   if (opts.data) el.data = opts.data;
   if (opts.endpoint) el.endpoint = opts.endpoint;
   if (opts.mockFetch) el.fetchFn = opts.mockFetch;
@@ -141,7 +141,7 @@ async function createElement(opts: {
   return el;
 }
 
-describe('notification-inbox', () => {
+describe('blocks-notification-inbox', () => {
   let mockSSE: MockSSEManager;
 
   beforeEach(() => {
@@ -641,7 +641,7 @@ describe('notification-inbox', () => {
 
   describe('column layout', () => {
     it('status column width accommodates its header or hides it', async () => {
-      const el = document.createElement('notification-inbox') as NotificationInbox;
+      const el = document.createElement('blocks-notification-inbox') as NotificationInbox;
       el.data = [makeNotification()];
       document.body.appendChild(el);
       await (el as any).updateComplete;
@@ -660,7 +660,7 @@ describe('notification-inbox', () => {
     });
 
     it('age column width fits short date text without overflow', async () => {
-      const el = document.createElement('notification-inbox') as NotificationInbox;
+      const el = document.createElement('blocks-notification-inbox') as NotificationInbox;
       el.data = [makeNotification()];
       document.body.appendChild(el);
       await (el as any).updateComplete;

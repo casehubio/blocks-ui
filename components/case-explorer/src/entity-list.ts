@@ -16,7 +16,7 @@ export const EntityListTopics = {
   ENTITY_SELECTED: 'entity.selected',
 } as const;
 
-@customElement('entity-list')
+@customElement('blocks-entity-list')
 export class EntityList extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) registration?: EntityTypeRegistration;
   @property({ type: String }) endpoint = '';
@@ -119,7 +119,7 @@ export class EntityList extends LiveRegionMixin(LitElement) {
           <button @click=${() => this._fetchEntities()}>Retry</button>
         </div>
       ` : nothing}
-      <list-pane
+      <blocks-list-pane
         .dataSet=${this._dataSet}
         .columnConfig=${[{ id: ENTITY_ID_COLUMN, visible: false }, ...reg.columnConfig]}
         .columnRenderers=${reg.columnRenderers ? new Map(Object.entries(reg.columnRenderers)) : undefined}
@@ -128,7 +128,7 @@ export class EntityList extends LiveRegionMixin(LitElement) {
         .pageSize=${this.pageSize}
         selection-topic=${this.selectionTopic ? `${this.selectionTopic}:_internal` : ''}
         @row-activate=${this._onRowActivate}
-      ></list-pane>
+      ></blocks-list-pane>
       ${this._nextCursor ? html`
         <div class="load-more">
           <button @click=${() => this._loadMore()} ?disabled=${this._loading}>Load more</button>

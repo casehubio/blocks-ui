@@ -13,7 +13,7 @@ const IDENTITY: WorkIdentity = {
 
 let notificationCounter = 100;
 
-@customElement('notification-page')
+@customElement('blocks-example-notification')
 export class NotificationPage extends LitElement {
   @state() private mockState: MockNotificationState | null = null;
   @state() private showSubscriptions = false;
@@ -141,7 +141,7 @@ export class NotificationPage extends LitElement {
       min-height: 0;
     }
 
-    notification-inbox {
+    blocks-notification-inbox {
       display: block;
       height: 100%;
       container-type: inline-size;
@@ -204,7 +204,7 @@ export class NotificationPage extends LitElement {
       padding: 0;
     }
 
-    subscription-list {
+    blocks-subscription-list {
       display: block;
       min-height: 300px;
     }
@@ -297,7 +297,7 @@ export class NotificationPage extends LitElement {
 
   private resetData(): void {
     this.mockState?.reset();
-    const inbox = this.shadowRoot?.querySelector('notification-inbox') as any;
+    const inbox = this.shadowRoot?.querySelector('blocks-notification-inbox') as any;
     inbox?.refresh?.();
   }
 
@@ -316,10 +316,10 @@ export class NotificationPage extends LitElement {
             <span class="toolbar-title">CaseHub Workspace</span>
           </div>
           <div class="toolbar-right">
-            <notification-bell
+            <blocks-notification-bell
               endpoint=""
               .identity=${IDENTITY}
-            ></notification-bell>
+            ></blocks-notification-bell>
           </div>
         </div>
 
@@ -352,10 +352,10 @@ export class NotificationPage extends LitElement {
         </div>
 
         <div class="main-content">
-          <notification-inbox
+          <blocks-notification-inbox
             endpoint=""
             .identity=${IDENTITY}
-          ></notification-inbox>
+          ></blocks-notification-inbox>
         </div>
 
         ${this.showSubscriptions ? html`
@@ -366,10 +366,10 @@ export class NotificationPage extends LitElement {
               <button class="dialog-close" @click=${() => { this.showSubscriptions = false; }} aria-label="Close">✕</button>
             </div>
             <div class="dialog-body">
-              <subscription-list
+              <blocks-subscription-list
                 endpoint=""
                 .identity=${IDENTITY}
-              ></subscription-list>
+              ></blocks-subscription-list>
             </div>
           </div>
         ` : nothing}
@@ -382,10 +382,10 @@ export class NotificationPage extends LitElement {
               <button class="dialog-close" @click=${() => { this.showPreferences = false; }} aria-label="Close">✕</button>
             </div>
             <div class="dialog-body" style="padding: 16px; overflow: auto;">
-              <notification-preferences
+              <blocks-notification-preferences
                 endpoint=""
                 .identity=${IDENTITY}
-              ></notification-preferences>
+              ></blocks-notification-preferences>
             </div>
           </div>
         ` : nothing}

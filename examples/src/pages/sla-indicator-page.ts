@@ -10,7 +10,7 @@ function pastISO(ms: number): string {
   return new Date(Date.now() - ms).toISOString();
 }
 
-@customElement('sla-indicator-page')
+@customElement('blocks-example-sla-indicator')
 export class SlaIndicatorPage extends LitElement {
   @state() private _timeShift = 0;
 
@@ -75,37 +75,37 @@ export class SlaIndicatorPage extends LitElement {
         <div class="card">
           <div class="card-label">Normal — 2 days remaining</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(172800000 + shift)}" sla-window="604800000" warning-threshold="0.25" critical-threshold="0.10"></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(172800000 + shift)}" sla-window="604800000" warning-threshold="0.25" critical-threshold="0.10"></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Warning — 4 hours remaining</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(14400000 + shift)}" sla-window="86400000" warning-threshold="0.25" critical-threshold="0.10"></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(14400000 + shift)}" sla-window="86400000" warning-threshold="0.25" critical-threshold="0.10"></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Critical — 12 minutes remaining</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(720000 + shift)}" sla-window="3600000" warning-threshold="0.25" critical-threshold="0.10"></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(720000 + shift)}" sla-window="3600000" warning-threshold="0.25" critical-threshold="0.10"></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Breached — 3 hours ago</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${pastISO(10800000 - shift)}" sla-window="86400000"></sla-indicator>
+            <blocks-sla-indicator deadline="${pastISO(10800000 - shift)}" sla-window="86400000"></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Breached + Escalation L2</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${pastISO(7200000 - shift)}" escalation-stage="L2"></sla-indicator>
+            <blocks-sla-indicator deadline="${pastISO(7200000 - shift)}" escalation-stage="L2"></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Absolute fallback (no slaWindow)</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(2400000 + shift)}"></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(2400000 + shift)}"></blocks-sla-indicator>
           </div>
         </div>
       </div>
@@ -115,19 +115,19 @@ export class SlaIndicatorPage extends LitElement {
         <div class="card">
           <div class="card-label">Normal — expanded</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(259200000 + shift)}" sla-window="604800000" ?compact=${false}></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(259200000 + shift)}" sla-window="604800000" ?compact=${false}></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Warning — expanded + escalation</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${futureISO(7200000 + shift)}" sla-window="86400000" escalation-stage="Manager" ?compact=${false}></sla-indicator>
+            <blocks-sla-indicator deadline="${futureISO(7200000 + shift)}" sla-window="86400000" escalation-stage="Manager" ?compact=${false}></blocks-sla-indicator>
           </div>
         </div>
         <div class="card">
           <div class="card-label">Breached — expanded</div>
           <div class="card-indicator">
-            <sla-indicator deadline="${pastISO(86400000 - shift)}" ?compact=${false}></sla-indicator>
+            <blocks-sla-indicator deadline="${pastISO(86400000 - shift)}" ?compact=${false}></blocks-sla-indicator>
           </div>
         </div>
       </div>

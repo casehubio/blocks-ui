@@ -47,7 +47,7 @@ const DEFAULT_OUTCOMES: OutcomeDefinition[] = [
   { key: 'reject', label: 'Reject', variant: 'danger' },
 ];
 
-@customElement('approval-gate')
+@customElement('blocks-approval-gate')
 export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String, attribute: 'gate-id' }) gateId = '';
   @property({ type: String }) endpoint = '';
@@ -347,11 +347,11 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
       <div class="gate">
         <div class="header">
           <p class="prompt" id="gate-prompt">${this.prompt}</p>
-          ${this.deadline !== null ? html`<sla-indicator
+          ${this.deadline !== null ? html`<blocks-sla-indicator
             .deadline=${this.deadline}
             .slaWindow=${this.slaWindow}
             compact
-          ></sla-indicator>` : nothing}
+          ></blocks-sla-indicator>` : nothing}
         </div>
 
         ${this.contextText ? html`<p class="context">${this.contextText}</p>` : nothing}
@@ -621,6 +621,6 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'approval-gate': ApprovalGate;
+    'blocks-approval-gate': ApprovalGate;
   }
 }

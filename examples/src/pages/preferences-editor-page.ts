@@ -94,7 +94,7 @@ function mockFetch(url: string, init?: RequestInit): Promise<Response> {
   return Promise.resolve(new Response('Not Found', { status: 404 }));
 }
 
-@customElement('preferences-editor-page')
+@customElement('blocks-example-preferences-editor')
 export class PreferencesEditorPage extends LitElement {
   @state() private _eventLog: string[] = [];
 
@@ -125,13 +125,13 @@ export class PreferencesEditorPage extends LitElement {
       <h3>Full editor — system / tenant / team hierarchy</h3>
       <p>Work items (SLA, delegation, claims, escalation), platform (debug, session, locale, CORS), notifications (digest, quiet hours, retries), and trust scoring (initial score, decay, routing). Acme: strict compliance, relaxed engineering. Globex: German locale, short sessions.</p>
       <div class="demo-section" style="height:600px;">
-        <preferences-editor
+        <blocks-preferences-editor
           .scopeTree=${SCOPE_TREE}
           endpoint="/preferences"
           .fetchFn=${mockFetch}
           @preference-changed=${this._onChanged}
           @preference-deleted=${this._onDeleted}
-        ></preferences-editor>
+        ></blocks-preferences-editor>
       </div>
       ${this._eventLog.length > 0 ? html`
         <h3>Event log</h3>

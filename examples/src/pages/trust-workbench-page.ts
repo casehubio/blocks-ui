@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '../../../components/trust-workbench/src/trust-workbench.js';
 
-@customElement('trust-workbench-page')
+@customElement('blocks-example-trust-workbench')
 export class TrustWorkbenchPage extends LitElement {
   @state() private _actorId = 'agent-alice';
   @state() private _eventLog: string[] = [];
@@ -51,7 +51,7 @@ export class TrustWorkbenchPage extends LitElement {
       </div>
 
       <div class="workbench-container">
-        <trust-workbench endpoint="/api" actor-id=${this._actorId}></trust-workbench>
+        <blocks-trust-workbench endpoint="/api" actor-id=${this._actorId}></blocks-trust-workbench>
       </div>
 
       ${this._eventLog.length > 0 ? html`

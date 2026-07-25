@@ -101,7 +101,7 @@ const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<Co
 
 const NotificationInboxBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
 
-@customElement('notification-inbox')
+@customElement('blocks-notification-inbox')
 export class NotificationInbox extends NotificationInboxBase {
   @property({ type: String }) endpoint?: string;
   @property({ type: Array }) data?: Notification[];
@@ -1054,6 +1054,6 @@ export class NotificationInbox extends NotificationInboxBase {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'notification-inbox': NotificationInbox;
+    'blocks-notification-inbox': NotificationInbox;
   }
 }

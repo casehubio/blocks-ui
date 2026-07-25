@@ -18,12 +18,12 @@ const SAMPLE_DATA: Precedent[] = [
 
 let originalFetch: typeof globalThis.fetch;
 
-describe('similarity-panel', () => {
+describe('blocks-similarity-panel', () => {
   let el: SimilarityPanelEl;
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
-    el = document.createElement('similarity-panel') as SimilarityPanelEl;
+    el = document.createElement('blocks-similarity-panel') as SimilarityPanelEl;
     document.body.appendChild(el);
   });
 

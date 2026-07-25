@@ -40,7 +40,7 @@ function getOutcomeColors(outcome: string): string {
   return '';
 }
 
-@customElement('similarity-panel')
+@customElement('blocks-similarity-panel')
 export class SimilarityPanel extends DataSourceMixin(LitElement) {
   @property({ attribute: false }) data: Precedent[] | null = null;
   @property({ type: String, attribute: 'empty-message' }) emptyMessage = 'No similar cases found';
@@ -116,6 +116,6 @@ export class SimilarityPanel extends DataSourceMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'similarity-panel': SimilarityPanel;
+    'blocks-similarity-panel': SimilarityPanel;
   }
 }

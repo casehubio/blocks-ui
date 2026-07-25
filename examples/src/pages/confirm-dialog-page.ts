@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/blocks-ui-core';
 
-@customElement('confirm-dialog-page')
+@customElement('blocks-example-confirm-dialog')
 export class ConfirmDialogPage extends LitElement {
   @state() private _basicOpen = false;
   @state() private _persistentOpen = false;

@@ -39,7 +39,7 @@ async function bootstrap() {
   await import('./pages/preferences-editor-page.js');
 
   app.textContent = '';
-  app.appendChild(document.createElement('example-shell'));
+  app.appendChild(document.createElement('blocks-example-shell'));
 }
 
 bootstrap().catch(err => {

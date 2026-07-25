@@ -4,7 +4,7 @@ import type { DetailRenderer } from '../types.js';
 import { caseInstanceType } from '../presets.js';
 import '../entity-detail.js';
 
-@customElement('case-detail-panel')
+@customElement('blocks-case-detail-panel')
 export class CaseDetailPanel extends LitElement {
   @property({ type: String }) endpoint = '';
   @property({ attribute: false }) detailRenderer?: DetailRenderer;
@@ -13,6 +13,6 @@ export class CaseDetailPanel extends LitElement {
 
   override render(): TemplateResult {
     const reg = { ...caseInstanceType({ listEndpoint: this.endpoint }), detailRenderer: this.detailRenderer };
-    return html`<entity-detail .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></entity-detail>`;
+    return html`<blocks-entity-detail .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-detail>`;
   }
 }

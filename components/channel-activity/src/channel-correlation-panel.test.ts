@@ -11,13 +11,13 @@ function makeMsg(overrides: Partial<QhorusMessage> = {}): QhorusMessage {
   };
 }
 
-describe('channel-correlation-panel', () => {
+describe('blocks-channel-correlation-panel', () => {
   let element: HTMLElement;
 
   afterEach(() => { element?.remove(); });
 
   it('shows empty state when no message selected', async () => {
-    element = document.createElement('channel-correlation-panel') as any;
+    element = document.createElement('blocks-channel-correlation-panel') as any;
     (element as any).messages = [];
     (element as any).commitments = new Map();
     document.body.appendChild(element);
@@ -27,7 +27,7 @@ describe('channel-correlation-panel', () => {
   });
 
   it('builds chain from correlationId', async () => {
-    element = document.createElement('channel-correlation-panel') as any;
+    element = document.createElement('blocks-channel-correlation-panel') as any;
     (element as any).messages = [
       makeMsg({ id: 'm1', correlationId: 'corr-1', sender: 'human:alice', messageType: 'COMMAND', createdAt: '2026-07-20T10:00:00Z' }),
       makeMsg({ id: 'm2', correlationId: 'corr-1', sender: 'agent-1', messageType: 'STATUS', createdAt: '2026-07-20T10:01:00Z' }),
@@ -44,7 +44,7 @@ describe('channel-correlation-panel', () => {
   });
 
   it('builds chain from inReplyTo', async () => {
-    element = document.createElement('channel-correlation-panel') as any;
+    element = document.createElement('blocks-channel-correlation-panel') as any;
     (element as any).messages = [
       makeMsg({ id: 'm1', sender: 'human:alice', messageType: 'COMMAND', createdAt: '2026-07-20T10:00:00Z' }),
       makeMsg({ id: 'm2', inReplyTo: 'm1', sender: 'agent-1', messageType: 'RESPONSE', createdAt: '2026-07-20T10:01:00Z' }),
@@ -59,7 +59,7 @@ describe('channel-correlation-panel', () => {
   });
 
   it('shows duration between nodes', async () => {
-    element = document.createElement('channel-correlation-panel') as any;
+    element = document.createElement('blocks-channel-correlation-panel') as any;
     (element as any).messages = [
       makeMsg({ id: 'm1', correlationId: 'corr-1', createdAt: '2026-07-20T10:00:00Z' }),
       makeMsg({ id: 'm2', correlationId: 'corr-1', createdAt: '2026-07-20T10:05:00Z' }),
@@ -74,7 +74,7 @@ describe('channel-correlation-panel', () => {
   });
 
   it('emits message-selected on node click', async () => {
-    element = document.createElement('channel-correlation-panel') as any;
+    element = document.createElement('blocks-channel-correlation-panel') as any;
     const msg = makeMsg({ id: 'click-me', correlationId: 'corr-1' });
     (element as any).messages = [msg];
     (element as any).commitments = new Map();

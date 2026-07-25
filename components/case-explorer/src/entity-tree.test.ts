@@ -49,7 +49,7 @@ describe('EntityTree', () => {
   };
 
   function createTree(nodes: readonly EntityTreeNode[]) {
-    const el = document.createElement('entity-tree') as any;
+    const el = document.createElement('blocks-entity-tree') as any;
     el.nodes = nodes;
     el.selectionTopic = 'case';
     el.fetchFn = fetchFn;

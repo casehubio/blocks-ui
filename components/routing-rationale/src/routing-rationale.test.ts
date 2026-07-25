@@ -35,12 +35,12 @@ const SAMPLE_DATA: RoutingRationaleData = {
 
 let originalFetch: typeof globalThis.fetch;
 
-describe('routing-rationale', () => {
+describe('blocks-routing-rationale', () => {
   let el: RoutingRationaleEl;
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
-    el = document.createElement('routing-rationale') as RoutingRationaleEl;
+    el = document.createElement('blocks-routing-rationale') as RoutingRationaleEl;
     document.body.appendChild(el);
   });
 

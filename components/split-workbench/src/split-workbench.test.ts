@@ -21,12 +21,12 @@ Object.defineProperty(globalThis, 'localStorage', {
 });
 
 function createElement(topic = 'test'): SplitWorkbenchEl {
-  const el = document.createElement('split-workbench') as SplitWorkbenchEl;
+  const el = document.createElement('blocks-split-workbench') as SplitWorkbenchEl;
   el.selectionTopic = topic;
   return el;
 }
 
-describe('split-workbench', () => {
+describe('blocks-split-workbench', () => {
   let el: SplitWorkbenchEl;
 
   afterEach(() => {
@@ -262,7 +262,7 @@ describe('split-workbench', () => {
   describe('validation', () => {
     it('warns when selection-topic is not set', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      el = document.createElement('split-workbench') as SplitWorkbenchEl;
+      el = document.createElement('blocks-split-workbench') as SplitWorkbenchEl;
       document.body.appendChild(el);
       await el.updateComplete;
       expect(warn).toHaveBeenCalledWith(expect.stringContaining('selection-topic'));

@@ -12,7 +12,7 @@ function relativeTime(iso: string): string {
   return `${days}d`;
 }
 
-@customElement('work-item-row')
+@customElement('blocks-work-item-row')
 export class WorkItemRow extends LitElement {
   @property({ type: Object }) item!: WorkItemResponse;
 

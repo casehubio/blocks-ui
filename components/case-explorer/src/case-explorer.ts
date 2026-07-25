@@ -9,7 +9,7 @@ import './entity-tree.js';
 import '@casehubio/blocks-ui-split-workbench';
 import type { EntityTypeRegistration, EntityTreeNode, EntitySelection, NavigationState } from './types.js';
 
-@customElement('case-explorer')
+@customElement('blocks-case-explorer')
 export class CaseExplorer extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) entityTypes: readonly EntityTypeRegistration[] = [];
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
@@ -142,19 +142,19 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
         ${this._renderToolbar(navState)}
         ${navState.breadcrumbs.length > 0 ? this._renderBreadcrumbs(navState) : nothing}
         <div class="content">
-          <split-workbench selection-topic=${this._selectionTopic}>
+          <blocks-split-workbench selection-topic=${this._selectionTopic}>
             <div slot="list">
               ${navState.viewMode === 'list' && currentReg
-                ? html`<entity-list .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></entity-list>`
+                ? html`<blocks-entity-list .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></blocks-entity-list>`
                 : nothing}
               ${navState.viewMode === 'tree'
                 ? this._renderTreePanel(navState)
                 : nothing}
             </div>
             <div slot="detail">
-              <entity-detail .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></entity-detail>
+              <blocks-entity-detail .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></blocks-entity-detail>
             </div>
-          </split-workbench>
+          </blocks-split-workbench>
         </div>
       </div>
     `;
@@ -229,7 +229,7 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
       return html`<div class="tree-prompt">Loading hierarchy...</div>`;
     }
 
-    return html`<entity-tree .nodes=${this._treeNodes} selection-topic=${this._selectionTopic} .fetchFn=${this.fetchFn}></entity-tree>`;
+    return html`<blocks-entity-tree .nodes=${this._treeNodes} selection-topic=${this._selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-tree>`;
   }
 
   private async _fetchTreeData(rootId: string): Promise<void> {

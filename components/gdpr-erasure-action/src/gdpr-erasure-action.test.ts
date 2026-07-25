@@ -25,12 +25,12 @@ function fillAndSubmit(el: GdprErasureActionEl, subjectId: string, reason: strin
   form.dispatchEvent(new Event('submit', { cancelable: true }));
 }
 
-describe('gdpr-erasure-action', () => {
+describe('blocks-gdpr-erasure-action', () => {
   let el: GdprErasureActionEl;
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
-    el = document.createElement('gdpr-erasure-action') as GdprErasureActionEl;
+    el = document.createElement('blocks-gdpr-erasure-action') as GdprErasureActionEl;
     el.endpoint = 'http://test.local/api/erasure';
     document.body.appendChild(el);
   });

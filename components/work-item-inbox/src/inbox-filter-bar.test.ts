@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './inbox-filter-bar.js';
 
-describe('inbox-filter-bar', () => {
+describe('blocks-inbox-filter-bar', () => {
   let el: HTMLElement & {
     activeStatusFilters: Set<string>;
     activePriorityFilters: Set<string>;
   };
 
   beforeEach(async () => {
-    el = document.createElement('inbox-filter-bar') as any;
+    el = document.createElement('blocks-inbox-filter-bar') as any;
     document.body.appendChild(el);
     await (el as any).updateComplete;
   });

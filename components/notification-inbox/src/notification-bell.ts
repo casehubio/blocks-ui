@@ -10,7 +10,7 @@ import { NotificationApi } from './api.js';
  *
  * Connects to platform SSE endpoint for real-time badge updates.
  */
-@customElement('notification-bell')
+@customElement('blocks-notification-bell')
 export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String }) endpoint?: string;
   @property({ type: Object }) identity?: WorkIdentity;
@@ -235,11 +235,11 @@ export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitEl
       ${this.open
         ? html`
             <div class="dropdown" role="dialog" aria-label="Notification inbox">
-              <notification-inbox
+              <blocks-notification-inbox
                 .endpoint=${this.endpoint}
                 .identity=${this.identity}
                 .fetchFn=${this.fetchFn}
-              ></notification-inbox>
+              ></blocks-notification-inbox>
             </div>
           `
         : ''}
@@ -249,6 +249,6 @@ export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitEl
 
 declare global {
   interface HTMLElementTagNameMap {
-    'notification-bell': NotificationBell;
+    'blocks-notification-bell': NotificationBell;
   }
 }

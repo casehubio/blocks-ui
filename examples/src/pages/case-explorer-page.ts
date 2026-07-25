@@ -125,7 +125,7 @@ function mockFetch(url: string): Promise<Response> {
   return Promise.resolve(new Response('Not Found', { status: 404 }));
 }
 
-@customElement('case-explorer-page')
+@customElement('blocks-example-case-explorer')
 export class CaseExplorerPage extends LitElement {
   @state() private _activeDemo = 'composed';
   @state() private _eventLog: string[] = [];
@@ -211,9 +211,9 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>Full Case Explorer (composed)</h3>
       <p>Entity type tabs, list/tree mode toggle, split-workbench layout, breadcrumb navigation, detail panel with commands.</p>
-      <div class="code">&lt;case-explorer .entityTypes=\${[caseInstanceType({...}), workerType({...})]} /&gt;</div>
+      <div class="code">&lt;blocks-case-explorer .entityTypes=\${[caseInstanceType({...}), workerType({...})]} /&gt;</div>
       <div class="demo-section tall">
-        <case-explorer .entityTypes=${types} .fetchFn=${mockFetch}></case-explorer>
+        <blocks-case-explorer .entityTypes=${types} .fetchFn=${mockFetch}></blocks-case-explorer>
       </div>
     `;
   }
@@ -224,16 +224,16 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>entity-list — Standalone case list</h3>
       <p>Cursor-aware fetch, TypedDataSet conversion, filter controls, EntitySelection emission on row click.</p>
-      <div class="code">&lt;entity-list .registration=\${caseInstanceType({listEndpoint: '/api/cases'})} selection-topic="demo-case" /&gt;</div>
+      <div class="code">&lt;blocks-entity-list .registration=\${caseInstanceType({listEndpoint: '/api/cases'})} selection-topic="demo-case" /&gt;</div>
       <div class="demo-section medium">
-        <entity-list .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="demo-case"></entity-list>
+        <blocks-entity-list .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="demo-case"></blocks-entity-list>
       </div>
 
       <h3>entity-list — Standalone worker list</h3>
       <p>Same component, different registration. Shows workers across all cases.</p>
-      <div class="code">&lt;entity-list .registration=\${workerType({listEndpoint: '/api/workers'})} selection-topic="demo-worker" /&gt;</div>
+      <div class="code">&lt;blocks-entity-list .registration=\${workerType({listEndpoint: '/api/workers'})} selection-topic="demo-worker" /&gt;</div>
       <div class="demo-section medium">
-        <entity-list .registration=${workerReg} .fetchFn=${mockFetch} selection-topic="demo-worker"></entity-list>
+        <blocks-entity-list .registration=${workerReg} .fetchFn=${mockFetch} selection-topic="demo-worker"></blocks-entity-list>
       </div>
     `;
   }
@@ -243,13 +243,13 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>entity-detail — Standalone</h3>
       <p>Fetches full EntityInstance on selection. Three-tier renderer resolution, command bar, relationship tabs. Click a case in the list above to populate.</p>
-      <div class="code">&lt;entity-list .registration=\${reg} selection-topic="detail-demo" /&gt;
-&lt;entity-detail .registration=\${reg} selection-topic="detail-demo" /&gt;</div>
+      <div class="code">&lt;blocks-entity-list .registration=\${reg} selection-topic="detail-demo" /&gt;
+&lt;blocks-entity-detail .registration=\${reg} selection-topic="detail-demo" /&gt;</div>
       <div class="demo-section medium">
-        <entity-list .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="detail-demo"></entity-list>
+        <blocks-entity-list .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="detail-demo"></blocks-entity-list>
       </div>
       <div class="demo-section medium">
-        <entity-detail .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="detail-demo"></entity-detail>
+        <blocks-entity-detail .registration=${caseReg} .fetchFn=${mockFetch} selection-topic="detail-demo"></blocks-entity-detail>
       </div>
     `;
   }
@@ -258,9 +258,9 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>entity-tree — Collapsible hierarchy</h3>
       <p>ARIA tree with expand/collapse, lazy loading, M-of-N group progress, node selection. Click nodes to emit EntitySelection.</p>
-      <div class="code">&lt;entity-tree .nodes=\${treeData} selection-topic="tree-demo" /&gt;</div>
+      <div class="code">&lt;blocks-entity-tree .nodes=\${treeData} selection-topic="tree-demo" /&gt;</div>
       <div class="demo-section medium">
-        <entity-tree .nodes=${MOCK_TREE} selection-topic="tree-demo" .fetchFn=${mockFetch}></entity-tree>
+        <blocks-entity-tree .nodes=${MOCK_TREE} selection-topic="tree-demo" .fetchFn=${mockFetch}></blocks-entity-tree>
       </div>
     `;
   }
@@ -269,23 +269,23 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>entity-command-bar — Normal commands</h3>
       <p>Renders buttons from availableCommands. Click executes POST to endpoint.</p>
-      <div class="code">&lt;entity-command-bar .commands=\${[{name:'suspend', label:'Suspend', endpoint:'...'}]} /&gt;</div>
+      <div class="code">&lt;blocks-entity-command-bar .commands=\${[{name:'suspend', label:'Suspend', endpoint:'...'}]} /&gt;</div>
       <div class="demo-section short">
-        <entity-command-bar
+        <blocks-entity-command-bar
           .commands=${MOCK_CASES[0]!.availableCommands}
           entity-id="case-1" entity-type="case-instance"
           .fetchFn=${mockFetch}
-        ></entity-command-bar>
+        ></blocks-entity-command-bar>
       </div>
 
       <h3>entity-command-bar — Destructive with confirmation</h3>
       <p>Destructive severity shows danger styling. Confirmation opens blocks-confirm-dialog before executing.</p>
       <div class="demo-section short">
-        <entity-command-bar
+        <blocks-entity-command-bar
           .commands=${MOCK_WORKERS[1]!.availableCommands}
           entity-id="w-2" entity-type="worker:agent"
           .fetchFn=${mockFetch}
-        ></entity-command-bar>
+        ></blocks-entity-command-bar>
       </div>
 
       <h3>entity-command-bar — All worker types</h3>
@@ -293,11 +293,11 @@ export class CaseExplorerPage extends LitElement {
       ${MOCK_WORKERS.map(w => html`
         <p style="font-weight:500; margin-top:12px">${w.summary} (${w.type})</p>
         <div class="demo-section short">
-          <entity-command-bar
+          <blocks-entity-command-bar
             .commands=${w.availableCommands}
             entity-id=${w.id} entity-type=${w.type}
             .fetchFn=${mockFetch}
-          ></entity-command-bar>
+          ></blocks-entity-command-bar>
         </div>
       `)}
     `;
@@ -307,16 +307,16 @@ export class CaseExplorerPage extends LitElement {
     return html`
       <h3>case-instance-list — Convenience wrapper</h3>
       <p>Pre-configured entity-list with case columns. Drop-in with just an endpoint.</p>
-      <div class="code">&lt;case-instance-list endpoint="/api/cases" /&gt;</div>
+      <div class="code">&lt;blocks-case-instance-list endpoint="/api/cases" /&gt;</div>
       <div class="demo-section medium">
-        <case-instance-list endpoint="/api/cases" .fetchFn=${mockFetch} selection-topic="conv-case"></case-instance-list>
+        <blocks-case-instance-list endpoint="/api/cases" .fetchFn=${mockFetch} selection-topic="conv-case"></blocks-case-instance-list>
       </div>
 
       <h3>worker-list — Convenience wrapper</h3>
       <p>Pre-configured entity-list with worker columns.</p>
-      <div class="code">&lt;worker-list endpoint="/api/workers" /&gt;</div>
+      <div class="code">&lt;blocks-worker-list endpoint="/api/workers" /&gt;</div>
       <div class="demo-section medium">
-        <worker-list endpoint="/api/workers" .fetchFn=${mockFetch} selection-topic="conv-worker"></worker-list>
+        <blocks-worker-list endpoint="/api/workers" .fetchFn=${mockFetch} selection-topic="conv-worker"></blocks-worker-list>
       </div>
     `;
   }

@@ -109,7 +109,7 @@ function buildColumnRenderers(policy: RoutingRationaleData['policy'], selectedId
   ]);
 }
 
-@customElement('routing-rationale')
+@customElement('blocks-routing-rationale')
 export class RoutingRationale extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   @property({ attribute: false }) data: RoutingRationaleData | null = null;
   @property({ type: String, attribute: 'score-label' }) scoreLabel = 'Trust Score';
@@ -258,6 +258,6 @@ export class RoutingRationale extends DataSourceMixin(LiveRegionMixin(LitElement
 
 declare global {
   interface HTMLElementTagNameMap {
-    'routing-rationale': RoutingRationale;
+    'blocks-routing-rationale': RoutingRationale;
   }
 }

@@ -26,13 +26,13 @@ const testTabs: TabDefinition[] = [
 ];
 
 function createElement(topic = 'test'): DetailPaneEl {
-  const el = document.createElement('detail-pane') as DetailPaneEl;
+  const el = document.createElement('blocks-detail-pane') as DetailPaneEl;
   el.selectionTopic = topic;
   el.tabs = testTabs;
   return el;
 }
 
-describe('detail-pane', () => {
+describe('blocks-detail-pane', () => {
   let el: DetailPaneEl;
 
   afterEach(() => {

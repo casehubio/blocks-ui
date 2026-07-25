@@ -6,7 +6,7 @@ import type { CaseEvent, PagedResponse, EventLogEntryResponse } from '@casehubio
 import type { Layout } from '@casehubio/blocks-ui-blocks-timeline';
 import mockEvents from '../../mock-data/case-events.json';
 
-@customElement('timeline-events-page')
+@customElement('blocks-example-timeline-events')
 export class TimelineEventsPage extends LitElement {
   @state() private _layout: Layout = 'vertical';
   private _originalFetch: typeof globalThis.fetch | null = null;

@@ -5,7 +5,7 @@ import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
 import '@casehubio/pages-ui-components';
 
-@customElement('channel-nav')
+@customElement('blocks-channel-nav')
 export class ChannelNavElement extends LitElement {
   @property({ type: Array }) channels: QhorusChannel[] = [];
   @property({ type: String }) selectedChannelId?: string;
@@ -337,6 +337,6 @@ export class ChannelNavElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-nav': ChannelNavElement;
+    'blocks-channel-nav': ChannelNavElement;
   }
 }

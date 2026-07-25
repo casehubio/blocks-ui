@@ -66,7 +66,7 @@ const ENTRY_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<ColumnId,
   }],
 ]);
 
-@customElement('audit-trail-viewer')
+@customElement('blocks-audit-trail-viewer')
 export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint?: string;
   @property({ type: Object }) identity?: WorkIdentity;
@@ -686,6 +686,6 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'audit-trail-viewer': AuditTrailViewer;
+    'blocks-audit-trail-viewer': AuditTrailViewer;
   }
 }

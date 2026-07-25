@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import 'emoji-picker-element';
 
-@customElement('channel-emoji-picker')
+@customElement('blocks-channel-emoji-picker')
 export class ChannelEmojiPickerElement extends LitElement {
   @property({ type: String }) skinToneEmoji?: string;
   static override readonly styles = css`
@@ -44,6 +44,6 @@ export class ChannelEmojiPickerElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-emoji-picker': ChannelEmojiPickerElement;
+    'blocks-channel-emoji-picker': ChannelEmojiPickerElement;
   }
 }

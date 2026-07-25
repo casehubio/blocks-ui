@@ -45,7 +45,7 @@ describe('WorkItemWorkbench', () => {
   };
 
   beforeEach(() => {
-    element = document.createElement('work-item-workbench') as WorkItemWorkbench;
+    element = document.createElement('blocks-work-item-workbench') as WorkItemWorkbench;
     element.endpoint = 'http://localhost:8080/api';
     element.identity = mockIdentity;
   });
@@ -65,7 +65,7 @@ describe('WorkItemWorkbench', () => {
     it('renders split-workbench internally', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const sw = element.shadowRoot!.querySelector('split-workbench');
+      const sw = element.shadowRoot!.querySelector('blocks-split-workbench');
       expect(sw).toBeTruthy();
       expect(sw!.getAttribute('selection-topic')).toBe('work-item');
     });
@@ -73,7 +73,7 @@ describe('WorkItemWorkbench', () => {
     it('renders work-item-inbox in list slot', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const inbox = element.shadowRoot!.querySelector('work-item-inbox');
+      const inbox = element.shadowRoot!.querySelector('blocks-work-item-inbox');
       expect(inbox).toBeTruthy();
       expect(inbox!.getAttribute('slot')).toBe('list');
     });
@@ -81,7 +81,7 @@ describe('WorkItemWorkbench', () => {
     it('renders work-item-detail in detail slot', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const detail = element.shadowRoot!.querySelector('work-item-detail');
+      const detail = element.shadowRoot!.querySelector('blocks-work-item-detail');
       expect(detail).toBeTruthy();
       expect(detail!.getAttribute('slot')).toBe('detail');
     });
@@ -106,8 +106,8 @@ describe('WorkItemWorkbench', () => {
     it('passes endpoint to inbox and detail', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const inbox = element.shadowRoot!.querySelector('work-item-inbox') as any;
-      const detail = element.shadowRoot!.querySelector('work-item-detail') as any;
+      const inbox = element.shadowRoot!.querySelector('blocks-work-item-inbox') as any;
+      const detail = element.shadowRoot!.querySelector('blocks-work-item-detail') as any;
       expect(inbox?.endpoint).toBe('http://localhost:8080/api');
       expect(detail?.endpoint).toBe('http://localhost:8080/api');
     });
@@ -115,8 +115,8 @@ describe('WorkItemWorkbench', () => {
     it('passes identity to inbox and detail', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const inbox = element.shadowRoot!.querySelector('work-item-inbox') as any;
-      const detail = element.shadowRoot!.querySelector('work-item-detail') as any;
+      const inbox = element.shadowRoot!.querySelector('blocks-work-item-inbox') as any;
+      const detail = element.shadowRoot!.querySelector('blocks-work-item-detail') as any;
       expect(inbox?.identity?.userId).toBe('user-1');
       expect(detail?.identity?.userId).toBe('user-1');
     });

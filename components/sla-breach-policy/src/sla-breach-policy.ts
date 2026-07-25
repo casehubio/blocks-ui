@@ -4,7 +4,7 @@ import { pulseAnimation } from '@casehubio/blocks-ui-core';
 import '@casehubio/blocks-ui-sla-indicator';
 import type { TierDefinition } from './types.js';
 
-@customElement('sla-breach-policy')
+@customElement('blocks-sla-breach-policy')
 export class SlaBreachPolicy extends LitElement {
   @property({ attribute: false }) tiers: TierDefinition[] = [];
   @property({ type: Number, attribute: 'time-remaining' }) timeRemaining = 0;
@@ -86,7 +86,7 @@ export class SlaBreachPolicy extends LitElement {
     return html`
       ${this.deadline ? html`
         <div class="header">
-          <sla-indicator .deadline=${this.deadline} compact></sla-indicator>
+          <blocks-sla-indicator .deadline=${this.deadline} compact></blocks-sla-indicator>
         </div>
       ` : nothing}
       <div class="tier-list" role="list">
@@ -110,6 +110,6 @@ export class SlaBreachPolicy extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'sla-breach-policy': SlaBreachPolicy;
+    'blocks-sla-breach-policy': SlaBreachPolicy;
   }
 }

@@ -21,7 +21,7 @@ const TRUST_LEVEL_COLORS: Record<string, string> = {
   none: 'var(--color-neutral, #ccc)',
 };
 
-@customElement('trust-score-panel')
+@customElement('blocks-trust-score-panel')
 export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegionMixin(LitElement))) {
   @property({ type: String, attribute: 'actor-id' }) actorId?: string;
   @property({ type: String }) mode: 'full' | 'compact' = 'full';
@@ -387,6 +387,6 @@ export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegion
 
 declare global {
   interface HTMLElementTagNameMap {
-    'trust-score-panel': TrustScorePanel;
+    'blocks-trust-score-panel': TrustScorePanel;
   }
 }

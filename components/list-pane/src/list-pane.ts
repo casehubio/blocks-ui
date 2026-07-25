@@ -5,7 +5,7 @@ import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import '@casehubio/pages-table';
 import type { TypedRow, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
 
-@customElement('list-pane')
+@customElement('blocks-list-pane')
 export class ListPane extends DataSourceMixin(LitElement) {
   @property({ attribute: false }) columnConfig?: readonly TableColumnConfig[];
   @property({ attribute: false }) columnRenderers?: ReadonlyMap<ColumnId, ColumnRenderer>;
@@ -100,6 +100,6 @@ export class ListPane extends DataSourceMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'list-pane': ListPane;
+    'blocks-list-pane': ListPane;
   }
 }

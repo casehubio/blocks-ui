@@ -123,11 +123,11 @@ const mockItems: WorkItemRootResponse[] = [
   },
 ];
 
-describe('work-item-inbox', () => {
+describe('blocks-work-item-inbox', () => {
   let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
 
   beforeEach(async () => {
-    el = document.createElement('work-item-inbox') as any;
+    el = document.createElement('blocks-work-item-inbox') as any;
     el.identity = identity;
     el.data = mockItems;
     document.body.appendChild(el);
@@ -311,7 +311,7 @@ describe('work-item-inbox', () => {
 
   it('accepts empty string as valid endpoint', async () => {
     // Verify the component treats "" as a valid endpoint (not null/undefined)
-    const el2 = document.createElement('work-item-inbox') as any;
+    const el2 = document.createElement('blocks-work-item-inbox') as any;
     el2.endpoint = '';
     el2.identity = identity;
     el2.data = mockItems; // provide data directly to avoid fetch
@@ -341,7 +341,7 @@ describe('work-item-inbox', () => {
   it('filter state propagates to filter-bar as new Set reference on toggle', async () => {
     // Root cause: inbox mutated Set in-place, Lit dirty check compares references.
     // Filter bar never re-rendered because the Set object identity didn't change.
-    const filterBar = el.shadowRoot!.querySelector('inbox-filter-bar') as any;
+    const filterBar = el.shadowRoot!.querySelector('blocks-inbox-filter-bar') as any;
     expect(filterBar).toBeTruthy();
 
     const initialRef = filterBar.activeStatusFilters;
@@ -417,7 +417,7 @@ describe('work-item-inbox', () => {
     // Simulate the actual user flow: clicking badges dispatches filter-click
     // events from the summary bar, which the inbox handles.
     const inbox = el as any;
-    const summaryBar = inbox.shadowRoot?.querySelector('inbox-summary-bar');
+    const summaryBar = inbox.shadowRoot?.querySelector('blocks-inbox-summary-bar');
     if (!summaryBar) return; // skip if summary bar not rendered (no summary data)
 
     const dispatchFilterClick = (type: string) => {
@@ -637,7 +637,7 @@ describe('SSE status transition → tab membership', () => {
   let el: any;
 
   beforeEach(async () => {
-    el = document.createElement('work-item-inbox') as any;
+    el = document.createElement('blocks-work-item-inbox') as any;
     el.identity = identity;
     document.body.appendChild(el);
     await el.updateComplete;
@@ -851,7 +851,7 @@ describe('inbox filter count matrix', () => {
   let el: any;
 
   beforeEach(async () => {
-    el = document.createElement('work-item-inbox') as any;
+    el = document.createElement('blocks-work-item-inbox') as any;
     el.identity = identity;
     el.data = testItems;
     document.body.appendChild(el);
@@ -1107,7 +1107,7 @@ describe('queue scope', () => {
   let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
 
   beforeEach(async () => {
-    el = document.createElement('work-item-inbox') as any;
+    el = document.createElement('blocks-work-item-inbox') as any;
     el.identity = identity;
     el.data = mockItems;
     document.body.appendChild(el);
@@ -1117,7 +1117,7 @@ describe('queue scope', () => {
   afterEach(() => el.remove());
 
   it('renders queue-pill-bar above tabs', async () => {
-    const pillBar = el.shadowRoot!.querySelector('queue-pill-bar');
+    const pillBar = el.shadowRoot!.querySelector('blocks-queue-pill-bar');
     expect(pillBar).not.toBeNull();
   });
 
@@ -1132,19 +1132,19 @@ describe('queue scope', () => {
       breachCount: 0,
     };
     await (el as any).updateComplete;
-    const contextBar = el.shadowRoot!.querySelector('scope-context-bar');
+    const contextBar = el.shadowRoot!.querySelector('blocks-scope-context-bar');
     expect(contextBar).not.toBeNull();
   });
 
   it('hides scope-context-bar when no queue selected', async () => {
     (el as any)._queueScope = null;
     await (el as any).updateComplete;
-    const contextBar = el.shadowRoot!.querySelector('scope-context-bar');
+    const contextBar = el.shadowRoot!.querySelector('blocks-scope-context-bar');
     expect(contextBar).toBeNull();
   });
 
   it('passes statusCounts to filter bar', async () => {
-    const filterBar = el.shadowRoot!.querySelector('inbox-filter-bar') as any;
+    const filterBar = el.shadowRoot!.querySelector('blocks-inbox-filter-bar') as any;
     expect(filterBar.statusCounts).toBeDefined();
   });
 
@@ -1308,7 +1308,7 @@ describe('queue scope', () => {
     };
     await (el as any).updateComplete;
 
-    const contextBar = el.shadowRoot!.querySelector('scope-context-bar')!;
+    const contextBar = el.shadowRoot!.querySelector('blocks-scope-context-bar')!;
     contextBar.dispatchEvent(new CustomEvent('scope-clear', { bubbles: true, composed: true }));
     await (el as any).updateComplete;
 
@@ -1376,7 +1376,7 @@ describe('queue SSE lifecycle', () => {
   let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
 
   beforeEach(async () => {
-    el = document.createElement('work-item-inbox') as any;
+    el = document.createElement('blocks-work-item-inbox') as any;
     el.identity = identity;
     el.data = mockItems;
     document.body.appendChild(el);

@@ -11,9 +11,9 @@ function makeReactions(specs: Array<[string, string[]]>): Reaction[] {
 
 afterEach(() => { document.body.innerHTML = ''; });
 
-describe('channel-reaction-bar', () => {
+describe('blocks-channel-reaction-bar', () => {
   it('renders grouped reaction pills', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = makeReactions([['👍', ['a', 'b']], ['❤️', ['a']]]);
     el.messageId = 'msg-1';
     document.body.appendChild(el);
@@ -28,7 +28,7 @@ describe('channel-reaction-bar', () => {
   });
 
   it('highlights pills where current user reacted', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = makeReactions([['👍', ['me', 'other']]]);
     el.messageId = 'msg-1';
     el.currentActorId = 'me';
@@ -40,7 +40,7 @@ describe('channel-reaction-bar', () => {
   });
 
   it('emits channel:react on click when not reacted', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = makeReactions([['👍', ['other']]]);
     el.messageId = 'msg-1';
     el.currentActorId = 'me';
@@ -57,7 +57,7 @@ describe('channel-reaction-bar', () => {
   });
 
   it('emits channel:unreact on click when already reacted', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = makeReactions([['👍', ['me']]]);
     el.messageId = 'msg-1';
     el.currentActorId = 'me';
@@ -72,7 +72,7 @@ describe('channel-reaction-bar', () => {
   });
 
   it('renders add button when reactions array is empty', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = [];
     el.messageId = 'msg-1';
     document.body.appendChild(el);
@@ -85,7 +85,7 @@ describe('channel-reaction-bar', () => {
   });
 
   it('clicking add button shows emoji picker', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = [];
     el.messageId = 'msg-1';
     document.body.appendChild(el);
@@ -95,12 +95,12 @@ describe('channel-reaction-bar', () => {
     addBtn.click();
     await el.updateComplete;
 
-    const picker = el.shadowRoot!.querySelector('channel-emoji-picker');
+    const picker = el.shadowRoot!.querySelector('blocks-channel-emoji-picker');
     expect(picker).toBeTruthy();
   });
 
   it('selecting emoji emits channel:react and closes picker', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = [];
     el.messageId = 'msg-1';
     document.body.appendChild(el);
@@ -113,7 +113,7 @@ describe('channel-reaction-bar', () => {
     const handler = vi.fn();
     el.addEventListener('pages-event', handler);
 
-    const picker = el.shadowRoot!.querySelector('channel-emoji-picker')!;
+    const picker = el.shadowRoot!.querySelector('blocks-channel-emoji-picker')!;
     picker.dispatchEvent(new CustomEvent('emoji-selected', {
       bubbles: true, composed: true,
       detail: { emoji: '🎉' },
@@ -123,11 +123,11 @@ describe('channel-reaction-bar', () => {
     expect(handler).toHaveBeenCalledOnce();
     expect(handler.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.REACT);
     expect(handler.mock.calls[0]![0]!.detail.payload).toEqual({ messageId: 'msg-1', emoji: '🎉' });
-    expect(el.shadowRoot!.querySelector('channel-emoji-picker')).toBeNull();
+    expect(el.shadowRoot!.querySelector('blocks-channel-emoji-picker')).toBeNull();
   });
 
   it('clicking add button while picker is open closes it', async () => {
-    const el = document.createElement('channel-reaction-bar') as any;
+    const el = document.createElement('blocks-channel-reaction-bar') as any;
     el.reactions = [];
     el.messageId = 'msg-1';
     document.body.appendChild(el);
@@ -136,11 +136,11 @@ describe('channel-reaction-bar', () => {
     const addBtn = el.shadowRoot!.querySelector('.add-reaction-btn') as HTMLButtonElement;
     addBtn.click();
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('channel-emoji-picker')).toBeTruthy();
+    expect(el.shadowRoot!.querySelector('blocks-channel-emoji-picker')).toBeTruthy();
 
     addBtn.click();
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('channel-emoji-picker')).toBeNull();
+    expect(el.shadowRoot!.querySelector('blocks-channel-emoji-picker')).toBeNull();
   });
 
   describe('viewport-aware positioning', () => {
@@ -160,7 +160,7 @@ describe('channel-reaction-bar', () => {
 
     it('applies flip class when insufficient space above', async () => {
       setViewport(1024, 800);
-      const el = document.createElement('channel-reaction-bar') as any;
+      const el = document.createElement('blocks-channel-reaction-bar') as any;
       el.reactions = [];
       el.messageId = 'msg-1';
       document.body.appendChild(el);
@@ -177,7 +177,7 @@ describe('channel-reaction-bar', () => {
 
     it('applies align-right class when insufficient space on right', async () => {
       setViewport(400, 800);
-      const el = document.createElement('channel-reaction-bar') as any;
+      const el = document.createElement('blocks-channel-reaction-bar') as any;
       el.reactions = [];
       el.messageId = 'msg-1';
       document.body.appendChild(el);
@@ -194,7 +194,7 @@ describe('channel-reaction-bar', () => {
 
     it('no flip or align-right when sufficient space', async () => {
       setViewport(1024, 800);
-      const el = document.createElement('channel-reaction-bar') as any;
+      const el = document.createElement('blocks-channel-reaction-bar') as any;
       el.reactions = [];
       el.messageId = 'msg-1';
       document.body.appendChild(el);
@@ -212,7 +212,7 @@ describe('channel-reaction-bar', () => {
 
     it('applies both flip and align-right in top-right corner', async () => {
       setViewport(400, 800);
-      const el = document.createElement('channel-reaction-bar') as any;
+      const el = document.createElement('blocks-channel-reaction-bar') as any;
       el.reactions = [];
       el.messageId = 'msg-1';
       document.body.appendChild(el);

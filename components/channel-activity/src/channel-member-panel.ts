@@ -7,7 +7,7 @@ interface MemberWithPresence {
   presence: PresenceState;
 }
 
-@customElement('channel-member-panel')
+@customElement('blocks-channel-member-panel')
 export class ChannelMemberPanelElement extends LitElement {
   static override readonly styles = css`
     :host {
@@ -164,6 +164,6 @@ export class ChannelMemberPanelElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-member-panel': ChannelMemberPanelElement;
+    'blocks-channel-member-panel': ChannelMemberPanelElement;
   }
 }

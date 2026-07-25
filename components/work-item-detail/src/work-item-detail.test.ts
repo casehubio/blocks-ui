@@ -11,7 +11,7 @@ describe('WorkItemDetail', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
-    element = document.createElement('work-item-detail') as WorkItemDetail;
+    element = document.createElement('blocks-work-item-detail') as WorkItemDetail;
     container.appendChild(element);
   });
 
@@ -94,7 +94,7 @@ describe('WorkItemDetail', () => {
       console.log('element._error:', (element as any)._error);
 
       // Give the action bar child component time to render
-      const actionBar = element.shadowRoot?.querySelector('detail-action-bar') as any;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar') as any;
       expect(actionBar).toBeTruthy();
       await actionBar?.updateComplete;
 
@@ -112,7 +112,7 @@ describe('WorkItemDetail', () => {
       element.data = workItem;
       await element.updateComplete;
 
-      const actionBar = element.shadowRoot?.querySelector('detail-action-bar') as any;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar') as any;
       await actionBar?.updateComplete;
 
       const actions = actionBar?.shadowRoot?.querySelectorAll('button');
@@ -131,7 +131,7 @@ describe('WorkItemDetail', () => {
       element.data = workItem;
       await element.updateComplete;
 
-      const actionBar = element.shadowRoot?.querySelector('detail-action-bar') as any;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar') as any;
       await actionBar?.updateComplete;
 
       const actions = actionBar?.shadowRoot?.querySelectorAll('button');
@@ -151,7 +151,7 @@ describe('WorkItemDetail', () => {
       element.data = workItem;
       await element.updateComplete;
 
-      const actionBar = element.shadowRoot?.querySelector('detail-action-bar') as any;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar') as any;
       await actionBar?.updateComplete;
 
       const actions = actionBar?.shadowRoot?.querySelectorAll('button');
@@ -169,7 +169,7 @@ describe('WorkItemDetail', () => {
       element.data = workItem;
       await element.updateComplete;
 
-      const actionBar = element.shadowRoot?.querySelector('detail-action-bar') as any;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar') as any;
       await actionBar?.updateComplete;
 
       const actions = actionBar?.shadowRoot?.querySelectorAll('button');
@@ -191,7 +191,7 @@ describe('WorkItemDetail', () => {
         expect(banner).toBeTruthy();
         expect(banner?.textContent).toContain(status);
 
-        const actionBar = element.shadowRoot?.querySelector('detail-action-bar');
+        const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar');
         expect(actionBar).toBeFalsy();
       });
     });

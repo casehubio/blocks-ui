@@ -97,11 +97,11 @@ describe('AuditTrailViewer', () => {
 
   describe('Component initialization', () => {
     it('should register as a custom element', () => {
-      expect(customElements.get('audit-trail-viewer')).toBeDefined();
+      expect(customElements.get('blocks-audit-trail-viewer')).toBeDefined();
     });
 
     it('should render with required properties', async () => {
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         endpoint: 'http://localhost/api',
         'subject-id': 'case-123',
       });
@@ -128,7 +128,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -203,7 +203,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -273,7 +273,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -307,7 +307,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -340,7 +340,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -381,7 +381,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -474,7 +474,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -525,7 +525,7 @@ describe('AuditTrailViewer', () => {
         entry.entryType === 'COMMAND' ? html`<div>Custom render</div>` : undefined
       );
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;
@@ -571,7 +571,7 @@ describe('AuditTrailViewer', () => {
         return Promise.reject(new Error('Unknown endpoint'));
       });
 
-      element = await fixture<AuditTrailViewer>('audit-trail-viewer', {
+      element = await fixture<AuditTrailViewer>('blocks-audit-trail-viewer', {
         'subject-id': 'case-123',
       });
       globalThis.fetch = mockFetch as unknown as typeof fetch;

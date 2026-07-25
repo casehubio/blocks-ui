@@ -4,7 +4,7 @@ import type { DetailRenderer } from '../types.js';
 import { workerType } from '../presets.js';
 import '../entity-detail.js';
 
-@customElement('worker-detail-panel')
+@customElement('blocks-worker-detail-panel')
 export class WorkerDetailPanel extends LitElement {
   @property({ type: String }) endpoint = '';
   @property({ attribute: false }) detailRenderer?: DetailRenderer;
@@ -14,6 +14,6 @@ export class WorkerDetailPanel extends LitElement {
 
   override render(): TemplateResult {
     const reg = { ...workerType({ listEndpoint: this.endpoint }), detailRenderer: this.detailRenderer, detailRendererMap: this.detailRendererMap };
-    return html`<entity-detail .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></entity-detail>`;
+    return html`<blocks-entity-detail .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-detail>`;
   }
 }

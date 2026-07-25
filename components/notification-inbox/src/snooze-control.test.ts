@@ -37,11 +37,11 @@ function createMockApi(overrides: Partial<Record<string, unknown>> = {}) {
   } as unknown as NotificationApi;
 }
 
-describe('snooze-control', () => {
+describe('blocks-snooze-control', () => {
   let el: SnoozeControl;
 
   beforeEach(async () => {
-    el = document.createElement('snooze-control') as SnoozeControl;
+    el = document.createElement('blocks-snooze-control') as SnoozeControl;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi();
     document.body.appendChild(el);
@@ -60,7 +60,7 @@ describe('snooze-control', () => {
 
   it('shows snoozed state with cancel button when snoozed', async () => {
     el.remove();
-    el = document.createElement('snooze-control') as SnoozeControl;
+    el = document.createElement('blocks-snooze-control') as SnoozeControl;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi({ getSnooze: async () => mockSnooze });
     document.body.appendChild(el);
@@ -102,7 +102,7 @@ describe('snooze-control', () => {
 
   it('cancels snooze and returns to activate form', async () => {
     el.remove();
-    el = document.createElement('snooze-control') as SnoozeControl;
+    el = document.createElement('blocks-snooze-control') as SnoozeControl;
     el.endpoint = 'http://localhost/api';
     let cancelCalled = false;
     el.api = createMockApi({
@@ -121,7 +121,7 @@ describe('snooze-control', () => {
 
   it('emits snooze.cancelled event', async () => {
     el.remove();
-    el = document.createElement('snooze-control') as SnoozeControl;
+    el = document.createElement('blocks-snooze-control') as SnoozeControl;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi({ getSnooze: async () => mockSnooze });
     document.body.appendChild(el);
@@ -139,7 +139,7 @@ describe('snooze-control', () => {
 
   it('shows error on fetch failure', async () => {
     el.remove();
-    el = document.createElement('snooze-control') as SnoozeControl;
+    el = document.createElement('blocks-snooze-control') as SnoozeControl;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi({ getSnooze: async () => { throw new Error('Network error'); } });
     document.body.appendChild(el);

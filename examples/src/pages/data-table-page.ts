@@ -24,7 +24,7 @@ function relativeTime(iso: string): string {
   return `${Math.floor(hours / 24)}d`;
 }
 
-@customElement('data-table-page')
+@customElement('blocks-example-data-table')
 export class DataTablePage extends LitElement {
   @state() private items: WorkItemRootResponse[] = [];
   @state() private selectedKeys: string[] = [];

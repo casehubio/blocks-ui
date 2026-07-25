@@ -13,7 +13,7 @@ const DEVTOWN_STAGES: StageConfig[] = [
   { key: 'REJECTED', label: 'Rejected', terminal: 'failure' },
 ];
 
-@customElement('commitment-lifecycle-page')
+@customElement('blocks-example-commitment-lifecycle')
 export class CommitmentLifecyclePage extends LitElement {
   @state() private _selectedId = 'commit-001';
 

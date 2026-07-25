@@ -9,7 +9,7 @@ const IDENTITY: WorkIdentity = {
   groups: ['compliance', 'clinical-safety', 'household', 'device-ops', 'code-review'],
 };
 
-@customElement('detail-page')
+@customElement('blocks-example-detail')
 export class DetailPage extends LitElement {
   @state() private items: WorkItemResponse[] = [];
   @state() private selectedId: string | null = null;
@@ -23,7 +23,7 @@ export class DetailPage extends LitElement {
     .pick-item.active { border-color: var(--pages-accent-9); background: var(--pages-accent-2); }
     .pick-item .status { font-size: 11px; color: var(--pages-neutral-9); text-transform: uppercase; }
     .detail-area { flex: 1; overflow: auto; }
-    work-item-detail { display: block; height: 100%; }
+    blocks-work-item-detail { display: block; height: 100%; }
   `;
 
   override async connectedCallback() {
@@ -48,7 +48,7 @@ export class DetailPage extends LitElement {
       </div>
       <div class="detail-area">
         ${this.selectedId
-          ? html`<work-item-detail endpoint="" .workItemId=${this.selectedId} .identity=${IDENTITY}></work-item-detail>`
+          ? html`<blocks-work-item-detail endpoint="" .workItemId=${this.selectedId} .identity=${IDENTITY}></blocks-work-item-detail>`
           : html`<div style="padding: 24px; color: var(--pages-neutral-9)">Select an item to view details</div>`}
       </div>
     `;

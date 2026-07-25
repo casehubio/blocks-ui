@@ -11,7 +11,7 @@ describe('EntityCommandBar', () => {
   });
 
   function createBar(commands: readonly CommandDescriptor[], entityId = 'e1', entityType = 'worker') {
-    const el = document.createElement('entity-command-bar') as any;
+    const el = document.createElement('blocks-entity-command-bar') as any;
     el.commands = commands;
     el.entityId = entityId;
     el.entityType = entityType;

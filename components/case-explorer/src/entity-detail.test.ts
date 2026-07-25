@@ -55,7 +55,7 @@ describe('EntityDetail', () => {
   };
 
   function createDetail(reg: EntityTypeRegistration = testRegistration) {
-    const el = document.createElement('entity-detail') as any;
+    const el = document.createElement('blocks-entity-detail') as any;
     el.registration = reg;
     el.fetchFn = fetchFn;
     el.selectionTopic = 'case';
@@ -125,7 +125,7 @@ describe('EntityDetail', () => {
     await new Promise(r => setTimeout(r, 0));
     await el.updateComplete;
 
-    const commandBar = el.shadowRoot!.querySelector('entity-command-bar');
+    const commandBar = el.shadowRoot!.querySelector('blocks-entity-command-bar');
     expect(commandBar).toBeTruthy();
     expect((commandBar as any).commands.length).toBe(1);
     expect((commandBar as any).commands[0].name).toBe('cancel');

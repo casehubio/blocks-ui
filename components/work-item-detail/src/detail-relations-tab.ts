@@ -23,7 +23,7 @@ interface RelatedItem {
   readonly relationType: 'parent' | 'child' | 'linked';
 }
 
-@customElement('detail-relations-tab')
+@customElement('blocks-detail-relations-tab')
 export class DetailRelationsTab extends LitElement {
   @property({ type: Object }) workItem: WorkItemResponse | null = null;
   @property({ type: Array }) relations: readonly WorkItemRelation[] = [];
@@ -237,6 +237,6 @@ export class DetailRelationsTab extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'detail-relations-tab': DetailRelationsTab;
+    'blocks-detail-relations-tab': DetailRelationsTab;
   }
 }

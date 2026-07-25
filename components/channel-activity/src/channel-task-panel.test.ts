@@ -12,13 +12,13 @@ function makeMsg(overrides: Partial<QhorusMessage> = {}): QhorusMessage {
   };
 }
 
-describe('channel-task-panel', () => {
+describe('blocks-channel-task-panel', () => {
   let element: HTMLElement;
 
   afterEach(() => { element?.remove(); });
 
   it('renders empty state when no commands', async () => {
-    element = document.createElement('channel-task-panel') as any;
+    element = document.createElement('blocks-channel-task-panel') as any;
     (element as any).messages = [
       makeMsg({ id: 'm1', messageType: 'STATUS' }),
     ];
@@ -33,7 +33,7 @@ describe('channel-task-panel', () => {
     const past = new Date(Date.now() - 86400000).toISOString();
     const future = new Date(Date.now() + 86400000).toISOString();
 
-    element = document.createElement('channel-task-panel') as any;
+    element = document.createElement('blocks-channel-task-panel') as any;
     (element as any).messages = [
       makeMsg({ id: 'active', content: 'Active task' }),
       makeMsg({ id: 'overdue', content: 'Overdue task' }),
@@ -57,7 +57,7 @@ describe('channel-task-panel', () => {
 
   it('marks overdue rows with overdue class', async () => {
     const past = new Date(Date.now() - 86400000).toISOString();
-    element = document.createElement('channel-task-panel') as any;
+    element = document.createElement('blocks-channel-task-panel') as any;
     (element as any).messages = [makeMsg({ id: 'od' })];
     (element as any).commitments = new Map([
       ['od', { state: 'OPEN', deadline: past, createdAt: '2026-07-20T10:00:00Z', updatedAt: '2026-07-20T10:00:00Z' }],
@@ -70,7 +70,7 @@ describe('channel-task-panel', () => {
   });
 
   it('emits message-selected event on row click', async () => {
-    element = document.createElement('channel-task-panel') as any;
+    element = document.createElement('blocks-channel-task-panel') as any;
     const msg = makeMsg({ id: 'click-me' });
     (element as any).messages = [msg];
     (element as any).commitments = new Map();

@@ -5,7 +5,7 @@ import { commitmentStateCategory } from './types.js';
 import './channel-message.js';
 import '@casehubio/pages-ui-components';
 
-@customElement('channel-thread')
+@customElement('blocks-channel-thread')
 export class ChannelThreadElement extends LitElement {
   @property({ type: Object }) rootMessage!: QhorusMessage;
   @property({ type: Array }) replies: QhorusMessage[] = [];
@@ -76,11 +76,11 @@ export class ChannelThreadElement extends LitElement {
 
     return html`
       <div class="root-message ${this.selectedMessageId === this.rootMessage.id ? 'selected' : ''}">
-        <channel-message .message=${this.rootMessage}
+        <blocks-channel-message .message=${this.rootMessage}
                         .reactions=${this.reactions.filter(r => r.messageId === this.rootMessage.id)}
                         .commitmentState=${this.commitmentState}
                         .renderContent=${this.renderContent}
-                        .formatSender=${this.formatSender}></channel-message>
+                        .formatSender=${this.formatSender}></blocks-channel-message>
       </div>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">
@@ -98,10 +98,10 @@ export class ChannelThreadElement extends LitElement {
         ${!this.collapsed ? html`
           ${this.replies.map(r => html`
             <div class="reply ${this.selectedMessageId === r.id ? 'selected' : ''}">
-              <channel-message .message=${r}
+              <blocks-channel-message .message=${r}
                               .reactions=${this.reactions.filter(rx => rx.messageId === r.id)}
                               .renderContent=${this.renderContent}
-                              .formatSender=${this.formatSender}></channel-message>
+                              .formatSender=${this.formatSender}></blocks-channel-message>
             </div>
           `)}
         ` : nothing}
@@ -112,6 +112,6 @@ export class ChannelThreadElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-thread': ChannelThreadElement;
+    'blocks-channel-thread': ChannelThreadElement;
   }
 }

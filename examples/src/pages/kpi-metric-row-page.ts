@@ -55,7 +55,7 @@ const IOT_METRICS: MetricDefinition[] = [
   { key: 'offline', value: 12, label: 'Offline', status: 'critical' },
 ];
 
-@customElement('kpi-metric-row-page')
+@customElement('blocks-example-kpi-metric-row')
 export class KpiMetricRowPage extends LitElement {
   @state() private _columns: number | null = null;
   @state() private _lastClicked = '';
@@ -117,18 +117,18 @@ export class KpiMetricRowPage extends LitElement {
 
       <h3>Operations Dashboard</h3>
       <div class="section">
-        <kpi-metric-row .metrics=${DASHBOARD_METRICS} .columns=${this._columns}></kpi-metric-row>
+        <blocks-kpi-metric-row .metrics=${DASHBOARD_METRICS} .columns=${this._columns}></blocks-kpi-metric-row>
         <div class="event-log">${this._lastClicked}</div>
       </div>
 
       <h3>IoT Fleet Overview</h3>
       <div class="section">
-        <kpi-metric-row .metrics=${IOT_METRICS} .columns=${this._columns}></kpi-metric-row>
+        <blocks-kpi-metric-row .metrics=${IOT_METRICS} .columns=${this._columns}></blocks-kpi-metric-row>
       </div>
 
       <h3>Empty State</h3>
       <div class="section">
-        <kpi-metric-row .metrics=${[]}></kpi-metric-row>
+        <blocks-kpi-metric-row .metrics=${[]}></blocks-kpi-metric-row>
       </div>
     `;
   }

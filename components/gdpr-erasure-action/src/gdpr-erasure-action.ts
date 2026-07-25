@@ -10,7 +10,7 @@ export const GdprErasureTopics = {
   ERASURE_COMPLETED: 'gdpr.erasure-completed',
 } as const;
 
-@customElement('gdpr-erasure-action')
+@customElement('blocks-gdpr-erasure-action')
 export class GdprErasureAction extends LitElement {
   @property({ type: String }) endpoint = '';
   @property({ type: String, attribute: 'subject-label' }) subjectLabel = 'Subject';
@@ -260,6 +260,6 @@ export class GdprErasureAction extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'gdpr-erasure-action': GdprErasureAction;
+    'blocks-gdpr-erasure-action': GdprErasureAction;
   }
 }

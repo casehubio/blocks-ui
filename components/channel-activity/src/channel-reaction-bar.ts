@@ -13,7 +13,7 @@ interface GroupedReaction {
   readonly userReacted: boolean;
 }
 
-@customElement('channel-reaction-bar')
+@customElement('blocks-channel-reaction-bar')
 export class ChannelReactionBarElement extends LitElement {
   @property({ type: Array }) reactions: Reaction[] = [];
   @property({ type: String }) messageId = '';
@@ -133,7 +133,7 @@ export class ChannelReactionBarElement extends LitElement {
         <pages-button class="add-reaction-btn" variant="ghost" size="sm" @click=${this._togglePicker} title="Add reaction">+</pages-button>
         ${this._showPicker ? html`
           <div class="picker-popover ${this._flipVertical ? 'flip' : ''} ${this._flipHorizontal ? 'align-right' : ''}">
-            <channel-emoji-picker @emoji-selected=${this._onEmojiSelected}></channel-emoji-picker>
+            <blocks-channel-emoji-picker @emoji-selected=${this._onEmojiSelected}></blocks-channel-emoji-picker>
           </div>
         ` : nothing}
       </div>
@@ -143,6 +143,6 @@ export class ChannelReactionBarElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-reaction-bar': ChannelReactionBarElement;
+    'blocks-channel-reaction-bar': ChannelReactionBarElement;
   }
 }

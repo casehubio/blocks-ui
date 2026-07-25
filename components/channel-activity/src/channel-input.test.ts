@@ -5,9 +5,9 @@ import { ChannelEventTopics } from './events.js';
 
 afterEach(() => { document.body.innerHTML = ''; });
 
-describe('channel-input', () => {
+describe('blocks-channel-input', () => {
   it('renders a textarea', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -15,7 +15,7 @@ describe('channel-input', () => {
   });
 
   it('emits channel:send-message on Enter', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -35,7 +35,7 @@ describe('channel-input', () => {
   });
 
   it('does not emit on Shift+Enter', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -50,7 +50,7 @@ describe('channel-input', () => {
   });
 
   it('does not emit empty messages', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -66,7 +66,7 @@ describe('channel-input', () => {
   });
 
   it('clears textarea after sending', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -81,7 +81,7 @@ describe('channel-input', () => {
   });
 
   it('shows reply banner when replyTo is set', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.replyTo = { messageId: 'msg-1', senderName: 'agent-alpha' };
     document.body.appendChild(el);
@@ -93,7 +93,7 @@ describe('channel-input', () => {
   });
 
   it('includes inReplyTo in sent message when replying', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.replyTo = { messageId: 'msg-1', senderName: 'alpha' };
     document.body.appendChild(el);
@@ -110,7 +110,7 @@ describe('channel-input', () => {
   });
 
   it('clears replyTo banner on cancel click', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.replyTo = { messageId: 'msg-1', senderName: 'alpha' };
     document.body.appendChild(el);
@@ -126,7 +126,7 @@ describe('channel-input', () => {
   // --- Type Selector (Gap #1) ---
 
   it('type selector hidden by default', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -134,7 +134,7 @@ describe('channel-input', () => {
   });
 
   it('type selector shown when showTypeSelector=true', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     document.body.appendChild(el);
@@ -146,7 +146,7 @@ describe('channel-input', () => {
   });
 
   it('allowedTypes filters the type selector', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     el.allowedTypes = ['QUERY', 'COMMAND'];
@@ -159,7 +159,7 @@ describe('channel-input', () => {
   });
 
   it('deniedTypes filters the type selector', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     el.deniedTypes = ['EVENT'];
@@ -173,7 +173,7 @@ describe('channel-input', () => {
   });
 
   it('deniedTypes takes precedence over allowedTypes', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     el.allowedTypes = ['QUERY', 'EVENT'];
@@ -187,7 +187,7 @@ describe('channel-input', () => {
   });
 
   it('speechAct included in payload when type selector is visible', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     document.body.appendChild(el);
@@ -204,7 +204,7 @@ describe('channel-input', () => {
   });
 
   it('speechAct not included when type selector is hidden', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -222,7 +222,7 @@ describe('channel-input', () => {
   // --- Error Feedback (Gap #4) ---
 
   it('shows default error when setError called', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -236,7 +236,7 @@ describe('channel-input', () => {
   });
 
   it('uses renderError callback when provided', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.renderError = (msg: string) => html`<div class="custom-error">ERR: ${msg}</div>`;
     document.body.appendChild(el);
@@ -251,7 +251,7 @@ describe('channel-input', () => {
   });
 
   it('clears error on next send', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -270,7 +270,7 @@ describe('channel-input', () => {
   });
 
   it('empty and undefined allowedTypes/deniedTypes mean no constraint', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTypeSelector = true;
     el.allowedTypes = [];
@@ -290,7 +290,7 @@ describe('channel-input', () => {
   ];
 
   it('shows topic pill when showTopicSelector is true', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = true;
     el.topic = 'General';
@@ -304,7 +304,7 @@ describe('channel-input', () => {
   });
 
   it('hides topic pill when showTopicSelector is false', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = false;
     document.body.appendChild(el);
@@ -313,7 +313,7 @@ describe('channel-input', () => {
   });
 
   it('shows escape hatch + button when showTopicSelector is false', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = false;
     document.body.appendChild(el);
@@ -322,7 +322,7 @@ describe('channel-input', () => {
   });
 
   it('hides escape hatch + button when showTopicSelector is true', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = true;
     el.topics = TOPICS;
@@ -332,7 +332,7 @@ describe('channel-input', () => {
   });
 
   it('includes topicId in send payload when topic selector is active', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = true;
     el.topicId = 't2';
@@ -351,7 +351,7 @@ describe('channel-input', () => {
   });
 
   it('shows read-only topic pill when replying', async () => {
-    const el = document.createElement('channel-input') as any;
+    const el = document.createElement('blocks-channel-input') as any;
     el.channelId = 'ch-1';
     el.showTopicSelector = true;
     el.topic = 'deployment';

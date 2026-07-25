@@ -10,7 +10,7 @@ export interface FilterChangeDetail {
 const STATUS_FILTERS = ['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'SUSPENDED', 'DELEGATED'] as const;
 const PRIORITY_FILTERS = ['URGENT', 'HIGH', 'MEDIUM', 'LOW'] as const;
 
-@customElement('inbox-filter-bar')
+@customElement('blocks-inbox-filter-bar')
 export class InboxFilterBar extends LitElement {
   @property({ type: Object }) activeStatusFilters: Set<string> = new Set();
   @property({ type: Object }) activePriorityFilters: Set<string> = new Set();
@@ -235,6 +235,6 @@ export class InboxFilterBar extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'inbox-filter-bar': InboxFilterBar;
+    'blocks-inbox-filter-bar': InboxFilterBar;
   }
 }

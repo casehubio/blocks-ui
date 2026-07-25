@@ -8,7 +8,7 @@ import {
   WorkItemEventTopics,
 } from '@casehubio/blocks-ui-core';
 
-@customElement('queue-pill-bar')
+@customElement('blocks-queue-pill-bar')
 export class QueuePillBar extends LitElement {
   @property({ type: String }) endpoint = '';
   @property({ type: Array }) queues: QueueView[] = [];

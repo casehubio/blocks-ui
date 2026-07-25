@@ -46,7 +46,7 @@ describe('PreferencesEditor', () => {
   }
 
   function create(scopeTree: ScopeNode[] = SCOPE_TREE) {
-    const el = document.createElement('preferences-editor') as any;
+    const el = document.createElement('blocks-preferences-editor') as any;
     el.scopeTree = scopeTree;
     el.endpoint = '/preferences';
     el.fetchFn = fetchFn;

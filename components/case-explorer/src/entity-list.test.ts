@@ -44,7 +44,7 @@ describe('EntityList', () => {
   };
 
   function createList(reg: EntityTypeRegistration = testRegistration) {
-    const el = document.createElement('entity-list') as any;
+    const el = document.createElement('blocks-entity-list') as any;
     el.registration = reg;
     el.fetchFn = fetchFn;
     el.selectionTopic = 'case';
@@ -70,7 +70,7 @@ describe('EntityList', () => {
     await new Promise(r => setTimeout(r, 0));
     await el.updateComplete;
 
-    const listPane = el.shadowRoot!.querySelector('list-pane');
+    const listPane = el.shadowRoot!.querySelector('blocks-list-pane');
     expect(listPane).toBeTruthy();
     expect(listPane!.dataSet).toBeTruthy();
     expect(listPane!.dataSet!.rows.length).toBe(1);
@@ -128,7 +128,7 @@ describe('EntityList', () => {
 
     expect(fetchFn).toHaveBeenCalledTimes(2);
     expect(fetchFn.mock.calls[1]![0]).toContain('cursor=cursor-page-2');
-    const listPane = el.shadowRoot!.querySelector('list-pane');
+    const listPane = el.shadowRoot!.querySelector('blocks-list-pane');
     expect(listPane!.dataSet!.rows.length).toBe(2);
   });
 
@@ -201,7 +201,7 @@ describe('EntityList', () => {
     await new Promise(r => setTimeout(r, 0));
     await el.updateComplete;
 
-    const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+    const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
     const rowKeyFn = listPane.getRowKey;
     expect(rowKeyFn).toBeTruthy();
 

@@ -63,7 +63,7 @@ describe('notification-page', () => {
 
     expect(shadow!.querySelector('.toolbar')).not.toBeNull();
     expect(shadow!.querySelector('.controls')).not.toBeNull();
-    expect(shadow!.querySelector('notification-inbox')).not.toBeNull();
+    expect(shadow!.querySelector('blocks-notification-inbox')).not.toBeNull();
   });
 
   it('shows error message when init fails', async () => {
@@ -116,7 +116,7 @@ describe('notification-page', () => {
 
     expect(shadow.querySelector('.dialog-panel')).not.toBeNull();
     expect(shadow.querySelector('.dialog-title')?.textContent?.trim()).toBe('Subscriptions');
-    expect(shadow.querySelector('subscription-list')).not.toBeNull();
+    expect(shadow.querySelector('blocks-subscription-list')).not.toBeNull();
   });
 
   it('closes subscription dialog when close button clicked', async () => {
@@ -182,7 +182,7 @@ describe('notification-page', () => {
     }
 
     const shadow = el.shadowRoot!;
-    const inbox = shadow.querySelector('notification-inbox') as any;
+    const inbox = shadow.querySelector('blocks-notification-inbox') as any;
     expect(inbox).not.toBeNull();
 
     // Wait for inbox to load its initial data
@@ -298,7 +298,7 @@ describe('notification-page', () => {
     }
 
     const shadow = el.shadowRoot!;
-    const inbox = shadow.querySelector('notification-inbox') as any;
+    const inbox = shadow.querySelector('blocks-notification-inbox') as any;
     expect(inbox).not.toBeNull();
 
     await flush(200);
@@ -329,7 +329,7 @@ describe('notification-page', () => {
     }
 
     const shadow = el.shadowRoot!;
-    const inbox = shadow.querySelector('notification-inbox') as any;
+    const inbox = shadow.querySelector('blocks-notification-inbox') as any;
     expect(inbox).not.toBeNull();
 
     await flush();
@@ -359,7 +359,7 @@ describe('notification-page', () => {
     }
 
     const shadow = el.shadowRoot!;
-    const inbox = shadow.querySelector('notification-inbox') as any;
+    const inbox = shadow.querySelector('blocks-notification-inbox') as any;
     expect(inbox).not.toBeNull();
 
     // Wait for inbox to fetch and render initial data
@@ -401,7 +401,7 @@ describe('notification-page', () => {
     }
 
     const shadow = el.shadowRoot!;
-    const inbox = shadow.querySelector('notification-inbox') as any;
+    const inbox = shadow.querySelector('blocks-notification-inbox') as any;
     expect(inbox).not.toBeNull();
 
     await flush(200);

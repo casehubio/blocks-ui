@@ -19,7 +19,7 @@ export interface MetricDefinition {
 
 const TREND_ARROWS: Record<string, string> = { up: '▲', down: '▼', stable: '—' };
 
-@customElement('kpi-metric-row')
+@customElement('blocks-kpi-metric-row')
 export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   @property({ type: Array }) metrics: MetricDefinition[] = [];
   @property({ type: String }) endpoint: string | null = null;
@@ -262,6 +262,6 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'kpi-metric-row': KpiMetricRow;
+    'blocks-kpi-metric-row': KpiMetricRow;
   }
 }

@@ -9,7 +9,7 @@ export const EntityCommandBarTopics = {
   ENTITY_CHANGED: 'entity.changed',
 } as const;
 
-@customElement('entity-command-bar')
+@customElement('blocks-entity-command-bar')
 export class EntityCommandBar extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) commands: readonly CommandDescriptor[] = [];
   @property({ type: String, attribute: 'entity-id' }) entityId = '';

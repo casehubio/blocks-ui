@@ -8,7 +8,7 @@ export const EntityTreeTopics = {
   NODE_SELECTED: 'tree.node-selected',
 } as const;
 
-@customElement('entity-tree')
+@customElement('blocks-entity-tree')
 export class EntityTree extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) nodes: readonly EntityTreeNode[] = [];
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';

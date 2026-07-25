@@ -49,7 +49,7 @@ interface SubscriptionFormData {
   template: NotificationTemplate;
 }
 
-@customElement('subscription-editor')
+@customElement('blocks-subscription-editor')
 export class SubscriptionEditor extends LitElement {
   @property({ type: String }) endpoint?: string;
   @property({ type: Object }) identity?: WorkIdentity;
@@ -345,6 +345,6 @@ export class SubscriptionEditor extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'subscription-editor': SubscriptionEditor;
+    'blocks-subscription-editor': SubscriptionEditor;
   }
 }

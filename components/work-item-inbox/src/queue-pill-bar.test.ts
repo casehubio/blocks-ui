@@ -12,7 +12,7 @@ const SUMMARIES: QueueSummaryEntry[] = [
   { queueId: 'q2', count: 8, breachCount: 2 },
 ];
 
-describe('queue-pill-bar', () => {
+describe('blocks-queue-pill-bar', () => {
   let el: HTMLElement & {
     queues: QueueView[];
     summaries: QueueSummaryEntry[];
@@ -39,7 +39,7 @@ describe('queue-pill-bar', () => {
       thresholds = [];
     } as any;
 
-    el = document.createElement('queue-pill-bar') as any;
+    el = document.createElement('blocks-queue-pill-bar') as any;
     el.queues = QUEUES;
     el.summaries = SUMMARIES;
     document.body.appendChild(el);
@@ -102,7 +102,7 @@ describe('queue-pill-bar', () => {
       return originalFetch(url);
     });
 
-    const freshEl = document.createElement('queue-pill-bar') as any;
+    const freshEl = document.createElement('blocks-queue-pill-bar') as any;
     freshEl.endpoint = '';
     document.body.appendChild(freshEl);
     await freshEl.updateComplete;

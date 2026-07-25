@@ -6,7 +6,7 @@ import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
 import type { CommitmentRecord } from './commitment.js';
 
-@customElement('channel-correlation-panel')
+@customElement('blocks-channel-correlation-panel')
 export class ChannelCorrelationPanelElement extends LitElement {
   @property({ type: Array }) messages: QhorusMessage[] = [];
   @property({ type: Object }) commitments: Map<string, CommitmentRecord> = new Map();
@@ -226,6 +226,6 @@ export class ChannelCorrelationPanelElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-correlation-panel': ChannelCorrelationPanelElement;
+    'blocks-channel-correlation-panel': ChannelCorrelationPanelElement;
   }
 }

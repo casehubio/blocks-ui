@@ -6,7 +6,7 @@ describe('ValueEditor', () => {
   beforeEach(() => { document.body.innerHTML = ''; });
 
   function create(schema: Partial<PreferenceSchemaDescriptor>, value: string) {
-    const el = document.createElement('value-editor') as any;
+    const el = document.createElement('blocks-value-editor') as any;
     el.schema = {
       namespace: 'test', name: 'key', qualifiedName: 'test.key',
       type: 'string', label: 'Test', description: null,

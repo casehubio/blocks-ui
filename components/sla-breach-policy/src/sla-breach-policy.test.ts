@@ -16,11 +16,11 @@ const SAMPLE_TIERS: TierDefinition[] = [
   { threshold: 0.0, label: 'Breach', consequence: 'Compliance report generated' },
 ];
 
-describe('sla-breach-policy', () => {
+describe('blocks-sla-breach-policy', () => {
   let el: SlaBreachPolicyEl;
 
   beforeEach(() => {
-    el = document.createElement('sla-breach-policy') as SlaBreachPolicyEl;
+    el = document.createElement('blocks-sla-breach-policy') as SlaBreachPolicyEl;
     document.body.appendChild(el);
   });
 
@@ -85,14 +85,14 @@ describe('sla-breach-policy', () => {
     el.tiers = SAMPLE_TIERS;
     el.deadline = new Date(Date.now() + 3600000).toISOString();
     await el.updateComplete;
-    const indicator = el.shadowRoot!.querySelector('sla-indicator');
+    const indicator = el.shadowRoot!.querySelector('blocks-sla-indicator');
     expect(indicator).toBeTruthy();
   });
 
   it('does not render sla-indicator when no deadline', async () => {
     el.tiers = SAMPLE_TIERS;
     await el.updateComplete;
-    const indicator = el.shadowRoot!.querySelector('sla-indicator');
+    const indicator = el.shadowRoot!.querySelector('blocks-sla-indicator');
     expect(indicator).toBeFalsy();
   });
 });

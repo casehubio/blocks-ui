@@ -6,13 +6,13 @@ function makeRef(overrides: Partial<ArtefactRef> = {}): ArtefactRef {
   return { uri: 'doc://case-123/report.md', type: 'DOCUMENT', label: 'Case Report', ...overrides };
 }
 
-describe('channel-artifact-panel', () => {
+describe('blocks-channel-artifact-panel', () => {
   let element: HTMLElement;
 
   afterEach(() => { element?.remove(); });
 
   it('shows empty state when no artifact selected', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     document.body.appendChild(element);
     await (element as any).updateComplete;
 
@@ -20,7 +20,7 @@ describe('channel-artifact-panel', () => {
   });
 
   it('renders artifact header with label and type badge', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     (element as any).selectedArtefactRef = makeRef({ label: 'Risk Report', type: 'DOCUMENT' });
     document.body.appendChild(element);
     await (element as any).updateComplete;
@@ -30,7 +30,7 @@ describe('channel-artifact-panel', () => {
   });
 
   it('renders card view for CASE type artifacts', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     (element as any).selectedArtefactRef = makeRef({ type: 'CASE', label: 'Case AML-4521', uri: 'case://aml-4521' });
     document.body.appendChild(element);
     await (element as any).updateComplete;
@@ -41,7 +41,7 @@ describe('channel-artifact-panel', () => {
   });
 
   it('calls resolveArtifact callback and renders content', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     const ref = makeRef({ type: 'CODE', label: 'main.ts' });
     (element as any).resolveArtifact = async (_r: ArtefactRef): Promise<ResolvedArtifact> =>
       ({ content: 'console.log("hello")', language: 'typescript' });
@@ -55,7 +55,7 @@ describe('channel-artifact-panel', () => {
   });
 
   it('maintains navigation history', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     document.body.appendChild(element);
 
     (element as any).selectedArtefactRef = makeRef({ uri: 'doc://a', label: 'A' });
@@ -73,7 +73,7 @@ describe('channel-artifact-panel', () => {
   });
 
   it('renders scope highlight when selectedText present', async () => {
-    element = document.createElement('channel-artifact-panel') as any;
+    element = document.createElement('blocks-channel-artifact-panel') as any;
     (element as any).selectedArtefactRef = makeRef({
       scope: { startLine: 10, endLine: 15, selectedText: 'highlighted section' },
     });

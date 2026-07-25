@@ -40,7 +40,7 @@ const mockPipeline: DeployStage[] = [
   { name: 'Prod Deploy', status: 'queued', startedAt: '2026-07-14T14:00:00Z' },
 ];
 
-@customElement('timeline-custom-page')
+@customElement('blocks-example-timeline-custom')
 export class TimelineCustomPage extends LitElement {
   @state() private _layout: Layout = 'horizontal';
 

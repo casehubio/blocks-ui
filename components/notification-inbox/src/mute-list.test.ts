@@ -52,11 +52,11 @@ function createMockApi(overrides: Partial<Record<string, unknown>> = {}) {
   } as unknown as NotificationApi;
 }
 
-describe('mute-list', () => {
+describe('blocks-mute-list', () => {
   let el: MuteList;
 
   beforeEach(async () => {
-    el = document.createElement('mute-list') as MuteList;
+    el = document.createElement('blocks-mute-list') as MuteList;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi();
     document.body.appendChild(el);
@@ -166,7 +166,7 @@ describe('mute-list', () => {
 
   it('shows error on fetch failure', async () => {
     el.remove();
-    el = document.createElement('mute-list') as MuteList;
+    el = document.createElement('blocks-mute-list') as MuteList;
     el.endpoint = 'http://localhost/api';
     el.api = createMockApi({
       listMuteRules: async () => { throw new Error('Network error'); },

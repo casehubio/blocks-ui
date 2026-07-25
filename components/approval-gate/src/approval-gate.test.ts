@@ -22,12 +22,12 @@ type ApprovalGateEl = HTMLElement & {
 
 const identity: WorkIdentity = { userId: 'user-1', displayName: 'Alice', groups: ['approvers'] };
 
-describe('approval-gate', () => {
+describe('blocks-approval-gate', () => {
   let el: ApprovalGateEl;
 
   beforeEach(async () => {
     vi.useFakeTimers();
-    el = document.createElement('approval-gate') as ApprovalGateEl;
+    el = document.createElement('blocks-approval-gate') as ApprovalGateEl;
     el.gateId = 'gate-001';
     el.endpoint = '/api/work-items';
     el.identity = identity;
@@ -82,7 +82,7 @@ describe('approval-gate', () => {
   it('renders sla-indicator when deadline is set', async () => {
     el.deadline = new Date(Date.now() + 86400000).toISOString();
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('sla-indicator')).toBeTruthy();
+    expect(el.shadowRoot!.querySelector('blocks-sla-indicator')).toBeTruthy();
   });
 
   it('renders quorum progress bar', async () => {

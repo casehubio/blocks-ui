@@ -18,7 +18,7 @@ interface PagesGroupedViewHost extends HTMLElement {
   setGetRowClass(v: ((row: import('@casehubio/pages-data/dist/dataset/types.js').TypedRow) => string) | undefined): void;
 }
 
-@customElement('grouped-data-view')
+@customElement('blocks-grouped-data-view')
 export class GroupedDataView extends DataSourceMixin(LitElement) {
   @property({ type: String, attribute: 'group-by' }) groupBy = '';
   @property({ attribute: false }) groupOrder?: string[];
@@ -166,6 +166,6 @@ export class GroupedDataView extends DataSourceMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'grouped-data-view': GroupedDataView;
+    'blocks-grouped-data-view': GroupedDataView;
   }
 }

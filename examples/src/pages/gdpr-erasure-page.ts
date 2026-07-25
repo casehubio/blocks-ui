@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '../../../components/gdpr-erasure-action/src/gdpr-erasure-action.js';
 
-@customElement('gdpr-erasure-page')
+@customElement('blocks-example-gdpr-erasure')
 export class GdprErasurePage extends LitElement {
   @state() private _subjectLabel = 'Patient';
   @state() private _eventLog: string[] = [];
@@ -75,11 +75,11 @@ export class GdprErasurePage extends LitElement {
       </div>
 
       <div class="demo-section" @pages-event=${this._handleEvent}>
-        <gdpr-erasure-action
+        <blocks-gdpr-erasure-action
           endpoint="http://mock.local/api/erasure"
           .subjectLabel=${this._subjectLabel}
           .reasonOptions=${['GDPR Art.17 Request', 'Data Retention Policy', 'Account Deletion', 'Consent Withdrawal']}
-        ></gdpr-erasure-action>
+        ></blocks-gdpr-erasure-action>
         <p class="hint">Try subject IDs: any text = success, "error" = failure, "already" = already withdrawn</p>
       </div>
 

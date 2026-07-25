@@ -26,19 +26,19 @@ function topic(id: string, name: string, overrides: Partial<QhorusTopic> = {}): 
 
 afterEach(() => { document.body.innerHTML = ''; });
 
-describe('channel-feed', () => {
+describe('blocks-channel-feed', () => {
   it('renders messages chronologically', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1'), msg('2'), msg('3')];
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const msgs = el.shadowRoot!.querySelectorAll('channel-message');
+    const msgs = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect(msgs.length).toBe(3);
   });
 
   it('groups consecutive messages from same sender within 2 min', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('1', { sender: 'alice', createdAt: '2026-07-07T12:00:00Z' }),
       msg('2', { sender: 'alice', createdAt: '2026-07-07T12:00:30Z' }),
@@ -52,7 +52,7 @@ describe('channel-feed', () => {
   });
 
   it('splits sender groups when messages >2min apart', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('1', { sender: 'alice', createdAt: '2026-07-07T12:00:00Z' }),
       msg('2', { sender: 'alice', createdAt: '2026-07-07T12:02:01Z' }),
@@ -65,7 +65,7 @@ describe('channel-feed', () => {
   });
 
   it('renders empty state when messages array is empty', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [];
     document.body.appendChild(el);
     await el.updateComplete;
@@ -76,7 +76,7 @@ describe('channel-feed', () => {
   });
 
   it('separates replies from roots and renders thread inline', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'alice' }),
       msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
@@ -86,7 +86,7 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const threads = el.shadowRoot!.querySelectorAll('channel-thread');
+    const threads = el.shadowRoot!.querySelectorAll('blocks-channel-thread');
     expect(threads.length).toBe(1);
     const thread = threads[0] as any;
     expect(thread.rootMessage.id).toBe('root');
@@ -94,7 +94,7 @@ describe('channel-feed', () => {
   });
 
   it('promotes orphaned replies to roots when parent is missing', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('m1', { sender: 'alice' }),
       msg('orphan', { sender: 'bob', inReplyTo: 'deleted-parent' }),
@@ -102,14 +102,14 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect(messages.length).toBe(2);
-    const threads = el.shadowRoot!.querySelectorAll('channel-thread');
+    const threads = el.shadowRoot!.querySelectorAll('blocks-channel-thread');
     expect(threads.length).toBe(0);
   });
 
   it('filters reactions per message correctly', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' }), msg('m2', { sender: 'bob' })];
     el.reactions = [
       { messageId: 'm1', emoji: '👍', actorId: 'u1', createdAt: '2026-07-07T12:00:00Z' },
@@ -119,13 +119,13 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect((messages[0] as any).reactions.length).toBe(2);
     expect((messages[1] as any).reactions.length).toBe(1);
   });
 
   it('feed container has role="log" and aria-live="polite"', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1')];
     document.body.appendChild(el);
     await el.updateComplete;
@@ -138,7 +138,7 @@ describe('channel-feed', () => {
   // --- renderContextHeader (extension point) ---
 
   it('renders context header when callback is provided', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1')];
     el.renderContextHeader = () => html`<div class="test-header">Case Context</div>`;
     document.body.appendChild(el);
@@ -150,7 +150,7 @@ describe('channel-feed', () => {
   });
 
   it('does not render context header when callback is absent', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1')];
     document.body.appendChild(el);
     await el.updateComplete;
@@ -162,7 +162,7 @@ describe('channel-feed', () => {
   // --- terminalDimming (Gap #2) ---
 
   it('applies terminal-dimmed class to DONE/FAILURE/DECLINE/HANDOFF messages', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('1', { messageType: 'DONE' }),
       msg('2', { messageType: 'QUERY' }),
@@ -176,7 +176,7 @@ describe('channel-feed', () => {
   });
 
   it('does not apply terminal-dimmed when terminalDimming=false', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1', { messageType: 'DONE' })];
     el.terminalDimming = false;
     document.body.appendChild(el);
@@ -189,7 +189,7 @@ describe('channel-feed', () => {
   // --- eventStyling (Gap #2) ---
 
   it('applies event-dimmed class to EVENT messages', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('1', { messageType: 'EVENT' }),
       msg('2', { messageType: 'COMMAND' }),
@@ -203,7 +203,7 @@ describe('channel-feed', () => {
   });
 
   it('does not apply event-dimmed when eventStyling=false', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('1', { messageType: 'EVENT' })];
     el.eventStyling = false;
     document.body.appendChild(el);
@@ -216,7 +216,7 @@ describe('channel-feed', () => {
   // --- staleCursorMinutes (Gap #5) ---
 
   it('shows stale prompt when channel cursor is older than threshold', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 1;
     el.messages = [];
@@ -234,7 +234,7 @@ describe('channel-feed', () => {
   });
 
   it('emits channel:cursor-catchup when catch-up button clicked', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 1;
     el.messages = [];
@@ -259,7 +259,7 @@ describe('channel-feed', () => {
   });
 
   it('emits channel:cursor-reload when reload button clicked', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 1;
     el.messages = [];
@@ -284,7 +284,7 @@ describe('channel-feed', () => {
   });
 
   it('clears stale prompt when messages update', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 1;
     el.messages = [];
@@ -304,7 +304,7 @@ describe('channel-feed', () => {
   });
 
   it('does not show stale prompt when staleCursorMinutes=0', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 0;
     el.messages = [];
@@ -321,7 +321,7 @@ describe('channel-feed', () => {
   });
 
   it('does not show stale prompt when cursor is fresh', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.channelId = 'ch-1';
     el.staleCursorMinutes = 30;
     el.messages = [];
@@ -337,13 +337,13 @@ describe('channel-feed', () => {
   });
 
   it('passes channelName to channel-message elements', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' })];
     el.channelName = 'general';
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    const msgEl = el.shadowRoot!.querySelector('blocks-channel-message') as any;
     expect(msgEl.channelName).toBe('general');
   });
 
@@ -351,19 +351,19 @@ describe('channel-feed', () => {
 
   it('passes renderContent to channel-message elements', async () => {
     const renderContent = vi.fn((m: QhorusMessage) => html`<span class="custom">${m.content}</span>`);
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' })];
     el.renderContent = renderContent;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    const msgEl = el.shadowRoot!.querySelector('blocks-channel-message') as any;
     expect(msgEl.renderContent).toBe(renderContent);
   });
 
   it('passes renderContent to channel-thread elements', async () => {
     const renderContent = vi.fn(() => undefined);
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'alice' }),
       msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
@@ -372,7 +372,7 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    const thread = el.shadowRoot!.querySelector('blocks-channel-thread') as any;
     expect(thread.renderContent).toBe(renderContent);
   });
 
@@ -380,25 +380,25 @@ describe('channel-feed', () => {
 
   it('passes formatSender to channel-message elements', async () => {
     const formatSender = vi.fn((s: string) => s.toUpperCase());
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' })];
     el.formatSender = formatSender;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    const msgEl = el.shadowRoot!.querySelector('blocks-channel-message') as any;
     expect(msgEl.formatSender).toBe(formatSender);
   });
 
   // --- View modes ---
 
   it('defaults viewMode to flat', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     expect(el.viewMode).toBe('flat');
   });
 
   it('topics mode: renders topic section headers', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.viewMode = 'topics';
     el.topics = [
       topic('t1', 'General'),
@@ -418,7 +418,7 @@ describe('channel-feed', () => {
   // --- selectedMessageId ---
 
   it('highlights the selected message with a selected class', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' }), msg('m2', { sender: 'bob' })];
     el.selectedMessageId = 'm2';
     document.body.appendChild(el);
@@ -430,7 +430,7 @@ describe('channel-feed', () => {
   });
 
   it('highlights a thread root with selected class when selectedMessageId matches', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'alice' }),
       msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
@@ -439,12 +439,12 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const thread = el.shadowRoot!.querySelector('channel-thread') as HTMLElement;
+    const thread = el.shadowRoot!.querySelector('blocks-channel-thread') as HTMLElement;
     expect(thread.classList.contains('selected')).toBe(true);
   });
 
   it('does not highlight thread when a different message is selected', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'alice' }),
       msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
@@ -454,12 +454,12 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const thread = el.shadowRoot!.querySelector('channel-thread') as HTMLElement;
+    const thread = el.shadowRoot!.querySelector('blocks-channel-thread') as HTMLElement;
     expect(thread.classList.contains('selected')).toBe(false);
   });
 
   it('expands and highlights thread when selectedMessageId is a reply inside it', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'mark', messageType: 'COMMAND' }),
       msg('reply1', { sender: 'agent-atlas', messageType: 'STATUS', inReplyTo: 'root' }),
@@ -468,7 +468,7 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    const thread = el.shadowRoot!.querySelector('blocks-channel-thread') as any;
     expect(thread.collapsed).toBe(true);
     expect(thread.classList.contains('selected')).toBe(false);
 
@@ -478,11 +478,11 @@ describe('channel-feed', () => {
 
     expect(thread.collapsed).toBe(false);
     expect(thread.classList.contains('selected')).toBe(true);
-    expect(thread.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(2);
+    expect(thread.shadowRoot!.querySelectorAll('.reply blocks-channel-message').length).toBe(2);
   });
 
   it('adds data-message-id to message-item wrappers', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [msg('m1', { sender: 'alice' }), msg('m2', { sender: 'bob' })];
     document.body.appendChild(el);
     await el.updateComplete;
@@ -493,7 +493,7 @@ describe('channel-feed', () => {
   });
 
   it('passes selectedMessageId to channel-thread components', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.messages = [
       msg('root', { sender: 'alice' }),
       msg('reply1', { sender: 'bob', inReplyTo: 'root' }),
@@ -502,12 +502,12 @@ describe('channel-feed', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const thread = el.shadowRoot!.querySelector('channel-thread') as any;
+    const thread = el.shadowRoot!.querySelector('blocks-channel-thread') as any;
     expect(thread.selectedMessageId).toBe('reply1');
   });
 
   it('topics mode: does not render empty topic sections', async () => {
-    const el = document.createElement('channel-feed') as any;
+    const el = document.createElement('blocks-channel-feed') as any;
     el.viewMode = 'topics';
     el.topics = [
       topic('t1', 'General'),

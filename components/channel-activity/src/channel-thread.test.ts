@@ -14,9 +14,9 @@ function msg(id: string, type: string, content: string): QhorusMessage {
 
 afterEach(() => { document.body.innerHTML = ''; });
 
-describe('channel-thread', () => {
+describe('blocks-channel-thread', () => {
   it('renders root message and reply count when collapsed', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Analyze auth');
     el.replies = [msg('2', 'STATUS', 'Reading files'), msg('3', 'DONE', 'Complete')];
     el.collapsed = true;
@@ -24,25 +24,25 @@ describe('channel-thread', () => {
     await el.updateComplete;
 
     const shadow = el.shadowRoot!;
-    expect(shadow.querySelector('channel-message')).toBeTruthy();
+    expect(shadow.querySelector('blocks-channel-message')).toBeTruthy();
     expect(shadow.textContent).toContain('2 replies');
-    expect(shadow.querySelectorAll('.reply channel-message').length).toBe(0);
+    expect(shadow.querySelectorAll('.reply blocks-channel-message').length).toBe(0);
   });
 
   it('renders all replies when expanded', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Analyze auth');
     el.replies = [msg('2', 'STATUS', 'Reading'), msg('3', 'DONE', 'Done')];
     el.collapsed = false;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect(messages.length).toBe(3);
   });
 
   it('toggles collapse on header click', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.collapsed = true;
@@ -53,11 +53,11 @@ describe('channel-thread', () => {
     await el.updateComplete;
 
     expect(el.collapsed).toBe(false);
-    expect(el.shadowRoot!.querySelectorAll('channel-message').length).toBe(2);
+    expect(el.shadowRoot!.querySelectorAll('blocks-channel-message').length).toBe(2);
   });
 
   it('shows commitment state on header', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'STATUS', 'Working')];
     el.commitmentState = 'FULFILLED';
@@ -71,16 +71,16 @@ describe('channel-thread', () => {
   });
 
   it('renders nothing when rootMessage is not set', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const message = el.shadowRoot!.querySelector('channel-message');
+    const message = el.shadowRoot!.querySelector('blocks-channel-message');
     expect(message).toBeNull();
   });
 
   it('shows "1 reply" for singular reply count', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.collapsed = true;
@@ -92,7 +92,7 @@ describe('channel-thread', () => {
   });
 
   it('aria-expanded is false when collapsed', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.collapsed = true;
@@ -104,7 +104,7 @@ describe('channel-thread', () => {
   });
 
   it('applies commitment-success CSS class for FULFILLED state', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.commitmentState = 'FULFILLED';
@@ -120,20 +120,20 @@ describe('channel-thread', () => {
 
   it('passes renderContent to root channel-message', async () => {
     const renderContent = vi.fn(() => html`<span class="custom">custom</span>`);
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [];
     el.renderContent = renderContent;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const msgEl = el.shadowRoot!.querySelector('channel-message') as any;
+    const msgEl = el.shadowRoot!.querySelector('blocks-channel-message') as any;
     expect(msgEl.renderContent).toBe(renderContent);
   });
 
   it('passes renderContent to reply channel-messages', async () => {
     const renderContent = vi.fn(() => undefined);
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.renderContent = renderContent;
@@ -141,7 +141,7 @@ describe('channel-thread', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect((messages[1] as any).renderContent).toBe(renderContent);
   });
 
@@ -149,7 +149,7 @@ describe('channel-thread', () => {
 
   it('passes formatSender to channel-message elements', async () => {
     const formatSender = vi.fn((s: string) => s.toUpperCase());
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.formatSender = formatSender;
@@ -157,7 +157,7 @@ describe('channel-thread', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect((messages[0] as any).formatSender).toBe(formatSender);
     expect((messages[1] as any).formatSender).toBe(formatSender);
   });
@@ -165,7 +165,7 @@ describe('channel-thread', () => {
   // --- selectedMessageId auto-expand ---
 
   it('auto-expands when selectedMessageId matches a reply', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('root', 'COMMAND', 'Task');
     el.replies = [msg('reply1', 'STATUS', 'Working'), msg('reply2', 'DONE', 'Done')];
     el.collapsed = true;
@@ -173,17 +173,17 @@ describe('channel-thread', () => {
     await el.updateComplete;
 
     expect(el.collapsed).toBe(true);
-    expect(el.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(0);
+    expect(el.shadowRoot!.querySelectorAll('.reply blocks-channel-message').length).toBe(0);
 
     el.selectedMessageId = 'reply1';
     await el.updateComplete;
 
     expect(el.collapsed).toBe(false);
-    expect(el.shadowRoot!.querySelectorAll('.reply channel-message').length).toBe(2);
+    expect(el.shadowRoot!.querySelectorAll('.reply blocks-channel-message').length).toBe(2);
   });
 
   it('highlights the selected reply within the thread', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('root', 'COMMAND', 'Task');
     el.replies = [msg('reply1', 'STATUS', 'Working'), msg('reply2', 'DONE', 'Done')];
     el.collapsed = false;
@@ -197,7 +197,7 @@ describe('channel-thread', () => {
   });
 
   it('highlights the root message when selectedMessageId matches root', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('root', 'COMMAND', 'Task');
     el.replies = [msg('reply1', 'DONE', 'Done')];
     el.selectedMessageId = 'root';
@@ -211,7 +211,7 @@ describe('channel-thread', () => {
   });
 
   it('does not auto-expand when selectedMessageId matches root', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('root', 'COMMAND', 'Task');
     el.replies = [msg('reply1', 'DONE', 'Done')];
     el.collapsed = true;
@@ -225,14 +225,14 @@ describe('channel-thread', () => {
   });
 
   it('uses identity formatSender by default when none is set', async () => {
-    const el = document.createElement('channel-thread') as any;
+    const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
     el.collapsed = false;
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const messages = el.shadowRoot!.querySelectorAll('channel-message');
+    const messages = el.shadowRoot!.querySelectorAll('blocks-channel-message');
     expect((messages[0] as any).formatSender('alice', 'AGENT')).toBe('alice');
     expect((messages[1] as any).formatSender('bob', 'HUMAN')).toBe('bob');
   });

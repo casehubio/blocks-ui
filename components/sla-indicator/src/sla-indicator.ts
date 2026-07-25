@@ -54,7 +54,7 @@ function formatAriaLabel(ms: number): string {
   return `${parts.join(' ')} remaining`;
 }
 
-@customElement('sla-indicator')
+@customElement('blocks-sla-indicator')
 export class SlaIndicator extends LitElement {
   @property({ type: String }) deadline = '';
   @property({ type: Number, attribute: 'sla-window' }) slaWindow: number | null = null;
@@ -221,6 +221,6 @@ export class SlaIndicator extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'sla-indicator': SlaIndicator;
+    'blocks-sla-indicator': SlaIndicator;
   }
 }

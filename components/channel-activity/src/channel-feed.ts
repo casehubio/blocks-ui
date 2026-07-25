@@ -16,7 +16,7 @@ interface MessageGroup {
 
 const CURSOR_STORAGE_KEY = 'channel-activity.cursors';
 
-@customElement('channel-feed')
+@customElement('blocks-channel-feed')
 export class ChannelFeedElement extends LitElement {
   @property({ type: Array }) messages: QhorusMessage[] = [];
   @property({ type: Array }) reactions: Reaction[] = [];
@@ -269,7 +269,7 @@ export class ChannelFeedElement extends LitElement {
       target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       return;
     }
-    const thread = feed.querySelector(`channel-thread[data-contains~="${this.selectedMessageId}"]`) as HTMLElement | null;
+    const thread = feed.querySelector(`blocks-channel-thread[data-contains~="${this.selectedMessageId}"]`) as HTMLElement | null;
     if (thread) {
       thread.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
@@ -332,13 +332,13 @@ export class ChannelFeedElement extends LitElement {
               </div>
               ${group.messages.map(msg => html`
                 <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id}>
-                  <channel-message .message=${msg}
+                  <blocks-channel-message .message=${msg}
                                   .reactions=${reactionIndex.get(msg.id) ?? []}
                                   .showActorBadge=${group.messages.indexOf(msg) === 0}
                                   .channelName=${this.channelName}
                                   .renderContent=${this.renderContent}
                                   .formatSender=${this.formatSender}>
-                  </channel-message>
+                  </blocks-channel-message>
                 </div>
               `)}
             </div>
@@ -357,7 +357,7 @@ export class ChannelFeedElement extends LitElement {
           <span class="group-sender">${group.sender}</span>
         </div>
         ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
-          <channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
+          <blocks-channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
                          .rootMessage=${msg}
                          .replies=${repliesByParent.get(msg.id)!}
                          .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
@@ -366,17 +366,17 @@ export class ChannelFeedElement extends LitElement {
                          .formatSender=${this.formatSender}
                          data-message-id=${msg.id}
                          data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
-          </channel-thread>
+          </blocks-channel-thread>
         ` : html`
           <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id}>
-            <channel-message .message=${msg}
+            <blocks-channel-message .message=${msg}
                             .reactions=${reactionIndex.get(msg.id) ?? []}
                             .showActorBadge=${group.messages.indexOf(msg) === 0}
                             .channelName=${this.channelName}
                             .parentMessage=${msg.inReplyTo ? this.messages.find(m => m.id === msg.inReplyTo) : undefined}
                             .renderContent=${this.renderContent}
                             .formatSender=${this.formatSender}>
-            </channel-message>
+            </blocks-channel-message>
           </div>
         `)}
       </div>
@@ -386,6 +386,6 @@ export class ChannelFeedElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'channel-feed': ChannelFeedElement;
+    'blocks-channel-feed': ChannelFeedElement;
   }
 }

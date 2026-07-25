@@ -5,7 +5,7 @@ import './channel-preferences.js';
 import './mute-list.js';
 import './snooze-control.js';
 
-@customElement('notification-preferences')
+@customElement('blocks-notification-preferences')
 export class NotificationPreferencesEl extends LitElement {
   @property({ type: String }) endpoint?: string;
   @property({ type: Object }) identity?: WorkIdentity;
@@ -35,15 +35,15 @@ export class NotificationPreferencesEl extends LitElement {
     return html`
       <section>
         <h3>Delivery Channels</h3>
-        <channel-preferences .endpoint=${this.endpoint} .identity=${this.identity}></channel-preferences>
+        <blocks-channel-preferences .endpoint=${this.endpoint} .identity=${this.identity}></blocks-channel-preferences>
       </section>
       <section>
         <h3>Muted</h3>
-        <mute-list .endpoint=${this.endpoint} .identity=${this.identity}></mute-list>
+        <blocks-mute-list .endpoint=${this.endpoint} .identity=${this.identity}></blocks-mute-list>
       </section>
       <section>
         <h3>Snooze</h3>
-        <snooze-control .endpoint=${this.endpoint} .identity=${this.identity}></snooze-control>
+        <blocks-snooze-control .endpoint=${this.endpoint} .identity=${this.identity}></blocks-snooze-control>
       </section>
     `;
   }
@@ -51,6 +51,6 @@ export class NotificationPreferencesEl extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'notification-preferences': NotificationPreferencesEl;
+    'blocks-notification-preferences': NotificationPreferencesEl;
   }
 }

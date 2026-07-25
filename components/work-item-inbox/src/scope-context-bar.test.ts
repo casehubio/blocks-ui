@@ -2,11 +2,11 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './scope-context-bar.js';
 import type { QueueView } from '@casehubio/blocks-ui-core';
 
-describe('scope-context-bar', () => {
+describe('blocks-scope-context-bar', () => {
   let el: HTMLElement & { queue: QueueView | null };
 
   beforeEach(async () => {
-    el = document.createElement('scope-context-bar') as any;
+    el = document.createElement('blocks-scope-context-bar') as any;
     document.body.appendChild(el);
     await (el as any).updateComplete;
   });

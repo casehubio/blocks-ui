@@ -10,11 +10,11 @@ const mockSummary: InboxSummary = {
   claimDeadlineBreached: 1,
 };
 
-describe('inbox-summary-bar', () => {
+describe('blocks-inbox-summary-bar', () => {
   let el: HTMLElement & { summary: InboxSummary | null; overdueActive: boolean; claimBreachActive: boolean };
 
   beforeEach(async () => {
-    el = document.createElement('inbox-summary-bar') as any;
+    el = document.createElement('blocks-inbox-summary-bar') as any;
     el.summary = mockSummary;
     document.body.appendChild(el);
     await (el as any).updateComplete;

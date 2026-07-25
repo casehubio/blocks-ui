@@ -3,7 +3,7 @@ import './channel-nav.js';
 import type { QhorusChannel } from './types.js';
 import { ChannelEventTopics } from './events.js';
 
-describe('channel-nav', () => {
+describe('blocks-channel-nav', () => {
   let el: HTMLElement;
 
   afterEach(() => {
@@ -12,7 +12,7 @@ describe('channel-nav', () => {
   });
 
   it('renders list of channels with names', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     const channels: QhorusChannel[] = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -28,7 +28,7 @@ describe('channel-nav', () => {
   });
 
   it('highlights selected channel', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -44,7 +44,7 @@ describe('channel-nav', () => {
   });
 
   it('emits channel:selected on channel click', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -59,7 +59,7 @@ describe('channel-nav', () => {
   });
 
   it('emits channel:create with name from prompt', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -74,7 +74,7 @@ describe('channel-nav', () => {
   });
 
   it('does not emit create when prompt cancelled', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -87,7 +87,7 @@ describe('channel-nav', () => {
   });
 
   it('emits channel:delete after confirm', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -103,7 +103,7 @@ describe('channel-nav', () => {
   });
 
   it('does not emit delete when confirm cancelled', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -117,7 +117,7 @@ describe('channel-nav', () => {
   });
 
   it('navigates channels with arrow keys and Enter', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -143,7 +143,7 @@ describe('channel-nav', () => {
   });
 
   it('handles empty channel list without crashing', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [];
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -158,7 +158,7 @@ describe('channel-nav', () => {
   // --- showCreate / showDelete toggles (#64) ---
 
   it('hides create button when showCreate=false', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).showCreate = false;
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -167,7 +167,7 @@ describe('channel-nav', () => {
   });
 
   it('shows create button by default', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -175,7 +175,7 @@ describe('channel-nav', () => {
   });
 
   it('hides delete buttons when showDelete=false', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     (el as any).showDelete = false;
     document.body.appendChild(el);
@@ -185,7 +185,7 @@ describe('channel-nav', () => {
   });
 
   it('shows delete buttons by default', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     document.body.appendChild(el);
     await (el as any).updateComplete;
@@ -196,7 +196,7 @@ describe('channel-nav', () => {
   // --- messageCounts (#64) ---
 
   it('displays message count badge in sidebar mode', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -211,7 +211,7 @@ describe('channel-nav', () => {
   });
 
   it('does not display count badge when count is zero or absent', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
     ];
@@ -225,7 +225,7 @@ describe('channel-nav', () => {
   // --- layout: dropdown (#64) ---
 
   it('renders as custom dropdown in dropdown mode', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -249,7 +249,7 @@ describe('channel-nav', () => {
   });
 
   it('emits channel:selected on dropdown option click', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -273,7 +273,7 @@ describe('channel-nav', () => {
   });
 
   it('reflects selectedChannelId in dropdown trigger', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
       { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
@@ -288,7 +288,7 @@ describe('channel-nav', () => {
   });
 
   it('shows message counts in dropdown options', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
     ];
@@ -308,7 +308,7 @@ describe('channel-nav', () => {
   });
 
   it('closes dropdown on Escape', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     (el as any).layout = 'dropdown';
     document.body.appendChild(el);
@@ -325,7 +325,7 @@ describe('channel-nav', () => {
   });
 
   it('hides create and delete in dropdown mode regardless of toggle values', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     (el as any).layout = 'dropdown';
     (el as any).showCreate = true;
@@ -338,7 +338,7 @@ describe('channel-nav', () => {
   });
 
   it('renders sidebar by default', async () => {
-    el = document.createElement('channel-nav');
+    el = document.createElement('blocks-channel-nav');
     (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
     document.body.appendChild(el);
     await (el as any).updateComplete;

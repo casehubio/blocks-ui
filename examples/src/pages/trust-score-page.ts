@@ -12,7 +12,7 @@ import type { TrendPoint } from '@casehubio/blocks-ui-core';
 import type { DataSource } from '@casehubio/pages-data/dist/datasource/types.js';
 import type { ExternalColumnDef } from '@casehubio/pages-data/dist/dataset/external/types.js';
 
-@customElement('trust-score-page')
+@customElement('blocks-example-trust-score')
 export class TrustScorePage extends LitElement {
   @state() private _selectedActorId = 'agent-alice';
   @state() private _mode: 'full' | 'compact' = 'full';
@@ -265,12 +265,12 @@ export class TrustScorePage extends LitElement {
       </div>
 
       <div class="demo-section" @pages-event=${this._handleCapabilitySelected}>
-        <trust-score-panel
+        <blocks-trust-score-panel
           .mode=${this._mode}
           .actorId=${this._selectedActorId}
           endpoint="http://mock.local/api/v1/ledger"
           .trendSource=${this._trendSource}
-        ></trust-score-panel>
+        ></blocks-trust-score-panel>
       </div>
 
       <h2>Compact Mode Examples (Pre-fetched Data)</h2>
@@ -283,28 +283,28 @@ export class TrustScorePage extends LitElement {
             return html`
               <div class="compact-example">
                 <label>${actor.actorId}:</label>
-                <trust-score-panel
+                <blocks-trust-score-panel
                   mode="compact"
                   .score=${actor.globalScore}
                   .trustLevel=${level}
-                ></trust-score-panel>
+                ></blocks-trust-score-panel>
               </div>
             `;
           })}
         <div class="compact-example">
           <label>No data:</label>
-          <trust-score-panel mode="compact" trustLevel="none"></trust-score-panel>
+          <blocks-trust-score-panel mode="compact" trustLevel="none"></blocks-trust-score-panel>
         </div>
       </div>
 
       <h2>Static Trend Data (trendData import)</h2>
       <div class="demo-section">
-        <trust-score-panel
+        <blocks-trust-score-panel
           mode="full"
           .score=${0.82}
           .trustLevel=${'high'}
           .trendData=${this._staticTrendData}
-        ></trust-score-panel>
+        ></blocks-trust-score-panel>
       </div>
 
       ${this._eventLog.length > 0

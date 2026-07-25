@@ -7,7 +7,7 @@ import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.j
 
 let originalFetch: typeof globalThis.fetch;
 
-describe('trust-score-panel', () => {
+describe('blocks-trust-score-panel', () => {
   let mockFetch: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -48,7 +48,7 @@ describe('trust-score-panel', () => {
       let resolveFetch: (value: any) => void;
       mockFetch.mockImplementation(() => new Promise((resolve) => { resolveFetch = resolve; }));
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -75,7 +75,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       document.body.appendChild(el);
 
@@ -102,7 +102,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -129,7 +129,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -154,7 +154,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -181,7 +181,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -197,7 +197,7 @@ describe('trust-score-panel', () => {
     it('handles error state gracefully', async () => {
       mockFetch.mockRejectedValue(new Error('Network error'));
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -214,7 +214,7 @@ describe('trust-score-panel', () => {
 
   describe('Compact Mode - Pre-fetched Path', () => {
     it('renders badge without fetching when score + trustLevel provided', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'compact';
       el.score = 0.85;
       el.trustLevel = 'high';
@@ -228,7 +228,7 @@ describe('trust-score-panel', () => {
     });
 
     it('applies correct CSS class for trust level', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'compact';
       el.score = 0.85;
       el.trustLevel = 'high';
@@ -248,7 +248,7 @@ describe('trust-score-panel', () => {
       ];
 
       for (const { level, score } of levels) {
-        const el = document.createElement('trust-score-panel') as TrustScorePanel;
+        const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
         el.mode = 'compact';
         if (score !== undefined) el.score = score;
         el.trustLevel = level;
@@ -276,7 +276,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'compact';
       el.actorId = 'agent-456';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -307,7 +307,7 @@ describe('trust-score-panel', () => {
         json: async () => mockResponse,
       });
 
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -355,7 +355,7 @@ describe('trust-score-panel', () => {
           dimensionScores: {},
         }),
       });
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.actorId = 'agent-123';
       el.endpoint = 'http://test.local/api/v1/ledger';
@@ -368,7 +368,7 @@ describe('trust-score-panel', () => {
     });
 
     it('renders sparkline when trendData is provided', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.score = 0.87;
       el.trustLevel = 'high';
@@ -385,7 +385,7 @@ describe('trust-score-panel', () => {
     });
 
     it('uses trust-level color for sparkline', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.score = 0.87;
       el.trustLevel = 'high';
@@ -402,7 +402,7 @@ describe('trust-score-panel', () => {
     });
 
     it('renders ARIA label on sparkline', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.score = 0.87;
       el.trustLevel = 'high';
@@ -419,7 +419,7 @@ describe('trust-score-panel', () => {
     });
 
     it('does not show trend section in compact mode', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'compact';
       el.score = 0.87;
       el.trustLevel = 'high';
@@ -434,7 +434,7 @@ describe('trust-score-panel', () => {
     });
 
     it('hides trend section with single point (graceful degradation)', async () => {
-      const el = document.createElement('trust-score-panel') as TrustScorePanel;
+      const el = document.createElement('blocks-trust-score-panel') as TrustScorePanel;
       el.mode = 'full';
       el.score = 0.87;
       el.trustLevel = 'high';

@@ -4,7 +4,7 @@ import '../../../components/similarity-panel/src/similarity-panel.js';
 import type { Precedent } from '../../../components/similarity-panel/src/types.js';
 import precedentData from '../../mock-data/precedents.json';
 
-@customElement('similarity-panel-page')
+@customElement('blocks-example-similarity-panel')
 export class SimilarityPanelPage extends LitElement {
   @state() private _eventLog: string[] = [];
 
@@ -36,19 +36,19 @@ export class SimilarityPanelPage extends LitElement {
 
       <h3>With Data (Property Injection)</h3>
       <div class="demo-section" @pages-event=${this._handleEvent}>
-        <similarity-panel
+        <blocks-similarity-panel
           .data=${precedentData.precedents as Precedent[]}
-        ></similarity-panel>
+        ></blocks-similarity-panel>
       </div>
 
       <h3>Empty State</h3>
       <div class="demo-section">
-        <similarity-panel .data=${[]}></similarity-panel>
+        <blocks-similarity-panel .data=${[]}></blocks-similarity-panel>
       </div>
 
       <h3>Custom Empty Message</h3>
       <div class="demo-section">
-        <similarity-panel .data=${[]} empty-message="No matching precedents for this case"></similarity-panel>
+        <blocks-similarity-panel .data=${[]} empty-message="No matching precedents for this case"></blocks-similarity-panel>
       </div>
 
       ${this._eventLog.length > 0 ? html`

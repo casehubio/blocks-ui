@@ -56,7 +56,7 @@ const NAV: NavCategory[] = [
 ];
 
 
-@customElement('example-shell')
+@customElement('blocks-example-shell')
 export class ExampleShell extends LitElement {
   @state() private currentPage = '';
   @state() private theme: 'light' | 'dark' = 'light';
@@ -172,34 +172,34 @@ export class ExampleShell extends LitElement {
 
   private renderPage() {
     switch (this.currentPage) {
-      case '#components/row': return html`<row-page></row-page>`;
-      case '#components/inbox': return html`<inbox-page></inbox-page>`;
-      case '#components/detail': return html`<detail-page></detail-page>`;
-      case '#components/queue': return html`<queue-inbox-page></queue-inbox-page>`;
-      case '#components/sla-indicator': return html`<sla-indicator-page></sla-indicator-page>`;
-      case '#components/kpi-metric-row': return html`<kpi-metric-row-page></kpi-metric-row-page>`;
-      case '#components/approval-gate': return html`<approval-gate-page></approval-gate-page>`;
-      case '#components/confirm-dialog': return html`<confirm-dialog-page></confirm-dialog-page>`;
-      case '#components/data-table': return html`<data-table-page></data-table-page>`;
-      case '#components/notifications': return html`<notification-page></notification-page>`;
-      case '#components/audit-trail': return html`<audit-trail-page></audit-trail-page>`;
-      case '#components/timeline-events': return html`<timeline-events-page></timeline-events-page>`;
-      case '#components/timeline-commitment': return html`<timeline-commitment-page></timeline-commitment-page>`;
-      case '#components/timeline-custom': return html`<timeline-custom-page></timeline-custom-page>`;
-      case '#components/trust-score': return html`<trust-score-page></trust-score-page>`;
-      case '#components/channel-activity': return html`<channel-activity-page></channel-activity-page>`;
-      case '#components/commitment-lifecycle': return html`<commitment-lifecycle-page></commitment-lifecycle-page>`;
-      case '#components/similarity-panel': return html`<similarity-panel-page></similarity-panel-page>`;
-      case '#components/trust-feedback': return html`<trust-feedback-page></trust-feedback-page>`;
-      case '#components/compliance-summary': return html`<compliance-summary-page></compliance-summary-page>`;
-      case '#components/gdpr-erasure': return html`<gdpr-erasure-page></gdpr-erasure-page>`;
-      case '#components/sla-breach-policy': return html`<sla-breach-policy-page></sla-breach-policy-page>`;
-      case '#components/grouped-data-view': return html`<grouped-data-view-page></grouped-data-view-page>`;
-      case '#components/case-explorer': return html`<case-explorer-page></case-explorer-page>`;
-      case '#components/preferences-editor': return html`<preferences-editor-page></preferences-editor-page>`;
-      case '#composed/workbench': return html`<workbench-page></workbench-page>`;
-      case '#composed/trust-workbench': return html`<trust-workbench-page></trust-workbench-page>`;
-      default: return html`<workbench-page></workbench-page>`;
+      case '#components/row': return html`<blocks-example-row></blocks-example-row>`;
+      case '#components/inbox': return html`<blocks-example-inbox></blocks-example-inbox>`;
+      case '#components/detail': return html`<blocks-example-detail></blocks-example-detail>`;
+      case '#components/queue': return html`<blocks-example-queue-inbox></blocks-example-queue-inbox>`;
+      case '#components/sla-indicator': return html`<blocks-example-sla-indicator></blocks-example-sla-indicator>`;
+      case '#components/kpi-metric-row': return html`<blocks-example-kpi-metric-row></blocks-example-kpi-metric-row>`;
+      case '#components/approval-gate': return html`<blocks-example-approval-gate></blocks-example-approval-gate>`;
+      case '#components/confirm-dialog': return html`<blocks-example-confirm-dialog></blocks-example-confirm-dialog>`;
+      case '#components/data-table': return html`<blocks-example-data-table></blocks-example-data-table>`;
+      case '#components/notifications': return html`<blocks-example-notification></blocks-example-notification>`;
+      case '#components/audit-trail': return html`<blocks-example-audit-trail></blocks-example-audit-trail>`;
+      case '#components/timeline-events': return html`<blocks-example-timeline-events></blocks-example-timeline-events>`;
+      case '#components/timeline-commitment': return html`<blocks-example-timeline-commitment></blocks-example-timeline-commitment>`;
+      case '#components/timeline-custom': return html`<blocks-example-timeline-custom></blocks-example-timeline-custom>`;
+      case '#components/trust-score': return html`<blocks-example-trust-score></blocks-example-trust-score>`;
+      case '#components/channel-activity': return html`<blocks-example-channel-activity></blocks-example-channel-activity>`;
+      case '#components/commitment-lifecycle': return html`<blocks-example-commitment-lifecycle></blocks-example-commitment-lifecycle>`;
+      case '#components/similarity-panel': return html`<blocks-example-similarity-panel></blocks-example-similarity-panel>`;
+      case '#components/trust-feedback': return html`<blocks-example-trust-feedback></blocks-example-trust-feedback>`;
+      case '#components/compliance-summary': return html`<blocks-example-compliance-summary></blocks-example-compliance-summary>`;
+      case '#components/gdpr-erasure': return html`<blocks-example-gdpr-erasure></blocks-example-gdpr-erasure>`;
+      case '#components/sla-breach-policy': return html`<blocks-example-sla-breach-policy></blocks-example-sla-breach-policy>`;
+      case '#components/grouped-data-view': return html`<blocks-example-grouped-data-view></blocks-example-grouped-data-view>`;
+      case '#components/case-explorer': return html`<blocks-example-case-explorer></blocks-example-case-explorer>`;
+      case '#components/preferences-editor': return html`<blocks-example-preferences-editor></blocks-example-preferences-editor>`;
+      case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
+      case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
+      default: return html`<blocks-example-workbench></blocks-example-workbench>`;
     }
   }
 }

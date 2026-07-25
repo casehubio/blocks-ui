@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { PreferenceSchemaDescriptor } from './types.js';
 
-@customElement('value-editor')
+@customElement('blocks-value-editor')
 export class ValueEditor extends LitElement {
   @property({ attribute: false }) schema!: PreferenceSchemaDescriptor;
   @property({ type: String }) value = '';

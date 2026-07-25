@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent, emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 
-@customElement('split-workbench')
+@customElement('blocks-split-workbench')
 export class SplitWorkbench extends LiveRegionMixin(LitElement) {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
   @property({ type: String }) override title = '';
@@ -258,6 +258,6 @@ export class SplitWorkbench extends LiveRegionMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'split-workbench': SplitWorkbench;
+    'blocks-split-workbench': SplitWorkbench;
   }
 }

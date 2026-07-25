@@ -53,7 +53,7 @@ function makeDataSet(items: Array<{ lane: string; name: string }>): TypedDataSet
 
 describe('_toGroupingKey', () => {
   it('converts string column ID to GroupingKey with distinct strategy', () => {
-    const el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    const el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     const key = el._toGroupingKey('lane');
     expect(key.sourceId).toBe('lane');
     expect(key.columnId).toBe('lane');
@@ -67,7 +67,7 @@ describe('_toGroupingKey', () => {
 describe('_prepareDataSet', () => {
   let el: GroupedDataViewEl;
   beforeEach(() => {
-    el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
   });
 
   it('sorts interleaved data to ensure group adjacency', () => {
@@ -149,7 +149,7 @@ describe('grouped-data-view rendering', () => {
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
-    el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     document.body.appendChild(el);
   });
 
@@ -209,7 +209,7 @@ describe('event capture', () => {
   let el: GroupedDataViewEl;
 
   beforeEach(() => {
-    el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     document.body.appendChild(el);
   });
 
@@ -294,7 +294,7 @@ describe('configure()', () => {
   let el: GroupedDataViewEl;
 
   beforeEach(() => {
-    el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     document.body.appendChild(el);
   });
 
@@ -321,7 +321,7 @@ describe('configure()', () => {
 
 describe('group styling resolution', () => {
   it('uses groupStyle callback when present', () => {
-    const el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    const el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     const styleFn = (name: string) => name === 'HIGH' ? { className: 'from-callback' } : undefined;
     el.groupStyle = styleFn;
     el.groupConfig = new Map([['HIGH', { className: 'from-map' }]]);
@@ -330,7 +330,7 @@ describe('group styling resolution', () => {
   });
 
   it('falls back to groupConfig when groupStyle returns undefined', () => {
-    const el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    const el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     el.groupStyle = () => undefined;
     el.groupConfig = new Map([['HIGH', { className: 'from-map' }]]);
     const resolved = el.groupStyle('HIGH') ?? el.groupConfig?.get('HIGH');
@@ -344,7 +344,7 @@ describe('loading and error states', () => {
 
   beforeEach(() => {
     originalFetch = globalThis.fetch;
-    el = document.createElement('grouped-data-view') as GroupedDataViewEl;
+    el = document.createElement('blocks-grouped-data-view') as GroupedDataViewEl;
     document.body.appendChild(el);
   });
 

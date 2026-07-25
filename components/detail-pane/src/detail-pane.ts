@@ -4,7 +4,7 @@ import { onPagesEvent } from '@casehubio/blocks-ui-core';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { TabDefinition } from './types.js';
 
-@customElement('detail-pane')
+@customElement('blocks-detail-pane')
 export class DetailPane extends LiveRegionMixin(LitElement) {
   @property({ type: Array }) tabs: TabDefinition[] = [];
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
@@ -201,6 +201,6 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'detail-pane': DetailPane;
+    'blocks-detail-pane': DetailPane;
   }
 }

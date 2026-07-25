@@ -6,7 +6,7 @@ import '@casehubio/blocks-ui-split-workbench';
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';
 
-@customElement('work-item-workbench')
+@customElement('blocks-work-item-workbench')
 export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
   @property({ type: Object }) identity!: WorkIdentity;
   @property({ type: String }) endpoint = '';
@@ -135,17 +135,17 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <split-workbench selection-topic="work-item">
-        <work-item-inbox slot="list"
+      <blocks-split-workbench selection-topic="work-item">
+        <blocks-work-item-inbox slot="list"
           .endpoint=${this.endpoint}
           .identity=${this.identity}
-        ></work-item-inbox>
-        <work-item-detail slot="detail"
+        ></blocks-work-item-inbox>
+        <blocks-work-item-detail slot="detail"
           .endpoint=${this.endpoint}
           .identity=${this.identity}
           .userSearchProvider=${this.userSearchProvider}
-        ></work-item-detail>
-      </split-workbench>
+        ></blocks-work-item-detail>
+      </blocks-split-workbench>
 
       ${this._renderKeyboardHints()}
       ${this._showShortcutOverlay ? this._renderShortcutOverlay() : ''}
@@ -198,6 +198,6 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'work-item-workbench': WorkItemWorkbench;
+    'blocks-work-item-workbench': WorkItemWorkbench;
   }
 }

@@ -22,7 +22,7 @@ const DECISIONS: Array<{ label: string; data: GateDecision }> = [
   },
 ];
 
-@customElement('trust-feedback-page')
+@customElement('blocks-example-trust-feedback')
 export class TrustFeedbackPage extends LitElement {
   @state() private _selectedIndex = 0;
   @state() private _compact = false;
@@ -58,22 +58,22 @@ export class TrustFeedbackPage extends LitElement {
 
       <h3>Interactive Demo</h3>
       <div class="demo-section">
-        <trust-feedback-display
+        <blocks-trust-feedback-display
           .gateDecision=${selected.data}
           ?compact=${this._compact}
-        ></trust-feedback-display>
+        ></blocks-trust-feedback-display>
       </div>
 
       <h3>No Data</h3>
       <div class="demo-section">
-        <trust-feedback-display></trust-feedback-display>
+        <blocks-trust-feedback-display></blocks-trust-feedback-display>
       </div>
 
       <h3>All Variants (Compact)</h3>
       <div class="demo-section">
         <div class="compact-grid">
           ${DECISIONS.map(d => html`
-            <trust-feedback-display .gateDecision=${d.data} compact></trust-feedback-display>
+            <blocks-trust-feedback-display .gateDecision=${d.data} compact></blocks-trust-feedback-display>
           `)}
         </div>
       </div>

@@ -10,7 +10,7 @@ function makeTopic(overrides: Partial<QhorusTopic> = {}): QhorusTopic {
 }
 
 async function createElement(topics: QhorusTopic[], selectedTopicId: string | null = null, viewMode: 'flat' | 'threaded' | 'topics' = 'flat') {
-  const el = document.createElement('channel-topic-bar') as any;
+  const el = document.createElement('blocks-channel-topic-bar') as any;
   el.topics = topics;
   el.selectedTopicId = selectedTopicId;
   el.viewMode = viewMode;

@@ -42,7 +42,7 @@ const STATUS_COLORS: Record<string, string> = {
   BREACHED: 'background: var(--pages-danger-3, #f8d7da); color: var(--pages-danger-11, #721c24);',
 };
 
-@customElement('compliance-summary')
+@customElement('blocks-compliance-summary')
 export class ComplianceSummary extends DataSourceMixin(LitElement) {
   @property({ attribute: false }) requirements: RequirementDefinition[] | null = null;
 
@@ -113,6 +113,6 @@ export class ComplianceSummary extends DataSourceMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'compliance-summary': ComplianceSummary;
+    'blocks-compliance-summary': ComplianceSummary;
   }
 }

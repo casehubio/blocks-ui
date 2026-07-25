@@ -2,13 +2,13 @@ import { describe, it, expect, afterEach } from 'vitest';
 import './channel-member-panel.js';
 import type { ChannelMember, PresenceState } from './types.js';
 
-describe('channel-member-panel', () => {
+describe('blocks-channel-member-panel', () => {
   let element: HTMLElement;
 
   afterEach(() => { element?.remove(); });
 
   it('renders member list sorted by presence', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'Alice', role: 'PARTICIPANT' },
       { channelId: 'c1', memberId: 'm2', displayName: 'Bob', role: 'PARTICIPANT' },
@@ -28,7 +28,7 @@ describe('channel-member-panel', () => {
   });
 
   it('shows presence dots with correct classes', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'Online', role: 'PARTICIPANT' },
       { channelId: 'c1', memberId: 'm2', displayName: 'Away', role: 'PARTICIPANT' },
@@ -49,7 +49,7 @@ describe('channel-member-panel', () => {
   });
 
   it('shows role badges for MODERATOR and OBSERVER', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'Mod', role: 'MODERATOR' },
       { channelId: 'c1', memberId: 'm2', displayName: 'Obs', role: 'OBSERVER' },
@@ -70,7 +70,7 @@ describe('channel-member-panel', () => {
   });
 
   it('groups under section headers', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'A', role: 'PARTICIPANT' },
       { channelId: 'c1', memberId: 'm2', displayName: 'B', role: 'PARTICIPANT' },
@@ -92,7 +92,7 @@ describe('channel-member-panel', () => {
   });
 
   it('handles empty member list', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [];
     (element as any).presence = [];
     document.body.appendChild(element);
@@ -103,7 +103,7 @@ describe('channel-member-panel', () => {
   });
 
   it('members without presence default to OFFLINE', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'Alice', role: 'PARTICIPANT' },
       { channelId: 'c1', memberId: 'm2', displayName: 'Bob', role: 'PARTICIPANT' },
@@ -122,7 +122,7 @@ describe('channel-member-panel', () => {
   });
 
   it('shows status message when present', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [{ channelId: 'c1', memberId: 'm1', displayName: 'Alice', role: 'PARTICIPANT' }];
     (element as any).presence = [{ memberId: 'm1', status: 'BUSY', statusMessage: 'In a meeting' }];
     document.body.appendChild(element);
@@ -132,7 +132,7 @@ describe('channel-member-panel', () => {
   });
 
   it('sorts alphabetically within same group', async () => {
-    element = document.createElement('channel-member-panel') as any;
+    element = document.createElement('blocks-channel-member-panel') as any;
     (element as any).members = [
       { channelId: 'c1', memberId: 'm1', displayName: 'Charlie', role: 'PARTICIPANT' },
       { channelId: 'c1', memberId: 'm2', displayName: 'Alice', role: 'PARTICIPANT' },

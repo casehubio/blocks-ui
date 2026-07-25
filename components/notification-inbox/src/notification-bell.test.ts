@@ -49,7 +49,7 @@ class MockSSEManager {
   }
 }
 
-describe('notification-bell', () => {
+describe('blocks-notification-bell', () => {
   let mockSSEManager: MockSSEManager;
   let mockFetch: ReturnType<typeof vi.fn>;
 
@@ -68,7 +68,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 0 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -87,7 +87,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 5 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -105,7 +105,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 150 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -123,7 +123,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 0 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -154,7 +154,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 0 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -177,7 +177,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 0 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -194,7 +194,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 5 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -221,7 +221,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 5 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -248,7 +248,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 3 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;
@@ -265,7 +265,7 @@ describe('notification-bell', () => {
       json: async () => ({ count: 0 }),
     });
 
-    const el = fixture(document.createElement('notification-bell')) as NotificationBell;
+    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
     el.sseManager = mockSSEManager as unknown as SSEManager;

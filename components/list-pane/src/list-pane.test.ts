@@ -43,7 +43,7 @@ function mockFetchFail(status: number): ReturnType<typeof vi.fn> {
 let originalFetch: typeof globalThis.fetch;
 
 function createElement(opts: Partial<{ endpoint: string; topic: string }> = {}): ListPaneEl {
-  const el = document.createElement('list-pane') as ListPaneEl;
+  const el = document.createElement('blocks-list-pane') as ListPaneEl;
   if (opts.endpoint !== undefined) el.endpoint = opts.endpoint;
   else el.endpoint = '/api/items';
   el.selectionTopic = opts.topic ?? 'test';
@@ -62,7 +62,7 @@ async function flush(): Promise<void> {
   await new Promise(r => setTimeout(r, 20));
 }
 
-describe('list-pane', () => {
+describe('blocks-list-pane', () => {
   let el: ListPaneEl;
 
   beforeEach(() => {
@@ -102,7 +102,7 @@ describe('list-pane', () => {
     it('does not fetch when endpoint is not set', async () => {
       const fetchFn = mockFetch();
       globalThis.fetch = fetchFn as unknown as typeof fetch;
-      el = document.createElement('list-pane') as ListPaneEl;
+      el = document.createElement('blocks-list-pane') as ListPaneEl;
       el.getRowKey = (row: TypedRow) => {
         const cell = row.cell(columnId('id'));
         return cell.type === 'NULL' ? '' : String((cell as { value: unknown }).value);
@@ -114,14 +114,14 @@ describe('list-pane', () => {
     });
 
     it('shows empty message when no data', async () => {
-      el = document.createElement('list-pane') as ListPaneEl;
+      el = document.createElement('blocks-list-pane') as ListPaneEl;
       document.body.appendChild(el);
       await el.updateComplete;
       expect(el.shadowRoot!.textContent).toContain('No items found');
     });
 
     it('shows custom empty message', async () => {
-      el = document.createElement('list-pane') as ListPaneEl;
+      el = document.createElement('blocks-list-pane') as ListPaneEl;
       el.emptyMessage = 'Nothing here';
       document.body.appendChild(el);
       await el.updateComplete;
@@ -290,7 +290,7 @@ describe('list-pane', () => {
     });
 
     it('empty state has role=status', async () => {
-      el = document.createElement('list-pane') as ListPaneEl;
+      el = document.createElement('blocks-list-pane') as ListPaneEl;
       document.body.appendChild(el);
       await el.updateComplete;
       const status = el.shadowRoot!.querySelector('[role="status"]');

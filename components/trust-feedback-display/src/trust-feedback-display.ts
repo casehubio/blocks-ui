@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { GateDecision } from './types.js';
 
-@customElement('trust-feedback-display')
+@customElement('blocks-trust-feedback-display')
 export class TrustFeedbackDisplay extends LitElement {
   @property({ attribute: false }) gateDecision: GateDecision | null = null;
   @property({ type: Boolean }) compact = false;
@@ -133,6 +133,6 @@ export class TrustFeedbackDisplay extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'trust-feedback-display': TrustFeedbackDisplay;
+    'blocks-trust-feedback-display': TrustFeedbackDisplay;
   }
 }

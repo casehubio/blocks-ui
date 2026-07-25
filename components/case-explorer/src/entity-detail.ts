@@ -6,7 +6,7 @@ import './entity-command-bar.js';
 import type { EntityTypeRegistration, EntitySelection, DetailRenderer } from './types.js';
 import { DEFAULT_READER } from './readers.js';
 
-@customElement('entity-detail')
+@customElement('blocks-entity-detail')
 export class EntityDetail extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) registration: EntityTypeRegistration | undefined;
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
@@ -187,12 +187,12 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
       </div>
       ${(this._reader.commands?.(this._entity) ?? []).length > 0 ? html`
         <div class="command-section">
-          <entity-command-bar
+          <blocks-entity-command-bar
             .commands=${this._reader.commands?.(this._entity) ?? []}
             entity-id=${this._reader.id(this._entity)}
             entity-type=${this._reader.type?.(this._entity) ?? this.registration?.type ?? ''}
             .fetchFn=${this.fetchFn}
-          ></entity-command-bar>
+          ></blocks-entity-command-bar>
         </div>
       ` : nothing}
     `;
@@ -267,7 +267,7 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
 
   private _renderRelationship(rel: { childType: string; label: string; endpointTemplate: string }, parentId: string): TemplateResult {
     const endpoint = rel.endpointTemplate.replace('{parentId}', parentId);
-    return html`<entity-list .endpoint=${endpoint} .registration=${this._getChildRegistration(rel.childType)} .fetchFn=${this.fetchFn}></entity-list>`;
+    return html`<blocks-entity-list .endpoint=${endpoint} .registration=${this._getChildRegistration(rel.childType)} .fetchFn=${this.fetchFn}></blocks-entity-list>`;
   }
 
   private _getChildRegistration(childType: string): EntityTypeRegistration | undefined {

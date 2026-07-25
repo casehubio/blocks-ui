@@ -86,7 +86,7 @@ function emitDecisionSelected(id: string): void {
   }));
 }
 
-describe('trust-workbench', () => {
+describe('blocks-trust-workbench', () => {
   let el: TrustWorkbenchEl;
 
   beforeEach(() => {
@@ -94,7 +94,7 @@ describe('trust-workbench', () => {
     globalThis.fetch = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ actorId: 'worker-42', globalScore: 0.85, capabilityScores: {}, dimensionScores: {} }), { status: 200 })
     ) as unknown as typeof fetch;
-    el = document.createElement('trust-workbench') as TrustWorkbenchEl;
+    el = document.createElement('blocks-trust-workbench') as TrustWorkbenchEl;
     el.endpoint = '/api';
     el.actorId = 'worker-42';
   });
@@ -115,7 +115,7 @@ describe('trust-workbench', () => {
     it('renders split-workbench with trust-routing selection-topic', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const sw = el.shadowRoot!.querySelector('split-workbench');
+      const sw = el.shadowRoot!.querySelector('blocks-split-workbench');
       expect(sw).toBeTruthy();
       expect(sw!.getAttribute('selection-topic')).toBe('trust-routing');
     });
@@ -123,14 +123,14 @@ describe('trust-workbench', () => {
     it('renders trust-score-panel in left slot', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const panel = el.shadowRoot!.querySelector('trust-score-panel');
+      const panel = el.shadowRoot!.querySelector('blocks-trust-score-panel');
       expect(panel).toBeTruthy();
     });
 
     it('renders list-pane in left slot with trust-routing topic', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const listPane = el.shadowRoot!.querySelector('list-pane');
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane');
       expect(listPane).toBeTruthy();
       expect(listPane!.getAttribute('selection-topic')).toBe('trust-routing');
     });
@@ -138,14 +138,14 @@ describe('trust-workbench', () => {
     it('passes endpoint to trust-score-panel', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const panel = el.shadowRoot!.querySelector('trust-score-panel') as any;
+      const panel = el.shadowRoot!.querySelector('blocks-trust-score-panel') as any;
       expect(panel?.endpoint).toBe('/api');
     });
 
     it('passes actorId to trust-score-panel', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const panel = el.shadowRoot!.querySelector('trust-score-panel') as any;
+      const panel = el.shadowRoot!.querySelector('blocks-trust-score-panel') as any;
       expect(panel?.actorId).toBe('worker-42');
     });
 
@@ -161,7 +161,7 @@ describe('trust-workbench', () => {
     it('renders empty detail pane when no decision selected', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const rationale = el.shadowRoot!.querySelector('routing-rationale');
+      const rationale = el.shadowRoot!.querySelector('blocks-routing-rationale');
       expect(rationale).toBeNull();
       expect(el.shadowRoot!.textContent).toContain('Select a routing decision');
     });
@@ -172,7 +172,7 @@ describe('trust-workbench', () => {
       el._routingDetail = SAMPLE_RATIONALE;
       el._feedbackEntries = [SAMPLE_FEEDBACK];
       await el.updateComplete;
-      const rationale = el.shadowRoot!.querySelector('routing-rationale');
+      const rationale = el.shadowRoot!.querySelector('blocks-routing-rationale');
       expect(rationale).toBeTruthy();
     });
 
@@ -182,7 +182,7 @@ describe('trust-workbench', () => {
       el._routingDetail = SAMPLE_RATIONALE;
       el._feedbackEntries = [SAMPLE_FEEDBACK, { ...SAMPLE_FEEDBACK, decision: 'REJECTED' }];
       await el.updateComplete;
-      const displays = el.shadowRoot!.querySelectorAll('trust-feedback-display');
+      const displays = el.shadowRoot!.querySelectorAll('blocks-trust-feedback-display');
       expect(displays.length).toBe(2);
     });
 
@@ -212,7 +212,7 @@ describe('trust-workbench', () => {
       await el.updateComplete;
       emitCapabilitySelected('code-review');
       await el.updateComplete;
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.endpoint).toContain('capability=code-review');
     });
 
@@ -223,7 +223,7 @@ describe('trust-workbench', () => {
       await el.updateComplete;
       emitCapabilitySelected('code-review');
       await el.updateComplete;
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.endpoint).not.toContain('capability=');
     });
 
@@ -315,7 +315,7 @@ describe('trust-workbench', () => {
       document.body.appendChild(el);
       await el.updateComplete;
       await new Promise(r => setTimeout(r, 50));
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.dataSet).toBeTruthy();
       expect(listPane?.dataSet?.rows?.length).toBe(2);
     });
@@ -330,7 +330,7 @@ describe('trust-workbench', () => {
       el.routingHistory = SAMPLE_SUMMARIES;
       await el.updateComplete;
       await new Promise(r => setTimeout(r, 50));
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.dataSet).toBeTruthy();
       expect(listPane?.dataSet?.rows?.length).toBe(2);
     });
@@ -344,7 +344,7 @@ describe('trust-workbench', () => {
       emitCapabilitySelected('code-review');
       await el.updateComplete;
       await new Promise(r => setTimeout(r, 50));
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.dataSet?.rows?.length).toBe(1);
     });
 
@@ -365,7 +365,7 @@ describe('trust-workbench', () => {
       el.routingColumns = customConfig;
       document.body.appendChild(el);
       await el.updateComplete;
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.columnConfig).toBe(customConfig);
     });
 
@@ -374,7 +374,7 @@ describe('trust-workbench', () => {
       el.routingColumnRenderers = customRenderers;
       document.body.appendChild(el);
       await el.updateComplete;
-      const listPane = el.shadowRoot!.querySelector('list-pane') as any;
+      const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
       expect(listPane?.columnRenderers).toBe(customRenderers);
     });
 
@@ -384,7 +384,7 @@ describe('trust-workbench', () => {
       el._routingDetail = SAMPLE_RATIONALE;
       document.body.appendChild(el);
       await el.updateComplete;
-      const rationale = el.shadowRoot!.querySelector('routing-rationale') as any;
+      const rationale = el.shadowRoot!.querySelector('blocks-routing-rationale') as any;
       expect(rationale?.renderCandidate).toBe(renderFn);
     });
   });

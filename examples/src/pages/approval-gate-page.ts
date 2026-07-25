@@ -43,7 +43,7 @@ const EVIDENCE_DATA = {
   'Pattern': 'Multiple rapid transfers to newly opened accounts',
 };
 
-@customElement('approval-gate-page')
+@customElement('blocks-example-approval-gate')
 export class ApprovalGatePage extends LitElement {
   @state() private _eventLog: string[] = [];
 
@@ -115,18 +115,18 @@ export class ApprovalGatePage extends LitElement {
 
       <h3>Simple Binary Approve/Reject</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-001"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
           prompt="Approve PI authorisation for Trial ONCO-2026-Alpha?"
           contextText="Phase II clinical trial with 200 enrolled patients. Principal Investigator requests authorisation to proceed to Stage 3 dosing."
-        ></approval-gate>
+        ></blocks-approval-gate>
       </div>
 
       <h3>Custom Outcomes (AML)</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-002"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
@@ -134,12 +134,12 @@ export class ApprovalGatePage extends LitElement {
           contextText="Multiple rapid transfers totalling $125,000 to newly opened accounts in high-risk jurisdictions."
           .outcomes=${AML_OUTCOMES}
           .data=${EVIDENCE_DATA}
-        ></approval-gate>
+        ></blocks-approval-gate>
       </div>
 
       <h3>With Quorum (3-of-5)</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-003"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
@@ -147,12 +147,12 @@ export class ApprovalGatePage extends LitElement {
           contextText="Quarterly distribution from Henderson Family Trust. Requires 3 of 5 trustee approvals."
           .quorum=${QUORUM}
           .history=${HISTORY}
-        ></approval-gate>
+        ></blocks-approval-gate>
       </div>
 
       <h3>With SLA Deadline</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-004"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
@@ -160,12 +160,12 @@ export class ApprovalGatePage extends LitElement {
           contextText="Suspected Unexpected Serious Adverse Reaction requires expedited safety review within 72 hours."
           deadline="${new Date(Date.now() + 14400000).toISOString()}"
           .slaWindow=${259200000}
-        ></approval-gate>
+        ></blocks-approval-gate>
       </div>
 
       <h3>Already Decided (current user voted)</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-005"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
@@ -173,12 +173,12 @@ export class ApprovalGatePage extends LitElement {
           contextText="Engine ActionGateWorkItemHandler flagged a high-risk automated decision for human review."
           .quorum=${ALREADY_VOTED_QUORUM}
           .history=${HISTORY}
-        ></approval-gate>
+        ></blocks-approval-gate>
       </div>
 
       <h3>With Slotted Evidence</h3>
       <div class="scenario">
-        <approval-gate
+        <blocks-approval-gate
           gateId="gate-006"
           endpoint="/api/work-items"
           .identity=${CURRENT_USER}
@@ -191,7 +191,7 @@ export class ApprovalGatePage extends LitElement {
             <strong>Warranty:</strong> 10 years materials, 5 years labour<br/>
             <strong>Competing quotes:</strong> $22,000 (XYZ), $19,800 (123 Roofing)
           </div>
-        </approval-gate>
+        </blocks-approval-gate>
       </div>
 
       <h3>Event Log</h3>

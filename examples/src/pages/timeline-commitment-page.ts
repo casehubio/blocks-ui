@@ -4,7 +4,7 @@ import '@casehubio/blocks-ui-blocks-timeline';
 import { stateProgressionStrategy, linearResolveStatus } from '@casehubio/blocks-ui-blocks-timeline';
 import type { StageConfig } from '@casehubio/blocks-ui-blocks-timeline';
 
-@customElement('timeline-commitment-page')
+@customElement('blocks-example-timeline-commitment')
 export class TimelineCommitmentPage extends LitElement {
   private _fulfilledData = {
     currentState: 'FULFILLED',

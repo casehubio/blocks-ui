@@ -17,11 +17,11 @@ const sampleMetrics: MetricDefinition[] = [
   { key: 'backlog', value: 23, label: 'Backlog', sparkline: [30, 28, 25, 27, 23], status: 'warning' },
 ];
 
-describe('kpi-metric-row', () => {
+describe('blocks-kpi-metric-row', () => {
   let el: KpiMetricRowEl;
 
   beforeEach(async () => {
-    el = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+    el = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
     document.body.appendChild(el);
     await el.updateComplete;
   });
@@ -123,7 +123,7 @@ describe('kpi-metric-row', () => {
 
   describe('density property', () => {
     it('reflects density attribute to the host element', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'compact';
       document.body.appendChild(el);
@@ -133,7 +133,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('defaults to comfortable density', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       document.body.appendChild(el);
       await el.updateComplete;
@@ -142,7 +142,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('uses 120px minmax in compact density', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'compact';
       document.body.appendChild(el);
@@ -153,7 +153,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('uses 90px minmax in dense density', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'dense';
       document.body.appendChild(el);
@@ -164,7 +164,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('uses 160px minmax in comfortable density', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'comfortable';
       document.body.appendChild(el);
@@ -175,7 +175,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('applies compact density CSS for padding and font size', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'compact';
       document.body.appendChild(el);
@@ -188,7 +188,7 @@ describe('kpi-metric-row', () => {
     });
 
     it('applies dense density CSS for padding and font size', async () => {
-      const el = document.createElement('kpi-metric-row') as any;
+      const el = document.createElement('blocks-kpi-metric-row') as any;
       el.metrics = [{ key: 'k1', value: 42, label: 'Test' }];
       el.density = 'dense';
       document.body.appendChild(el);
@@ -204,7 +204,7 @@ describe('kpi-metric-row', () => {
   describe('endpoint mode', () => {
     it('renders loading skeleton when fetching', async () => {
       vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})));
-      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      const endpointEl = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
       endpointEl.endpoint = '/api/metrics';
       document.body.appendChild(endpointEl);
       await endpointEl.updateComplete;
@@ -221,7 +221,7 @@ describe('kpi-metric-row', () => {
         ok: true,
         json: () => Promise.resolve(mockData),
       }));
-      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      const endpointEl = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
       endpointEl.endpoint = '/api/metrics';
       document.body.appendChild(endpointEl);
       await new Promise(r => setTimeout(r, 0));
@@ -234,7 +234,7 @@ describe('kpi-metric-row', () => {
 
     it('renders error state on fetch failure', async () => {
       vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
-      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      const endpointEl = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
       endpointEl.endpoint = '/api/metrics';
       document.body.appendChild(endpointEl);
       await new Promise(r => setTimeout(r, 0));
@@ -256,7 +256,7 @@ describe('kpi-metric-row', () => {
         ok: true,
         json: () => Promise.resolve(initialData),
       }));
-      const endpointEl = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      const endpointEl = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
       endpointEl.endpoint = '/api/metrics';
       document.body.appendChild(endpointEl);
       await new Promise(r => setTimeout(r, 0));
@@ -280,7 +280,7 @@ describe('kpi-metric-row', () => {
       });
       vi.stubGlobal('fetch', mockFetch);
 
-      const el = document.createElement('kpi-metric-row') as KpiMetricRowEl;
+      const el = document.createElement('blocks-kpi-metric-row') as KpiMetricRowEl;
       el.endpoint = '/api/v1/metrics';
       document.body.appendChild(el);
       await el.updateComplete;

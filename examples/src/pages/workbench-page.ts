@@ -9,16 +9,16 @@ const IDENTITY: WorkIdentity = {
   groups: ['compliance', 'clinical-safety', 'household', 'device-ops', 'code-review'],
 };
 
-@customElement('workbench-page')
+@customElement('blocks-example-workbench')
 export class WorkbenchPage extends LitElement {
   static override styles = css`
     :host { display: block; height: 100%; }
-    work-item-workbench { display: block; height: 100%; }
+    blocks-work-item-workbench { display: block; height: 100%; }
   `;
 
   override render() {
     return html`
-      <work-item-workbench endpoint="" .identity=${IDENTITY}></work-item-workbench>
+      <blocks-work-item-workbench endpoint="" .identity=${IDENTITY}></blocks-work-item-workbench>
     `;
   }
 }

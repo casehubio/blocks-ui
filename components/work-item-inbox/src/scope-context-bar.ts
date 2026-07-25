@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { QueueView } from '@casehubio/blocks-ui-core';
 
-@customElement('scope-context-bar')
+@customElement('blocks-scope-context-bar')
 export class ScopeContextBar extends LitElement {
   @property({ type: Object }) queue: QueueView | null = null;
 

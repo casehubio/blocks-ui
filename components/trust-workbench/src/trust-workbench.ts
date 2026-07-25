@@ -16,7 +16,7 @@ import '@casehubio/blocks-ui-list-pane';
 import '@casehubio/blocks-ui-routing-rationale';
 import '@casehubio/blocks-ui-trust-feedback-display';
 
-@customElement('trust-workbench')
+@customElement('blocks-trust-workbench')
 export class TrustWorkbench extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint = '';
   @property({ type: String, attribute: 'actor-id' }) actorId = '';
@@ -202,14 +202,14 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <split-workbench selection-topic="trust-routing">
+      <blocks-split-workbench selection-topic="trust-routing">
         <div slot="list" class="left-panel">
-          <trust-score-panel
+          <blocks-trust-score-panel
             mode="full"
             .endpoint=${this.endpoint}
             actor-id=${this.actorId}
-          ></trust-score-panel>
-          <list-pane
+          ></blocks-trust-score-panel>
+          <blocks-list-pane
             selection-topic="trust-routing"
             .endpoint=${this._listEndpoint}
             .dataSet=${this._listDataSet}
@@ -217,12 +217,12 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
             .columnRenderers=${this.routingColumnRenderers ?? DEFAULT_ROUTING_RENDERERS}
             .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
             empty-message="No routing decisions"
-          ></list-pane>
+          ></blocks-list-pane>
         </div>
         <div slot="detail" class="detail-panel">
           ${this._renderDetail()}
         </div>
-      </split-workbench>
+      </blocks-split-workbench>
     `;
   }
 
@@ -242,16 +242,16 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
       return html`<div class="detail-empty">Select a routing decision to view details</div>`;
     }
     return html`
-      <routing-rationale
+      <blocks-routing-rationale
         .data=${this._routingDetail}
         .renderCandidate=${this.renderCandidate}
-      ></routing-rationale>
+      ></blocks-routing-rationale>
       ${this._feedbackEntries.length > 0 ? html`
         <section class="feedback-section">
           <h3>Feedback</h3>
           <div class="feedback-list">
             ${this._feedbackEntries.map(fb => html`
-              <trust-feedback-display compact .gateDecision=${fb}></trust-feedback-display>
+              <blocks-trust-feedback-display compact .gateDecision=${fb}></blocks-trust-feedback-display>
             `)}
           </div>
         </section>
@@ -262,6 +262,6 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'trust-workbench': TrustWorkbench;
+    'blocks-trust-workbench': TrustWorkbench;
   }
 }

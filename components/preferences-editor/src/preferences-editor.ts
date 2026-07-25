@@ -24,7 +24,7 @@ const ROW_TYPE_COL = columnId('rowType');
 const QN_COL = columnId('qualifiedName');
 const SCOPE_COL = columnId('scope');
 
-@customElement('preferences-editor')
+@customElement('blocks-preferences-editor')
 export class PreferencesEditor extends LitElement {
   @property({ attribute: false }) scopeTree: readonly ScopeNode[] = [];
   @property({ type: String }) endpoint = '/preferences';
@@ -130,13 +130,13 @@ export class PreferencesEditor extends LitElement {
         const disabled = inheritState === 'inherited' || inheritState === 'default';
         const scope = row.text(SCOPE_COL);
         const value = row.text(VALUE_COL);
-        return html`<value-editor
+        return html`<blocks-value-editor
           .schema=${schema}
           .value=${value}
           ?disabled=${disabled}
           style="display:inline-block;min-width:120px;"
           @value-changed=${(e: CustomEvent) => this.handleSave(scope, schema.namespace, schema.name, '', e.detail.value)}
-        ></value-editor>`;
+        ></blocks-value-editor>`;
       }],
       [SOURCE_COL, (_cell: unknown, row: TypedRow) => {
         const rowType = row.text(ROW_TYPE_COL);

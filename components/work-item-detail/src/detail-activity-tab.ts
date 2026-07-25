@@ -2,7 +2,7 @@ import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WorkItemResponse, WorkItemLifecycleEvent } from '@casehubio/blocks-ui-core';
 
-@customElement('detail-activity-tab')
+@customElement('blocks-detail-activity-tab')
 export class DetailActivityTab extends LitElement {
   @property({ type: Object }) workItem: WorkItemResponse | null = null;
   @property({ type: Array }) events: readonly WorkItemLifecycleEvent[] = [];
@@ -248,6 +248,6 @@ export class DetailActivityTab extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'detail-activity-tab': DetailActivityTab;
+    'blocks-detail-activity-tab': DetailActivityTab;
   }
 }

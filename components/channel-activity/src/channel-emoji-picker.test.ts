@@ -3,9 +3,9 @@ import './channel-emoji-picker.js';
 
 afterEach(() => { document.body.innerHTML = ''; });
 
-describe('channel-emoji-picker', () => {
+describe('blocks-channel-emoji-picker', () => {
   it('renders an emoji-picker element', async () => {
-    const el = document.createElement('channel-emoji-picker') as any;
+    const el = document.createElement('blocks-channel-emoji-picker') as any;
     document.body.appendChild(el);
     await el.updateComplete;
     const picker = el.shadowRoot!.querySelector('emoji-picker');
@@ -13,7 +13,7 @@ describe('channel-emoji-picker', () => {
   });
 
   it('emits emoji-selected event on emoji click', async () => {
-    const el = document.createElement('channel-emoji-picker') as any;
+    const el = document.createElement('blocks-channel-emoji-picker') as any;
     document.body.appendChild(el);
     await el.updateComplete;
 
@@ -31,7 +31,7 @@ describe('channel-emoji-picker', () => {
   });
 
   it('passes skinToneEmoji attribute to inner picker', async () => {
-    const el = document.createElement('channel-emoji-picker') as any;
+    const el = document.createElement('blocks-channel-emoji-picker') as any;
     el.skinToneEmoji = '👍';
     document.body.appendChild(el);
     await el.updateComplete;
@@ -40,7 +40,7 @@ describe('channel-emoji-picker', () => {
   });
 
   it('does not emit when emoji-click has no unicode', async () => {
-    const el = document.createElement('channel-emoji-picker') as any;
+    const el = document.createElement('blocks-channel-emoji-picker') as any;
     document.body.appendChild(el);
     await el.updateComplete;
 
