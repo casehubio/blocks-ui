@@ -6,6 +6,7 @@ import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
 import './channel-message.js';
 import './channel-thread.js';
+import '@casehubio/pages-ui-components';
 
 interface MessageGroup {
   sender: string;
@@ -285,8 +286,8 @@ export class ChannelFeedElement extends LitElement {
       ${this._showStalePrompt ? html`
         <div class="stale-prompt">
           <span>You were away for a while.</span>
-          <button class="stale-catchup" @click=${this._onCatchUp}>Catch up from where you left off</button>
-          <button class="stale-reload" @click=${this._onReload}>Reload full history</button>
+          <pages-button class="stale-catchup" variant="ghost" @click=${this._onCatchUp}>Catch up from where you left off</pages-button>
+          <pages-button class="stale-reload" variant="ghost" @click=${this._onReload}>Reload full history</pages-button>
         </div>
       ` : nothing}
       <div class="feed" role="log" aria-live="polite">

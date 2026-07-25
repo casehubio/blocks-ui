@@ -177,6 +177,7 @@ __metadata:
   resolution: "@casehubio/blocks-ui-channel-activity@workspace:components/channel-activity"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-ui-components": "file:../../../pages/packages/pages-ui-components"
     "@types/dompurify": "npm:^3.0.5"
     "@types/node": "npm:^22.0.0"
     dompurify: "npm:^3.4.11"
@@ -510,163 +511,163 @@ __metadata:
 
 "@casehubio/pages-component@file:../../../pages/packages/pages-component::locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=50a132&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
+  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=fa5e44&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
 "@casehubio/pages-component@file:../../../pages/packages/pages-component::locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=50a132&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
+  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=fa5e44&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
 "@casehubio/pages-component@file:../../../pages/packages/pages-component::locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=50a132&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
+  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=fa5e44&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
 "@casehubio/pages-component@file:../../../pages/packages/pages-component::locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=50a132&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
+  resolution: "@casehubio/pages-component@file:../../../pages/packages/pages-component#../../../pages/packages/pages-component::hash=fa5e44&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
-"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-component@file:../pages-component::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=50a132&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-component@file:../pages-component#../pages-component::hash=fa5e44&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     "@casehubio/pages-data": "file:../pages-data"
-  checksum: 10c0/23adffa69db1e0bb78066a98e66c8c9771e450085f0952d395cdb84e665a84bc3e4f20a5e7ecc3b65922b49ab32600df9c09bfef47e883950162109c748546f0
+  checksum: 10c0/b87747e18a4ddfb8360ac951e41348c2edd4ceaac3acaaf9e51b2e2079f9e9e495a7bd51ded4b4608557da37e7d98a1acad98fb0a3df3c02e7fe70449287085a
   languageName: node
   linkType: hard
 
@@ -681,451 +682,451 @@ __metadata:
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-blocks-timeline%40workspace%3Acomponents%2Fblocks-timeline":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-blocks-timeline%40workspace%3Acomponents%2Fblocks-timeline"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-blocks-timeline%40workspace%3Acomponents%2Fblocks-timeline"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
 "@casehubio/pages-data@file:../../../pages/packages/pages-data::locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=cde663&locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox"
+  resolution: "@casehubio/pages-data@file:../../../pages/packages/pages-data#../../../pages/packages/pages-data::hash=af4f57&locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-core%2540workspace%253Apackages%252Fblocks-ui-core":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-core%2540workspace%253Apackages%252Fblocks-ui-core":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-core%2540workspace%253Apackages%252Fblocks-ui-core"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-core%2540workspace%253Apackages%252Fblocks-ui-core"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-audit-trail-viewer%252540workspace%25253Acomponents%25252Faudit-trail-viewer":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-audit-trail-viewer%252540workspace%25253Acomponents%25252Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-audit-trail-viewer%252540workspace%25253Acomponents%25252Faudit-trail-viewer"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-audit-trail-viewer%252540workspace%25253Acomponents%25252Faudit-trail-viewer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-case-explorer%252540workspace%25253Acomponents%25252Fcase-explorer":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-case-explorer%252540workspace%25253Acomponents%25252Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-case-explorer%252540workspace%25253Acomponents%25252Fcase-explorer"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-case-explorer%252540workspace%25253Acomponents%25252Fcase-explorer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-compliance-summary%252540workspace%25253Acomponents%25252Fcompliance-summary":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-compliance-summary%252540workspace%25253Acomponents%25252Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-compliance-summary%252540workspace%25253Acomponents%25252Fcompliance-summary"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-compliance-summary%252540workspace%25253Acomponents%25252Fcompliance-summary"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-grouped-data-view%252540workspace%25253Acomponents%25252Fgrouped-data-view":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-grouped-data-view%252540workspace%25253Acomponents%25252Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-grouped-data-view%252540workspace%25253Acomponents%25252Fgrouped-data-view"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-grouped-data-view%252540workspace%25253Acomponents%25252Fgrouped-data-view"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-list-pane%252540workspace%25253Acomponents%25252Flist-pane":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-list-pane%252540workspace%25253Acomponents%25252Flist-pane":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-list-pane%252540workspace%25253Acomponents%25252Flist-pane"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-list-pane%252540workspace%25253Acomponents%25252Flist-pane"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-preferences-editor%252540workspace%25253Acomponents%25252Fpreferences-editor":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-preferences-editor%252540workspace%25253Acomponents%25252Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-preferences-editor%252540workspace%25253Acomponents%25252Fpreferences-editor"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-preferences-editor%252540workspace%25253Acomponents%25252Fpreferences-editor"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-routing-rationale%252540workspace%25253Acomponents%25252Frouting-rationale":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-routing-rationale%252540workspace%25253Acomponents%25252Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-routing-rationale%252540workspace%25253Acomponents%25252Frouting-rationale"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-routing-rationale%252540workspace%25253Acomponents%25252Frouting-rationale"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-similarity-panel%252540workspace%25253Acomponents%25252Fsimilarity-panel":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-similarity-panel%252540workspace%25253Acomponents%25252Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-similarity-panel%252540workspace%25253Acomponents%25252Fsimilarity-panel"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-similarity-panel%252540workspace%25253Acomponents%25252Fsimilarity-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-score-panel%252540workspace%25253Acomponents%25252Ftrust-score-panel":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-score-panel%252540workspace%25253Acomponents%25252Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-score-panel%252540workspace%25253Acomponents%25252Ftrust-score-panel"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-score-panel%252540workspace%25253Acomponents%25252Ftrust-score-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-workbench%252540workspace%25253Acomponents%25252Ftrust-workbench":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-workbench%252540workspace%25253Acomponents%25252Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-workbench%252540workspace%25253Acomponents%25252Ftrust-workbench"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-trust-workbench%252540workspace%25253Acomponents%25252Ftrust-workbench"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-work-item-inbox%252540workspace%25253Acomponents%25252Fwork-item-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-work-item-inbox%252540workspace%25253Acomponents%25252Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Dd3fe78%2526locator%253D%252540casehubio%25252Fblocks-ui-work-item-inbox%252540workspace%25253Acomponents%25252Fwork-item-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-table%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-table%253A%253Ahash%253Db3f472%2526locator%253D%252540casehubio%25252Fblocks-ui-work-item-inbox%252540workspace%25253Acomponents%25252Fwork-item-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253Dffd197%2526locator%253D%252540casehubio%25252Fblocks-ui-gdpr-erasure-action%252540workspace%25253Acomponents%25252Fgdpr-erasure-action":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253D4068f6%2526locator%253D%252540casehubio%25252Fblocks-ui-gdpr-erasure-action%252540workspace%25253Acomponents%25252Fgdpr-erasure-action":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253Dffd197%2526locator%253D%252540casehubio%25252Fblocks-ui-gdpr-erasure-action%252540workspace%25253Acomponents%25252Fgdpr-erasure-action"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253D4068f6%2526locator%253D%252540casehubio%25252Fblocks-ui-gdpr-erasure-action%252540workspace%25253Acomponents%25252Fgdpr-erasure-action"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253Dffd197%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253D4068f6%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3D50a132%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253Dffd197%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-component%40file%3A..%2Fpages-component%23..%2Fpages-component%3A%3Ahash%3Dfa5e44%26locator%3D%2540casehubio%252Fpages-viz%2540file%253A..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%2523..%252F..%252F..%252Fpages%252Fpackages%252Fpages-viz%253A%253Ahash%253D4068f6%2526locator%253D%252540casehubio%25252Fblocks-ui-notification-inbox%252540workspace%25253Acomponents%25252Fnotification-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
-"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-data@file:../pages-data::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=cde663&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-data@file:../pages-data#../pages-data::hash=af4f57&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
-  checksum: 10c0/9445ae077c42d9fe9d7f222ebdf3cdff40e164cb1b3a89150eb5893094dac896c97a5f80efeb0f58e1d1a2d86b8ef876595ccd2d9318bf634e794b9293e3c4dd
+  checksum: 10c0/e9dd6730ff8730e66331ca42310cd263a5d1716d785c2379227d0d35309bffc028e55ba6e81c51564b0397d80b8a751ca34ef52c387eea1aefded98b1947c9d1
   languageName: node
   linkType: hard
 
@@ -1283,108 +1284,108 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-audit-trail-viewer%2540workspace%253Acomponents%252Faudit-trail-viewer"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-case-explorer%2540workspace%253Acomponents%252Fcase-explorer"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-compliance-summary%2540workspace%253Acomponents%252Fcompliance-summary"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-grouped-data-view%2540workspace%253Acomponents%252Fgrouped-data-view"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-list-pane%2540workspace%253Acomponents%252Flist-pane"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-preferences-editor%2540workspace%253Acomponents%252Fpreferences-editor"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-routing-rationale%2540workspace%253Acomponents%252Frouting-rationale"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-similarity-panel%2540workspace%253Acomponents%252Fsimilarity-panel"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-score-panel%2540workspace%253Acomponents%252Ftrust-score-panel"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-trust-workbench%2540workspace%253Acomponents%252Ftrust-workbench"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
   languageName: node
   linkType: hard
 
-"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
+"@casehubio/pages-primitives@file:../pages-primitives::locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Dd3fe78%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
+  resolution: "@casehubio/pages-primitives@file:../pages-primitives#../pages-primitives::hash=ab386d&locator=%40casehubio%2Fpages-table%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-table%3A%3Ahash%3Db3f472%26locator%3D%2540casehubio%252Fblocks-ui-work-item-inbox%2540workspace%253Acomponents%252Fwork-item-inbox"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/4d1cca39e412a1f00afa35bd6e37669ec8b0c1299f783b6555cf0195cfae0071d503dfac10a497015f1061071451aac1ba5a5ee9aee477a3bad57a6829d4a432
@@ -1393,160 +1394,169 @@ __metadata:
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-audit-trail-viewer%40workspace%3Acomponents%2Faudit-trail-viewer"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-case-explorer%40workspace%3Acomponents%2Fcase-explorer"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-compliance-summary%40workspace%3Acomponents%2Fcompliance-summary"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-grouped-data-view%40workspace%3Acomponents%2Fgrouped-data-view"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-list-pane%40workspace%3Acomponents%2Flist-pane":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-list-pane%40workspace%3Acomponents%2Flist-pane"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-list-pane%40workspace%3Acomponents%2Flist-pane"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-preferences-editor%40workspace%3Acomponents%2Fpreferences-editor"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-routing-rationale%40workspace%3Acomponents%2Frouting-rationale"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-similarity-panel%40workspace%3Acomponents%2Fsimilarity-panel"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-trust-score-panel%40workspace%3Acomponents%2Ftrust-score-panel"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-trust-workbench%40workspace%3Acomponents%2Ftrust-workbench"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
 "@casehubio/pages-table@file:../../../pages/packages/pages-table::locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=d3fe78&locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox"
+  resolution: "@casehubio/pages-table@file:../../../pages/packages/pages-table#../../../pages/packages/pages-table::hash=b3f472&locator=%40casehubio%2Fblocks-ui-work-item-inbox%40workspace%3Acomponents%2Fwork-item-inbox"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-primitives": "file:../pages-primitives"
     lit: "npm:^3.0.0"
-  checksum: 10c0/0d339ae27805c63ca5a611123c5245d21cdac1bef69fad6cd8583866f539b6e90f1ef61122e2f61a63b55dd4d8214b836031ee27f66b62d379a12fb3cefe45e2
+  checksum: 10c0/dcd280370c59846068009cfff308a77527cbd0a8effcd7edd46b06f86baead2996e97d7b1692192873e273c8b1d9d7dfe6e978d7eadae8af5bf5644c1fdb568d
   languageName: node
   linkType: hard
 
-"@casehubio/pages-ui-components@file:../pages-ui-components::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
+"@casehubio/pages-ui-components@file:../../../pages/packages/pages-ui-components::locator=%40casehubio%2Fblocks-ui-channel-activity%40workspace%3Acomponents%2Fchannel-activity":
   version: 0.2.3
-  resolution: "@casehubio/pages-ui-components@file:../pages-ui-components#../pages-ui-components::hash=f75e2a&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
+  resolution: "@casehubio/pages-ui-components@file:../../../pages/packages/pages-ui-components#../../../pages/packages/pages-ui-components::hash=f75e2a&locator=%40casehubio%2Fblocks-ui-channel-activity%40workspace%3Acomponents%2Fchannel-activity"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/2c218191acc12dc2569785ae54a07b4a809187c0555a4afd1d2820bcd7933f07b2d3b54c937c2c3e02295a50f31a8dc7710faed1166e7f626e43ad8b152e27d3
   languageName: node
   linkType: hard
 
-"@casehubio/pages-ui-components@file:../pages-ui-components::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+"@casehubio/pages-ui-components@file:../pages-ui-components::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action":
   version: 0.2.3
-  resolution: "@casehubio/pages-ui-components@file:../pages-ui-components#../pages-ui-components::hash=f75e2a&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3Dffd197%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
+  resolution: "@casehubio/pages-ui-components@file:../pages-ui-components#../pages-ui-components::hash=f75e2a&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-gdpr-erasure-action%2540workspace%253Acomponents%252Fgdpr-erasure-action"
+  dependencies:
+    lit: "npm:^3.3.3"
+  checksum: 10c0/2c218191acc12dc2569785ae54a07b4a809187c0555a4afd1d2820bcd7933f07b2d3b54c937c2c3e02295a50f31a8dc7710faed1166e7f626e43ad8b152e27d3
+  languageName: node
+  linkType: hard
+
+"@casehubio/pages-ui-components@file:../pages-ui-components::locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox":
+  version: 0.2.3
+  resolution: "@casehubio/pages-ui-components@file:../pages-ui-components#../pages-ui-components::hash=f75e2a&locator=%40casehubio%2Fpages-viz%40file%3A..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%23..%2F..%2F..%2Fpages%2Fpackages%2Fpages-viz%3A%3Ahash%3D4068f6%26locator%3D%2540casehubio%252Fblocks-ui-notification-inbox%2540workspace%253Acomponents%252Fnotification-inbox"
   dependencies:
     lit: "npm:^3.3.3"
   checksum: 10c0/2c218191acc12dc2569785ae54a07b4a809187c0555a4afd1d2820bcd7933f07b2d3b54c937c2c3e02295a50f31a8dc7710faed1166e7f626e43ad8b152e27d3
@@ -1555,38 +1565,38 @@ __metadata:
 
 "@casehubio/pages-ui-tokens@file:../../../pages/packages/pages-ui-tokens::locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core":
   version: 0.3.0
-  resolution: "@casehubio/pages-ui-tokens@file:../../../pages/packages/pages-ui-tokens#../../../pages/packages/pages-ui-tokens::hash=99413b&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
+  resolution: "@casehubio/pages-ui-tokens@file:../../../pages/packages/pages-ui-tokens#../../../pages/packages/pages-ui-tokens::hash=fea4aa&locator=%40casehubio%2Fblocks-ui-core%40workspace%3Apackages%2Fblocks-ui-core"
   dependencies:
     lit: "npm:^3.3.3"
   bin:
     pages-tokens: dist/cli.js
-  checksum: 10c0/497dbc2bc61334c1a2a45a97323e49c576a4f057bb935860d4b599e43b8fa28f9b6d622e08ea48449f4fd798744c691905f53ea52422a931d26acbca7a103b88
+  checksum: 10c0/c42a636eaf25308b57970956ead6cc79427abb77e884094ba344a55929b7ca5ce4874db8f7e7ddcbf83a551c8ff4cd01c66886fa4ae04a357d53781a6821866b
   languageName: node
   linkType: hard
 
 "@casehubio/pages-viz@file:../../../pages/packages/pages-viz::locator=%40casehubio%2Fblocks-ui-gdpr-erasure-action%40workspace%3Acomponents%2Fgdpr-erasure-action":
   version: 0.2.3
-  resolution: "@casehubio/pages-viz@file:../../../pages/packages/pages-viz#../../../pages/packages/pages-viz::hash=ffd197&locator=%40casehubio%2Fblocks-ui-gdpr-erasure-action%40workspace%3Acomponents%2Fgdpr-erasure-action"
+  resolution: "@casehubio/pages-viz@file:../../../pages/packages/pages-viz#../../../pages/packages/pages-viz::hash=4068f6&locator=%40casehubio%2Fblocks-ui-gdpr-erasure-action%40workspace%3Acomponents%2Fgdpr-erasure-action"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-ui-components": "file:../pages-ui-components"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"
-  checksum: 10c0/5b584bfae40e9777cf3cce98bb43121200414f1b1d7c710995f93da01fc2479dfb59d01982cc620d742b4c881c9ccafeb26fca77b43932f0fddd5836224c5cfd
+  checksum: 10c0/c537802eb693c930e1ba4faf640ea29107a8edcdf311324fa127a110119278f9dde2efdc6ffa40b42dd0b076ebf525f6154aab7b4a1ace215fda184294ff50e4
   languageName: node
   linkType: hard
 
 "@casehubio/pages-viz@file:../../../pages/packages/pages-viz::locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox":
   version: 0.2.3
-  resolution: "@casehubio/pages-viz@file:../../../pages/packages/pages-viz#../../../pages/packages/pages-viz::hash=ffd197&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
+  resolution: "@casehubio/pages-viz@file:../../../pages/packages/pages-viz#../../../pages/packages/pages-viz::hash=4068f6&locator=%40casehubio%2Fblocks-ui-notification-inbox%40workspace%3Acomponents%2Fnotification-inbox"
   dependencies:
     "@casehubio/pages-component": "file:../pages-component"
     "@casehubio/pages-data": "file:../pages-data"
     "@casehubio/pages-ui-components": "file:../pages-ui-components"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"
-  checksum: 10c0/5b584bfae40e9777cf3cce98bb43121200414f1b1d7c710995f93da01fc2479dfb59d01982cc620d742b4c881c9ccafeb26fca77b43932f0fddd5836224c5cfd
+  checksum: 10c0/c537802eb693c930e1ba4faf640ea29107a8edcdf311324fa127a110119278f9dde2efdc6ffa40b42dd0b076ebf525f6154aab7b4a1ace215fda184294ff50e4
   languageName: node
   linkType: hard
 

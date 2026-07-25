@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { QhorusMessage, CommitmentState, Reaction, ActorType } from './types.js';
 import { commitmentStateCategory } from './types.js';
 import './channel-message.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-thread')
 export class ChannelThreadElement extends LitElement {
@@ -31,13 +32,7 @@ export class ChannelThreadElement extends LitElement {
     .thread-toggle {
       font-size: var(--pages-font-size-xs, 11px);
       color: var(--pages-accent-9, #6366f1);
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 2px 6px;
-      border-radius: var(--pages-radius-sm, 4px);
     }
-    .thread-toggle:hover { background: var(--pages-neutral-3, #e5e5e5); }
     .thread-commitment {
       font-size: 10px;
       padding: 1px 6px;
@@ -89,11 +84,11 @@ export class ChannelThreadElement extends LitElement {
       </div>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">
-          <button class="thread-toggle"
+          <pages-button class="thread-toggle" variant="ghost" size="sm"
                   @click=${this._toggle}
                   aria-expanded=${!this.collapsed}>
             ${this.collapsed ? '▶' : '▼'} ${this._summary()}
-          </button>
+          </pages-button>
           ${this.commitmentState ? html`
             <span class="thread-commitment commitment-${commitmentStateCategory(this.commitmentState)}">
               ${this.commitmentState}

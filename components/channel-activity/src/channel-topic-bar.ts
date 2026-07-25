@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import type { QhorusTopic } from './types.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-topic-bar')
 export class ChannelTopicBarElement extends LitElement {
@@ -148,16 +149,16 @@ export class ChannelTopicBarElement extends LitElement {
 
     return html`
       <div class="pills">
-        <button class="topic-pill ${this.selectedTopicId === null ? 'active' : ''}"
+        <pages-button class="topic-pill ${this.selectedTopicId === null ? 'active' : ''}"
                 @click=${() => this._onPillClick(null)}>
           All
-        </button>
+        </pages-button>
         ${sorted.map(t => html`
-          <button class="topic-pill ${this.selectedTopicId === t.id ? 'active' : ''} ${t.state === 'RESOLVED' ? 'resolved' : ''} ${t.state === 'ARCHIVED' ? 'archived' : ''}"
+          <pages-button class="topic-pill ${this.selectedTopicId === t.id ? 'active' : ''} ${t.state === 'RESOLVED' ? 'resolved' : ''} ${t.state === 'ARCHIVED' ? 'archived' : ''}"
                   @click=${() => this._onPillClick(t.id)}>
             ${t.name}
             ${t.messageCount > 0 ? html`<span class="count">${t.messageCount}</span>` : nothing}
-          </button>
+          </pages-button>
         `)}
         ${this._hasArchived() ? html`
           <button class="show-archived-toggle"
@@ -165,12 +166,12 @@ export class ChannelTopicBarElement extends LitElement {
                   aria-label="Show archived topics"
                   @click=${this._toggleArchived}>
             ${this._showArchived ? '👁' : '👁‍🗨'}
-          </button>
+          </pages-button>
         ` : nothing}
       </div>
-      <button class="mode-btn ${this.viewMode === 'topics' ? 'active' : ''}"
+      <pages-button class="mode-btn" variant="ghost" size="sm ${this.viewMode === 'topics' ? 'active' : ''}"
               @click=${() => this._onModeClick(this.viewMode === 'topics' ? 'flat' : 'topics')}
-              aria-pressed=${this.viewMode === 'topics' ? 'true' : 'false'}>Topics</button>
+              aria-pressed=${this.viewMode === 'topics' ? 'true' : 'false'}>Topics</pages-button>
     `;
   }
 }

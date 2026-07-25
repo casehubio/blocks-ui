@@ -6,6 +6,7 @@ import { messageTypeCategory, commitmentStateCategory, isObligationCreating } fr
 import { renderMarkdown } from './markdown.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-message')
 export class ChannelMessageElement extends LitElement {
@@ -262,7 +263,7 @@ export class ChannelMessageElement extends LitElement {
           ` : nothing}
         </div>
         <div class="action-bar">
-          <button class="reply-btn" @click=${this._onReply}>↩ Reply</button>
+          <pages-button class="reply-btn" variant="ghost" size="sm" @click=${this._onReply}>↩ Reply</pages-button>
         </div>
       </div>
     `;
@@ -287,9 +288,9 @@ export class ChannelMessageElement extends LitElement {
           <span class="commitment-badge commitment-${commitmentStateCategory(this.commitmentState)}">${this.commitmentState}</span>
         ` : nothing}
         <time datetime=${m.createdAt}>${this._formatTime(m.createdAt)}</time>
-        <button class="expand-toggle" @click=${this._toggle} aria-expanded=${this._expanded}>
+        <pages-button class="expand-toggle" variant="ghost" size="sm" @click=${this._toggle} aria-expanded=${this._expanded}>
           ${this._expanded ? '▼' : '▶'}
-        </button>
+        </pages-button>
       </div>
       <div class="content">${this.renderContent?.(m) ?? unsafeHTML(renderMarkdown(m.content))}</div>
       ${m.messageType === 'HANDOFF' && m.target ? html`

@@ -4,6 +4,7 @@ import type { Reaction } from './types.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
 import './channel-emoji-picker.js';
+import '@casehubio/pages-ui-components';
 
 interface GroupedReaction {
   readonly emoji: string;
@@ -122,14 +123,14 @@ export class ChannelReactionBarElement extends LitElement {
     const groups = this._grouped();
     return html`
       ${groups.map(g => html`
-        <button class="reaction-pill ${g.userReacted ? 'reacted' : ''}"
+        <pages-button class="reaction-pill ${g.userReacted ? 'reacted' : ''}"
                 @click=${() => this._toggleReaction(g.emoji, g.userReacted)}>
           <span class="emoji">${g.emoji}</span>
           <span class="count">${g.count}</span>
-        </button>
+        </pages-button>
       `)}
       <div class="picker-container">
-        <button class="add-reaction-btn" @click=${this._togglePicker} title="Add reaction">+</button>
+        <pages-button class="add-reaction-btn" variant="ghost" size="sm" @click=${this._togglePicker} title="Add reaction">+</pages-button>
         ${this._showPicker ? html`
           <div class="picker-popover ${this._flipVertical ? 'flip' : ''} ${this._flipHorizontal ? 'align-right' : ''}">
             <channel-emoji-picker @emoji-selected=${this._onEmojiSelected}></channel-emoji-picker>

@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import type { QhorusChannel, ChannelSemantic } from './types.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-nav')
 export class ChannelNavElement extends LitElement {
@@ -84,7 +85,7 @@ export class ChannelNavElement extends LitElement {
       width: 100%;
       padding: var(--pages-space-2, 8px);
       background: var(--pages-accent-9, #0ea5e9);
-      color: #fff;
+      color: var(--pages-neutral-1, #fff);
       border: none;
       border-radius: var(--pages-radius-1, 4px);
       cursor: pointer;
@@ -131,7 +132,7 @@ export class ChannelNavElement extends LitElement {
       background: var(--pages-neutral-1, #ffffff);
       border: 1px solid var(--pages-neutral-5, #d4d4d4);
       border-radius: var(--pages-radius-1, 4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: var(--pages-shadow-3, 0 4px 12px rgba(0,0,0,0.1));
       z-index: 10;
       max-height: 200px;
       overflow-y: auto;
@@ -267,7 +268,7 @@ export class ChannelNavElement extends LitElement {
         : '';
       return html`
         <div class="dropdown-wrapper" @click=${(e: Event) => e.stopPropagation()}>
-          <button class="dropdown-trigger"
+          <pages-button class="dropdown-trigger" variant="ghost"
                   role="combobox"
                   aria-expanded=${this._dropdownOpen}
                   aria-haspopup="listbox"
@@ -275,7 +276,7 @@ export class ChannelNavElement extends LitElement {
                   @keydown=${this._handleDropdownKeyDown}>
             <span>${triggerLabel}</span>
             <span class="dropdown-arrow">${this._dropdownOpen ? '▲' : '▼'}</span>
-          </button>
+          </pages-button>
           ${this._dropdownOpen ? html`
             <ul class="dropdown-panel" role="listbox">
               ${this.channels.map((channel, index) => {
@@ -312,13 +313,13 @@ export class ChannelNavElement extends LitElement {
                 <span class="channel-name">${channel.name}</span>
                 ${count ? html`<span class="message-count">${count}</span>` : nothing}
                 ${this.showDelete ? html`
-                  <button
+                  <pages-button variant="ghost" size="sm"
                     class="delete-btn"
                     aria-label="Delete channel ${channel.name}"
                     @click="${(e: MouseEvent) => this.handleDeleteClick(e, channel)}"
                   >
                     ✕
-                  </button>
+                  </pages-button>
                 ` : nothing}
               </li>
             `;
@@ -326,9 +327,9 @@ export class ChannelNavElement extends LitElement {
         )}
       </ul>
       ${this.showCreate ? html`
-        <button class="create-channel-btn" @click="${this.handleCreateChannel}">
+        <pages-button class="create-channel-btn" variant="ghost" size="sm" @click="${this.handleCreateChannel}">
           Create Channel
-        </button>
+        </pages-button>
       ` : nothing}
     `;
   }

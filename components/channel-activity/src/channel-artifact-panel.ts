@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { ArtefactRef, ResolvedArtifact } from './types.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-artifact-panel')
 export class ChannelArtifactPanelElement extends LitElement {
@@ -202,14 +203,14 @@ export class ChannelArtifactPanelElement extends LitElement {
       <div class="panel-title">Artifacts</div>
       <div class="header-bar">
         <div class="nav-buttons">
-          <button class="nav-back" ?disabled=${this._historyIndex <= 0}
-            @click=${this._navigateBack}>\u{2190}</button>
-          <button class="nav-forward" ?disabled=${this._historyIndex >= this._history.length - 1}
-            @click=${this._navigateForward}>\u{2192}</button>
+          <pages-button class="nav-back" variant="ghost" size="sm" ?disabled=${this._historyIndex <= 0}
+            @click=${this._navigateBack}>\u{2190}</pages-button>
+          <pages-button class="nav-forward" variant="ghost" size="sm" ?disabled=${this._historyIndex >= this._history.length - 1}
+            @click=${this._navigateForward}>\u{2192}</pages-button>
         </div>
         <span class="artifact-label">${ref.label}</span>
         <span class="type-badge">${ref.type}</span>
-        <button class="copy-btn" title="Copy URI" @click=${this._copyUri}>\u{1F4CB}</button>
+        <pages-button class="copy-btn" variant="ghost" size="sm" title="Copy URI" @click=${this._copyUri}>\u{1F4CB}</pages-button>
       </div>
       <div class="artifact-uri">${ref.uri}</div>
       <div class="content-area">

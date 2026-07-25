@@ -3,6 +3,7 @@ import { customElement, property, state, query } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import { ChannelEventTopics } from './events.js';
 import { MESSAGE_TYPES, type MessageType, type QhorusTopic } from './types.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('channel-input')
 export class ChannelInputElement extends LitElement {
@@ -187,13 +188,13 @@ export class ChannelInputElement extends LitElement {
       ${this.replyTo ? html`
         <div class="reply-banner">
           <span>Replying to <strong>${this.replyTo.senderName}</strong></span>
-          <button class="reply-cancel" aria-label="Cancel reply" @click=${this._cancelReply}>✕</button>
+          <pages-button class="reply-cancel" variant="ghost" size="sm" aria-label="Cancel reply" @click=${this._cancelReply}>✕</pages-button>
         </div>
       ` : nothing}
       ${this.showTopicSelector ? html`
         <span class="topic-pill ${this.replyTo ? 'read-only' : ''}">${this.topic || 'General'}</span>
       ` : html`
-        <button class="new-topic-btn" aria-label="New topic">+</button>
+        <pages-button class="new-topic-btn" variant="ghost" size="sm" aria-label="New topic">+</pages-button>
       `}
       ${this.showTypeSelector ? html`
         <div class="type-selector">
