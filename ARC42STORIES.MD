@@ -307,7 +307,7 @@ Subscription editor and notification preferences UI. NotificationApi.getEventTyp
 | #81 | Schema-form enhancements — real form capabilities | 🔲 epic open |
 | #84 | Variable row heights with cell spanning | 🔲 open |
 | #85 | Column resizing interaction with single-grid model | 🔲 open |
-| #88 | pages-modal duplicate CustomElementRegistry crash in esbuild | 🔲 bug open |
+| #88 | pages-modal duplicate CustomElementRegistry crash in esbuild | ✅ fixed |
 
 ---
 
@@ -345,7 +345,7 @@ Subscription editor and notification preferences UI. NotificationApi.getEventTyp
 | Risk | Impact | Mitigation |
 |---|---|---|
 | pages-component source/dist mismatch | Vite dev server resolves TypeScript source, build resolves compiled dist — different module graphs | Vite aliases in showcase, documented workaround |
-| pages-modal duplicate CustomElementRegistry crash | esbuild bundles duplicate CustomElement registrations when pages-modal is imported from multiple entry points (#88) | Open — needs pages-side fix |
+| pages-modal duplicate CustomElementRegistry crash | esbuild bundles duplicate CustomElement registrations when pages-modal is imported from multiple entry points (#88) | ✅ Fixed — pages sub-path exports + blocks-ui narrowed imports to /a11y |
 | jsdom hides shadow DOM bugs | Tests pass but CSS scoping, scroll positioning, and popup placement fail in real browsers | Showcase app as visual regression baseline |
 | TypeScript project reference cascading failures | Upstream compilation error produces misleading "no exported member" errors in all downstream packages | Check `.d.ts` output existence, not error messages (blog: "The Build That Lied") |
 | Schema-form duplication with pages | Schema-form in pages duplicates 6 input components pages already had (#81) | Gap analysis complete, incremental fix planned |
