@@ -7,3 +7,5 @@ wksp
 target/
 .yarn/install-state.gz
 .playwright-mcp/
+.claude
+package-lock.json
