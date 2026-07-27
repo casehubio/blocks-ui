@@ -186,9 +186,10 @@ export class SessionList extends SessionListBase {
   }
 
   private _handleRowActivate(e: CustomEvent<RowActivateDetail>): void {
-    const { key } = e.detail;
-    if (key) {
-      emitPagesEvent(this, SessionEventTopics.SELECTED, { id: key });
+    const { key, row } = e.detail;
+    const id = key ?? row?.text(ID_COL);
+    if (id) {
+      emitPagesEvent(this, SessionEventTopics.SELECTED, { id });
     }
   }
 
