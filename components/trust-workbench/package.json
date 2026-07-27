@@ -25,9 +25,9 @@
     "@casehubio/blocks-ui-split-workbench": "workspace:*",
     "@casehubio/blocks-ui-trust-feedback-display": "workspace:*",
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*",
-    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
-    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
-    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
+    "@casehubio/pages-data": "*",
+    "@casehubio/pages-primitives": "*",
+    "@casehubio/pages-table": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

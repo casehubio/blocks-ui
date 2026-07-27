@@ -22,10 +22,10 @@
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-list-pane": "workspace:*",
     "@casehubio/blocks-ui-split-workbench": "workspace:*",
-    "@casehubio/pages-component": "file:../../../pages/packages/pages-component",
-    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
-    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
-    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
+    "@casehubio/pages-component": "*",
+    "@casehubio/pages-data": "*",
+    "@casehubio/pages-primitives": "*",
+    "@casehubio/pages-table": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-viz": "file:../../../pages/packages/pages-viz",
+    "@casehubio/pages-viz": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

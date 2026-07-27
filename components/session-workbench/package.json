@@ -20,7 +20,7 @@
     "@casehubio/blocks-ui-session-detail": "workspace:*",
     "@casehubio/blocks-ui-session-list": "workspace:*",
     "@casehubio/blocks-ui-split-workbench": "workspace:*",
-    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
+    "@casehubio/pages-primitives": "*",
     "lit": "^3.1.0"
   },
   "devDependencies": {

@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
-    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
-    "@casehubio/pages-table": "file:../../../pages/packages/pages-table",
-    "@casehubio/pages-viz": "file:../../../pages/packages/pages-viz",
+    "@casehubio/pages-data": "*",
+    "@casehubio/pages-primitives": "*",
+    "@casehubio/pages-table": "*",
+    "@casehubio/pages-viz": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

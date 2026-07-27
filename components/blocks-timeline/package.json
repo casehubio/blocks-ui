@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-data": "file:../../../pages/packages/pages-data",
-    "@casehubio/pages-primitives": "file:../../../pages/packages/pages-primitives",
+    "@casehubio/pages-data": "*",
+    "@casehubio/pages-primitives": "*",
     "lit": "^3.2.0"
   },
   "devDependencies": {

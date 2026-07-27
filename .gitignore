@@ -5,6 +5,7 @@ dist/
 wksp
 *.tsbuildinfo
 target/
+.casehub-packages/
 .yarn/install-state.gz
 .playwright-mcp/
 .claude
