@@ -92,6 +92,20 @@ Reusable, domain-aware UI components that multiple CaseHub applications share. C
 **Peer repos (each has its own Claude session — do not commit to these):**
 platform, eidos, ledger, connectors, iot, work, worker, qhorus, pages, engine, claudony, openclaw, neural-text, devtown, aml, clinical, drafthouse, life, quarkmind, flow, soc, fsitrading, ras, ops, workers, desiredstate, blocks
 
+## Frontend Dependencies
+
+This project consumes frontend packages from casehub-pages via **Maven SNAPSHOT** artifacts (WebJar pattern) and **also publishes** its own components as Maven SNAPSHOT artifacts for downstream CaseHub apps.
+See [casehub-pages ADR-0001](https://github.com/casehubio/casehub-pages/blob/main/docs/adr/0001-cross-repo-frontend-dependency-management.md).
+
+| Direction | Source | Mechanism |
+|-----------|--------|-----------|
+| Consumes | casehub-pages | Maven SNAPSHOT (`META-INF/resources/`) |
+| Publishes | blocks-ui components | Maven SNAPSHOT (`META-INF/resources/`) |
+
+**Local development:** after changing pages, run `yarn build && mvn install` in casehub-pages to publish the SNAPSHOT to `~/.m2`. After changing blocks-ui, run the same here so downstream apps pick up changes.
+
+**Do not use npm `file:` references for cross-repo dependencies** — they break in CI. See ADR-0001.
+
 ## Build Commands
 
 ```bash
