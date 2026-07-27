@@ -70,7 +70,7 @@ describe('blocks-session-list', () => {
       if (detail.topic === 'session:selected') events.push(detail.payload);
     });
     const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement;
-    table.dispatchEvent(new CustomEvent('row-activate', { detail: { rowIndex: 0 }, bubbles: true }));
+    table.dispatchEvent(new CustomEvent('row-activate', { detail: { key: 'sess-1' }, bubbles: true, composed: true }));
     expect(events).toHaveLength(1);
     expect(events[0]).toEqual({ id: 'sess-1' });
   });

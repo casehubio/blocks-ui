@@ -3,10 +3,10 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import '@casehubio/pages-table';
-import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
+import type { TableColumnConfig, ColumnRenderer, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { CellValue, TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { SessionResponse, CreateSessionRequest } from './types.js';
 import { SessionEventTopics } from './types.js';
 
@@ -185,11 +185,10 @@ export class SessionList extends SessionListBase {
     }
   }
 
-  private _handleRowActivate(e: CustomEvent): void {
-    const detail = e.detail as { rowIndex: number };
-    const session = this._sessions[detail.rowIndex];
-    if (session) {
-      emitPagesEvent(this, SessionEventTopics.SELECTED, { id: session.id });
+  private _handleRowActivate(e: CustomEvent<RowActivateDetail>): void {
+    const { key } = e.detail;
+    if (key) {
+      emitPagesEvent(this, SessionEventTopics.SELECTED, { id: key });
     }
   }
 
@@ -212,6 +211,7 @@ export class SessionList extends SessionListBase {
           .dataSet=${this._tableData}
           .columnConfig=${SESSION_COL_CONFIG}
           .columnRenderers=${this._columnRenderers}
+          .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
           @row-activate=${this._handleRowActivate}
         ></pages-table>
       </div>
