@@ -45,7 +45,7 @@ export class EntityTree extends LiveRegionMixin(LitElement) {
       font-size: 0.875rem;
     }
 
-    .node:hover { background: var(--pages-hover-color, #f0f0f0); }
+    .node:hover { background: var(--pages-neutral-4, #f0f0f0); }
 
     .node.selected {
       background: var(--pages-selection-color, #e3f2fd);
@@ -62,7 +62,7 @@ export class EntityTree extends LiveRegionMixin(LitElement) {
       cursor: pointer;
       padding: 0;
       font-size: 0.625rem;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
     }
 
     .toggle-spacer { width: 16px; display: inline-block; }
@@ -73,19 +73,19 @@ export class EntityTree extends LiveRegionMixin(LitElement) {
       padding: 1px 6px;
       border-radius: 3px;
       font-size: 0.6875rem;
-      background: var(--pages-surface-color, #f0f0f0);
-      color: var(--pages-muted-color, #666);
+      background: var(--pages-neutral-3, #f0f0f0);
+      color: var(--pages-neutral-9, #666);
     }
 
     .group-info {
       font-size: 0.75rem;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
     }
 
     .loading-indicator {
       padding: 4px 8px 4px 28px;
       font-size: 0.8125rem;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
     }
   `;
 

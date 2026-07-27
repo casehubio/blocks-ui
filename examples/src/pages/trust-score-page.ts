@@ -58,7 +58,7 @@ export class TrustScorePage extends LitElement {
       gap: var(--spacing-md, 16px);
       margin-bottom: var(--spacing-lg, 24px);
       padding: var(--spacing-md, 16px);
-      background: var(--color-surface-secondary, #f5f5f5);
+      background: var(--pages-neutral-3, #f5f5f5);
       border-radius: var(--border-radius-md, 8px);
       align-items: flex-end;
     }
@@ -72,15 +72,16 @@ export class TrustScorePage extends LitElement {
     .control-group label {
       font-size: var(--font-size-sm, 14px);
       font-weight: var(--font-weight-semibold, 600);
-      color: var(--color-text-secondary, #666);
+      color: var(--pages-neutral-9, #666);
     }
 
     select, button {
       padding: var(--spacing-sm, 8px);
-      border: 1px solid var(--color-border, #d1d5db);
+      border: 1px solid var(--pages-neutral-5, #d1d5db);
       border-radius: var(--border-radius-sm, 4px);
       font-size: var(--font-size-base, 16px);
-      background: white;
+      background: var(--pages-neutral-3, #fff);
+      color: var(--pages-neutral-12, #111);
     }
 
     button {
@@ -89,13 +90,13 @@ export class TrustScorePage extends LitElement {
     }
 
     button:hover {
-      background: var(--color-surface-secondary, #f5f5f5);
+      background: var(--pages-neutral-3, #f5f5f5);
     }
 
     .demo-section {
       margin-top: var(--spacing-lg, 24px);
       padding: var(--spacing-md, 16px);
-      border: 1px solid var(--color-border, #d1d5db);
+      border: 1px solid var(--pages-neutral-5, #d1d5db);
       border-radius: var(--border-radius-md, 8px);
     }
 
@@ -113,13 +114,13 @@ export class TrustScorePage extends LitElement {
 
     .compact-example label {
       font-size: var(--font-size-sm, 14px);
-      color: var(--color-text-secondary, #666);
+      color: var(--pages-neutral-9, #666);
     }
 
     .event-log {
       margin-top: var(--spacing-lg, 24px);
       padding: var(--spacing-md, 16px);
-      background: var(--color-surface-secondary, #f5f5f5);
+      background: var(--pages-neutral-3, #f5f5f5);
       border-radius: var(--border-radius-md, 8px);
       max-height: 200px;
       overflow-y: auto;

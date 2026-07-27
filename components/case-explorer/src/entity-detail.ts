@@ -29,7 +29,7 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
       align-items: center;
       justify-content: center;
       height: 100%;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
       font-size: 0.875rem;
     }
 
@@ -38,26 +38,26 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
       align-items: center;
       justify-content: center;
       padding: 32px;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
     }
 
     .error {
       padding: 16px;
-      color: var(--pages-danger-color, #dc3545);
+      color: var(--pages-error-9, #dc3545);
       text-align: center;
     }
 
     .error button {
       margin-left: 8px;
       padding: 4px 12px;
-      border: 1px solid var(--pages-border-color, #ccc);
+      border: 1px solid var(--pages-neutral-5, #ccc);
       border-radius: 4px;
       cursor: pointer;
     }
 
     .header {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--pages-border-color, #ccc);
+      border-bottom: 1px solid var(--pages-neutral-5, #ccc);
     }
 
     .header h2 {
@@ -72,13 +72,13 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
       border-radius: 4px;
       font-size: 0.75rem;
       font-weight: 500;
-      background: var(--pages-surface-color, #f0f0f0);
+      background: var(--pages-neutral-3, #f0f0f0);
       margin-left: 8px;
     }
 
     .tabs {
       display: flex;
-      border-bottom: 1px solid var(--pages-border-color, #ccc);
+      border-bottom: 1px solid var(--pages-neutral-5, #ccc);
     }
 
     .tabs button {
@@ -88,16 +88,16 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
       cursor: pointer;
       font-size: 0.875rem;
       border-bottom: 2px solid transparent;
-      color: var(--pages-muted-color, #999);
+      color: var(--pages-neutral-9, #999);
     }
 
     .tabs button[aria-selected="true"] {
-      color: var(--pages-text-color, #333);
-      border-bottom-color: var(--pages-primary-color, #0066cc);
+      color: var(--pages-neutral-12, #333);
+      border-bottom-color: var(--pages-accent-9, #0066cc);
     }
 
     .tabs button:hover {
-      color: var(--pages-text-color, #333);
+      color: var(--pages-neutral-12, #333);
     }
 
     .tab-content { padding: 16px; }
@@ -110,18 +110,18 @@ export class EntityDetail extends LiveRegionMixin(LitElement) {
 
     .state-table td {
       padding: 6px 12px;
-      border-bottom: 1px solid var(--pages-border-color, #eee);
+      border-bottom: 1px solid var(--pages-neutral-5, #eee);
     }
 
     .state-table td:first-child {
       font-weight: 500;
-      color: var(--pages-muted-color, #666);
+      color: var(--pages-neutral-9, #666);
       width: 30%;
     }
 
     .command-section {
       padding: 12px 16px;
-      border-top: 1px solid var(--pages-border-color, #ccc);
+      border-top: 1px solid var(--pages-neutral-5, #ccc);
     }
   `;
 

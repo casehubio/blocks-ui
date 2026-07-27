@@ -29,8 +29,8 @@ export class SlaBreachPolicy extends LitElement {
       }
       .tier--active {
         border-color: var(--pages-orange-9, #ea580c);
-        background: var(--pages-orange-1, #fff7ed);
-        box-shadow: 0 2px 8px oklch(0.6 0.16 50 / 0.15);
+        background: var(--pages-orange-3, rgba(255, 247, 237, 0.15));
+        box-shadow: 0 2px 8px var(--pages-orange-5, rgba(234, 88, 12, 0.15));
       }
       .tier-node {
         flex-shrink: 0;
@@ -59,7 +59,7 @@ export class SlaBreachPolicy extends LitElement {
       }
       .tier-label { font-weight: 600; font-size: 14px; color: var(--pages-neutral-12, #111); }
       .tier-threshold { font-size: 12px; color: var(--pages-neutral-9, #888); }
-      .tier--active .tier-label { color: var(--pages-orange-11, #9a3412); }
+      .tier--active .tier-label { color: var(--pages-orange-9, #ea580c); }
       .tier-consequence { font-size: 13px; color: var(--pages-neutral-11, #555); margin-bottom: var(--pages-space-1, 0.25rem); }
       .tier-regulation { font-size: 12px; color: var(--pages-neutral-9, #888); font-style: italic; }
     `,

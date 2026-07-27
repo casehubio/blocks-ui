@@ -59,7 +59,7 @@ const NAV: NavCategory[] = [
 @customElement('blocks-example-shell')
 export class ExampleShell extends LitElement {
   @state() private currentPage = '';
-  @state() private theme: 'light' | 'dark' = 'light';
+  @state() private theme: 'light' | 'dark' = 'dark';
   @state() private density: 'comfortable' | 'compact' = 'comfortable';
 
   static override styles = css`
@@ -124,7 +124,7 @@ export class ExampleShell extends LitElement {
   };
 
   private applyCurrentTheme(): void {
-    const name = this.theme === 'dark' ? 'default-dark' : 'default-light';
+    const name = this.theme === 'dark' ? 'casehub-dark' : 'casehub-light';
     applyTheme(name);
     if (this.density === 'compact') {
       document.documentElement.classList.add('pages-density-compact');

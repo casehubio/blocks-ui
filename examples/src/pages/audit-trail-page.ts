@@ -185,42 +185,43 @@ export class AuditTrailPage extends LitElement {
       margin: 0 0 8px 0;
       font-size: 28px;
       font-weight: 600;
-      color: var(--pages-gray-12, #111827);
+      color: var(--pages-neutral-12, #111827);
     }
 
     .description {
       margin: 0;
       font-size: 16px;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
       line-height: 1.5;
     }
 
     .viewer-container {
       margin-bottom: 32px;
-      border: 1px solid var(--pages-gray-6, #d1d5db);
+      border: 1px solid var(--pages-neutral-6, #d1d5db);
       border-radius: 8px;
       padding: 16px;
-      background: white;
+      background: var(--pages-neutral-2, #fff);
     }
 
     .info-panel {
       padding: 24px;
-      background: var(--pages-gray-1, #fafbfc);
+      background: var(--pages-neutral-3, #fafbfc);
       border-radius: 8px;
+      color: var(--pages-neutral-12, #111);
     }
 
     .info-panel h2 {
       margin: 0 0 16px 0;
       font-size: 20px;
       font-weight: 600;
-      color: var(--pages-gray-12, #111827);
+      color: var(--pages-neutral-12, #111827);
     }
 
     .info-panel h3 {
       margin: 24px 0 12px 0;
       font-size: 16px;
       font-weight: 600;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .info-panel h3:first-of-type {
@@ -235,17 +236,17 @@ export class AuditTrailPage extends LitElement {
     .info-panel li {
       margin-bottom: 8px;
       line-height: 1.5;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .info-panel p {
       margin: 0 0 12px 0;
       line-height: 1.5;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .info-panel strong {
-      color: var(--pages-gray-12, #111827);
+      color: var(--pages-neutral-12, #111827);
     }
   `;
 }

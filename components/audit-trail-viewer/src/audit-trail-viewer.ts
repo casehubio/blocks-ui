@@ -483,7 +483,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
       gap: 16px;
       margin-bottom: 16px;
       padding: 12px;
-      background: var(--pages-gray-2, #f8f9fa);
+      background: var(--pages-neutral-2, #f8f9fa);
       border-radius: 4px;
       flex-wrap: wrap;
     }
@@ -502,16 +502,19 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     select,
     input[type='date'] {
       padding: 4px 8px;
-      border: 1px solid var(--pages-gray-6, #d1d5db);
+      border: 1px solid var(--pages-neutral-5, #d1d5db);
       border-radius: 4px;
       font-size: 14px;
+      background: var(--pages-neutral-3, #fff);
+      color: var(--pages-neutral-12, #111);
     }
 
     .chip {
       padding: 4px 12px;
-      border: 1px solid var(--pages-gray-6, #d1d5db);
+      border: 1px solid var(--pages-neutral-6, #d1d5db);
       border-radius: 16px;
-      background: white;
+      background: var(--pages-neutral-3, #fff);
+      color: var(--pages-neutral-12, #111);
       cursor: pointer;
       font-size: 13px;
       transition: all 0.2s;
@@ -524,7 +527,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     }
 
     .chip:hover {
-      background: var(--pages-gray-3, #e5e7eb);
+      background: var(--pages-neutral-3, #e5e7eb);
     }
 
     .chip[aria-checked='true']:hover {
@@ -559,14 +562,14 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     .digest {
       font-family: var(--pages-font-mono, monospace);
       font-size: 12px;
-      background: var(--pages-gray-2, #f8f9fa);
+      background: var(--pages-neutral-2, #f8f9fa);
       padding: 2px 6px;
       border-radius: 3px;
     }
 
     .entry-detail {
       padding: 16px;
-      background: var(--pages-gray-1, #fafbfc);
+      background: var(--pages-neutral-1, #fafbfc);
       border-left: 3px solid var(--pages-accent-9, #3b82f6);
       margin: 8px 0;
     }
@@ -584,13 +587,13 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
       font-size: 13px;
       font-weight: 600;
       text-transform: uppercase;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .full-digest {
       font-family: var(--pages-font-mono, monospace);
       font-size: 12px;
-      background: white;
+      background: var(--pages-neutral-2, #fff);
       padding: 8px;
       border-radius: 4px;
       display: block;
@@ -608,7 +611,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
       gap: 12px;
       align-items: center;
       padding: 8px;
-      background: white;
+      background: var(--pages-neutral-2, #fff);
       border-radius: 4px;
       font-size: 13px;
     }
@@ -644,25 +647,25 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     .capability {
       font-family: var(--pages-font-mono, monospace);
       font-size: 11px;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .confidence {
       font-size: 12px;
-      color: var(--pages-gray-10, #6b7280);
+      color: var(--pages-neutral-10, #6b7280);
       margin-left: auto;
     }
 
     .redacted {
       font-style: italic;
-      color: var(--pages-gray-9, #9ca3af);
+      color: var(--pages-neutral-9, #9ca3af);
     }
 
     .loading,
     .error {
       padding: 24px;
       text-align: center;
-      color: var(--pages-gray-11, #1f2937);
+      color: var(--pages-neutral-11, #1f2937);
     }
 
     .error button {

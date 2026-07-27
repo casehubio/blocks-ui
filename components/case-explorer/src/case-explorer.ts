@@ -33,7 +33,7 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
-      border-bottom: 1px solid var(--pages-border-color, #ccc);
+      border-bottom: 1px solid var(--pages-neutral-5, #ccc);
       flex-wrap: wrap;
     }
 
@@ -44,21 +44,21 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
 
     .tabs button {
       padding: 6px 14px;
-      border: 1px solid var(--pages-border-color, #ccc);
-      background: var(--pages-surface-color, #fff);
+      border: 1px solid var(--pages-neutral-5, #ccc);
+      background: var(--pages-neutral-3, #fff);
       cursor: pointer;
       font-size: 0.8125rem;
       border-radius: 4px;
     }
 
     .tabs button[aria-selected="true"] {
-      background: var(--pages-primary-color, #0066cc);
+      background: var(--pages-accent-9, #0066cc);
       color: #fff;
-      border-color: var(--pages-primary-color, #0066cc);
+      border-color: var(--pages-accent-9, #0066cc);
     }
 
     .tabs button:hover:not([aria-selected="true"]) {
-      background: var(--pages-hover-color, #f0f0f0);
+      background: var(--pages-neutral-4, #f0f0f0);
     }
 
     .view-toggle {
@@ -69,17 +69,17 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
 
     .view-toggle button {
       padding: 4px 10px;
-      border: 1px solid var(--pages-border-color, #ccc);
-      background: var(--pages-surface-color, #fff);
+      border: 1px solid var(--pages-neutral-5, #ccc);
+      background: var(--pages-neutral-3, #fff);
       cursor: pointer;
       font-size: 0.75rem;
       border-radius: 3px;
     }
 
     .view-toggle button[aria-checked="true"] {
-      background: var(--pages-primary-color, #0066cc);
+      background: var(--pages-accent-9, #0066cc);
       color: #fff;
-      border-color: var(--pages-primary-color, #0066cc);
+      border-color: var(--pages-accent-9, #0066cc);
     }
 
     .breadcrumbs {
@@ -87,28 +87,28 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
       gap: 4px;
       padding: 4px 12px;
       font-size: 0.8125rem;
-      color: var(--pages-muted-color, #999);
-      border-bottom: 1px solid var(--pages-border-color, #eee);
+      color: var(--pages-neutral-9, #999);
+      border-bottom: 1px solid var(--pages-neutral-5, #eee);
     }
 
     .breadcrumbs button {
       border: none;
       background: none;
       cursor: pointer;
-      color: var(--pages-primary-color, #0066cc);
+      color: var(--pages-accent-9, #0066cc);
       font-size: 0.8125rem;
       padding: 0;
     }
 
     .breadcrumbs button:hover { text-decoration: underline; }
-    .breadcrumb-separator { color: var(--pages-muted-color, #ccc); }
+    .breadcrumb-separator { color: var(--pages-neutral-9, #ccc); }
 
     .content { flex: 1; overflow: hidden; }
 
     .tree-prompt {
       display: flex; align-items: center; justify-content: center;
       height: 100%; padding: 32px;
-      color: var(--pages-muted-color, #999); font-size: 0.875rem; text-align: center;
+      color: var(--pages-neutral-9, #999); font-size: 0.875rem; text-align: center;
     }
   `;
 

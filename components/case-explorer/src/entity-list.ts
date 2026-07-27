@@ -39,7 +39,7 @@ export class EntityList extends LiveRegionMixin(LitElement) {
       gap: 8px;
       padding: 8px;
       flex-wrap: wrap;
-      border-bottom: 1px solid var(--pages-border-color, #ccc);
+      border-bottom: 1px solid var(--pages-neutral-5, #ccc);
     }
 
     .filter-bar label {
@@ -51,7 +51,7 @@ export class EntityList extends LiveRegionMixin(LitElement) {
 
     .filter-bar select, .filter-bar input {
       padding: 4px 8px;
-      border: 1px solid var(--pages-border-color, #ccc);
+      border: 1px solid var(--pages-neutral-5, #ccc);
       border-radius: 4px;
       font-size: 0.8125rem;
     }
@@ -64,25 +64,25 @@ export class EntityList extends LiveRegionMixin(LitElement) {
 
     .load-more button {
       padding: 6px 16px;
-      border: 1px solid var(--pages-border-color, #ccc);
+      border: 1px solid var(--pages-neutral-5, #ccc);
       border-radius: 4px;
-      background: var(--pages-surface-color, #fff);
+      background: var(--pages-neutral-3, #fff);
       cursor: pointer;
       font-size: 0.875rem;
     }
 
-    .load-more button:hover { background: var(--pages-hover-color, #f0f0f0); }
+    .load-more button:hover { background: var(--pages-neutral-4, #f0f0f0); }
 
     .error {
       padding: 16px;
-      color: var(--pages-danger-color, #dc3545);
+      color: var(--pages-error-9, #dc3545);
       text-align: center;
     }
 
     .error button {
       margin-left: 8px;
       padding: 4px 12px;
-      border: 1px solid var(--pages-border-color, #ccc);
+      border: 1px solid var(--pages-neutral-5, #ccc);
       border-radius: 4px;
       cursor: pointer;
     }
@@ -194,10 +194,12 @@ export class EntityList extends LiveRegionMixin(LitElement) {
 
   private _onRowActivate = (e: Event): void => {
     const detail = (e as CustomEvent).detail;
-    const index = detail?.index ?? 0;
-    const entity = this._entities[index];
+    const key = detail?.key as string | undefined;
+    const reader = this.registration?.reader ?? DEFAULT_READER;
+    const entity = key
+      ? this._entities.find(ent => reader.id(ent) === key)
+      : this._entities[0];
     if (entity) {
-      const reader = this.registration?.reader ?? DEFAULT_READER;
       this._handleRowActivation({ id: reader.id(entity), type: reader.type?.(entity) ?? this.registration?.type ?? '' });
     }
   };

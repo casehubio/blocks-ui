@@ -26,28 +26,28 @@ export class EntityCommandBar extends LiveRegionMixin(LitElement) {
     button {
       padding: 6px 12px;
       border-radius: 4px;
-      border: 1px solid var(--pages-border-color, #ccc);
-      background: var(--pages-surface-color, #fff);
-      color: var(--pages-text-color, #333);
+      border: 1px solid var(--pages-neutral-5, #ccc);
+      background: var(--pages-neutral-3, #fff);
+      color: var(--pages-neutral-12, #333);
       cursor: pointer;
       font-size: 0.875rem;
     }
 
-    button:hover { background: var(--pages-hover-color, #f0f0f0); }
+    button:hover { background: var(--pages-neutral-4, #f0f0f0); }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
 
     button.destructive {
-      border-color: var(--pages-danger-color, #dc3545);
-      color: var(--pages-danger-color, #dc3545);
+      border-color: var(--pages-error-9, #dc3545);
+      color: var(--pages-error-9, #dc3545);
     }
 
     button.destructive:hover {
-      background: var(--pages-danger-color, #dc3545);
+      background: var(--pages-error-9, #dc3545);
       color: #fff;
     }
 
     .error {
-      color: var(--pages-danger-color, #dc3545);
+      color: var(--pages-error-9, #dc3545);
       font-size: 0.8125rem;
       padding: 4px 8px;
     }

@@ -45,10 +45,10 @@ export class TimelineCustomPage extends LitElement {
   @state() private _layout: Layout = 'horizontal';
 
   private _statusColors: Record<string, { bg: string; color: string }> = {
-    completed: { bg: '#dcfce7', color: '#166534' },
-    active: { bg: '#dbeafe', color: '#1e3a5f' },
-    pending: { bg: '#f3f4f6', color: '#9ca3af' },
-    failed: { bg: '#fee2e2', color: '#991b1b' },
+    completed: { bg: 'var(--pages-success-3, #dcfce7)', color: 'var(--pages-success-11, #166534)' },
+    active: { bg: 'var(--pages-accent-3, #dbeafe)', color: 'var(--pages-accent-11, #1e3a5f)' },
+    pending: { bg: 'var(--pages-neutral-3, #f3f4f6)', color: 'var(--pages-neutral-8, #9ca3af)' },
+    failed: { bg: 'var(--pages-error-3, #fee2e2)', color: 'var(--pages-error-11, #991b1b)' },
   };
 
   private _customRenderNode = (node: TimelineNode): TemplateResult => {
@@ -67,7 +67,7 @@ export class TimelineCustomPage extends LitElement {
   private _customRenderDetail = (node: TimelineNode): TemplateResult => {
     const detail = node.detail as { duration?: string } | undefined;
     return html`
-      <div style="font-size:13px;color:#374151">
+      <div style="font-size:13px;color:var(--pages-neutral-11, #374151)">
         ${detail?.duration ? html`<div>Duration: <strong>${detail.duration}</strong></div>` : html`<div>Pending</div>`}
         ${node.actor ? html`<div>Runner: ${node.actor}</div>` : ''}
       </div>
@@ -150,20 +150,20 @@ export class TimelineCustomPage extends LitElement {
     :host { display: block; padding: 24px; font-family: var(--pages-font-family, system-ui); }
     .page-container { max-width: 1200px; margin: 0 auto; }
     .header { margin-bottom: 32px; }
-    h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: var(--pages-gray-12, #111827); }
-    h2 { margin: 32px 0 8px 0; font-size: 20px; font-weight: 600; color: var(--pages-gray-12, #111827); }
-    .description { margin: 0 0 16px 0; font-size: 16px; color: var(--pages-gray-11, #1f2937); line-height: 1.5; }
-    .subtitle { margin: 0 0 12px 0; font-size: 14px; color: var(--pages-gray-9, #6b7280); }
+    h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: var(--pages-neutral-12, #111827); }
+    h2 { margin: 32px 0 8px 0; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111827); }
+    .description { margin: 0 0 16px 0; font-size: 16px; color: var(--pages-neutral-11, #1f2937); line-height: 1.5; }
+    .subtitle { margin: 0 0 12px 0; font-size: 14px; color: var(--pages-neutral-9, #6b7280); }
     .controls { display: flex; gap: 8px; }
-    .controls button { padding: 8px 16px; border: 1px solid var(--pages-gray-6, #d1d5db); border-radius: 6px; background: white; cursor: pointer; font-size: 14px; }
-    .controls button:hover { background: var(--pages-gray-2, #f9fafb); }
-    .viewer-container { margin-bottom: 16px; border: 1px solid var(--pages-gray-6, #d1d5db); border-radius: 8px; background: white; }
-    .info-panel { padding: 24px; background: var(--pages-gray-1, #fafbfc); border-radius: 8px; margin-top: 32px; }
+    .controls button { padding: 8px 16px; border: 1px solid var(--pages-neutral-5, #d1d5db); border-radius: 6px; background: var(--pages-neutral-3, #fff); color: var(--pages-neutral-12, #111); cursor: pointer; font-size: 14px; }
+    .controls button:hover { background: var(--pages-neutral-2, #f9fafb); }
+    .viewer-container { margin-bottom: 16px; border: 1px solid var(--pages-neutral-6, #d1d5db); border-radius: 8px; background: var(--pages-neutral-3, #fff); }
+    .info-panel { padding: 24px; background: var(--pages-neutral-1, #fafbfc); border-radius: 8px; margin-top: 32px; }
     .info-panel h2 { margin: 0 0 16px 0; }
     .info-panel h3 { margin: 24px 0 12px 0; font-size: 16px; font-weight: 600; }
     .info-panel ul, .info-panel ol { margin: 0; padding-left: 24px; }
     .info-panel li { margin-bottom: 8px; line-height: 1.5; }
-    .info-panel code { background: var(--pages-gray-3, #f3f4f6); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+    .info-panel code { background: var(--pages-neutral-3, #f3f4f6); padding: 2px 6px; border-radius: 3px; font-size: 13px; }
 
     .custom-node { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     .custom-node--completed { background: var(--pages-success-3, #dcfce7); color: var(--pages-success-11, #166534); }

@@ -109,13 +109,13 @@ export class TimelineEventsPage extends LitElement {
     :host { display: block; padding: 24px; font-family: var(--pages-font-family, system-ui); }
     .page-container { max-width: 1200px; margin: 0 auto; }
     .header { margin-bottom: 32px; }
-    h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: var(--pages-gray-12, #111827); }
-    .description { margin: 0 0 16px 0; font-size: 16px; color: var(--pages-gray-11, #1f2937); line-height: 1.5; }
+    h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: var(--pages-neutral-12, #111827); }
+    .description { margin: 0 0 16px 0; font-size: 16px; color: var(--pages-neutral-11, #1f2937); line-height: 1.5; }
     .controls { display: flex; gap: 8px; }
-    .controls button { padding: 8px 16px; border: 1px solid var(--pages-gray-6, #d1d5db); border-radius: 6px; background: white; cursor: pointer; font-size: 14px; }
-    .controls button:hover { background: var(--pages-gray-2, #f9fafb); }
-    .viewer-container { margin-bottom: 32px; border: 1px solid var(--pages-gray-6, #d1d5db); border-radius: 8px; background: white; }
-    .info-panel { padding: 24px; background: var(--pages-gray-1, #fafbfc); border-radius: 8px; }
+    .controls button { padding: 8px 16px; border: 1px solid var(--pages-neutral-5, #d1d5db); border-radius: 6px; background: var(--pages-neutral-3, #fff); color: var(--pages-neutral-12, #111); cursor: pointer; font-size: 14px; }
+    .controls button:hover { background: var(--pages-neutral-4, #f9fafb); }
+    .viewer-container { margin-bottom: 32px; border: 1px solid var(--pages-neutral-5, #d1d5db); border-radius: 8px; background: var(--pages-neutral-2, #fff); }
+    .info-panel { padding: 24px; background: var(--pages-neutral-3, #fafbfc); border-radius: 8px; color: var(--pages-neutral-12, #111); }
     .info-panel h2 { margin: 0 0 16px 0; font-size: 20px; font-weight: 600; }
     .info-panel h3 { margin: 24px 0 12px 0; font-size: 16px; font-weight: 600; }
     .info-panel ul { margin: 0; padding-left: 24px; }

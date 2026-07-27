@@ -16,6 +16,11 @@ const SAMPLE_TIERS: TierDefinition[] = [
   { threshold: 0.0, label: 'Breach', consequence: 'Compliance report generated' },
 ];
 
+function getStylesText(el: HTMLElement): string {
+  const styleTags = el.shadowRoot!.querySelectorAll('style');
+  return Array.from(styleTags).map(s => s.textContent ?? '').join(' ');
+}
+
 describe('blocks-sla-breach-policy', () => {
   let el: SlaBreachPolicyEl;
 
@@ -94,5 +99,21 @@ describe('blocks-sla-breach-policy', () => {
     await el.updateComplete;
     const indicator = el.shadowRoot!.querySelector('blocks-sla-indicator');
     expect(indicator).toBeFalsy();
+  });
+
+  it('active tier background uses theme token, not hardcoded light colour', () => {
+    const css = getStylesText(el);
+    expect(css).toContain('.tier--active');
+    expect(css).not.toContain('#fff7ed');
+  });
+
+  it('active tier label uses theme token, not hardcoded dark-on-light colour', () => {
+    const css = getStylesText(el);
+    expect(css).not.toContain('#9a3412');
+  });
+
+  it('active tier box-shadow uses no hardcoded oklch values', () => {
+    const css = getStylesText(el);
+    expect(css).not.toContain('oklch');
   });
 });

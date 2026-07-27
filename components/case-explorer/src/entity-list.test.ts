@@ -214,6 +214,72 @@ describe('EntityList', () => {
     expect(keys[2]).toBe('c3');
   });
 
+  it('_onRowActivate uses row key to identify entity, not index', async () => {
+    const multiResponse: EntityListResponse = {
+      entities: [
+        testEntity,
+        { ...testEntity, id: 'c2', summary: 'PR Review #43' },
+        { ...testEntity, id: 'c3', summary: 'PR Review #44' },
+      ],
+      totalCount: 3,
+    };
+    fetchFn.mockResolvedValue({ ok: true, json: async () => multiResponse });
+    const el = createList();
+    await el.updateComplete;
+    await new Promise(r => setTimeout(r, 0));
+    await el.updateComplete;
+
+    const events: CustomEvent[] = [];
+    document.addEventListener('pages-event', ((e: CustomEvent) => {
+      if (e.detail?.topic === 'case:selected') events.push(e);
+    }) as EventListener);
+
+    const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
+    const secondRow = listPane.dataSet!.rows[1];
+    listPane.dispatchEvent(new CustomEvent('row-activate', {
+      detail: { row: secondRow, key: 'c2' },
+      bubbles: true,
+      composed: true,
+    }));
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(events.length).toBe(1);
+    expect(events[0]!.detail.payload.id).toBe('c2');
+  });
+
+  it('_onRowActivate uses row key to identify entity, not index', async () => {
+    const multiResponse: EntityListResponse = {
+      entities: [
+        testEntity,
+        { ...testEntity, id: 'c2', summary: 'PR Review #43' },
+        { ...testEntity, id: 'c3', summary: 'PR Review #44' },
+      ],
+      totalCount: 3,
+    };
+    fetchFn.mockResolvedValue({ ok: true, json: async () => multiResponse });
+    const el = createList();
+    await el.updateComplete;
+    await new Promise(r => setTimeout(r, 0));
+    await el.updateComplete;
+
+    const events: CustomEvent[] = [];
+    document.addEventListener('pages-event', ((e: CustomEvent) => {
+      if (e.detail?.topic === 'case:selected') events.push(e);
+    }) as EventListener);
+
+    const listPane = el.shadowRoot!.querySelector('blocks-list-pane') as any;
+    const secondRow = listPane.dataSet!.rows[1];
+    listPane.dispatchEvent(new CustomEvent('row-activate', {
+      detail: { row: secondRow, key: 'c2' },
+      bubbles: true,
+      composed: true,
+    }));
+    await new Promise(r => setTimeout(r, 0));
+
+    expect(events.length).toBe(1);
+    expect(events[0]!.detail.payload.id).toBe('c2');
+  });
+
   it('re-fetches when registration changes', async () => {
     const workerResponse: EntityListResponse = {
       entities: [{ ...testEntity, id: 'w1', type: 'worker', summary: 'Build Pipeline' }],
