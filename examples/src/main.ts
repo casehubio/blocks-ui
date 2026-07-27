@@ -37,6 +37,7 @@ async function bootstrap() {
   await import('./pages/case-explorer-page.js');
   await import('./pages/trust-workbench-page.js');
   await import('./pages/preferences-editor-page.js');
+  await import('./pages/session-workbench-page.js');
 
   app.textContent = '';
   app.appendChild(document.createElement('blocks-example-shell'));

@@ -14,7 +14,7 @@
 
 `casehub-blocks-ui` is the shared UI component library for the CaseHub platform — the frontend parallel to `casehub-blocks` (shared Java coordination patterns). Each component consumes `casehub-pages` APIs (DataSourceController, pages-event, CSS tokens) but knows nothing about a specific app's domain model. Components work standalone in a test harness AND embedded via pages `hostPanel`.
 
-The repo ships 24 components across work management, trust/compliance, communication, case exploration, and notification domains — all framework-agnostic Web Components built with Lit.
+The repo ships 27 components across work management, trust/compliance, communication, case exploration, session management, and notification domains — all framework-agnostic Web Components built with Lit.
 
 ### Stakeholders
 
