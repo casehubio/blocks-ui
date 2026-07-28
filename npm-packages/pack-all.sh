@@ -28,10 +28,11 @@ for pkg_json in "$REPO_ROOT"/packages/*/package.json "$REPO_ROOT"/components/*/p
         continue
     fi
 
-    echo "  PACK $pkg_name"
+    npm_name="$(node -p "require('$pkg_json').name")"
+    echo "  PACK $npm_name"
     tarball="$OUTPUT_DIR/tarballs/$pkg_name.tgz"
     GH_PACKAGES_TOKEN="${GH_PACKAGES_TOKEN:-dummy}" \
-        yarn --cwd "$REPO_ROOT" workspace "@casehubio/$pkg_name" pack --out "$tarball" 2>/dev/null
+        yarn --cwd "$REPO_ROOT" workspace "$npm_name" pack --out "$tarball" 2>/dev/null
 
     # Unpack tarball to packages/<name>/
     mkdir -p "$OUTPUT_DIR/packages/$pkg_name"
