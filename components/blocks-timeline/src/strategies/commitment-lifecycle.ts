@@ -45,7 +45,7 @@ export function commitmentLifecycleStrategy(options?: {
 
   return {
     transformData(raw: unknown): StateData {
-      const commitment = raw as CommitmentState;
+      const commitment = raw as CommitmentLifecycleData;
       const transitions = commitment.stages.map(s => {
         const t: { state: string; actor?: string; timestamp?: string } = { state: s.key };
         if (s.actor !== undefined) t.actor = s.actor;

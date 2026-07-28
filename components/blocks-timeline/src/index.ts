@@ -15,5 +15,5 @@ export {
 export {
   commitmentLifecycleStrategy,
   COMMITMENT_STAGES,
-  type CommitmentState,
+  type CommitmentLifecycleData,
 } from './strategies/commitment-lifecycle.js';
