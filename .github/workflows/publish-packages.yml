@@ -116,7 +116,7 @@ jobs:
 
       - name: Trigger downstream CI
         run: |
-          for repo in aml chat-app claudony clinical devtown life openclaw; do
+          for repo in aml chat-app claudony clinical devtown iot life openclaw; do
             gh api repos/casehubio/$repo/dispatches \
               -f event_type=upstream-published \
               -f client_payload[source]="${GITHUB_REPOSITORY}" \
