@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   commitmentLifecycleStrategy,
   COMMITMENT_STAGES,
-  type CommitmentState,
+  type CommitmentLifecycleData,
 } from './commitment-lifecycle.js';
 import { linearResolveStatus } from './state-progression.js';
 import type { StageConfig } from '../types.js';
@@ -109,9 +109,9 @@ describe('commitmentLifecycleStrategy', () => {
       expect(commitmentLifecycleStrategy().transformData).toBeDefined();
     });
 
-    it('maps CommitmentState to StateData', () => {
+    it('maps CommitmentLifecycleData to StateData', () => {
       const strategy = commitmentLifecycleStrategy();
-      const raw: CommitmentState = {
+      const raw: CommitmentLifecycleData = {
         id: 'c1',
         currentStage: 'ACKNOWLEDGED',
         stages: [
@@ -145,7 +145,7 @@ describe('commitmentLifecycleStrategy', () => {
 
     it('preserves messages on the raw object (not in transformed)', () => {
       const strategy = commitmentLifecycleStrategy();
-      const raw: CommitmentState = {
+      const raw: CommitmentLifecycleData = {
         id: 'c1',
         currentStage: 'COMMANDED',
         stages: [],

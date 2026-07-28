@@ -8,7 +8,7 @@ export const COMMITMENT_STAGES: readonly StageConfig[] = [
   { key: 'DECLINED', label: 'Declined', terminal: 'failure' },
 ];
 
-export interface CommitmentState {
+export interface CommitmentLifecycleData {
   readonly id: string;
   readonly currentStage: string;
   readonly stages: ReadonlyArray<{

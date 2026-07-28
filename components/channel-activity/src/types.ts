@@ -7,11 +7,13 @@ export type MessageType = typeof MESSAGE_TYPES[number];
 export const ACTOR_TYPES = ['HUMAN', 'AGENT', 'SYSTEM'] as const;
 export type ActorType = typeof ACTOR_TYPES[number];
 
-export const COMMITMENT_STATES = [
-  'OPEN', 'ACKNOWLEDGED', 'FULFILLED', 'FAILED',
-  'DECLINED', 'DELEGATED', 'EXPIRED',
-] as const;
-export type CommitmentState = typeof COMMITMENT_STATES[number];
+export {
+  COMMITMENT_STATES,
+  type CommitmentState,
+  type StateCategory,
+  commitmentStateCategory,
+  isTerminalCommitmentState,
+} from '@casehubio/blocks-ui-core';
 
 export const CHANNEL_SEMANTICS = [
   'APPEND', 'COLLECT', 'BARRIER', 'EPHEMERAL', 'LAST_WRITE',
@@ -135,14 +137,4 @@ export function messageTypeCategory(type: MessageType): 'info' | 'obligation' | 
   }
 }
 
-export function commitmentStateCategory(state: CommitmentState): 'active' | 'info' | 'success' | 'danger' | 'neutral' | 'transfer' | 'warning' {
-  switch (state) {
-    case 'OPEN': return 'active';
-    case 'ACKNOWLEDGED': return 'info';
-    case 'FULFILLED': return 'success';
-    case 'FAILED': return 'danger';
-    case 'DECLINED': return 'neutral';
-    case 'DELEGATED': return 'transfer';
-    case 'EXPIRED': return 'warning';
-  }
-}
+

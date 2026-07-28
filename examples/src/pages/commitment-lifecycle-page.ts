@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '../../../components/blocks-timeline/src/blocks-timeline.js';
 import { commitmentLifecycleStrategy } from '../../../components/blocks-timeline/src/strategies/commitment-lifecycle.js';
-import type { CommitmentState } from '../../../components/blocks-timeline/src/strategies/commitment-lifecycle.js';
+import type { CommitmentLifecycleData } from '../../../components/blocks-timeline/src/strategies/commitment-lifecycle.js';
 import type { StageConfig } from '../../../components/blocks-timeline/src/types.js';
 import commitmentData from '../../mock-data/commitments.json';
 
@@ -31,8 +31,8 @@ export class CommitmentLifecyclePage extends LitElement {
     .message-content { margin-top: 4px; }
   `;
 
-  private get _commitment(): CommitmentState | undefined {
-    return (commitmentData.commitments as CommitmentState[]).find(c => c.id === this._selectedId);
+  private get _commitment(): CommitmentLifecycleData | undefined {
+    return (commitmentData.commitments as CommitmentLifecycleData[]).find(c => c.id === this._selectedId);
   }
 
   override render() {
@@ -44,7 +44,7 @@ export class CommitmentLifecyclePage extends LitElement {
 
       <div class="controls">
         <select @change=${(e: Event) => { this._selectedId = (e.target as HTMLSelectElement).value; }}>
-          ${(commitmentData.commitments as CommitmentState[]).map(c => html`
+          ${(commitmentData.commitments as CommitmentLifecycleData[]).map(c => html`
             <option value=${c.id} ?selected=${c.id === this._selectedId}>${c.id} (${c.currentStage})</option>
           `)}
         </select>
