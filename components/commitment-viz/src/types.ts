@@ -19,6 +19,6 @@ export interface RangeDecoration {
   readonly state: CommitmentState;
   readonly category: StateCategory;
   readonly startMessageId: string;
-  readonly endMessageId?: string;
+  readonly endMessageId?: string | undefined;
   readonly messageIds: readonly string[];
 }
