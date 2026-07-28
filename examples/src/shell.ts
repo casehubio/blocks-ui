@@ -45,6 +45,7 @@ const NAV: NavCategory[] = [
       { id: 'case-explorer', label: 'Case Explorer', hash: '#components/case-explorer' },
       { id: 'preferences-editor', label: 'Preferences Editor', hash: '#components/preferences-editor' },
       { id: 'session-workbench', label: 'Session Workbench', hash: '#components/session-workbench' },
+      { id: 'commitment-viz', label: 'Commitment Viz', hash: '#components/commitment-viz' },
     ],
   },
   {
@@ -199,6 +200,7 @@ export class ExampleShell extends LitElement {
       case '#components/case-explorer': return html`<blocks-example-case-explorer></blocks-example-case-explorer>`;
       case '#components/preferences-editor': return html`<blocks-example-preferences-editor></blocks-example-preferences-editor>`;
       case '#components/session-workbench': return html`<blocks-example-session-workbench></blocks-example-session-workbench>`;
+      case '#components/commitment-viz': return html`<blocks-example-commitment-viz></blocks-example-commitment-viz>`;
       case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
       case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
       default: return html`<blocks-example-workbench></blocks-example-workbench>`;

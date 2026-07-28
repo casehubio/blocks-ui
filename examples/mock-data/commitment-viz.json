@@ -1,0 +1,64 @@
+{
+  "commitments": {
+    "corr-001": {
+      "state": "OPEN",
+      "createdAt": "2026-07-14T08:00:00Z",
+      "updatedAt": "2026-07-14T08:00:00Z"
+    },
+    "corr-002": {
+      "state": "ACKNOWLEDGED",
+      "acknowledgedAt": "2026-07-14T08:15:00Z",
+      "createdAt": "2026-07-14T08:00:00Z",
+      "updatedAt": "2026-07-14T08:15:00Z",
+      "deadline": "2026-07-14T16:00:00Z"
+    },
+    "corr-003": {
+      "state": "FULFILLED",
+      "acknowledgedAt": "2026-07-13T10:30:00Z",
+      "resolvedAt": "2026-07-13T14:00:00Z",
+      "createdAt": "2026-07-13T10:00:00Z",
+      "updatedAt": "2026-07-13T14:00:00Z"
+    },
+    "corr-004": {
+      "state": "EXPIRED",
+      "createdAt": "2026-07-12T09:00:00Z",
+      "updatedAt": "2026-07-12T17:00:00Z",
+      "deadline": "2026-07-12T12:00:00Z"
+    },
+    "corr-005": {
+      "state": "DECLINED",
+      "createdAt": "2026-07-11T14:00:00Z",
+      "updatedAt": "2026-07-11T14:30:00Z",
+      "resolvedAt": "2026-07-11T14:30:00Z"
+    },
+    "corr-006": {
+      "state": "DELEGATED",
+      "acknowledgedAt": "2026-07-10T09:15:00Z",
+      "createdAt": "2026-07-10T09:00:00Z",
+      "updatedAt": "2026-07-10T10:00:00Z",
+      "resolvedAt": "2026-07-10T10:00:00Z"
+    },
+    "corr-007": {
+      "state": "FAILED",
+      "acknowledgedAt": "2026-07-09T11:00:00Z",
+      "createdAt": "2026-07-09T10:00:00Z",
+      "updatedAt": "2026-07-09T15:00:00Z",
+      "resolvedAt": "2026-07-09T15:00:00Z"
+    }
+  },
+  "messages": [
+    { "id": "m1", "correlationId": "corr-002", "content": "Review AE classification" },
+    { "id": "m2", "content": "Status update: no issues found" },
+    { "id": "m3", "correlationId": "corr-002", "content": "Classification acknowledged" },
+    { "id": "m4", "correlationId": "corr-003", "content": "Requested lab results review" },
+    { "id": "m5", "correlationId": "corr-003", "content": "Review complete, all within range" },
+    { "id": "m6", "content": "General discussion message" }
+  ],
+  "transitions": [
+    { "from": "OPEN", "to": "ACKNOWLEDGED", "actor": "agent-alice", "timestamp": "2026-07-14T08:15:00Z" },
+    { "from": "ACKNOWLEDGED", "to": "FULFILLED", "actor": "agent-bob", "timestamp": "2026-07-13T14:00:00Z" },
+    { "from": "OPEN", "to": "DECLINED", "actor": "agent-carol", "timestamp": "2026-07-11T14:30:00Z" },
+    { "from": "OPEN", "to": "EXPIRED", "timestamp": "2026-07-12T17:00:00Z" },
+    { "from": "ACKNOWLEDGED", "to": "DELEGATED", "actor": "agent-dan", "timestamp": "2026-07-10T10:00:00Z" }
+  ]
+}

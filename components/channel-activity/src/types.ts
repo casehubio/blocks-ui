@@ -136,5 +136,3 @@ export function messageTypeCategory(type: MessageType): 'info' | 'obligation' | 
     case 'EVENT': return 'telemetry';
   }
 }
-
-
