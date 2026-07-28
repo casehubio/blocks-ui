@@ -295,4 +295,32 @@ describe('blocks-kpi-metric-row', () => {
       el.remove();
     });
   });
+
+  describe('density-responsive sparkline height', () => {
+    it('renders sparkline at height 40 for comfortable density', async () => {
+      el.metrics = [{ key: 'test', value: 50, label: 'Metric', sparkline: [10, 20, 30, 20, 10] }];
+      await el.updateComplete;
+      const svg = el.shadowRoot!.querySelector('svg.sparkline') as SVGElement;
+      expect(svg).toBeTruthy();
+      expect(svg.getAttribute('height')).toBe('40');
+    });
+
+    it('renders sparkline at height 32 for compact density', async () => {
+      (el as any).density = 'compact';
+      el.metrics = [{ key: 'test', value: 50, label: 'Metric', sparkline: [10, 20, 30, 20, 10] }];
+      await el.updateComplete;
+      const svg = el.shadowRoot!.querySelector('svg.sparkline') as SVGElement;
+      expect(svg).toBeTruthy();
+      expect(svg.getAttribute('height')).toBe('32');
+    });
+
+    it('renders sparkline at height 24 for dense density', async () => {
+      (el as any).density = 'dense';
+      el.metrics = [{ key: 'test', value: 50, label: 'Metric', sparkline: [10, 20, 30, 20, 10] }];
+      await el.updateComplete;
+      const svg = el.shadowRoot!.querySelector('svg.sparkline') as SVGElement;
+      expect(svg).toBeTruthy();
+      expect(svg.getAttribute('height')).toBe('24');
+    });
+  });
 });

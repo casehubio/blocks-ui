@@ -156,6 +156,14 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
     }
   }
 
+  private get _sparklineHeight(): number {
+    switch (this.density) {
+      case 'dense': return 24;
+      case 'compact': return 32;
+      default: return 40;
+    }
+  }
+
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('endpoint') && this.endpoint) {
       this._fetchMetrics();
@@ -215,7 +223,7 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
             ${TREND_ARROWS[m.trend.direction]} ${m.trend.delta}
           </span>
         ` : nothing}
-        ${m.sparkline ? renderSparkline(m.sparkline, { width: 48, height: 20 }) : nothing}
+        ${m.sparkline ? renderSparkline(m.sparkline, { width: 48, height: this._sparklineHeight }) : nothing}
       </div>
     `;
   }
