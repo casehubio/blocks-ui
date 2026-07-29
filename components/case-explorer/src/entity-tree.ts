@@ -92,7 +92,7 @@ export class EntityTree extends LiveRegionMixin(LitElement) {
   override render(): TemplateResult {
     return html`
       <ul role="tree" aria-label="Entity hierarchy">
-        ${this.nodes.map(node => this._renderNode(node, 0))}
+        ${(Array.isArray(this.nodes) ? this.nodes : []).map(node => this._renderNode(node, 0))}
       </ul>
     `;
   }

@@ -266,12 +266,12 @@ export class ChannelFeedElement extends LitElement {
     if (!feed) return;
     const target = feed.querySelector(`[data-message-id="${this.selectedMessageId}"]`) as HTMLElement | null;
     if (target) {
-      target.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      target.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
       return;
     }
     const thread = feed.querySelector(`blocks-channel-thread[data-contains~="${this.selectedMessageId}"]`) as HTMLElement | null;
     if (thread) {
-      thread.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      thread.scrollIntoView?.({ block: 'nearest', behavior: 'smooth' });
     }
   }
 

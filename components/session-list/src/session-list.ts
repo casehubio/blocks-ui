@@ -40,6 +40,7 @@ export class SessionList extends SessionListBase {
 
   @state() _sessions: SessionResponse[] = [];
   @state() private _tableData: TypedDataSet | undefined;
+  @state() private _selectedKeys: readonly string[] = [];
   @state() private _loading = false;
   @state() private _error: string | null = null;
   @state() private _showSpawnForm = false;
@@ -68,6 +69,7 @@ export class SessionList extends SessionListBase {
     this._fetchSessions();
     this._unsubs.push(
       onPagesEvent(document, SessionEventTopics.REFRESH, () => { this._fetchSessions(); }),
+      onPagesEvent(document, SessionEventTopics.DESELECTED, () => { this._selectedKeys = []; }),
     );
   }
 
@@ -189,6 +191,7 @@ export class SessionList extends SessionListBase {
     const { key, row } = e.detail;
     const id = key ?? row?.text(ID_COL);
     if (id) {
+      this._selectedKeys = [id];
       emitPagesEvent(this, SessionEventTopics.SELECTED, { id });
     }
   }
@@ -213,6 +216,8 @@ export class SessionList extends SessionListBase {
           .columnConfig=${SESSION_COL_CONFIG}
           .columnRenderers=${this._columnRenderers}
           .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
+          selection="single"
+          .selectedKeys=${this._selectedKeys}
           @row-activate=${this._handleRowActivate}
         ></pages-table>
       </div>

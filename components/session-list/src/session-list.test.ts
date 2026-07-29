@@ -75,6 +75,40 @@ describe('blocks-session-list', () => {
     expect(events[0]).toEqual({ id: 'sess-1' });
   });
 
+  it('sets selection="single" on pages-table', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement & { selection: string };
+    expect(table.selection).toBe('single');
+  });
+
+  it('passes selectedKeys to pages-table after row activate', async () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement & { selectedKeys?: readonly string[] };
+    table.dispatchEvent(new CustomEvent('row-activate', { detail: { key: 'sess-1' }, bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(table.selectedKeys).toEqual(['sess-1']);
+  });
+
+  it('updates selectedKeys when a different row is activated', async () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement & { selectedKeys?: readonly string[] };
+    table.dispatchEvent(new CustomEvent('row-activate', { detail: { key: 'sess-1' }, bubbles: true, composed: true }));
+    await el.updateComplete;
+    table.dispatchEvent(new CustomEvent('row-activate', { detail: { key: 'sess-2' }, bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(table.selectedKeys).toEqual(['sess-2']);
+  });
+
+  it('clears selectedKeys on deselect event', async () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as HTMLElement & { selectedKeys?: readonly string[] };
+    table.dispatchEvent(new CustomEvent('row-activate', { detail: { key: 'sess-1' }, bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(table.selectedKeys).toEqual(['sess-1']);
+    document.dispatchEvent(new CustomEvent('pages-event', {
+      bubbles: true, composed: true,
+      detail: { topic: 'session:deselected', payload: {} },
+    }));
+    await el.updateComplete;
+    expect(table.selectedKeys).toEqual([]);
+  });
+
   it('creates a session via POST and prepends to list', async () => {
     const newSession: SessionResponse = {
       id: 'sess-3', name: 'cl-new', workingDir: '/tmp', command: 'claude',
