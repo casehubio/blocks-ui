@@ -169,7 +169,7 @@ export class ChannelTopicBarElement extends LitElement {
           </pages-button>
         ` : nothing}
       </div>
-      <pages-button class="mode-btn" variant="ghost" size="sm ${this.viewMode === 'topics' ? 'active' : ''}"
+      <pages-button class="mode-btn ${this.viewMode === 'topics' ? 'active' : ''}" variant="ghost" size="sm"
               @click=${() => this._onModeClick(this.viewMode === 'topics' ? 'flat' : 'topics')}
               aria-pressed=${this.viewMode === 'topics' ? 'true' : 'false'}>Topics</pages-button>
     `;
