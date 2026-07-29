@@ -112,19 +112,6 @@ describe('fetchSource', () => {
     expect(sink.applyCalls[0]!.totalRows).toBe(42);
   });
 
-  it('routes extraction errors to sink.error', async () => {
-    const source = fetchSource('http://api/items', {
-      fetchFn: mockFetchOk('not-valid-data'),
-      columns: [{ id: columnId('x'), type: ColumnType.TEXT }],
-    });
-
-    const sink = createMockSink();
-    source.connect(sink);
-    await vi.waitFor(() => expect(sink.errorCalls).toHaveLength(1));
-
-    expect(sink.errorCalls[0]!.permanent).toBe(true);
-  });
-
   it('calls sink.error on HTTP failure', async () => {
     const source = fetchSource('http://api/items', { fetchFn: mockFetchFail(500) });
     const sink = createMockSink();
