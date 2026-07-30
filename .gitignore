@@ -10,3 +10,4 @@ target/
 .playwright-mcp/
 .claude
 package-lock.json
+proj
