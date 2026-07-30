@@ -1,3 +1,11 @@
+export interface DiffSummary {
+  modified: number;
+  deleted: number;
+  inserted: number;
+  currentIdx: number;
+  totalDiffs: number;
+}
+
 export interface DebateStreamEntry {
   entryType: string;
   content: string;
