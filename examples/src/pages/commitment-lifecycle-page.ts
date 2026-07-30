@@ -71,6 +71,34 @@ export class CommitmentLifecyclePage extends LitElement {
         ` : html`<p>Select a commitment</p>`}
       </div>
 
+      <h3>Non-Linear Paths</h3>
+      <p style="font-size: 13px; color: var(--pages-neutral-9, #777); margin-bottom: 12px;">
+        The 7-state model is a branching state machine — OPEN can jump directly to DECLINED or DELEGATED without passing through ACKNOWLEDGED. Skipped stages render as "skipped" rather than "pending."
+      </p>
+      <div class="demo-section" style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <strong style="font-size: 12px;">OPEN → DECLINED (skipping ACKNOWLEDGED)</strong>
+          <blocks-timeline
+            .strategy=${commitmentLifecycleStrategy()}
+            .data=${(commitmentData.commitments as CommitmentLifecycleData[]).find(c => c.id === 'commit-003')}
+          ></blocks-timeline>
+        </div>
+        <div>
+          <strong style="font-size: 12px;">OPEN → DELEGATED (transfer — skipping ACKNOWLEDGED)</strong>
+          <blocks-timeline
+            .strategy=${commitmentLifecycleStrategy()}
+            .data=${(commitmentData.commitments as CommitmentLifecycleData[]).find(c => c.id === 'commit-005')}
+          ></blocks-timeline>
+        </div>
+        <div>
+          <strong style="font-size: 12px;">OPEN → EXPIRED (timeout — skipping ACKNOWLEDGED)</strong>
+          <blocks-timeline
+            .strategy=${commitmentLifecycleStrategy()}
+            .data=${(commitmentData.commitments as CommitmentLifecycleData[]).find(c => c.id === 'commit-006')}
+          ></blocks-timeline>
+        </div>
+      </div>
+
       <h3>Custom Stages (DevTown Review)</h3>
       <div class="demo-section">
         <blocks-timeline

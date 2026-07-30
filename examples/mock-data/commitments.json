@@ -46,6 +46,29 @@
         { "key": "OPEN", "status": "completed", "actor": "system", "timestamp": "2026-07-14T14:00:00Z" },
         { "key": "DELEGATED", "status": "completed", "actor": "agent-alice", "timestamp": "2026-07-14T14:30:00Z" }
       ]
+    },
+    {
+      "id": "commit-006",
+      "currentStage": "EXPIRED",
+      "stages": [
+        { "key": "OPEN", "status": "completed", "actor": "system", "timestamp": "2026-07-11T14:00:00Z" },
+        { "key": "EXPIRED", "status": "failed", "actor": "system", "timestamp": "2026-07-12T14:00:00Z" }
+      ],
+      "messages": [
+        { "sender": "system", "content": "Deadline passed without acknowledgement", "timestamp": "2026-07-12T14:00:00Z" }
+      ]
+    },
+    {
+      "id": "commit-007",
+      "currentStage": "FAILED",
+      "stages": [
+        { "key": "OPEN", "status": "completed", "actor": "coordinator", "timestamp": "2026-07-10T09:00:00Z" },
+        { "key": "ACKNOWLEDGED", "status": "completed", "actor": "agent-dave", "timestamp": "2026-07-10T09:15:00Z" },
+        { "key": "FAILED", "status": "failed", "actor": "agent-dave", "timestamp": "2026-07-10T16:00:00Z" }
+      ],
+      "messages": [
+        { "sender": "agent-dave", "content": "Unable to complete — external dependency unavailable", "timestamp": "2026-07-10T16:00:00Z" }
+      ]
     }
   ]
 }

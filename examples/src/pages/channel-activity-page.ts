@@ -39,10 +39,11 @@ function mockMessages(channelId: string): QhorusMessage[] {
 const REACTIONS: Reaction[] = [];
 
 const TASK_PANEL_MESSAGES: QhorusMessage[] = [
-  { id: 'cmd-1', channelId: 'ch-1', sender: 'human:alice', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Run compliance check on transactions above $50k', topic: '', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T09:00:00Z', target: 'agent-compliance' },
-  { id: 'cmd-2', channelId: 'ch-1', sender: 'human:bob', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Verify KYC documents for case AML-4521', topic: '', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T08:00:00Z', target: 'agent-kyc' },
-  { id: 'cmd-3', channelId: 'ch-1', sender: 'system', messageType: 'COMMAND', actorType: 'SYSTEM', content: 'Generate daily risk summary report', topic: '', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T07:00:00Z' },
-  { id: 'cmd-4', channelId: 'ch-1', sender: 'human:alice', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Review flagged account AC-9912', topic: '', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T06:00:00Z', target: 'agent-review' },
+  { id: 'cmd-1', channelId: 'ch-1', sender: 'human:alice', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Run compliance check on transactions above $50k', topic: '', correlationId: 'corr-cmd1', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T09:00:00Z', target: 'agent-compliance' },
+  { id: 'cmd-2', channelId: 'ch-1', sender: 'human:bob', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Verify KYC documents for case AML-4521', topic: '', correlationId: 'corr-cmd2', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T08:00:00Z', target: 'agent-kyc' },
+  { id: 'cmd-3', channelId: 'ch-1', sender: 'system', messageType: 'COMMAND', actorType: 'SYSTEM', content: 'Generate daily risk summary report', topic: '', correlationId: 'corr-cmd3', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T07:00:00Z' },
+  { id: 'cmd-4', channelId: 'ch-1', sender: 'human:alice', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Review flagged account AC-9912', topic: '', correlationId: 'corr-cmd4', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T06:00:00Z', target: 'agent-review' },
+  { id: 'cmd-5', channelId: 'ch-1', sender: 'human:bob', messageType: 'COMMAND', actorType: 'HUMAN', content: 'Delegate sanctions check to compliance team', topic: '', correlationId: 'corr-cmd5', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T05:00:00Z', target: 'agent-sanctions' },
   { id: 'status-1', channelId: 'ch-1', sender: 'agent-compliance', messageType: 'STATUS', actorType: 'AGENT', content: 'Processing 142 transactions...', topic: '', replyCount: 0, artefactRefs: [], createdAt: '2026-07-20T09:05:00Z' },
 ];
 
@@ -121,9 +122,11 @@ export class ChannelActivityPage extends LitElement {
   @state() private _viewMode: 'flat' | 'threaded' | 'topics' = 'flat';
   @state() private _selectedTopicId: string | null = null;
   @state() private _taskPanelCommitments: Map<string, CommitmentRecord> = new Map([
-    ['cmd-1', { state: 'OPEN', deadline: new Date(Date.now() + 86400000).toISOString(), createdAt: '2026-07-20T09:00:00Z', updatedAt: '2026-07-20T09:00:00Z' }],
-    ['cmd-2', { state: 'OPEN', deadline: new Date(Date.now() - 3600000).toISOString(), createdAt: '2026-07-20T08:00:00Z', updatedAt: '2026-07-20T08:00:00Z' }],
-    ['cmd-3', { state: 'FULFILLED', createdAt: '2026-07-20T07:00:00Z', updatedAt: '2026-07-20T10:00:00Z' }],
+    ['corr-cmd1', { state: 'OPEN', deadline: new Date(Date.now() + 86400000).toISOString(), createdAt: '2026-07-20T09:00:00Z', updatedAt: '2026-07-20T09:00:00Z' }],
+    ['corr-cmd2', { state: 'OPEN', deadline: new Date(Date.now() - 3600000).toISOString(), createdAt: '2026-07-20T08:00:00Z', updatedAt: '2026-07-20T08:00:00Z' }],
+    ['corr-cmd3', { state: 'FULFILLED', createdAt: '2026-07-20T07:00:00Z', updatedAt: '2026-07-20T10:00:00Z' }],
+    ['corr-cmd4', { state: 'DELEGATED', createdAt: '2026-07-20T06:00:00Z', updatedAt: '2026-07-20T06:30:00Z' }],
+    ['corr-cmd5', { state: 'EXPIRED', deadline: new Date(Date.now() - 86400000).toISOString(), createdAt: '2026-07-20T05:00:00Z', updatedAt: '2026-07-20T05:00:00Z' }],
     ['cmd-4', { state: 'DECLINED', createdAt: '2026-07-20T06:00:00Z', updatedAt: '2026-07-20T09:30:00Z' }],
   ]);
   @state() private _correlationSelectedId = 'corr-m1';
@@ -264,7 +267,7 @@ export class ChannelActivityPage extends LitElement {
         <div class="panel-slot">
           <blocks-channel-correlation-panel
             .messages=${CORRELATION_MESSAGES}
-            .commitments=${new Map()}
+            .commitments=${new Map([['corr-demo', { state: 'FULFILLED', createdAt: '2026-07-20T10:00:00Z', updatedAt: '2026-07-20T10:15:00Z' }]])}
             .selectedMessageId=${this._correlationSelectedId}
             @pages-event=${(e: CustomEvent) => {
               if (e.detail?.topic === 'channel:message-selected') {
