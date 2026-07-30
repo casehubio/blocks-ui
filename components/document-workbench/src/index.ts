@@ -1,6 +1,7 @@
 export { DebateFeed } from './debate-feed.js';
 export { DocumentDiff } from './document-diff.js';
 export { DocumentTimeline } from './document-timeline.js';
+export { ReviewTracker } from './review-tracker.js';
 
 export type {
   DiffSummary,
