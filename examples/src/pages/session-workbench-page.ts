@@ -30,7 +30,8 @@ const MOCK_SESSIONS: SessionResponse[] = [
   },
 ];
 
-const MOCK_TERMINAL = `\x1b[32m❯\x1b[0m claude --resume
+const MOCK_TERMINALS: Record<string, string> = {
+  'sess-a1b2': `\x1b[32m❯\x1b[0m claude --resume
 Resuming session cl-devtown-reviewer...
 
 \x1b[36mReading CLAUDE.md...\x1b[0m
@@ -50,22 +51,108 @@ The changes look focused on the PR review service. Let me check the test coverag
 [INFO] BUILD SUCCESS
 
 All tests pass. The refactoring maintains backward compatibility.
-`;
+`,
+  'sess-c3d4': `\x1b[32m❯\x1b[0m claude
+Starting new session cl-engine-worker...
 
-const MOCK_GIT_STATUS = {
-  gitRepo: true, githubRepo: 'casehubio/devtown', branch: 'issue-42-pr-review-sla',
-  pr: {
-    number: 87, title: 'feat: SLA-bounded PR review with escalation',
-    url: 'https://github.com/casehubio/devtown/pull/87', state: 'OPEN',
-    checksTotal: 5, checksPassed: 4, checksFailed: 0, checksPending: 1,
+\x1b[36mReading CLAUDE.md...\x1b[0m
+
+\x1b[33m$ mvn test -pl engine-core\x1b[0m
+[INFO] Running io.casehub.engine.core.SpiRegistryTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Running io.casehub.engine.core.ExpressionEvaluatorTest
+[INFO] Tests run: 14, Failures: 2, Errors: 0, Skipped: 0
+
+\x1b[31m[ERROR] ExpressionEvaluatorTest.shouldResolveNestedPath:42 expected:<"London"> but was:<null>\x1b[0m
+\x1b[31m[ERROR] ExpressionEvaluatorTest.shouldHandleMissingField:58 expected NPE not thrown\x1b[0m
+
+Two test failures in the expression evaluator — nested path resolution returns null when intermediate nodes are missing.
+
+Investigating...
+`,
+  'sess-e5f6': `\x1b[32m❯\x1b[0m claude -p security-review
+Running security review on casehub/ledger...
+
+\x1b[36mScanning for OWASP Top 10...\x1b[0m
+
+\x1b[33m$ grep -rn "Runtime.exec\|ProcessBuilder" src/\x1b[0m
+No matches found.
+
+\x1b[33m$ grep -rn "SELECT.*\+.*\\"" src/\x1b[0m
+No matches found — parameterised queries throughout.
+
+\x1b[32m✓\x1b[0m No command injection vectors
+\x1b[32m✓\x1b[0m No SQL injection vectors
+\x1b[33m⚠\x1b[0m JWT expiry set to 24h — consider reducing to 1h for admin tokens
+
+Review complete. 0 critical, 0 high, 1 medium finding.
+`,
+  'sess-g7h8': `\x1b[32m❯\x1b[0m claude --resume
+Resuming session cl-test-runner...
+
+\x1b[36mReading CLAUDE.md...\x1b[0m
+
+\x1b[33m$ mvn verify -pl integration-tests\x1b[0m
+[INFO] Running io.casehub.work.CaseLicycleIT
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Running io.casehub.work.SlaEscalationIT
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Running io.casehub.work.QueueRoutingIT
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 1
+[INFO] BUILD SUCCESS
+
+All integration tests pass. The skipped test (QueueRoutingIT#shouldRerouteOnPriorityChange) depends on the priority-requeue feature not yet merged.
+`,
+};
+
+const MOCK_GIT_STATUSES: Record<string, object> = {
+  'sess-a1b2': {
+    gitRepo: true, githubRepo: 'casehubio/devtown', branch: 'issue-42-pr-review-sla',
+    pr: {
+      number: 87, title: 'feat: SLA-bounded PR review with escalation',
+      url: 'https://github.com/casehubio/devtown/pull/87', state: 'OPEN',
+      checksTotal: 5, checksPassed: 4, checksFailed: 0, checksPending: 1,
+    },
+  },
+  'sess-c3d4': {
+    gitRepo: true, githubRepo: 'casehubio/engine', branch: 'issue-55-expression-spi',
+    pr: null,
+  },
+  'sess-e5f6': {
+    gitRepo: true, githubRepo: 'casehubio/ledger', branch: 'main',
+    pr: null,
+  },
+  'sess-g7h8': {
+    gitRepo: true, githubRepo: 'casehubio/work', branch: 'issue-19-queue-routing',
+    pr: {
+      number: 34, title: 'feat: queue-based routing with SLA awareness',
+      url: 'https://github.com/casehubio/work/pull/34', state: 'OPEN',
+      checksTotal: 3, checksPassed: 3, checksFailed: 0, checksPending: 0,
+    },
   },
 };
 
-const MOCK_HEALTH = [
-  { port: 3100, up: true, responseMs: 12 },
-  { port: 8080, up: true, responseMs: 45 },
-  { port: 5432, up: true, responseMs: 3 },
-];
+const MOCK_HEALTHS: Record<string, Array<{ port: number; up: boolean; responseMs: number }>> = {
+  'sess-a1b2': [
+    { port: 3100, up: true, responseMs: 12 },
+    { port: 8080, up: true, responseMs: 45 },
+    { port: 5432, up: true, responseMs: 3 },
+  ],
+  'sess-c3d4': [
+    { port: 8080, up: true, responseMs: 38 },
+    { port: 5432, up: true, responseMs: 5 },
+    { port: 6379, up: false, responseMs: 0 },
+  ],
+  'sess-e5f6': [
+    { port: 8080, up: true, responseMs: 22 },
+    { port: 5432, up: true, responseMs: 4 },
+  ],
+  'sess-g7h8': [
+    { port: 8080, up: true, responseMs: 51 },
+    { port: 5432, up: true, responseMs: 7 },
+    { port: 9090, up: true, responseMs: 15 },
+  ],
+};
 
 let nextId = 100;
 
@@ -120,21 +207,28 @@ export class ExampleSessionWorkbench extends LitElement {
       return new Response(null, { status: 204 });
     }
 
-    const outputMatch = url.match(/^\/api\/sessions\/[^/]+\/output/);
+    const outputMatch = url.match(/^\/api\/sessions\/([^/]+)\/output/);
     if (outputMatch && method === 'GET') {
-      return new Response(MOCK_TERMINAL, { status: 200, headers: { 'Content-Type': 'text/plain' } });
+      const id = outputMatch[1]!;
+      const terminal = MOCK_TERMINALS[id] ?? `Session ${id} — no output available.
+`;
+      return new Response(terminal, { status: 200, headers: { 'Content-Type': 'text/plain' } });
     }
 
-    const gitMatch = url.match(/^\/api\/sessions\/[^/]+\/git-status$/);
+    const gitMatch = url.match(/^\/api\/sessions\/([^/]+)\/git-status$/);
     if (gitMatch && method === 'GET') {
-      return new Response(JSON.stringify(MOCK_GIT_STATUS), {
+      const id = gitMatch[1]!;
+      const gitStatus = MOCK_GIT_STATUSES[id] ?? { gitRepo: false };
+      return new Response(JSON.stringify(gitStatus), {
         status: 200, headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    const healthMatch = url.match(/^\/api\/sessions\/[^/]+\/service-health$/);
+    const healthMatch = url.match(/^\/api\/sessions\/([^/]+)\/service-health$/);
     if (healthMatch && method === 'GET') {
-      return new Response(JSON.stringify(MOCK_HEALTH), {
+      const id = healthMatch[1]!;
+      const health = MOCK_HEALTHS[id] ?? [];
+      return new Response(JSON.stringify(health), {
         status: 200, headers: { 'Content-Type': 'application/json' },
       });
     }

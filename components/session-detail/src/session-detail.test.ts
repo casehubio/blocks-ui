@@ -79,6 +79,29 @@ describe('blocks-session-detail', () => {
     expect(el.sessionId).toBe('sess-42');
   });
 
+  it('fetches new session data when sessionId changes', async () => {
+    vi.mocked(fetch).mockResolvedValueOnce({
+      ok: true, text: () => Promise.resolve('output for sess-1'),
+    } as unknown as Response);
+    el.sessionId = 'sess-1';
+    await el.updateComplete;
+    await vi.waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith('/api/sessions/sess-1/output?lines=200');
+    });
+
+    vi.mocked(fetch).mockResolvedValueOnce({
+      ok: true, text: () => Promise.resolve('output for sess-2'),
+    } as unknown as Response);
+    el.sessionId = 'sess-2';
+    await el.updateComplete;
+    await vi.waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith('/api/sessions/sess-2/output?lines=200');
+    });
+    await vi.waitFor(() => {
+      expect(el._terminalOutput).toBe('output for sess-2');
+    });
+  });
+
   it('tears down timers on sessionId change', async () => {
     vi.useFakeTimers();
     vi.mocked(fetch).mockResolvedValue({
