@@ -40,6 +40,16 @@ async function bootstrap() {
   await import('./pages/session-workbench-page.js');
   await import('./pages/commitment-viz-page.js');
 
+  await import('./pages/document-diff-page.js');
+  await import('./pages/debate-feed-page.js');
+  await import('./pages/review-tracker-page.js');
+  await import('./pages/document-timeline-page.js');
+  await import('./pages/context-gauge-page.js');
+  await import('./pages/doc-picker-page.js');
+  await import('./pages/brainstorm-options-page.js');
+  await import('./pages/brainstorm-picker-page.js');
+  await import('./pages/workspace-status-page.js');
+
   app.textContent = '';
   app.appendChild(document.createElement('blocks-example-shell'));
 }

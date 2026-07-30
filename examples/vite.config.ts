@@ -6,6 +6,7 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@casehubio/blocks-ui-core', replacement: resolve(__dirname, '../packages/blocks-ui-core/src') },
+      { find: '@casehubio/blocks-ui-document-workbench', replacement: resolve(__dirname, '../components/document-workbench/src') },
       { find: '@casehubio/blocks-ui-work-item-row', replacement: resolve(__dirname, '../components/work-item-row/src') },
       { find: '@casehubio/blocks-ui-work-item-inbox', replacement: resolve(__dirname, '../components/work-item-inbox/src') },
       { find: '@casehubio/blocks-ui-work-item-detail', replacement: resolve(__dirname, '../components/work-item-detail/src') },

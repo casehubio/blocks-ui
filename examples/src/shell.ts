@@ -55,6 +55,20 @@ const NAV: NavCategory[] = [
       { id: 'trust-workbench', label: 'Trust Workbench', hash: '#composed/trust-workbench' },
     ],
   },
+  {
+    label: 'Document Workbench',
+    items: [
+      { id: 'document-diff', label: 'Document Diff', hash: '#document-workbench/document-diff' },
+      { id: 'debate-feed', label: 'Debate Feed', hash: '#document-workbench/debate-feed' },
+      { id: 'review-tracker', label: 'Review Tracker', hash: '#document-workbench/review-tracker' },
+      { id: 'document-timeline', label: 'Document Timeline', hash: '#document-workbench/document-timeline' },
+      { id: 'context-gauge', label: 'Context Gauge', hash: '#document-workbench/context-gauge' },
+      { id: 'doc-picker', label: 'Doc Picker', hash: '#document-workbench/doc-picker' },
+      { id: 'brainstorm-options', label: 'Brainstorm Options', hash: '#document-workbench/brainstorm-options' },
+      { id: 'brainstorm-picker', label: 'Brainstorm Picker', hash: '#document-workbench/brainstorm-picker' },
+      { id: 'workspace-status', label: 'Workspace Status', hash: '#document-workbench/workspace-status' },
+    ],
+  },
 ];
 
 
