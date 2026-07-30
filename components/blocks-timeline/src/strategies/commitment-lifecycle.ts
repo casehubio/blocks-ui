@@ -1,5 +1,5 @@
 import type { TimelineStrategy, StageConfig } from '../types.js';
-import { stateProgressionStrategy, QHORUS_STAGES } from './state-progression.js';
+import { stateProgressionStrategy } from './state-progression.js';
 import type { StateData, ResolveStatus } from './state-progression.js';
 
 export interface CommitmentLifecycleData {
@@ -19,13 +19,10 @@ export interface CommitmentLifecycleData {
 }
 
 export function commitmentLifecycleStrategy(options?: {
-  stages?: StageConfig[];
+  stages?: readonly StageConfig[];
   resolveStatus?: ResolveStatus;
 }): TimelineStrategy<StateData> {
-  const base = stateProgressionStrategy({
-    stages: options?.stages ?? QHORUS_STAGES,
-    resolveStatus: options?.resolveStatus,
-  });
+  const base = stateProgressionStrategy(options);
   return {
     ...base,
     transformData(raw: unknown): StateData {

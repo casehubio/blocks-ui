@@ -60,7 +60,7 @@ export function linearResolveStatus(
 }
 
 export function stateProgressionStrategy(options?: {
-  stages?: StageConfig[];
+  stages?: readonly StageConfig[];
   resolveStatus?: ResolveStatus;
 }): TimelineStrategy<StateData> {
   const stages = options?.stages ?? QHORUS_STAGES;
