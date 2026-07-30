@@ -1,0 +1,82 @@
+export interface DebateStreamEntry {
+  entryType: string;
+  content: string;
+  round: number;
+  agentRole: string;
+  timestamp?: string;
+  pointId?: string;
+  priority?: string;
+  scope?: string;
+  location?: string;
+  commitHash?: string;
+  documentPath?: string;
+}
+
+export interface Snapshot {
+  label: string;
+  round: number;
+  commitHash: string;
+  documentPath: string;
+}
+
+export interface TrailHighlight {
+  raiseRound: number | null;
+  fixRound: number | null;
+  verifyRound: number | null;
+}
+
+export interface BrainstormOptionData {
+  id: string;
+  title: string;
+  description: string;
+  tradeoffs: string;
+  status: string;
+}
+
+export interface OptionsPayload {
+  sessionId: string;
+  options: BrainstormOptionData[];
+  state: string;
+}
+
+export interface ConvergedPayload extends OptionsPayload {
+  selectedOptionId: string;
+}
+
+export interface BrainstormSessionInfo {
+  sessionId: string;
+  state: string;
+  optionCount: string;
+}
+
+export interface WorkspaceProgressPayload {
+  type: string;
+  agent?: string;
+  message?: string;
+  elapsed?: number;
+  cost?: number;
+  round?: number;
+  cumulativeCost?: number;
+  count?: number;
+  cached?: boolean;
+  finalState?: string;
+}
+
+export interface ContextUsagePayload {
+  windowSizeChars?: number;
+  effectivePercent: number;
+  thresholdExceeded?: boolean;
+  serverContributionChars?: number;
+  messageCount?: number;
+  agentReportedPercent?: number | null;
+}
+
+export interface DocEntry {
+  path: string;
+  label?: string;
+}
+
+export interface Comparison {
+  pathA: string | null;
+  pathB: string | null;
+}
