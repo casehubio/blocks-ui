@@ -82,8 +82,16 @@ TypeScript/Yarn workspace monorepo with TypeScript project references.
 ## Platform Docs
 - [Platform Index](https://raw.githubusercontent.com/casehubio/parent/main/docs/INDEX.md) — discovery index (start here)
 - [Building Platform](https://raw.githubusercontent.com/casehubio/parent/main/docs/guides/building-platform.md) — platform contributor guide
-- [UI Architecture](https://raw.githubusercontent.com/casehubio/parent/main/docs/platform/ui-architecture.md) — pages → blocks-ui → app layering
-- [This repo's deep-dive](https://raw.githubusercontent.com/casehubio/parent/main/docs/repos/casehub-blocks-ui.md)
+
+## Repo Guide
+
+This repo owns its own documentation, synced to parent via CI:
+- `docs/guides/consumer-guide.md` — for app builders: modules, APIs, quick start
+- `docs/guides/contributor-guide.md` — for platform builders: architecture, SPIs, internals
+
+Update the relevant guide in the same session when implementation changes modules, SPIs, or public APIs. Do not defer — drift compounds.
+
+Read `docs/guides/consumer-guide.md` for app-level work. Only read `docs/guides/contributor-guide.md` when modifying this repo's internals or extension points.
 
 ## Repository Role
 
