@@ -1,6 +1,8 @@
 export { toGraph } from './adapter/case-adapter.js';
 export type { AdapterResult } from './adapter/case-adapter.js';
-export { applyPropertyEdit } from './adapter/yaml-editor.js';
+export { applyPropertyEdit, addElement, removeElement, switchBindingTarget } from './adapter/yaml-editor.js';
+export { GitHubBackend } from './persistence/github-backend.js';
+export type { GitHubBackendConfig } from './persistence/github-backend.js';
 export { toReactFlowGraph } from './adapter/react-flow-transform.js';
 export type { RFNode, RFEdge } from './adapter/react-flow-transform.js';
 export { registerCaseStencils } from './stencils/index.js';

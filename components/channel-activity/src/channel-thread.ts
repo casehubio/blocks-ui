@@ -16,6 +16,8 @@ export class ChannelThreadElement extends LitElement {
   @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
   @property({ attribute: false }) formatSender: (sender: string, actorType: ActorType) => string = (s) => s;
 
+  @property({ type: String }) currentActorId?: string;
+
   static override readonly styles = css`
     :host {
       display: block;
@@ -69,7 +71,8 @@ export class ChannelThreadElement extends LitElement {
                         .reactions=${this.reactions.filter(r => r.messageId === this.rootMessage.id)}
                         .commitmentState=${this.commitmentState}
                         .renderContent=${this.renderContent}
-                        .formatSender=${this.formatSender}></blocks-channel-message>
+                        .formatSender=${this.formatSender}
+                        .currentActorId=${this.currentActorId}></blocks-channel-message>
       </div>
       ${this.replies.length > 0 ? html`
         <div class="thread-header">
@@ -88,7 +91,8 @@ export class ChannelThreadElement extends LitElement {
               <blocks-channel-message .message=${r}
                               .reactions=${this.reactions.filter(rx => rx.messageId === r.id)}
                               .renderContent=${this.renderContent}
-                              .formatSender=${this.formatSender}></blocks-channel-message>
+                              .formatSender=${this.formatSender}
+                              .currentActorId=${this.currentActorId}></blocks-channel-message>
             </div>
           `)}
         ` : nothing}

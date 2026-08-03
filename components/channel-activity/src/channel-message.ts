@@ -24,6 +24,8 @@ export class ChannelMessageElement extends LitElement {
   }
   @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
 
+  @property({ type: String }) currentActorId?: string;
+
   @state() private _expanded = false;
 
   static override readonly styles = css`
@@ -295,7 +297,7 @@ export class ChannelMessageElement extends LitElement {
         </div>
       ` : nothing}
       ${this._expanded ? this._renderExpanded() : nothing}
-      <blocks-channel-reaction-bar .reactions=${this.reactions} .messageId=${m.id}></blocks-channel-reaction-bar>
+      <blocks-channel-reaction-bar .reactions=${this.reactions} .messageId=${m.id} .currentActorId=${this.currentActorId}></blocks-channel-reaction-bar>
     `;
   }
 }

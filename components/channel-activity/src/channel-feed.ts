@@ -33,6 +33,8 @@ export class ChannelFeedElement extends LitElement {
   @property({ attribute: false }) renderContent?: (message: QhorusMessage) => TemplateResult | undefined;
   @property({ attribute: false }) formatSender?: (sender: string, actorType: ActorType) => string;
 
+  @property({ type: String }) currentActorId?: string;
+
   @state() private _prevMessageCount = 0;
   @state() private _showStalePrompt = false;
   @state() private _staleCursorId?: string;
@@ -336,7 +338,8 @@ export class ChannelFeedElement extends LitElement {
                                   .showActorBadge=${group.messages.indexOf(msg) === 0}
                                   .channelName=${this.channelName}
                                   .renderContent=${this.renderContent}
-                                  .formatSender=${this.formatSender}>
+                                  .formatSender=${this.formatSender}
+                                  .currentActorId=${this.currentActorId}>
                   </blocks-channel-message>
                 </div>
               `)}
@@ -363,6 +366,7 @@ export class ChannelFeedElement extends LitElement {
                          .selectedMessageId=${this.selectedMessageId}
                          .renderContent=${this.renderContent}
                          .formatSender=${this.formatSender}
+                         .currentActorId=${this.currentActorId}
                          data-message-id=${msg.id}
                          data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
           </blocks-channel-thread>
@@ -374,7 +378,8 @@ export class ChannelFeedElement extends LitElement {
                             .channelName=${this.channelName}
                             .parentMessage=${msg.inReplyTo ? this.messages.find(m => m.id === msg.inReplyTo) : undefined}
                             .renderContent=${this.renderContent}
-                            .formatSender=${this.formatSender}>
+                            .formatSender=${this.formatSender}
+                            .currentActorId=${this.currentActorId}>
             </blocks-channel-message>
           </div>
         `)}

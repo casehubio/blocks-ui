@@ -77,16 +77,17 @@ Core shared utilities re-exported from pages and domain-specific to blocks-ui:
 ### graph-stencil-case (`packages/graph-stencil-case`)
 
 Case domain adapter for the visual diagram editor (epic #103). Exports:
-- `CaseAdapter` — implements `DomainAdapter<string>` from `@casehubio/graph-core`. `toGraph(yamlSource)` parses case definition YAML into `GraphModel`. `applyEdit(yamlSource, edit)` applies structural edits back to YAML. Currently stubbed.
-- `caseStencils` — array of `StencilDescriptor` objects defining the case domain grammar:
-  - **binding** — can be contained by worker, outbound to worker
-  - **worker** — container for bindings, connects to/from bindings
-  - **milestone** — connects from bindings/goals, outbound to bindings
-  - **goal** — terminal node (success/failure kind), inbound only
-  - **subcase** — sub-case reference (namespace/name/version), inbound only
-- `CaseDefinition` type
+- `toGraph(yaml)` → `AdapterResult { model: GraphModel, yamlPaths: Map }` — parses YAML into graph model with YAML path metadata for editing
+- `applyPropertyEdit(yaml, nodePath, field, value)` → new YAML string — CST-preserving property mutation
+- `addElement(yaml, elementType, defaults?)` → new YAML string — adds binding/worker/milestone/goal with generated defaults
+- `removeElement(yaml, nodePath)` → new YAML string — removes element by YAML path
+- `switchBindingTarget(yaml, bindingPath, targetType)` → new YAML string — switches binding target (capability/subCase/humanTask)
+- `toReactFlowGraph(model)` → `{ nodes: RFNode[], edges: RFEdge[] }` — transforms GraphModel to React Flow format
+- `registerCaseStencils()` — registers 5 stencil grammars + render functions (binding, worker, milestone, goal, subcase)
+- `GitHubBackend` — `PersistenceBackend` implementation using GitHub Contents API
+- `CaseDefinition` type (generated from CaseDefinition.yaml JSON Schema)
 
-Each stencil defines grammar rules (containment, connection min/max/allowedFrom/allowedTo) and JSON Schema property definitions.
+Each stencil defines grammar rules (containment, connection min/max/allowedFrom/allowedTo) and Lit render functions for React Flow custom nodes.
 
 ### graph-stencil-swf (`packages/graph-stencil-swf`)
 

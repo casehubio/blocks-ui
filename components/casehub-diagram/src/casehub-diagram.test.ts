@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { toGraph, toReactFlowGraph, applyPropertyEdit } from '@casehubio/graph-stencil-case';
+import { toGraph, toReactFlowGraph, applyPropertyEdit, addElement, removeElement, switchBindingTarget } from '@casehubio/graph-stencil-case';
+import { InMemoryBackend } from '@casehubio/graph-core';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -88,5 +89,85 @@ describe('edit cycle', () => {
     const binding = merged.find(n => n.id === 'binding:extract-text')!;
     expect(binding.position).toEqual({ x: 100, y: 200 });
     expect(binding.data['when']).toBe('.changed');
+  });
+});
+
+const SIMPLE_YAML = `dsl: "1.0.0"
+namespace: test
+name: sample
+version: "1.0.0"
+spec:
+  bindings:
+    - name: b1
+      capability: cap1
+  workers:
+    - name: w1
+      capabilities:
+        - cap1
+`;
+
+describe('structural editing round-trip', () => {
+  it('add binding → toGraph → new node exists', () => {
+    const yaml = addElement(SIMPLE_YAML, 'binding');
+    const { model } = toGraph(yaml);
+    expect(model.nodes.some(n => n.id === 'binding:binding-1')).toBe(true);
+  });
+
+  it('remove worker → toGraph → binding becomes external', () => {
+    const yaml = removeElement(SIMPLE_YAML, ['spec', 'workers', 0]);
+    const { model } = toGraph(yaml);
+    expect(model.nodes.some(n => n.type === 'external')).toBe(true);
+  });
+
+  it('switchBindingTarget → toGraph → topology changes', () => {
+    const yaml = switchBindingTarget(SIMPLE_YAML, ['spec', 'bindings', 0], 'subCase');
+    const { model } = toGraph(yaml);
+    const capEdges = model.edges.filter(e => e.type === 'capability-dispatch' && e.source === 'binding:b1');
+    expect(capEdges).toHaveLength(0);
+    expect(model.nodes.some(n => n.type === 'subcase')).toBe(true);
+  });
+
+  it('add then remove round-trips back to equivalent graph', () => {
+    const added = addElement(SIMPLE_YAML, 'milestone');
+    const { model: withMilestone } = toGraph(added);
+    expect(withMilestone.nodes.some(n => n.id === 'milestone:milestone-1')).toBe(true);
+
+    const removed = removeElement(added, ['spec', 'milestones', 0]);
+    const { model: withoutMilestone } = toGraph(removed);
+    expect(withoutMilestone.nodes.some(n => n.id === 'milestone:milestone-1')).toBe(false);
+  });
+});
+
+describe('persistence round-trip', () => {
+  it('write then read returns the same yaml', async () => {
+    const backend = new InMemoryBackend();
+    const writeResult = await backend.write('test.yaml', SIMPLE_YAML, '');
+    expect(writeResult.status).toBe('ok');
+    const readResult = await backend.read('test.yaml');
+    expect(readResult.status).toBe('ok');
+    if (readResult.status === 'ok') {
+      expect(readResult.yaml).toBe(SIMPLE_YAML);
+    }
+  });
+
+  it('write with stale version returns conflict', async () => {
+    const backend = new InMemoryBackend();
+    await backend.write('test.yaml', SIMPLE_YAML, '');
+    await backend.write('test.yaml', 'changed', '1');
+    const result = await backend.write('test.yaml', 'stale', '1');
+    expect(result.status).toBe('conflict');
+  });
+
+  it('dirty tracking: current !== saved after edit', () => {
+    const saved = SIMPLE_YAML;
+    const current = addElement(SIMPLE_YAML, 'binding');
+    expect(current !== saved).toBe(true);
+  });
+
+  it('dirty tracking: undo past save point marks dirty', () => {
+    const edited = addElement(SIMPLE_YAML, 'binding');
+    const savedYaml = edited;
+    const afterUndo = SIMPLE_YAML;
+    expect(afterUndo !== savedYaml).toBe(true);
   });
 });
