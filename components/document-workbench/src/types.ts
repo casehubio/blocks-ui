@@ -88,3 +88,28 @@ export interface Comparison {
   pathA: string | null;
   pathB: string | null;
 }
+
+export interface ThreadStreamEntry {
+  threadId: string;
+  threadAction: string;
+  content: string;
+  agentRole: string;
+  sender?: string;
+  timestamp?: string;
+  anchor?: ThreadAnchor;
+}
+
+export interface ThreadAnchor {
+  side: string;
+  startLine: number;
+  endLine: number;
+  selectedText: string;
+}
+
+export interface ThreadInfo {
+  threadId: string;
+  anchor: ThreadAnchor;
+  status: string;
+  entries: ThreadStreamEntry[];
+  createdBy: string;
+}

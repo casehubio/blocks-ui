@@ -48,6 +48,13 @@ export class DocumentDiff extends LitElement {
   private _pendingPathA: string | null = null;
   private _pendingPathB: string | null = null;
   private _cleanups: (() => void)[] = [];
+  private _threadAnchors: Array<{
+    threadId: string;
+    side: string;
+    startLine: number;
+    endLine: number;
+    status: string;
+  }> = [];
 
   private _$(id: string): HTMLElement {
     return (this.renderRoot as ShadowRoot).getElementById(id)!;
@@ -286,6 +293,15 @@ export class DocumentDiff extends LitElement {
       font-weight: 700;
       font-size: 11px;
     }
+
+    .thread-highlight-flash {
+      animation: thread-flash 1.5s ease-out;
+    }
+
+    @keyframes thread-flash {
+      0% { background: var(--pages-accent-3, #c7d2fe); }
+      100% { background: transparent; }
+    }
   `;
 
   override createRenderRoot(): HTMLElement | DocumentFragment {
@@ -351,7 +367,43 @@ export class DocumentDiff extends LitElement {
         if (this._pathA && payload.path === this._pathA) this.loadFile('a', payload.path);
         if (this._pathB && payload.path === this._pathB) this.loadFile('b', payload.path);
       }),
+      onPagesEvent<{ threadId: string; anchor: any; createdBy: string }>(
+        document, 'thread-created', (payload) => {
+          if (payload.anchor && payload.anchor.side) {
+            this._threadAnchors.push({
+              threadId: payload.threadId,
+              side: payload.anchor.side,
+              startLine: payload.anchor.startLine,
+              endLine: payload.anchor.endLine,
+              status: 'OPEN',
+            });
+            this._renderThreadGutterMarkers();
+          }
+        },
+      ),
+      onPagesEvent<{ threadId: string }>(document, 'thread-resolved', (payload) => {
+        const anchor = this._threadAnchors.find(a => a.threadId === payload.threadId);
+        if (anchor) {
+          anchor.status = 'RESOLVED';
+          this._renderThreadGutterMarkers();
+        }
+      }),
     );
+
+    const onThreadFocused = (e: Event) => {
+      const { side, startLine } = (e as CustomEvent).detail;
+      const panelKey = side === 'A' ? 'a' : 'b';
+      const render = this._$(`render-${panelKey}`);
+      if (!render) return;
+      const children = [...render.children];
+      if (startLine >= 0 && startLine < children.length) {
+        children[startLine].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        children[startLine].classList.add('thread-highlight-flash');
+        setTimeout(() => children[startLine].classList.remove('thread-highlight-flash'), 1500);
+      }
+    };
+    document.addEventListener('thread-focused', onThreadFocused);
+    this._cleanups.push(() => document.removeEventListener('thread-focused', onThreadFocused));
 
     for (const p of ['a', 'b'] as const) {
       this._$(`label-${p}`).addEventListener('input', () => {
@@ -567,6 +619,33 @@ export class DocumentDiff extends LitElement {
 
   clearHighlight(): void {
     this.renderRoot.querySelectorAll('.section-highlight-bar').forEach(el => el.remove());
+  }
+
+  private _renderThreadGutterMarkers(): void {
+    this.renderRoot.querySelectorAll('.thread-gutter-marker').forEach(el => el.remove());
+    for (const anchor of this._threadAnchors) {
+      const panelKey = anchor.side === 'A' ? 'a' : 'b';
+      const render = this._$(`render-${panelKey}`);
+      if (!render) continue;
+      const children = [...render.children];
+      if (anchor.startLine >= children.length) continue;
+      const target = children[anchor.startLine];
+      const marker = document.createElement('div');
+      marker.className = 'thread-gutter-marker';
+      marker.dataset.threadId = anchor.threadId;
+      marker.style.cssText = `position:absolute;left:-18px;width:12px;height:${Math.max(1, anchor.endLine - anchor.startLine + 1) * 1.5}em;border-radius:2px;cursor:pointer;background:${anchor.status === 'OPEN' ? 'var(--pages-accent-9, #6366f1)' : 'var(--pages-neutral-5, #d4d4d4)'};opacity:0.6;`;
+      marker.title = `Thread ${anchor.status === 'OPEN' ? '(open)' : '(resolved)'}`;
+      marker.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.dispatchEvent(new CustomEvent('thread-selected', {
+          bubbles: true,
+          composed: true,
+          detail: { threadId: anchor.threadId },
+        }));
+      });
+      target.style.position = 'relative';
+      target.appendChild(marker);
+    }
   }
 
   async selectFile(panel: 'a' | 'b'): Promise<void> {

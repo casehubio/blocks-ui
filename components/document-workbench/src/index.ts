@@ -7,6 +7,7 @@ export { DocPicker } from './doc-picker.js';
 export { BrainstormOptions } from './brainstorm-options.js';
 export { BrainstormPicker } from './brainstorm-picker.js';
 export { WorkspaceStatus } from './workspace-status.js';
+export { SelectionThreads } from './selection-threads.js';
 
 export type {
   DiffSummary,
@@ -21,4 +22,7 @@ export type {
   ContextUsagePayload,
   DocEntry,
   Comparison,
+  ThreadStreamEntry,
+  ThreadAnchor,
+  ThreadInfo,
 } from './types.js';
