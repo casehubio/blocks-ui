@@ -1415,3 +1415,261 @@ describe('queue SSE lifecycle', () => {
     expect(inbox._queueSSECleanup).toBeNull();
   });
 });
+
+describe('column expansion (#105)', () => {
+  let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
+
+  const richItems: WorkItemRootResponse[] = [
+    {
+      item: {
+        id: 'wi-rich-1',
+        title: 'Rich Item',
+        description: null,
+        status: 'IN_PROGRESS',
+        priority: 'HIGH',
+        assigneeId: 'user-1',
+        candidateGroups: null,
+        candidateUsers: null,
+        requiredCapabilities: null,
+        createdBy: null,
+        createdAt: '2026-08-01T10:00:00Z',
+        updatedAt: '2026-08-04T14:00:00Z',
+        assignedAt: null,
+        startedAt: null,
+        completedAt: null,
+        suspendedAt: null,
+        version: 1,
+        labels: [{ name: 'domain', value: 'aml' }, { name: 'risk-level', value: 'high' }],
+        types: ['review'],
+        category: 'review',
+        owner: 'system',
+        scope: null,
+        formKey: null,
+        templateId: null,
+        inputDataSchema: null,
+        outputDataSchema: null,
+        payload: null,
+        resolution: null,
+        outcome: null,
+        permittedOutcomes: null,
+        confidenceScore: null,
+        claimDeadline: null,
+        expiresAt: '2026-08-10T23:59:59Z',
+        followUpDate: null,
+        delegationDeclineTarget: null,
+        delegationChain: null,
+        priorStatus: null,
+        callerRef: null,
+        excludedUsers: null,
+        percentComplete: 60,
+        statusNote: 'Under review by senior analyst',
+      },
+      childCount: 0,
+      completedCount: null,
+      requiredCount: null,
+      groupStatus: null,
+    },
+    {
+      item: {
+        id: 'wi-rich-2',
+        title: 'Null Fields Item',
+        description: null,
+        status: 'PENDING',
+        priority: 'LOW',
+        assigneeId: null,
+        candidateGroups: 'compliance',
+        candidateUsers: null,
+        requiredCapabilities: null,
+        createdBy: null,
+        createdAt: '2026-08-03T08:00:00Z',
+        updatedAt: '2026-08-03T08:00:00Z',
+        assignedAt: null,
+        startedAt: null,
+        completedAt: null,
+        suspendedAt: null,
+        version: 1,
+        labels: [],
+        types: ['investigation'],
+        category: 'investigation',
+        owner: 'system',
+        scope: null,
+        formKey: null,
+        templateId: null,
+        inputDataSchema: null,
+        outputDataSchema: null,
+        payload: null,
+        resolution: null,
+        outcome: null,
+        permittedOutcomes: null,
+        confidenceScore: null,
+        claimDeadline: null,
+        expiresAt: null,
+        followUpDate: null,
+        delegationDeclineTarget: null,
+        delegationChain: null,
+        priorStatus: null,
+        callerRef: null,
+        excludedUsers: null,
+        percentComplete: null,
+        statusNote: null,
+      },
+      childCount: 0,
+      completedCount: null,
+      requiredCount: null,
+      groupStatus: null,
+    },
+  ];
+
+  beforeEach(async () => {
+    el = document.createElement('blocks-work-item-inbox') as any;
+    el.identity = identity;
+    el.data = richItems;
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+  });
+
+  afterEach(() => el.remove());
+
+  it('priority column is visible by default', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const priorityConfig = table.columnConfig.find((c: any) => c.id === 'priority');
+    expect(priorityConfig).toBeDefined();
+    expect(priorityConfig.visible).not.toBe(false);
+  });
+
+  it('percentComplete column exists in dataset', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'percentComplete');
+    expect(col).toBeDefined();
+    expect(row.number(col.id)).toBe(60);
+  });
+
+  it('percentComplete column is hidden by default (toggleable)', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const config = table.columnConfig.find((c: any) => c.id === 'percentComplete');
+    expect(config).toBeDefined();
+    expect(config.visible).toBe(false);
+  });
+
+  it('statusNote column exists in dataset', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'statusNote');
+    expect(col).toBeDefined();
+    expect(row.text(col.id)).toBe('Under review by senior analyst');
+  });
+
+  it('statusNote column is hidden by default', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const config = table.columnConfig.find((c: any) => c.id === 'statusNote');
+    expect(config).toBeDefined();
+    expect(config.visible).toBe(false);
+  });
+
+  it('expiresAt column exists in dataset', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'expiresAt');
+    expect(col).toBeDefined();
+  });
+
+  it('expiresAt column is hidden by default', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const config = table.columnConfig.find((c: any) => c.id === 'expiresAt');
+    expect(config).toBeDefined();
+    expect(config.visible).toBe(false);
+  });
+
+  it('assigneeId column exists in dataset', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'assigneeId');
+    expect(col).toBeDefined();
+    expect(row.text(col.id)).toBe('user-1');
+  });
+
+  it('assigneeId column is hidden by default', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const config = table.columnConfig.find((c: any) => c.id === 'assigneeId');
+    expect(config).toBeDefined();
+    expect(config.visible).toBe(false);
+  });
+
+  it('labels column exists in dataset', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'labels');
+    expect(col).toBeDefined();
+  });
+
+  it('labels column is hidden by default', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const config = table.columnConfig.find((c: any) => c.id === 'labels');
+    expect(config).toBeDefined();
+    expect(config.visible).toBe(false);
+  });
+
+  it('has column renderer for percentComplete', () => {
+    const inbox = el as any;
+    const renderers: Map<any, any> = inbox._columnRenderers;
+    const hasRenderer = Array.from(renderers.keys()).some((k: any) => k === 'percentComplete');
+    expect(hasRenderer).toBe(true);
+  });
+
+  it('has column renderer for labels', () => {
+    const inbox = el as any;
+    const renderers: Map<any, any> = inbox._columnRenderers;
+    const hasRenderer = Array.from(renderers.keys()).some((k: any) => k === 'labels');
+    expect(hasRenderer).toBe(true);
+  });
+
+  it('has column renderer for expiresAt', () => {
+    const inbox = el as any;
+    const renderers: Map<any, any> = inbox._columnRenderers;
+    const hasRenderer = Array.from(renderers.keys()).some((k: any) => k === 'expiresAt');
+    expect(hasRenderer).toBe(true);
+  });
+
+  it('has column renderer for priority', () => {
+    const inbox = el as any;
+    const renderers: Map<any, any> = inbox._columnRenderers;
+    const hasRenderer = Array.from(renderers.keys()).some((k: any) => k === 'priority');
+    expect(hasRenderer).toBe(true);
+  });
+
+  it('percentComplete renderer handles null values', async () => {
+    (el as any).activeTab = 'all';
+    await (el as any).updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[1];
+    const col = ds.columns.find((c: any) => c.id === 'percentComplete');
+    expect(row.cell(col.id).type).toBe('NULL');
+  });
+
+  it('labels getValue serialises label array to comma-separated string', () => {
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[0];
+    const col = ds.columns.find((c: any) => c.id === 'labels');
+    const val = row.text(col.id);
+    expect(val).toContain('aml');
+    expect(val).toContain('high');
+  });
+
+  it('labels getValue returns empty string for empty labels', async () => {
+    (el as any).activeTab = 'all';
+    await (el as any).updateComplete;
+    const table = el.shadowRoot!.querySelector('pages-table') as any;
+    const ds = table.dataSet;
+    const row = ds.rows[1];
+    const col = ds.columns.find((c: any) => c.id === 'labels');
+    expect(row.text(col.id)).toBe('');
+  });
+});

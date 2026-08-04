@@ -44,6 +44,11 @@ const STATUS_COL = columnId('status');
 const CATEGORY_COL = columnId('category');
 const CREATED_COL = columnId('created');
 const PRIORITY_COL = columnId('priority');
+const PERCENT_COL = columnId('percentComplete');
+const STATUS_NOTE_COL = columnId('statusNote');
+const EXPIRES_COL = columnId('expiresAt');
+const ASSIGNEE_COL = columnId('assigneeId');
+const LABELS_COL = columnId('labels');
 
 const INBOX_COL_DEFS = [
   { id: ITEM_ID_COL, type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.id },
@@ -52,15 +57,25 @@ const INBOX_COL_DEFS = [
   { id: CATEGORY_COL, name: 'Category', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.category },
   { id: CREATED_COL, name: 'Created', type: ColumnType.DATE, getValue: (row: WorkItemRootResponse) => row.item.createdAt },
   { id: PRIORITY_COL, type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.priority },
+  { id: PERCENT_COL, name: 'Progress', type: ColumnType.NUMBER, getValue: (row: WorkItemRootResponse) => row.item.percentComplete },
+  { id: STATUS_NOTE_COL, name: 'Note', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.statusNote },
+  { id: EXPIRES_COL, name: 'Deadline', type: ColumnType.DATE, getValue: (row: WorkItemRootResponse) => row.item.expiresAt },
+  { id: ASSIGNEE_COL, name: 'Assignee', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.assigneeId },
+  { id: LABELS_COL, name: 'Labels', type: ColumnType.TEXT, getValue: (row: WorkItemRootResponse) => row.item.labels.map(l => l.value ?? l.name).join(', ') },
 ] as const;
 
 const INBOX_COL_CONFIG: readonly TableColumnConfig[] = [
   { id: ITEM_ID_COL, visible: false },
   { id: TITLE_COL, sortable: true, width: '3fr' },
   { id: STATUS_COL, sortable: true, width: '1fr' },
+  { id: PRIORITY_COL, sortable: true, width: '80px' },
   { id: CATEGORY_COL, sortable: true, width: '1fr' },
   { id: CREATED_COL, sortable: true, width: '1fr' },
-  { id: PRIORITY_COL, visible: false },
+  { id: PERCENT_COL, sortable: true, width: '120px', visible: false },
+  { id: STATUS_NOTE_COL, sortable: true, width: '1fr', visible: false },
+  { id: EXPIRES_COL, sortable: true, width: '1fr', visible: false },
+  { id: ASSIGNEE_COL, sortable: true, width: '1fr', visible: false },
+  { id: LABELS_COL, sortable: true, width: '1fr', visible: false },
 ];
 
 const WorkItemInboxBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
@@ -115,11 +130,23 @@ export class WorkItemInbox extends WorkItemInboxBase {
     cancelled: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
   };
 
+  private static _priorityColors: Record<string, string> = {
+    urgent: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
+    high: 'background: var(--pages-warning-4, #fef3c7); color: var(--pages-warning-11, #92400e);',
+    medium: 'background: var(--pages-info-4, #dbeafe); color: var(--pages-info-11, #0369a1);',
+    low: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
+  };
+
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
       const colors = WorkItemInbox._statusColors[status.toLowerCase()] ?? '';
       return html`<span style="display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; ${colors}">${status}</span>`;
+    }],
+    [PRIORITY_COL, (cell: CellValue) => {
+      const priority = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
+      const colors = WorkItemInbox._priorityColors[priority.toLowerCase()] ?? '';
+      return html`<span style="display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; ${colors}">${priority}</span>`;
     }],
     [CREATED_COL, (cell: CellValue) => {
       if (cell.type === 'NULL') return html`<span>—</span>`;
@@ -135,6 +162,25 @@ export class WorkItemInbox extends WorkItemInboxBase {
       if (diffHours < 24) return html`<span>${diffHours}h ago</span>`;
       if (diffDays < 7) return html`<span>${diffDays}d ago</span>`;
       return html`<span>${date.toLocaleDateString()}</span>`;
+    }],
+    [PERCENT_COL, (cell: CellValue) => {
+      if (cell.type === 'NULL') return html`<span>—</span>`;
+      const pct = (cell as { value: number }).value;
+      return html`<span role="img" aria-label="${pct}% complete" style="display: inline-flex; align-items: center; gap: 6px;"><span style="display: inline-block; width: 60px; height: 6px; border-radius: 3px; background: var(--pages-neutral-4, #e5e5e5); overflow: hidden;"><span style="display: block; height: 100%; width: ${pct}%; border-radius: 3px; background: var(--pages-accent-9, #0066cc);"></span></span><span style="font-size: 11px; color: var(--pages-neutral-11, #555555);">${pct}%</span></span>`;
+    }],
+    [EXPIRES_COL, (cell: CellValue) => {
+      if (cell.type === 'NULL') return html`<span>—</span>`;
+      const date = (cell as { value: Date }).value;
+      const now = new Date();
+      const overdue = date.getTime() < now.getTime();
+      const style = overdue ? 'color: var(--pages-danger-11, #991b1b); font-weight: 600;' : '';
+      return html`<span style="${style}">${date.toLocaleDateString()}</span>`;
+    }],
+    [LABELS_COL, (cell: CellValue) => {
+      const text = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
+      if (!text) return html`<span>—</span>`;
+      const tags = text.split(', ');
+      return html`<span style="display: inline-flex; gap: 4px; flex-wrap: wrap;">${tags.map(t => html`<span style="display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 10px; background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);">${t}</span>`)}</span>`;
     }],
   ]);
 
