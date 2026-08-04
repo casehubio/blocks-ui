@@ -1,5 +1,6 @@
-import { html, type TemplateResult } from 'lit-html';
-import type { StencilGrammar } from '@casehubio/graph-core';
+import { html } from 'lit-html';
+import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
+import type { StencilTemplate } from '@casehubio/graph-renderer';
 
 export const milestoneGrammar: StencilGrammar = {
   type: 'milestone',
@@ -9,7 +10,8 @@ export const milestoneGrammar: StencilGrammar = {
   },
 };
 
-export function renderMilestone(data: Record<string, unknown>): TemplateResult {
+export function renderMilestone(node: GraphNode, _decoration?: NodeDecoration): StencilTemplate {
+  const data = node.properties;
   const name = String(data['name'] ?? '');
   const sla = data['slaDuration'] ? String(data['slaDuration']) : '';
 

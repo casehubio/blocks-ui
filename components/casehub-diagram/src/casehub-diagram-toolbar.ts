@@ -6,6 +6,9 @@ export class CasehubDiagramToolbar extends LitElement {
   @property({ type: Boolean }) dirty = false;
   @property({ type: Boolean }) saving = false;
   @property({ type: Boolean }) hasBackend = false;
+  @property({ type: Boolean }) runtimeAvailable = false;
+  @property({ type: String }) mode: 'design' | 'runtime' = 'design';
+  @property({ type: Number }) staleSeconds = 0;
 
   static override styles = css`
     :host { display: flex; align-items: center; gap: 8px; padding: 4px 12px; border-bottom: 1px solid var(--pages-border-color, #ddd); height: 32px; box-sizing: border-box; font-family: var(--pages-font-family, system-ui, sans-serif); }
@@ -18,20 +21,42 @@ export class CasehubDiagramToolbar extends LitElement {
     button:hover:not(:disabled) { background: var(--pages-surface-raised, #f5f5f5); }
     button:disabled { opacity: 0.4; cursor: default; }
     .dirty-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pages-warning-color, #f59e0b); }
+    .mode-toggle[aria-pressed="true"] { background: var(--pages-accent-subtle, #e8f0fe); border-color: var(--pages-accent-color, #1a73e8); color: var(--pages-accent-color, #1a73e8); }
+    .spacer { flex: 1; }
+    .stale-badge { font-size: 11px; color: var(--pages-warning-color, #f59e0b); }
   `;
 
   override render() {
-    if (!this.hasBackend) return nothing;
-
-    return html`
+    const saveSection = this.hasBackend ? html`
       <button ?disabled=${!this.dirty || this.saving} @click=${this._save}>
         ${this.saving ? 'Saving…' : 'Save'}
       </button>
       ${this.dirty ? html`<span class="dirty-dot"></span>` : nothing}
-    `;
+    ` : nothing;
+
+    const modeSection = this.runtimeAvailable ? html`
+      <span class="spacer"></span>
+      <button class="mode-toggle"
+        aria-pressed=${this.mode === 'runtime'}
+        @click=${this._toggleMode}>
+        ${this.mode === 'design' ? '⚡ Runtime' : '✏️ Design'}
+      </button>
+      ${this.staleSeconds > 0 ? html`<span class="stale-badge">⚠ stale (${this.staleSeconds}s ago)</span>` : nothing}
+    ` : nothing;
+
+    return html`${saveSection}${modeSection}`;
   }
 
   private _save(): void {
     this.dispatchEvent(new CustomEvent('toolbar-save', { bubbles: true, composed: true }));
+  }
+
+  private _toggleMode(): void {
+    const newMode = this.mode === 'design' ? 'runtime' : 'design';
+    this.dispatchEvent(new CustomEvent('toolbar-mode-change', {
+      detail: { mode: newMode },
+      bubbles: true,
+      composed: true,
+    }));
   }
 }

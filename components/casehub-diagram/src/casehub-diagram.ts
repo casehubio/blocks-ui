@@ -2,15 +2,17 @@ import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import {
   toGraph,
-  toReactFlowGraph,
   registerCaseStencils,
   applyPropertyEdit,
   addElement,
   removeElement,
   switchBindingTarget,
 } from '@casehubio/graph-stencil-case';
-import type { AdapterResult, RFNode, RFEdge } from '@casehubio/graph-stencil-case';
-import { computeElkLayout } from '@casehubio/graph-renderer';
+import type { AdapterResult, CaseRuntimeState } from '@casehubio/graph-stencil-case';
+import { toDecorations } from '@casehubio/graph-stencil-case';
+import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
+import type { ElkLayoutResult } from '@casehubio/graph-renderer';
+import type { Node, Edge } from '@xyflow/react';
 import { edgesOf } from '@casehubio/graph-core';
 import type { PersistenceBackend } from '@casehubio/graph-core';
 import '@casehubio/graph-renderer';
@@ -35,9 +37,10 @@ export class CasehubDiagram extends LitElement {
   @property({ attribute: false }) schema: Record<string, unknown> = {};
   @property({ attribute: false }) backend: PersistenceBackend | null = null;
   @property() uri = '';
+  @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;
 
-  @state() private _nodes: RFNode[] = [];
-  @state() private _edges: RFEdge[] = [];
+  @state() private _nodes: Node[] = [];
+  @state() private _edges: Edge[] = [];
   @state() private _error = '';
   @state() private _selectedNodeId = '';
   @state() private _selectedData: Record<string, unknown> = {};
@@ -45,6 +48,8 @@ export class CasehubDiagram extends LitElement {
   @state() private _saving = false;
   @state() private _showConflict = false;
   @state() private _confirmMessage = '';
+  @state() private _mode: 'design' | 'runtime' = 'design';
+  @state() private _staleSeconds = 0;
 
   private _currentYaml = '';
   private _savedYaml = '';
@@ -54,6 +59,7 @@ export class CasehubDiagram extends LitElement {
   private _redoStack: string[] = [];
   private _renderInProgress = false;
   private _pendingRenderYaml = '';
+  private _lastLayout: ElkLayoutResult | undefined;
   private _conflictVersion = '';
   private _pendingConfirm: ((v: boolean) => void) | null = null;
 
@@ -98,6 +104,22 @@ export class CasehubDiagram extends LitElement {
     if ((changed.has('backend') || changed.has('uri')) && this.backend && this.uri) {
       await this._load();
     }
+    if (changed.has('runtimeState')) {
+      if (this.runtimeState === null) {
+        this._mode = 'design';
+        this._staleSeconds = 0;
+        if (this._adapterResult) {
+          const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout);
+          this._nodes = nodes;
+          this._edges = edges;
+        }
+      } else {
+        this._updateStaleness();
+        if (this._mode === 'runtime') {
+          this._applyDecorations();
+        }
+      }
+    }
   }
 
   private async _fullRender(yamlStr: string): Promise<void> {
@@ -109,8 +131,10 @@ export class CasehubDiagram extends LitElement {
     try {
       this._error = '';
       this._adapterResult = toGraph(yamlStr);
-      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model);
-      this._nodes = await computeElkLayout(nodes, edges, { direction: 'DOWN', spacing: 60 }) as RFNode[];
+      this._lastLayout = await computeElkLayout(this._adapterResult.model, { direction: 'DOWN', spacing: 60 });
+      const decorations = this._mode === 'runtime' && this.runtimeState ? toDecorations(this.runtimeState) : undefined;
+      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
+      this._nodes = nodes;
       this._edges = edges;
     } catch (e) {
       this._error = String(e);
@@ -130,12 +154,9 @@ export class CasehubDiagram extends LitElement {
     try {
       this._error = '';
       this._adapterResult = toGraph(yamlStr);
-      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model);
-      const posMap = new Map(this._nodes.map(n => [n.id, n.position]));
-      this._nodes = nodes.map(n => ({
-        ...n,
-        position: posMap.get(n.id) ?? n.position,
-      }));
+      const decorations = this._mode === 'runtime' && this.runtimeState ? toDecorations(this.runtimeState) : undefined;
+      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
+      this._nodes = nodes;
       this._edges = edges;
       this._updateSelectedNode();
     } catch (e) {
@@ -163,6 +184,32 @@ export class CasehubDiagram extends LitElement {
       this._selectedSchema = (this.schema.$defs as Record<string, Record<string, unknown>>)[defKey] ?? {};
     }
   }
+
+  private _updateStaleness(): void {
+    if (!this.runtimeState) { this._staleSeconds = 0; return; }
+    const elapsed = Math.floor((Date.now() - new Date(this.runtimeState.timestamp).getTime()) / 1000);
+    this._staleSeconds = Math.max(0, elapsed - 30);
+  }
+
+  private _applyDecorations(): void {
+    if (!this._adapterResult || !this.runtimeState) return;
+    const decorations = toDecorations(this.runtimeState);
+    const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
+    this._nodes = nodes;
+    this._edges = edges;
+  }
+
+  private _handleModeChange = (e: Event): void => {
+    const detail = (e as CustomEvent<{ mode: 'design' | 'runtime' }>).detail;
+    this._mode = detail.mode;
+    if (this._mode === 'runtime' && this.runtimeState) {
+      this._applyDecorations();
+    } else if (this._adapterResult) {
+      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout);
+      this._nodes = nodes;
+      this._edges = edges;
+    }
+  };
 
   private _handleNodeClick = (e: Event): void => {
     const detail = (e as CustomEvent<{ nodeId: string }>).detail;
@@ -419,7 +466,11 @@ spec:
           ?hasBackend=${this.backend != null}
           ?dirty=${isDirty}
           ?saving=${this._saving}
+          ?runtimeAvailable=${this.runtimeState !== null}
+          .mode=${this._mode}
+          .staleSeconds=${this._staleSeconds}
           @toolbar-save=${() => this._save()}
+          @toolbar-mode-change=${this._handleModeChange}
         ></casehub-diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
           <casehub-diagram-palette

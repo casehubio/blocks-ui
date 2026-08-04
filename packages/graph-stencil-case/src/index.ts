@@ -3,10 +3,16 @@ export type { AdapterResult } from './adapter/case-adapter.js';
 export { applyPropertyEdit, addElement, removeElement, switchBindingTarget } from './adapter/yaml-editor.js';
 export { GitHubBackend } from './persistence/github-backend.js';
 export type { GitHubBackendConfig } from './persistence/github-backend.js';
-export { toReactFlowGraph } from './adapter/react-flow-transform.js';
-export type { RFNode, RFEdge } from './adapter/react-flow-transform.js';
 export { registerCaseStencils } from './stencils/index.js';
 export { renderBinding, renderWorker, renderMilestone, renderGoal, renderSubCase } from './stencils/index.js';
+export { toDecorations } from './runtime/runtime-adapter.js';
+export type {
+  CaseRuntimeState,
+  PlanItemSnapshot,
+  MilestoneSnapshot,
+  TaskStatus,
+  MilestoneLifecycleStatus,
+} from './runtime/types.js';
 export type {
   CaseDefinition,
   CaseDefinitionSpec,

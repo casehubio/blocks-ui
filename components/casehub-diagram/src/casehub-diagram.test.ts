@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { toGraph, toReactFlowGraph, applyPropertyEdit, addElement, removeElement, switchBindingTarget } from '@casehubio/graph-stencil-case';
+import { toGraph, applyPropertyEdit, addElement, removeElement, switchBindingTarget } from '@casehubio/graph-stencil-case';
+import { toReactFlowGraph } from '@casehubio/graph-renderer';
 import { InMemoryBackend } from '@casehubio/graph-core';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';

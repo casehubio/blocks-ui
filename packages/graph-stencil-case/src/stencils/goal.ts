@@ -1,5 +1,6 @@
-import { html, type TemplateResult } from 'lit-html';
-import type { StencilGrammar } from '@casehubio/graph-core';
+import { html } from 'lit-html';
+import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
+import type { StencilTemplate } from '@casehubio/graph-renderer';
 
 export const goalGrammar: StencilGrammar = {
   type: 'goal',
@@ -14,7 +15,8 @@ const KIND_COLORS: Record<string, string> = {
   failure: '#c62828',
 };
 
-export function renderGoal(data: Record<string, unknown>): TemplateResult {
+export function renderGoal(node: GraphNode, _decoration?: NodeDecoration): StencilTemplate {
+  const data = node.properties;
   const name = String(data['name'] ?? '');
   const kind = String(data['kind'] ?? 'success');
   const color = KIND_COLORS[kind] ?? 'var(--pages-accent-color, #1a73e8)';

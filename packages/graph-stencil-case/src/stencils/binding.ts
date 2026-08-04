@@ -1,5 +1,6 @@
-import { html, type TemplateResult } from 'lit-html';
-import type { StencilGrammar } from '@casehubio/graph-core';
+import { html } from 'lit-html';
+import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
+import type { StencilTemplate } from '@casehubio/graph-renderer';
 
 export const bindingGrammar: StencilGrammar = {
   type: 'binding',
@@ -25,14 +26,16 @@ function targetLabel(data: Record<string, unknown>): string {
   return '?';
 }
 
-export function renderBinding(data: Record<string, unknown>): TemplateResult {
+export function renderBinding(node: GraphNode, decoration?: NodeDecoration): StencilTemplate {
+  const data = node.properties;
   const name = String(data['name'] ?? '');
   const trigger = triggerLabel(data['on'] as Record<string, unknown> | undefined);
   const target = targetLabel(data);
   const when = data['when'] ? String(data['when']).slice(0, 40) : '';
+  const opacity = decoration?.badge?.icon === '—' ? '0.5' : '1';
 
   return html`
-    <div style="padding: 8px 12px; border-radius: 8px; border: 2px solid var(--pages-border-color, #ccc); background: var(--pages-surface-color, #fff); min-width: 180px; font-family: var(--pages-font-family, sans-serif); font-size: 13px;">
+    <div style="padding: 8px 12px; border-radius: 8px; border: 2px solid var(--pages-border-color, #ccc); background: var(--pages-surface-color, #fff); min-width: 180px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; opacity: ${opacity};">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
         <span style="font-weight: 600; color: var(--pages-text-color, #333);">${name}</span>
         <span style="background: var(--pages-accent-subtle, #e8f0fe); color: var(--pages-accent-color, #1a73e8); padding: 1px 6px; border-radius: 4px; font-size: 11px;">${trigger}</span>

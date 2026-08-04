@@ -1,5 +1,6 @@
-import { html, type TemplateResult } from 'lit-html';
-import type { StencilGrammar } from '@casehubio/graph-core';
+import { html } from 'lit-html';
+import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
+import type { StencilTemplate } from '@casehubio/graph-renderer';
 
 export const workerGrammar: StencilGrammar = {
   type: 'worker',
@@ -9,7 +10,8 @@ export const workerGrammar: StencilGrammar = {
   },
 };
 
-export function renderWorker(data: Record<string, unknown>): TemplateResult {
+export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): StencilTemplate {
+  const data = node.properties;
   const name = String(data['name'] ?? '');
   const caps = (data['capabilities'] as string[] | undefined) ?? [];
   const desc = data['description'] ? String(data['description']).slice(0, 60) : '';

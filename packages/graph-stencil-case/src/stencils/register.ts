@@ -1,6 +1,4 @@
-import { registerGrammar } from '@casehubio/graph-core';
-import { registerNodeType } from '@casehubio/graph-renderer';
-import { createReactNodeType } from '../bridge/create-react-node-type.js';
+import { registerStencil } from '@casehubio/graph-renderer';
 import { bindingGrammar, renderBinding } from './binding.js';
 import { workerGrammar, renderWorker } from './worker.js';
 import { milestoneGrammar, renderMilestone } from './milestone.js';
@@ -13,19 +11,9 @@ export function registerCaseStencils(): void {
   if (registered) return;
   registered = true;
 
-  const stencils = [
-    { grammar: bindingGrammar, render: renderBinding },
-    { grammar: workerGrammar, render: renderWorker },
-    { grammar: milestoneGrammar, render: renderMilestone },
-    { grammar: goalGrammar, render: renderGoal },
-    { grammar: subcaseGrammar, render: renderSubCase },
-  ];
-
-  for (const s of stencils) {
-    registerGrammar(s.grammar);
-    registerNodeType({
-      type: s.grammar.type,
-      component: createReactNodeType(s.render),
-    });
-  }
+  registerStencil({ type: 'binding', label: 'Binding', icon: 'link', grammar: bindingGrammar, render: renderBinding });
+  registerStencil({ type: 'worker', label: 'Worker', icon: 'cpu', grammar: workerGrammar, render: renderWorker });
+  registerStencil({ type: 'milestone', label: 'Milestone', icon: 'flag', grammar: milestoneGrammar, render: renderMilestone });
+  registerStencil({ type: 'goal', label: 'Goal', icon: 'target', grammar: goalGrammar, render: renderGoal });
+  registerStencil({ type: 'subcase', label: 'SubCase', icon: 'layers', grammar: subcaseGrammar, render: renderSubCase });
 }
