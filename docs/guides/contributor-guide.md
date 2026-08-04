@@ -82,12 +82,13 @@ Case domain adapter for the visual diagram editor (epic #103). Exports:
 - `addElement(yaml, elementType, defaults?)` → new YAML string — adds binding/worker/milestone/goal with generated defaults
 - `removeElement(yaml, nodePath)` → new YAML string — removes element by YAML path
 - `switchBindingTarget(yaml, bindingPath, targetType)` → new YAML string — switches binding target (capability/subCase/humanTask)
-- `toReactFlowGraph(model)` → `{ nodes: RFNode[], edges: RFEdge[] }` — transforms GraphModel to React Flow format
-- `registerCaseStencils()` — registers 5 stencil grammars + render functions (binding, worker, milestone, goal, subcase)
+- `registerCaseStencils()` — registers 5 stencil descriptors via pages `registerStencil()` (StencilDescriptor API with grammar, properties schema, render function)
 - `GitHubBackend` — `PersistenceBackend` implementation using GitHub Contents API
+- `toDecorations(state: CaseRuntimeState)` → `ReadonlyMap<string, NodeDecoration>` — pure function mapping runtime state to visual decorations. PlanItem aggregation uses active-worst-first priority per binding; milestones map 1:1.
+- Types: `CaseRuntimeState`, `PlanItemSnapshot`, `MilestoneSnapshot`, `TaskStatus` (9 states), `MilestoneLifecycleStatus` (3 states)
 - `CaseDefinition` type (generated from CaseDefinition.yaml JSON Schema)
 
-Each stencil defines grammar rules (containment, connection min/max/allowedFrom/allowedTo) and Lit render functions for React Flow custom nodes.
+Each stencil's render function accepts `(node: GraphNode, decoration?: NodeDecoration)` → `StencilTemplate`. Decorations are rendered by the pages graph-renderer; OBSOLETE status additionally applies reduced opacity inside the stencil render function.
 
 ### graph-stencil-swf (`packages/graph-stencil-swf`)
 
@@ -209,6 +210,18 @@ Session detail — tabbed detail pane for a selected session: Terminal (polling 
 ### session-workbench (`components/session-workbench`)
 
 Session workbench — composition shell for session management. Composes session-list + session-detail in split-workbench with `selection-topic="session"`. `KeyboardShortcutMixin` for overlay. `configure()` method for hostPanel integration.
+
+### casehub-diagram (`components/casehub-diagram`)
+
+Visual diagram editor for CaseDefinition YAML. Orchestrates graph-stencil-case adapter + stencils, pages `<pages-graph-canvas>` rendering, ELK auto-layout. Sub-elements: `casehub-diagram-toolbar` (save/dirty/mode toggle/staleness), `casehub-diagram-palette` (add nodes), `casehub-diagram-properties` (schema-driven property editing, binding target switching).
+
+**Runtime overlay internals:** `runtimeState` property triggers decoration flow. On change: `toDecorations(runtimeState)` produces `Map<string, NodeDecoration>`, passed to `toReactFlowGraph(model, layout, decorations)`. Decoration-only updates (no YAML change) skip `computeElkLayout` — the `_updateWithoutLayout` path reuses the cached layout and applies fresh decorations. Full renders (YAML change) also include decorations when in runtime mode.
+
+Mode toggle (`_mode: 'design' | 'runtime'`): defaults to `'design'`. Reverts to `'design'` only when `runtimeState` is explicitly set to `null` (checked via `changedProperties.has('runtimeState')`) — not on transient absence during refetch.
+
+Staleness: `_staleSeconds` computed from `CaseRuntimeState.timestamp` vs `Date.now()`. Re-evaluated on each `runtimeState` update and mode change. No timer — intentionally freezes at last-known age if updates stop.
+
+Render guard: async `_fullRender` tracks `_renderInProgress` and `_pendingRenderYaml` to handle YAML changes during ELK layout computation. Same guard covers decoration changes during layout.
 
 ### document-workbench (`components/document-workbench`)
 

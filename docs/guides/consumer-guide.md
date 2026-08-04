@@ -22,7 +22,7 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | Package | npm name | Purpose | Maturity |
 |---------|----------|---------|----------|
 | `packages/blocks-ui-core` | `@casehubio/blocks-ui-core` | Tokens, DataSourceMixin, TrendSourceMixin, renderSparkline, EventStreamController, event helpers, domain types, SharedTimerController, blocks-confirm-dialog, renderPropertyTree, pulseAnimation CSS, CommitmentStatePill | Beta |
-| `packages/graph-stencil-case` | `@casehubio/graph-stencil-case` | Case domain adapter and structural stencils (binding, worker, milestone, goal, subcase) for the graph editor. Implements `DomainAdapter` from `@casehubio/graph-core`. | Alpha |
+| `packages/graph-stencil-case` | `@casehubio/graph-stencil-case` | Case domain adapter, structural stencils (binding, worker, milestone, goal, subcase), YAML editor (add/remove/edit/switchTarget), RuntimeAdapter (`toDecorations`), persistence SPI (`GitHubBackend`). | Beta |
 | `packages/graph-stencil-swf` | `@casehubio/graph-stencil-swf` | Serverless Workflow (SWF) domain adapter and stencils (call, switch) for the graph editor. Uses `@openworkflowspec/sdk`. Implements `DomainAdapter` from `@casehubio/graph-core`. | Alpha |
 
 ### Components (`components/`)
@@ -58,6 +58,7 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | `session-workbench` | Session workbench — split-pane layout with session list and detail panels | Beta |
 | `trust-workbench` | Composite trust visibility — score panel, routing history, feedback display | Beta |
 | `document-workbench` | Document review workbench — 9 panels for AI-assisted document review: debate feed, document diff, timeline, review tracker, brainstorm options/picker, context gauge, doc picker, workspace status | Beta |
+| `casehub-diagram` | Visual diagram editor for CaseDefinition YAML — graph canvas, palette, property panel, toolbar, design/runtime mode toggle, runtime state overlay with status badges | Beta |
 | `work-item-row` | Single work item row (legacy — inbox now uses pages-table) | Deprecated |
 
 **Maturity levels:**
@@ -133,14 +134,62 @@ Session workbench for claudony session management — composes session-list + se
 
 Commitment lifecycle visualization — transition badges (`commitment-transition-badge`), range bars (compact/detailed modes), `decorateCommitmentRanges` pure function for feed decoration metadata. Uses the 7-state commitment model (OPEN/ACKNOWLEDGED/FULFILLED/FAILED/DECLINED/DELEGATED/EXPIRED). Props-driven, decoupled from channel-activity.
 
-### Graph Stencils (Alpha)
+### casehub-diagram
 
-Two domain adapter packages for the visual diagram editor (issue #103):
+Visual diagram editor for CaseDefinition YAML. Renders case definitions as interactive node graphs with ELK auto-layout.
 
-- **graph-stencil-case** — `CaseAdapter` implements `DomainAdapter<string>` from `@casehubio/graph-core`. Provides `caseStencils`: binding, worker, milestone, goal, subcase stencil descriptors with grammar rules (containment, connection constraints) and JSON Schema property definitions. Parses case definition YAML to produce graph models.
-- **graph-stencil-swf** — `SwfAdapter` implements `DomainAdapter<string>`. Provides `swfStencils`: call and switch stencil descriptors. Uses `@openworkflowspec/sdk` for SWF YAML parsing.
+**Properties:**
 
-Both adapters are currently stubbed (toGraph returns empty models, applyEdit returns input unchanged). The stencil descriptors are fully defined with grammar rules.
+| Property | Type | Description |
+|----------|------|-------------|
+| `yaml` | `string` | Inline YAML source |
+| `src` | `string` | URL to fetch YAML from |
+| `backend` | `PersistenceBackend \| null` | Persistence SPI for load/save (e.g. `GitHubBackend`) |
+| `uri` | `string` | Resource URI for the backend |
+| `schema` | `Record<string, unknown>` | CaseDefinition JSON Schema for property panel |
+| `runtimeState` | `CaseRuntimeState \| null` | Live execution state — enables runtime overlay |
+
+**Runtime overlay:** Set `runtimeState` to project live execution state onto the graph as visual decorations (status badges, borders, tooltips). The component is transport-agnostic — the host application owns data delivery (REST polling, SSE, WebSocket) and passes the snapshot as a property.
+
+```typescript
+interface CaseRuntimeState {
+  readonly planItems: readonly PlanItemSnapshot[];
+  readonly milestones: readonly MilestoneSnapshot[];
+  readonly timestamp: string;  // ISO 8601
+}
+
+interface PlanItemSnapshot {
+  readonly id: string;
+  readonly bindingName: string;
+  readonly status: TaskStatus;
+  readonly createdAt: string;  // ISO 8601
+}
+
+interface MilestoneSnapshot {
+  readonly name: string;
+  readonly status: MilestoneLifecycleStatus;
+}
+```
+
+`TaskStatus`: PENDING, RUNNING, DELEGATED, SUSPENDED, COMPLETED, FAULTED, REJECTED, OBSOLETE, CANCELLED (9 states). `MilestoneLifecycleStatus`: PENDING, ACTIVE, COMPLETED (3 states).
+
+When `runtimeState` is set, a design/runtime mode toggle appears in the toolbar. In runtime mode, binding nodes show aggregated PlanItem status badges (active-worst-first priority) and milestone nodes show lifecycle badges. Setting `runtimeState` to `null` reverts to design-only mode.
+
+Staleness: if `timestamp` is older than 30 seconds, a stale indicator appears in the toolbar. The component does not poll — staleness is evaluated on each `runtimeState` update.
+
+**Custom overlay use:** For apps that need decorations outside the component (e.g. a secondary status panel), `toDecorations(state)` is exported from `@casehubio/graph-stencil-case`:
+
+```typescript
+import { toDecorations } from '@casehubio/graph-stencil-case';
+const decorations = toDecorations(runtimeState);
+// Map<string, NodeDecoration> keyed by node ID
+```
+
+**Editing:** All editing capabilities (property panel, palette, delete, save, undo/redo) remain active in runtime mode. The overlay is purely visual.
+
+### graph-stencil-swf (Alpha)
+
+Serverless Workflow (SWF) domain adapter for the visual diagram editor. `SwfAdapter` implements `DomainAdapter<string>`. Uses `@openworkflowspec/sdk` for SWF YAML parsing. Currently stubbed — stencil descriptors (call, switch) are fully defined with grammar rules but the adapter methods return empty models.
 
 ---
 
