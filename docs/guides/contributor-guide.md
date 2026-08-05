@@ -68,7 +68,14 @@ Core shared utilities re-exported from pages and domain-specific to blocks-ui:
 
 **Domain types**: `TrustLevel`, `trustLevelFromScore(score)`, `CommitmentState` (7-state: OPEN/ACKNOWLEDGED/FULFILLED/FAILED/DECLINED/DELEGATED/EXPIRED), `CommitmentRecord`, `RawCommitment`, `commitmentStateCategory(state)`, `isTerminalCommitmentState(state)`, `toCommitmentRecord(raw)`, `toCommitmentMap(commitments)`, `StateCategory`.
 
-**UI components**: `BlocksConfirmDialog` (`<blocks-confirm-dialog>`, FocusTrapMixin, danger/success/neutral variants), `CommitmentStatePill` (`<commitment-state-pill>`, promoted from commitment-viz in #101), `stateCategoryStyles` + `CategoryStyle`.
+**Status registry** (#109): `StatusDescriptor`, `StateCategory`, `lookupStatus(domain, state)`, `registerStatus(domain, state, descriptor)`, `FALLBACK_DESCRIPTOR`. 10 built-in domains (case, task, workitem, work, milestone, outcome, group, sla, node, session, commitment) with cross-domain defaults. Extend with `registerStatus()` for new domains:
+
+```typescript
+import { registerStatus } from '@casehubio/blocks-ui-core';
+registerStatus('myDomain', 'ACTIVE', { category: 'info', icon: '◉', pulse: true });
+```
+
+**UI components**: `StatusBadge` (`<status-badge>`, generic status pill for all domains — #109), `BlocksConfirmDialog` (`<blocks-confirm-dialog>`, FocusTrapMixin, danger/success/neutral variants), `CommitmentStatePill` (`<commitment-state-pill>`, deprecated — delegates to status-badge), `stateCategoryStyles` + `CategoryStyle`.
 
 **Utilities**: `SharedTimerController` (`subscribe`/`unsubscribe`), `pulseAnimation` CSS, `DatasetContract` (re-exported from pages-data).
 
@@ -85,7 +92,8 @@ Case domain adapter for the visual diagram editor (epic #103). Exports:
 - `registerCaseStencils()` — registers 5 stencil descriptors via pages `registerStencil()` (StencilDescriptor API with grammar, properties schema, render function)
 - `GitHubBackend` — `PersistenceBackend` implementation using GitHub Contents API
 - `toDecorations(state: CaseRuntimeState)` → `ReadonlyMap<string, NodeDecoration>` — pure function mapping runtime state to visual decorations. PlanItem aggregation uses active-worst-first priority per binding; milestones map 1:1.
-- Types: `CaseRuntimeState`, `PlanItemSnapshot`, `MilestoneSnapshot`, `TaskStatus` (9 states), `MilestoneLifecycleStatus` (3 states)
+- `toDecoration(domain, state)` → `NodeDecoration` — single-state decoration via status registry (#109). Used internally by `toDecorations`; also available for custom domain decorations. `BADGE_COLORS` provides raw hex per `StateCategory`.
+- Types: `CaseRuntimeState` (with optional `caseStatus`), `PlanItemSnapshot`, `MilestoneSnapshot`, `TaskStatus` (9 states), `MilestoneLifecycleStatus` (3 states)
 - `CaseDefinition` type (generated from CaseDefinition.yaml JSON Schema)
 
 Each stencil's render function accepts `(node: GraphNode, decoration?: NodeDecoration)` → `StencilTemplate`. Decorations are rendered by the pages graph-renderer; OBSOLETE status additionally applies reduced opacity inside the stencil render function.

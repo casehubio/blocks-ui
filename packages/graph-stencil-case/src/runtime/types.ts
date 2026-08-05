@@ -19,4 +19,5 @@ export interface CaseRuntimeState {
   readonly planItems: readonly PlanItemSnapshot[];
   readonly milestones: readonly MilestoneSnapshot[];
   readonly timestamp: string;
+  readonly caseStatus?: string;
 }

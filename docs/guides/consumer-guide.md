@@ -21,7 +21,7 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 
 | Package | npm name | Purpose | Maturity |
 |---------|----------|---------|----------|
-| `packages/blocks-ui-core` | `@casehubio/blocks-ui-core` | Tokens, DataSourceMixin, TrendSourceMixin, renderSparkline, EventStreamController, event helpers, domain types, SharedTimerController, blocks-confirm-dialog, renderPropertyTree, pulseAnimation CSS, CommitmentStatePill | Beta |
+| `packages/blocks-ui-core` | `@casehubio/blocks-ui-core` | Tokens, DataSourceMixin, TrendSourceMixin, renderSparkline, EventStreamController, event helpers, domain types, SharedTimerController, blocks-confirm-dialog, renderPropertyTree, pulseAnimation CSS, CommitmentStatePill, StatusBadge (generic status pills), status registry (`lookupStatus`/`registerStatus`) | Beta |
 | `packages/graph-stencil-case` | `@casehubio/graph-stencil-case` | Case domain adapter, structural stencils (binding, worker, milestone, goal, subcase), YAML editor (add/remove/edit/switchTarget), RuntimeAdapter (`toDecorations`), persistence SPI (`GitHubBackend`). | Beta |
 | `packages/graph-stencil-swf` | `@casehubio/graph-stencil-swf` | Serverless Workflow (SWF) domain adapter and stencils (call, switch) for the graph editor. Uses `@openworkflowspec/sdk`. Implements `DomainAdapter` from `@casehubio/graph-core`. | Alpha |
 
@@ -91,6 +91,25 @@ Qhorus channel activity — eight sub-elements covering the full messaging lifec
 ### notification-inbox
 
 Notification UI — bell with unread badge, inbox with tabs/filters/SSE, subscription list CRUD, subscription editor (schema-driven form), channel preferences (per-channel delivery mode/digest/groupBy/quiet hours), mute list, snooze control, notification preferences container.
+
+### status-badge
+
+Generic status pill for any domain's state enum. Replaces ad-hoc `_statusColors` records. Uses the status registry (`lookupStatus`) for state-to-category mapping and `stateCategoryStyles()` for colours.
+
+```html
+<status-badge domain="case" state="RUNNING" showIcon></status-badge>
+<status-badge domain="workitem" state="ASSIGNED" size="md"></status-badge>
+<status-badge state="COMPLETED"></status-badge> <!-- cross-domain default -->
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `state` | `string` | — | The state value to display |
+| `domain` | `string` | — | Optional domain for domain-specific rendering |
+| `size` | `'sm' \| 'md'` | `'sm'` | Pill size |
+| `showIcon` | `boolean` | `false` | Show state icon |
+
+Built-in domains: `case`, `task`, `workitem`, `work`, `milestone`, `outcome`, `group`, `sla`, `node`, `session`, `commitment`.
 
 ### audit-trail-viewer
 

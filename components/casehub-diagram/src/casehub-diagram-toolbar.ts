@@ -1,5 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
 
 @customElement('casehub-diagram-toolbar')
 export class CasehubDiagramToolbar extends LitElement {
@@ -9,6 +10,7 @@ export class CasehubDiagramToolbar extends LitElement {
   @property({ type: Boolean }) runtimeAvailable = false;
   @property({ type: String }) mode: 'design' | 'runtime' = 'design';
   @property({ type: Number }) staleSeconds = 0;
+  @property({ type: String }) caseStatus?: string;
 
   static override styles = css`
     :host { display: flex; align-items: center; gap: 8px; padding: 4px 12px; border-bottom: 1px solid var(--pages-border-color, #ddd); height: 32px; box-sizing: border-box; font-family: var(--pages-font-family, system-ui, sans-serif); }
@@ -34,8 +36,13 @@ export class CasehubDiagramToolbar extends LitElement {
       ${this.dirty ? html`<span class="dirty-dot"></span>` : nothing}
     ` : nothing;
 
+    const caseBadge = this.caseStatus ? html`
+      <status-badge domain="case" state=${this.caseStatus} size="sm" showIcon></status-badge>
+    ` : nothing;
+
     const modeSection = this.runtimeAvailable ? html`
       <span class="spacer"></span>
+      ${caseBadge}
       <button class="mode-toggle"
         aria-pressed=${this.mode === 'runtime'}
         @click=${this._toggleMode}>
