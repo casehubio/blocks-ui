@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import '@casehubio/pages-table';
+import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
 import type { TableColumnConfig, ColumnRenderer, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
@@ -48,17 +49,10 @@ export class SessionList extends SessionListBase {
   @state() private _spawnWorkDir = '';
   @state() _restartError: { name: string; workingDir: string; command: string } | null = null;
 
-  private _statusColors: Record<string, string> = {
-    ACTIVE: 'background: var(--pages-success-4, #d1fae5); color: var(--pages-success-11, #065f46);',
-    WAITING: 'background: var(--pages-warning-4, #fef3c7); color: var(--pages-warning-11, #92400e);',
-    IDLE: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
-  };
-
   private _columnRenderers: ReadonlyMap<typeof NAME_COL | typeof STATUS_COL, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-      const style = this._statusColors[status] ?? '';
-      return html`<span class="status-badge" style="${style}; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">${status}</span>`;
+      return html`<status-badge domain="session" state=${status} size="sm" showIcon></status-badge>`;
     }],
   ]);
 

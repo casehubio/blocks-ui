@@ -27,6 +27,7 @@ import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primiti
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import '@casehubio/pages-table';
+import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
@@ -118,18 +119,6 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private sseManager = new SSEManager();
   private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
 
-  private static _statusColors: Record<string, string> = {
-    pending: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
-    assigned: 'background: var(--pages-info-4, #dbeafe); color: var(--pages-info-11, #0369a1);',
-    in_progress: 'background: var(--pages-accent-4, #cce5ff); color: var(--pages-accent-11, #0066cc);',
-    suspended: 'background: var(--pages-warning-4, #fef3c7); color: var(--pages-warning-11, #92400e);',
-    delegated: 'background: var(--pages-accent-4, #cce5ff); color: var(--pages-accent-11, #0066cc);',
-    completed: 'background: var(--pages-success-4, #d1fae5); color: var(--pages-success-11, #065f46);',
-    rejected: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
-    faulted: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
-    cancelled: 'background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #555555);',
-  };
-
   private static _priorityColors: Record<string, string> = {
     urgent: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
     high: 'background: var(--pages-warning-4, #fef3c7); color: var(--pages-warning-11, #92400e);',
@@ -140,8 +129,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-      const colors = WorkItemInbox._statusColors[status.toLowerCase()] ?? '';
-      return html`<span style="display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; ${colors}">${status}</span>`;
+      return html`<status-badge domain="workitem" state=${status} size="sm" showIcon></status-badge>`;
     }],
     [PRIORITY_COL, (cell: CellValue) => {
       const priority = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
