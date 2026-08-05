@@ -1,11 +1,11 @@
+import type { StateCategory } from './status.js';
+export type { StateCategory };
+
 export const COMMITMENT_STATES = [
   'OPEN', 'ACKNOWLEDGED', 'FULFILLED', 'FAILED',
   'DECLINED', 'DELEGATED', 'EXPIRED',
 ] as const;
 export type CommitmentState = typeof COMMITMENT_STATES[number];
-
-export type StateCategory = 'active' | 'info' | 'success' | 'danger'
-  | 'neutral' | 'transfer' | 'warning';
 
 export function commitmentStateCategory(state: CommitmentState): StateCategory {
   switch (state) {
