@@ -1,9 +1,7 @@
 import type { NodeDecoration } from '@casehubio/graph-core';
 import type { CaseRuntimeState, PlanItemSnapshot } from './types.js';
+import { toDecoration } from './decoration.js';
 import {
-  TASK_STATUS_DECORATIONS,
-  MILESTONE_STATUS_DECORATIONS,
-  UNKNOWN_DECORATION,
   TERMINAL_SEVERITY,
   ACTIVE_WORST_PRIORITY,
   isActiveStatus,
@@ -28,7 +26,7 @@ function aggregateBinding(items: readonly PlanItemSnapshot[]): NodeDecoration {
     statusKey = sorted[0]!.status;
   }
 
-  const base = TASK_STATUS_DECORATIONS[statusKey] ?? UNKNOWN_DECORATION;
+  const base = toDecoration('task', statusKey);
   const tooltip = buildTooltip(items);
 
   return {
@@ -69,7 +67,7 @@ export function toDecorations(state: CaseRuntimeState): ReadonlyMap<string, Node
   }
 
   for (const milestone of state.milestones) {
-    const base = MILESTONE_STATUS_DECORATIONS[milestone.status] ?? UNKNOWN_DECORATION;
+    const base = toDecoration('milestone', milestone.status);
     decorations.set(`milestone:${milestone.name}`, { ...base, tooltip: milestone.status.toLowerCase() });
   }
 
