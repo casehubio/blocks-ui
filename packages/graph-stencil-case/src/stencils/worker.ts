@@ -48,8 +48,7 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
 
 function emitDrillDown(target: HTMLElement, workerId: string, workerName: string, doBlock: unknown): void {
   const doYaml = wrapDoBlockForEvent(doBlock);
-  emitPagesEvent(target, {
-    topic: 'diagram:worker-drill-down',
+  emitPagesEvent(target, 'diagram:worker-drill-down', {
     workerId,
     workerName,
     doYaml,
@@ -63,7 +62,10 @@ function wrapDoBlockForEvent(doBlock: unknown): string {
   });
 }
 
-class WorkerThumbnail extends HTMLElement {
+// Guard: WorkerThumbnail requires browser globals (HTMLElement, customElements)
+const _HTMLElement = typeof HTMLElement !== 'undefined' ? HTMLElement : (class {} as typeof HTMLElement);
+
+class WorkerThumbnail extends _HTMLElement {
   private _rendered = false;
   private _expanded = false;
   doBlock: unknown;
@@ -113,6 +115,6 @@ class WorkerThumbnail extends HTMLElement {
   }
 }
 
-if (!customElements.get('worker-thumbnail')) {
+if (typeof customElements !== 'undefined' && !customElements.get('worker-thumbnail')) {
   customElements.define('worker-thumbnail', WorkerThumbnail);
 }

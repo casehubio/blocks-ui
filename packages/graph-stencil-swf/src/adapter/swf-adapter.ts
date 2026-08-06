@@ -30,7 +30,7 @@ export function toSwfGraph(yaml: string): AdapterResult {
   const edges: GraphEdge[] = flatGraph.edges.map(e => mapEdge(e, allSdkNodes));
   const model = createGraph(nodes, edges);
 
-  return { model, yamlPaths, degraded };
+  return degraded ? { model, yamlPaths, degraded } : { model, yamlPaths };
 }
 
 function mapNode(sdkNode: FlatGraphNode): GraphNode {

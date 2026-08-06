@@ -6,10 +6,10 @@ export interface AdapterResult {
   readonly degraded?: { readonly reason: string };
 }
 
-export const SWF_KNOWN_TYPES = new Set([
+export const SWF_KNOWN_TYPES: ReadonlySet<string> = new Set([
   'call', 'set', 'switch', 'raise', 'try', 'try-catch', 'catch',
   'start', 'end', 'entry', 'exit',
-] as const);
+]);
 
 export const SYNTHETIC_TYPES = new Set(['start', 'end', 'entry', 'exit', 'root', 'try', 'catch']);
 
