@@ -38,17 +38,17 @@ export function addElement(
   defaults?: Record<string, unknown>,
 ): string {
   const doc = parseDocument(yaml);
-  const arrayKey = ELEMENT_PATHS[elementType];
+  const arrayKey = ELEMENT_PATHS[elementType]!;
   const specPath = ['spec', arrayKey];
 
   const parsed = parseYaml(yaml) as { spec: Record<string, Array<{ name?: string }>> };
   const existing = parsed.spec?.[arrayKey] ?? [];
-  const existingNames = new Set(existing.map(e => String(e.name ?? '')));
+  const existingNames = new Set(existing.map((e: { name?: string }) => String(e.name ?? '')));
 
   let n = 1;
   while (existingNames.has(`${elementType}-${n}`)) n++;
 
-  const generated = ELEMENT_DEFAULTS[elementType](n);
+  const generated = ELEMENT_DEFAULTS[elementType]!(n);
   const merged = defaults ? { ...generated, ...defaults } : generated;
 
   const seq = doc.getIn(specPath);

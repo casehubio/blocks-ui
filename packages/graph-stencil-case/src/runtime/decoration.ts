@@ -1,5 +1,5 @@
 import type { NodeDecoration } from '@casehubio/graph-core';
-import { lookupStatus, type StateCategory } from '../../../blocks-ui-core/src/types/status.js';
+import { lookupStatus, type StateCategory } from '@casehubio/blocks-ui-core';
 
 export const BADGE_COLORS: Record<StateCategory, string> = {
   active:   '#6366f1',

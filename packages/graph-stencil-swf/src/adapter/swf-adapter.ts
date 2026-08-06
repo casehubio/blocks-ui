@@ -1,14 +1,11 @@
-import type { DomainAdapter, GraphModel, GraphEdit } from '@casehubio/graph-core';
+import type { GraphModel } from '@casehubio/graph-core';
 
-export class SwfAdapter implements DomainAdapter<string> {
+export class SwfAdapter {
   toGraph(workflowYaml: string): GraphModel {
-    // TODO: use @openworkflowspec/sdk to parse and build FlatGraph
-    // then adapt to our GraphModel
     return { nodes: [], edges: [] };
   }
 
-  applyEdit(workflowYaml: string, edit: GraphEdit): string {
-    // TODO: apply edit to SWF YAML
+  applyEdit(workflowYaml: string, _edit: unknown): string {
     return workflowYaml;
   }
 }

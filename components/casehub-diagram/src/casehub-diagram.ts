@@ -365,14 +365,7 @@ export class CasehubDiagram extends LitElement {
         this._selectedNodeId = '';
         await this._fullRender(result.yaml);
       } else if (result.status === 'not_found') {
-        const empty = 'dsl: "1.0.0"
-namespace: 
-name: 
-version: "1.0.0"
-spec:
-  bindings: []
-  workers: []
-';
+        const empty = `dsl: "1.0.0"\nnamespace: \nname: \nversion: "1.0.0"\nspec:\n  bindings: []\n  workers: []\n`;
         this._currentYaml = empty;
         this._savedYaml = empty;
         this._version = '';

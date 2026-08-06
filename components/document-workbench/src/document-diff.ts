@@ -643,7 +643,7 @@ export class DocumentDiff extends LitElement {
           detail: { threadId: anchor.threadId },
         }));
       });
-      target.style.position = 'relative';
+      (target as HTMLElement).style.position = 'relative';
       target.appendChild(marker);
     }
   }
@@ -1090,10 +1090,10 @@ export class DocumentDiff extends LitElement {
     if (a.length < 2) return pos;
     let i = a.length - 2;
     while (i > 0 && a[i][fk] > pos) i--;
-    const lo = a[i], hi = a[i + 1];
-    if (hi[fk] === lo[fk]) return lo[tk];
-    return lo[tk] + Math.max(0, Math.min(1, (pos - lo[fk]) / (hi[fk] - lo[fk])))
-                  * (hi[tk] - lo[tk]);
+    const lo = a[i]!, hi = a[i + 1]!;
+    if (hi[fk] === lo[fk]) return lo[tk]!;
+    return lo[tk]! + Math.max(0, Math.min(1, (pos - lo[fk]!) / (hi[fk]! - lo[fk]!)))
+                  * (hi[tk]! - lo[tk]!);
   }
 
   private _buildScrollAnchors(): void {
@@ -1105,10 +1105,10 @@ export class DocumentDiff extends LitElement {
     const brA = bodyA.getBoundingClientRect();
     const brB = bodyB.getBoundingClientRect();
 
-    const aHds = [...this._$('render-a').querySelectorAll('h2,h3,h4')]
+    const aHds = [... Array.from(this._$('render-a').querySelectorAll('h2,h3,h4'))]
       .map(el => ({ text: this._normHead(el.textContent!),
                     pos: el.getBoundingClientRect().top - brA.top + bodyA.scrollTop }));
-    const bHds = [...this._$('render-b').querySelectorAll('h2,h3,h4')]
+    const bHds = [... Array.from(this._$('render-b').querySelectorAll('h2,h3,h4'))]
       .map(el => ({ text: this._normHead(el.textContent!),
                     pos: el.getBoundingClientRect().top - brB.top + bodyB.scrollTop }));
 
@@ -1121,13 +1121,13 @@ export class DocumentDiff extends LitElement {
         || (bh.text.length >= 18 && ah.text.startsWith(bh.text.slice(0, 18)))));
       if (bi >= 0) {
         usedB.add(bi);
-        anchors.push({ a: ah.pos, b: bHds[bi].pos });
+        anchors.push({ a: ah.pos, b: bHds[bi]!.pos });
       }
     }
     anchors.push({ a: maxA, b: maxB });
 
     anchors.sort((x, y) => x.a - y.a);
-    this._scrollAnchors = anchors.filter((an, i) => i === 0 || an.a > anchors[i - 1].a);
+    this._scrollAnchors = anchors.filter((an, i) => i === 0 || an.a > anchors[i - 1]!.a);
   }
 
   private _setupScrollSync(): void {

@@ -246,6 +246,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-list-pane": "workspace:*"
+    "@casehubio/blocks-ui-split-workbench": "workspace:*"
+    "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-table": "npm:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-core@workspace:*, @casehubio/blocks-ui-core@workspace:packages/blocks-ui-core":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-core@workspace:packages/blocks-ui-core"
@@ -619,6 +637,8 @@ __metadata:
 "@casehubio/graph-core@portal:./.casehub-packages/packages/graph-core::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-core@portal:./.casehub-packages/packages/graph-core::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@types/json-schema": "npm:^7.0.15"
   languageName: node
   linkType: soft
 
@@ -626,8 +646,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-renderer@portal:./.casehub-packages/packages/graph-renderer::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-work-registry": "npm:0.1.0"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     "@xyflow/react": "npm:^12.4.0"
     elkjs: "npm:^0.9.3"
     lit: "npm:^3.3.3"
@@ -640,6 +662,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-stencil-case@workspace:packages/graph-stencil-case"
   dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/pages-component": "npm:*"
@@ -674,6 +697,16 @@ __metadata:
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
   languageName: unknown
+  linkType: soft
+
+"@casehubio/graph-work-registry@portal:./.casehub-packages/packages/graph-work-registry::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/graph-work-registry@portal:./.casehub-packages/packages/graph-work-registry::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@types/json-schema": "npm:^7.0.15"
+    yaml: "npm:^2.7.0"
+  languageName: node
   linkType: soft
 
 "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A.":

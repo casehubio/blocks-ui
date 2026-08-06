@@ -37,6 +37,7 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",
     "@casehubio/pages-component": "*",

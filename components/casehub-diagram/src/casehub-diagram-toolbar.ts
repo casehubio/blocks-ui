@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
+import '@casehubio/blocks-ui-core/dist/status-badge/status-badge.js';
 
 @customElement('casehub-diagram-toolbar')
 export class CasehubDiagramToolbar extends LitElement {
