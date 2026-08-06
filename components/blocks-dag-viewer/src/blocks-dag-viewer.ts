@@ -59,7 +59,7 @@ export class BlocksDagViewer extends LitElement {
     if (this.dagResult == null) { this._decorations = new Map(); return; }
     const raw = dagToDecorations(this.dagResult);
     if (this._adapterResult == null) { this._decorations = raw; return; }
-    const knownIds = new Set(this._adapterResult.model.nodes.map(n => n.id));
+    const knownIds = new Set(this._adapterResult.model.nodes.map((n: { id: string }) => n.id));
     const filtered = new Map<string, NodeDecoration>();
     for (const [k, v] of raw) {
       if (knownIds.has(k)) filtered.set(k, v);
@@ -71,7 +71,7 @@ export class BlocksDagViewer extends LitElement {
     if (this.dagResult == null || this._adapterResult == null) {
       return { nodeCount: 0, completed: 0, running: 0, failed: 0 };
     }
-    const states = Object.values(this.dagResult.nodeStates);
+    const states = Object.values(this.dagResult.nodeStates) as import('@casehubio/graph-stencil-htn').NodeStateSnapshot[];
     return {
       nodeCount: this._adapterResult.model.nodes.length,
       completed: states.filter(s => s.kind === 'Completed').length,

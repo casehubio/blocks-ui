@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { render } from 'lit-html';
 import { renderDagNode, dagNodeGrammar } from './dag-node.js';

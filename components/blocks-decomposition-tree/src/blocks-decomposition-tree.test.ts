@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { BlocksDecompositionTree, STRATEGY_COLORS } from './blocks-decomposition-tree.js';
 import type {
@@ -6,7 +7,9 @@ import type {
 } from '@casehubio/graph-stencil-htn';
 
 function leaf(id: string, desc?: string, executor?: string): LeafTaskSnapshot {
-  return { kind: 'leaf', id, description: desc ?? `Leaf ${id}`, executorName: executor };
+  const result: LeafTaskSnapshot = { kind: 'leaf', id, description: desc ?? `Leaf ${id}` };
+  if (executor != null) return { ...result, executorName: executor };
+  return result;
 }
 
 function method(
@@ -14,7 +17,9 @@ function method(
   children: (LeafTaskSnapshot | CompoundTaskSnapshot)[] = [],
   guardLabel?: string,
 ): DecompositionMethodSnapshot {
-  return { strategyId, children, guardLabel };
+  const result: DecompositionMethodSnapshot = { strategyId, children };
+  if (guardLabel != null) return { ...result, guardLabel };
+  return result;
 }
 
 function compound(
@@ -22,7 +27,9 @@ function compound(
   methods: DecompositionMethodSnapshot[],
   selectedMethodIndex?: number,
 ): CompoundTaskSnapshot {
-  return { kind: 'compound', id: `compound:${name}`, name, methods, selectedMethodIndex };
+  const result: CompoundTaskSnapshot = { kind: 'compound', id: `compound:${name}`, name, methods };
+  if (selectedMethodIndex != null) return { ...result, selectedMethodIndex };
+  return result;
 }
 
 function snap(root: LeafTaskSnapshot | CompoundTaskSnapshot): DecompositionSnapshot {

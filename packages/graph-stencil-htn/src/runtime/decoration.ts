@@ -13,7 +13,7 @@ export const BADGE_COLORS: Record<StateCategory, string> = {
 
 export function toDecoration(domain: string, state: string): NodeDecoration {
   const descriptor = lookupStatus(domain, state);
-  const color = BADGE_COLORS[descriptor.category];
+  const color: string = BADGE_COLORS[descriptor.category];
 
   const decoration: NodeDecoration = {
     badge: {

@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { BlocksDagViewer } from './blocks-dag-viewer.js';
 import type { DagPlanSnapshot } from '@casehubio/graph-stencil-htn';
