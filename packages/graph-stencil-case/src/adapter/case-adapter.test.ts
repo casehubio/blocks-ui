@@ -1,14 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { toGraph } from './case-adapter.js';
 
-const EXAMPLE_YAML = readFileSync(
-  resolve(import.meta.dirname, '../../../../../engine/schema/src/main/resources/examples/document-processing.yaml'),
-  'utf-8',
-);
+const EXAMPLE_PATH = resolve(import.meta.dirname, '../../../../../engine/schema/src/main/resources/examples/document-processing.yaml');
+const HAS_ENGINE = existsSync(EXAMPLE_PATH);
+const EXAMPLE_YAML = HAS_ENGINE ? readFileSync(EXAMPLE_PATH, 'utf-8') : '';
 
-describe('toGraph', () => {
+describe.skipIf(!HAS_ENGINE)('toGraph', () => {
   it('creates worker nodes from spec.workers', () => {
     const { model } = toGraph(EXAMPLE_YAML);
     const workers = model.nodes.filter(n => n.type === 'worker');
