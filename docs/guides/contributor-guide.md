@@ -107,6 +107,32 @@ Serverless Workflow (SWF) domain adapter for the visual diagram editor (epic #10
   - **swf-switch** — conditional branch, multiple outbound connections
   - (TODO: raise, catch, entry, exit stencils)
 
+### graph-stencil-htn (`packages/graph-stencil-htn`)
+
+HTN/DAG domain adapter for the DAG execution viewer and decomposition tree (epic #107). Exports:
+- `dagToGraph(plan)` → `DagAdapterResult { model, entryNodeIds, exitNodeIds, taskIdToGraphNodeId }` — converts `DagPlanSnapshot` to `GraphModel` with topology metadata
+- `dagToDecorations(result)` → `ReadonlyMap<string, NodeDecoration>` — maps `DagResultSnapshot` node states to decorations via `node:` status domain (#109)
+- `nodeStatesToTaskStates(plan, result)` → `Record<string, NodeStateSnapshot>` — re-keys DagNode states by taskId for the decomposition tree
+- `registerHtnStencils()` — registers the `dag-node` stencil via pages `registerStencil()` (join indicators, executor badges, dimmed opacity for Skipped/Cancelled)
+- `toDecoration(domain, state)` → `NodeDecoration` — local duplicate of graph-stencil-case's decoration function (parallel packages, no cross-dependency)
+- Types: `TaskNodeSnapshot` (LeafTask/CompoundTask), `DecompositionSnapshot`, `DagPlanSnapshot`, `DagNodeSnapshot`, `DagResultSnapshot`, `NodeStateKind` (6 variants), `PlanItemDefinition` (Primitive/Compound), `CasePlanModelSnapshot`
+
+### blocks-dag-viewer (`components/blocks-dag-viewer`)
+
+Read-only DAG execution graph viewer. Wraps `pages-graph-canvas` with ELK layout. Property-based data delivery (`dagPlan`, `dagResult`, `dispatchMode`). Toolbar with dispatch mode badge, summary stats, staleness timer. Decoration-only update path skips ELK when only `dagResult` changes. Node selection via `selectionTopic` with `taskId` payload for tree ↔ DAG coordination.
+
+### blocks-decomposition-tree (`components/blocks-decomposition-tree`)
+
+HTN decomposition tree — recursive ARIA tree for `CompoundTask → DecompositionMethod → children`. 8 strategy badge colours + unknown fallback, guard label display, `selectedMethodIndex` highlighting, `nodeStates`-driven status badges on leaves. Render callbacks (`renderLeaf`, `renderMethod`) per component-customisation protocol. Shared `selectionTopic` with DAG viewer for coordination.
+
+### blocks-plan-item-tree (`components/blocks-plan-item-tree`)
+
+PlanItemDefinition tree — recursive ARIA tree for Primitive/Compound plan item hierarchy. `CompletionSemantics` badges (All/M-of-N/FirstWins), `DispatchMode` pills (ORCHESTRATED/CHOREOGRAPHED), repeatable indicators, entry condition display. Render callbacks (`renderPrimitive`, `renderCompound`).
+
+### blocks-plan-model-dashboard (`components/blocks-plan-model-dashboard`)
+
+CasePlanModel dashboard — card-based grid layout showing agenda (table with status badges), focus area with rationale, resource budget key-value pairs, sub-case list with case status, compound definition progress bars. Consumes `CasePlanModelSnapshot` as a single property.
+
 ### split-workbench (`components/split-workbench`)
 
 Generic split-pane layout shell — draggable divider, localStorage-persisted ratio, CSS container query responsive mode (single-panel below 768px), selection coordination via pages-event topics. Accepts any children via named slots (list, detail, header).
