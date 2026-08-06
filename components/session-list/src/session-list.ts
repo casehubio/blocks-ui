@@ -49,7 +49,7 @@ export class SessionList extends SessionListBase {
   @state() private _spawnWorkDir = '';
   @state() _restartError: { name: string; workingDir: string; command: string } | null = null;
 
-  private _columnRenderers: ReadonlyMap<typeof NAME_COL | typeof STATUS_COL, ColumnRenderer> = new Map([
+  private _columnRenderers: ReadonlyMap<typeof NAME_COL | typeof STATUS_COL, ColumnRenderer> = new Map<typeof NAME_COL | typeof STATUS_COL, ColumnRenderer>([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
       return html`<status-badge domain="session" state=${status} size="sm" showIcon></status-badge>`;
