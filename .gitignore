@@ -5,9 +5,11 @@ dist/
 wksp
 *.tsbuildinfo
 target/
-.casehub-packages/
+.casehub-packages
 .yarn/install-state.gz
 .playwright-mcp/
 .claude
 package-lock.json
 proj
+.mvn/maven.config
+.mvn/slot-settings.xml

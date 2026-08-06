@@ -25,6 +25,7 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
+    "@casehubio/diagram-core": "workspace:*",
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",
     "@casehubio/graph-stencil-case": "workspace:*",

@@ -90,6 +90,7 @@ Case domain adapter for the visual diagram editor (epic #103). Exports:
 - `removeElement(yaml, nodePath)` → new YAML string — removes element by YAML path
 - `switchBindingTarget(yaml, bindingPath, targetType)` → new YAML string — switches binding target (capability/subCase/humanTask)
 - `registerCaseStencils()` — registers 5 stencil descriptors via pages `registerStencil()` (StencilDescriptor API with grammar, properties schema, render function)
+- `registerThumbnailRenderer(type, renderer)` / `getThumbnailRenderer(type)` — ThumbnailRenderer SPI for worker node previews (SWF thumbnails registered by the hosting app)
 - `GitHubBackend` — `PersistenceBackend` implementation using GitHub Contents API
 - `toDecorations(state: CaseRuntimeState)` → `ReadonlyMap<string, NodeDecoration>` — pure function mapping runtime state to visual decorations. PlanItem aggregation uses active-worst-first priority per binding; milestones map 1:1.
 - `toDecoration(domain, state)` → `NodeDecoration` — single-state decoration via status registry (#109). Used internally by `toDecorations`; also available for custom domain decorations. `BADGE_COLORS` provides raw hex per `StateCategory`.
@@ -98,14 +99,24 @@ Case domain adapter for the visual diagram editor (epic #103). Exports:
 
 Each stencil's render function accepts `(node: GraphNode, decoration?: NodeDecoration)` → `StencilTemplate`. Decorations are rendered by the pages graph-renderer; OBSOLETE status additionally applies reduced opacity inside the stencil render function.
 
+### diagram-core (`packages/diagram-core`)
+
+Shared diagram orchestration extracted from casehub-diagram (#106). Exports:
+- `DiagramBaseMixin(LitElement)` — Lit mixin owning undo/redo, render pipeline (`_fullRender`/`_updateWithoutLayout`), dirty tracking, persistence (`_load`/`_save`), keyboard shortcuts, selected node state, mode toggle, `src` fetch with AbortController, error/degraded/readonly modes. Subclasses implement 5 abstract methods: `_adaptYaml`, `_applyPropertyEdit`, `_schemaTypeMap`, `_paletteTypes`, `_emptyTemplate`.
+- `DiagramToolbar` — base toolbar (save/dirty indicator)
+- `DiagramProperties` — generic schema-driven property panel with `renderPropertyForm`
+- Form utilities: `fieldTypeFor`, `validateField`, `renderNestedGroup`, `renderTriggerEditor`
+
 ### graph-stencil-swf (`packages/graph-stencil-swf`)
 
-Serverless Workflow (SWF) domain adapter for the visual diagram editor (epic #103). Exports:
-- `SwfAdapter` — implements `DomainAdapter<string>`. Uses `@openworkflowspec/sdk` for SWF YAML parsing. Currently stubbed.
-- `swfStencils` — array of `StencilDescriptor` objects:
-  - **swf-call** — function call node, outbound to call/switch/raise/exit
-  - **swf-switch** — conditional branch, multiple outbound connections
-  - (TODO: raise, catch, entry, exit stencils)
+SWF domain adapter for the visual diagram editor (#106). Uses `@openworkflowspec/sdk`. Exports:
+- `toSwfGraph(yaml)` → `AdapterResult { model, yamlPaths, degraded? }` — dual YAML walk (SDK `buildFlatGraph` + YAML CST path walker), type prefixing (`swf-*`), integrity assertion
+- `applySwfPropertyEdit(yaml, nodePath, field, value)` → new YAML string — CST-preserving via `yaml` library
+- `registerSwfStencils()` — registers 10 typed stencils (call with sub-type icons, set, switch, raise, try, try-catch, start, end, entry, exit) + generic fallback, 2 edge types (flow, switch-case)
+- `swfTaskSchema` — static JSON Schema for SWF task types (CallTask, SetTask, SwitchTask, RaiseTask, TryTask, TryCatchTask)
+- `createSwfThumbnailRenderer()` — SVG thumbnail renderer with layout caching
+- `wrapDoBlock(doBlock)` — wraps a `do:` array into a minimal SWF document envelope
+- `SWF_KNOWN_TYPES`, `SYNTHETIC_TYPES`, `SWF_TYPE_PREFIX` — type constants
 
 ### split-workbench (`components/split-workbench`)
 

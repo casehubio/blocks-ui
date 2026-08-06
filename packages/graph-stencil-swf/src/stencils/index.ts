@@ -1,19 +1,9 @@
-import type { StencilGrammar } from '@casehubio/graph-core';
-
-export const callGrammar: StencilGrammar = {
-  type: 'swf-call',
-  connections: {
-    inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-switch', 'swf-entry'] },
-    outbound: { min: 0, max: 1, allowedTo: ['swf-call', 'swf-switch', 'swf-raise', 'swf-exit'] },
-  },
-};
-
-export const switchGrammar: StencilGrammar = {
-  type: 'swf-switch',
-  connections: {
-    inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-switch', 'swf-entry'] },
-    outbound: { min: 1, max: Infinity, allowedTo: ['swf-call', 'swf-switch', 'swf-raise', 'swf-exit'] },
-  },
-};
-
-export const swfGrammars: StencilGrammar[] = [callGrammar, switchGrammar];
+export { registerSwfStencils } from './register.js';
+export { callGrammar, renderCall } from './call.js';
+export { setGrammar, renderSet } from './set.js';
+export { switchGrammar, renderSwitch } from './switch.js';
+export { raiseGrammar, renderRaise } from './raise.js';
+export { tryGrammar, renderTry } from './try.js';
+export { tryCatchGrammar, renderTryCatch } from './try-catch.js';
+export { startGrammar, endGrammar, entryGrammar, exitGrammar, renderStart, renderEnd, renderEntry, renderExit } from './boundary.js';
+export { genericGrammar, renderGeneric } from './generic.js';

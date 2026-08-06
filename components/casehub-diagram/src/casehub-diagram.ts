@@ -8,13 +8,14 @@ import {
   removeElement,
   switchBindingTarget,
 } from '@casehubio/graph-stencil-case';
-import type { AdapterResult, CaseRuntimeState } from '@casehubio/graph-stencil-case';
+import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
 import { toDecorations } from '@casehubio/graph-stencil-case';
-import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
-import type { ElkLayoutResult } from '@casehubio/graph-renderer';
-import type { Node, Edge } from '@xyflow/react';
+import { toReactFlowGraph } from '@casehubio/graph-renderer';
+import type { ElkLayoutOptions } from '@casehubio/graph-renderer';
+import type { NodeDecoration } from '@casehubio/graph-core';
 import { edgesOf } from '@casehubio/graph-core';
-import type { PersistenceBackend } from '@casehubio/graph-core';
+import { DiagramBaseMixin } from '@casehubio/diagram-core';
+import type { AdapterResult } from '@casehubio/diagram-core';
 import '@casehubio/graph-renderer';
 import './casehub-diagram-palette.js';
 import './casehub-diagram-toolbar.js';
@@ -28,82 +29,97 @@ const SCHEMA_TYPE_MAP: Record<string, string> = {
   subcase: 'SubCase',
 };
 
-const MAX_UNDO = 50;
+const PALETTE_TYPES = ['binding', 'worker', 'milestone', 'goal'];
+
+const EMPTY_CASE_YAML = `dsl: "1.0.0"
+namespace:
+name:
+version: "1.0.0"
+spec:
+  bindings: []
+  workers: []
+`;
 
 @customElement('casehub-diagram')
-export class CasehubDiagram extends LitElement {
-  @property() yaml = '';
-  @property() src = '';
-  @property({ attribute: false }) schema: Record<string, unknown> = {};
-  @property({ attribute: false }) backend: PersistenceBackend | null = null;
-  @property() uri = '';
+export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;
 
-  @state() private _nodes: Node[] = [];
-  @state() private _edges: Edge[] = [];
-  @state() private _error = '';
-  @state() private _selectedNodeId = '';
-  @state() private _selectedData: Record<string, unknown> = {};
-  @state() private _selectedSchema: Record<string, unknown> = {};
-  @state() private _saving = false;
-  @state() private _showConflict = false;
-  @state() private _confirmMessage = '';
-  @state() private _mode: 'design' | 'runtime' = 'design';
   @state() private _staleSeconds = 0;
 
-  private _currentYaml = '';
-  private _savedYaml = '';
-  private _version = '';
-  private _adapterResult: AdapterResult | null = null;
-  private _undoStack: string[] = [];
-  private _redoStack: string[] = [];
-  private _renderInProgress = false;
-  private _pendingRenderYaml = '';
-  private _lastLayout: ElkLayoutResult | undefined;
-  private _conflictVersion = '';
-  private _pendingConfirm: ((v: boolean) => void) | null = null;
+  private _expandedWorkers = new Set<string>();
+  private _expandDebounce: ReturnType<typeof setTimeout> | null = null;
 
-  override createRenderRoot(): HTMLElement {
-    return this;
+  protected _adaptYaml(yaml: string): AdapterResult {
+    return toGraph(yaml);
+  }
+
+  protected _applyPropertyEdit(
+    yaml: string,
+    nodePath: readonly (string | number)[],
+    field: (string | number)[],
+    value: unknown,
+  ): string {
+    return applyPropertyEdit(yaml, nodePath, field, value);
+  }
+
+  protected _schemaTypeMap(): Record<string, string> {
+    return SCHEMA_TYPE_MAP;
+  }
+
+  protected _paletteTypes(): string[] {
+    return PALETTE_TYPES;
+  }
+
+  protected _emptyTemplate(): string | null {
+    return EMPTY_CASE_YAML;
+  }
+
+  protected _decorations(): ReadonlyMap<string, NodeDecoration> | undefined {
+    if (this._mode === 'runtime' && this.runtimeState) {
+      return toDecorations(this.runtimeState);
+    }
+    return undefined;
+  }
+
+  protected _layoutOptions(): ElkLayoutOptions {
+    if (this._expandedWorkers.size === 0) {
+      return { direction: 'DOWN', spacing: 60 };
+    }
+    const nodeSizes = new Map<string, { width: number; height: number }>();
+    for (const id of this._expandedWorkers) {
+      nodeSizes.set(id, { width: 320, height: 240 });
+    }
+    return { direction: 'DOWN', spacing: 60, nodeSizes };
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     registerCaseStencils();
-    this.addEventListener('keydown', this._handleKeydown);
+    this.addEventListener('worker-expand-toggle', this._handleWorkerExpand as EventListener);
   }
 
   override disconnectedCallback(): void {
-    this.removeEventListener('keydown', this._handleKeydown);
+    this.removeEventListener('worker-expand-toggle', this._handleWorkerExpand as EventListener);
+    if (this._expandDebounce) clearTimeout(this._expandDebounce);
     super.disconnectedCallback();
   }
 
+  private _handleWorkerExpand = (e: CustomEvent<{ workerId: string; expanded: boolean }>): void => {
+    const { workerId, expanded } = e.detail;
+    if (expanded) {
+      this._expandedWorkers.add(workerId);
+    } else {
+      this._expandedWorkers.delete(workerId);
+    }
+    if (this._expandDebounce) clearTimeout(this._expandDebounce);
+    this._expandDebounce = setTimeout(() => {
+      this._expandDebounce = null;
+      this._fullRender(this._currentYaml);
+    }, 150);
+  };
+
   override async updated(changed: Map<string, unknown>): Promise<void> {
-    if (changed.has('yaml') && this.yaml) {
-      this._currentYaml = this.yaml;
-      this._savedYaml = this.yaml;
-      this._undoStack = [];
-      this._redoStack = [];
-      this._selectedNodeId = '';
-      await this._fullRender(this.yaml);
-    }
-    if (changed.has('src') && this.src) {
-      try {
-        const response = await fetch(this.src);
-        const text = await response.text();
-        this._currentYaml = text;
-        this._savedYaml = text;
-        this._undoStack = [];
-        this._redoStack = [];
-        this._selectedNodeId = '';
-        await this._fullRender(text);
-      } catch (e) {
-        this._error = `Failed to fetch ${this.src}: ${e}`;
-      }
-    }
-    if ((changed.has('backend') || changed.has('uri')) && this.backend && this.uri) {
-      await this._load();
-    }
+    await super.updated(changed);
     if (changed.has('runtimeState')) {
       if (this.runtimeState === null) {
         this._mode = 'design';
@@ -116,72 +132,9 @@ export class CasehubDiagram extends LitElement {
       } else {
         this._updateStaleness();
         if (this._mode === 'runtime') {
-          this._applyDecorations();
+          this._applyRuntimeDecorations();
         }
       }
-    }
-  }
-
-  private async _fullRender(yamlStr: string): Promise<void> {
-    if (this._renderInProgress) {
-      this._pendingRenderYaml = yamlStr;
-      return;
-    }
-    this._renderInProgress = true;
-    try {
-      this._error = '';
-      this._adapterResult = toGraph(yamlStr);
-      this._lastLayout = await computeElkLayout(this._adapterResult.model, { direction: 'DOWN', spacing: 60 });
-      const decorations = this._mode === 'runtime' && this.runtimeState ? toDecorations(this.runtimeState) : undefined;
-      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
-      this._nodes = nodes;
-      this._edges = edges;
-    } catch (e) {
-      this._error = String(e);
-    } finally {
-      this._renderInProgress = false;
-      if (this._pendingRenderYaml && this._pendingRenderYaml !== yamlStr) {
-        const pending = this._pendingRenderYaml;
-        this._pendingRenderYaml = '';
-        await this._fullRender(pending);
-      } else {
-        this._pendingRenderYaml = '';
-      }
-    }
-  }
-
-  private _updateWithoutLayout(yamlStr: string): void {
-    try {
-      this._error = '';
-      this._adapterResult = toGraph(yamlStr);
-      const decorations = this._mode === 'runtime' && this.runtimeState ? toDecorations(this.runtimeState) : undefined;
-      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
-      this._nodes = nodes;
-      this._edges = edges;
-      this._updateSelectedNode();
-    } catch (e) {
-      this._error = `Edit failed: ${e}`;
-      this._currentYaml = this._undoStack.pop() ?? this._currentYaml;
-    }
-  }
-
-  private _updateSelectedNode(): void {
-    if (!this._selectedNodeId || !this._adapterResult) {
-      this._selectedData = {};
-      this._selectedSchema = {};
-      return;
-    }
-    const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
-    if (!node) {
-      this._selectedNodeId = '';
-      this._selectedData = {};
-      this._selectedSchema = {};
-      return;
-    }
-    this._selectedData = { ...node.properties };
-    const defKey = SCHEMA_TYPE_MAP[node.type];
-    if (defKey && this.schema.$defs) {
-      this._selectedSchema = (this.schema.$defs as Record<string, Record<string, unknown>>)[defKey] ?? {};
     }
   }
 
@@ -191,7 +144,7 @@ export class CasehubDiagram extends LitElement {
     this._staleSeconds = Math.max(0, elapsed - 30);
   }
 
-  private _applyDecorations(): void {
+  private _applyRuntimeDecorations(): void {
     if (!this._adapterResult || !this.runtimeState) return;
     const decorations = toDecorations(this.runtimeState);
     const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
@@ -203,51 +156,11 @@ export class CasehubDiagram extends LitElement {
     const detail = (e as CustomEvent<{ mode: 'design' | 'runtime' }>).detail;
     this._mode = detail.mode;
     if (this._mode === 'runtime' && this.runtimeState) {
-      this._applyDecorations();
+      this._applyRuntimeDecorations();
     } else if (this._adapterResult) {
       const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout);
       this._nodes = nodes;
       this._edges = edges;
-    }
-  };
-
-  private _handleNodeClick = (e: Event): void => {
-    const detail = (e as CustomEvent<{ nodeId: string }>).detail;
-    this._selectedNodeId = detail.nodeId;
-    this._updateSelectedNode();
-  };
-
-  private _handleSelectionChange = (e: Event): void => {
-    const detail = (e as CustomEvent<{ nodeIds: string[] }>).detail;
-    if (detail.nodeIds.length === 0) {
-      this._selectedNodeId = '';
-      this._selectedData = {};
-      this._selectedSchema = {};
-    }
-  };
-
-  private _handlePropertyChange = (e: Event): void => {
-    const detail = (e as CustomEvent<{ field: (string | number)[]; value: unknown }>).detail;
-    if (!this._selectedNodeId || !this._adapterResult) return;
-
-    const nodePath = this._adapterResult.yamlPaths.get(this._selectedNodeId);
-    if (!nodePath) return;
-
-    this._undoStack.push(this._currentYaml);
-    if (this._undoStack.length > MAX_UNDO) this._undoStack.shift();
-    this._redoStack = [];
-
-    try {
-      this._currentYaml = applyPropertyEdit(
-        this._currentYaml,
-        nodePath,
-        detail.field,
-        detail.value,
-      );
-      this._updateWithoutLayout(this._currentYaml);
-    } catch (e) {
-      this._currentYaml = this._undoStack.pop() ?? this._currentYaml;
-      this._error = `Edit failed: ${e}`;
     }
   };
 
@@ -269,8 +182,9 @@ export class CasehubDiagram extends LitElement {
     this._updateSelectedNode();
   };
 
-  private _handleDelete = async (): Promise<void> => {
+  protected async _onDelete(): Promise<void> {
     if (!this._selectedNodeId || !this._adapterResult) return;
+    if (this._confirmMessage) return;
     const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
     if (!node || node.type === 'external') return;
     const nodePath = this._adapterResult.yamlPaths.get(this._selectedNodeId);
@@ -283,13 +197,17 @@ export class CasehubDiagram extends LitElement {
       if (!confirmed) return;
     }
 
-    this._pushUndo();
-    this._currentYaml = removeElement(this._currentYaml, nodePath);
-    this._selectedNodeId = '';
-    this._selectedData = {};
-    this._selectedSchema = {};
-    await this._fullRender(this._currentYaml);
-  };
+    try {
+      this._pushUndo();
+      this._currentYaml = removeElement(this._currentYaml, nodePath);
+      this._selectedNodeId = '';
+      this._selectedData = {};
+      this._selectedSchema = {};
+      await this._fullRender(this._currentYaml);
+    } catch (e) {
+      this._error = `Delete failed: ${e}`;
+    }
+  }
 
   private _confirmDeleteDialog(type: string, name: string, edgeCount: number): Promise<boolean> {
     return new Promise(resolve => {
@@ -301,163 +219,18 @@ export class CasehubDiagram extends LitElement {
     });
   }
 
-  private _pushUndo(): void {
-    this._undoStack.push(this._currentYaml);
-    if (this._undoStack.length > MAX_UNDO) this._undoStack.shift();
-    this._redoStack = [];
-  }
-
-  private _handleKeydown = (e: KeyboardEvent): void => {
-    const tag = (e.target as HTMLElement).tagName;
-    const isTextInput = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement).isContentEditable;
-
-    if (e.key === 'Escape') {
-      this._selectedNodeId = '';
-      this._selectedData = {};
-      this._selectedSchema = {};
-      return;
-    }
-    if ((e.key === 'Delete' || e.key === 'Backspace') && !isTextInput) {
-      e.preventDefault();
-      this._handleDelete();
-      return;
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-      e.preventDefault();
-      this._undo();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
-      e.preventDefault();
-      this._redo();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-      e.preventDefault();
-      this._save();
-    }
-  };
-
-  private async _undo(): Promise<void> {
-    if (this._undoStack.length === 0) return;
-    this._redoStack.push(this._currentYaml);
-    this._currentYaml = this._undoStack.pop()!;
-    await this._fullRender(this._currentYaml);
-    this._updateSelectedNode();
-  }
-
-  private async _redo(): Promise<void> {
-    if (this._redoStack.length === 0) return;
-    this._undoStack.push(this._currentYaml);
-    this._currentYaml = this._redoStack.pop()!;
-    await this._fullRender(this._currentYaml);
-    this._updateSelectedNode();
-  }
-
-  private async _load(): Promise<void> {
-    if (!this.backend || this._saving) return;
-    try {
-      const result = await this.backend.read(this.uri);
-      if (result.status === 'ok') {
-        this._currentYaml = result.yaml;
-        this._savedYaml = result.yaml;
-        this._version = result.version;
-        this._undoStack = [];
-        this._redoStack = [];
-        this._selectedNodeId = '';
-        await this._fullRender(result.yaml);
-      } else if (result.status === 'not_found') {
-        const empty = `dsl: "1.0.0"\nnamespace: \nname: \nversion: "1.0.0"\nspec:\n  bindings: []\n  workers: []\n`;
-        this._currentYaml = empty;
-        this._savedYaml = empty;
-        this._version = '';
-        await this._fullRender(empty);
-      } else if (result.status === 'parse_error') {
-        this._error = result.message;
-      } else if (result.status === 'schema_error') {
-        this._currentYaml = result.yaml;
-        this._savedYaml = result.yaml;
-        this._version = result.version;
-        await this._fullRender(result.yaml);
-      }
-    } catch (e) {
-      this._error = `Load failed: ${e}`;
-    }
-  }
-
-  private async _save(): Promise<void> {
-    if (!this.backend || this._currentYaml === this._savedYaml || this._saving || this._renderInProgress) return;
-    this._saving = true;
-    this.requestUpdate();
-    try {
-      const result = await this.backend.write(this.uri, this._currentYaml, this._version);
-      if (result.status === 'ok') {
-        this._version = result.version;
-        this._savedYaml = this._currentYaml;
-      } else if (result.status === 'conflict') {
-        this._conflictVersion = result.currentVersion;
-        this._showConflict = true;
-      }
-    } catch (e) {
-      this._error = `Save failed: ${e}`;
-    } finally {
-      this._saving = false;
-      this.requestUpdate();
-    }
-  }
-
-  private async _resolveConflict(action: 'overwrite' | 'reload' | 'cancel'): Promise<void> {
-    this._showConflict = false;
-    if (action === 'overwrite' && this.backend) {
-      this._version = this._conflictVersion;
-      await this._save();
-    } else if (action === 'reload') {
-      await this._load();
-    }
-    this.requestUpdate();
-  }
-
-  private _renderConflictDialog() {
-    return html`
-      <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-        <div style="background: var(--pages-surface-color, #fff); padding: 20px; border-radius: 8px; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-          <div style="font-weight: 600; margin-bottom: 12px;">Conflict detected</div>
-          <div style="font-size: 13px; margin-bottom: 16px;">The file was modified externally since your last load.</div>
-          <div style="display: flex; gap: 8px; justify-content: flex-end;">
-            <button @click=${() => this._resolveConflict('cancel')}>Keep editing</button>
-            <button @click=${() => this._resolveConflict('reload')}>Discard my changes</button>
-            <button @click=${() => this._resolveConflict('overwrite')}>Save anyway</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  private _renderDeleteConfirm() {
-    return html`
-      <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-        <div style="background: var(--pages-surface-color, #fff); padding: 20px; border-radius: 8px; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-          <div style="font-size: 13px; margin-bottom: 16px;">${this._confirmMessage}</div>
-          <div style="display: flex; gap: 8px; justify-content: flex-end;">
-            <button @click=${() => { this._confirmMessage = ''; this._pendingConfirm?.(false); this.requestUpdate(); }}>Cancel</button>
-            <button @click=${() => { this._confirmMessage = ''; this._pendingConfirm?.(true); this.requestUpdate(); }}>Remove</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
   override render() {
     if (this._error) {
-      return html`<div style="color: red; padding: 16px;">${this._error}</div>`;
+      return this._renderError();
     }
     const hasSelection = this._selectedNodeId !== '';
     const isExternal = hasSelection && this._adapterResult?.model.nodes.find(n => n.id === this._selectedNodeId)?.type === 'external';
-    const isDirty = this._currentYaml !== this._savedYaml;
 
     return html`
       <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
         <casehub-diagram-toolbar
           ?hasBackend=${this.backend != null}
-          ?dirty=${isDirty}
+          ?dirty=${this._isDirty}
           ?saving=${this._saving}
           ?runtimeAvailable=${this.runtimeState !== null}
           .mode=${this._mode}

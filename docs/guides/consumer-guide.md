@@ -23,7 +23,8 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 |---------|----------|---------|----------|
 | `packages/blocks-ui-core` | `@casehubio/blocks-ui-core` | Tokens, DataSourceMixin, TrendSourceMixin, renderSparkline, EventStreamController, event helpers, domain types, SharedTimerController, blocks-confirm-dialog, renderPropertyTree, pulseAnimation CSS, CommitmentStatePill, StatusBadge (generic status pills), status registry (`lookupStatus`/`registerStatus`) | Beta |
 | `packages/graph-stencil-case` | `@casehubio/graph-stencil-case` | Case domain adapter, structural stencils (binding, worker, milestone, goal, subcase), YAML editor (add/remove/edit/switchTarget), RuntimeAdapter (`toDecorations`), persistence SPI (`GitHubBackend`). | Beta |
-| `packages/graph-stencil-swf` | `@casehubio/graph-stencil-swf` | Serverless Workflow (SWF) domain adapter and stencils (call, switch) for the graph editor. Uses `@openworkflowspec/sdk`. Implements `DomainAdapter` from `@casehubio/graph-core`. | Alpha |
+| `packages/diagram-core` | `@casehubio/diagram-core` | Shared diagram orchestration — DiagramBaseMixin (undo/redo, render pipeline, persistence, keyboard shortcuts, error/degraded/readonly modes), DiagramToolbar, DiagramProperties, form utilities. | Beta |
+| `packages/graph-stencil-swf` | `@casehubio/graph-stencil-swf` | SWF domain adapter (`toSwfGraph` — dual YAML walk with SDK `buildFlatGraph`, type prefixing, degraded mode), 10 typed stencils + generic fallback, edge types (flow, switch-case), `applySwfPropertyEdit`, `swfTaskSchema`, `createSwfThumbnailRenderer`. Uses `@openworkflowspec/sdk`. | Beta |
 
 ### Components (`components/`)
 
@@ -58,7 +59,8 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | `session-workbench` | Session workbench — split-pane layout with session list and detail panels | Beta |
 | `trust-workbench` | Composite trust visibility — score panel, routing history, feedback display | Beta |
 | `document-workbench` | Document review workbench — 9 panels for AI-assisted document review: debate feed, document diff, timeline, review tracker, brainstorm options/picker, context gauge, doc picker, workspace status | Beta |
-| `casehub-diagram` | Visual diagram editor for CaseDefinition YAML — graph canvas, palette, property panel, toolbar, design/runtime mode toggle, runtime state overlay with status badges | Beta |
+| `casehub-diagram` | Visual diagram editor for CaseDefinition YAML — extends DiagramBaseMixin, case-specific palette, property panel with binding target selector, structural editing, runtime overlay with status badges, worker inline expand | Beta |
+| `swf-diagram` | Standalone SWF workflow diagram — extends DiagramBaseMixin, schema-driven property editing, degraded mode banner. Read-only + property editing (no structural editing). | Beta |
 | `work-item-row` | Single work item row (legacy — inbox now uses pages-table) | Deprecated |
 
 **Maturity levels:**
@@ -206,9 +208,32 @@ const decorations = toDecorations(runtimeState);
 
 **Editing:** All editing capabilities (property panel, palette, delete, save, undo/redo) remain active in runtime mode. The overlay is purely visual.
 
-### graph-stencil-swf (Alpha)
+### swf-diagram + graph-stencil-swf
 
-Serverless Workflow (SWF) domain adapter for the visual diagram editor. `SwfAdapter` implements `DomainAdapter<string>`. Uses `@openworkflowspec/sdk` for SWF YAML parsing. Currently stubbed — stencil descriptors (call, switch) are fully defined with grammar rules but the adapter methods return empty models.
+Standalone SWF workflow diagram component. `swf-diagram` extends `DiagramBaseMixin` from `diagram-core` and delegates to `graph-stencil-swf` for adapter, stencils, property editing, and schema.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `yaml` | `string` | SWF YAML string to render |
+| `src` | `string` | URL to fetch SWF YAML from |
+| `backend` | `PersistenceBackend \| null` | Optional persistence backend |
+| `uri` | `string` | Resource URI for persistence |
+| `schema` | `Record<string, unknown>` | JSON Schema — defaults to `swfTaskSchema` (self-sufficient) |
+| `readonly` | `boolean` | When true, suppresses property panel and save |
+
+**Stencils:** 10 typed stencils (call with sub-type icon switching, set, switch, raise, try, try-catch, start, end, entry, exit) plus a generic fallback for unsupported SWF types. Edge types: `flow` (solid) and `switch-case` (dashed).
+
+**Worker thumbnail integration:** Worker nodes in `casehub-diagram` that have a `do:` block render a miniaturised SWF preview. The application registers the thumbnail renderer at init:
+
+```typescript
+import { registerThumbnailRenderer } from '@casehubio/graph-stencil-case';
+import { createSwfThumbnailRenderer } from '@casehubio/graph-stencil-swf';
+registerThumbnailRenderer('swf', createSwfThumbnailRenderer());
+```
+
+**Drill-down:** Worker nodes emit `diagram:worker-drill-down` pages-event with `workerId`, `workerName`, `doYaml`. The hosting app handles navigation to `swf-diagram`.
 
 ---
 

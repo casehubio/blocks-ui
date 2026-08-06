@@ -1,0 +1,98 @@
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { toSwfGraph, applySwfPropertyEdit, registerSwfStencils, swfTaskSchema } from '@casehubio/graph-stencil-swf';
+import { DiagramBaseMixin } from '@casehubio/diagram-core';
+import type { AdapterResult } from '@casehubio/diagram-core';
+import '@casehubio/graph-renderer';
+
+const SWF_SCHEMA_TYPE_MAP: Record<string, string> = {
+  'swf-call': 'CallTask',
+  'swf-set': 'SetTask',
+  'swf-switch': 'SwitchTask',
+  'swf-raise': 'RaiseTask',
+  'swf-try': 'TryTask',
+  'swf-try-catch': 'TryCatchTask',
+};
+
+@customElement('swf-diagram')
+export class SwfDiagram extends DiagramBaseMixin(LitElement) {
+  @property({ attribute: false })
+  override schema: Record<string, unknown> = swfTaskSchema;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    registerSwfStencils();
+  }
+
+  protected _adaptYaml(yaml: string): AdapterResult {
+    return toSwfGraph(yaml);
+  }
+
+  protected _applyPropertyEdit(
+    yaml: string,
+    nodePath: readonly (string | number)[],
+    field: (string | number)[],
+    value: unknown,
+  ): string {
+    return applySwfPropertyEdit(yaml, nodePath, field, value);
+  }
+
+  protected _schemaTypeMap(): Record<string, string> {
+    return SWF_SCHEMA_TYPE_MAP;
+  }
+
+  protected _paletteTypes(): string[] {
+    return [];
+  }
+
+  protected _emptyTemplate(): string | null {
+    return null;
+  }
+
+  override render() {
+    if (this._error) {
+      return this._renderError();
+    }
+    const hasSelection = this._selectedNodeId !== '';
+    const isReadonly = this.readonly || !!this._adapterResult?.degraded;
+
+    return html`
+      <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
+        <diagram-toolbar
+          ?hasBackend=${this.backend != null}
+          ?dirty=${this._isDirty}
+          ?saving=${this._saving}
+          @toolbar-save=${() => this._save()}
+        ></diagram-toolbar>
+        <div style="display: flex; flex: 1; overflow: hidden;">
+          <pages-graph-canvas
+            .nodes=${this._nodes}
+            .edges=${this._edges}
+            style="flex: 1; height: 100%;"
+            @pages-event=${(e: CustomEvent) => {
+              const topic = e.detail?.topic as string | undefined;
+              if (topic === 'graph:node-click') this._handleNodeClick(e);
+              if (topic === 'graph:selection-change') this._handleSelectionChange(e);
+            }}
+          ></pages-graph-canvas>
+          ${hasSelection && !isReadonly ? html`
+            <div style="width: 300px; border-left: 1px solid var(--pages-border-color, #ddd); overflow-y: auto;">
+              <diagram-properties
+                .schema=${this._selectedSchema}
+                .data=${this._selectedData}
+                ?readonly=${isReadonly}
+                @property-change=${this._handlePropertyChange}
+              ></diagram-properties>
+            </div>
+          ` : nothing}
+          ${this._adapterResult?.degraded ? html`
+            <div style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: var(--pages-warning-color, #f59e0b); color: #000; padding: 4px 12px; border-radius: 4px; font-size: 12px;">
+              Property editing unavailable — ${this._adapterResult.degraded.reason}
+            </div>
+          ` : nothing}
+        </div>
+        ${this._showConflict ? this._renderConflictDialog() : nothing}
+      </div>
+    `;
+  }
+}

@@ -1,0 +1,17 @@
+import { parseDocument } from 'yaml';
+
+export function applySwfPropertyEdit(
+  yaml: string,
+  nodePath: readonly (string | number)[],
+  field: (string | number)[],
+  value: unknown,
+): string {
+  const doc = parseDocument(yaml);
+  const fullPath = [...nodePath, ...field];
+  if (value === undefined) {
+    doc.deleteIn(fullPath);
+  } else {
+    doc.setIn(fullPath, value);
+  }
+  return doc.toString();
+}

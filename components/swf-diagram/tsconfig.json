@@ -9,6 +9,6 @@
   "include": ["src"],
   "references": [
     { "path": "../../packages/diagram-core" },
-    { "path": "../../packages/graph-stencil-case" }
+    { "path": "../../packages/graph-stencil-swf" }
   ]
 }
