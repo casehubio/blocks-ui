@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { toDecorations } from './runtime-adapter.js';
 import type { CaseRuntimeState, PlanItemSnapshot } from './types.js';
