@@ -47,7 +47,7 @@ export class SessionDetail extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
     this._unsubs.push(
-      onPagesEvent<{ id: string }>(document, SessionEventTopics.SELECTED, (p) => {
+      onPagesEvent<{ id: string }>(document, SessionEventTopics.SELECTED, (p: { id: string }) => {
         this.sessionId = p.id;
       }),
       onPagesEvent(document, SessionEventTopics.DESELECTED, () => {
