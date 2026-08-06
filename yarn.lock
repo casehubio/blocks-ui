@@ -151,6 +151,64 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-blocks-dag-viewer@workspace:components/blocks-dag-viewer":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-blocks-dag-viewer@workspace:components/blocks-dag-viewer"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-core": "npm:*"
+    "@casehubio/graph-renderer": "npm:*"
+    "@casehubio/graph-stencil-htn": "workspace:*"
+    jsdom: "npm:^29.1.1"
+    lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-blocks-decomposition-tree@workspace:components/blocks-decomposition-tree":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-blocks-decomposition-tree@workspace:components/blocks-decomposition-tree"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-stencil-htn": "workspace:*"
+    jsdom: "npm:^29.1.1"
+    lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-blocks-plan-item-tree@workspace:components/blocks-plan-item-tree":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-blocks-plan-item-tree@workspace:components/blocks-plan-item-tree"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-stencil-htn": "workspace:*"
+    jsdom: "npm:^29.1.1"
+    lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:components/blocks-plan-model-dashboard":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:components/blocks-plan-model-dashboard"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-stencil-htn": "workspace:*"
+    jsdom: "npm:^29.1.1"
+    lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-blocks-timeline@workspace:components/blocks-timeline":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-timeline@workspace:components/blocks-timeline"
@@ -238,6 +296,24 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-table": "npm:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-list-pane": "workspace:*"
+    "@casehubio/blocks-ui-split-workbench": "workspace:*"
+    "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
@@ -619,6 +695,8 @@ __metadata:
 "@casehubio/graph-core@portal:./.casehub-packages/packages/graph-core::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-core@portal:./.casehub-packages/packages/graph-core::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@types/json-schema": "npm:^7.0.15"
   languageName: node
   linkType: soft
 
@@ -626,8 +704,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-renderer@portal:./.casehub-packages/packages/graph-renderer::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-work-registry": "npm:0.1.0"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     "@xyflow/react": "npm:^12.4.0"
     elkjs: "npm:^0.9.3"
     lit: "npm:^3.3.3"
@@ -661,6 +741,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/graph-stencil-htn@workspace:*, @casehubio/graph-stencil-htn@workspace:packages/graph-stencil-htn":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/graph-stencil-htn@workspace:packages/graph-stencil-htn"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-core": "npm:*"
+    "@casehubio/graph-renderer": "npm:*"
+    jsdom: "npm:^29.1.1"
+    lit-html: "npm:^3.3.0"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/graph-stencil-swf@workspace:packages/graph-stencil-swf":
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-stencil-swf@workspace:packages/graph-stencil-swf"
@@ -675,6 +770,17 @@ __metadata:
     vitest: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
+
+"@casehubio/graph-work-registry@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@casehubio/graph-work-registry@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40casehubio%2Fgraph-work-registry%2F0.1.0%2F5320b14ee4b7e62a7f26b39e26bd2368579cdf10"
+  dependencies:
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@types/json-schema": "npm:^7.0.15"
+    yaml: "npm:^2.7.0"
+  checksum: 10c0/dd79c319ce08acb60ce9c0002837b071d5a17036df6218ecb794a333d8cde6a65d0b86d12761461497933e0c0502794b1c0f23023a9d3f444f3de94f03ecc5cc
+  languageName: node
+  linkType: hard
 
 "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
