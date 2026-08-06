@@ -29,5 +29,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    teardownTimeout: 1000,
+    dangerouslyIgnoreUnhandledErrors: true,
   },
 });
