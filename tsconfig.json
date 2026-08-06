@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "packages/blocks-ui-core/tsconfig.build.json" },
+    { "path": "packages/graph-stencil-htn/tsconfig.build.json" },
     { "path": "components/approval-gate/tsconfig.build.json" },
     { "path": "components/audit-trail-viewer/tsconfig.build.json" },
     { "path": "components/blocks-timeline/tsconfig.build.json" },
