@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
 import { dagToDecorations, nodeStatesToTaskStates } from './dag-runtime.js';
 import type { DagResultSnapshot, DagPlanSnapshot, NodeStateSnapshot } from '../types/index.js';
