@@ -1,0 +1,68 @@
+// @vitest-environment jsdom
+import { describe, it, expect } from 'vitest';
+import { BlocksPlanModelDashboard } from './blocks-plan-model-dashboard.js';
+import type { CasePlanModelSnapshot } from '@casehubio/graph-stencil-htn';
+
+function emptyModel(): CasePlanModelSnapshot {
+  return {
+    caseId: 'case-1',
+    agenda: [],
+    resourceBudget: {},
+    subCases: [],
+    compounds: [],
+    timestamp: '2026-08-06T10:00:00Z',
+  };
+}
+
+function fullModel(): CasePlanModelSnapshot {
+  return {
+    caseId: 'case-1',
+    agenda: [
+      { planItemId: 'pi-1', bindingName: 'verify-identity', status: 'RUNNING', description: 'KYC check' },
+      { planItemId: 'pi-2', bindingName: 'score-risk', status: 'PENDING' },
+    ],
+    focus: 'identity-verification',
+    focusRationale: 'High-risk customer requires manual verification',
+    resourceBudget: { 'llm-tokens': 5000, 'human-hours': 2 },
+    subCases: [
+      { caseDefinition: 'fraud-check', namespace: 'compliance', status: 'RUNNING' },
+    ],
+    compounds: [
+      { id: 'c1', name: 'process-claim', status: 'RUNNING', childCount: 4, completedCount: 1, completion: { kind: 'All' } },
+    ],
+    timestamp: '2026-08-06T10:00:00Z',
+  };
+}
+
+describe('BlocksPlanModelDashboard', () => {
+  it('renders empty state when planModel is null', () => {
+    const el = new BlocksPlanModelDashboard();
+    expect(el.planModel).toBeNull();
+  });
+
+  it('stores planModel property', () => {
+    const el = new BlocksPlanModelDashboard();
+    el.planModel = emptyModel();
+    expect(el.planModel!.caseId).toBe('case-1');
+  });
+
+  it('accepts model with empty collections', () => {
+    const el = new BlocksPlanModelDashboard();
+    el.planModel = emptyModel();
+    expect(el.planModel!.agenda).toHaveLength(0);
+    expect(el.planModel!.subCases).toHaveLength(0);
+    expect(el.planModel!.compounds).toHaveLength(0);
+  });
+
+  it('accepts full model with all fields', () => {
+    const el = new BlocksPlanModelDashboard();
+    el.planModel = fullModel();
+    expect(el.planModel!.agenda).toHaveLength(2);
+    expect(el.planModel!.focus).toBe('identity-verification');
+    expect(el.planModel!.focusRationale).toBeDefined();
+    expect(Object.keys(el.planModel!.resourceBudget)).toHaveLength(2);
+    expect(el.planModel!.subCases).toHaveLength(1);
+    expect(el.planModel!.compounds).toHaveLength(1);
+    expect(el.planModel!.compounds[0]!.completedCount).toBe(1);
+  });
+});

@@ -6,6 +6,11 @@ wksp
 *.tsbuildinfo
 target/
 .casehub-packages
+.casehub-packages/
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
 .yarn/install-state.gz
 .playwright-mcp/
 .claude

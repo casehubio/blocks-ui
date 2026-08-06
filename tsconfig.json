@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "packages/blocks-ui-core/tsconfig.build.json" },
+    { "path": "packages/graph-stencil-htn/tsconfig.build.json" },
     { "path": "components/approval-gate/tsconfig.build.json" },
     { "path": "components/audit-trail-viewer/tsconfig.build.json" },
     { "path": "components/blocks-timeline/tsconfig.build.json" },
@@ -26,6 +27,11 @@
     { "path": "components/routing-rationale/tsconfig.build.json" },
     { "path": "components/case-explorer/tsconfig.build.json" },
     { "path": "components/trust-workbench/tsconfig.build.json" },
-    { "path": "components/preferences-editor/tsconfig.build.json" }
+    { "path": "components/preferences-editor/tsconfig.build.json" },
+    { "path": "packages/graph-stencil-htn/tsconfig.build.json" },
+    { "path": "components/blocks-dag-viewer/tsconfig.build.json" },
+    { "path": "components/blocks-decomposition-tree/tsconfig.build.json" },
+    { "path": "components/blocks-plan-item-tree/tsconfig.build.json" },
+    { "path": "components/blocks-plan-model-dashboard/tsconfig.build.json" }
   ]
 }
