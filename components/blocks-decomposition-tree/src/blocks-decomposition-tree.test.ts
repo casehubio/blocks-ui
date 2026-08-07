@@ -25,11 +25,8 @@ function method(
 function compound(
   name: string,
   methods: DecompositionMethodSnapshot[],
-  selectedMethodIndex?: number,
 ): CompoundTaskSnapshot {
-  const result: CompoundTaskSnapshot = { kind: 'compound', id: `compound:${name}`, name, methods };
-  if (selectedMethodIndex != null) return { ...result, selectedMethodIndex };
-  return result;
+  return { kind: 'compound', id: `compound:${name}`, name, methods };
 }
 
 function snap(root: LeafTaskSnapshot | CompoundTaskSnapshot): DecompositionSnapshot {

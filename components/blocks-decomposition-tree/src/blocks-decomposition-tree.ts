@@ -48,9 +48,7 @@ export class BlocksDecompositionTree extends LitElement {
     .executor-pill { background: var(--pages-accent-subtle, #e8f0fe); color: var(--pages-accent-color, #1a73e8);
       padding: 1px 6px; border-radius: 4px; font-size: 11px; }
     .method-count { font-size: 11px; color: var(--pages-text-tertiary, #999); }
-    .dimmed { opacity: 0.5; }
-    .selected-method { border-left: 3px solid var(--pages-accent-color, #1a73e8); padding-left: 5px; }
-  `;
+`;
 
   private _toggle(id: string): void {
     const next = new Set(this._expanded);
@@ -79,7 +77,7 @@ export class BlocksDecompositionTree extends LitElement {
           <span>${leaf.description ?? leaf.id}</span>
           ${leaf.executorName ? html`<span class="executor-pill">${leaf.executorName}</span>` : nothing}
           ${stateEntry ? html`<status-badge domain="node" .state=${stateEntry.kind.toUpperCase()}></status-badge>` : nothing}
-          ${leaf.rationale ? html`<span title=${leaf.rationale} style="cursor: help; font-size: 11px; color: var(--pages-text-tertiary, #999);">💡</span>` : nothing}
+
         </div>
       </li>
     `;
@@ -101,7 +99,7 @@ export class BlocksDecompositionTree extends LitElement {
         </div>
         ${expanded ? html`
           <ul role="group">
-            ${compound.methods.map((m, i) => this._renderMethodNode(m, i, compound.selectedMethodIndex, depth + 1))}
+            ${compound.methods.map((m, i) => this._renderMethodNode(m, i, depth + 1))}
           </ul>
         ` : nothing}
       </li>
@@ -111,19 +109,16 @@ export class BlocksDecompositionTree extends LitElement {
   private _renderMethodNode(
     method: DecompositionMethodSnapshot,
     index: number,
-    selectedIndex: number | undefined,
     depth: number,
   ): TemplateResult {
     if (this.renderMethod) return html`<li role="treeitem">${this.renderMethod(method)}</li>`;
-    const isSelected = selectedIndex === index;
-    const isDimmed = selectedIndex != null && !isSelected;
     const color = STRATEGY_COLORS[method.strategyId] ?? STRATEGY_COLORS['_unknown']!;
     const guardText = method.guardLabel != null && method.guardLabel.length > 40
       ? method.guardLabel.slice(0, 40) + '…' : method.guardLabel;
 
     return html`
-      <li role="treeitem" class=${isDimmed ? 'dimmed' : ''}>
-        <div class="node ${isSelected ? 'selected-method' : ''}">
+      <li role="treeitem">
+        <div class="node">
           <span class="strategy-badge" style="background: ${color};">${method.strategyId}</span>
           ${guardText ? html`<span class="guard" title=${method.guardLabel ?? ''}>${guardText}</span>` : nothing}
         </div>

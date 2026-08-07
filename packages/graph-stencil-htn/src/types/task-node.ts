@@ -5,7 +5,6 @@ export interface LeafTaskSnapshot {
   readonly id: string;
   readonly description?: string;
   readonly executorName?: string;
-  readonly rationale?: string;
 }
 
 export interface CompoundTaskSnapshot {
@@ -13,7 +12,6 @@ export interface CompoundTaskSnapshot {
   readonly id: string;
   readonly name: string;
   readonly methods: readonly DecompositionMethodSnapshot[];
-  readonly selectedMethodIndex?: number;
 }
 
 export interface DecompositionMethodSnapshot {
