@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../../packages/blocks-ui-core" },
+    { "path": "../blocks-timeline" },
+    { "path": "../execution-monitor" },
+    { "path": "../split-workbench" }
+  ]
+}

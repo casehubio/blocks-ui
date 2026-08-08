@@ -198,7 +198,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-blocks-timeline@workspace:components/blocks-timeline":
+"@casehubio/blocks-ui-blocks-timeline@workspace:*, @casehubio/blocks-ui-blocks-timeline@workspace:components/blocks-timeline":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-timeline@workspace:components/blocks-timeline"
   dependencies:
@@ -363,6 +363,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-execution-monitor@workspace:*, @casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-primitives": "npm:*"
+    jsdom: "npm:^25.0.0"
+    lit: "npm:^3.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action"
@@ -436,6 +450,23 @@ __metadata:
     typescript: "npm:~5.7.2"
     vite: "npm:^6.0.3"
     vitest: "npm:^2.1.8"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-orchestration-workbench@workspace:components/orchestration-workbench":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-orchestration-workbench@workspace:components/orchestration-workbench"
+  dependencies:
+    "@casehubio/blocks-ui-blocks-timeline": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-execution-monitor": "workspace:*"
+    "@casehubio/blocks-ui-split-workbench": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-primitives": "npm:*"
+    jsdom: "npm:^25.0.0"
+    lit: "npm:^3.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
