@@ -16,3 +16,7 @@ export {
   commitmentLifecycleStrategy,
   type CommitmentLifecycleData,
 } from './strategies/commitment-lifecycle.js';
+export {
+  orchestrationEventsStrategy,
+  orchestrationFilterCategory,
+} from './strategies/orchestration-events.js';

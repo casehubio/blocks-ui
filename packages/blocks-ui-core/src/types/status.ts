@@ -70,6 +70,28 @@ const REGISTRY = new Map<string, StatusDescriptor>([
   ['commitment:DECLINED',     { category: 'neutral',  icon: '🚫' }],
   ['commitment:DELEGATED',    { category: 'transfer', icon: '↳' }],
   ['commitment:EXPIRED',      { category: 'warning',  icon: '⌛' }],
+
+  ['execution:IDLE',              { category: 'neutral', icon: '○' }],
+  ['execution:RUNNING',           { category: 'active',  icon: '▶', pulse: true, border: true }],
+  ['execution:WAITING_FOR_AGENT', { category: 'warning', icon: '⏳', border: true }],
+  ['execution:WAITING_FOR_EVENT', { category: 'warning', icon: '⏳' }],
+  ['execution:COMPLETE',          { category: 'success', icon: '✓' }],
+  ['execution:FAULTED',           { category: 'danger',  icon: '!', pulse: true }],
+  ['execution:CANCELLED',         { category: 'neutral', icon: '/' }],
+
+  ['agent:SUCCESS',  { category: 'success', icon: '✓' }],
+  ['agent:FAILURE',  { category: 'danger',  icon: '✗' }],
+  ['agent:TIMEOUT',  { category: 'warning', icon: '⌛' }],
+  ['agent:DECLINED', { category: 'neutral', icon: '🚫' }],
+
+  ['pattern:SEQUENCE',    { category: 'info', icon: '→' }],
+  ['pattern:PARALLEL',    { category: 'info', icon: '⇉' }],
+  ['pattern:LOOP',        { category: 'info', icon: '↻' }],
+  ['pattern:CONDITIONAL', { category: 'info', icon: '◇' }],
+  ['pattern:SUPERVISOR',  { category: 'info', icon: '◎' }],
+  ['pattern:DEBATE',      { category: 'info', icon: '⇌' }],
+  ['pattern:VOTING',      { category: 'info', icon: '☐' }],
+  ['pattern:HTN',         { category: 'info', icon: '▦' }],
 ]);
 
 export function registerStatus(domain: string, state: string, descriptor: StatusDescriptor): void {

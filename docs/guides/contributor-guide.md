@@ -66,9 +66,9 @@ Core shared utilities re-exported from pages and domain-specific to blocks-ui:
 
 **Rendering**: `renderSparkline` + `SparklineOptions` (shared SVG sparkline), `renderPropertyTree` + `propertyTreeStyles` (recursive nested object renderer).
 
-**Domain types**: `TrustLevel`, `trustLevelFromScore(score)`, `CommitmentState` (7-state: OPEN/ACKNOWLEDGED/FULFILLED/FAILED/DECLINED/DELEGATED/EXPIRED), `CommitmentRecord`, `RawCommitment`, `commitmentStateCategory(state)`, `isTerminalCommitmentState(state)`, `toCommitmentRecord(raw)`, `toCommitmentMap(commitments)`, `StateCategory`.
+**Domain types**: `TrustLevel`, `trustLevelFromScore(score)`, `CommitmentState` (7-state: OPEN/ACKNOWLEDGED/FULFILLED/FAILED/DECLINED/DELEGATED/EXPIRED), `CommitmentRecord`, `RawCommitment`, `commitmentStateCategory(state)`, `isTerminalCommitmentState(state)`, `toCommitmentRecord(raw)`, `toCommitmentMap(commitments)`, `StateCategory`. Orchestration types (#111): `ExecutionState` (7 states), `ExecutionResult` (4 outcomes), `AgentRef`/`AgentResult`, `PatternType` (8 patterns), `ExecutionModel`, `FailurePolicy`, `AgentRetryPolicy`, `OrchestrationAuditEvent` (discriminated union payload), `ExecutionSnapshot`.
 
-**Status registry** (#109): `StatusDescriptor`, `StateCategory`, `lookupStatus(domain, state)`, `registerStatus(domain, state, descriptor)`, `FALLBACK_DESCRIPTOR`. 10 built-in domains (case, task, workitem, work, milestone, outcome, group, sla, node, session, commitment) with cross-domain defaults. Extend with `registerStatus()` for new domains:
+**Status registry** (#109): `StatusDescriptor`, `StateCategory`, `lookupStatus(domain, state)`, `registerStatus(domain, state, descriptor)`, `FALLBACK_DESCRIPTOR`. 13 built-in domains (case, task, workitem, work, milestone, outcome, group, sla, node, session, commitment, execution, agent, pattern) with cross-domain defaults. Extend with `registerStatus()` for new domains:
 
 ```typescript
 import { registerStatus } from '@casehubio/blocks-ui-core';

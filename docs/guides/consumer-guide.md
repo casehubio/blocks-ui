@@ -57,6 +57,8 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | `session-list` | Session list — filterable session table with status badges | Beta |
 | `session-detail` | Session detail panel — session metadata, activity log, state display | Beta |
 | `session-workbench` | Session workbench — split-pane layout with session list and detail panels | Beta |
+| `execution-monitor` | Execution monitor — SSE-driven live execution state with agent roster | Beta |
+| `orchestration-workbench` | Orchestration workbench — execution monitor + audit timeline in split-workbench | Beta |
 | `trust-workbench` | Composite trust visibility — score panel, routing history, feedback display | Beta |
 | `document-workbench` | Document review workbench — 9 panels for AI-assisted document review: debate feed, document diff, timeline, review tracker, brainstorm options/picker, context gauge, doc picker, workspace status | Beta |
 | `casehub-diagram` | Visual diagram editor for CaseDefinition YAML — extends DiagramBaseMixin, case-specific palette, property panel with binding target selector, structural editing, runtime overlay with status badges, worker inline expand | Beta |
