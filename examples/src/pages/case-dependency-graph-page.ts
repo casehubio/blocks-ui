@@ -48,11 +48,11 @@ const SAMPLE_GRAPH: GraphModel = {
   ],
 };
 
-function getRelationships(id: string): Array<{ target: string; type: string; direction: string }> {
-  const rels: Array<{ target: string; type: string; direction: string }> = [];
+function getRelationships(id: string): Array<{ targetId: string; targetLabel: string; type: string; direction: string }> {
+  const rels: Array<{ targetId: string; targetLabel: string; type: string; direction: string }> = [];
   for (const e of SAMPLE_GRAPH.edges) {
-    if (e.source === id) rels.push({ target: CASE_DETAILS[e.target]?.label ?? e.target, type: e.type, direction: 'outgoing' });
-    if (e.target === id) rels.push({ target: CASE_DETAILS[e.source]?.label ?? e.source, type: e.type, direction: 'incoming' });
+    if (e.source === id) rels.push({ targetId: e.target, targetLabel: CASE_DETAILS[e.target]?.label ?? e.target, type: e.type, direction: 'outgoing' });
+    if (e.target === id) rels.push({ targetId: e.source, targetLabel: CASE_DETAILS[e.source]?.label ?? e.source, type: e.type, direction: 'incoming' });
   }
   return rels;
 }
@@ -91,7 +91,8 @@ export class CaseDependencyGraphPage extends LitElement {
     .rel-item { display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 13px; }
     .rel-badge { padding: 1px 6px; border-radius: 3px; font-size: 11px; color: #fff; }
     .rel-direction { color: var(--pages-neutral-9, #999); font-size: 11px; }
-    .rel-target { color: var(--pages-neutral-12, #111); }
+    .rel-target { color: var(--pages-accent-9, #0066cc); cursor: pointer; text-decoration: none; }
+    .rel-target:hover { text-decoration: underline; }
 
     .scenario-note { margin-bottom: 16px; padding: 12px 16px; background: var(--pages-accent-3, #e0e7ff); border-radius: 6px; font-size: 13px; color: var(--pages-accent-11, #1e40af); line-height: 1.5; }
   `;
@@ -104,6 +105,12 @@ export class CaseDependencyGraphPage extends LitElement {
   override disconnectedCallback(): void {
     this.removeEventListener('pages-event', this._handleEvent as EventListener);
     super.disconnectedCallback();
+  }
+
+  private _navigateTo(id: string): void {
+    if (CASE_DETAILS[id]) this._selectedCase = CASE_DETAILS[id];
+    const graph = this.shadowRoot?.querySelector('blocks-case-dependency-graph') as any;
+    if (graph?.focusNode) graph.focusNode(id);
   }
 
   private _handleEvent = (e: CustomEvent): void => {
@@ -145,7 +152,7 @@ export class CaseDependencyGraphPage extends LitElement {
                   <li class="rel-item">
                     <span class="rel-badge" style="background: ${desc.color}">${desc.label ?? r.type}</span>
                     <span class="rel-direction">${r.direction === 'outgoing' ? '→' : '←'}</span>
-                    <span class="rel-target">${r.target}</span>
+                    <a class="rel-target" @click=${(e: Event) => { e.preventDefault(); this._navigateTo(r.targetId); }}>${r.targetLabel}</a>
                   </li>`;
               })}
             </ul>

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { zoom } from 'd3-zoom';
+import { zoom, zoomIdentity } from 'd3-zoom';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 import type { GraphModel, GraphNode } from '@casehubio/graph-core';
@@ -30,6 +30,7 @@ export class BlocksCaseDependencyGraph extends LitElement {
   private _simNodes: SimNode[] = [];
   private _simLinks: SimLink[] = [];
   private _unsubs: Array<() => void> = [];
+  private _zoomBehavior: ReturnType<typeof zoom> | null = null;
 
   static override styles = css`
     :host { display: flex; flex-direction: column; height: 100%; }
@@ -87,6 +88,26 @@ export class BlocksCaseDependencyGraph extends LitElement {
   refresh(): void {
     if (this.endpoint) this._fetchData();
     else if (this._model) this._buildGraph();
+  }
+
+  focusNode(id: string): void {
+    const node = this._simNodes.find(n => n.id === id);
+    if (!node || node.x == null || node.y == null) return;
+    const svg = this.shadowRoot?.querySelector('svg') as SVGSVGElement | null;
+    if (!svg || !this._zoomBehavior) return;
+
+    const width = svg.clientWidth || 800;
+    const height = svg.clientHeight || 600;
+    const scale = 1.2;
+    const tx = width / 2 - node.x * scale;
+    const ty = height / 2 - node.y * scale;
+
+    const transform = zoomIdentity.translate(tx, ty).scale(scale);
+    select(svg as SVGSVGElement).transition().duration(500).call(
+      this._zoomBehavior.transform as any, transform,
+    );
+
+    emitPagesEvent(this, `${this.selectionTopic}:selected`, { id });
   }
 
   private async _fetchData(): Promise<void> {
@@ -154,12 +175,12 @@ export class BlocksCaseDependencyGraph extends LitElement {
         .attr('y2', d => (d.target as SimNode).y ?? 0);
     });
 
-    const zoomBehavior = zoom<SVGSVGElement, unknown>()
+    this._zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.1, 4])
       .on('zoom', (event) => {
         select(container).attr('transform', event.transform);
       });
-    select(svg as SVGSVGElement).call(zoomBehavior);
+    select(svg as SVGSVGElement).call(this._zoomBehavior);
 
     const sim = this._sim;
     const dragBehavior = drag<SVGGElement, SimNode>()
@@ -224,6 +245,7 @@ export class BlocksCaseDependencyGraph extends LitElement {
 
   private _cleanup(): void {
     if (this._sim) { stopSimulation(this._sim); this._sim = null; }
+    this._zoomBehavior = null;
     const container = this.shadowRoot?.querySelector('.container') as SVGGElement | null;
     if (container) clearGraph(container);
   }
