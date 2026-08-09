@@ -26,6 +26,8 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-list-pane', replacement: resolve(__dirname, '../components/list-pane/src') },
       { find: '@casehubio/blocks-ui-detail-pane', replacement: resolve(__dirname, '../components/detail-pane/src') },
       { find: '@casehubio/blocks-ui-case-explorer', replacement: resolve(__dirname, '../components/case-explorer/src') },
+      { find: '@casehubio/blocks-ui-case-dependency-graph', replacement: resolve(__dirname, '../components/case-dependency-graph/src') },
+      { find: '@casehubio/graph-core', replacement: resolve(__dirname, '../.casehub-packages/packages/graph-core/dist') },
       { find: '@casehubio/blocks-ui-routing-rationale', replacement: resolve(__dirname, '../components/routing-rationale/src') },
       { find: '@casehubio/blocks-ui-trust-feedback-display', replacement: resolve(__dirname, '../components/trust-feedback-display/src') },
       { find: '@casehubio/blocks-ui-trust-workbench', replacement: resolve(__dirname, '../components/trust-workbench/src') },
