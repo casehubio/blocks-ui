@@ -280,6 +280,10 @@ Staleness: `_staleSeconds` computed from `CaseRuntimeState.timestamp` vs `Date.n
 
 Render guard: async `_fullRender` tracks `_renderInProgress` and `_pendingRenderYaml` to handle YAML changes during ELK layout computation. Same guard covers decoration changes during layout.
 
+### case-dependency-graph (`components/case-dependency-graph`)
+
+D3 force-directed graph of case relationships. Consumes `GraphModel` from graph-core. Three built-in relationship types (parent_child, supersedes, coordination) via the relationship type registry in blocks-ui-core — apps register additional types with `registerRelationshipType()`. Dual data mode (endpoint fetch or `graphData` property). Edge type filter toolbar with DOT export. Node click emits selection topic events. Render callbacks (`renderNode`, `renderTooltip`) for domain customisation. D3 modules: d3-force (simulation), d3-selection (SVG), d3-zoom (pan/zoom), d3-drag (node drag with force rebalance).
+
 ### document-workbench (`components/document-workbench`)
 
 Document review workbench panels for AI-assisted document review. Nine LitElement components:
