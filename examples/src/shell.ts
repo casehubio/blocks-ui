@@ -46,6 +46,7 @@ const NAV: NavCategory[] = [
       { id: 'preferences-editor', label: 'Preferences Editor', hash: '#components/preferences-editor' },
       { id: 'session-workbench', label: 'Session Workbench', hash: '#components/session-workbench' },
       { id: 'commitment-viz', label: 'Commitment Viz', hash: '#components/commitment-viz' },
+      { id: 'case-dependency-graph', label: 'Case Dependency Graph', hash: '#components/case-dependency-graph' },
     ],
   },
   {
@@ -216,6 +217,7 @@ export class ExampleShell extends LitElement {
       case '#components/preferences-editor': return html`<blocks-example-preferences-editor></blocks-example-preferences-editor>`;
       case '#components/session-workbench': return html`<blocks-example-session-workbench></blocks-example-session-workbench>`;
       case '#components/commitment-viz': return html`<blocks-example-commitment-viz></blocks-example-commitment-viz>`;
+      case '#components/case-dependency-graph': return html`<blocks-example-case-dependency-graph></blocks-example-case-dependency-graph>`;
       case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
       case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
       case '#composed/conversation-viewer': return html`<blocks-example-conversation-viewer></blocks-example-conversation-viewer>`;

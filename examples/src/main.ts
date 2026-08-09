@@ -39,6 +39,7 @@ async function bootstrap() {
   await import('./pages/preferences-editor-page.js');
   await import('./pages/session-workbench-page.js');
   await import('./pages/commitment-viz-page.js');
+  await import('./pages/case-dependency-graph-page.js');
 
   await import('./pages/document-diff-page.js');
   await import('./pages/debate-feed-page.js');
