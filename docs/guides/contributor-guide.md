@@ -19,17 +19,17 @@
 
 ### Data Architecture
 
-**DataSourceMixin** — Lit mixin for pull-based data loading (REST endpoints). Adds `endpoint`, `loading`, `error`, `dataSet` properties. Wraps `DataSourceAdapter` -> `DataSourceController` from pages-component, producing `TypedDataSet` via extraction pipeline. Used by: similarity-panel, compliance-summary, grouped-data-view, list-pane, routing-rationale.
+**DataSourceMixin** — Lit mixin for pull-based data loading (REST endpoints). Adds `endpoint`, `loading`, `error`, `dataSet` properties. Wraps `DataSourceAdapter` -> `DataSourceController`, producing `TypedDataSet` via extraction pipeline. **Canonical home: `@casehubio/pages-component`** — re-exported from blocks-ui-core for backward compatibility. Used by: similarity-panel, compliance-summary, grouped-data-view, list-pane, routing-rationale.
 
-Additional data-source exports from blocks-ui-core:
+Additional data-source exports (all canonical in `@casehubio/pages-data`, re-exported here):
 - `fetchSource(url, options)` — standalone fetch with TypedDataSet extraction
 - `createTypedFetchSource(options)` — factory for typed fetch sources
 - `EMPTY_DATASET` — empty TypedDataSet placeholder for initial state
-- `DatasetContract` — re-exported from `@casehubio/pages-data`, the contract type for dataset shapes
+- `DatasetContract` — the contract type for dataset shapes
 
-**TrendSourceMixin** — Lit mixin for time-series trend data. Adds trend endpoint, provides `TrendPoint[]` via `extractTrendPoints`. Used by trust-score-panel for sparkline trend lines.
+**TrendSourceMixin** — Lit mixin for time-series trend data. Adds trend endpoint, provides `TrendPoint[]` via `extractTrendPoints`. **Canonical home: `@casehubio/pages-component`**. Used by trust-score-panel for sparkline trend lines.
 
-**EventStreamController** — Lit `ReactiveController` for push-based data (SSE streams). Wraps `EventStream` from pages-data. Provides `latest`, `all`, and `status` (ConnectionStatus). Batches events by default. Connects/disconnects on host lifecycle.
+**EventStreamController** — Lit `ReactiveController` for push-based data (SSE streams). Wraps `EventStream` from pages-data. **Canonical home: `@casehubio/pages-component`**. Provides `latest`, `all`, and `status` (ConnectionStatus). Batches events by default.
 
 Components can use both — DataSourceMixin for initial load, EventStreamController for live updates.
 
@@ -60,11 +60,11 @@ Core shared utilities re-exported from pages and domain-specific to blocks-ui:
 
 **Tokens** (re-exported from pages-ui-tokens): `generateScale`, `SPACING_SCALE`, `TYPOGRAPHY`, `MOTION`, `RADIUS`, `ELEVATION_LIGHT`, `ELEVATION_DARK`, `DENSITY_COMPACT_OVERRIDES`, `applyTheme`, `registerTheme`, `getTheme`, `listThemes`.
 
-**Data source** (wrapping pages DataSourceController): `DataSourceMixin`, `DataSourceAdapter`, `fetchSource` + `FetchSourceOptions`, `createTypedFetchSource` + `TypedFetchOptions`, `EMPTY_DATASET`, `TrendSourceMixin`, `TrendPoint`, `extractTrendPoints`.
+**Data source** (re-exported from pages — canonical home is `@casehubio/pages-component` and `@casehubio/pages-data`): `DataSourceMixin`, `DataSourceAdapter`, `fetchSource` + `FetchSourceOptions`, `createTypedFetchSource` + `TypedFetchOptions`, `EMPTY_DATASET`, `TrendSourceMixin`, `TrendPoint`, `extractTrendPoints`.
 
-**Event stream**: `EventStreamController` (Lit ReactiveController for SSE).
+**Event stream** (re-exported from `@casehubio/pages-component`): `EventStreamController` (Lit ReactiveController for SSE).
 
-**Rendering**: `renderSparkline` + `SparklineOptions` (shared SVG sparkline), `renderPropertyTree` + `propertyTreeStyles` (recursive nested object renderer).
+**Rendering** (re-exported from `@casehubio/pages-ui-components`): `renderSparkline` + `SparklineOptions` (shared SVG sparkline), `renderPropertyTree` + `propertyTreeStyles` (recursive nested object renderer).
 
 **Domain types**: `TrustLevel`, `trustLevelFromScore(score)`, `CommitmentState` (7-state: OPEN/ACKNOWLEDGED/FULFILLED/FAILED/DECLINED/DELEGATED/EXPIRED), `CommitmentRecord`, `RawCommitment`, `commitmentStateCategory(state)`, `isTerminalCommitmentState(state)`, `toCommitmentRecord(raw)`, `toCommitmentMap(commitments)`, `StateCategory`. Orchestration types (#111): `ExecutionState` (7 states), `ExecutionResult` (4 outcomes), `AgentRef`/`AgentResult`, `PatternType` (8 patterns), `ExecutionModel`, `FailurePolicy`, `AgentRetryPolicy`, `OrchestrationAuditEvent` (discriminated union payload), `ExecutionSnapshot`.
 
@@ -75,9 +75,9 @@ import { registerStatus } from '@casehubio/blocks-ui-core';
 registerStatus('myDomain', 'ACTIVE', { category: 'info', icon: '◉', pulse: true });
 ```
 
-**UI components**: `StatusBadge` (`<status-badge>`, generic status pill for all domains — #109), `BlocksConfirmDialog` (`<blocks-confirm-dialog>`, FocusTrapMixin, danger/success/neutral variants), `CommitmentStatePill` (`<commitment-state-pill>`, deprecated — delegates to status-badge), `stateCategoryStyles` + `CategoryStyle`.
+**UI components**: `StatusBadge` (`<status-badge>`, generic status pill for all domains — #109), `PagesConfirmDialog` (re-exported from `@casehubio/pages-ui-components` as `BlocksConfirmDialog` for backward compat), `CommitmentStatePill` (`<commitment-state-pill>`, deprecated — delegates to status-badge), `stateCategoryStyles` + `CategoryStyle`.
 
-**Utilities**: `SharedTimerController` (`subscribe`/`unsubscribe`), `pulseAnimation` CSS, `DatasetContract` (re-exported from pages-data).
+**Utilities** (re-exported from pages): `SharedTimerController` (`subscribe`/`unsubscribe` from `@casehubio/pages-component`), `pulseAnimation` CSS (from `@casehubio/pages-ui-tokens`), `DatasetContract` (from `@casehubio/pages-data`).
 
 **Event helpers**: re-exported from pages-component (`emitPagesEvent`, `onPagesEvent`).
 
