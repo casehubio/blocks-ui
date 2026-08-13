@@ -340,7 +340,7 @@ export class ChannelNavElement extends LitElement {
           Create Channel
         </pages-button>
       ` : nothing}
-      <blocks-confirm-dialog class="delete-dialog"
+      <pages-confirm-dialog class="delete-dialog"
         .open=${!!this._deleteTarget}
         heading="Delete Channel"
         message=${this._deleteTarget ? `Delete channel "${this._deleteTarget.name}"? This cannot be undone.` : ''}
@@ -348,8 +348,8 @@ export class ChannelNavElement extends LitElement {
         confirmVariant="danger"
         @confirm=${this._onDeleteConfirm}
         @cancel=${this._onDeleteCancel}
-      ></blocks-confirm-dialog>
-      <blocks-confirm-dialog class="create-dialog"
+      ></pages-confirm-dialog>
+      <pages-confirm-dialog class="create-dialog"
         .open=${this._showCreateDialog}
         heading="Create Channel"
         message="Enter a name for the new channel."
@@ -358,7 +358,7 @@ export class ChannelNavElement extends LitElement {
         .showReason=${true}
         @confirm=${this._onCreateConfirm}
         @cancel=${this._onCreateCancel}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
     `;
   }
 }

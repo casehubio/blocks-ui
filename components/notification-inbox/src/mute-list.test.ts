@@ -130,7 +130,7 @@ describe('blocks-mute-list', () => {
     el.handleRemove('mute-1');
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog');
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog');
     expect(dialog).toBeTruthy();
     expect(dialog!.open).toBe(true);
   });

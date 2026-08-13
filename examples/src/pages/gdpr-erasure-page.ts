@@ -64,7 +64,7 @@ export class GdprErasurePage extends LitElement {
   override render() {
     return html`
       <h2>GDPR Erasure Action</h2>
-      <p>Three-phase erasure form: input → confirmation (blocks-confirm-dialog) → receipt.</p>
+      <p>Three-phase erasure form: input → confirmation (pages-confirm-dialog) → receipt.</p>
 
       <div class="controls">
         <select @change=${(e: Event) => { this._subjectLabel = (e.target as HTMLSelectElement).value; }}>

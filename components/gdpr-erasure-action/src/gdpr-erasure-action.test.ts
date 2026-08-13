@@ -79,7 +79,7 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-123', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement & { open: boolean };
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement & { open: boolean };
     expect(dialog).toBeTruthy();
     expect(dialog.open).toBe(true);
   });
@@ -99,7 +99,7 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-123', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement;
     dialog.dispatchEvent(new CustomEvent('confirm'));
     await el.updateComplete;
 
@@ -132,7 +132,7 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-456', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement;
     dialog.dispatchEvent(new CustomEvent('confirm'));
 
     await vi.waitFor(() => {
@@ -153,7 +153,7 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-fail', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement;
     dialog.dispatchEvent(new CustomEvent('confirm'));
 
     await vi.waitFor(() => expect(el.shadowRoot!.textContent).toContain('HTTP 500'));
@@ -164,12 +164,12 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-123', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement;
     dialog.dispatchEvent(new CustomEvent('cancel'));
     await el.updateComplete;
 
     expect(el.shadowRoot!.querySelector('form')).toBeTruthy();
-    expect((el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement & { open: boolean }).open).toBe(false);
+    expect((el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement & { open: boolean }).open).toBe(false);
   });
 
   it('resets form after receipt', async () => {
@@ -182,7 +182,7 @@ describe('blocks-gdpr-erasure-action', () => {
     fillAndSubmit(el, 'subject-reset', el.reasonOptions[0]!);
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as HTMLElement;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as HTMLElement;
     dialog.dispatchEvent(new CustomEvent('confirm'));
 
     await vi.waitFor(() => expect(el.shadowRoot!.textContent).toContain('Erasure Complete'));

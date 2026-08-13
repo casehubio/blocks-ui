@@ -69,7 +69,7 @@ export class ConfirmDialogPage extends LitElement {
           : html`<span class="result-empty">Click a button above to open a dialog...</span>`}
       </div>
 
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._basicOpen}
         heading="Delete 3 items?"
         message="This action cannot be undone. The items will be permanently removed."
@@ -78,9 +78,9 @@ export class ConfirmDialogPage extends LitElement {
         confirmVariant="danger"
         @confirm=${() => { this._basicOpen = false; this._lastResult = 'Danger dialog: CONFIRMED'; }}
         @cancel=${() => { this._basicOpen = false; this._lastResult = 'Danger dialog: CANCELLED'; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
 
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._successOpen}
         heading="Approve deployment?"
         message="This will deploy v2.4.1 to production."
@@ -89,9 +89,9 @@ export class ConfirmDialogPage extends LitElement {
         confirmVariant="success"
         @confirm=${() => { this._successOpen = false; this._lastResult = 'Success dialog: CONFIRMED'; }}
         @cancel=${() => { this._successOpen = false; this._lastResult = 'Success dialog: CANCELLED'; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
 
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._persistentOpen}
         heading="Authorise PI access?"
         message="This grants Principal Investigator access to unblinded trial data. Click outside will NOT dismiss — you must explicitly choose."
@@ -101,9 +101,9 @@ export class ConfirmDialogPage extends LitElement {
         ?persistent=${true}
         @confirm=${() => { this._persistentOpen = false; this._lastResult = 'Persistent dialog: CONFIRMED (only Escape or button can close)'; }}
         @cancel=${() => { this._persistentOpen = false; this._lastResult = 'Persistent dialog: CANCELLED (via Escape or button)'; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
 
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._reasonOpen}
         heading="Reject application?"
         message="Please provide a reason for the rejection."
@@ -113,7 +113,7 @@ export class ConfirmDialogPage extends LitElement {
         ?showReason=${true}
         @confirm=${(e: CustomEvent) => { this._reasonOpen = false; this._lastResult = 'Reason dialog: CONFIRMED — reason: ' + (e.detail.reason || '(none provided)'); }}
         @cancel=${() => { this._reasonOpen = false; this._lastResult = 'Reason dialog: CANCELLED'; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
     `;
   }
 }

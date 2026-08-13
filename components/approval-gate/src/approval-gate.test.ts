@@ -140,7 +140,7 @@ describe('blocks-approval-gate', () => {
   it('opens confirmation dialog on outcome button click', async () => {
     el.shadowRoot!.querySelector<HTMLButtonElement>('.action-btn')!.click();
     await el.updateComplete;
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog');
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog');
     expect(dialog).toBeTruthy();
     expect((dialog as any).open).toBe(true);
   });

@@ -1037,7 +1037,7 @@ export class NotificationInbox extends NotificationInboxBase {
         ${this._actionError ? html`<div class="error-banner" role="alert">${this._actionError}</div>` : nothing}
         ${this.renderItems()}
         ${this.renderBatchActionBar()}
-        <blocks-confirm-dialog
+        <pages-confirm-dialog
           .open=${this._showDismissDialog}
           heading="Dismiss notifications?"
           message="This will dismiss ${this._pendingDismissItems.length} selected notification(s)."
@@ -1046,7 +1046,7 @@ export class NotificationInbox extends NotificationInboxBase {
           confirmVariant="danger"
           @confirm=${this._confirmBatchDismiss}
           @cancel=${() => { this._showDismissDialog = false; }}
-        ></blocks-confirm-dialog>
+        ></pages-confirm-dialog>
       </div>
     `;
   }

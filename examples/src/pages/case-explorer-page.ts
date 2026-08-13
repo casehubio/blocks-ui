@@ -279,7 +279,7 @@ export class CaseExplorerPage extends LitElement {
       </div>
 
       <h3>entity-command-bar — Destructive with confirmation</h3>
-      <p>Destructive severity shows danger styling. Confirmation opens blocks-confirm-dialog before executing.</p>
+      <p>Destructive severity shows danger styling. Confirmation opens pages-confirm-dialog before executing.</p>
       <div class="demo-section short">
         <blocks-entity-command-bar
           .commands=${MOCK_WORKERS[1]!.availableCommands}

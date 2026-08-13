@@ -264,7 +264,7 @@ export class MuteList extends LitElement {
         `
       }
 
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._showRemoveDialog}
         heading="Remove mute rule?"
         message="This mute rule will be removed and notifications will resume."
@@ -273,7 +273,7 @@ export class MuteList extends LitElement {
         confirmVariant="danger"
         @confirm=${this.confirmRemove}
         @cancel=${() => { this._showRemoveDialog = false; this._pendingRemoveId = null; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
     `;
   }
 }

@@ -90,7 +90,7 @@ describe('EntityCommandBar', () => {
     button.click();
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog');
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog');
     expect(dialog).toBeTruthy();
     expect((dialog as any).heading).toBe('Cancel Worker');
     expect(fetchFn).not.toHaveBeenCalled();

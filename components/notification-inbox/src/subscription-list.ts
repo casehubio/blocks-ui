@@ -441,7 +441,7 @@ export class SubscriptionList extends LitElement {
         </div>
         ${this.renderList()}
         ${this.renderEditor()}
-        <blocks-confirm-dialog
+        <pages-confirm-dialog
           .open=${this._showDeleteDialog}
           heading="Delete subscription?"
           message="This will permanently delete this subscription. You will no longer receive notifications for this event."
@@ -453,7 +453,7 @@ export class SubscriptionList extends LitElement {
             this._showDeleteDialog = false;
             this._pendingDeleteId = null;
           }}
-        ></blocks-confirm-dialog>
+        ></pages-confirm-dialog>
       </div>
     `;
   }

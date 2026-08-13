@@ -244,7 +244,7 @@ export class GdprErasureAction extends LitElement {
           </button>
         </div>
       </form>
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${this._confirmPending}
         heading="Confirm Data Erasure"
         .message=${`Permanently erase all data for ${this.subjectLabel.toLowerCase()} "${this._subjectId}"?\nReason: ${this._reason}\n\nThis action cannot be undone.`}
@@ -253,7 +253,7 @@ export class GdprErasureAction extends LitElement {
         persistent
         @confirm=${this._performErasure}
         @cancel=${this._cancelErasure}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
     `;
   }
 }

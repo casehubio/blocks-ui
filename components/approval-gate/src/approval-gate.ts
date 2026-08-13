@@ -410,7 +410,7 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
 
         ${this._error !== null ? html`<p class="error">${this._error}</p>` : nothing}
 
-        <blocks-confirm-dialog
+        <pages-confirm-dialog
           .open=${this._selectedOutcome !== null}
           heading="Confirm decision"
           .message=${'Are you sure you want to: ' + (this._selectedOutcome?.label ?? '')}
@@ -420,7 +420,7 @@ export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
           persistent
           @confirm=${this._handleConfirm}
           @cancel=${this._handleDialogCancel}
-        ></blocks-confirm-dialog>
+        ></pages-confirm-dialog>
       </div>
     `;
   }

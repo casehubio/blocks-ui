@@ -73,14 +73,14 @@ export class EntityCommandBar extends LiveRegionMixin(LitElement) {
   private _renderConfirmDialog(): TemplateResult {
     const cmd = this._pendingCommand!;
     return html`
-      <blocks-confirm-dialog
+      <pages-confirm-dialog
         .open=${true}
         .heading=${cmd.label}
         .message=${cmd.confirmMessage ?? `Are you sure you want to ${cmd.label.toLowerCase()}?`}
         .confirmVariant=${cmd.severity === 'destructive' ? 'danger' : 'neutral'}
         @confirm=${() => this._executeCommand(cmd)}
         @cancel=${() => { this._pendingCommand = null; }}
-      ></blocks-confirm-dialog>
+      ></pages-confirm-dialog>
     `;
   }
 

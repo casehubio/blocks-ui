@@ -1303,7 +1303,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
         ${this._queueError ? html`<div class="error">${this._queueError}</div>` : ''}
         ${!this._queueLoading && !this._queueError ? this.renderItems() : ''}
         ${this.renderBatchActionBar()}
-        <blocks-confirm-dialog
+        <pages-confirm-dialog
           .open=${this._showCancelDialog}
           heading="Cancel items?"
           message="This will cancel ${this._pendingCancelItems.length} selected item(s)."
@@ -1313,7 +1313,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
           .showReason=${true}
           @confirm=${this._confirmBatchCancel}
           @cancel=${() => { this._showCancelDialog = false; }}
-        ></blocks-confirm-dialog>
+        ></pages-confirm-dialog>
       </div>
     `;
   }
