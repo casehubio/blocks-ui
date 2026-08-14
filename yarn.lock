@@ -266,6 +266,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-cluster-panel@workspace:components/cluster-panel":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-cluster-panel@workspace:components/cluster-panel"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-commitment-viz@workspace:*, @casehubio/blocks-ui-commitment-viz@workspace:components/commitment-viz":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-commitment-viz@workspace:components/commitment-viz"
@@ -354,6 +366,18 @@ __metadata:
     "@open-wc/testing": "npm:^4.0.0"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.0.0"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-dimension-dashboard@workspace:components/dimension-dashboard":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-dimension-dashboard@workspace:components/dimension-dashboard"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
@@ -500,6 +524,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-reconciliation-status@workspace:components/reconciliation-status":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-reconciliation-status@workspace:components/reconciliation-status"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-routing-rationale@workspace:*, @casehubio/blocks-ui-routing-rationale@workspace:components/routing-rationale":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-routing-rationale@workspace:components/routing-rationale"
@@ -509,6 +546,18 @@ __metadata:
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-service-card@workspace:components/service-card":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-service-card@workspace:components/service-card"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -629,6 +678,21 @@ __metadata:
     "@casehubio/graph-stencil-swf": "workspace:*"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-topology-viewer@workspace:components/topology-viewer":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-topology-viewer@workspace:components/topology-viewer"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/graph-core": "npm:*"
+    "@casehubio/graph-renderer": "npm:*"
+    "@casehubio/pages-data": "npm:*"
+    lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
@@ -910,6 +974,7 @@ __metadata:
     "@casehubio/pages-component": "npm:0.2.3"
     "@casehubio/pages-data": "npm:0.2.3"
     "@casehubio/pages-ui-components": "npm:0.2.3"
+    "@drdreo/heatmap": "npm:^1.4.1"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"
   languageName: node
@@ -1016,6 +1081,13 @@ __metadata:
   version: 4.0.0
   resolution: "@csstools/css-tokenizer@npm:4.0.0"
   checksum: 10c0/669cf3d0f9c8e1ffdf8c9955ad8beba0c8cfe03197fe29a4fcbd9ee6f7a18856cfa42c62670021a75183d9ab37f5d14a866e6a9df753a6c07f59e36797a9ea9f
+  languageName: node
+  linkType: hard
+
+"@drdreo/heatmap@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@drdreo/heatmap@npm:1.4.1"
+  checksum: 10c0/775b7c99d4dceb1c19b73681d23c4d669d930d92080d585d613ef777ef4972cfb32daeb83d59a7ed95d19d27847909cc0c7dfb018d60dec1d29fc4faa26dd419
   languageName: node
   linkType: hard
 
