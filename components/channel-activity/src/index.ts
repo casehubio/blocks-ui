@@ -1,5 +1,9 @@
 export * from './types.js';
 export * from './events.js';
+export { PushController, ALL_TOPICS } from './push-controller.js';
+export type { ConnectionStatus, DatasetOp, DatasetHandler } from './push-controller.js';
+export { ChannelStateController } from './channel-state-controller.js';
+export type { Space, SpaceNode, ChannelTree } from './channel-state-controller.js';
 export { renderMarkdown } from './markdown.js';
 export { ChannelMessageElement } from './channel-message.js';
 export { ChannelReactionBarElement } from './channel-reaction-bar.js';
