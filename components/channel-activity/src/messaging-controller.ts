@@ -9,6 +9,7 @@ import type {
 
 export interface MessagingConfig {
   readonly restBase: string;
+  readonly messageRestBase?: string;
   readonly fetch?: typeof globalThis.fetch;
 }
 
@@ -18,12 +19,14 @@ export class MessagingController implements ReactiveController {
   private _host: ReactiveControllerHost;
   private _channels: ChannelStateController;
   private _restBase: string;
+  private _messageRestBase: string;
   private _fetch: typeof globalThis.fetch;
 
   constructor(host: ReactiveControllerHost, channels: ChannelStateController, config: MessagingConfig) {
     this._host = host;
     this._channels = channels;
     this._restBase = config.restBase;
+    this._messageRestBase = config.messageRestBase ?? `${config.restBase}/channels`;
     this._fetch = config.fetch ?? globalThis.fetch.bind(globalThis);
     host.addController(this);
   }
@@ -75,8 +78,8 @@ export class MessagingController implements ReactiveController {
   private async _sendMessage(payload: SendMessagePayload) {
     try {
       const url = payload.inReplyTo
-        ? `${this._restBase}/channels/${payload.channelId}/messages/${payload.inReplyTo}/replies`
-        : `${this._restBase}/channels/${payload.channelId}/messages`;
+        ? `${this._messageRestBase}/${payload.channelId}/messages/${payload.inReplyTo}/replies`
+        : `${this._messageRestBase}/${payload.channelId}/messages`;
       const body: Record<string, unknown> = { text: payload.content };
       if (payload.speechAct) body.messageType = payload.speechAct;
       if (payload.artefactRefs?.length) body.artefactRefs = payload.artefactRefs;
