@@ -365,4 +365,14 @@ describe('loading and error states', () => {
     await el.updateComplete;
     expect(el.shadowRoot!.textContent).toContain('No data');
   });
+
+  it('has aria-label on host', () => {
+    expect(el.getAttribute('aria-label')).toBe('Grouped data');
+  });
+
+  it('accepts custom aria-label', async () => {
+    el.setAttribute('aria-label', 'Cases by lane');
+    await el.updateComplete;
+    expect(el.getAttribute('aria-label')).toBe('Cases by lane');
+  });
 });

@@ -13,6 +13,12 @@ export class ChannelArtifactPanelElement extends LitElement {
   @state() private _content?: string | undefined;
   @state() private _language?: string | undefined;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Artifact viewer');
+  }
+
   static override readonly styles = css`
     :host {
       display: flex;

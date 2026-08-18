@@ -149,4 +149,12 @@ describe('blocks-compliance-summary', () => {
     await el.updateComplete;
     await vi.waitFor(() => expect(el.shadowRoot!.textContent).toContain('unavailable'));
   });
+
+  it('has aria-label on host', () => {
+    expect(el.getAttribute('aria-label')).toBe('Compliance status');
+  });
+
+  it('has role="region" on host', () => {
+    expect(el.getAttribute('role')).toBe('region');
+  });
 });

@@ -18,6 +18,9 @@ export class WorkspaceStatus extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'status');
+    this.setAttribute('aria-label', 'Workspace status');
+    this.setAttribute('aria-live', 'polite');
     this._cleanups.push(
       onPagesEvent<WorkspaceProgressPayload>(document, 'workspace-progress', (p) => {
         this._handleProgress(p);

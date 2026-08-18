@@ -31,6 +31,8 @@ export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Orchestration workbench');
     this._unsubs.push(
       onPagesEvent(document, 'execution.agent-selected', (payload: { agentRef: { id: string } }) => {
         this.announce(`Agent selected: ${payload.agentRef.id}`);

@@ -46,6 +46,7 @@ export class ConversationWorkbench extends KeyboardShortcutMixin(LiveRegionMixin
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('aria-label', 'Conversation viewer');
     this._unsubs.push(
       onPagesEvent<{ pointId: string }>(document, `${this.selectionTopic}:selected`, (payload) => {
         this._selectedPointId = payload.pointId;

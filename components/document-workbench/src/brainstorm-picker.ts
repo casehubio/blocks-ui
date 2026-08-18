@@ -15,6 +15,8 @@ export class BrainstormPicker extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Brainstorm sessions');
     this._cleanups.push(
       onPagesEvent<BrainstormSessionInfo[]>(document, 'brainstorm-sessions', (payload) => {
         this._sessions = payload;

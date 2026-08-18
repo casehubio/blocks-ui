@@ -19,6 +19,8 @@ export class ReviewPipeline extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Review pipeline progress');
     this._cleanups.push(
       onPagesEvent<PipelineProgressPayload>(document, 'pipeline-progress', (p) => {
         this._pipeline = p;

@@ -125,7 +125,7 @@ export class PointList extends LitElement {
 
     let currentRound: number | null = null;
     return html`
-      <div class="list-container">
+      <div class="list-container" role="log" aria-label="Conversation points" aria-live="polite">
         ${this.points.map(point => {
           const parts: TemplateResult[] = [];
           if (point.round !== currentRound) {

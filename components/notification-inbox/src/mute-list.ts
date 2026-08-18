@@ -157,6 +157,8 @@ export class MuteList extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Mute rules');
     if (this.endpoint != null && this.api == null) {
       this.api = new NotificationApi(this.endpoint);
     }
@@ -222,6 +224,7 @@ export class MuteList extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this.loading));
     if (this.loading) {
       return html`<div class="loading">Loading mute rules...</div>`;
     }

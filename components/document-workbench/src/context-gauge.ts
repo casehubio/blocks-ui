@@ -17,6 +17,11 @@ export class ContextGauge extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'meter');
+    this.setAttribute('aria-label', 'Context usage');
+    this.setAttribute('aria-valuemin', '0');
+    this.setAttribute('aria-valuemax', '100');
+    this.setAttribute('aria-valuenow', '0');
     this._cleanups.push(
       onPagesEvent<ContextUsagePayload>(document, 'context-usage', (payload) => {
         this._handleMeta(payload);
@@ -37,6 +42,7 @@ export class ContextGauge extends LitElement {
     if (data.windowSizeChars != null) this._windowSizeChars = data.windowSizeChars;
     this._visible = true;
     this._pct = data.effectivePercent;
+    this.setAttribute('aria-valuenow', String(Math.round(data.effectivePercent)));
     this._thresholdExceeded = data.thresholdExceeded ?? false;
     const contribK = Math.round((data.serverContributionChars || 0) / 1000);
     const windowK = this._windowSizeChars ? Math.round(this._windowSizeChars / 1000) : '?';
@@ -50,6 +56,7 @@ export class ContextGauge extends LitElement {
     this._pct = 0;
     this._thresholdExceeded = false;
     this._tooltipText = '';
+    this.setAttribute('aria-valuenow', '0');
   }
 
   static override styles = css`

@@ -16,6 +16,18 @@ describe('casehub-diagram-palette', () => {
     el.remove();
   });
 
+  it('sets role="toolbar" and aria-label on connect', () => {
+    expect(el.getAttribute('role')).toBe('toolbar');
+    expect(el.getAttribute('aria-label')).toBe('Diagram palette');
+    expect(el.getAttribute('aria-orientation')).toBe('vertical');
+  });
+
+  it('reflects disabled as aria-disabled', async () => {
+    el.disabled = true;
+    await el.updateComplete;
+    expect(el.getAttribute('aria-disabled')).toBe('true');
+  });
+
   it('renders four palette items', () => {
     const buttons = el.shadowRoot!.querySelectorAll('button');
     expect(buttons.length).toBe(4);

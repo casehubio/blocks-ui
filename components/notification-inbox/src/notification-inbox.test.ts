@@ -676,4 +676,22 @@ describe('blocks-notification-inbox', () => {
       el.remove();
     });
   });
+
+  describe('ARIA', () => {
+    it('has aria-label on host', () => {
+      const el = document.createElement('blocks-notification-inbox') as NotificationInbox;
+      document.body.appendChild(el);
+      expect(el.getAttribute('aria-label')).toBe('Notification inbox');
+      el.remove();
+    });
+
+    it('has aria-live on inbox container', async () => {
+      const el = document.createElement('blocks-notification-inbox') as NotificationInbox;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+      const container = el.shadowRoot!.querySelector('.inbox-container');
+      expect(container?.getAttribute('aria-live')).toBe('polite');
+      el.remove();
+    });
+  });
 });

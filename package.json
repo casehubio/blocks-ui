@@ -28,6 +28,7 @@
     "typecheck": "tsc --build",
     "test": "yarn workspaces foreach -A run test",
     "clean": "yarn workspaces foreach -A run clean",
+    "aria-check": "node scripts/aria-check.mjs",
     "examples": "yarn --cwd examples dev"
   }
 }

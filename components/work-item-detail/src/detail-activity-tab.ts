@@ -7,6 +7,13 @@ export class DetailActivityTab extends LitElement {
   @property({ type: Object }) workItem: WorkItemResponse | null = null;
   @property({ type: Array }) events: readonly WorkItemLifecycleEvent[] = [];
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'log');
+    this.setAttribute('aria-label', 'Work item activity');
+    this.setAttribute('aria-live', 'polite');
+  }
+
   static override styles = css`
     :host {
       display: block;

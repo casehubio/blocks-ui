@@ -65,6 +65,9 @@ export class ReviewTracker extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'log');
+    this.setAttribute('aria-label', 'Review tracker');
+    this.setAttribute('aria-live', 'polite');
     this._cleanups.push(
       onPagesEvent<DebateStreamEntry[]>(document, 'debate-entries', (payload) => {
         this._entries = [...this._entries, ...payload];

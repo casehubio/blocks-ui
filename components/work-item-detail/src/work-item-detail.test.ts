@@ -197,6 +197,18 @@ describe('WorkItemDetail', () => {
     });
   });
 
+  describe('DetailActionBar ARIA', () => {
+    it('sets role="toolbar" and aria-label on connect', async () => {
+      const workItem = createMockWorkItem('PENDING');
+      element.identity = mockIdentity;
+      element.data = workItem;
+      await element.updateComplete;
+      const actionBar = element.shadowRoot?.querySelector('blocks-detail-action-bar');
+      expect(actionBar?.getAttribute('role')).toBe('toolbar');
+      expect(actionBar?.getAttribute('aria-label')).toBe('Work item actions');
+    });
+  });
+
   describe('Tabs', () => {
     it('should render three tabs: Overview, Activity, Relations', async () => {
       const workItem = createMockWorkItem('PENDING');

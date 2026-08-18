@@ -42,6 +42,8 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'status');
+    this.setAttribute('aria-label', 'Execution monitor');
     this._startStaleTimer();
   }
 
@@ -178,6 +180,7 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
   }
 
   override render(): TemplateResult {
+    this.setAttribute('aria-busy', String(!this._snapshot && !!this._sseUrl));
     if (!this._snapshot) {
       if (this._sseUrl) return html`<div class="loading">Connecting...</div>`;
       return html`<div class="placeholder">No execution data</div>`;

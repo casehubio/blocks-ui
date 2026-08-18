@@ -20,6 +20,7 @@ interface PagesGroupedViewHost extends HTMLElement {
 
 @customElement('blocks-grouped-data-view')
 export class GroupedDataView extends DataSourceMixin(LitElement) {
+  @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = 'Grouped data';
   @property({ type: String, attribute: 'group-by' }) groupBy = '';
   @property({ attribute: false }) groupOrder?: string[];
   @property({ attribute: false }) groupConfig?: Map<string, GroupStyleConfig>;

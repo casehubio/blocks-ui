@@ -103,7 +103,7 @@ export class BlocksDagViewer extends LitElement {
         .elapsed=${this.dagResult?.elapsed ?? null}
         .resultTimestamp=${this.dagResult?.timestamp ?? null}
       ></blocks-dag-toolbar>
-      <div class="canvas-area">
+      <div class="canvas-area" role="img" aria-label="DAG execution graph">
         ${this.dagPlan == null
           ? html`<div class="empty">No DAG plan loaded</div>`
           : html`<!-- pages-graph-canvas integration point: toReactFlowGraph(model, layout, decorations) -->`}

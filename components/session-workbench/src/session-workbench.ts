@@ -28,6 +28,8 @@ export class SessionWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Session workbench');
     this.registerShortcut('?', () => { this._showShortcutOverlay = !this._showShortcutOverlay; }, { description: 'Show keyboard shortcuts' });
     this.registerShortcut('Escape', () => { if (this._showShortcutOverlay) this._showShortcutOverlay = false; }, { description: 'Close overlay' });
   }

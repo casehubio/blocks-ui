@@ -88,6 +88,8 @@ export class SnoozeControl extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'form');
+    this.setAttribute('aria-label', 'Snooze settings');
     if (this.endpoint != null && this.api == null) {
       this.api = new NotificationApi(this.endpoint);
     }
@@ -142,6 +144,7 @@ export class SnoozeControl extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this.loading));
     if (this.loading) {
       return html`<div class="loading">Loading snooze state...</div>`;
     }

@@ -44,7 +44,13 @@ const STATUS_COLORS: Record<string, string> = {
 
 @customElement('blocks-compliance-summary')
 export class ComplianceSummary extends DataSourceMixin(LitElement) {
+  @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = 'Compliance status';
   @property({ attribute: false }) requirements: RequirementDefinition[] | null = null;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+  }
 
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }

@@ -22,6 +22,8 @@ export class DocPicker extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Document comparison');
     this._cleanups.push(
       onPagesEvent<{ documents: DocEntry[] }>(document, 'documents-changed', (payload) => {
         this._documents = payload.documents || [];

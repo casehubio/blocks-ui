@@ -49,4 +49,22 @@ describe('ExecutionMonitor', () => {
     const el = new ExecutionMonitor();
     expect(el.staleThresholdMs).toBe(30000);
   });
+
+  it('sets role="status" and aria-label on connect', async () => {
+    const { ExecutionMonitor } = await import('./execution-monitor.js');
+    const el = new ExecutionMonitor();
+    document.body.appendChild(el);
+    expect(el.getAttribute('role')).toBe('status');
+    expect(el.getAttribute('aria-label')).toBe('Execution monitor');
+    el.remove();
+  });
+
+  it('sets aria-busy when connecting', async () => {
+    const { ExecutionMonitor } = await import('./execution-monitor.js');
+    const el = new ExecutionMonitor();
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    expect(el.getAttribute('aria-busy')).toBe('false');
+    el.remove();
+  });
 });

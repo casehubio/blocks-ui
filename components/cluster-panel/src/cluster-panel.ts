@@ -24,6 +24,18 @@ export class ClusterPanel extends LitElement {
   @state() private _fetchedData: ClusterInfo[] | null = null;
   @state() private _loading = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Cluster management');
+  }
+
+  override willUpdate(changed: Map<PropertyKey, unknown>): void {
+    if (changed.has('readonly')) {
+      this.setAttribute('aria-disabled', String(this.readonly));
+    }
+  }
+
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
     .cluster-list { display: flex; flex-direction: column; gap: var(--pages-space-2, 0.5rem); }
@@ -190,6 +202,7 @@ export class ClusterPanel extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this._loading));
     if (this._loading) return html`<div class="empty">Loading clusters...</div>`;
     const clusters = this._effectiveData;
 

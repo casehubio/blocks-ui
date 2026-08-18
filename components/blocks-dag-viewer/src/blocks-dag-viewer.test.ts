@@ -51,4 +51,14 @@ describe('BlocksDagViewer', () => {
     el.selectionTopic = 'my-topic';
     expect(el.selectionTopic).toBe('my-topic');
   });
+
+  it('canvas area has role="img" and aria-label', async () => {
+    const el = new BlocksDagViewer();
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const canvas = el.shadowRoot!.querySelector('.canvas-area');
+    expect(canvas?.getAttribute('role')).toBe('img');
+    expect(canvas?.getAttribute('aria-label')).toBe('DAG execution graph');
+    el.remove();
+  });
 });

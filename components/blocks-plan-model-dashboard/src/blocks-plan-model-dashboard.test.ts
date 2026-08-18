@@ -65,4 +65,31 @@ describe('BlocksPlanModelDashboard', () => {
     expect(el.planModel!.compounds).toHaveLength(1);
     expect(el.planModel!.compounds[0]!.completedCount).toBe(1);
   });
+
+  it('renders cards with role="region" and aria-label', async () => {
+    const el = new BlocksPlanModelDashboard();
+    el.planModel = fullModel();
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const regions = el.shadowRoot!.querySelectorAll('[role="region"]');
+    expect(regions.length).toBeGreaterThanOrEqual(4);
+    const labels = Array.from(regions).map(r => r.getAttribute('aria-label'));
+    expect(labels).toContain('Agenda');
+    expect(labels).toContain('Focus');
+    expect(labels).toContain('Resource Budget');
+    expect(labels).toContain('Sub-Cases');
+    el.remove();
+  });
+
+  it('renders compound progress with role="progressbar"', async () => {
+    const el = new BlocksPlanModelDashboard();
+    el.planModel = fullModel();
+    document.body.appendChild(el);
+    await (el as any).updateComplete;
+    const progressbar = el.shadowRoot!.querySelector('[role="progressbar"]');
+    expect(progressbar).toBeTruthy();
+    expect(progressbar!.getAttribute('aria-valuenow')).toBe('1');
+    expect(progressbar!.getAttribute('aria-valuemax')).toBe('4');
+    el.remove();
+  });
 });

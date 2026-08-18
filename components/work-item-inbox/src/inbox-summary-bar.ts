@@ -17,6 +17,12 @@ export class InboxSummaryBar extends LitElement {
   @property({ type: Number }) visibleOverdue: number | null = null;
   @property({ type: Number }) visibleBreach: number | null = null;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'toolbar');
+    this.setAttribute('aria-label', 'Inbox summary');
+  }
+
   static override styles = css`
     :host { display: block; }
 

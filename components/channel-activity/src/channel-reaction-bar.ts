@@ -26,6 +26,12 @@ export class ChannelReactionBarElement extends LitElement {
   private static readonly PICKER_WIDTH = 353;
   private static readonly PICKER_HEIGHT = 400;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Message reactions');
+  }
+
   static override readonly styles = css`
     :host { display: flex; gap: var(--pages-space-1, 4px); flex-wrap: wrap; margin-top: var(--pages-space-1, 4px); }
     .reaction-pill {
@@ -103,6 +109,7 @@ export class ChannelReactionBarElement extends LitElement {
       this._computePickerPosition();
     }
     this._showPicker = !this._showPicker;
+    this.setAttribute('aria-expanded', String(this._showPicker));
   }
 
   private _computePickerPosition() {

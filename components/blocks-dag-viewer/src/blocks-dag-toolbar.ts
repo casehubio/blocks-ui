@@ -17,6 +17,9 @@ export class BlocksDagToolbar extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'status');
+    this.setAttribute('aria-label', 'DAG execution status');
+    this.setAttribute('aria-live', 'polite');
     this._startStaleTimer();
   }
 

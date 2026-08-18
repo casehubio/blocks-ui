@@ -14,6 +14,19 @@ const ITEMS: { type: ElementType; label: string; shape: string }[] = [
 export class CasehubDiagramPalette extends LitElement {
   @property({ type: Boolean }) disabled = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'toolbar');
+    this.setAttribute('aria-label', 'Diagram palette');
+    this.setAttribute('aria-orientation', 'vertical');
+  }
+
+  override willUpdate(changed: Map<PropertyKey, unknown>): void {
+    if (changed.has('disabled')) {
+      this.setAttribute('aria-disabled', String(this.disabled));
+    }
+  }
+
   static override styles = css`
     :host { display: flex; flex-direction: column; gap: 4px; padding: 6px; width: 56px; box-sizing: border-box; }
     button {

@@ -5,6 +5,13 @@ import 'emoji-picker-element';
 @customElement('blocks-channel-emoji-picker')
 export class ChannelEmojiPickerElement extends LitElement {
   @property({ type: String }) skinToneEmoji?: string;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Emoji picker');
+  }
+
   static override readonly styles = css`
     :host {
       display: block;

@@ -20,6 +20,15 @@ describe('BlocksDagToolbar', () => {
     expect(el.failedCount).toBe(1);
   });
 
+  it('sets role="status" and aria-label on connect', () => {
+    const el = new BlocksDagToolbar();
+    document.body.appendChild(el);
+    expect(el.getAttribute('role')).toBe('status');
+    expect(el.getAttribute('aria-label')).toBe('DAG execution status');
+    expect(el.getAttribute('aria-live')).toBe('polite');
+    el.remove();
+  });
+
   it('computes staleness from timestamp', () => {
     const el = new BlocksDagToolbar();
     const old = new Date(Date.now() - 45_000).toISOString();

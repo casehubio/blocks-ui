@@ -10,6 +10,12 @@ export class CommitmentStatePill extends LitElement {
   @property({ type: String }) size: 'sm' | 'md' = 'sm';
   @property({ type: Boolean }) showIcon = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'status');
+    this.setAttribute('aria-label', 'Commitment state');
+  }
+
   static override styles = css`
     :host { display: inline-block; }
   `;

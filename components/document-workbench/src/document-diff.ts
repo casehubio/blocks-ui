@@ -357,6 +357,8 @@ export class DocumentDiff extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Document diff');
     this._connected = true;
 
     this._$('choose-a').addEventListener('click', () => this.selectFile('a'));

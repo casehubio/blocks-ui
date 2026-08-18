@@ -12,6 +12,12 @@ export class CaseInstanceList extends LitElement {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'case';
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Case instances');
+  }
+
   override render(): TemplateResult {
     const reg = { ...caseInstanceType({ listEndpoint: this.endpoint }), columnRenderers: this.columnRenderers, filters: this.filters };
     return html`<blocks-entity-list .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-list>`;

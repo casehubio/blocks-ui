@@ -26,6 +26,12 @@ export class PointDetail extends LitElement {
   @property({ attribute: false }) obligations: ObligationChain[] = [];
   @property({ attribute: false }) renderEntry?: (entry: ConversationEntry) => TemplateResult | undefined;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Conversation point detail');
+  }
+
   static override styles = css`
     :host { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
     .detail-container { padding: 12px; display: flex; flex-direction: column; gap: 12px; }

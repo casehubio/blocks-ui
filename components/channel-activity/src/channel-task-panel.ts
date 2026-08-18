@@ -13,6 +13,12 @@ export class ChannelTaskPanelElement extends LitElement {
   @property({ type: Object }) commitments: Map<string, CommitmentRecord> = new Map();
   @property({ type: String }) selectedMessageId?: string;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Obligations');
+  }
+
   static override readonly styles = css`
     :host {
       display: flex;

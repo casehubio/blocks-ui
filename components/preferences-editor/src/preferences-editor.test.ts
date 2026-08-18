@@ -171,4 +171,10 @@ describe('PreferencesEditor', () => {
     expect(prefRows).toHaveLength(4);
     expect(prefRows.every((r: any) => scopeRows.some((s: any) => s.id === r.parentId))).toBe(true);
   });
+
+  it('has role="form" and aria-label on host', async () => {
+    const el = create();
+    expect(el.getAttribute('role')).toBe('form');
+    expect(el.getAttribute('aria-label')).toBe('Preferences');
+  });
 });

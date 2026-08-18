@@ -110,6 +110,8 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Work item workbench');
     this._registerKeyboardShortcuts();
   }
 

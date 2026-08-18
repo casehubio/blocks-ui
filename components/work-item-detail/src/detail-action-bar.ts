@@ -7,6 +7,12 @@ export class DetailActionBar extends LitElement {
   @property({ type: Object }) workItem: WorkItemResponse | null = null;
   @property({ type: Object }) identity: WorkIdentity | null = null;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'toolbar');
+    this.setAttribute('aria-label', 'Work item actions');
+  }
+
   static override styles = css`
     :host {
       display: block;

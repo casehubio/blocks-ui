@@ -8,6 +8,18 @@ export class ValueEditor extends LitElement {
   @property({ type: String }) value = '';
   @property({ type: Boolean }) disabled = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Value editor');
+  }
+
+  override willUpdate(changed: Map<PropertyKey, unknown>): void {
+    if (changed.has('disabled')) {
+      this.setAttribute('aria-disabled', String(this.disabled));
+    }
+  }
+
   static override styles = css`
     :host { display: inline-block; }
     input, select {

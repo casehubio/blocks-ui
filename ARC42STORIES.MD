@@ -298,15 +298,15 @@ Subscription editor and notification preferences UI. NotificationApi.getEventTyp
 
 | Issue | Title | Status |
 |---|---|---|
-| #26 | Cell spanning — single-grid rendering model | 🔲 spec complete, implementation in pages |
-| #35 | Cross-repo component migration tracking | 🔲 epic open |
-| #36 | OpenClaw demo UI migration | 🔲 epic open |
-| #41 | DevTown governance workbench migration | 🔲 epic open |
-| #56 | App delivery — all blocks-ui work needed by consuming apps | 🔲 epic open |
-| #72 | Notification center frontend — bell icon, inbox dropdown, preferences | 🔲 open |
-| #81 | Schema-form enhancements — real form capabilities | 🔲 epic open |
-| #84 | Variable row heights with cell spanning | 🔲 open |
-| #85 | Column resizing interaction with single-grid model | 🔲 open |
+| #26 | Cell spanning — single-grid rendering model | ✅ done |
+| #35 | Cross-repo component migration tracking | ✅ done |
+| #36 | OpenClaw demo UI migration | ✅ done |
+| #41 | DevTown governance workbench migration | ✅ done |
+| #56 | App delivery — all blocks-ui work needed by consuming apps | ✅ done |
+| #72 | Notification center frontend — bell icon, inbox dropdown, preferences | ✅ done |
+| #81 | Schema-form enhancements — real form capabilities | ✅ done |
+| #84 | Variable row heights with cell spanning | ✅ done |
+| #85 | Column resizing interaction with single-grid model | ✅ done |
 | #88 | pages-modal duplicate CustomElementRegistry crash in esbuild | ✅ fixed |
 
 ---

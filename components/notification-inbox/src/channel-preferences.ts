@@ -147,6 +147,8 @@ export class ChannelPreferences extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Channel preferences');
     if (this.endpoint != null && this.api == null) {
       this.api = new NotificationApi(this.endpoint);
     }
@@ -312,6 +314,7 @@ export class ChannelPreferences extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this.loading));
     if (this.loading) {
       return html`<div class="loading">Loading preferences...</div>`;
     }

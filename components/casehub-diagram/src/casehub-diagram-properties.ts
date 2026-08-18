@@ -24,6 +24,12 @@ export class CasehubDiagramProperties extends LitElement {
   @litProp({ type: String }) selectedType = '';
   @litProp({ attribute: false }) workerNames: string[] = [];
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Diagram properties');
+  }
+
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui, sans-serif); }
     .panel { padding: 12px; overflow-y: auto; height: 100%; box-sizing: border-box; }

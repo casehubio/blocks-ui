@@ -95,7 +95,12 @@ export class BlocksPlanModelDashboard extends LitElement {
           <div style="display: flex; align-items: center; gap: 8px; padding: 4px 0;">
             <span style="font-weight: 500;">${c.name}</span>
             <status-badge domain="task" .state=${c.status}></status-badge>
-            <div class="progress-bar" style="flex: 1; max-width: 200px;">
+            <div class="progress-bar" style="flex: 1; max-width: 200px;"
+              role="progressbar"
+              aria-valuenow="${c.completedCount}"
+              aria-valuemin="0"
+              aria-valuemax="${c.childCount}"
+              aria-label="${c.name} progress">
               <div class="bar-track">
                 <div class="bar-fill" style="width: ${c.childCount > 0 ? (c.completedCount / c.childCount) * 100 : 0}%;"></div>
               </div>
@@ -113,19 +118,19 @@ export class BlocksPlanModelDashboard extends LitElement {
     }
     const m = this.planModel;
     return html`
-      <div class="card agenda-full">
+      <div class="card agenda-full" role="region" aria-label="Agenda">
         <div class="card-title">Agenda</div>
         ${this._renderAgenda(m.agenda)}
       </div>
-      <div class="card">
+      <div class="card" role="region" aria-label="Focus">
         <div class="card-title">Focus</div>
         ${this._renderFocus(m.focus, m.focusRationale)}
       </div>
-      <div class="card">
+      <div class="card" role="region" aria-label="Resource Budget">
         <div class="card-title">Resource Budget</div>
         ${this._renderBudget(m.resourceBudget)}
       </div>
-      <div class="card">
+      <div class="card" role="region" aria-label="Sub-Cases">
         <div class="card-title">Sub-Cases</div>
         ${this._renderSubCases(m.subCases)}
       </div>

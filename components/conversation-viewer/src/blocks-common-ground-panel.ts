@@ -23,6 +23,12 @@ export class CommonGroundPanel extends LitElement {
   @property({ type: String }) factTopic = 'common-ground-fact';
   @property({ attribute: false }) renderFact?: (fact: GroundedFact) => TemplateResult | undefined;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Common ground');
+  }
+
   static override styles = css`
     :host { display: block; height: 100%; overflow-y: auto; container-type: inline-size; }
     .grid {

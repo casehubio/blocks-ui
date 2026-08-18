@@ -11,6 +11,12 @@ export class CaseDetailPanel extends LitElement {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'case';
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Case details');
+  }
+
   override render(): TemplateResult {
     const reg = { ...caseInstanceType({ listEndpoint: this.endpoint }), detailRenderer: this.detailRenderer };
     return html`<blocks-entity-detail .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-detail>`;

@@ -19,6 +19,13 @@ export class ConvergenceIndicator extends LitElement {
   @property({ attribute: false }) signal?: ConvergenceSignal;
   @property({ type: String }) size: 'sm' | 'md' = 'md';
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'status');
+    this.setAttribute('aria-label', 'Convergence status');
+    this.setAttribute('aria-live', 'polite');
+  }
+
   static override styles = [
     pulseAnimation,
     css`

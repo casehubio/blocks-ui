@@ -10,6 +10,12 @@ export class NotificationPreferencesEl extends LitElement {
   @property({ type: String }) endpoint?: string;
   @property({ type: Object }) identity?: WorkIdentity;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Notification preferences');
+  }
+
   static override readonly styles = css`
     :host {
       display: block;

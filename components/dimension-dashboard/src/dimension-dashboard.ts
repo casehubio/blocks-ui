@@ -24,6 +24,12 @@ export class DimensionDashboard extends LitElement {
   @state() private _fetchedData: DimensionDashboardData | null = null;
   @state() private _loading = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Dimension status');
+  }
+
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
     .header {
@@ -142,6 +148,7 @@ export class DimensionDashboard extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this._loading));
     if (this._loading) return html`<div class="empty">Loading dimension data...</div>`;
     const d = this._effectiveData;
     if (!d) return html`<div class="empty">No dimension data</div>`;

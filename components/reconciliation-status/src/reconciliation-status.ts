@@ -27,6 +27,12 @@ export class ReconciliationStatus extends LitElement {
   @state() private _fetchedData: ReconciliationSnapshot | null = null;
   @state() private _loading = false;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Reconciliation status');
+  }
+
   private _sseManager = new SSEManager();
   private _sseHandler = (event: SSEEvent) => {
     this.data = event.data as ReconciliationSnapshot;
@@ -204,6 +210,7 @@ export class ReconciliationStatus extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this._loading));
     if (this._loading) return html`<div class="empty">Loading reconciliation data...</div>`;
     const snapshot = this._effectiveData;
     if (!snapshot) return html`<div class="empty">No reconciliation data</div>`;

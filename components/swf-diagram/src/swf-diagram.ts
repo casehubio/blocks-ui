@@ -68,6 +68,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           <pages-graph-canvas
             .nodes=${this._nodes}
             .edges=${this._edges}
+            role="img"
+            aria-label="Workflow diagram"
             style="flex: 1; height: 100%;"
             @pages-event=${(e: CustomEvent) => {
               const topic = e.detail?.topic as string | undefined;

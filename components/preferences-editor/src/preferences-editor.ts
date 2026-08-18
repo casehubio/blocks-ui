@@ -57,6 +57,8 @@ export class PreferencesEditor extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'form');
+    this.setAttribute('aria-label', 'Preferences');
     this._dataSource.endpoint = this.endpoint;
   }
 

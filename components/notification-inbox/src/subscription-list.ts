@@ -258,6 +258,8 @@ export class SubscriptionList extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Subscriptions');
 
     if (this.endpoint != null && this.api == null) {
       this.api = new NotificationApi(this.endpoint);
@@ -433,6 +435,7 @@ export class SubscriptionList extends LitElement {
   }
 
   override render() {
+    this.setAttribute('aria-busy', String(this.loading));
     return html`
       <div class="container">
         <div class="header">

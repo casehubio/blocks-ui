@@ -13,6 +13,12 @@ export class CaseDefinitionBrowser extends LitElement {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'definition';
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Case definitions');
+  }
+
   override render(): TemplateResult {
     const reg = { ...caseDefinitionType({ listEndpoint: this.endpoint }), columnRenderers: this.columnRenderers, filters: this.filters };
     return html`

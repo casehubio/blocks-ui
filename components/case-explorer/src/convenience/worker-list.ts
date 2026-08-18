@@ -12,6 +12,12 @@ export class WorkerList extends LitElement {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'worker';
   @property({ attribute: false }) fetchFn: typeof fetch = fetch;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Workers');
+  }
+
   override render(): TemplateResult {
     const reg = { ...workerType({ listEndpoint: this.endpoint }), columnRenderers: this.columnRenderers, filters: this.filters };
     return html`<blocks-entity-list .registration=${reg} selection-topic=${this.selectionTopic} .fetchFn=${this.fetchFn}></blocks-entity-list>`;

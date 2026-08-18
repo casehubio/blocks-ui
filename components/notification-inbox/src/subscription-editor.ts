@@ -126,6 +126,8 @@ export class SubscriptionEditor extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'form');
+    this.setAttribute('aria-label', 'Subscription editor');
     if (this.endpoint != null && this.api == null) {
       this.api = new NotificationApi(this.endpoint);
     }

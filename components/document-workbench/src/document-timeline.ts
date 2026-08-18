@@ -20,6 +20,9 @@ export class DocumentTimeline extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'log');
+    this.setAttribute('aria-label', 'Document timeline');
+    this.setAttribute('aria-live', 'polite');
     this._cleanups.push(
       onPagesEvent<DebateStreamEntry | DebateStreamEntry[]>(document, 'debate-entries', (payload) => {
         this._handleEntries(Array.isArray(payload) ? payload : [payload]);

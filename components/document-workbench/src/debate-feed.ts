@@ -52,6 +52,9 @@ export class DebateFeed extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'log');
+    this.setAttribute('aria-label', 'Debate feed');
+    this.setAttribute('aria-live', 'polite');
     this._cleanups.push(
       onPagesEvent<DebateStreamEntry[]>(document, 'debate-entries', (payload) => {
         this._entries = [...this._entries, ...payload];

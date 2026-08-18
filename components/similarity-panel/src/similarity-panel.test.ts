@@ -158,4 +158,14 @@ describe('blocks-similarity-panel', () => {
     await el.updateComplete;
     await vi.waitFor(() => expect(el.shadowRoot!.textContent).toContain('unavailable'));
   });
+
+  it('has aria-label on host', () => {
+    expect(el.getAttribute('aria-label')).toBe('Similar cases');
+  });
+
+  it('accepts custom aria-label', async () => {
+    el.setAttribute('aria-label', 'Past precedents');
+    await el.updateComplete;
+    expect(el.getAttribute('aria-label')).toBe('Past precedents');
+  });
 });

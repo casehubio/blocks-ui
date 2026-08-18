@@ -27,6 +27,8 @@ export class BrainstormOptions extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', 'Brainstorm options');
     this._cleanups.push(
       onPagesEvent<OptionsPayload>(document, 'brainstorm-options', (payload) => {
         if (this.sessionId && payload.sessionId === this.sessionId) {

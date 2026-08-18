@@ -9,6 +9,12 @@ export class BlocksDependencyToolbar extends LitElement {
   @property({ type: Number }) nodeCount = 0;
   @property({ type: Number }) edgeCount = 0;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.setAttribute('role', 'toolbar');
+    this.setAttribute('aria-label', 'Dependency graph filters');
+  }
+
   static override styles = css`
     :host { display: flex; align-items: center; gap: 8px; padding: 8px 12px;
       border-bottom: 1px solid var(--pages-neutral-5, #ccc); flex-wrap: wrap;

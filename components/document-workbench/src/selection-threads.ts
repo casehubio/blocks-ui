@@ -33,6 +33,8 @@ export class SelectionThreads extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('role', 'region');
+    this.setAttribute('aria-label', 'Selection threads');
     this._cleanups.push(
       onPagesEvent<ThreadStreamEntry[]>(document, 'thread-entries', (entries) => {
         for (const entry of entries) {

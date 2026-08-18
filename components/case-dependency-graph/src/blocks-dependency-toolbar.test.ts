@@ -8,6 +8,13 @@ describe('blocks-dependency-toolbar', () => {
     expect(customElements.get('blocks-dependency-toolbar')).toBeDefined();
   });
 
+  it('sets role="toolbar" and aria-label on connect', async () => {
+    const el = document.createElement('blocks-dependency-toolbar');
+    document.body.appendChild(el);
+    expect(el.getAttribute('role')).toBe('toolbar');
+    expect(el.getAttribute('aria-label')).toBe('Dependency graph filters');
+  });
+
   it('renders edge type checkboxes', async () => {
     const el = document.createElement('blocks-dependency-toolbar') as any;
     el.edgeTypes = [

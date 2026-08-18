@@ -185,6 +185,28 @@ yarn typecheck
 - Visual consistency through `--pages-*` CSS custom properties from `pages-ui-tokens`
 - Design for the full platform: trust scores from ledger, channel activity from qhorus, case timelines from engine, IoT device state from iot
 
+## ARIA Requirements
+
+Every component must have ARIA attributes. ARIA is the unified interaction model — no component ships without it.
+
+**Mandatory for every `@customElement`:**
+- `aria-label` on the host or primary container (set in `connectedCallback` or as a reflected property)
+- Appropriate `role` attribute matching the component's interaction pattern
+- State attributes (`aria-busy`, `aria-disabled`, `aria-expanded`, etc.) reflecting component state
+
+**Pattern guide** (pick the pattern matching the component's function):
+- **Interactive controls:** `role="button"`, `role="form"`, `role="listbox"` + state attrs
+- **Data display:** `role="region"` + `aria-label`, or `role="status"` + `aria-live="polite"`
+- **Trees:** `role="tree"` / `role="treeitem"` + `aria-expanded`, `aria-level`
+- **Tabs:** `role="tablist"` / `role="tab"` / `role="tabpanel"` + `aria-selected`, `aria-controls`
+- **Visualizations:** `role="img"` + `aria-label` describing the content
+- **Live content:** `role="log"` or `role="status"` + `aria-live="polite"`
+- **Composition shells:** Inherit ARIA from composed children (split-workbench provides regions)
+
+**Tests:** Every component test file must include ARIA assertions verifying role and aria-label.
+
+**Build validation:** `yarn aria-check` scans all components for minimum ARIA compliance. CI fails if any component lacks ARIA.
+
 ## IntelliJ MCP Routing
 
 One IntelliJ MCP server is available:

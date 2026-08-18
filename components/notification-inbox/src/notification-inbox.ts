@@ -404,6 +404,7 @@ export class NotificationInbox extends NotificationInboxBase {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.setAttribute('aria-label', 'Notification inbox');
 
     // Keyboard shortcuts
     this.registerShortcut('d', () => this._handleDismissShortcut(), {
@@ -1031,7 +1032,7 @@ export class NotificationInbox extends NotificationInboxBase {
 
   override render() {
     return html`
-      <div class="inbox-container">
+      <div class="inbox-container" aria-live="polite">
         ${this.renderTabs()}
         ${this.renderFilterBar()}
         ${this._actionError ? html`<div class="error-banner" role="alert">${this._actionError}</div>` : nothing}
