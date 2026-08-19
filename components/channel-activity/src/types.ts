@@ -80,6 +80,9 @@ export interface QhorusChannel {
   readonly allowedTypes?: readonly MessageType[];
   readonly deniedTypes?: readonly MessageType[];
   readonly paused: boolean;
+  readonly spaceId?: string;
+  readonly spaceName?: string;
+  readonly parentSpaceId?: string;
 }
 
 export interface Reaction {
