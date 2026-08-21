@@ -24,7 +24,7 @@ export const exitGrammar: StencilGrammar = {
 
 function renderBoundaryNode(label: string, color: string): StencilTemplate {
   return html`
-    <div style="padding: 6px 14px; border: 2px solid ${color}; background: ${color}22; border-radius: 20px; font-family: var(--pages-font-family, sans-serif); font-size: 11px; font-weight: 600; color: ${color}; text-align: center; min-width: 60px;">
+    <div style="padding: 14px 14px; border: 2px solid ${color}; background: ${color}22; border-radius: 20px; font-family: var(--pages-font-family, sans-serif); font-size: 11px; font-weight: 600; color: ${color}; text-align: center; min-width: 60px; box-sizing: border-box;">
       ${label}
     </div>
   `;

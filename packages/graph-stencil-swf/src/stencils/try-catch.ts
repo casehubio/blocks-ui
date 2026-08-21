@@ -10,18 +10,28 @@ export const tryCatchGrammar: StencilGrammar = {
   },
 };
 
+export function renderCatch(node: GraphNode, _decoration?: NodeDecoration): StencilTemplate {
+  const label = node.properties['label'] ? String(node.properties['label']) : 'catch';
+  return html`
+    <div style="font-family: var(--pages-font-family, sans-serif); font-size: 11px; font-weight: 600; color: var(--pages-danger-11, #b91c1c); letter-spacing: 0.03em; padding: 2px 8px;">
+      <span style="opacity: 0.8;">&#x26A0;</span> ${label}
+    </div>
+  `;
+}
+
 export function renderTryCatch(node: GraphNode, _decoration?: NodeDecoration): StencilTemplate {
-  const label = node.properties['label'] ? String(node.properties['label']) : 'Catch';
+  const label = node.properties['label'] ? String(node.properties['label']) : 'try/catch';
   const errors = node.properties['errors'] as { with?: { type?: string } } | undefined;
   const errorFilter = errors?.with?.type ?? '';
 
   return html`
-    <div style="padding: 8px 12px; border: 2px solid #ea580c; background: #fff7ed; border-top: 3px solid #ea580c; min-width: 160px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px;">
-      <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: #ea580c;">
-        <span>\u{1F6E1}\u{FE0F}</span>
+
+    <div style="padding: 5px 10px; font-family: var(--pages-font-family, sans-serif); font-size: 12px; position: relative;">
+      <div style="display: flex; align-items: center; gap: 5px; font-weight: 600; color: var(--pages-warning-11, #92400e);">
+        <span style="font-size: 13px;">\u{1F6E1}\u{FE0F}</span>
         <span>${label}</span>
+        ${errorFilter ? html`<span style="color: var(--pages-warning-9, #b45309); font-weight: 400; font-size: 10px; margin-left: 6px; opacity: 0.7;">${errorFilter}</span>` : ''}
       </div>
-      ${errorFilter ? html`<div style="color: var(--pages-text-secondary, #666); font-size: 11px; margin-top: 2px;">${errorFilter}</div>` : ''}
     </div>
   `;
 }

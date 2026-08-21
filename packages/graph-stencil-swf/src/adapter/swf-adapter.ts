@@ -27,7 +27,9 @@ export function toSwfGraph(yaml: string): AdapterResult {
   }
 
   const nodes: GraphNode[] = allSdkNodes.map(mapNode);
-  const edges: GraphEdge[] = flatGraph.edges.map(e => mapEdge(e, allSdkNodes));
+  const parentMap = new Map(allSdkNodes.filter(n => n.parentId).map(n => [n.id, n.parentId!]));
+  const rawEdges: GraphEdge[] = flatGraph.edges.map(e => mapEdge(e, allSdkNodes));
+  const edges = rawEdges.map(e => clampEdgeToContainerBoundary(e, parentMap));
   const model = createGraph(nodes, edges);
 
   return degraded ? { model, yamlPaths, degraded } : { model, yamlPaths };
@@ -35,10 +37,14 @@ export function toSwfGraph(yaml: string): AdapterResult {
 
 function mapNode(sdkNode: FlatGraphNode): GraphNode {
   const sdkType = sdkNode.type as string;
-  const type = SWF_KNOWN_TYPES.has(sdkType) ? `${SWF_TYPE_PREFIX}${sdkType}` : 'swf-generic';
+  const isRoot = sdkType === 'root' || (!sdkNode.parentId && sdkType !== 'start' && sdkType !== 'end');
+  const type = isRoot ? 'swf-root' : SWF_KNOWN_TYPES.has(sdkType) ? `${SWF_TYPE_PREFIX}${sdkType}` : 'swf-generic';
 
   const properties: Record<string, unknown> = {};
-  if (sdkNode.label) properties['label'] = sdkNode.label;
+  if (sdkNode.label) {
+    const sdkTypeStr = sdkNode.type as string;
+    properties['label'] = (sdkTypeStr === 'try' || sdkTypeStr === 'catch') ? sdkTypeStr : sdkNode.label;
+  }
   if (sdkNode.task) Object.assign(properties, sdkNode.task);
   if (!SWF_KNOWN_TYPES.has(sdkType)) properties['originalType'] = sdkType;
 
@@ -61,6 +67,41 @@ function mapEdge(sdkEdge: SdkGraphEdge, nodes: FlatGraphNode[]): GraphEdge {
     target: sdkEdge.targetId,
     ...(sdkEdge.label ? { properties: { label: sdkEdge.label } } : {}),
   };
+}
+
+function ancestors(nodeId: string, parentMap: Map<string, string>): string[] {
+  const result: string[] = [];
+  let current = parentMap.get(nodeId);
+  while (current) {
+    result.push(current);
+    current = parentMap.get(current);
+  }
+  return result;
+}
+
+function clampEdgeToContainerBoundary(edge: GraphEdge, parentMap: Map<string, string>): GraphEdge {
+  const sourceAncestors = new Set(ancestors(edge.source, parentMap));
+  const targetAncestors = new Set(ancestors(edge.target, parentMap));
+
+  let source = edge.source;
+  let target = edge.target;
+
+  // If source is inside a container that the target is NOT inside, walk source up
+  let s = parentMap.get(source);
+  while (s && !targetAncestors.has(s) && s !== target) {
+    source = s;
+    s = parentMap.get(s);
+  }
+
+  // If target is inside a container that the source is NOT inside, walk target up
+  let t = parentMap.get(target);
+  while (t && !sourceAncestors.has(t) && t !== source) {
+    target = t;
+    t = parentMap.get(t);
+  }
+
+  if (source === edge.source && target === edge.target) return edge;
+  return { ...edge, source, target };
 }
 
 export function wrapDoBlock(doBlock: unknown): string {

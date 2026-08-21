@@ -69,7 +69,7 @@ export function createSwfThumbnailRenderer(): (doBlock: unknown, container: HTML
     for (let i = 0; i < positioned.length - 1; i++) {
       const from = positioned[i]!;
       const to = positioned[i + 1]!;
-      svg += `<line x1="${centerX}" y1="${from.y + nodeH}" x2="${centerX}" y2="${to.y}" stroke="#ccc" stroke-width="1"/>`;
+      svg += `<line x1="${centerX}" y1="${from.y + nodeH}" x2="${centerX}" y2="${to.y}" stroke="currentColor" stroke-opacity="0.4" stroke-width="1"/>`;
     }
 
     for (const p of positioned) {
