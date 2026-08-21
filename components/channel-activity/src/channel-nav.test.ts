@@ -501,6 +501,59 @@ describe('blocks-channel-nav', () => {
       expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch-w' });
     });
 
+    it('renders space filter dropdown with all spaces', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const select = el.shadowRoot!.querySelector('.space-filter') as HTMLSelectElement;
+      expect(select).toBeTruthy();
+      const options = select.querySelectorAll('option');
+      expect(options.length).toBe(3);
+      expect(options[0]!.textContent).toBe('All Spaces');
+      expect(options[1]!.textContent).toBe('Case Alpha');
+      expect(options[2]!.textContent).toBe('Case Beta');
+    });
+
+    it('filters to selected space channels plus ungrouped', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const select = el.shadowRoot!.querySelector('.space-filter') as HTMLSelectElement;
+      select.value = 'sp-1';
+      select.dispatchEvent(new Event('change'));
+      await (el as any).updateComplete;
+
+      const spaceGroups = el.shadowRoot!.querySelectorAll('.space-group');
+      expect(spaceGroups.length).toBe(1);
+      expect(el.shadowRoot!.querySelector('.space-header')!.textContent).toContain('Case Alpha');
+
+      const ungrouped = el.shadowRoot!.querySelectorAll('.ungrouped .channel-item');
+      expect(ungrouped.length).toBe(1);
+    });
+
+    it('resets to all spaces when All Spaces selected', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const select = el.shadowRoot!.querySelector('.space-filter') as HTMLSelectElement;
+      select.value = 'sp-1';
+      select.dispatchEvent(new Event('change'));
+      await (el as any).updateComplete;
+
+      select.value = '';
+      select.dispatchEvent(new Event('change'));
+      await (el as any).updateComplete;
+
+      const spaceGroups = el.shadowRoot!.querySelectorAll('.space-group');
+      expect(spaceGroups.length).toBe(2);
+    });
+
     it('falls back to flat mode when channelTree absent', async () => {
       el = document.createElement('blocks-channel-nav');
       (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];

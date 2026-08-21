@@ -16,6 +16,7 @@ export class ChannelNavElement extends LitElement {
   @property({ type: Boolean }) showDelete = true;
   @state() private _focusedIndex = 0;
   @state() private _expandedSpaces = new Set<string>();
+  @state() private _spaceFilter = '';
   @state() private _dropdownOpen = false;
   @state() private _deleteTarget: QhorusChannel | null = null;
   @state() private _showCreateDialog = false;
@@ -133,6 +134,19 @@ export class ChannelNavElement extends LitElement {
       margin: 0;
       padding: 0;
     }
+    .space-filter {
+      width: 100%;
+      padding: var(--pages-space-2, 8px);
+      margin-bottom: var(--pages-space-2, 8px);
+      border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-1, 4px);
+      background: var(--pages-neutral-1, #ffffff);
+      color: var(--pages-neutral-12, #1a1a1a);
+      font-size: 13px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .space-filter:hover { border-color: var(--pages-neutral-7, #a3a3a3); }
     .dropdown-wrapper { position: relative; }
     .dropdown-trigger {
       width: 100%;
@@ -369,17 +383,28 @@ export class ChannelNavElement extends LitElement {
     `;
   }
 
+  private _onSpaceFilterChange(e: Event) {
+    this._spaceFilter = (e.target as HTMLSelectElement).value;
+  }
+
   private _renderTree(): unknown {
     const tree = this.channelTree!;
     this._ensureExpanded(tree);
+    const filteredSpaces = this._spaceFilter
+      ? tree.spaces.filter(s => s.space.id === this._spaceFilter)
+      : tree.spaces;
     return html`
+      <select class="space-filter" @change="${this._onSpaceFilterChange}" .value="${this._spaceFilter}">
+        <option value="">All Spaces</option>
+        ${tree.spaces.map(s => html`<option value="${s.space.id}">${s.space.name}</option>`)}
+      </select>
       <div class="channel-list" role="tree" tabindex="0" @keydown="${this._handleTreeKeyDown}">
         ${tree.ungrouped.length > 0 ? html`
           <ul class="ungrouped">
             ${tree.ungrouped.map(ch => this._renderChannelItem(ch))}
           </ul>
         ` : nothing}
-        ${tree.spaces.map(node => this._renderSpaceGroup(node))}
+        ${filteredSpaces.map(node => this._renderSpaceGroup(node))}
       </div>
       ${this.showCreate ? html`
         <pages-button class="create-channel-btn" variant="ghost" size="sm" @click="${this.handleCreateChannel}">
