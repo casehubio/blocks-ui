@@ -10,29 +10,32 @@ export class BlocksPlanModelDashboard extends LitElement {
 
   static override styles = css`
     :host { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px;
-      font-family: var(--pages-font-family, sans-serif); font-size: 13px; }
-    .empty { grid-column: 1 / -1; color: var(--pages-text-tertiary, #999); font-style: italic; }
-    .card { border: 1px solid var(--pages-border-color, #e5e7eb); border-radius: 8px;
-      padding: 12px 16px; background: var(--pages-surface-color, #fff); }
-    .card-title { font-weight: 600; font-size: 14px; color: var(--pages-text-color, #333);
+      font-family: var(--pages-font-family, sans-serif); font-size: 13px;
+      color: var(--pages-neutral-11, #e2e8f0); }
+    .empty { grid-column: 1 / -1; color: var(--pages-neutral-9, #64748b); font-style: italic; }
+    .card { border: 1px solid var(--pages-neutral-5, #334155); border-radius: 8px;
+      padding: 12px 16px; background: var(--pages-neutral-2, #1e293b); }
+    .card-title { font-weight: 600; font-size: 14px; color: var(--pages-neutral-12, #f1f5f9);
       margin-bottom: 8px; }
     .agenda-full { grid-column: 1 / -1; }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; font-size: 11px; color: var(--pages-text-tertiary, #999);
-      border-bottom: 1px solid var(--pages-border-color, #e5e7eb); padding: 4px 8px; }
-    td { padding: 4px 8px; border-bottom: 1px solid var(--pages-border-color, #f3f4f6); }
+    th { text-align: left; font-size: 11px; color: var(--pages-neutral-9, #64748b);
+      border-bottom: 1px solid var(--pages-neutral-5, #334155); padding: 4px 8px;
+      text-transform: uppercase; letter-spacing: 0.05em; }
+    td { padding: 6px 8px; border-bottom: 1px solid var(--pages-neutral-4, #1e293b);
+      color: var(--pages-neutral-11, #cbd5e1); }
     .status-pill { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px;
       font-weight: 600; }
-    .focus-text { color: var(--pages-text-color, #333); }
-    .focus-rationale { color: var(--pages-text-secondary, #666); font-style: italic; margin-top: 4px; }
-    .budget-key { color: var(--pages-text-secondary, #666); }
-    .budget-value { font-weight: 600; }
+    .focus-text { color: var(--pages-neutral-12, #f1f5f9); }
+    .focus-rationale { color: var(--pages-neutral-9, #94a3b8); font-style: italic; margin-top: 4px; }
+    .budget-key { color: var(--pages-neutral-9, #94a3b8); }
+    .budget-value { font-weight: 600; color: var(--pages-neutral-12, #f1f5f9); }
     .progress-bar { display: flex; align-items: center; gap: 6px; }
-    .bar-track { flex: 1; height: 6px; background: var(--pages-border-color, #e5e7eb);
+    .bar-track { flex: 1; height: 6px; background: var(--pages-neutral-5, #334155);
       border-radius: 3px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--pages-accent-color, #1a73e8);
+    .bar-fill { height: 100%; background: var(--pages-accent-9, #3b82f6);
       border-radius: 3px; transition: width 0.3s; }
-    .bar-label { font-size: 11px; color: var(--pages-text-secondary, #666); white-space: nowrap; }
+    .bar-label { font-size: 11px; color: var(--pages-neutral-9, #94a3b8); white-space: nowrap; }
   `;
 
   private _renderAgenda(agenda: readonly AgendaItem[]) {

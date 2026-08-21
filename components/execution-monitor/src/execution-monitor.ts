@@ -66,7 +66,7 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
 
   private _reconnectSSE(): void {
     this._teardownSSE();
-    this._snapshot = undefined;
+    if (!this.data) this._snapshot = undefined;
     if (!this.endpoint || !this.executionId || this.data) return;
     this._sseUrl = `${this.endpoint}/${this.executionId}/state`;
     this._sseManager.subscribe(this._sseUrl, this._sseHandler);

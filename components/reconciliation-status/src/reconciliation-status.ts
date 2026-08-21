@@ -172,7 +172,7 @@ export class ReconciliationStatus extends LitElement {
   }
 
   private _renderNode(node: NodeReconciliationStatus, clusterId: string) {
-    const colors = NODE_STATUS_COLORS[node.status] ?? NODE_STATUS_COLORS.ABSENT;
+    const colors = (NODE_STATUS_COLORS[node.status] ?? NODE_STATUS_COLORS.ABSENT)!;
     return html`
       <div class="node-row" @click=${() => this._handleNodeClick(node, clusterId)}>
         <span class="node-type">${node.nodeType}</span>

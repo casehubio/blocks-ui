@@ -136,7 +136,7 @@ export class ServiceCard extends LitElement {
   }
 
   private _renderCluster(c: ClusterDeploymentStatus) {
-    const color = CLUSTER_STATUS_COLORS[c.status] ?? CLUSTER_STATUS_COLORS.unknown;
+    const color = (CLUSTER_STATUS_COLORS[c.status] ?? CLUSTER_STATUS_COLORS.unknown)!;
     return html`
       <div class="cluster-row">
         <span class="cluster-dot" style="background: ${color};"></span>
@@ -151,7 +151,7 @@ export class ServiceCard extends LitElement {
     const d = this._effectiveData;
     if (!d) return html`<div class="empty">No service data</div>`;
 
-    const colors = STATUS_COLORS[d.status] ?? STATUS_COLORS.ABSENT;
+    const colors = (STATUS_COLORS[d.status] ?? STATUS_COLORS.ABSENT)!;
 
     return html`
       <div class="card" @click=${this._handleClick} role="button" tabindex="0"

@@ -23,15 +23,14 @@ function toGraphModel(snapshot: TopologySnapshot): GraphModel {
     nodes: snapshot.services.map(s => ({
       id: s.id,
       type: 'topology-service',
-      label: s.name,
-      data: s,
+      properties: { label: s.name, ...s } as Record<string, unknown>,
     })),
     edges: snapshot.edges.map((e, i) => ({
       id: `edge-${i}`,
       source: e.source,
       target: e.target,
-      label: e.label,
       type: 'topology-dependency',
+      properties: { label: e.label },
     })),
   };
 }
@@ -180,7 +179,7 @@ export class TopologyViewer extends LitElement {
   }
 
   private _renderNode(node: TopologyNode) {
-    const colors = STATUS_COLORS[node.status] ?? STATUS_COLORS.ABSENT;
+    const colors = (STATUS_COLORS[node.status] ?? STATUS_COLORS.ABSENT)!;
     return html`
       <div class="topology-node" @click=${() => this._handleNodeClick(node)}
            style="border-color: ${colors.border}; background: ${colors.bg};"
