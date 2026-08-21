@@ -399,7 +399,7 @@ export class ChannelNavElement extends LitElement {
         ${tree.spaces.map(s => html`<option value="${s.space.id}">${s.space.name}</option>`)}
       </select>
       <div class="channel-list" role="tree" tabindex="0" @keydown="${this._handleTreeKeyDown}">
-        ${tree.ungrouped.length > 0 ? html`
+        ${!this._spaceFilter && tree.ungrouped.length > 0 ? html`
           <ul class="ungrouped">
             ${tree.ungrouped.map(ch => this._renderChannelItem(ch))}
           </ul>

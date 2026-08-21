@@ -531,8 +531,8 @@ describe('blocks-channel-nav', () => {
       expect(spaceGroups.length).toBe(1);
       expect(el.shadowRoot!.querySelector('.space-header')!.textContent).toContain('Case Alpha');
 
-      const ungrouped = el.shadowRoot!.querySelectorAll('.ungrouped .channel-item');
-      expect(ungrouped.length).toBe(1);
+      const ungrouped = el.shadowRoot!.querySelector('.ungrouped');
+      expect(ungrouped).toBeNull();
     });
 
     it('resets to all spaces when All Spaces selected', async () => {
