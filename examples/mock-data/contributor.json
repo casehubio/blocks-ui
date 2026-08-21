@@ -1,0 +1,38 @@
+{
+  "actorId": "contributor-chen-m",
+  "globalScore": 0.82,
+  "capabilityScores": {
+    "medical-review": 0.91,
+    "fraud-analysis": 0.76,
+    "compliance-assessment": 0.84,
+    "claims-adjudication": 0.78,
+    "document-verification": 0.88
+  },
+  "dimensionScores": {
+    "accuracy": 0.89,
+    "timeliness": 0.74,
+    "thoroughness": 0.86,
+    "consistency": 0.81,
+    "communication": 0.79
+  },
+  "intakeClassification": {
+    "lane": "FAST_TRACK",
+    "trustScore": 0.82,
+    "observationCount": 147,
+    "classificationReason": "Sustained high accuracy across 147 observations with strong domain expertise in medical review",
+    "fastTrackThreshold": 0.8,
+    "standardThreshold": 0.5
+  },
+  "recentOutcomes": [
+    { "repo": "casehubio/clinical", "prNumber": 892, "outcome": "ACCEPTED", "occurredAt": "2026-08-17T14:30:00Z" },
+    { "repo": "casehubio/clinical", "prNumber": 887, "outcome": "ACCEPTED", "occurredAt": "2026-08-16T09:15:00Z" },
+    { "repo": "casehubio/aml", "prNumber": 445, "outcome": "NEEDS_REVISION", "occurredAt": "2026-08-15T16:42:00Z" },
+    { "repo": "casehubio/clinical", "prNumber": 881, "outcome": "ACCEPTED", "occurredAt": "2026-08-14T11:20:00Z" },
+    { "repo": "casehubio/life", "prNumber": 234, "outcome": "ACCEPTED", "occurredAt": "2026-08-13T13:55:00Z" },
+    { "repo": "casehubio/aml", "prNumber": 438, "outcome": "REJECTED", "occurredAt": "2026-08-12T10:30:00Z" },
+    { "repo": "casehubio/clinical", "prNumber": 876, "outcome": "ACCEPTED", "occurredAt": "2026-08-11T15:10:00Z" },
+    { "repo": "casehubio/clinical", "prNumber": 871, "outcome": "ACCEPTED", "occurredAt": "2026-08-10T09:45:00Z" },
+    { "repo": "casehubio/life", "prNumber": 228, "outcome": "NEEDS_REVISION", "occurredAt": "2026-08-09T14:20:00Z" },
+    { "repo": "casehubio/clinical", "prNumber": 865, "outcome": "ACCEPTED", "occurredAt": "2026-08-08T11:00:00Z" }
+  ]
+}

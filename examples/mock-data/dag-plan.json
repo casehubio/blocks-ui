@@ -1,0 +1,87 @@
+{
+  "plan": {
+    "nodes": {
+      "validate-input": {
+        "id": "validate-input",
+        "taskId": "validate-input",
+        "taskDescription": "Validate incoming claim payload against schema",
+        "executorName": "schema-validator",
+        "dependsOn": [],
+        "joinType": "ALL_OF"
+      },
+      "enrich-policy": {
+        "id": "enrich-policy",
+        "taskId": "enrich-policy",
+        "taskDescription": "Fetch policy details from underwriting system",
+        "executorName": "policy-lookup-agent",
+        "dependsOn": ["validate-input"],
+        "joinType": "ALL_OF"
+      },
+      "enrich-claimant": {
+        "id": "enrich-claimant",
+        "taskId": "enrich-claimant",
+        "taskDescription": "Retrieve claimant history and risk profile",
+        "executorName": "claimant-profile-agent",
+        "dependsOn": ["validate-input"],
+        "joinType": "ALL_OF"
+      },
+      "check-sanctions": {
+        "id": "check-sanctions",
+        "taskId": "check-sanctions",
+        "taskDescription": "Screen claimant against sanctions and PEP lists",
+        "executorName": "sanctions-screening-agent",
+        "dependsOn": ["enrich-claimant"],
+        "joinType": "ALL_OF"
+      },
+      "fraud-scoring": {
+        "id": "fraud-scoring",
+        "taskId": "fraud-scoring",
+        "taskDescription": "Run ML fraud detection model on enriched data",
+        "executorName": "fraud-ml-agent",
+        "dependsOn": ["enrich-policy", "enrich-claimant"],
+        "joinType": "ALL_OF"
+      },
+      "medical-review": {
+        "id": "medical-review",
+        "taskId": "medical-review",
+        "taskDescription": "Extract and validate medical evidence from attachments",
+        "executorName": "medical-nlp-agent",
+        "dependsOn": ["enrich-policy"],
+        "joinType": "ALL_OF"
+      },
+      "aggregate-risk": {
+        "id": "aggregate-risk",
+        "taskId": "aggregate-risk",
+        "taskDescription": "Combine fraud score, sanctions result, and medical review into risk assessment",
+        "executorName": "risk-aggregator",
+        "dependsOn": ["fraud-scoring", "check-sanctions", "medical-review"],
+        "joinType": "ALL_OF"
+      },
+      "routing-decision": {
+        "id": "routing-decision",
+        "taskId": "routing-decision",
+        "taskDescription": "Determine claim routing: auto-approve, manual review, or SIU referral",
+        "executorName": "routing-engine",
+        "dependsOn": ["aggregate-risk"],
+        "joinType": "ALL_OF"
+      }
+    },
+    "timestamp": "2026-08-18T10:30:00Z"
+  },
+  "result": {
+    "nodeStates": {
+      "validate-input": { "kind": "Completed" },
+      "enrich-policy": { "kind": "Completed" },
+      "enrich-claimant": { "kind": "Completed" },
+      "check-sanctions": { "kind": "Completed" },
+      "fraud-scoring": { "kind": "Dispatched" },
+      "medical-review": { "kind": "Dispatched" },
+      "aggregate-risk": { "kind": "Pending" },
+      "routing-decision": { "kind": "Pending" }
+    },
+    "completedResults": {},
+    "allSucceeded": false,
+    "elapsed": "PT12.4S",
+    "timestamp": "2026-08-18T10:30:12Z"
+  }
+}

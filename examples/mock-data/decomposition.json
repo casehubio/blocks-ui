@@ -1,0 +1,95 @@
+{
+  "decomposition": {
+    "root": {
+      "kind": "compound",
+      "id": "investigate-claim",
+      "name": "Investigate Insurance Claim",
+      "methods": [
+        {
+          "guardLabel": "claim.type == 'HEALTH' && claim.amount > 10000",
+          "strategyId": "htn",
+          "children": [
+            {
+              "kind": "compound",
+              "id": "gather-evidence",
+              "name": "Gather Evidence",
+              "methods": [
+                {
+                  "strategyId": "parallel",
+                  "children": [
+                    { "kind": "leaf", "id": "extract-medical-records", "description": "Extract structured data from medical records using NLP", "executorName": "medical-nlp-agent" },
+                    { "kind": "leaf", "id": "fetch-claim-history", "description": "Retrieve claimant's prior claim history", "executorName": "claims-db-agent" },
+                    { "kind": "leaf", "id": "verify-provider", "description": "Validate healthcare provider credentials and billing patterns", "executorName": "provider-verification-agent" }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "compound",
+              "id": "assess-risk",
+              "name": "Risk Assessment",
+              "methods": [
+                {
+                  "guardLabel": "evidence.fraud_indicators > 0",
+                  "strategyId": "forward-reasoning",
+                  "children": [
+                    { "kind": "leaf", "id": "run-fraud-model", "description": "Execute ML fraud detection on gathered evidence", "executorName": "fraud-ml-agent" },
+                    { "kind": "leaf", "id": "cross-reference-claims", "description": "Check for duplicate or related claims across network", "executorName": "network-analysis-agent" }
+                  ]
+                },
+                {
+                  "strategyId": "static",
+                  "children": [
+                    { "kind": "leaf", "id": "standard-risk-score", "description": "Calculate standard actuarial risk score", "executorName": "risk-scoring-agent" }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "compound",
+              "id": "determine-outcome",
+              "name": "Determine Outcome",
+              "methods": [
+                {
+                  "guardLabel": "risk.score < 0.3",
+                  "strategyId": "goal-oriented",
+                  "children": [
+                    { "kind": "leaf", "id": "auto-approve", "description": "Auto-approve low-risk claim with payout calculation", "executorName": "payout-calculator-agent" }
+                  ]
+                },
+                {
+                  "guardLabel": "risk.score >= 0.3 && risk.score < 0.7",
+                  "strategyId": "hybrid",
+                  "children": [
+                    { "kind": "leaf", "id": "manual-review-queue", "description": "Route to human reviewer with evidence summary", "executorName": "review-queue-agent" }
+                  ]
+                },
+                {
+                  "guardLabel": "risk.score >= 0.7",
+                  "strategyId": "llm",
+                  "children": [
+                    { "kind": "leaf", "id": "siu-referral", "description": "Generate SIU referral with fraud indicators summary", "executorName": "siu-referral-agent" },
+                    { "kind": "leaf", "id": "notify-compliance", "description": "Send compliance notification for regulatory tracking", "executorName": "compliance-notifier" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "timestamp": "2026-08-18T10:30:00Z"
+  },
+  "nodeStates": {
+    "extract-medical-records": { "kind": "Completed" },
+    "fetch-claim-history": { "kind": "Completed" },
+    "verify-provider": { "kind": "Dispatched" },
+    "run-fraud-model": { "kind": "Pending" },
+    "cross-reference-claims": { "kind": "Pending" },
+    "standard-risk-score": { "kind": "Pending" },
+    "auto-approve": { "kind": "Pending" },
+    "manual-review-queue": { "kind": "Pending" },
+    "siu-referral": { "kind": "Pending" },
+    "notify-compliance": { "kind": "Pending" }
+  }
+}

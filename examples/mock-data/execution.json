@@ -1,0 +1,53 @@
+{
+  "snapshot": {
+    "executionId": "exec-claim-adjudication-04182",
+    "state": "RUNNING",
+    "model": {
+      "pattern": "HTN",
+      "routingStrategy": "trust-weighted",
+      "decompositionStrategy": "forward-reasoning",
+      "activationStrategy": "eager",
+      "aggregationStrategy": "weighted-consensus",
+      "terminationStrategy": "first-success",
+      "failurePolicy": {
+        "routingFailureAction": "RETRY_BROADER",
+        "aggregationFailureAction": "ESCALATE",
+        "agentRetryPolicy": { "maxRetries": 2, "backoffMs": 1000 }
+      }
+    },
+    "activeAgents": [
+      { "id": "agent-medical-nlp", "type": "WORKER", "name": "Medical NLP Extractor" },
+      { "id": "agent-fraud-ml", "type": "WORKER", "name": "Fraud Detection Model" },
+      { "id": "agent-reviewer-chen", "type": "HUMAN", "name": "Dr. Chen (Medical Review)" }
+    ],
+    "completedAgents": [
+      { "agentRef": { "id": "agent-schema-val", "type": "WORKER", "name": "Schema Validator" }, "status": "SUCCESS", "detail": "Claim payload valid — 47 fields validated", "duration": 230 },
+      { "agentRef": { "id": "agent-policy-lookup", "type": "EXTERNAL", "name": "Policy Lookup Service" }, "status": "SUCCESS", "detail": "Policy POL-2024-88421 active — Health Gold tier, $50k coverage", "duration": 1420 },
+      { "agentRef": { "id": "agent-claimant-profile", "type": "WORKER", "name": "Claimant Profile Agent" }, "status": "SUCCESS", "detail": "Claimant history retrieved — 3 prior claims, no flags", "duration": 890 },
+      { "agentRef": { "id": "agent-dedup", "type": "WORKER", "name": "Duplicate Detector" }, "status": "SUCCESS", "detail": "No duplicate claims found within 90-day window", "duration": 340 },
+      { "agentRef": { "id": "agent-sanctions-v1", "type": "EXTERNAL", "name": "Sanctions Screening (Primary)" }, "status": "FAILURE", "error": "Upstream provider timeout after 5000ms", "duration": 5012 },
+      { "agentRef": { "id": "agent-sanctions-v2", "type": "EXTERNAL", "name": "Sanctions Screening (Fallback)" }, "status": "SUCCESS", "detail": "No sanctions hits — cleared against OFAC, EU, UN lists", "duration": 2100 }
+    ],
+    "iteration": 1,
+    "startedAt": "2026-08-18T10:29:48Z"
+  },
+  "events": [
+    { "id": "evt-001", "eventType": "EXECUTION_STARTED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:48Z", "payload": { "type": "EXECUTION_STARTED", "model": { "pattern": "HTN", "routingStrategy": "trust-weighted", "failurePolicy": { "routingFailureAction": "RETRY_BROADER", "aggregationFailureAction": "ESCALATE" } } } },
+    { "id": "evt-002", "eventType": "ROUTING_DECISION", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:48Z", "payload": { "type": "ROUTING_DECISION", "outcome": "SELECTED", "selectedAgents": [{ "id": "agent-schema-val", "type": "WORKER", "name": "Schema Validator" }], "reason": "First task in intake phase" } },
+    { "id": "evt-003", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:48Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-schema-val", "type": "WORKER", "name": "Schema Validator" } } },
+    { "id": "evt-004", "eventType": "AGENT_RESULT", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:48Z", "payload": { "type": "AGENT_RESULT", "agentRef": { "id": "agent-schema-val", "type": "WORKER", "name": "Schema Validator" }, "status": "SUCCESS", "detail": "47 fields validated", "duration": 230 } },
+    { "id": "evt-005", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:49Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-policy-lookup", "type": "EXTERNAL", "name": "Policy Lookup Service" } } },
+    { "id": "evt-006", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:49Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-dedup", "type": "WORKER", "name": "Duplicate Detector" } } },
+    { "id": "evt-007", "eventType": "AGENT_RESULT", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:49Z", "payload": { "type": "AGENT_RESULT", "agentRef": { "id": "agent-dedup", "type": "WORKER", "name": "Duplicate Detector" }, "status": "SUCCESS", "detail": "No duplicates", "duration": 340 } },
+    { "id": "evt-008", "eventType": "AGENT_RESULT", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:50Z", "payload": { "type": "AGENT_RESULT", "agentRef": { "id": "agent-policy-lookup", "type": "EXTERNAL", "name": "Policy Lookup Service" }, "status": "SUCCESS", "detail": "Policy verified", "duration": 1420 } },
+    { "id": "evt-009", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:50Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-claimant-profile", "type": "WORKER", "name": "Claimant Profile Agent" } } },
+    { "id": "evt-010", "eventType": "AGENT_FAILED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:55Z", "payload": { "type": "AGENT_FAILED", "agentRef": { "id": "agent-sanctions-v1", "type": "EXTERNAL", "name": "Sanctions Screening (Primary)" }, "status": "FAILURE", "error": "Upstream provider timeout after 5000ms", "duration": 5012 } },
+    { "id": "evt-011", "eventType": "ROUTING_DECISION", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:55Z", "payload": { "type": "ROUTING_DECISION", "outcome": "SELECTED", "selectedAgents": [{ "id": "agent-sanctions-v2", "type": "EXTERNAL", "name": "Sanctions Screening (Fallback)" }], "reason": "Primary timed out — fallback per RETRY_BROADER" } },
+    { "id": "evt-012", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:55Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-sanctions-v2", "type": "EXTERNAL", "name": "Sanctions Screening (Fallback)" } } },
+    { "id": "evt-013", "eventType": "AGENT_RESULT", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:57Z", "payload": { "type": "AGENT_RESULT", "agentRef": { "id": "agent-sanctions-v2", "type": "EXTERNAL", "name": "Sanctions Screening (Fallback)" }, "status": "SUCCESS", "detail": "No sanctions hits", "duration": 2100 } },
+    { "id": "evt-014", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:58Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-medical-nlp", "type": "WORKER", "name": "Medical NLP Extractor" } } },
+    { "id": "evt-015", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:29:58Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-fraud-ml", "type": "WORKER", "name": "Fraud Detection Model" } } },
+    { "id": "evt-016", "eventType": "ACTIVATION_EVALUATED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:30:00Z", "payload": { "type": "ACTIVATION_EVALUATED", "conditionMet": true, "conditionExpression": "medical.complexity > THRESHOLD" } },
+    { "id": "evt-017", "eventType": "AGENT_DISPATCHED", "executionId": "exec-claim-adjudication-04182", "timestamp": "2026-08-18T10:30:00Z", "payload": { "type": "AGENT_DISPATCHED", "agentRef": { "id": "agent-reviewer-chen", "type": "HUMAN", "name": "Dr. Chen (Medical Review)" } } }
+  ]
+}

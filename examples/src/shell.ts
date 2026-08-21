@@ -47,6 +47,26 @@ const NAV: NavCategory[] = [
       { id: 'session-workbench', label: 'Session Workbench', hash: '#components/session-workbench' },
       { id: 'commitment-viz', label: 'Commitment Viz', hash: '#components/commitment-viz' },
       { id: 'case-dependency-graph', label: 'Case Dependency Graph', hash: '#components/case-dependency-graph' },
+      { id: 'contributor-workbench', label: 'Contributor Workbench', hash: '#components/contributor-workbench' },
+    ],
+  },
+  {
+    label: 'Orchestration',
+    items: [
+      { id: 'decomposition-tree', label: 'Decomposition Tree', hash: '#orchestration/decomposition-tree' },
+      { id: 'plan-item-tree', label: 'Plan Item Tree', hash: '#orchestration/plan-item-tree' },
+      { id: 'plan-model-dashboard', label: 'Plan Model Dashboard', hash: '#orchestration/plan-model-dashboard' },
+      { id: 'dag-viewer', label: 'DAG Viewer', hash: '#orchestration/dag-viewer' },
+      { id: 'execution-monitor', label: 'Execution Monitor', hash: '#orchestration/execution-monitor' },
+      { id: 'orchestration-workbench', label: 'Orchestration Workbench', hash: '#orchestration/orchestration-workbench' },
+    ],
+  },
+  {
+    label: 'Diagrams',
+    items: [
+      { id: 'casehub-diagram', label: 'CaseHub Diagram', hash: '#diagrams/casehub-diagram' },
+      { id: 'swf-diagram', label: 'SWF Diagram', hash: '#diagrams/swf-diagram' },
+      { id: 'diagram-workbench', label: 'Diagram Workbench', hash: '#diagrams/diagram-workbench' },
     ],
   },
   {
@@ -221,6 +241,25 @@ export class ExampleShell extends LitElement {
       case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
       case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
       case '#composed/conversation-viewer': return html`<blocks-example-conversation-viewer></blocks-example-conversation-viewer>`;
+      case '#components/contributor-workbench': return html`<blocks-example-contributor-workbench></blocks-example-contributor-workbench>`;
+      case '#orchestration/decomposition-tree': return html`<blocks-example-decomposition-tree></blocks-example-decomposition-tree>`;
+      case '#orchestration/plan-item-tree': return html`<blocks-example-plan-item-tree></blocks-example-plan-item-tree>`;
+      case '#orchestration/plan-model-dashboard': return html`<blocks-example-plan-model-dashboard></blocks-example-plan-model-dashboard>`;
+      case '#orchestration/dag-viewer': return html`<blocks-example-dag-viewer></blocks-example-dag-viewer>`;
+      case '#orchestration/execution-monitor': return html`<blocks-example-execution-monitor></blocks-example-execution-monitor>`;
+      case '#orchestration/orchestration-workbench': return html`<blocks-example-orchestration-workbench></blocks-example-orchestration-workbench>`;
+      case '#diagrams/casehub-diagram': return html`<blocks-example-casehub-diagram></blocks-example-casehub-diagram>`;
+      case '#diagrams/swf-diagram': return html`<blocks-example-swf-diagram></blocks-example-swf-diagram>`;
+      case '#diagrams/diagram-workbench': return html`<blocks-example-diagram-workbench></blocks-example-diagram-workbench>`;
+      case '#document-workbench/document-diff': return html`<blocks-example-document-diff></blocks-example-document-diff>`;
+      case '#document-workbench/debate-feed': return html`<blocks-example-debate-feed></blocks-example-debate-feed>`;
+      case '#document-workbench/review-tracker': return html`<blocks-example-review-tracker></blocks-example-review-tracker>`;
+      case '#document-workbench/document-timeline': return html`<blocks-example-document-timeline></blocks-example-document-timeline>`;
+      case '#document-workbench/context-gauge': return html`<blocks-example-context-gauge></blocks-example-context-gauge>`;
+      case '#document-workbench/doc-picker': return html`<blocks-example-doc-picker></blocks-example-doc-picker>`;
+      case '#document-workbench/brainstorm-options': return html`<blocks-example-brainstorm-options></blocks-example-brainstorm-options>`;
+      case '#document-workbench/brainstorm-picker': return html`<blocks-example-brainstorm-picker></blocks-example-brainstorm-picker>`;
+      case '#document-workbench/workspace-status': return html`<blocks-example-workspace-status></blocks-example-workspace-status>`;
       default: return html`<blocks-example-workbench></blocks-example-workbench>`;
     }
   }

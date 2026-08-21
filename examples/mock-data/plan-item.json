@@ -1,0 +1,60 @@
+{
+  "definition": {
+    "kind": "compound",
+    "id": "claims-processing",
+    "name": "Claims Processing Pipeline",
+    "children": [
+      {
+        "kind": "compound", "id": "intake-phase", "name": "Intake & Validation",
+        "children": [
+          { "kind": "primitive", "id": "schema-validation", "name": "Schema Validation", "executor": { "name": "schema-validator", "description": "Validates claim payload against JSON Schema" }, "entryCondition": "claim.submitted == true" },
+          { "kind": "primitive", "id": "duplicate-check", "name": "Duplicate Detection", "executor": { "name": "dedup-agent", "description": "Checks for duplicate or near-duplicate claims" } },
+          { "kind": "primitive", "id": "policy-lookup", "name": "Policy Verification", "executor": { "name": "policy-lookup-agent", "description": "Verifies active policy and coverage terms" } }
+        ],
+        "planningStrategy": "forward-reasoning", "completion": { "kind": "All" }, "dispatchMode": "ORCHESTRATED", "repeatable": false
+      },
+      {
+        "kind": "compound", "id": "investigation-phase", "name": "Investigation",
+        "children": [
+          {
+            "kind": "compound", "id": "evidence-collection", "name": "Evidence Collection",
+            "children": [
+              { "kind": "primitive", "id": "medical-extraction", "name": "Medical Record Extraction", "executor": { "name": "medical-nlp-agent", "description": "NLP extraction from medical documents" } },
+              { "kind": "primitive", "id": "provider-verification", "name": "Provider Credential Check", "executor": { "name": "provider-verification-agent", "description": "Validates healthcare provider credentials" } }
+            ],
+            "completion": { "kind": "All" }, "dispatchMode": "ORCHESTRATED", "repeatable": false
+          },
+          {
+            "kind": "compound", "id": "risk-assessment", "name": "Risk Assessment",
+            "children": [
+              { "kind": "primitive", "id": "fraud-scoring", "name": "Fraud Model Scoring", "executor": { "name": "fraud-ml-agent", "description": "ML-based fraud probability scoring" } },
+              { "kind": "primitive", "id": "sanctions-screening", "name": "Sanctions Screening", "executor": { "name": "sanctions-agent", "description": "PEP and sanctions list screening" } },
+              { "kind": "primitive", "id": "network-analysis", "name": "Network Analysis", "executor": { "name": "network-analysis-agent", "description": "Cross-claim network pattern detection" } }
+            ],
+            "completion": { "kind": "MOfN", "m": 2 }, "dispatchMode": "ORCHESTRATED", "repeatable": false, "entryCondition": "evidence.collected == true"
+          }
+        ],
+        "planningStrategy": "htn", "completion": { "kind": "All" }, "dispatchMode": "ORCHESTRATED", "repeatable": false
+      },
+      {
+        "kind": "compound", "id": "decision-phase", "name": "Decision & Routing",
+        "children": [
+          { "kind": "primitive", "id": "auto-adjudication", "name": "Auto-Adjudication", "executor": { "name": "adjudication-engine", "description": "Rules-based automatic claim decision" }, "entryCondition": "risk.score < 0.3" },
+          { "kind": "primitive", "id": "human-review", "name": "Human Review Assignment", "executor": { "name": "review-queue-agent", "description": "Routes to appropriate human reviewer" }, "entryCondition": "risk.score >= 0.3" },
+          { "kind": "primitive", "id": "siu-escalation", "name": "SIU Escalation", "executor": { "name": "siu-referral-agent", "description": "Generates referral to Special Investigations Unit" }, "entryCondition": "risk.score >= 0.7" }
+        ],
+        "planningStrategy": "goal-oriented", "completion": { "kind": "FirstWins" }, "dispatchMode": "CHOREOGRAPHED", "repeatable": false
+      },
+      {
+        "kind": "compound", "id": "compliance-phase", "name": "Compliance & Notification",
+        "children": [
+          { "kind": "primitive", "id": "regulatory-filing", "name": "Regulatory Filing", "executor": { "name": "compliance-notifier", "description": "Files required regulatory notifications" } },
+          { "kind": "primitive", "id": "claimant-notification", "name": "Claimant Notification", "executor": { "name": "notification-agent", "description": "Sends outcome notification to claimant" } }
+        ],
+        "planningStrategy": "static", "completion": { "kind": "All" }, "dispatchMode": "ORCHESTRATED", "repeatable": true, "exitCondition": "notifications.allSent == true"
+      }
+    ],
+    "planningStrategy": "htn", "completion": { "kind": "All" }, "dispatchMode": "ORCHESTRATED", "repeatable": false,
+    "scopedBindings": { "claims-investigator": "PARTICIPANT", "compliance-officer": "COMPANION" }
+  }
+}

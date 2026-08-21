@@ -1,0 +1,33 @@
+{
+  "planModel": {
+    "caseId": "CLM-2026-04182",
+    "agenda": [
+      { "planItemId": "pi-001", "bindingName": "schema-validation", "status": "COMPLETED", "description": "Validate incoming claim payload" },
+      { "planItemId": "pi-002", "bindingName": "policy-lookup", "status": "COMPLETED", "description": "Verify active policy and coverage" },
+      { "planItemId": "pi-003", "bindingName": "medical-extraction", "status": "RUNNING", "description": "Extract structured data from medical records" },
+      { "planItemId": "pi-004", "bindingName": "fraud-scoring", "status": "RUNNING", "description": "ML fraud detection scoring" },
+      { "planItemId": "pi-005", "bindingName": "sanctions-screening", "status": "PENDING", "description": "PEP and sanctions list screening" },
+      { "planItemId": "pi-006", "bindingName": "routing-decision", "status": "PENDING", "description": "Determine claim routing path" }
+    ],
+    "focus": "investigation-phase",
+    "focusRationale": "Evidence collection and risk assessment are the current bottleneck — two parallel agents are running against medical records and fraud models. Sanctions screening is queued pending claimant enrichment.",
+    "resourceBudget": {
+      "maxAgentConcurrency": 3,
+      "remainingApiCalls": 847,
+      "timeoutMs": 300000,
+      "retryBudget": 2,
+      "estimatedCostUsd": 0.42
+    },
+    "subCases": [
+      { "caseDefinition": "provider-audit", "namespace": "compliance", "status": "ACTIVE" },
+      { "caseDefinition": "claimant-history-review", "namespace": "investigation", "status": "COMPLETED" }
+    ],
+    "compounds": [
+      { "id": "intake-phase", "name": "Intake & Validation", "status": "COMPLETED", "childCount": 3, "completedCount": 3, "completion": { "kind": "All" } },
+      { "id": "investigation-phase", "name": "Investigation", "status": "RUNNING", "childCount": 5, "completedCount": 2, "completion": { "kind": "All" } },
+      { "id": "decision-phase", "name": "Decision & Routing", "status": "PENDING", "childCount": 3, "completedCount": 0, "completion": { "kind": "FirstWins" } },
+      { "id": "compliance-phase", "name": "Compliance & Notification", "status": "PENDING", "childCount": 2, "completedCount": 0, "completion": { "kind": "All" } }
+    ],
+    "timestamp": "2026-08-18T10:30:12Z"
+  }
+}
