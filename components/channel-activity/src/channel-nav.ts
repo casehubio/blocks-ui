@@ -240,10 +240,16 @@ export class ChannelNavElement extends LitElement {
     this._showCreateDialog = false;
   }
 
+  private get _dropdownChannels(): QhorusChannel[] {
+    return this.channelTree
+      ? [...this.channelTree.ungrouped, ...this.channelTree.spaces.flatMap(s => s.channels)]
+      : this.channels;
+  }
+
   private _toggleDropdown(): void {
     this._dropdownOpen = !this._dropdownOpen;
     if (this._dropdownOpen) {
-      this._focusedIndex = Math.max(0, this.channels.findIndex(c => c.id === this.selectedChannelId));
+      this._focusedIndex = Math.max(0, this._dropdownChannels.findIndex(c => c.id === this.selectedChannelId));
       document.addEventListener('click', this._closeDropdown);
     } else {
       document.removeEventListener('click', this._closeDropdown);
@@ -262,12 +268,13 @@ export class ChannelNavElement extends LitElement {
   }
 
   private _handleDropdownKeyDown(event: KeyboardEvent): void {
-    if (this.channels.length === 0) return;
+    const channels = this._dropdownChannels;
+    if (channels.length === 0) return;
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
         if (!this._dropdownOpen) { this._toggleDropdown(); return; }
-        this._focusedIndex = Math.min(this._focusedIndex + 1, this.channels.length - 1);
+        this._focusedIndex = Math.min(this._focusedIndex + 1, channels.length - 1);
         break;
       case 'ArrowUp':
         event.preventDefault();
@@ -276,7 +283,7 @@ export class ChannelNavElement extends LitElement {
       case 'Enter':
         event.preventDefault();
         if (this._dropdownOpen) {
-          const focused = this.channels[this._focusedIndex];
+          const focused = channels[this._focusedIndex];
           if (focused) this._selectDropdownItem(focused.id);
         } else {
           this._toggleDropdown();
@@ -475,9 +482,7 @@ export class ChannelNavElement extends LitElement {
 
   override render() {
     if (this.layout === 'dropdown') {
-      const channels = this.channelTree
-        ? [...this.channelTree.ungrouped, ...this.channelTree.spaces.flatMap(s => s.channels)]
-        : this.channels;
+      const channels = this._dropdownChannels;
       const selected = channels.find(c => c.id === this.selectedChannelId) ?? channels[0];
       const selectedCount = selected?.unreadCount;
       const triggerLabel = selected
