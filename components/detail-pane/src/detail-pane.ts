@@ -13,6 +13,12 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
   @state() private _item: unknown = null;
   @state() private _activeTabId = '';
 
+  configure(props: Record<string, unknown>): void {
+    if (props.tabs !== undefined) this.tabs = props.tabs as TabDefinition[];
+    if (props.selectionTopic !== undefined) this.selectionTopic = props.selectionTopic as string;
+    if (props.emptyMessage !== undefined) this.emptyMessage = props.emptyMessage as string;
+  }
+
   private _tabElements = new Map<string, HTMLElement>();
   private _unsubs: Array<() => void> = [];
 

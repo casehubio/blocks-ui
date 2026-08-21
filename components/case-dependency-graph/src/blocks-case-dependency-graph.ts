@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { zoom, zoomIdentity } from 'd3-zoom';
+import { zoom, zoomIdentity, type ZoomBehavior } from 'd3-zoom';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 import type { GraphModel, GraphNode } from '@casehubio/graph-core';
 import { emitPagesEvent, onPagesEvent, lookupRelationshipType } from '@casehubio/blocks-ui-core';
 import { createSimulation, stopSimulation } from './force-layout.js';
-import { renderGraph, clearGraph } from './graph-renderer.js';
+import { renderGraph, clearGraph, type RenderOptions } from './graph-renderer.js';
 import { toDOT } from './dot-export.js';
 import type { SimNode, SimLink, FilterChangePayload } from './types.js';
 import './blocks-dependency-toolbar.js';
@@ -30,7 +30,7 @@ export class BlocksCaseDependencyGraph extends LitElement {
   private _simNodes: SimNode[] = [];
   private _simLinks: SimLink[] = [];
   private _unsubs: Array<() => void> = [];
-  private _zoomBehavior: ReturnType<typeof zoom> | null = null;
+  private _zoomBehavior: ZoomBehavior<SVGSVGElement, unknown> | null = null;
 
   static override styles = css`
     :host { display: flex; flex-direction: column; height: 100%; }
@@ -159,10 +159,10 @@ export class BlocksCaseDependencyGraph extends LitElement {
     const width = svg.clientWidth || 800;
     const height = svg.clientHeight || 600;
 
-    renderGraph(container, this._simNodes, this._simLinks, {
-      renderNode: this.renderNode,
-      renderTooltip: this.renderTooltip,
-    });
+    const opts: RenderOptions = {};
+    if (this.renderNode) opts.renderNode = this.renderNode;
+    if (this.renderTooltip) opts.renderTooltip = this.renderTooltip;
+    renderGraph(container, this._simNodes, this._simLinks, opts);
 
     this._sim = createSimulation(this._simNodes, this._simLinks, width, height);
     this._sim.on('tick', () => {
@@ -180,7 +180,7 @@ export class BlocksCaseDependencyGraph extends LitElement {
       .on('zoom', (event) => {
         select(container).attr('transform', event.transform);
       });
-    select(svg as SVGSVGElement).call(this._zoomBehavior);
+    select(svg as SVGSVGElement).call(this._zoomBehavior!);
 
     const sim = this._sim;
     const dragBehavior = drag<SVGGElement, SimNode>()

@@ -25,9 +25,11 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint: string | null = null;
   @property({ type: Number }) columns: number | null = null;
   @property({ type: String, reflect: true }) density: 'comfortable' | 'compact' | 'dense' = 'comfortable';
+  @property({ type: Number, attribute: 'refresh-interval' }) refreshInterval: number | null = null;
 
   @state() private _loading = false;
   @state() private _error: string | null = null;
+  private _refreshTimer: ReturnType<typeof setInterval> | null = null;
 
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
@@ -143,6 +145,26 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this._startRefreshTimer();
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._stopRefreshTimer();
+  }
+
+  private _startRefreshTimer(): void {
+    this._stopRefreshTimer();
+    if (this.refreshInterval && this.refreshInterval > 0 && this.endpoint) {
+      this._refreshTimer = setInterval(() => this._fetchMetrics(), this.refreshInterval);
+    }
+  }
+
+  private _stopRefreshTimer(): void {
+    if (this._refreshTimer !== null) {
+      clearInterval(this._refreshTimer);
+      this._refreshTimer = null;
+    }
   }
 
   private get _gridMinmax(): string {
@@ -167,6 +189,9 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('endpoint') && this.endpoint) {
       this._fetchMetrics();
+    }
+    if (changed.has('refreshInterval') || changed.has('endpoint')) {
+      this._startRefreshTimer();
     }
   }
 
@@ -261,10 +286,12 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
     metrics?: MetricDefinition[];
     endpoint?: string | null;
     columns?: number | null;
+    refreshInterval?: number | null;
   }): void {
     if (props.metrics !== undefined) this.metrics = props.metrics;
     if (props.endpoint !== undefined) this.endpoint = props.endpoint;
     if (props.columns !== undefined) this.columns = props.columns;
+    if (props.refreshInterval !== undefined) this.refreshInterval = props.refreshInterval;
   }
 }
 

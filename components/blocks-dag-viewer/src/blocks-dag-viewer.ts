@@ -6,6 +6,7 @@ import {
 } from '@casehubio/graph-stencil-htn';
 import type { NodeDecoration } from '@casehubio/graph-core';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import '@casehubio/graph-renderer';
 import './blocks-dag-toolbar.js';
 
 @customElement('blocks-dag-viewer')
@@ -106,7 +107,16 @@ export class BlocksDagViewer extends LitElement {
       <div class="canvas-area" role="img" aria-label="DAG execution graph">
         ${this.dagPlan == null
           ? html`<div class="empty">No DAG plan loaded</div>`
-          : html`<!-- pages-graph-canvas integration point: toReactFlowGraph(model, layout, decorations) -->`}
+          : html`<pages-graph-canvas
+              .model=${this._adapterResult?.model}
+              style="width: 100%; height: 100%;"
+              @pages-event=${(e: CustomEvent) => {
+                if (e.detail?.topic === 'graph:node:click') {
+                  const graphNodeId = e.detail.payload?.nodeId as string | undefined;
+                  if (graphNodeId?.startsWith('dag:')) this._onNodeClick(graphNodeId.slice(4));
+                }
+              }}
+            ></pages-graph-canvas>`}
       </div>
     `;
   }

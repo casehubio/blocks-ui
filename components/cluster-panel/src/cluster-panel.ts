@@ -30,12 +30,6 @@ export class ClusterPanel extends LitElement {
     this.setAttribute('aria-label', 'Cluster management');
   }
 
-  override willUpdate(changed: Map<PropertyKey, unknown>): void {
-    if (changed.has('readonly')) {
-      this.setAttribute('aria-disabled', String(this.readonly));
-    }
-  }
-
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
     .cluster-list { display: flex; flex-direction: column; gap: var(--pages-space-2, 0.5rem); }
@@ -112,6 +106,9 @@ export class ClusterPanel extends LitElement {
   `;
 
   override willUpdate(changed: PropertyValues): void {
+    if (changed.has('readonly')) {
+      this.setAttribute('aria-disabled', String(this.readonly));
+    }
     if (changed.has('endpoint') && this.endpoint && !this.data) {
       this._fetchFromEndpoint();
     }
@@ -155,7 +152,7 @@ export class ClusterPanel extends LitElement {
   }
 
   private _renderCluster(cluster: ClusterInfo) {
-    const colors = STATUS_COLORS[cluster.status] ?? STATUS_COLORS.UNKNOWN;
+    const colors = (STATUS_COLORS[cluster.status] ?? STATUS_COLORS.UNKNOWN)!;
     return html`
       <div class="cluster-row">
         <div class="cluster-info">
