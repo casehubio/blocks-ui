@@ -32,6 +32,7 @@ export class ChannelStateController implements ReactiveController {
   viewMode: 'flat' | 'threaded' | 'topics' = 'flat';
 
   private _host: ReactiveControllerHost;
+  private _currentUserId = '';
 
   constructor(host: ReactiveControllerHost, push: PushController) {
     this._host = host;
@@ -63,14 +64,19 @@ export class ChannelStateController implements ReactiveController {
     const roots: SpaceNode[] = [];
     for (const node of spaceMap.values()) {
       const parentId = node.space.parentSpaceId;
+      const channelUnread = node.channels.reduce((sum, ch) => sum + (ch.unreadCount ?? 0), 0);
       if (parentId) {
         const parent = spaceMap.get(parentId);
         if (parent) {
-          parent.children.push({ ...node, unreadCount: 0 });
+          parent.children.push({ ...node, unreadCount: channelUnread });
           continue;
         }
       }
-      roots.push({ ...node, unreadCount: 0 });
+      roots.push({ ...node, unreadCount: channelUnread });
+    }
+    for (const root of roots) {
+      const childrenUnread = root.children.reduce((sum, child) => sum + child.unreadCount, 0);
+      (root as { unreadCount: number }).unreadCount += childrenUnread;
     }
 
     return { spaces: roots, ungrouped };
@@ -93,8 +99,12 @@ export class ChannelStateController implements ReactiveController {
   handleEvent(topic: string, payload: unknown) {
     switch (topic) {
       case ChannelEventTopics.SELECT_CHANNEL: {
-        this.selectedChannelId = (payload as SelectChannelPayload).channelId;
+        const { channelId } = payload as SelectChannelPayload;
+        this.selectedChannelId = channelId;
         this.selectedTopicId = null;
+        this.channels = this.channels.map(ch =>
+          ch.id === channelId && (ch.unreadCount ?? 0) > 0 ? { ...ch, unreadCount: 0 } : ch
+        );
         this._host.requestUpdate();
         break;
       }
@@ -122,15 +132,17 @@ export class ChannelStateController implements ReactiveController {
   }
 
   private _toChannel(row: unknown[]): QhorusChannel {
-    const ch: QhorusChannel = { id: row[0] as string, name: row[1] as string, semantic: 'APPEND', paused: false };
+    const ch: QhorusChannel = { id: row[0] as string, name: row[1] as string, semantic: 'APPEND', paused: false, unreadCount: 0 };
     const desc = row[3] as string;
     const spaceId = row[5] as string;
     const spaceName = row[6] as string;
     const parentSpaceId = row[7] as string;
+    const unreadCount = row[8] as string;
     if (desc) (ch as { description: string }).description = desc;
     if (spaceId) (ch as { spaceId: string }).spaceId = spaceId;
     if (spaceName) (ch as { spaceName: string }).spaceName = spaceName;
     if (parentSpaceId) (ch as { parentSpaceId: string }).parentSpaceId = parentSpaceId;
+    if (unreadCount) (ch as { unreadCount: number }).unreadCount = parseInt(unreadCount, 10) || 0;
     return ch;
   }
 
@@ -166,11 +178,29 @@ export class ChannelStateController implements ReactiveController {
     if (op.op === 'snapshot') {
       this.messages = (op.rows ?? []).map(r => this._toMessage(r));
     } else if (op.op === 'append' && op.rows) {
-      this.messages = [...this.messages, ...op.rows.map(r => this._toMessage(r))];
+      const newMsgs = op.rows.map(r => this._toMessage(r));
+      this.messages = [...this.messages, ...newMsgs];
+      this._trackUnread(newMsgs);
     } else if (op.op === 'remove' && op.key) {
       this.messages = this.messages.filter(m => m.id !== op.key);
     }
     this._recomputeReplyCounts();
+  }
+
+  private _trackUnread(newMessages: QhorusMessage[]) {
+    const increments = new Map<string, number>();
+    for (const msg of newMessages) {
+      if (msg.channelId === this.selectedChannelId) continue;
+      if (msg.messageType === 'EVENT') continue;
+      if (msg.sender === this._currentUserId) continue;
+      increments.set(msg.channelId, (increments.get(msg.channelId) ?? 0) + 1);
+    }
+    if (increments.size > 0) {
+      this.channels = this.channels.map(ch => {
+        const inc = increments.get(ch.id);
+        return inc ? { ...ch, unreadCount: (ch.unreadCount ?? 0) + inc } : ch;
+      });
+    }
   }
 
   private _recomputeReplyCounts() {
@@ -207,6 +237,15 @@ export class ChannelStateController implements ReactiveController {
     if (parent) (msg as { inReplyTo: string }).inReplyTo = parent;
     if (target) (msg as { target: string }).target = target;
     return msg;
+  }
+
+  setCurrentUser(userId: string) {
+    this._currentUserId = userId;
+  }
+
+  latestMessageId(channelId: string): string | undefined {
+    const channelMsgs = this.messages.filter(m => m.channelId === channelId);
+    return channelMsgs.length > 0 ? channelMsgs[channelMsgs.length - 1]!.id : undefined;
   }
 
   hostConnected() {}

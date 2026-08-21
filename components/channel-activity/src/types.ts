@@ -83,6 +83,7 @@ export interface QhorusChannel {
   readonly spaceId?: string;
   readonly spaceName?: string;
   readonly parentSpaceId?: string;
+  readonly unreadCount?: number;
 }
 
 export interface Reaction {

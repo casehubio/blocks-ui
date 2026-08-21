@@ -19,3 +19,6 @@ proj
 .mvn/maven.config
 .mvn/slot-settings.xml
 .playwright-mcp
+.worktrees
+.worktrees/
+.claude/

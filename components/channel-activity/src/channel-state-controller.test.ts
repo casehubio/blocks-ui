@@ -22,10 +22,12 @@ function createPair() {
 
 function channelRow(id: string, name: string, opts?: {
   description?: string; spaceId?: string; spaceName?: string; parentSpaceId?: string;
+  unreadCount?: string;
 }): unknown[] {
   return [
     id, name, '', opts?.description ?? '', 'false',
     opts?.spaceId ?? '', opts?.spaceName ?? '', opts?.parentSpaceId ?? '',
+    opts?.unreadCount ?? '',
   ];
 }
 
@@ -80,6 +82,24 @@ describe('ChannelStateController', () => {
       expect(ctrl.channels[0]!.spaceId).toBe('sp-1');
       expect(ctrl.channels[0]!.spaceName).toBe('Project Alpha');
       expect(ctrl.channels[0]!.parentSpaceId).toBe('sp-root');
+    });
+
+    it('parses unread count from row position 8', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '7' })],
+      });
+      expect(ctrl.channels[0]!.unreadCount).toBe(7);
+    });
+
+    it('defaults unread count to 0 when absent', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general')],
+      });
+      expect(ctrl.channels[0]!.unreadCount).toBe(0);
     });
 
     it('treats empty space fields as undefined', () => {
@@ -185,6 +205,37 @@ describe('ChannelStateController', () => {
       const tree = ctrl.channelTree;
       expect(tree.spaces).toHaveLength(0);
       expect(tree.ungrouped).toHaveLength(0);
+    });
+
+    it('aggregates unread counts from channels to space nodes', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [
+          channelRow('ch-1', 'work', { spaceId: 'sp-1', spaceName: 'Alpha', unreadCount: '3' }),
+          channelRow('ch-2', 'observe', { spaceId: 'sp-1', spaceName: 'Alpha', unreadCount: '2' }),
+          channelRow('ch-3', 'general', { unreadCount: '5' }),
+        ],
+      });
+      const tree = ctrl.channelTree;
+      expect(tree.spaces[0]!.unreadCount).toBe(5);
+      expect(tree.ungrouped[0]!.unreadCount).toBe(5);
+    });
+
+    it('aggregates child space unread counts into parent', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [
+          channelRow('ch-1', 'parent-ch', { spaceId: 'sp-parent', spaceName: 'Parent', unreadCount: '1' }),
+          channelRow('ch-2', 'child-ch', {
+            spaceId: 'sp-child', spaceName: 'Child', parentSpaceId: 'sp-parent', unreadCount: '4',
+          }),
+        ],
+      });
+      const tree = ctrl.channelTree;
+      expect(tree.spaces[0]!.children[0]!.unreadCount).toBe(4);
+      expect(tree.spaces[0]!.unreadCount).toBe(5);
     });
   });
 
@@ -299,6 +350,77 @@ describe('ChannelStateController', () => {
       });
       expect(ctrl.messages[0]!.topic).toBe('design');
       expect(ctrl.messages[0]!.topicId).toBe('t-1');
+    });
+  });
+
+  describe('real-time unread tracking', () => {
+    it('increments unread on message append for non-selected channel', () => {
+      const { push, ctrl } = createPair();
+      ctrl.setCurrentUser('alice');
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '0' }), channelRow('ch-2', 'other', { unreadCount: '0' })],
+      });
+      ctrl.handleEvent(ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
+      push.applyOp({ op: 'append', dataset: 'messages', rows: [messageRow('ch-2', 'msg-1', { sender: 'bob', messageType: 'QUERY' })] });
+      expect(ctrl.channels.find(c => c.id === 'ch-2')!.unreadCount).toBe(1);
+    });
+
+    it('does not increment unread for selected channel', () => {
+      const { push, ctrl } = createPair();
+      ctrl.setCurrentUser('alice');
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '0' })],
+      });
+      ctrl.handleEvent(ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
+      push.applyOp({ op: 'append', dataset: 'messages', rows: [messageRow('ch-1', 'msg-1', { sender: 'bob', messageType: 'QUERY' })] });
+      expect(ctrl.channels.find(c => c.id === 'ch-1')!.unreadCount).toBe(0);
+    });
+
+    it('does not increment unread for EVENT messages', () => {
+      const { push, ctrl } = createPair();
+      ctrl.setCurrentUser('alice');
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '0' }), channelRow('ch-2', 'other', { unreadCount: '0' })],
+      });
+      ctrl.handleEvent(ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
+      push.applyOp({ op: 'append', dataset: 'messages', rows: [messageRow('ch-2', 'msg-1', { sender: 'bob', messageType: 'EVENT' })] });
+      expect(ctrl.channels.find(c => c.id === 'ch-2')!.unreadCount).toBe(0);
+    });
+
+    it('does not increment unread for own messages', () => {
+      const { push, ctrl } = createPair();
+      ctrl.setCurrentUser('alice');
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '0' }), channelRow('ch-2', 'other', { unreadCount: '0' })],
+      });
+      ctrl.handleEvent(ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
+      push.applyOp({ op: 'append', dataset: 'messages', rows: [messageRow('ch-2', 'msg-1', { sender: 'alice', messageType: 'QUERY' })] });
+      expect(ctrl.channels.find(c => c.id === 'ch-2')!.unreadCount).toBe(0);
+    });
+
+    it('resets unread to 0 on channel select', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general', { unreadCount: '5' })],
+      });
+      ctrl.handleEvent(ChannelEventTopics.SELECT_CHANNEL, { channelId: 'ch-1' });
+      expect(ctrl.channels.find(c => c.id === 'ch-1')!.unreadCount).toBe(0);
+    });
+
+    it('provides latestMessageId for a channel', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'messages',
+        rows: [messageRow('ch-1', '100'), messageRow('ch-1', '200'), messageRow('ch-2', '300')],
+      });
+      expect(ctrl.latestMessageId('ch-1')).toBe('200');
+      expect(ctrl.latestMessageId('ch-2')).toBe('300');
+      expect(ctrl.latestMessageId('ch-99')).toBeUndefined();
     });
   });
 
