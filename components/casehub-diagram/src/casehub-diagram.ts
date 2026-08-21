@@ -80,22 +80,33 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     return EMPTY_CASE_YAML;
   }
 
-  protected _decorations(): ReadonlyMap<string, NodeDecoration> | undefined {
+  protected override _decorations(): ReadonlyMap<string, NodeDecoration> | undefined {
     if (this._mode === 'runtime' && this.runtimeState) {
       return toDecorations(this.runtimeState);
     }
     return undefined;
   }
 
-  protected _layoutOptions(): ElkLayoutOptions {
-    if (this._expandedWorkers.size === 0) {
-      return { direction: 'DOWN', spacing: 60 };
-    }
+  protected override _layoutOptions(): ElkLayoutOptions {
     const nodeSizes = new Map<string, { width: number; height: number }>();
-    for (const id of this._expandedWorkers) {
-      nodeSizes.set(id, { width: 320, height: 240 });
+    if (this._adapterResult) {
+      for (const node of this._adapterResult.model.nodes) {
+        if (node.type === 'worker' && node.properties['do']) {
+          const id = node.id;
+          if (this._expandedWorkers.has(id.replace('worker:', ''))) {
+            nodeSizes.set(id, { width: 320, height: 240 });
+          } else {
+            nodeSizes.set(id, { width: 280, height: 130 });
+          }
+        }
+      }
     }
-    return { direction: 'DOWN', spacing: 60, nodeSizes };
+    if (this._expandedWorkers.size > 0) {
+      return { direction: 'DOWN', spacing: 60, nodeSizes, wrapping: true };
+    }
+    return nodeSizes.size > 0
+      ? { direction: 'RIGHT', spacing: 50, nodeSizes, wrapping: true }
+      : { direction: 'RIGHT', spacing: 50, wrapping: true };
   }
 
   override connectedCallback(): void {
@@ -131,7 +142,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
         this._mode = 'design';
         this._staleSeconds = 0;
         if (this._adapterResult) {
-          const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout);
+          const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, undefined, this._layoutOptions().direction);
           this._nodes = nodes;
           this._edges = edges;
         }
@@ -157,7 +168,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   private _applyRuntimeDecorations(): void {
     if (!this._adapterResult || !this.runtimeState) return;
     const decorations = toDecorations(this.runtimeState);
-    const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations);
+    const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, decorations, this._layoutOptions().direction);
     this._nodes = nodes;
     this._edges = edges;
   }
@@ -168,7 +179,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     if (this._mode === 'runtime' && this.runtimeState) {
       this._applyRuntimeDecorations();
     } else if (this._adapterResult) {
-      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout);
+      const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, undefined, this._layoutOptions().direction);
       this._nodes = nodes;
       this._edges = edges;
     }
