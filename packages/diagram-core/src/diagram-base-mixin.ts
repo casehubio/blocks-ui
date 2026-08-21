@@ -58,6 +58,8 @@ export declare class DiagramBaseInterface {
   _clearErrorAndRetry(): void;
   _renderConflictDialog(): TemplateResult;
   _renderDeleteConfirm(): TemplateResult;
+  protected _layoutOptions(): ElkLayoutOptions;
+  protected _decorations(): ReadonlyMap<string, NodeDecoration> | undefined;
 }
 
 export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T): Constructor<DiagramBaseInterface> & T;
@@ -185,7 +187,7 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
           return;
         }
         this._lastLayout = layout;
-        const { nodes, edges } = toReactFlowGraph(result.model, layout, this._decorations());
+        const { nodes, edges } = toReactFlowGraph(result.model, layout, this._decorations(), this._layoutOptions().direction);
         this._nodes = nodes;
         this._edges = edges;
       } catch (e) {
@@ -207,7 +209,7 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       try {
         this._error = '';
         this._adapterResult = this._adaptYaml(yamlStr);
-        const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, this._decorations());
+        const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, this._decorations(), this._layoutOptions().direction);
         this._nodes = nodes;
         this._edges = edges;
         this._updateSelectedNode();

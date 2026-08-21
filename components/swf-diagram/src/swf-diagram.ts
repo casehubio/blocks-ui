@@ -19,6 +19,9 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
   @property({ attribute: false })
   override schema: Record<string, unknown> = swfTaskSchema;
 
+  @property({ attribute: 'layout-direction' })
+  layoutDirection: 'DOWN' | 'RIGHT' = 'DOWN';
+
   override connectedCallback(): void {
     super.connectedCallback();
     registerSwfStencils();
@@ -41,12 +44,49 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return SWF_SCHEMA_TYPE_MAP;
   }
 
+  protected override _layoutOptions() {
+    return { direction: this.layoutDirection, spacing: 40, containerPadding: 25, wrapping: true };
+  }
+
   protected _paletteTypes(): string[] {
     return [];
   }
 
   protected _emptyTemplate(): string | null {
     return null;
+  }
+
+  private _filterNodes() {
+    const renderedEdges = this._filterEdges();
+    const connectedIds = new Set(renderedEdges.flatMap(e => [e.source, e.target]));
+    const containerTypes = new Set(['swf-try-catch']);
+    return this._nodes
+      .filter(n => n.type !== 'swf-root')
+      .map(n => {
+        const cleared = n.parentId === 'root' ? { ...n, parentId: undefined } : { ...n };
+        if (!connectedIds.has(n.id)) {
+          cleared.data = { ...cleared.data, _hideHandles: true };
+        }
+        if (containerTypes.has(n.type ?? '')) {
+          cleared.style = {
+            ...cleared.style,
+            background: 'var(--pages-neutral-4, #e5e5e5)',
+            border: '2px solid #d97706',
+            borderRadius: '10px',
+          };
+        }
+        return cleared;
+      });
+  }
+
+  private _filterEdges() {
+    const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
+    return this._edges.filter(e => {
+      const sp = nodeParents.get(e.source);
+      const tp = nodeParents.get(e.target);
+      if (!sp || !tp || sp !== tp) return true;
+      return sp === 'root';
+    });
   }
 
   override render() {
@@ -66,8 +106,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
         ></diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
           <pages-graph-canvas
-            .nodes=${this._nodes}
-            .edges=${this._edges}
+            .nodes=${this._filterNodes()}
+            .edges=${this._filterEdges()}
             role="img"
             aria-label="Workflow diagram"
             style="flex: 1; height: 100%;"
