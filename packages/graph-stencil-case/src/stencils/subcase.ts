@@ -20,10 +20,13 @@ export function renderSubCase(node: GraphNode, _decoration?: NodeDecoration): St
   const required = data['requiredCount'] as number | undefined;
 
   return html`
-    <div style="padding: 8px 12px; border: 3px double var(--pages-border-strong, #888); background: var(--pages-surface-color, #fff); min-width: 180px; font-family: var(--pages-font-family, sans-serif); font-size: 13px;">
-      <div style="font-weight: 600; color: var(--pages-text-color, #333);">${name}</div>
-      <div style="color: var(--pages-text-secondary, #666); font-size: 11px;">${ns} v${version}</div>
-      ${groupId ? html`<div style="font-size: 11px; color: var(--pages-accent-color, #1a73e8); margin-top: 2px;">${required ?? total}/${total} (${groupId})</div>` : ''}
+    <div style="padding: 10px 14px; border: 3px double #8b5cf6; background: var(--pages-neutral-2, #f5f5f5); border-radius: 6px; min-width: 180px; font-family: var(--pages-font-family, sans-serif); font-size: 13px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="font-size: 13px;">📦</span>
+        <span style="font-weight: 600; color: var(--pages-neutral-12, #111);">${name}</span>
+      </div>
+      ${ns ? html`<div style="color: var(--pages-neutral-9, #666); font-size: 11px; margin-top: 3px;">${ns}${version ? ` v${version}` : ''}</div>` : ''}
+      ${groupId ? html`<div style="font-size: 11px; color: #7c3aed; margin-top: 3px;">${required ?? total}/${total} (${groupId})</div>` : ''}
     </div>
   `;
 }

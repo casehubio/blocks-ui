@@ -5,13 +5,20 @@ import { milestoneGrammar, renderMilestone } from './milestone.js';
 import { goalGrammar, renderGoal } from './goal.js';
 import { subcaseGrammar, renderSubCase } from './subcase.js';
 
+const CURSOR_OVERRIDES = `
+.react-flow__pane { cursor: default !important; }
+.react-flow__pane.dragging { cursor: grabbing !important; }
+.react-flow__node { cursor: pointer !important; }
+.react-flow__node button { cursor: pointer !important; }
+`;
+
 let registered = false;
 
 export function registerCaseStencils(): void {
   if (registered) return;
   registered = true;
 
-  registerStencil({ type: 'binding', label: 'Binding', icon: 'link', grammar: bindingGrammar, render: renderBinding });
+  registerStencil({ type: 'binding', label: 'Binding', icon: 'link', grammar: bindingGrammar, render: renderBinding, defaultStyle: CURSOR_OVERRIDES });
   registerStencil({ type: 'worker', label: 'Worker', icon: 'cpu', grammar: workerGrammar, render: renderWorker });
   registerStencil({ type: 'milestone', label: 'Milestone', icon: 'flag', grammar: milestoneGrammar, render: renderMilestone });
   registerStencil({ type: 'goal', label: 'Goal', icon: 'target', grammar: goalGrammar, render: renderGoal });

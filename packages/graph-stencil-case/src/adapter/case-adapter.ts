@@ -43,8 +43,11 @@ export function toGraph(yaml: string): AdapterResult {
     });
     yamlPaths.set(nodeId, ['spec', 'bindings', bindingIndex]);
 
-    if (binding.capability) {
-      const workerNodeId = capabilityToWorker.get(binding.capability);
+    const capName = typeof binding.capability === 'string'
+      ? binding.capability
+      : (binding.capability as { name?: string } | undefined)?.name;
+    if (capName) {
+      const workerNodeId = capabilityToWorker.get(capName);
       if (workerNodeId) {
         edges.push({
           id: `${nodeId}--capability-dispatch--${workerNodeId}`,
@@ -52,32 +55,19 @@ export function toGraph(yaml: string): AdapterResult {
           source: nodeId,
           target: workerNodeId,
         });
-      } else {
-        const externalId = `external:${binding.capability}`;
-        if (!nodes.some(n => n.id === externalId)) {
-          nodes.push({
-            id: externalId,
-            type: 'external',
-            properties: { name: binding.capability },
-          });
-        }
-        edges.push({
-          id: `${nodeId}--capability-dispatch--${externalId}`,
-          type: 'capability-dispatch',
-          source: nodeId,
-          target: externalId,
-        });
       }
     }
 
     if (binding.subCase) {
       const sub = binding.subCase;
-      const subId = `subcase:${sub.namespace}/${sub.name}`;
+      const subId = typeof sub === 'string'
+        ? `subcase:${sub}`
+        : `subcase:${sub.namespace}/${sub.name}`;
       if (!nodes.some(n => n.id === subId)) {
         nodes.push({
           id: subId,
           type: 'subcase',
-          properties: { ...sub },
+          properties: typeof sub === 'string' ? { name: sub } : { ...sub },
         });
       }
       edges.push({
@@ -91,6 +81,8 @@ export function toGraph(yaml: string): AdapterResult {
     bindingIndex++;
   }
 
+  const bindingNames = new Set((def.spec.bindings ?? []).map(b => b.name).filter((n): n is string => Boolean(n)));
+
   let milestoneIndex = 0;
   for (const milestone of def.spec.milestones ?? []) {
     const nodeId = `milestone:${milestone.name}`;
@@ -100,8 +92,23 @@ export function toGraph(yaml: string): AdapterResult {
       properties: { ...milestone },
     });
     yamlPaths.set(nodeId, ['spec', 'milestones', milestoneIndex]);
+
+    if (milestone.condition) {
+      for (const bName of bindingNames) {
+        if (milestone.condition.includes(bName)) {
+          edges.push({
+            id: `binding:${bName}--condition--${nodeId}`,
+            type: 'condition',
+            source: `binding:${bName}`,
+            target: nodeId,
+          });
+        }
+      }
+    }
     milestoneIndex++;
   }
+
+  const milestoneNames = new Set((def.spec.milestones ?? []).map(m => m.name));
 
   let goalIndex = 0;
   for (const goal of def.spec.goals ?? []) {
@@ -112,6 +119,28 @@ export function toGraph(yaml: string): AdapterResult {
       properties: { ...goal },
     });
     yamlPaths.set(nodeId, ['spec', 'goals', goalIndex]);
+
+    const expr = JSON.stringify(goal.expression ?? {});
+    for (const mName of milestoneNames) {
+      if (expr.includes(mName)) {
+        edges.push({
+          id: `milestone:${mName}--goal--${nodeId}`,
+          type: 'goal-condition',
+          source: `milestone:${mName}`,
+          target: nodeId,
+        });
+      }
+    }
+    for (const bName of bindingNames) {
+      if (expr.includes(bName)) {
+        edges.push({
+          id: `binding:${bName}--goal--${nodeId}`,
+          type: 'goal-condition',
+          source: `binding:${bName}`,
+          target: nodeId,
+        });
+      }
+    }
     goalIndex++;
   }
 

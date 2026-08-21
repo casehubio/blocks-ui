@@ -36,23 +36,23 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
   const badge = BADGE_CONFIG[fnType];
 
   return html`
-    <div style="padding: 10px 14px; border: 2px solid var(--pages-border-strong, #888); background: var(--pages-surface-raised, #f8f8f8); min-width: 200px; font-family: var(--pages-font-family, sans-serif); font-size: 13px;">
-      <div style="display: flex; align-items: center; gap: 4px;">
-        <div style="font-weight: 700; color: var(--pages-text-color, #333); flex: 1;">${name}</div>
-        <span style="font-size: 9px; padding: 1px 5px; border-radius: 3px; background: ${badge.bg}; color: ${badge.fg}; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;">${badge.label}</span>
+    <div style="padding: 10px 14px; border: 2px solid var(--pages-neutral-7, #6b7280); background: var(--pages-neutral-2, #f5f5f5); min-width: 200px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="font-weight: 700; color: var(--pages-neutral-12, #111); flex: 1;">${name}</div>
+        <span style="font-size: 10px; padding: 2px 6px; border-radius: 3px; background: ${badge.bg}; color: ${badge.fg}; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;">${badge.label}</span>
         ${doBlock ? html`
           <button
-            style="border: none; background: none; cursor: pointer; font-size: 11px; color: var(--pages-accent-color, #1a73e8); padding: 0 2px;"
+            style="border: none; background: none; cursor: pointer; font-size: 13px; color: var(--pages-accent-9, #2563eb); padding: 0 2px;"
             title="Open SWF diagram"
             @click=${(e: Event) => { e.stopPropagation(); emitDrillDown(e.target as HTMLElement, node.id, name, doBlock); }}
           >⤢</button>
         ` : nothing}
       </div>
-      <div style="color: var(--pages-text-secondary, #666); font-size: 11px;">${caps.join(', ')}</div>
-      ${desc ? html`<div style="color: var(--pages-text-tertiary, #999); font-size: 11px; margin-top: 2px;">${desc}</div>` : nothing}
+      <div style="color: var(--pages-neutral-9, #666); font-size: 12px;">${caps.join(', ')}</div>
+      ${desc ? html`<div style="color: var(--pages-neutral-8, #888); font-size: 11px; margin-top: 3px;">${desc}</div>` : nothing}
       ${hasThumbnail ? html`
         <worker-thumbnail
-          style="display: block; margin-top: 6px; overflow: hidden; pointer-events: none; border: 1px solid var(--pages-border-color, #ddd); border-radius: 4px; background: var(--pages-surface-color, #fff);"
+          style="display: block; margin-top: 6px; overflow: hidden; pointer-events: none; border: 1px solid var(--pages-border-color, #ddd); border-radius: 4px; background: transparent;"
           .doBlock=${doBlock}
           .workerId=${node.id}
         ></worker-thumbnail>
