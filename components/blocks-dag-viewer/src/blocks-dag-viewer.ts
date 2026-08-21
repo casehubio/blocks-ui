@@ -5,6 +5,8 @@ import {
   type DagPlanSnapshot, type DagResultSnapshot, type DagDispatchMode, type DagAdapterResult,
 } from '@casehubio/graph-stencil-htn';
 import type { NodeDecoration } from '@casehubio/graph-core';
+import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
+import type { ElkLayoutResult } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/blocks-ui-core';
 import '@casehubio/graph-renderer';
 import './blocks-dag-toolbar.js';
@@ -18,6 +20,9 @@ export class BlocksDagViewer extends LitElement {
 
   @state() private _adapterResult: DagAdapterResult | null = null;
   @state() private _decorations: ReadonlyMap<string, NodeDecoration> = new Map();
+  @state() private _nodes: ReturnType<typeof toReactFlowGraph>['nodes'] = [];
+  @state() private _edges: ReturnType<typeof toReactFlowGraph>['edges'] = [];
+  private _lastLayout: ElkLayoutResult | undefined;
   private _pendingPlanTimestamp: string | null = null;
   private _renderInProgress = false;
 
@@ -30,7 +35,11 @@ export class BlocksDagViewer extends LitElement {
     if (changed.has('dagPlan')) {
       this._decorations = new Map();
       if (this.dagPlan != null) this._fullRender(this.dagPlan);
-      else this._adapterResult = null;
+      else {
+        this._adapterResult = null;
+        this._nodes = [];
+        this._edges = [];
+      }
     }
     if (changed.has('dagResult') && !changed.has('dagPlan')) {
       this._updateDecorations();
@@ -44,6 +53,8 @@ export class BlocksDagViewer extends LitElement {
     }
     this._renderInProgress = true;
     this._adapterResult = dagToGraph(plan);
+    const layout = await computeElkLayout(this._adapterResult.model, { direction: 'DOWN', spacing: 60 });
+    this._lastLayout = layout;
     this._updateDecorations();
     this._renderInProgress = false;
 
@@ -57,7 +68,7 @@ export class BlocksDagViewer extends LitElement {
   }
 
   private _updateDecorations(): void {
-    if (this.dagResult == null) { this._decorations = new Map(); return; }
+    if (this.dagResult == null) { this._decorations = new Map(); this._applyLayout(); return; }
     const raw = dagToDecorations(this.dagResult);
     if (this._adapterResult == null) { this._decorations = raw; return; }
     const knownIds = new Set(this._adapterResult.model.nodes.map((n: { id: string }) => n.id));
@@ -66,6 +77,14 @@ export class BlocksDagViewer extends LitElement {
       if (knownIds.has(k)) filtered.set(k, v);
     }
     this._decorations = filtered;
+    this._applyLayout();
+  }
+
+  private _applyLayout(): void {
+    if (!this._adapterResult || !this._lastLayout) return;
+    const { nodes, edges } = toReactFlowGraph(this._adapterResult.model, this._lastLayout, this._decorations);
+    this._nodes = nodes;
+    this._edges = edges;
   }
 
   private _computeStats() {
@@ -108,7 +127,8 @@ export class BlocksDagViewer extends LitElement {
         ${this.dagPlan == null
           ? html`<div class="empty">No DAG plan loaded</div>`
           : html`<pages-graph-canvas
-              .model=${this._adapterResult?.model}
+              .nodes=${this._nodes}
+              .edges=${this._edges}
               style="width: 100%; height: 100%;"
               @pages-event=${(e: CustomEvent) => {
                 if (e.detail?.topic === 'graph:node:click') {

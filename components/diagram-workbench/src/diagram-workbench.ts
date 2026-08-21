@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent } from '@casehubio/blocks-ui-core';
 import { stringify } from 'yaml';
 import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
+import type { CasehubDiagram } from '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-split-workbench';
 import '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-swf-diagram';
@@ -58,12 +59,11 @@ export class DiagramWorkbench extends LitElement {
       onPagesEvent(this, 'graph:node:click', (payload: unknown) => {
         const p = payload as { nodeId: string; nodeType: string };
         if (!p.nodeId.startsWith('worker:')) return;
-        const caseDiag = this.renderRoot.querySelector('casehub-diagram') as any;
-        if (!caseDiag?._nodes) return;
-        const node = caseDiag._nodes.find((n: any) => n.id === p.nodeId);
-        const doBlock = node?.data?.do;
+        const caseDiag = this.renderRoot.querySelector('casehub-diagram') as CasehubDiagram | null;
+        const props = caseDiag?.getNodeProperties(p.nodeId);
+        const doBlock = props?.do;
         if (!doBlock) return;
-        const name = String(node.data.name ?? p.nodeId.replace('worker:', ''));
+        const name = String(props.name ?? p.nodeId.replace('worker:', ''));
         const doYaml = stringify({ document: { dsl: '1.0.0', namespace: 'embedded', name: 'worker-do', version: '1.0.0' }, do: doBlock });
         this._selectedWorker = { name, yaml: doYaml };
       }),

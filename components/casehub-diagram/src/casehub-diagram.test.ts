@@ -171,3 +171,28 @@ describe('persistence round-trip', () => {
     expect(afterUndo !== savedYaml).toBe(true);
   });
 });
+
+describe('getNodeProperties contract', () => {
+  it('model lookup returns properties for a known node', () => {
+    const result = toGraph(SIMPLE_YAML);
+    const node = result.model.nodes.find(n => n.id === 'worker:w1');
+    expect(node).toBeDefined();
+    const props = { ...node!.properties };
+    expect(props.name).toBe('w1');
+  });
+
+  it('model lookup returns undefined for an unknown node', () => {
+    const result = toGraph(SIMPLE_YAML);
+    const node = result.model.nodes.find(n => n.id === 'worker:nonexistent');
+    expect(node).toBeUndefined();
+  });
+
+  it('spread copy is not the same reference as the original', () => {
+    const result = toGraph(SIMPLE_YAML);
+    const node = result.model.nodes.find(n => n.id === 'worker:w1')!;
+    const props1 = { ...node.properties };
+    const props2 = { ...node.properties };
+    expect(props1).not.toBe(props2);
+    expect(props1).toEqual(props2);
+  });
+});

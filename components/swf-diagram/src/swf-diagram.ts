@@ -56,9 +56,18 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return null;
   }
 
-  private _filterNodes() {
-    const renderedEdges = this._filterEdges();
-    const connectedIds = new Set(renderedEdges.flatMap(e => [e.source, e.target]));
+  private _computeFilteredEdges() {
+    const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
+    return this._edges.filter(e => {
+      const sp = nodeParents.get(e.source);
+      const tp = nodeParents.get(e.target);
+      if (!sp || !tp || sp !== tp) return true;
+      return sp === 'root';
+    });
+  }
+
+  private _computeFilteredNodes(filteredEdges: typeof this._edges) {
+    const connectedIds = new Set(filteredEdges.flatMap(e => [e.source, e.target]));
     const containerTypes = new Set(['swf-try-catch']);
     return this._nodes
       .filter(n => n.type !== 'swf-root')
@@ -79,22 +88,14 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
       });
   }
 
-  private _filterEdges() {
-    const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
-    return this._edges.filter(e => {
-      const sp = nodeParents.get(e.source);
-      const tp = nodeParents.get(e.target);
-      if (!sp || !tp || sp !== tp) return true;
-      return sp === 'root';
-    });
-  }
-
   override render() {
     if (this._error) {
       return this._renderError();
     }
     const hasSelection = this._selectedNodeId !== '';
     const isReadonly = this.readonly || !!this._adapterResult?.degraded;
+    const filteredEdges = this._computeFilteredEdges();
+    const filteredNodes = this._computeFilteredNodes(filteredEdges);
 
     return html`
       <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
@@ -106,8 +107,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
         ></diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
           <pages-graph-canvas
-            .nodes=${this._filterNodes()}
-            .edges=${this._filterEdges()}
+            .nodes=${filteredNodes}
+            .edges=${filteredEdges}
             role="img"
             aria-label="Workflow diagram"
             style="flex: 1; height: 100%;"

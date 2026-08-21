@@ -54,8 +54,10 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   @state() private _promptEditorOpen = false;
   @state() private _promptEditorValue = '';
   private _promptEditorField: (string | number)[] = [];
+  private _cachedLayoutOpts: ElkLayoutOptions | null = null;
 
   protected _adaptYaml(yaml: string): AdapterResult {
+    this._cachedLayoutOpts = null;
     return toGraph(yaml);
   }
 
@@ -88,6 +90,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   }
 
   protected override _layoutOptions(): ElkLayoutOptions {
+    if (this._cachedLayoutOpts) return this._cachedLayoutOpts;
     const nodeSizes = new Map<string, { width: number; height: number }>();
     if (this._adapterResult) {
       for (const node of this._adapterResult.model.nodes) {
@@ -101,12 +104,16 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
         }
       }
     }
+    let result: ElkLayoutOptions;
     if (this._expandedWorkers.size > 0) {
-      return { direction: 'DOWN', spacing: 60, nodeSizes, wrapping: true };
+      result = { direction: 'DOWN', spacing: 60, nodeSizes, wrapping: true };
+    } else {
+      result = nodeSizes.size > 0
+        ? { direction: 'RIGHT', spacing: 50, nodeSizes, wrapping: true }
+        : { direction: 'RIGHT', spacing: 50, wrapping: true };
     }
-    return nodeSizes.size > 0
-      ? { direction: 'RIGHT', spacing: 50, nodeSizes, wrapping: true }
-      : { direction: 'RIGHT', spacing: 50, wrapping: true };
+    this._cachedLayoutOpts = result;
+    return result;
   }
 
   override connectedCallback(): void {
@@ -128,6 +135,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     } else {
       this._expandedWorkers.delete(workerId);
     }
+    this._cachedLayoutOpts = null;
     if (this._expandDebounce) clearTimeout(this._expandDebounce);
     this._expandDebounce = setTimeout(() => {
       this._expandDebounce = null;
@@ -278,6 +286,11 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
       .filter(n => n.type === 'worker')
       .map(n => String(n.properties['name'] ?? ''))
       .filter(Boolean);
+  }
+
+  getNodeProperties(nodeId: string): Record<string, unknown> | undefined {
+    const node = this._adapterResult?.model.nodes.find(n => n.id === nodeId);
+    return node ? { ...node.properties } : undefined;
   }
 
   protected async _onDelete(): Promise<void> {
