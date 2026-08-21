@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import './channel-nav.js';
 import type { QhorusChannel } from './types.js';
+import type { ChannelTree } from './channel-state-controller.js';
 import { ChannelEventTopics } from './events.js';
 
 describe('blocks-channel-nav', () => {
@@ -244,15 +245,14 @@ describe('blocks-channel-nav', () => {
     expect(el.shadowRoot!.querySelector('.delete-btn')).toBeTruthy();
   });
 
-  // --- messageCounts (#64) ---
+  // --- unread count badges ---
 
-  it('displays message count badge in sidebar mode', async () => {
+  it('displays unread count badge from channel.unreadCount', async () => {
     el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
-      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
-      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false },
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false, unreadCount: 42 },
+      { id: 'ch2', name: 'Urgent', semantic: 'COLLECT', paused: false, unreadCount: 0 },
     ];
-    (el as any).messageCounts = { ch1: 42, ch2: 0 };
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -261,12 +261,11 @@ describe('blocks-channel-nav', () => {
     expect(badges[0]!.getAttribute('label')).toBe('42');
   });
 
-  it('does not display count badge when count is zero or absent', async () => {
+  it('does not display count badge when unreadCount is zero or absent', async () => {
     el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
       { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
     ];
-    (el as any).messageCounts = {};
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -338,13 +337,12 @@ describe('blocks-channel-nav', () => {
     expect(trigger.textContent).toContain('Urgent');
   });
 
-  it('shows message counts in dropdown options', async () => {
+  it('shows unread counts in dropdown options', async () => {
     el = document.createElement('blocks-channel-nav');
     (el as any).channels = [
-      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false },
+      { id: 'ch1', name: 'General', semantic: 'APPEND', paused: false, unreadCount: 7 },
     ];
     (el as any).layout = 'dropdown';
-    (el as any).messageCounts = { ch1: 7 };
     document.body.appendChild(el);
     await (el as any).updateComplete;
 
@@ -396,5 +394,121 @@ describe('blocks-channel-nav', () => {
 
     expect(el.shadowRoot!.querySelector('.channel-list')).toBeTruthy();
     expect(el.shadowRoot!.querySelector('.dropdown-trigger')).toBeNull();
+  });
+
+  // --- tree rendering ---
+
+  describe('tree mode', () => {
+    function makeTree(): ChannelTree {
+      return {
+        ungrouped: [
+          { id: 'ch-g', name: 'general', semantic: 'APPEND', paused: false, unreadCount: 3 },
+        ],
+        spaces: [
+          {
+            space: { id: 'sp-1', name: 'Case Alpha' },
+            channels: [
+              { id: 'ch-w', name: 'work', semantic: 'APPEND', paused: false, unreadCount: 0 },
+              { id: 'ch-o', name: 'observe', semantic: 'APPEND', paused: false, unreadCount: 5 },
+            ],
+            unreadCount: 5,
+            children: [],
+          },
+          {
+            space: { id: 'sp-2', name: 'Case Beta' },
+            channels: [
+              { id: 'ch-b', name: 'beta-work', semantic: 'APPEND', paused: false, unreadCount: 2 },
+            ],
+            unreadCount: 2,
+            children: [],
+          },
+        ],
+      };
+    }
+
+    it('renders ungrouped channels and space groups', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const headers = el.shadowRoot!.querySelectorAll('.space-header');
+      expect(headers.length).toBe(2);
+      expect(headers[0]!.textContent).toContain('Case Alpha');
+      expect(headers[1]!.textContent).toContain('Case Beta');
+
+      const ungroupedItems = el.shadowRoot!.querySelectorAll('.ungrouped .channel-item');
+      expect(ungroupedItems.length).toBe(1);
+      expect(ungroupedItems[0]!.textContent).toContain('general');
+    });
+
+    it('shows unread badge on space header', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const headers = el.shadowRoot!.querySelectorAll('.space-header');
+      const alphaBadge = headers[0]!.querySelector('pages-badge');
+      expect(alphaBadge).toBeTruthy();
+      expect(alphaBadge!.getAttribute('label')).toBe('5');
+    });
+
+    it('hides unread badge when space unread is 0', async () => {
+      el = document.createElement('blocks-channel-nav');
+      const tree = makeTree();
+      tree.spaces[0]!.channels.forEach(ch => (ch as any).unreadCount = 0);
+      (tree.spaces[0] as any).unreadCount = 0;
+      (el as any).channelTree = tree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const headers = el.shadowRoot!.querySelectorAll('.space-header');
+      expect(headers[0]!.querySelector('pages-badge')).toBeNull();
+    });
+
+    it('collapses space group on header click', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      let spaceChannels = el.shadowRoot!.querySelectorAll('.space-group:first-of-type .channel-item');
+      expect(spaceChannels.length).toBe(2);
+
+      const header = el.shadowRoot!.querySelector('.space-header') as HTMLElement;
+      header.click();
+      await (el as any).updateComplete;
+
+      spaceChannels = el.shadowRoot!.querySelectorAll('.space-group:first-of-type .channel-item');
+      expect(spaceChannels.length).toBe(0);
+    });
+
+    it('selects channel within space group', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = makeTree();
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const listener = vi.fn();
+      el.addEventListener('pages-event', listener);
+
+      const spaceChannels = el.shadowRoot!.querySelectorAll('.space-group .channel-item');
+      (spaceChannels[0] as HTMLElement).click();
+
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.calls[0]![0]!.detail.topic).toBe(ChannelEventTopics.SELECT_CHANNEL);
+      expect(listener.mock.calls[0]![0]!.detail.payload).toEqual({ channelId: 'ch-w' });
+    });
+
+    it('falls back to flat mode when channelTree absent', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channels = [{ id: 'ch1', name: 'General', semantic: 'APPEND', paused: false }];
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      expect(el.shadowRoot!.querySelector('.channel-list')).toBeTruthy();
+      expect(el.shadowRoot!.querySelector('.space-group')).toBeNull();
+    });
   });
 });
