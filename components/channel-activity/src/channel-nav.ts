@@ -2,7 +2,8 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { QhorusChannel, ChannelSemantic } from './types.js';
 import type { ChannelTree, SpaceNode } from './channel-state-controller.js';
-import { emitPagesEvent, BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
+import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import { ChannelEventTopics } from './events.js';
 import '@casehubio/pages-ui-components';
 

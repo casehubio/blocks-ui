@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import '@casehubio/pages-table';
 import '@casehubio/blocks-ui-core/status-badge/status-badge.js';

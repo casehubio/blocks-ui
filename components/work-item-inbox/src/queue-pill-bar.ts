@@ -1,10 +1,10 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import {
   type QueueView,
   type QueueSummaryEntry,
   type QueueScopeChangedPayload,
-  emitPagesEvent,
   WorkItemEventTopics,
 } from '@casehubio/blocks-ui-core';
 

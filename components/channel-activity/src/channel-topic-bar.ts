@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { QhorusTopic } from './types.js';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import { ChannelEventTopics } from './events.js';
 import '@casehubio/pages-ui-components';
 

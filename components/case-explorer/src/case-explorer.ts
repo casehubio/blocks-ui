@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/blocks-ui-core';
+import { onPagesEvent } from '@casehubio/pages-component';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { NavigationController } from './navigation-controller.js';
 import './entity-list.js';

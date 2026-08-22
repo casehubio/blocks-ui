@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DataSourceMixin, emitPagesEvent, onPagesEvent } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin, emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import '@casehubio/pages-table';
 import type { TypedRow, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';

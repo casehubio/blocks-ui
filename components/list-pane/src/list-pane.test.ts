@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import type { TableColumnConfig } from '@casehubio/pages-table';
 import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';

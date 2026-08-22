@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/pages-ui-tokens/dist/init.js';
 import '@casehubio/pages-ui-tokens/dist/theme-picker.js';
-import { applyTheme } from '@casehubio/blocks-ui-core';
+import { applyTheme } from '@casehubio/pages-ui-tokens';
 
 interface NavItem {
   id: string;

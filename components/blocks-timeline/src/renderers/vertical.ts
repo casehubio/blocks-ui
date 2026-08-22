@@ -1,7 +1,7 @@
 import { html, nothing, css } from 'lit';
 import type { TemplateResult } from 'lit';
 import type { TimelineNode } from '../types.js';
-import { renderPropertyTree, propertyTreeStyles } from '@casehubio/blocks-ui-core';
+import { renderPropertyTree, propertyTreeStyles } from '@casehubio/pages-ui-components';
 
 export interface VerticalOptions {
   expandedKeys: Set<string>;

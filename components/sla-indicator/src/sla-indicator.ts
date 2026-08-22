@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { subscribe, unsubscribe, emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { timerSubscribe, timerUnsubscribe, emitPagesEvent } from '@casehubio/pages-component';
 
 export const SlaIndicatorTopics = {
   STATE_CHANGED: 'sla.state-changed',
@@ -120,13 +120,13 @@ export class SlaIndicator extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    subscribe(this._tick);
+    timerSubscribe(this._tick);
     this._update();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    unsubscribe(this._tick);
+    timerUnsubscribe(this._tick);
     this._lastEmittedState = null;
   }
 

@@ -1,6 +1,6 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { GraphModel } from '@casehubio/graph-core';

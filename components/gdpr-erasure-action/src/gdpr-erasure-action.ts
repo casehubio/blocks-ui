@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import '@casehubio/blocks-ui-core';
 import '@casehubio/pages-viz';
 import type { FieldSchema } from '@casehubio/pages-viz';

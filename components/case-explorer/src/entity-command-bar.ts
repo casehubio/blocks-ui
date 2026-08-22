@@ -1,8 +1,9 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent, BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
+import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-void BlocksConfirmDialog;
+void PagesConfirmDialog;
 import type { CommandDescriptor } from './types.js';
 
 export const EntityCommandBarTopics = {

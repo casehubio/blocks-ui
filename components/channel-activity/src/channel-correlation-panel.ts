@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { QhorusMessage } from './types.js';
 import { messageTypeCategory, isObligationCreating } from './types.js';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import { ChannelEventTopics } from './events.js';
 import type { CommitmentRecord } from './commitment.js';
 

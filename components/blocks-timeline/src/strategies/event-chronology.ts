@@ -1,5 +1,5 @@
 import { html, nothing } from 'lit';
-import { renderPropertyTree } from '@casehubio/blocks-ui-core';
+import { renderPropertyTree } from '@casehubio/pages-ui-components';
 import type { TimelineNode, TimelineStrategy, PaginationMeta } from '../types.js';
 
 export type CaseHubEventType =

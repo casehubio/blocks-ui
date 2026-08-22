@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { TabDefinition } from './types.js';

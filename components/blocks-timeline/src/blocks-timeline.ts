@@ -1,7 +1,8 @@
 import { html, css, nothing, LitElement } from 'lit';
 import type { PropertyValues, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin, fetchSource } from '@casehubio/blocks-ui-core';
+import { DataSourceMixin } from '@casehubio/pages-component';
+import { fetchSource } from '@casehubio/pages-data';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { emitPagesEvent } from '@casehubio/pages-component';
 import type { SourceFactory } from '@casehubio/pages-data';

@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent, lookupStatus } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
+import { lookupStatus } from '@casehubio/blocks-ui-core';
 import { stateCategoryStyles } from '@casehubio/blocks-ui-core';
 import type { ConversationPoint } from './types.js';
 

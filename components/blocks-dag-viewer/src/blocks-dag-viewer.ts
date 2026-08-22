@@ -7,7 +7,7 @@ import {
 import type { NodeDecoration } from '@casehubio/graph-core';
 import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
 import type { ElkLayoutResult } from '@casehubio/graph-renderer';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import '@casehubio/graph-renderer';
 import './blocks-dag-toolbar.js';
 

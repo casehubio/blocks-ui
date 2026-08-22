@@ -5,7 +5,7 @@ import type {
   DecompositionSnapshot, TaskNodeSnapshot, LeafTaskSnapshot,
   CompoundTaskSnapshot, DecompositionMethodSnapshot, NodeStateSnapshot,
 } from '@casehubio/graph-stencil-htn';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 
 export const STRATEGY_COLORS: Record<string, string> = {
   'identity': '#9ca3af',

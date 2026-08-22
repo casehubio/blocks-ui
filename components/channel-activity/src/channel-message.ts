@@ -4,7 +4,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import type { QhorusMessage, Reaction, CommitmentState, ActorType } from './types.js';
 import { messageTypeCategory, isObligationCreating } from './types.js';
 import { renderMarkdown } from './markdown.js';
-import { emitPagesEvent } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
 import { ChannelEventTopics } from './events.js';
 import '@casehubio/pages-ui-components';
 

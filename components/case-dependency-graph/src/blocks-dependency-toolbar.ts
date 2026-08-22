@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { emitPagesEvent, lookupRelationshipType } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent } from '@casehubio/pages-component';
+import { lookupRelationshipType } from '@casehubio/blocks-ui-core';
 
 @customElement('blocks-dependency-toolbar')
 export class BlocksDependencyToolbar extends LitElement {

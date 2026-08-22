@@ -1,6 +1,6 @@
 import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/blocks-ui-core';
+import { onPagesEvent } from '@casehubio/pages-component';
 import { stringify } from 'yaml';
 import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
 import type { CasehubDiagram } from '@casehubio/blocks-ui-casehub-diagram';

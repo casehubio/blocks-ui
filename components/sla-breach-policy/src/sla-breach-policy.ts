@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { pulseAnimation } from '@casehubio/blocks-ui-core';
+import { pulseAnimation } from '@casehubio/pages-ui-tokens';
 import '@casehubio/blocks-ui-sla-indicator';
 import type { TierDefinition } from './types.js';
 

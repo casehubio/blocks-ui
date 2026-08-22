@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceAdapter } from '@casehubio/blocks-ui-core';
+import { DataSourceAdapter } from '@casehubio/pages-component';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { ColumnType, columnId } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';

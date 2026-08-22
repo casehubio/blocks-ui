@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
-import { BlocksConfirmDialog } from '@casehubio/blocks-ui-core';
+import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import '@casehubio/pages-viz';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';

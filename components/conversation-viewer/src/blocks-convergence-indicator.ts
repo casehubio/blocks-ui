@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import type { ConvergenceSignal, ConvergenceState } from './types.js';
-import { pulseAnimation } from '@casehubio/blocks-ui-core';
+import { pulseAnimation } from '@casehubio/pages-ui-tokens';
 
 const STATE_COLOURS: Record<ConvergenceState, string> = {
   PROGRESSING: 'var(--pages-neutral-8, #9ca3af)',

@@ -15,13 +15,12 @@ import type {
   QueueView,
   WorkItemQueueEvent,
 } from '@casehubio/blocks-ui-core';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
+import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import {
-  emitPagesEvent,
-  onPagesEvent,
   WorkItemEventTopics,
   isActiveStatus,
   WorkEventType as WorkEventTypeEnum,
-  BlocksConfirmDialog,
 } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';

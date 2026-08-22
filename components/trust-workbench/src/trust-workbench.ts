@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-import { onPagesEvent } from '@casehubio/blocks-ui-core';
+import { onPagesEvent } from '@casehubio/pages-component';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { ColumnId, TypedRow, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CandidateScore } from '@casehubio/blocks-ui-routing-rationale';
