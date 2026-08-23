@@ -21,7 +21,8 @@
     "@casehubio/pages-viz": "portal:./.casehub-packages/packages/pages-viz",
     "@casehubio/graph-core": "portal:./.casehub-packages/packages/graph-core",
     "@casehubio/graph-renderer": "portal:./.casehub-packages/packages/graph-renderer",
-    "@casehubio/graph-work-registry": "portal:./.casehub-packages/packages/graph-work-registry"
+    "@casehubio/graph-work-registry": "portal:./.casehub-packages/packages/graph-work-registry",
+    "@casehubio/pages-filter-bar": "portal:./.casehub-packages/packages/pages-filter-bar"
   },
   "scripts": {
     "build": "yarn workspaces foreach -A --topological run build",

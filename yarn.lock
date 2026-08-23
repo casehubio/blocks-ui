@@ -437,6 +437,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-event-trail@workspace:components/event-trail":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-event-trail@workspace:components/event-trail"
+  dependencies:
+    "@casehubio/pages-component": "npm:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-filter-bar": "npm:*"
+    "@casehubio/pages-table": "npm:*"
+    jsdom: "npm:^26.0.0"
+    lit: "npm:^3.2.1"
+    typescript: "npm:~5.7.2"
+    vitest: "npm:^2.1.8"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-execution-monitor@workspace:*, @casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor"
@@ -962,6 +977,16 @@ __metadata:
   dependencies:
     jsonata: "npm:^2.2.1"
     zod: "npm:^3.23.0"
+  languageName: node
+  linkType: soft
+
+"@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-ui-tokens": "workspace:*"
+    lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
 
