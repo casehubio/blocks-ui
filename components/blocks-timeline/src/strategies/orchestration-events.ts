@@ -1,5 +1,6 @@
 import { html } from 'lit';
-import type { TimelineNode, TimelineStrategy, NodeStatus } from '../types.js';
+import type { EventTimelineNode, EventNodeStatus } from '@casehubio/pages-viz';
+import type { EventTimelineStrategy } from '@casehubio/pages-viz';
 import type {
   OrchestrationAuditEvent, OrchestrationEventType, OrchestrationPayload,
 } from '@casehubio/blocks-ui-core';
@@ -34,7 +35,7 @@ function nodeLabel(payload: OrchestrationPayload): string {
   }
 }
 
-function nodeStatus(payload: OrchestrationPayload): NodeStatus {
+function nodeStatus(payload: OrchestrationPayload): EventNodeStatus {
   switch (payload.type) {
     case 'EXECUTION_STARTED': return 'active';
     case 'ROUTING_DECISION':
@@ -57,7 +58,7 @@ function nodeStatus(payload: OrchestrationPayload): NodeStatus {
   }
 }
 
-function toNode(event: OrchestrationAuditEvent): TimelineNode {
+function toNode(event: OrchestrationAuditEvent): EventTimelineNode {
   const filterCat = orchestrationFilterCategory(event.eventType);
   return {
     key: event.id,
@@ -69,7 +70,7 @@ function toNode(event: OrchestrationAuditEvent): TimelineNode {
   };
 }
 
-function renderDetail(node: TimelineNode) {
+function renderDetail(node: EventTimelineNode) {
   const payload = node.detail as OrchestrationPayload;
   if (!payload) return html``;
 
@@ -100,9 +101,17 @@ function renderDetail(node: TimelineNode) {
   }
 }
 
-export const orchestrationEventsStrategy: TimelineStrategy<OrchestrationAuditEvent[]> = {
-  toNodes(data: OrchestrationAuditEvent[]): TimelineNode[] {
+function isPagedResponse(data: unknown): data is { content: OrchestrationAuditEvent[] } {
+  return data != null && typeof data === 'object' && 'content' in data && Array.isArray((data as { content: unknown[] }).content);
+}
+
+export const orchestrationEventsStrategy: EventTimelineStrategy<OrchestrationAuditEvent[]> = {
+  toNodes(data: OrchestrationAuditEvent[]): EventTimelineNode[] {
     return data.map(toNode);
+  },
+  transformData(raw: unknown): OrchestrationAuditEvent[] {
+    if (isPagedResponse(raw)) return raw.content;
+    return raw as OrchestrationAuditEvent[];
   },
   defaultLayout: 'vertical',
   renderDetail,

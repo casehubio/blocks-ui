@@ -26,6 +26,34 @@ describe('orchestrationEventsStrategy', () => {
     expect(orchestrationEventsStrategy.supportsPagination).toBe(true);
   });
 
+  it('has transformData defined', () => {
+    expect(orchestrationEventsStrategy.transformData).toBeDefined();
+  });
+
+  it('transformData extracts .content from paged response', () => {
+    const paged = {
+      content: [
+        makeEvent('EXECUTION_STARTED', { type: 'EXECUTION_STARTED', model: {
+          pattern: 'PARALLEL', failurePolicy: { routingFailureAction: 'FAIL', aggregationFailureAction: 'FAIL' },
+        }}),
+      ],
+      page: 0, size: 20, totalElements: 1, totalPages: 1,
+    };
+    const result = orchestrationEventsStrategy.transformData!(paged);
+    expect(result).toHaveLength(1);
+    expect(result).toBe(paged.content);
+  });
+
+  it('transformData passes through plain array', () => {
+    const events = [
+      makeEvent('EXECUTION_STARTED', { type: 'EXECUTION_STARTED', model: {
+        pattern: 'PARALLEL', failurePolicy: { routingFailureAction: 'FAIL', aggregationFailureAction: 'FAIL' },
+      }}),
+    ];
+    const result = orchestrationEventsStrategy.transformData!(events);
+    expect(result).toBe(events);
+  });
+
   it('maps EXECUTION_STARTED to active node', () => {
     const events: OrchestrationAuditEvent[] = [
       makeEvent('EXECUTION_STARTED', { type: 'EXECUTION_STARTED', model: {

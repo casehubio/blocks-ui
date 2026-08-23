@@ -3,12 +3,12 @@ import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/blocks-ui-blocks-timeline';
 import { eventChronologyStrategy } from '@casehubio/blocks-ui-blocks-timeline';
 import type { CaseEvent, PagedResponse, EventLogEntryResponse } from '@casehubio/blocks-ui-blocks-timeline';
-import type { Layout } from '@casehubio/blocks-ui-blocks-timeline';
+import type { EventTimelineLayout } from '@casehubio/blocks-ui-blocks-timeline';
 import mockEvents from '../../mock-data/case-events.json';
 
 @customElement('blocks-example-timeline-events')
 export class TimelineEventsPage extends LitElement {
-  @state() private _layout: Layout = 'vertical';
+  @state() private _layout: EventTimelineLayout = 'vertical';
   private _originalFetch: typeof globalThis.fetch | null = null;
 
   private _mockFetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
@@ -94,11 +94,11 @@ export class TimelineEventsPage extends LitElement {
 
           <h3>Try It</h3>
           <ul>
-            <li>Click any event row to see the timeline.node-selected event fire</li>
+            <li>Click any event row to see the event-timeline:node-selected event fire</li>
             <li>Click "Details" on an event to expand the payload tree</li>
             <li>Toggle stream type chips to filter event categories</li>
             <li>Switch to Compact mode to see the temporal-weighted dot strip</li>
-            <li>Click the compact strip to fire timeline.expand-requested</li>
+            <li>Click the compact strip to fire event-timeline:expand-requested</li>
           </ul>
         </div>
       </div>

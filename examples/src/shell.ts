@@ -33,6 +33,7 @@ const NAV: NavCategory[] = [
       { id: 'timeline-events', label: 'Timeline (Events)', hash: '#components/timeline-events' },
       { id: 'timeline-commitment', label: 'Timeline (Commitment)', hash: '#components/timeline-commitment' },
       { id: 'timeline-custom', label: 'Timeline (Custom)', hash: '#components/timeline-custom' },
+
       { id: 'trust-score', label: 'Trust Score Panel', hash: '#components/trust-score' },
       { id: 'channel-activity', label: 'Channel Activity', hash: '#components/channel-activity' },
       { id: 'commitment-lifecycle', label: 'Commitment Lifecycle', hash: '#components/commitment-lifecycle' },
@@ -224,6 +225,7 @@ export class ExampleShell extends LitElement {
       case '#components/timeline-events': return html`<blocks-example-timeline-events></blocks-example-timeline-events>`;
       case '#components/timeline-commitment': return html`<blocks-example-timeline-commitment></blocks-example-timeline-commitment>`;
       case '#components/timeline-custom': return html`<blocks-example-timeline-custom></blocks-example-timeline-custom>`;
+
       case '#components/trust-score': return html`<blocks-example-trust-score></blocks-example-trust-score>`;
       case '#components/channel-activity': return html`<blocks-example-channel-activity></blocks-example-channel-activity>`;
       case '#components/commitment-lifecycle': return html`<blocks-example-commitment-lifecycle></blocks-example-commitment-lifecycle>`;

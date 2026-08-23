@@ -42,7 +42,7 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | `kpi-metric-row` | KPI metric cards — responsive grid with sparklines, trends, status colours, density property | Stable |
 | `approval-gate` | Approval gate — structured decision point with quorum, evidence slots, SLA integration | Beta |
 | `audit-trail-viewer` | Audit trail viewer — ledger entries with pages-table, Merkle verification banner, attestations, filters, GDPR erasure handling | Beta |
-| `blocks-timeline` | Pluggable timeline — vertical, horizontal, compact layouts with strategy-based content | Beta |
+| `blocks-timeline` | CaseHub timeline — extends PagesEventTimeline with tenancy header mapping and domain strategies | Beta |
 | `trust-score-panel` | Agent trust score visualisation — Bayesian Beta scores, trend lines, per-capability breakdown | Beta |
 | `channel-activity` | Qhorus channel activity — message feed, channel nav, member panel, speech-act badges | Beta |
 | `commitment-viz` | Commitment lifecycle visualization — state pills, transition badges, range bars | Beta |
@@ -122,7 +122,7 @@ Ledger entry viewer — pages-table rendering, Merkle verification banner, attes
 
 ### blocks-timeline
 
-Pluggable timeline — strategy-based content with three strategies: event chronology, state progression, commitment lifecycle. Three layouts (vertical, horizontal, compact), render callback resolution, temporal weighting. Strategy-declared pagination (load-more in vertical layout).
+CaseHub timeline — extends `PagesEventTimeline` from `@casehubio/pages-viz`. Adds only `configure()` override for WorkIdentity tenancy header mapping. All generic timeline capabilities (self-fetch, pagination, layouts, rendering) are in PagesEventTimeline. Domain strategies: event chronology, state progression, commitment lifecycle, orchestration events.
 
 ### trust-score-panel
 

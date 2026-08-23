@@ -56,6 +56,7 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-session-workbench', replacement: resolve(__dirname, '../components/session-workbench/src') },
       { find: /^@casehubio\/pages-viz\/(.*)/, replacement: resolve(__dirname, '../.casehub-packages/packages/pages-viz/src/$1') },
       { find: '@casehubio/pages-viz', replacement: resolve(__dirname, '../.casehub-packages/packages/pages-viz/src') },
+      { find: '@casehubio/pages-ui-components', replacement: resolve(__dirname, '../.casehub-packages/packages/pages-ui-components/src') },
       { find: /^@casehubio\/pages-ui-tokens\/dist\/(.*)/, replacement: resolve(__dirname, '../.casehub-packages/packages/pages-ui-tokens/src/$1') },
       { find: '@casehubio/pages-ui-tokens', replacement: resolve(__dirname, '../.casehub-packages/packages/pages-ui-tokens/src') },
       { find: /^@casehubio\/pages-component\/dist\/(.*)/, replacement: resolve(__dirname, '../.casehub-packages/packages/pages-component/dist/$1') },

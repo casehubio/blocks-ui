@@ -1,4 +1,5 @@
-import type { TimelineNode, TimelineStrategy, StageConfig, NodeStatus } from '../types.js';
+import type { EventTimelineNode, EventNodeStatus, EventTimelineStrategy } from '@casehubio/pages-viz';
+import type { StageConfig } from '../types.js';
 
 export const QHORUS_STAGES: readonly StageConfig[] = [
   { key: 'OPEN', label: 'Open' },
@@ -20,14 +21,14 @@ export type ResolveStatus = (
   currentState: string,
   transitions: Array<{ state: string; actor?: string; timestamp?: string }>,
   stages: readonly StageConfig[],
-) => NodeStatus;
+) => EventNodeStatus;
 
 export function defaultResolveStatus(
   stage: StageConfig,
   currentState: string,
   transitions: Array<{ state: string; actor?: string; timestamp?: string }>,
   _stages: readonly StageConfig[],
-): NodeStatus {
+): EventNodeStatus {
   if (stage.key === currentState) {
     if (stage.terminal === 'success') return 'completed';
     if (stage.terminal === 'failure') return 'failed';
@@ -45,7 +46,7 @@ export function linearResolveStatus(
   currentState: string,
   _transitions: Array<{ state: string; actor?: string; timestamp?: string }>,
   stages: readonly StageConfig[],
-): NodeStatus {
+): EventNodeStatus {
   const currentIndex = stages.findIndex(s => s.key === currentState);
   if (currentIndex === -1) return 'pending';
   const stageIndex = stages.indexOf(stage as StageConfig);
@@ -62,12 +63,12 @@ export function linearResolveStatus(
 export function stateProgressionStrategy(options?: {
   stages?: readonly StageConfig[];
   resolveStatus?: ResolveStatus;
-}): TimelineStrategy<StateData> {
+}): EventTimelineStrategy<StateData> {
   const stages = options?.stages ?? QHORUS_STAGES;
   const resolve = options?.resolveStatus ?? defaultResolveStatus;
 
   return {
-    toNodes(data: StateData): TimelineNode[] {
+    toNodes(data: StateData): EventTimelineNode[] {
       const transitions = data.transitions ? [...data.transitions] : [];
       const transitionMap = new Map<string, { state: string; actor?: string; timestamp?: string }>();
       for (const t of transitions) {

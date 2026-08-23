@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { render } from 'lit';
 import {
   eventChronologyStrategy,
   categorizeEvent,
@@ -100,6 +101,36 @@ describe('eventChronologyStrategy', () => {
       const nodes = strategy.toNodes(events);
       strategy.renderNode!(nodes[0]!);
       expect(calls).toEqual([events[0]!.eventType]);
+    });
+  });
+
+  describe('renderNode inline styles (PP-20260713-8ea1af)', () => {
+    it('renderNode output uses inline style, not CSS class reference', () => {
+      const strategy = eventChronologyStrategy();
+      const nodes = strategy.toNodes(events);
+      const result = strategy.renderNode!(nodes[0]!);
+      const container = document.createElement('div');
+      render(result, container);
+      const span = container.querySelector('span');
+      expect(span).toBeTruthy();
+      expect(span!.hasAttribute('style')).toBe(true);
+      expect(span!.className).not.toContain('event-type-badge');
+    });
+
+    it('renderNode inline style varies by event category', () => {
+      const strategy = eventChronologyStrategy();
+      const nodes = strategy.toNodes(events);
+      const container1 = document.createElement('div');
+      render(strategy.renderNode!(nodes[0]!), container1);
+      const style1 = container1.querySelector('span')!.getAttribute('style');
+
+      const container2 = document.createElement('div');
+      render(strategy.renderNode!(nodes[1]!), container2);
+      const style2 = container2.querySelector('span')!.getAttribute('style');
+
+      expect(style1).toBeTruthy();
+      expect(style2).toBeTruthy();
+      expect(style1).not.toBe(style2);
     });
   });
 

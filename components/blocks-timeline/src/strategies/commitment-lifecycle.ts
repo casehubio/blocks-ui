@@ -1,4 +1,5 @@
-import type { TimelineStrategy, StageConfig } from '../types.js';
+import type { EventTimelineStrategy } from '@casehubio/pages-viz';
+import type { StageConfig } from '../types.js';
 import { stateProgressionStrategy } from './state-progression.js';
 import type { StateData, ResolveStatus } from './state-progression.js';
 
@@ -21,7 +22,7 @@ export interface CommitmentLifecycleData {
 export function commitmentLifecycleStrategy(options?: {
   stages?: readonly StageConfig[];
   resolveStatus?: ResolveStatus;
-}): TimelineStrategy<StateData> {
+}): EventTimelineStrategy<StateData> {
   const base = stateProgressionStrategy(options);
   return {
     ...base,

@@ -5,7 +5,8 @@ import type { BlocksTimeline } from './blocks-timeline.js';
 import { eventChronologyStrategy } from './strategies/event-chronology.js';
 import { stateProgressionStrategy, linearResolveStatus } from './strategies/state-progression.js';
 import type { CaseEvent, PagedResponse, EventLogEntryResponse } from './strategies/event-chronology.js';
-import type { TimelineNode, TimelineStrategy } from './types.js';
+import type { BlocksTimelineStrategy } from './types.js';
+import type { EventTimelineNode } from '@casehubio/pages-viz';
 
 async function fixture<T extends HTMLElement & { updateComplete: Promise<boolean> }>(
   template: ReturnType<typeof html>,
@@ -59,10 +60,8 @@ describe('BlocksTimeline', () => {
       expect(element.shadowRoot!.querySelectorAll('[role="listitem"]').length).toBe(5);
     });
 
-    it('applies streamType as category CSS classes', () => {
-      expect(element.shadowRoot!.querySelector('.timeline-node.CASE')).toBeTruthy();
-      expect(element.shadowRoot!.querySelector('.timeline-node.WORKER')).toBeTruthy();
-      expect(element.shadowRoot!.querySelector('.timeline-node.TIMER')).toBeFalsy();
+    it('renders nodes with status-based classes', () => {
+      expect(element.shadowRoot!.querySelector('.timeline-node.status-completed')).toBeTruthy();
     });
 
     it('renders filter bar with stream type chips', () => {
@@ -71,25 +70,27 @@ describe('BlocksTimeline', () => {
     });
 
     it('filters nodes when chip toggled', async () => {
+      const before = element.shadowRoot!.querySelectorAll('[role="listitem"]').length;
       const workerChip = Array.from(element.shadowRoot!.querySelectorAll('.filter-chip'))
         .find(c => c.textContent?.includes('WORKER')) as HTMLElement;
       workerChip.click();
       await element.updateComplete;
-      expect(element.shadowRoot!.querySelectorAll('.timeline-node.WORKER').length).toBe(0);
+      const after = element.shadowRoot!.querySelectorAll('[role="listitem"]').length;
+      expect(after).toBeLessThan(before);
     });
 
-    it('emits timeline.node-selected on node click', async () => {
+    it('emits event-timeline:node-selected on node click', async () => {
       const handler = vi.fn();
       element.addEventListener('pages-event', handler);
       const nodeBody = element.shadowRoot!.querySelector('.node-body') as HTMLElement;
       nodeBody.click();
       await element.updateComplete;
       expect(handler).toHaveBeenCalledWith(expect.objectContaining({
-        detail: expect.objectContaining({ topic: 'timeline.node-selected' }),
+        detail: expect.objectContaining({ topic: 'event-timeline:node-selected' }),
       }));
     });
 
-    it('timeline.node-selected payload contains node and index', async () => {
+    it('event-timeline:node-selected payload contains node and index', async () => {
       const handler = vi.fn();
       element.addEventListener('pages-event', handler);
       const nodeBodies = element.shadowRoot!.querySelectorAll('.node-body');
@@ -182,14 +183,14 @@ describe('BlocksTimeline', () => {
       expect(element.shadowRoot!.querySelector('[role="img"]')).toBeTruthy();
     });
 
-    it('emits timeline.expand-requested on click', async () => {
+    it('emits event-timeline:expand-requested on click', async () => {
       const handler = vi.fn();
       element.addEventListener('pages-event', handler);
       const strip = element.shadowRoot!.querySelector('.compact-strip') as HTMLElement;
       strip.click();
       await element.updateComplete;
       expect(handler).toHaveBeenCalledWith(expect.objectContaining({
-        detail: expect.objectContaining({ topic: 'timeline.expand-requested' }),
+        detail: expect.objectContaining({ topic: 'event-timeline:expand-requested' }),
       }));
     });
 
@@ -355,7 +356,7 @@ describe('BlocksTimeline', () => {
     it('component renderNode overrides strategy renderNode', async () => {
       const strategyRender = vi.fn(() => html`<span class="strat">s</span>`);
       const componentRender = vi.fn(() => html`<span class="comp">c</span>`);
-      const strategy: TimelineStrategy<CaseEvent[]> = {
+      const strategy: BlocksTimelineStrategy<CaseEvent[]> = {
         ...eventChronologyStrategy(),
         renderNode: strategyRender,
       };
@@ -370,7 +371,7 @@ describe('BlocksTimeline', () => {
 
     it('strategy renderNode used when component has none', async () => {
       const strategyRender = vi.fn(() => html`<span class="strat">s</span>`);
-      const strategy: TimelineStrategy<CaseEvent[]> = {
+      const strategy: BlocksTimelineStrategy<CaseEvent[]> = {
         ...eventChronologyStrategy(),
         renderNode: strategyRender,
       };
@@ -393,7 +394,7 @@ describe('BlocksTimeline', () => {
     it('component renderDetail overrides strategy renderDetail', async () => {
       const strategyDetail = vi.fn(() => html`<span class="strat-d">sd</span>`);
       const componentDetail = vi.fn(() => html`<span class="comp-d">cd</span>`);
-      const strategy: TimelineStrategy<CaseEvent[]> = {
+      const strategy: BlocksTimelineStrategy<CaseEvent[]> = {
         ...eventChronologyStrategy(),
         renderDetail: strategyDetail,
       };
@@ -426,8 +427,8 @@ describe('BlocksTimeline', () => {
         <blocks-timeline .strategy=${eventChronologyStrategy()} .data=${mockEvents} .activeFilters=${['CASE']} layout="vertical"></blocks-timeline>
       `);
       await element.updateComplete;
-      expect(element.shadowRoot!.querySelectorAll('.timeline-node.CASE').length).toBeGreaterThan(0);
-      expect(element.shadowRoot!.querySelectorAll('.timeline-node.WORKER').length).toBe(0);
+      const nodes = element.shadowRoot!.querySelectorAll('[role="listitem"]');
+      expect(nodes.length).toBe(3);
     });
 
     it('accepts Set<string> as activeFilters', async () => {
@@ -435,16 +436,16 @@ describe('BlocksTimeline', () => {
         <blocks-timeline .strategy=${eventChronologyStrategy()} .data=${mockEvents} .activeFilters=${new Set(['WORKER'])} layout="vertical"></blocks-timeline>
       `);
       await element.updateComplete;
-      expect(element.shadowRoot!.querySelectorAll('.timeline-node.CASE').length).toBe(0);
-      expect(element.shadowRoot!.querySelectorAll('.timeline-node.WORKER').length).toBeGreaterThan(0);
+      const nodes = element.shadowRoot!.querySelectorAll('[role="listitem"]');
+      expect(nodes.length).toBe(2);
     });
 
     it('nodes with undefined category always visible', async () => {
-      const nodes: TimelineNode[] = [
+      const nodes: EventTimelineNode[] = [
         { key: 'n-0', label: 'No category', status: 'completed' },
       ];
-      const strategy: TimelineStrategy<TimelineNode[]> = {
-        toNodes: (d) => d,
+      const strategy: BlocksTimelineStrategy<EventTimelineNode[]> = {
+        toNodes: (d) => [...d],
         defaultLayout: 'vertical',
         filterCategories: ['CASE'],
       };
@@ -659,13 +660,14 @@ describe('BlocksTimeline', () => {
 
   // === LOADING / ERROR STATES ===
   describe('loading and error states', () => {
-    it('shows loading message when no inline data', async () => {
+    it('shows error when self-fetch endpoint fails', async () => {
       element = await fixture(html`
-        <blocks-timeline .strategy=${eventChronologyStrategy()} layout="vertical"></blocks-timeline>
+        <blocks-timeline .strategy=${eventChronologyStrategy()} endpoint="/api/events" layout="vertical"></blocks-timeline>
       `);
-      element.loading = true;
       await element.updateComplete;
-      expect(element.shadowRoot!.textContent).toContain('Loading');
+      await new Promise(r => setTimeout(r, 10));
+      await element.updateComplete;
+      expect(element.shadowRoot!.textContent).toContain('Failed to load');
     });
 
     it('shows error message when no inline data', async () => {

@@ -1,25 +1,27 @@
 import { describe, it, expect } from 'vitest';
-import type { TimelineNode, TimelineStrategy, StageConfig, Layout, NodeStatus, PaginationMeta } from './types.js';
+import type { BlocksTimelineStrategy, StageConfig, PaginationMeta } from './types.js';
+import type { EventTimelineNode, EventNodeStatus, EventTimelineStrategy } from '@casehubio/pages-viz';
+import type { EventTimelineLayout } from '@casehubio/pages-component';
 
 describe('types', () => {
-  it('TimelineNode accepts all valid statuses', () => {
-    const statuses: NodeStatus[] = ['completed', 'active', 'pending', 'failed', 'skipped'];
+  it('EventTimelineNode accepts all valid statuses', () => {
+    const statuses: EventNodeStatus[] = ['completed', 'active', 'pending', 'failed', 'skipped'];
     statuses.forEach(status => {
-      const node: TimelineNode = { key: 'k', label: 'l', status };
+      const node: EventTimelineNode = { key: 'k', label: 'l', status };
       expect(node.status).toBe(status);
     });
   });
 
-  it('TimelineNode optional fields default to undefined', () => {
-    const node: TimelineNode = { key: 'k', label: 'l', status: 'pending' };
+  it('EventTimelineNode optional fields default to undefined', () => {
+    const node: EventTimelineNode = { key: 'k', label: 'l', status: 'pending' };
     expect(node.timestamp).toBeUndefined();
     expect(node.actor).toBeUndefined();
     expect(node.detail).toBeUndefined();
     expect(node.category).toBeUndefined();
   });
 
-  it('Layout type accepts all valid values', () => {
-    const layouts: Layout[] = ['vertical', 'horizontal', 'compact'];
+  it('EventTimelineLayout type accepts all valid values', () => {
+    const layouts: EventTimelineLayout[] = ['vertical', 'horizontal', 'compact'];
     expect(layouts).toHaveLength(3);
   });
 
@@ -32,8 +34,8 @@ describe('types', () => {
     expect(waypoint.terminal).toBeUndefined();
   });
 
-  it('TimelineStrategy contract is satisfiable', () => {
-    const strategy: TimelineStrategy<string[]> = {
+  it('EventTimelineStrategy contract is satisfiable', () => {
+    const strategy: EventTimelineStrategy<string[]> = {
       toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
       defaultLayout: 'vertical',
     };
@@ -49,17 +51,8 @@ describe('types', () => {
     expect(meta.totalElements).toBe(100);
   });
 
-  it('TimelineStrategy pagination fields are optional', () => {
-    const strategy: TimelineStrategy<string[]> = {
-      toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
-      defaultLayout: 'vertical',
-    };
-    expect(strategy.supportsPagination).toBeUndefined();
-    expect(strategy.extractPaginationMeta).toBeUndefined();
-  });
-
-  it('TimelineStrategy with pagination extracts meta', () => {
-    const strategy: TimelineStrategy<string[]> = {
+  it('BlocksTimelineStrategy extends EventTimelineStrategy with pagination', () => {
+    const strategy: BlocksTimelineStrategy<string[]> = {
       toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
       defaultLayout: 'vertical',
       supportsPagination: true,
@@ -73,8 +66,17 @@ describe('types', () => {
       .toEqual({ page: 1, totalPages: 3, totalElements: 60 });
   });
 
-  it('TimelineStrategy with transformData processes raw input', () => {
-    const strategy: TimelineStrategy<string[]> = {
+  it('BlocksTimelineStrategy pagination fields are optional', () => {
+    const strategy: BlocksTimelineStrategy<string[]> = {
+      toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
+      defaultLayout: 'vertical',
+    };
+    expect(strategy.supportsPagination).toBeUndefined();
+    expect(strategy.extractPaginationMeta).toBeUndefined();
+  });
+
+  it('EventTimelineStrategy with transformData processes raw input', () => {
+    const strategy: EventTimelineStrategy<string[]> = {
       toNodes: (data) => data.map((d, i) => ({ key: String(i), label: d, status: 'pending' as const })),
       transformData: (raw) => (raw as { items: string[] }).items,
       defaultLayout: 'vertical',

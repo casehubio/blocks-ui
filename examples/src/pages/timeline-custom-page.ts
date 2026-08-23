@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/blocks-ui-blocks-timeline';
-import type { TimelineNode, TimelineStrategy, Layout } from '@casehubio/blocks-ui-blocks-timeline';
+import type { EventTimelineNode, EventTimelineLayout, BlocksTimelineStrategy } from '@casehubio/blocks-ui-blocks-timeline';
 import type { TemplateResult } from 'lit';
 
 interface DeployStage {
@@ -12,9 +12,9 @@ interface DeployStage {
   startedAt?: string;
 }
 
-function deployPipelineStrategy(): TimelineStrategy<DeployStage[]> {
+function deployPipelineStrategy(): BlocksTimelineStrategy<DeployStage[]> {
   return {
-    toNodes(data: DeployStage[]): TimelineNode[] {
+    toNodes(data: DeployStage[]): EventTimelineNode[] {
       return data.map((stage, i) => ({
         key: `deploy-${i}`,
         label: stage.name,
@@ -42,7 +42,7 @@ const mockPipeline: DeployStage[] = [
 
 @customElement('blocks-example-timeline-custom')
 export class TimelineCustomPage extends LitElement {
-  @state() private _layout: Layout = 'horizontal';
+  @state() private _layout: EventTimelineLayout = 'horizontal';
 
   private _statusColors: Record<string, { bg: string; color: string }> = {
     completed: { bg: 'var(--pages-success-3, #dcfce7)', color: 'var(--pages-success-11, #166534)' },
@@ -51,7 +51,7 @@ export class TimelineCustomPage extends LitElement {
     failed: { bg: 'var(--pages-error-3, #fee2e2)', color: 'var(--pages-error-11, #991b1b)' },
   };
 
-  private _customRenderNode = (node: TimelineNode): TemplateResult => {
+  private _customRenderNode = (node: EventTimelineNode): TemplateResult => {
     const icon = node.status === 'completed' ? '✓'
       : node.status === 'active' ? '⟳'
       : node.status === 'failed' ? '✗'
@@ -64,7 +64,7 @@ export class TimelineCustomPage extends LitElement {
     `;
   };
 
-  private _customRenderDetail = (node: TimelineNode): TemplateResult => {
+  private _customRenderDetail = (node: EventTimelineNode): TemplateResult => {
     const detail = node.detail as { duration?: string } | undefined;
     return html`
       <div style="font-size:13px;color:var(--pages-neutral-11, #374151)">
@@ -75,7 +75,7 @@ export class TimelineCustomPage extends LitElement {
   };
 
   private _toggleLayout(): void {
-    const layouts: Layout[] = ['horizontal', 'vertical', 'compact'];
+    const layouts: EventTimelineLayout[] = ['horizontal', 'vertical', 'compact'];
     const idx = layouts.indexOf(this._layout);
     this._layout = layouts[(idx + 1) % layouts.length]!;
   }
@@ -121,7 +121,7 @@ export class TimelineCustomPage extends LitElement {
           <h2>How to Write a Custom Strategy</h2>
           <ul>
             <li><strong>1. Define your data shape:</strong> The strategy is generic over your domain type (DeployStage[] here)</li>
-            <li><strong>2. Implement toNodes():</strong> Map each domain item to a TimelineNode with key, label, status, and optional actor/detail/timestamp</li>
+            <li><strong>2. Implement toNodes():</strong> Map each domain item to an EventTimelineNode with key, label, status, and optional actor/detail/timestamp</li>
             <li><strong>3. Set defaultLayout:</strong> The strategy declares its preferred layout — consumers can override</li>
             <li><strong>4. Optional renderNode/renderDetail:</strong> Strategy can provide default renderers — component callbacks override them</li>
             <li><strong>5. Optional transformData:</strong> Bridge between raw backend response and your typed input</li>

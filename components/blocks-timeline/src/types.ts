@@ -1,35 +1,8 @@
-import type { TemplateResult } from 'lit';
+import type { EventTimelineStrategy } from '@casehubio/pages-viz';
 
-export type NodeStatus = 'completed' | 'active' | 'pending' | 'failed' | 'skipped';
+export type BlocksTimelineStrategy<T = unknown> = EventTimelineStrategy<T>;
 
-export interface TimelineNode {
-  key: string;
-  label: string;
-  status: NodeStatus;
-  timestamp?: string | undefined;
-  actor?: string | undefined;
-  detail?: unknown | undefined;
-  category?: string | undefined;
-}
-
-export type Layout = 'vertical' | 'horizontal' | 'compact';
-
-export interface TimelineStrategy<T = unknown> {
-  toNodes(data: T): TimelineNode[];
-  transformData?: ((raw: unknown) => T) | undefined;
-  defaultLayout: Layout;
-  renderNode?: ((node: TimelineNode) => TemplateResult) | undefined;
-  renderDetail?: ((node: TimelineNode) => TemplateResult) | undefined;
-  filterCategories?: string[] | undefined;
-  supportsPagination?: boolean | undefined;
-  extractPaginationMeta?: ((raw: unknown) => PaginationMeta | undefined) | undefined;
-}
-
-export interface PaginationMeta {
-  page: number;
-  totalPages: number;
-  totalElements: number;
-}
+export type { PaginationMeta } from '@casehubio/pages-viz';
 
 export interface StageConfig {
   key: string;

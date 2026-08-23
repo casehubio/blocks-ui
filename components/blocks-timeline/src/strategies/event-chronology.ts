@@ -1,6 +1,7 @@
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 import { renderPropertyTree } from '@casehubio/pages-ui-components';
-import type { TimelineNode, TimelineStrategy, PaginationMeta } from '../types.js';
+import type { EventTimelineNode } from '@casehubio/pages-viz';
+import type { EventTimelineStrategy, PaginationMeta } from '@casehubio/pages-viz';
 
 export type CaseHubEventType =
   | 'CASE_STARTED' | 'CASE_COMPLETED' | 'CASE_FAULTED' | 'CASE_CANCELLED' | 'CASE_SUSPENDED' | 'CASE_RESUMED'
@@ -57,6 +58,16 @@ export function isCompactModeEvent(eventType: string): boolean {
   return category === 'lifecycle' || category === 'milestone';
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  lifecycle: 'background: var(--pages-accent-3, #dbeafe); color: var(--pages-accent-11, #1e40af)',
+  task: 'background: var(--pages-success-3, #dcfce7); color: var(--pages-success-11, #166534)',
+  agent: 'background: var(--pages-warning-3, #fef3c7); color: var(--pages-warning-11, #92400e)',
+  milestone: 'background: var(--pages-info-3, #e0f2fe); color: var(--pages-info-11, #0c4a6e)',
+  'action-gate': 'background: var(--pages-error-3, #fee2e2); color: var(--pages-error-11, #991b1b)',
+  orchestration: 'background: var(--pages-neutral-3, #e5e5e5); color: var(--pages-neutral-11, #333)',
+  timer: 'background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-10, #555)',
+};
+
 function isPagedResponse(data: unknown): data is PagedResponse<CaseEvent> {
   return data != null && typeof data === 'object' && 'content' in data && Array.isArray((data as PagedResponse<CaseEvent>).content);
 }
@@ -64,11 +75,11 @@ function isPagedResponse(data: unknown): data is PagedResponse<CaseEvent> {
 export function eventChronologyStrategy(options?: {
   categorize?: (eventType: string) => string;
   streamTypes?: string[];
-}): TimelineStrategy<CaseEvent[]> {
+}): EventTimelineStrategy<CaseEvent[]> {
   const cat = options?.categorize ?? categorizeEvent;
 
   return {
-    toNodes(data: CaseEvent[]): TimelineNode[] {
+    toNodes(data: CaseEvent[]): EventTimelineNode[] {
       return data.map((event, i) => ({
         key: `event-${i}`,
         label: event.eventType.replace(/_/g, ' '),
@@ -83,12 +94,13 @@ export function eventChronologyStrategy(options?: {
       if (isPagedResponse(raw)) return raw.content;
       return raw as CaseEvent[];
     },
-    renderNode(node: TimelineNode) {
+    renderNode(node: EventTimelineNode) {
       const event = node.detail as CaseEvent | undefined;
       const eventCategory = event ? cat(event.eventType) : 'lifecycle';
-      return html`<span class="event-type-badge ${eventCategory}">${node.label}</span>`;
+      const style = `display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; ${CATEGORY_COLORS[eventCategory] ?? CATEGORY_COLORS.lifecycle}`;
+      return html`<span style="${style}">${node.label}</span>`;
     },
-    renderDetail(node: TimelineNode) {
+    renderDetail(node: EventTimelineNode) {
       const event = node.detail as CaseEvent | undefined;
       return html`${renderPropertyTree(event?.payload)}`;
     },
