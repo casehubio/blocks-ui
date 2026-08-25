@@ -126,6 +126,7 @@ __metadata:
   resolution: "@casehubio/blocks-ui-audit-trail-viewer@workspace:components/audit-trail-viewer"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-event-trail": "workspace:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
@@ -437,7 +438,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-event-trail@workspace:components/event-trail":
+"@casehubio/blocks-ui-event-trail@workspace:*, @casehubio/blocks-ui-event-trail@workspace:components/event-trail":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-event-trail@workspace:components/event-trail"
   dependencies:

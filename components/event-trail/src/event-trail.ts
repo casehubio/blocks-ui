@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceMixin } from '@casehubio/pages-component';
+import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { fromRows } from '@casehubio/pages-data';
 import type { TypedDataSet, TypedRow, ColumnId, ColumnType } from '@casehubio/pages-data';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
@@ -12,7 +13,7 @@ import '@casehubio/pages-filter-bar';
 type ColDef = Parameters<typeof fromRows>[1][number];
 
 @customElement('blocks-event-trail')
-export class BlocksEventTrail extends DataSourceMixin(LitElement) {
+export class BlocksEventTrail extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   @property({ type: Array }) data?: unknown[];
   @property({ type: Array }) columnDefs: readonly ColDef[] = [];
   @property({ type: Array }) columnConfig?: TableColumnConfig[];
@@ -182,7 +183,7 @@ export class BlocksEventTrail extends DataSourceMixin(LitElement) {
           .entityField=${this.entityField}
           .entityLabel=${this.entityLabel ?? ''}
           ?showDateRange=${this.showDateRange}
-          @filter-change=${this._handleFilterChange}
+          @filter-bar-change=${this._handleFilterChange}
         ></pages-filter-bar>
       ` : nothing}
       <pages-table

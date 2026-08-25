@@ -102,7 +102,7 @@ describe('BlocksEventTrail', () => {
         chipField: TYPE_COL,
       });
       const filterBar = el.shadowRoot!.querySelector('pages-filter-bar') as HTMLElement;
-      filterBar.dispatchEvent(new CustomEvent('filter-change', {
+      filterBar.dispatchEvent(new CustomEvent('filter-bar-change', {
         bubbles: true,
         composed: true,
         detail: {
@@ -126,7 +126,7 @@ describe('BlocksEventTrail', () => {
         entityField: ACTOR_COL,
       });
       const filterBar = el.shadowRoot!.querySelector('pages-filter-bar') as HTMLElement;
-      filterBar.dispatchEvent(new CustomEvent('filter-change', {
+      filterBar.dispatchEvent(new CustomEvent('filter-bar-change', {
         bubbles: true,
         composed: true,
         detail: {
