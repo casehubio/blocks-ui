@@ -51,6 +51,7 @@ const PAGE_MODULES = [
   './pages/swf-diagram-page.js',
   './pages/casehub-diagram-page.js',
   './pages/diagram-workbench-page.js',
+  './pages/diagram-export-page.js',
 ];
 
 async function bootstrap() {

@@ -3,6 +3,14 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: __dirname,
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        export: resolve(__dirname, 'export.html'),
+      },
+    },
+  },
   resolve: {
     alias: [
       { find: '@casehubio/blocks-ui-core', replacement: resolve(__dirname, '../packages/blocks-ui-core/src') },

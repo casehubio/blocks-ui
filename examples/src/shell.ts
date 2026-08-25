@@ -68,6 +68,7 @@ const NAV: NavCategory[] = [
       { id: 'casehub-diagram', label: 'CaseHub Diagram', hash: '#diagrams/casehub-diagram' },
       { id: 'swf-diagram', label: 'SWF Diagram', hash: '#diagrams/swf-diagram' },
       { id: 'diagram-workbench', label: 'Diagram Workbench', hash: '#diagrams/diagram-workbench' },
+      { id: 'diagram-export', label: 'Diagram Export', hash: '#diagrams/diagram-export' },
     ],
   },
   {
@@ -253,6 +254,7 @@ export class ExampleShell extends LitElement {
       case '#diagrams/casehub-diagram': return html`<blocks-example-casehub-diagram></blocks-example-casehub-diagram>`;
       case '#diagrams/swf-diagram': return html`<blocks-example-swf-diagram></blocks-example-swf-diagram>`;
       case '#diagrams/diagram-workbench': return html`<blocks-example-diagram-workbench></blocks-example-diagram-workbench>`;
+      case '#diagrams/diagram-export': return html`<blocks-example-diagram-export></blocks-example-diagram-export>`;
       case '#document-workbench/document-diff': return html`<blocks-example-document-diff></blocks-example-document-diff>`;
       case '#document-workbench/debate-feed': return html`<blocks-example-debate-feed></blocks-example-debate-feed>`;
       case '#document-workbench/review-tracker': return html`<blocks-example-review-tracker></blocks-example-review-tracker>`;
