@@ -4,6 +4,8 @@ import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, ElkLayoutResult } from '@casehubio/graph-renderer';
 import type { PersistenceBackend, GraphModel, NodeDecoration } from '@casehubio/graph-core';
 import type { Node, Edge } from '@xyflow/react';
+import { exportDiagram } from './diagram-export.js';
+import type { ExportFormat } from './diagram-export.js';
 
 export interface AdapterResult {
   readonly model: GraphModel;
@@ -54,6 +56,7 @@ export declare class DiagramBaseInterface {
   _handleNodeClick: (e: Event) => void;
   _handleSelectionChange: (e: Event) => void;
   _handlePropertyChange: (e: Event) => void;
+  _exportDiagram(format: ExportFormat): Promise<void>;
   _renderError(): TemplateResult;
   _clearErrorAndRetry(): void;
   _renderConflictDialog(): TemplateResult;
@@ -396,6 +399,13 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
         this._save().catch(() => {});
       }
     };
+
+    protected async _exportDiagram(format: ExportFormat): Promise<void> {
+      const canvas = this.querySelector('pages-graph-canvas');
+      if (!canvas) return;
+      const name = this.uri ? this.uri.replace(/\.[^.]+$/, '') : 'diagram';
+      await exportDiagram(canvas as HTMLElement, this._nodes, format, name);
+    }
 
     protected _onDelete(): void {
       // Subclasses with structural editing override this

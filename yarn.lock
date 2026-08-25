@@ -864,6 +864,7 @@ __metadata:
   dependencies:
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
+    html-to-image: "npm:1.11.11"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
@@ -4676,6 +4677,13 @@ __metadata:
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
   checksum: 10c0/208e8a12de1a6569edbb14544f4567e6ce8ecc30b9394fcaa4e7bb1e60c12a7c9a1ed27e31290817157e8626f3a4f29e76c8747030822eb84a6abb15c255f0a0
+  languageName: node
+  linkType: hard
+
+"html-to-image@npm:1.11.11":
+  version: 1.11.11
+  resolution: "html-to-image@npm:1.11.11"
+  checksum: 10c0/0b6349221ad253dfca01d165c589d44341e942faf0273aab28c8b7d86ff2922d3e8e6390f57bf5ddaf6bac9a3b590a8cdaa77d52a363354796dd0e0e05eb35d2
   languageName: node
   linkType: hard
 

@@ -1,6 +1,8 @@
 export { DiagramBaseMixin } from './diagram-base-mixin.js';
 export type { AdapterResult } from './diagram-base-mixin.js';
 export { DiagramToolbar } from './diagram-toolbar.js';
+export { exportDiagram } from './diagram-export.js';
+export type { ExportFormat } from './diagram-export.js';
 export { DiagramProperties, renderPropertyForm, emitPropertyChange } from './diagram-properties.js';
 export { fieldTypeFor } from './form/field-renderer.js';
 export type { FieldType } from './form/field-renderer.js';

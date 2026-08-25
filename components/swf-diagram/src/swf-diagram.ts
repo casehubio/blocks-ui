@@ -101,9 +101,11 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
       <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
         <diagram-toolbar
           ?hasBackend=${this.backend != null}
+          ?hasNodes=${this._nodes.length > 0}
           ?dirty=${this._isDirty}
           ?saving=${this._saving}
           @toolbar-save=${() => this._save()}
+          @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
           <pages-graph-canvas

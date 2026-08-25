@@ -341,6 +341,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
       <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
         <casehub-diagram-toolbar
           ?hasBackend=${this.backend != null}
+          ?hasNodes=${this._nodes.length > 0}
           ?dirty=${this._isDirty}
           ?saving=${this._saving}
           ?runtimeAvailable=${this.runtimeState !== null}
@@ -348,6 +349,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           .staleSeconds=${this._staleSeconds}
           @toolbar-save=${() => this._save()}
           @toolbar-mode-change=${this._handleModeChange}
+          @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></casehub-diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
           <casehub-diagram-palette

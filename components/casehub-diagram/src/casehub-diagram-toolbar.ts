@@ -7,6 +7,7 @@ export class CasehubDiagramToolbar extends LitElement {
   @property({ type: Boolean }) dirty = false;
   @property({ type: Boolean }) saving = false;
   @property({ type: Boolean }) hasBackend = false;
+  @property({ type: Boolean }) hasNodes = false;
   @property({ type: Boolean }) runtimeAvailable = false;
   @property({ type: String }) mode: 'design' | 'runtime' = 'design';
   @property({ type: Number }) staleSeconds = 0;
@@ -51,11 +52,24 @@ export class CasehubDiagramToolbar extends LitElement {
       ${this.staleSeconds > 0 ? html`<span class="stale-badge">⚠ stale (${this.staleSeconds}s ago)</span>` : nothing}
     ` : nothing;
 
-    return html`${saveSection}${modeSection}`;
+    const exportSection = html`
+      <button ?disabled=${!this.hasNodes} @click=${() => this._export('svg')}>Export SVG</button>
+      <button ?disabled=${!this.hasNodes} @click=${() => this._export('png')}>Export PNG</button>
+    `;
+
+    return html`${saveSection}${exportSection}${modeSection}`;
   }
 
   private _save(): void {
     this.dispatchEvent(new CustomEvent('toolbar-save', { bubbles: true, composed: true }));
+  }
+
+  private _export(format: 'svg' | 'png'): void {
+    this.dispatchEvent(new CustomEvent('toolbar-export', {
+      detail: { format },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   private _toggleMode(): void {
