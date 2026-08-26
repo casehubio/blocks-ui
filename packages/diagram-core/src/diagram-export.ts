@@ -86,6 +86,43 @@ function exportFilter(el: HTMLElement): boolean {
   return !EXCLUDED_CLASSES.some(cls => el.classList.contains(cls));
 }
 
+const KEPT_STYLE_PROPS = new Set([
+  'color', 'opacity', 'visibility', 'cursor',
+  'background', 'background-color', 'background-image', 'background-size',
+  'background-position', 'background-repeat',
+  'border', 'border-top', 'border-right', 'border-bottom', 'border-left',
+  'border-color', 'border-style', 'border-width', 'border-radius',
+  'outline', 'outline-color', 'outline-style', 'outline-width',
+  'box-shadow',
+  'font', 'font-family', 'font-size', 'font-weight', 'font-style',
+  'line-height', 'letter-spacing', 'text-align', 'text-decoration',
+  'text-transform', 'text-overflow', 'white-space', 'word-break',
+  'overflow', 'overflow-x', 'overflow-y',
+  'display', 'position', 'top', 'right', 'bottom', 'left',
+  'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height',
+  'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+  'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+  'flex', 'flex-direction', 'flex-wrap', 'flex-grow', 'flex-shrink', 'flex-basis',
+  'justify-content', 'align-items', 'align-self', 'gap', 'row-gap', 'column-gap',
+  'grid-template-columns', 'grid-template-rows', 'grid-column', 'grid-row',
+  'transform', 'transform-origin', 'z-index', 'box-sizing',
+  'fill', 'stroke', 'stroke-width', 'stroke-dasharray', 'stroke-linecap',
+  'stroke-linejoin', 'stroke-opacity', 'fill-opacity',
+]);
+
+function stripBloatedStyles(svgDataUrl: string): string {
+  return svgDataUrl.replace(/style="([^"]*)"/g, (_match, styleStr: string) => {
+    const kept: string[] = [];
+    for (const decl of styleStr.split(';')) {
+      const colon = decl.indexOf(':');
+      if (colon < 0) continue;
+      const prop = decl.substring(0, colon).trim();
+      if (KEPT_STYLE_PROPS.has(prop)) kept.push(decl.trim());
+    }
+    return kept.length > 0 ? `style="${kept.join('; ')}"` : '';
+  });
+}
+
 export type ExportFormat = 'svg' | 'png';
 
 export async function exportDiagram(
@@ -116,12 +153,19 @@ export async function exportDiagram(
       transform: `translate(${vp.x}px, ${vp.y}px) scale(${vp.zoom})`,
     },
     filter: exportFilter,
+    skipFonts: true,
   };
   if (format === 'png') {
     opts.pixelRatio = pixelRatio;
   }
 
-  const dataUrl = await exportFn(viewport, opts);
+  let dataUrl = await exportFn(viewport, opts);
+
+  if (format === 'svg') {
+    const decoded = decodeURIComponent(dataUrl.split(',')[1] ?? '');
+    const stripped = stripBloatedStyles(decoded);
+    dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(stripped);
+  }
 
   const response = await fetch(dataUrl);
   const blob = await response.blob();
