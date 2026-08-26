@@ -72,21 +72,21 @@ describe('computeExportViewport', () => {
   it('zooms to fit a small diagram into a large target', () => {
     const bounds = { x: 0, y: 0, width: 200, height: 100 };
     const vp = computeExportViewport(bounds, 1920, 1080, 20);
-    // padded: 240 x 140, zoom = min(1920/240, 1080/140, 2) = min(8, 7.71, 2) = 2
-    expect(vp.zoom).toBe(2);
+    // padded: 240 x 140, zoom = min(1920/240, 1080/140) = min(8, 7.714) = 7.714
+    expect(vp.zoom).toBeCloseTo(7.714, 2);
   });
 
   it('zooms down for a large diagram', () => {
     const bounds = { x: 0, y: 0, width: 4000, height: 3000 };
     const vp = computeExportViewport(bounds, 1920, 1080, 20);
-    // padded: 4040 x 3040, zoom = min(1920/4040, 1080/3040, 2) = min(0.475, 0.355, 2) = 0.5 (clamped)
+    // padded: 4040 x 3040, zoom = min(1920/4040, 1080/3040) = min(0.475, 0.355) = 0.5 (MIN_ZOOM clamped)
     expect(vp.zoom).toBe(0.5);
   });
 
   it('centres the diagram within the target', () => {
     const bounds = { x: 0, y: 0, width: 920, height: 520 };
     const vp = computeExportViewport(bounds, 1920, 1080, 20);
-    // padded: 960 x 560, zoom = min(1920/960, 1080/560, 2) = min(2, 1.928, 2) ≈ 1.928
+    // padded: 960 x 560, zoom = min(1920/960, 1080/560) = min(2, 1.928) ≈ 1.928
     expect(vp.zoom).toBeCloseTo(1.928, 2);
     // x = (1920 - 960 * z) / 2 - (0 - 20) * z
     // y = (1920 and 1080 - padded * z) / 2 centred

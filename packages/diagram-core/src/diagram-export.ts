@@ -24,7 +24,6 @@ const DEFAULT_NODE_WIDTH = 150;
 const DEFAULT_NODE_HEIGHT = 40;
 const DEFAULT_PADDING = 20;
 const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 2;
 const EXPORT_WIDTH = 1920;
 const EXPORT_HEIGHT = 1080;
 
@@ -69,7 +68,6 @@ export function computeExportViewport(
   const zoom = Math.min(
     targetWidth / paddedWidth,
     targetHeight / paddedHeight,
-    MAX_ZOOM,
   );
   const clampedZoom = Math.max(MIN_ZOOM, zoom);
 
