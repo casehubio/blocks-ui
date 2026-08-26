@@ -401,7 +401,7 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
     };
 
     protected async _exportDiagram(format: ExportFormat): Promise<void> {
-      const canvas = this.querySelector('pages-graph-canvas');
+      const canvas = this.renderRoot.querySelector('pages-graph-canvas');
       if (!canvas) return;
       const name = this.uri ? this.uri.replace(/\.[^.]+$/, '') : 'diagram';
       await exportDiagram(canvas as HTMLElement, this._nodes, format, name);
