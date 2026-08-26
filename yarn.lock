@@ -274,6 +274,7 @@ __metadata:
   resolution: "@casehubio/blocks-ui-channel-activity@workspace:components/channel-activity"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-ui-components": "npm:*"
     "@types/dompurify": "npm:^3.0.5"
     "@types/node": "npm:^22.0.0"
@@ -986,8 +987,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft

@@ -91,7 +91,7 @@ Grouped tabular data with configurable visual modes — three presets (sectioned
 
 ### channel-activity
 
-Qhorus channel activity — eight sub-elements covering the full messaging lifecycle: feed (message grouping, threading, auto-scroll), individual messages, reactions, input with speech-act type selector, emoji picker, threaded replies, channel navigation (sidebar/dropdown modes), member panel with presence. DOMPurify + marked for markdown rendering. Extension points: `formatSender`, `renderContent`, `renderContextHeader`, `renderError`, `allowedTypes`/`deniedTypes` filtering, `showCreate`/`showDelete` toggles, `messageCounts`.
+Qhorus channel activity — twelve sub-elements covering the full messaging lifecycle: feed (message grouping, threading, auto-scroll), individual messages, reactions, input with speech-act type selector, emoji picker, threaded replies, channel navigation (sidebar/dropdown modes), member panel with presence, topic bar, task/artifact/correlation panels. DOMPurify + marked for markdown rendering. Convenience wrapper: `<blocks-channel-activity>` composes nav + feed + input + topic-bar in split-workbench with a tabbed sidebar (members/tasks/artifacts/correlations). Accepts a `PushController` (transport-agnostic — SSE, WebSocket, or test stubs) and creates domain controllers internally. Three tiers: standalone, panel-hosted via `configure()`, inline data mode. Extension points: `formatSender`, `renderContent`, `renderContextHeader`, `renderError`, `allowedTypes`/`deniedTypes` filtering, `showCreate`/`showDelete` toggles.
 
 ### notification-inbox
 
