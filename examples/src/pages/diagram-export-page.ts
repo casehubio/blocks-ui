@@ -47,6 +47,27 @@ export class DiagramExportPage extends LitElement {
   @state() private _yaml = PLACEHOLDER;
   @state() private _diagramType: 'case' | 'swf' = 'case';
 
+  override connectedCallback() {
+    super.connectedCallback();
+    const params = new URLSearchParams(window.location.search);
+
+    const type = params.get('type');
+    if (type === 'case' || type === 'swf') this._diagramType = type;
+
+    const yamlParam = params.get('yaml');
+    if (yamlParam) {
+      this._yaml = yamlParam;
+    }
+
+    const fileParam = params.get('file');
+    if (fileParam) {
+      fetch(fileParam)
+        .then(r => { if (!r.ok) throw new Error(`${r.status}`); return r.text(); })
+        .then(text => { this._yaml = text; })
+        .catch(err => console.error('Failed to load YAML file:', err));
+    }
+  }
+
   static override styles = css`
     :host { display: flex; flex-direction: column; height: 100%; padding: 24px; box-sizing: border-box; gap: 16px; }
     h2 { font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); margin: 0; }
@@ -96,6 +117,19 @@ export class DiagramExportPage extends LitElement {
     }
     casehub-diagram, swf-diagram { width: 100%; height: 100%; }
   `;
+
+  async getSvg(): Promise<string | null> {
+    await this.updateComplete;
+    const diagram = this.shadowRoot?.querySelector('casehub-diagram, swf-diagram') as any;
+    if (!diagram) return null;
+    if (typeof diagram.exportSvg === 'function') return diagram.exportSvg();
+    const svg = diagram.shadowRoot?.querySelector('svg') ?? diagram.querySelector('svg');
+    return svg?.outerHTML ?? null;
+  }
+
+  setYaml(yaml: string) {
+    this._yaml = yaml;
+  }
 
   override render() {
     return html`
