@@ -69,17 +69,17 @@ export class BlocksChannelActivityElement extends Base {
   @property({ attribute: false }) resolveArtifact?: (ref: ArtefactRef) => Promise<unknown>;
 
   @state() _selectedChannelId = '';
-  @state() _selectedChannelName?: string;
+  @state() _selectedChannelName: string | undefined;
   @state() _selectedTopicId: string | null = null;
-  @state() _replyTo?: { messageId: string; senderName: string };
+  @state() _replyTo: { messageId: string; senderName: string } | undefined;
   @state() _activeSidebarTab = 'members';
   @state() _selectedArtefactRef?: ArtefactRef;
 
-  _channels?: ChannelStateController;
-  _messaging?: MessagingController;
-  _membership?: MembershipController;
-  _reactions?: ReactionController;
-  _commitmentCtrl?: CommitmentController;
+  _channels: ChannelStateController | undefined;
+  _messaging: MessagingController | undefined;
+  _membership: MembershipController | undefined;
+  _reactions: ReactionController | undefined;
+  _commitmentCtrl: CommitmentController | undefined;
   _unsubs: (() => void)[] = [];
   _sidebarPanels = new Map<string, HTMLElement>();
 
