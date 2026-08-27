@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { applyPropertyEdit, addElement, removeElement, switchBindingTarget, switchFunctionType, switchMcpTransport, switchModelProvider } from './yaml-editor.js';
+import { applyPropertyEdit, addElement, removeElement, switchBindingTarget, switchFunctionType, switchMcpTransport, switchModelProvider, switchTriggerType } from './yaml-editor.js';
 import { toGraph } from './case-adapter.js';
 import type { CaseDefinition } from '../types/case-definition.js';
 
@@ -376,5 +376,37 @@ describe('switchModelProvider', () => {
     const model = ((parsed.spec.workers![0] as Record<string, unknown>).agent as Record<string, unknown>).model as Record<string, unknown>;
     expect(model.openai).toBeUndefined();
     expect(model.ollama).toEqual({ modelName: '' });
+  });
+});
+
+describe('switchTriggerType', () => {
+  it('switches from contextChange to cloudEvent', () => {
+    const result = switchTriggerType(SAMPLE_YAML, ['spec', 'bindings', 0], 'cloudEvent');
+    const parsed = parseYaml(result) as CaseDefinition;
+    const on = (parsed.spec.bindings![0] as Record<string, unknown>).on as Record<string, unknown>;
+    expect(on['contextChange']).toBeUndefined();
+    expect(on['cloudEvent']).toBeDefined();
+  });
+
+  it('switches from contextChange to schedule', () => {
+    const result = switchTriggerType(SAMPLE_YAML, ['spec', 'bindings', 0], 'schedule');
+    const parsed = parseYaml(result) as CaseDefinition;
+    const on = (parsed.spec.bindings![0] as Record<string, unknown>).on as Record<string, unknown>;
+    expect(on['contextChange']).toBeUndefined();
+    expect(on['schedule']).toBeDefined();
+  });
+
+  it('switches to scopeActivated', () => {
+    const result = switchTriggerType(SAMPLE_YAML, ['spec', 'bindings', 0], 'scopeActivated');
+    const parsed = parseYaml(result) as CaseDefinition;
+    const on = (parsed.spec.bindings![0] as Record<string, unknown>).on as Record<string, unknown>;
+    expect(on['contextChange']).toBeUndefined();
+    expect(on['scopeActivated']).toBeDefined();
+  });
+
+  it('preserves other binding fields', () => {
+    const result = switchTriggerType(SAMPLE_YAML, ['spec', 'bindings', 0], 'cloudEvent');
+    expect(result).toContain('name: scan');
+    expect(result).toContain("capability: ocr");
   });
 });

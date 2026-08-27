@@ -72,3 +72,8 @@ export const CORE_WORKER_KEYS = new Set([
   'name', 'description', 'capabilities', 'executionPolicy',
   'contextType', 'outputType',
 ]);
+
+export type TriggerType = 'contextChange' | 'cloudEvent' | 'schedule' | 'scopeActivated';
+
+export const TRIGGER_TYPES: readonly TriggerType[] =
+  ['contextChange', 'cloudEvent', 'schedule', 'scopeActivated'] as const;

@@ -1,5 +1,5 @@
-import type { WorkerFunctionType, McpTransportType, ModelProviderKey } from './types.js';
-import { FUNCTION_TYPE_KEYS, CORE_WORKER_KEYS, MODEL_PROVIDERS } from './types.js';
+import type { WorkerFunctionType, McpTransportType, ModelProviderKey, TriggerType } from './types.js';
+import { FUNCTION_TYPE_KEYS, CORE_WORKER_KEYS, MODEL_PROVIDERS, TRIGGER_TYPES } from './types.js';
 
 export function detectFunctionType(
   data: Record<string, unknown>,
@@ -28,6 +28,15 @@ export function detectModelProvider(
 ): ModelProviderKey | null {
   for (const key of MODEL_PROVIDERS) {
     if (model[key] != null) return key;
+  }
+  return null;
+}
+
+export function detectTriggerType(
+  on: Record<string, unknown>,
+): TriggerType | null {
+  for (const t of TRIGGER_TYPES) {
+    if (on[t] !== undefined) return t;
   }
   return null;
 }

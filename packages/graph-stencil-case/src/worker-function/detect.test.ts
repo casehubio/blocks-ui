@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { detectFunctionType, detectMcpTransport, detectModelProvider } from './detect.js';
+import { detectFunctionType, detectMcpTransport, detectModelProvider, detectTriggerType } from './detect.js';
 
 describe('detectFunctionType', () => {
   it('detects agent', () => {
@@ -76,5 +76,31 @@ describe('detectModelProvider', () => {
 
   it('returns null for empty model', () => {
     expect(detectModelProvider({})).toBeNull();
+  });
+});
+
+describe('detectTriggerType', () => {
+  it('detects contextChange', () => {
+    expect(detectTriggerType({ contextChange: { filter: '.x' } })).toBe('contextChange');
+  });
+
+  it('detects cloudEvent', () => {
+    expect(detectTriggerType({ cloudEvent: 'event.type' })).toBe('cloudEvent');
+  });
+
+  it('detects schedule', () => {
+    expect(detectTriggerType({ schedule: { cron: '*/5 * * * *' } })).toBe('schedule');
+  });
+
+  it('detects scopeActivated', () => {
+    expect(detectTriggerType({ scopeActivated: {} })).toBe('scopeActivated');
+  });
+
+  it('returns null for empty object', () => {
+    expect(detectTriggerType({})).toBeNull();
+  });
+
+  it('returns null for unrecognised key', () => {
+    expect(detectTriggerType({ customTrigger: {} })).toBeNull();
   });
 });

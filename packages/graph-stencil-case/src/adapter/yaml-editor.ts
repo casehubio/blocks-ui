@@ -1,6 +1,6 @@
 import { parseDocument, parse as parseYaml, type YAMLMap } from 'yaml';
-import type { WorkerFunctionType, McpTransportType, ModelProviderKey } from '../worker-function/types.js';
-import { FUNCTION_TYPE_KEYS, FUNCTION_TYPE_TO_YAML_KEY, MODEL_PROVIDERS } from '../worker-function/types.js';
+import type { WorkerFunctionType, McpTransportType, ModelProviderKey, TriggerType } from '../worker-function/types.js';
+import { FUNCTION_TYPE_KEYS, FUNCTION_TYPE_TO_YAML_KEY, MODEL_PROVIDERS, TRIGGER_TYPES } from '../worker-function/types.js';
 import { FUNCTION_TYPE_DEFAULTS, MCP_TRANSPORT_DEFAULTS, PROVIDER_DEFAULT } from '../worker-function/defaults.js';
 
 export function applyPropertyEdit(
@@ -139,5 +139,27 @@ export function switchModelProvider(
     if (model.has(key)) model.delete(key);
   }
   model.set(newProvider, doc.createNode(PROVIDER_DEFAULT));
+  return doc.toString();
+}
+
+const TRIGGER_DEFAULTS: Record<TriggerType, unknown> = {
+  contextChange: {},
+  cloudEvent: {},
+  schedule: {},
+  scopeActivated: {},
+};
+
+export function switchTriggerType(
+  yaml: string,
+  bindingPath: readonly (string | number)[],
+  newType: TriggerType,
+): string {
+  const doc = parseDocument(yaml);
+  const onPath = [...bindingPath, 'on'];
+  const on = doc.getIn(onPath) as YAMLMap;
+  for (const key of TRIGGER_TYPES) {
+    if (on.has(key)) on.delete(key);
+  }
+  on.set(newType, doc.createNode(TRIGGER_DEFAULTS[newType]));
   return doc.toString();
 }
