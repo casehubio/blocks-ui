@@ -21,6 +21,6 @@ export class BlocksPromptEditorElement extends LitElement {
 
   private _onInput(e: Event) {
     this.value = (e.target as HTMLTextAreaElement).value;
-    this.dispatchEvent(new CustomEvent('value-changed', { detail: { value: this.value }, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value }, bubbles: true, composed: true }));
   }
 }

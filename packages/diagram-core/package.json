@@ -28,6 +28,8 @@
   "dependencies": {
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",
+    "@casehubio/pages-diagram-palette": "*",
+    "@casehubio/pages-property-palette": "*",
     "html-to-image": "1.11.11",
     "lit": "^3.3.3"
   }

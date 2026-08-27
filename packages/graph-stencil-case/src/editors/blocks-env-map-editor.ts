@@ -29,6 +29,6 @@ export class BlocksEnvMapEditorElement extends LitElement {
       if (idx > 0) result[line.slice(0, idx)] = line.slice(idx + 1);
     }
     this.value = result;
-    this.dispatchEvent(new CustomEvent('value-changed', { detail: { value: this.value }, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value }, bubbles: true, composed: true }));
   }
 }

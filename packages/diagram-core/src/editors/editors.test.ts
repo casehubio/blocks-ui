@@ -20,6 +20,19 @@ describe('blocks-prompt-editor', () => {
     expect(textarea?.getAttribute('aria-label')).toBe('Prompt editor');
     el.remove();
   });
+
+  it('emits change event on input', async () => {
+    const el = new BlocksPromptEditorElement();
+    document.body.appendChild(el);
+    await el.updateComplete;
+    const textarea = el.shadowRoot!.querySelector('textarea')!;
+    const changePromise = new Promise<CustomEvent>(r => el.addEventListener('change', r as EventListener, { once: true }));
+    textarea.value = 'test prompt';
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    const event = await changePromise;
+    expect(event.detail.value).toBe('test prompt');
+    el.remove();
+  });
 });
 
 describe('blocks-json-editor', () => {

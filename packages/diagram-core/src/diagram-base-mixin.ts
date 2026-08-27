@@ -1,12 +1,16 @@
 import { html, nothing, type LitElement, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
-import type { ElkLayoutOptions, ElkLayoutResult } from '@casehubio/graph-renderer';
+import type { ElkLayoutOptions, ElkLayoutResult, EditPolicy } from '@casehubio/graph-renderer';
 import type { PersistenceBackend, GraphModel, NodeDecoration } from '@casehubio/graph-core';
 import type { Node, Edge } from '@xyflow/react';
+import type { PropertyPaletteSource, EditorResolver } from '@casehubio/pages-property-palette';
+import type { PaletteItem, PaletteSelectDetail } from '@casehubio/pages-diagram-palette';
 import { exportDiagram } from './diagram-export.js';
 import type { ExportFormat } from './diagram-export.js';
 import { getPropertySchema } from './schema-registry.js';
+import '@casehubio/pages-property-palette';
+import '@casehubio/pages-diagram-palette';
 
 export interface AdapterResult {
   readonly model: GraphModel;
@@ -56,13 +60,21 @@ export declare class DiagramBaseInterface {
   _handleNodeClick: (e: Event) => void;
   _handleSelectionChange: (e: Event) => void;
   _handlePropertyChange: (e: Event) => void;
+  _onPropertyChange(field: (string | number)[], value: unknown): void;
+  _handlePaletteSelect: (e: Event) => void;
   _exportDiagram(format: ExportFormat): Promise<void>;
   _renderError(): TemplateResult;
   _clearErrorAndRetry(): void;
   _renderConflictDialog(): TemplateResult;
   _renderDeleteConfirm(): TemplateResult;
+  _renderPropertyPanel(): TemplateResult;
+  _renderStencilPalette(): TemplateResult;
+  _paletteItems(): PaletteItem[];
   protected _layoutOptions(): ElkLayoutOptions;
   protected _decorations(): ReadonlyMap<string, NodeDecoration> | undefined;
+  protected _editPolicy(): EditPolicy | undefined;
+  protected _editorResolver(): EditorResolver | undefined;
+  protected get _propertyPaletteSource(): PropertyPaletteSource | undefined;
 }
 
 export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T): Constructor<DiagramBaseInterface> & T;
@@ -107,7 +119,7 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       value: unknown,
     ): string;
 
-    protected abstract _paletteTypes(): string[];
+    protected abstract _addElement(type: string): void;
 
     protected abstract _emptyTemplate(): string | null;
 
@@ -117,6 +129,86 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
 
     protected _layoutOptions(): ElkLayoutOptions {
       return { direction: 'DOWN', spacing: 60 };
+    }
+
+    protected _editPolicy(): EditPolicy | undefined {
+      return undefined;
+    }
+
+    protected _editorResolver(): EditorResolver | undefined {
+      return undefined;
+    }
+
+    protected get _propertyPaletteSource(): PropertyPaletteSource | undefined {
+      if (!this._selectedNodeId) return undefined;
+      return {
+        schema: this._selectedSchema as any,
+        data: this._selectedData,
+        readonly: this.readonly,
+        onChange: (field, value) => this._onPropertyChange(field, value),
+      };
+    }
+
+    protected _onPropertyChange(field: (string | number)[], value: unknown): void {
+      if (this.readonly) return;
+      if (this._adapterResult?.degraded) return;
+      if (!this._selectedNodeId || !this._adapterResult) return;
+      const nodePath = this._adapterResult.yamlPaths.get(this._selectedNodeId);
+      if (!nodePath) return;
+      this._pushUndo();
+      try {
+        this._currentYaml = this._applyPropertyEdit(this._currentYaml, nodePath, field, value);
+        this._updateWithoutLayout(this._currentYaml);
+      } catch (e) {
+        this._currentYaml = this._undoStack.pop() ?? this._currentYaml;
+        this._error = `Edit failed: ${e}`;
+      }
+    }
+
+    protected _paletteItems(): PaletteItem[] {
+      const policy = this._editPolicy();
+      if (!policy || !this._adapterResult) return [];
+      const emptyModel: GraphModel = { nodes: [], edges: [] };
+      return policy.getCreatableTypes(null, this._adapterResult?.model ?? emptyModel)
+        .map(s => ({ type: s.type, label: s.label, icon: s.icon, group: s.group }));
+    }
+
+    protected _handlePaletteSelect = (e: Event): void => {
+      if (this.readonly) return;
+      const detail = (e as CustomEvent<PaletteSelectDetail>).detail;
+      const policy = this._editPolicy();
+      if (policy) {
+        const emptyModel: GraphModel = { nodes: [], edges: [] };
+        const creatable = policy.getCreatableTypes(null, this._adapterResult?.model ?? emptyModel);
+        if (!creatable.some(s => s.type === detail.item.type)) return;
+      }
+      this._pushUndo();
+      this._addElement(detail.item.type);
+      this._fullRender(this._currentYaml);
+    };
+
+    protected _renderPropertyPanel(): TemplateResult {
+      const source = this._propertyPaletteSource;
+      if (!source) return html``;
+      return html`
+        <pages-property-palette
+          .source=${source}
+          .resolver=${this._editorResolver()}
+          paletteId=${this.tagName.toLowerCase()}>
+        </pages-property-palette>
+      `;
+    }
+
+    protected _renderStencilPalette(): TemplateResult {
+      const items = this._paletteItems();
+      if (items.length === 0) return html``;
+      return html`
+        <pages-diagram-palette
+          .items=${items}
+          paletteId=${this.tagName.toLowerCase()}
+          @pages-palette-select=${this._handlePaletteSelect}>
+        </pages-diagram-palette>
+      `;
     }
 
     override createRenderRoot(): HTMLElement {
@@ -375,7 +467,7 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
         this._selectedSchema = {};
         return;
       }
-      if ((e.key === 'Delete' || e.key === 'Backspace') && !isTextInput && this._paletteTypes().length > 0) {
+      if ((e.key === 'Delete' || e.key === 'Backspace') && !isTextInput && this._editPolicy() != null) {
         e.preventDefault();
         this._onDelete();
         return;

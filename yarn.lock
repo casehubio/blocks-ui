@@ -865,6 +865,8 @@ __metadata:
   dependencies:
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
+    "@casehubio/pages-diagram-palette": "npm:*"
+    "@casehubio/pages-property-palette": "npm:*"
     html-to-image: "npm:1.11.11"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
@@ -984,6 +986,15 @@ __metadata:
   languageName: node
   linkType: soft
 
+"@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/pages-primitives": "workspace:*"
+    lit: "npm:^3.3.3"
+  languageName: node
+  linkType: soft
+
 "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
@@ -998,6 +1009,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-primitives@portal:./.casehub-packages/packages/pages-primitives::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
+    lit: "npm:^3.3.3"
+  languageName: node
+  linkType: soft
+
+"@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/pages-ui-components": "workspace:*"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
