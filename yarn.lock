@@ -990,7 +990,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1017,7 +1017,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-ui-components": "workspace:*"
+    "@casehubio/pages-ui-components": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft

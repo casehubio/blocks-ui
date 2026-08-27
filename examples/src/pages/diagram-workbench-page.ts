@@ -159,8 +159,9 @@ export class DiagramWorkbenchPage extends LitElement {
   override render() {
     return html`
       <h2>Diagram Workbench</h2>
-      <p>Combined case + SWF diagram — click ⤢ on a worker node to inspect its workflow in the right pane.
-        Workers with SWF workflows show thumbnail previews that expand on click.</p>
+      <p>Combined case + SWF diagram with stencil palettes and property panels in both panes.
+        Click ⤢ on a worker node to inspect its workflow in the right pane.
+        Property palette updates when switching between case (left) and SWF (right) selections.</p>
       <div class="workbench-container">
         <blocks-diagram-workbench .yaml=${YAML}></blocks-diagram-workbench>
       </div>

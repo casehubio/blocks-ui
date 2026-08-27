@@ -1,5 +1,6 @@
 import { LitElement, html, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import {
   toGraph,
   registerCaseStencils,
@@ -38,6 +39,47 @@ import './casehub-diagram-toolbar.js';
 
 const caseEditPolicy = createCaseEditPolicy();
 
+function caseMiniMapNodeColor(node: { type?: string }): string {
+  switch (node.type) {
+    case 'binding': return '#3b82f6';
+    case 'worker': return '#6b7280';
+    case 'milestone': return '#d97706';
+    case 'goal': return '#16a34a';
+    case 'subcase': return '#8b5cf6';
+    case 'external': return '#94a3b8';
+    default: return '#2563eb';
+  }
+}
+
+function svgIcon(paths: string, color: string, size = 20) {
+  return html`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 20 20" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${unsafeSVG(paths)}</svg>`;
+}
+
+const CASE_ICON_PATHS: Record<string, { paths: string; color: string }> = {
+  link: {
+    paths: '<path d="M8.5 11.5a3.5 3.5 0 005-5l-1-1a3.5 3.5 0 00-5 0"></path><path d="M11.5 8.5a3.5 3.5 0 00-5 5l1 1a3.5 3.5 0 005 0"></path>',
+    color: '#3b82f6',
+  },
+  cpu: {
+    paths: '<rect x="5" y="5" width="10" height="10" rx="1.5"></rect><path d="M8 2v3m4-3v3M8 15v3m4-3v3M2 8h3m-3 4h3M15 8h3m-3 4h3"></path>',
+    color: '#6b7280',
+  },
+  flag: {
+    paths: '<path d="M4 15V4"></path><path d="M4 4c2-1.5 4-.5 6-2s4-.5 6 1v7c-2-1.5-4-.5-6 1s-4 .5-6-1" fill="#d97706" fill-opacity="0.15"></path>',
+    color: '#d97706',
+  },
+  target: {
+    paths: '<circle cx="10" cy="10" r="7"></circle><circle cx="10" cy="10" r="3.5"></circle><circle cx="10" cy="10" r="1" fill="#16a34a" stroke="none"></circle>',
+    color: '#16a34a',
+  },
+};
+
+function caseIconRenderer(icon: string) {
+  const def = CASE_ICON_PATHS[icon];
+  if (!def) return html`<span style="width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">${icon}</span>`;
+  return svgIcon(def.paths, def.color);
+}
+
 const EMPTY_CASE_YAML = `dsl: "1.0.0"
 namespace:
 name:
@@ -52,6 +94,9 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;
 
   @state() private _staleSeconds = 0;
+  @state() private _paletteOpen = true;
+  @state() private _paletteCompact = false;
+  @state() private _propertiesOpen = true;
 
   private _expandedWorkers = new Set<string>();
   private _expandDebounce: ReturnType<typeof setTimeout> | null = null;
@@ -73,6 +118,10 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
 
   protected override _editPolicy(): EditPolicy {
     return caseEditPolicy;
+  }
+
+  protected override _iconRenderer() {
+    return caseIconRenderer;
   }
 
   protected override _editorResolver(): EditorResolver {
@@ -178,6 +227,13 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
 
   override async updated(changed: Map<string, unknown>): Promise<void> {
     await super.updated(changed);
+    const palette = this.querySelector('pages-diagram-palette');
+    if (palette?.shadowRoot && !palette.shadowRoot.querySelector('#dock-toolbar-hide')) {
+      const s = document.createElement('style');
+      s.id = 'dock-toolbar-hide';
+      s.textContent = '.palette-toolbar { display: none !important; }';
+      palette.shadowRoot.appendChild(s);
+    }
     if (changed.has('runtimeState')) {
       if (this.runtimeState === null) {
         this._mode = 'design';
@@ -580,6 +636,48 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     });
   }
 
+  private _renderDockHeader(title: string, side: 'left' | 'right') {
+    const close = () => {
+      if (side === 'left') this._paletteOpen = !this._paletteOpen;
+      else this._propertiesOpen = !this._propertiesOpen;
+    };
+    const isPaletteCompact = side === 'left' && this._paletteCompact;
+    const toggleCompact = side === 'left' ? () => {
+      this._paletteCompact = !this._paletteCompact;
+      const palette = this.querySelector('pages-diagram-palette') as any;
+      if (palette) { palette._mode = this._paletteCompact ? 'compact' : 'standard'; palette.requestUpdate(); }
+    } : undefined;
+    return html`
+      <div style="display:flex; align-items:center; justify-content:${isPaletteCompact ? 'center' : 'space-between'}; padding:3px 6px; border-bottom:1px solid var(--pages-neutral-4,#e5e7eb); background:var(--pages-neutral-2,#f8f9fa); gap:4px;">
+        ${isPaletteCompact ? nothing : html`<span style="font-size:11px; font-weight:600; color:var(--pages-neutral-11,#374151); text-transform:uppercase; letter-spacing:0.5px;">${title}</span>`}
+        <div style="display:flex; gap:2px;">
+          ${toggleCompact ? html`
+            <button @click=${toggleCompact}
+              style="border:none; background:none; cursor:pointer; font-size:12px; color:var(--pages-neutral-9,#6b7280); padding:0 2px; line-height:1;"
+              aria-label="Toggle compact view" title="Toggle compact">⊞</button>
+          ` : nothing}
+          <button @click=${close}
+            style="border:none; background:none; cursor:pointer; font-size:13px; color:var(--pages-neutral-9,#6b7280); padding:0 2px; line-height:1;"
+            aria-label=${`Close ${title} panel`}
+            title="Close">&times;</button>
+        </div>
+      </div>`;
+  }
+
+  private _renderCollapsedDock(title: string, icon: string, side: 'left' | 'right') {
+    const toggle = () => {
+      if (side === 'left') this._paletteOpen = true;
+      else this._propertiesOpen = true;
+    };
+    return html`
+      <div style="width:28px; display:flex; flex-direction:column; align-items:center; border-${side === 'left' ? 'right' : 'left'}:1px solid var(--pages-neutral-4,#e5e7eb); background:var(--pages-neutral-2,#f8f9fa); padding-top:8px;">
+        <button @click=${toggle}
+          style="border:none; background:none; cursor:pointer; padding:4px; color:var(--pages-neutral-9,#6b7280); font-size:14px; writing-mode:vertical-rl; text-orientation:mixed; letter-spacing:1px;"
+          aria-label=${`Open ${title} panel`}
+          title=${title}>${icon} ${title}</button>
+      </div>`;
+  }
+
   override render() {
     if (this._error) {
       return this._renderError();
@@ -601,25 +699,42 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></casehub-diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
-          ${this._renderStencilPalette()}
+          ${this._paletteOpen ? html`
+            <div style="border-right:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
+              ${this._renderDockHeader('Stencils', 'left')}
+              <div style="padding:2px 4px;">
+                ${this._renderStencilPalette()}
+              </div>
+            </div>
+          ` : this._renderCollapsedDock('Stencils', '⊞', 'left')}
           <pages-graph-canvas
             .nodes=${this._nodes}
             .edges=${this._edges}
+            .miniMapNodeColor=${caseMiniMapNodeColor}
             role="img"
             aria-label="Case definition diagram"
-            style="flex: 1; height: 100%;"
+            style="flex: 1; height: 100%; min-width: 0;"
             @pages-event=${(e: CustomEvent) => {
               const topic = e.detail?.topic as string | undefined;
-              if (topic === 'graph:node-click') this._handleNodeClick(e);
-              if (topic === 'graph:selection-change') this._handleSelectionChange(e);
+              if (topic === 'graph:node:click') this._handleNodeClick(e);
+              if (topic === 'graph:selection:change') this._handleSelectionChange(e);
             }}
           ></pages-graph-canvas>
-          ${hasSelection ? html`
-            <div style="width: 300px; border-left: 1px solid var(--pages-border-color, #ddd); overflow-y: auto;">
-              ${this._renderTargetSelector()}
-              ${this._renderPropertyPanel()}
+          ${this._propertiesOpen ? html`
+            <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
+              ${this._renderDockHeader('Properties', 'right')}
+              ${hasSelection ? html`
+                <div style="padding:8px;">
+                  ${this._renderTargetSelector()}
+                  ${this._renderPropertyPanel()}
+                </div>
+              ` : html`
+                <div style="padding:12px; color:var(--pages-neutral-8,#9ca3af); font-size:12px; font-style:italic;">
+                  Click a node to view its properties
+                </div>
+              `}
             </div>
-          ` : nothing}
+          ` : this._renderCollapsedDock('Properties', '☰', 'right')}
         </div>
         ${this._showConflict ? this._renderConflictDialog() : nothing}
         ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}

@@ -170,7 +170,11 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       if (!policy || !this._adapterResult) return [];
       const emptyModel: GraphModel = { nodes: [], edges: [] };
       return policy.getCreatableTypes(null, this._adapterResult?.model ?? emptyModel)
-        .map(s => ({ type: s.type, label: s.label, icon: s.icon, group: s.group }));
+        .map(s => {
+          const item: PaletteItem = { type: s.type, label: s.label, icon: s.icon };
+          if (s.group) (item as any).group = s.group;
+          return item;
+        });
     }
 
     protected _handlePaletteSelect = (e: Event): void => {
@@ -184,7 +188,11 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       }
       this._pushUndo();
       this._addElement(detail.item.type);
-      this._fullRender(this._currentYaml);
+      if (this._lastLayout) {
+        this._updateWithoutLayout(this._currentYaml);
+      } else {
+        this._fullRender(this._currentYaml);
+      }
     };
 
     protected _renderPropertyPanel(): TemplateResult {
@@ -199,12 +207,17 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       `;
     }
 
+    protected _iconRenderer(): ((icon: string) => TemplateResult) | undefined {
+      return undefined;
+    }
+
     protected _renderStencilPalette(): TemplateResult {
       const items = this._paletteItems();
       if (items.length === 0) return html``;
       return html`
         <pages-diagram-palette
           .items=${items}
+          .iconRenderer=${this._iconRenderer()}
           paletteId=${this.tagName.toLowerCase()}
           @pages-palette-select=${this._handlePaletteSelect}>
         </pages-diagram-palette>
@@ -417,15 +430,30 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       this.requestUpdate();
     }
 
+    private _nodeClickGuard = false;
+
     protected _handleNodeClick = (e: Event): void => {
-      const detail = (e as CustomEvent<{ nodeId: string }>).detail;
-      this._selectedNodeId = detail.nodeId;
-      this._updateSelectedNode();
+      const detail = (e as CustomEvent).detail;
+      const payload = detail?.payload ?? detail;
+      const nodeId = payload?.nodeId ?? '';
+      if (nodeId && this._selectedNodeId !== nodeId) {
+        this._selectedNodeId = nodeId;
+        this._updateSelectedNode();
+      }
+      this._nodeClickGuard = true;
+      setTimeout(() => { this._nodeClickGuard = false; }, 100);
     };
 
     protected _handleSelectionChange = (e: Event): void => {
-      const detail = (e as CustomEvent<{ nodeIds: string[] }>).detail;
-      if (detail.nodeIds.length === 0) {
+      const detail = (e as CustomEvent).detail;
+      const payload = detail?.payload ?? detail;
+      const nodeIds: string[] = payload?.nodeIds ?? [];
+      if (nodeIds.length > 0) {
+        if (this._selectedNodeId !== nodeIds[0]) {
+          this._selectedNodeId = nodeIds[0]!;
+          this._updateSelectedNode();
+        }
+      } else if (this._selectedNodeId !== '' && !this._nodeClickGuard) {
         this._selectedNodeId = '';
         this._selectedData = {};
         this._selectedSchema = {};

@@ -205,7 +205,8 @@ export class SwfDiagramPage extends LitElement {
     const ex = EXAMPLES[this._example]!;
     return html`
       <h2>SWF Diagram</h2>
-      <p>${ex.description}</p>
+      <p>${ex.description} Stencil palette with 5 SWF task types (call, set, switch, raise, try).
+        Click a node to edit properties via schema-driven palette with x-group annotations.</p>
       <div class="controls">
         <label>Example:</label>
         <select @change=${(e: Event) => { this._example = (e.target as HTMLSelectElement).value; }}>

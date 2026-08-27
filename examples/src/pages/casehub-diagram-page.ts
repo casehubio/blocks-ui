@@ -185,9 +185,10 @@ export class CasehubDiagramPage extends LitElement {
   override render() {
     return html`
       <h2>CaseHub Diagram</h2>
-      <p>Visual diagram editor for CaseDefinition YAML — bindings, workers (with function type badges),
-        milestones, goals, sub-cases. Palette for adding nodes, property panel on selection,
-        structural editing, and optional runtime overlay.</p>
+      <p>Visual diagram editor for CaseDefinition YAML. Stencil palette (left) with 4 creatable types
+        driven by CaseEditPolicy. Click a node to see its schema-driven property palette (right) with
+        discriminator rendering for function type, trigger type, model provider, and MCP transport.
+        Structural editing: add, delete (with auto-join), undo/redo, and optional runtime overlay.</p>
       <div class="diagram-container">
         <casehub-diagram .yaml=${YAML}></casehub-diagram>
       </div>

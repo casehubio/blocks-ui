@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { toSwfGraph, applySwfPropertyEdit, addSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/diagram-core';
 import type { AdapterResult } from '@casehubio/diagram-core';
@@ -7,6 +8,39 @@ import type { EditPolicy } from '@casehubio/graph-renderer';
 import '@casehubio/graph-renderer';
 
 const swfEditPolicy = createSwfEditPolicy();
+
+function svgIcon(paths: string, color: string, size = 20) {
+  return html`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 20 20" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${unsafeSVG(paths)}</svg>`;
+}
+
+const SWF_ICON_PATHS: Record<string, { paths: string; color: string }> = {
+  phone: {
+    paths: '<path d="M5 4h3l1.5 4-2 1.5a8 8 0 003 3L12 11l4 1.5V16a1 1 0 01-1 1A13 13 0 014 5a1 1 0 011-1"></path>',
+    color: '#2563eb',
+  },
+  edit: {
+    paths: '<path d="M12 3l5 5-9 9H3v-5z"></path><path d="M10 5l5 5"></path>',
+    color: '#7c3aed',
+  },
+  'git-branch': {
+    paths: '<circle cx="7" cy="5" r="2"></circle><circle cx="13" cy="15" r="2"></circle><circle cx="7" cy="15" r="2"></circle><path d="M7 7v6m6-6V7a2 2 0 00-2-2H7"></path>',
+    color: '#0891b2',
+  },
+  'alert-triangle': {
+    paths: '<path d="M10 3L2 17h16L10 3z" fill="#dc2626" fill-opacity="0.12"></path><path d="M10 8v3m0 2.5v.5"></path>',
+    color: '#dc2626',
+  },
+  shield: {
+    paths: '<path d="M10 2L3 6v4c0 4.4 3 8.5 7 10 4-1.5 7-5.6 7-10V6l-7-4z" fill="#16a34a" fill-opacity="0.1"></path><path d="M8 10l2 2 3-4"></path>',
+    color: '#16a34a',
+  },
+};
+
+function swfIconRenderer(icon: string) {
+  const def = SWF_ICON_PATHS[icon];
+  if (!def) return html`<span style="width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">${icon}</span>`;
+  return svgIcon(def.paths, def.color);
+}
 
 @customElement('swf-diagram')
 export class SwfDiagram extends DiagramBaseMixin(LitElement) {
@@ -37,6 +71,10 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
 
   protected override _editPolicy(): EditPolicy {
     return swfEditPolicy;
+  }
+
+  protected override _iconRenderer() {
+    return swfIconRenderer;
   }
 
   protected _addElement(type: string): void {
@@ -99,22 +137,29 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
-          ${this._renderStencilPalette()}
+          <div style="border-right:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0; padding:8px;">
+            ${this._renderStencilPalette()}
+          </div>
           <pages-graph-canvas
             .nodes=${filteredNodes}
             .edges=${filteredEdges}
             role="img"
             aria-label="Workflow diagram"
-            style="flex: 1; height: 100%;"
+            style="flex: 1; height: 100%; min-width: 0;"
             @pages-event=${(e: CustomEvent) => {
               const topic = e.detail?.topic as string | undefined;
-              if (topic === 'graph:node-click') this._handleNodeClick(e);
-              if (topic === 'graph:selection-change') this._handleSelectionChange(e);
+              if (topic === 'graph:node:click') this._handleNodeClick(e);
+              if (topic === 'graph:selection:change') this._handleSelectionChange(e);
             }}
           ></pages-graph-canvas>
           ${hasSelection && !isReadonly ? html`
-            <div style="width: 300px; border-left: 1px solid var(--pages-border-color, #ddd); overflow-y: auto;">
-              ${this._renderPropertyPanel()}
+            <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
+              <div style="padding:6px 10px; border-bottom:1px solid var(--pages-neutral-4,#e5e7eb); background:var(--pages-neutral-2,#f8f9fa);">
+                <span style="font-size:12px; font-weight:600; color:var(--pages-neutral-11,#374151); text-transform:uppercase; letter-spacing:0.5px;">Properties</span>
+              </div>
+              <div style="padding:8px;">
+                ${this._renderPropertyPanel()}
+              </div>
             </div>
           ` : nothing}
           ${this._adapterResult?.degraded ? html`
