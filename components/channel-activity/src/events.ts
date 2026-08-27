@@ -19,6 +19,10 @@ export const ChannelEventTopics = {
   RENAME_TOPIC: 'channel:rename-topic',
   MERGE_TOPIC: 'channel:merge-topic',
   ARTEFACT_SELECTED: 'channel:artefact-selected',
+  CREATE_SPACE: 'space:create',
+  RENAME_SPACE: 'space:rename',
+  DELETE_SPACE: 'space:delete',
+  MOVE_CHANNEL_TO_SPACE: 'channel:move-to-space',
 } as const;
 
 export interface SendMessagePayload {
@@ -89,4 +93,22 @@ export interface MessageSelectedPayload {
 export interface CursorActionPayload {
   readonly channelId: string;
   readonly cursorId?: string;
+}
+
+export interface CreateSpacePayload {
+  readonly name: string;
+}
+
+export interface RenameSpacePayload {
+  readonly spaceId: string;
+  readonly newName: string;
+}
+
+export interface DeleteSpacePayload {
+  readonly spaceId: string;
+}
+
+export interface MoveChannelToSpacePayload {
+  readonly channelId: string;
+  readonly spaceId: string | null;
 }

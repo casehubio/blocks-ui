@@ -564,4 +564,220 @@ describe('blocks-channel-nav', () => {
       expect(el.shadowRoot!.querySelector('.space-group')).toBeNull();
     });
   });
+
+  describe('context menu', () => {
+    const mockTree: ChannelTree = {
+      ungrouped: [
+        { id: 'ch-ug', name: 'general', semantic: 'APPEND', paused: false, unreadCount: 0 },
+      ],
+      spaces: [{
+        space: { id: 'sp1', name: 'Case Alpha' },
+        channels: [
+          { id: 'ch1', name: 'work', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Case Alpha', unreadCount: 0 },
+        ],
+        unreadCount: 0,
+        children: [],
+      }, {
+        space: { id: 'sp2', name: 'Case Beta' },
+        channels: [
+          { id: 'ch2', name: 'observe', semantic: 'APPEND', paused: false, spaceId: 'sp2', spaceName: 'Case Beta', unreadCount: 0 },
+        ],
+        unreadCount: 0,
+        children: [],
+      }],
+    };
+
+    it('shows space context menu on right-click of space header', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const header = el.shadowRoot!.querySelector('.space-header')!;
+      header.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const menu = el.shadowRoot!.querySelector('.context-menu');
+      expect(menu).toBeTruthy();
+      const items = menu!.querySelectorAll('.context-menu-item');
+      expect(items[0]!.textContent!.trim()).toBe('Rename');
+      expect(items[1]!.textContent!.trim()).toBe('Delete');
+      expect(items[2]!.textContent!.trim()).toBe('Create Channel Here');
+    });
+
+    it('shows channel context menu with Move to Space submenu', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.channel-item');
+      const spacedChannel = Array.from(items).find(i => i.textContent!.includes('work'))!;
+      spacedChannel.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const menu = el.shadowRoot!.querySelector('.context-menu');
+      expect(menu).toBeTruthy();
+      const trigger = menu!.querySelector('.submenu-trigger');
+      expect(trigger).toBeTruthy();
+      expect(trigger!.textContent).toContain('Move to Space');
+      const submenuItems = menu!.querySelectorAll('.submenu .context-menu-item');
+      expect(submenuItems.length).toBeGreaterThan(0);
+    });
+
+    it('dismisses context menu on outside click', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const header = el.shadowRoot!.querySelector('.space-header')!;
+      header.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+      expect(el.shadowRoot!.querySelector('.context-menu')).toBeTruthy();
+
+      // requestAnimationFrame callback needs to fire before the click listener is registered
+      await new Promise(r => requestAnimationFrame(r));
+      await new Promise(r => setTimeout(r, 0));
+      document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await (el as any).updateComplete;
+      expect(el.shadowRoot!.querySelector('.context-menu')).toBeFalsy();
+    });
+
+    it('emits space:rename on inline rename Enter', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('pages-event', (e: Event) => events.push(e as CustomEvent));
+
+      const header = el.shadowRoot!.querySelector('.space-header')!;
+      header.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const renameItem = el.shadowRoot!.querySelectorAll('.context-menu .context-menu-item')[0]!;
+      (renameItem as HTMLElement).click();
+      await (el as any).updateComplete;
+
+      const input = el.shadowRoot!.querySelector('.space-rename-input') as HTMLInputElement;
+      expect(input).toBeTruthy();
+      input.value = 'Renamed Space';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      await (el as any).updateComplete;
+
+      const renameEvent = events.find(e => e.detail.topic === ChannelEventTopics.RENAME_SPACE);
+      expect(renameEvent).toBeTruthy();
+      expect(renameEvent!.detail.payload.newName).toBe('Renamed Space');
+    });
+
+    it('emits space:create on create space dialog confirm', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('pages-event', (e: Event) => events.push(e as CustomEvent));
+
+      const createBtn = el.shadowRoot!.querySelector('.create-space-btn') as HTMLElement;
+      createBtn.click();
+      await (el as any).updateComplete;
+
+      const dialog = el.shadowRoot!.querySelector('.create-space-dialog') as any;
+      dialog.dispatchEvent(new CustomEvent('confirm', { detail: { reason: 'New Space' }, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const createEvent = events.find(e => e.detail.topic === ChannelEventTopics.CREATE_SPACE);
+      expect(createEvent).toBeTruthy();
+      expect(createEvent!.detail.payload.name).toBe('New Space');
+    });
+
+    it('emits space:delete after delete confirmation', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('pages-event', (e: Event) => events.push(e as CustomEvent));
+
+      const header = el.shadowRoot!.querySelector('.space-header')!;
+      header.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const deleteItem = el.shadowRoot!.querySelectorAll('.context-menu .context-menu-item')[1]!;
+      (deleteItem as HTMLElement).click();
+      await (el as any).updateComplete;
+
+      const dialog = el.shadowRoot!.querySelector('.delete-space-dialog') as any;
+      dialog.dispatchEvent(new CustomEvent('confirm', { bubbles: true }));
+      await (el as any).updateComplete;
+
+      const deleteEvent = events.find(e => e.detail.topic === ChannelEventTopics.DELETE_SPACE);
+      expect(deleteEvent).toBeTruthy();
+    });
+
+    it('emits channel:create with spaceId for Create Channel Here', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('pages-event', (e: Event) => events.push(e as CustomEvent));
+
+      const header = el.shadowRoot!.querySelector('.space-header')!;
+      header.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.context-menu .context-menu-item');
+      const createItem = items[items.length - 1]!;
+      (createItem as HTMLElement).click();
+      await (el as any).updateComplete;
+
+      const dialog = el.shadowRoot!.querySelector('.create-dialog') as any;
+      dialog.dispatchEvent(new CustomEvent('confirm', { detail: { reason: 'new-channel' }, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const createEvent = events.find(e => e.detail.topic === ChannelEventTopics.CREATE_CHANNEL);
+      expect(createEvent).toBeTruthy();
+      expect(createEvent!.detail.payload.spaceId).toBe('sp1');
+    });
+
+    it('emits channel:move-to-space on submenu click', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('pages-event', (e: Event) => events.push(e as CustomEvent));
+
+      const channelItems = el.shadowRoot!.querySelectorAll('.channel-item');
+      const spacedChannel = Array.from(channelItems).find(i => i.textContent!.includes('work'))!;
+      spacedChannel.dispatchEvent(new MouseEvent('contextmenu', { clientX: 100, clientY: 200, bubbles: true }));
+      await (el as any).updateComplete;
+
+      const submenuItems = el.shadowRoot!.querySelectorAll('.submenu .context-menu-item');
+      expect(submenuItems.length).toBeGreaterThan(0);
+      (submenuItems[0] as HTMLElement).click();
+      await (el as any).updateComplete;
+
+      const moveEvent = events.find(e => e.detail.topic === ChannelEventTopics.MOVE_CHANNEL_TO_SPACE);
+      expect(moveEvent).toBeTruthy();
+    });
+
+    it('renders + Create Space button in tree mode', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = mockTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const btn = el.shadowRoot!.querySelector('.create-space-btn');
+      expect(btn).toBeTruthy();
+    });
+  });
 });

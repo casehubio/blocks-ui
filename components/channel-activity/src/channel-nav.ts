@@ -21,6 +21,13 @@ export class ChannelNavElement extends LitElement {
   @state() private _dropdownOpen = false;
   @state() private _deleteTarget: QhorusChannel | null = null;
   @state() private _showCreateDialog = false;
+  @state() private _contextMenu: { x: number; y: number; type: 'space' | 'channel'; target: SpaceNode | QhorusChannel } | null = null;
+  @state() private _renamingSpaceId: string | null = null;
+  @state() private _renameValue = '';
+  @state() private _showCreateSpaceDialog = false;
+  @state() private _showDeleteSpaceDialog = false;
+  @state() private _deleteSpaceTarget: SpaceNode | null = null;
+  @state() private _createChannelInSpaceId: string | null = null;
 
   static override readonly styles = css`
     :host {
@@ -199,6 +206,70 @@ export class ChannelNavElement extends LitElement {
       font-size: var(--pages-font-size-xs, 11px);
       color: var(--pages-neutral-8, #888);
     }
+    .context-menu {
+      position: fixed;
+      background: var(--pages-neutral-1, #fff);
+      border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-1, 4px);
+      box-shadow: var(--pages-shadow-3, 0 4px 12px rgba(0,0,0,0.1));
+      z-index: 100;
+      min-width: 180px;
+      padding: var(--pages-space-1, 4px);
+    }
+    .context-menu-item {
+      padding: var(--pages-space-2, 8px) var(--pages-space-3, 12px);
+      cursor: pointer;
+      border-radius: var(--pages-radius-1, 4px);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .context-menu-item:hover { background: var(--pages-neutral-3, #f5f5f5); }
+    .context-menu-item.danger:hover { color: var(--pages-danger-1, #dc2626); }
+    .context-menu-separator {
+      height: 1px;
+      background: var(--pages-neutral-4, #e5e5e5);
+      margin: var(--pages-space-1, 4px) 0;
+    }
+    .submenu-trigger { position: relative; }
+    .submenu-trigger .submenu { display: none; }
+    .submenu-trigger:hover .submenu { display: block; }
+    .submenu { position: absolute; left: 100%; top: 0; }
+    .space-rename-input {
+      flex: 1;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid var(--pages-accent-7, #818cf8);
+      border-radius: var(--pages-radius-1, 4px);
+      padding: 2px 4px;
+      background: var(--pages-neutral-1, #fff);
+      color: var(--pages-neutral-12, #1a1a1a);
+      outline: none;
+    }
+    .space-filter-row {
+      display: flex;
+      gap: var(--pages-space-1, 4px);
+      align-items: center;
+      margin-bottom: var(--pages-space-2, 8px);
+    }
+    .space-filter-row .space-filter { flex: 1; }
+    .create-space-btn {
+      width: 28px; height: 28px;
+      border: 1px solid var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-1, 4px);
+      background: var(--pages-neutral-1, #fff);
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--pages-neutral-9, #999);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .create-space-btn:hover {
+      background: var(--pages-neutral-3, #f5f5f5);
+      color: var(--pages-neutral-12, #1a1a1a);
+    }
   `;
 
   private getChannelIcon(_semantic: ChannelSemantic): string {
@@ -232,9 +303,12 @@ export class ChannelNavElement extends LitElement {
   private _onCreateConfirm(e: CustomEvent<{ reason?: string }>): void {
     const name = e.detail?.reason?.trim();
     if (name) {
-      emitPagesEvent(this, ChannelEventTopics.CREATE_CHANNEL, { name });
+      const payload: { name: string; spaceId?: string } = { name };
+      if (this._createChannelInSpaceId) payload.spaceId = this._createChannelInSpaceId;
+      emitPagesEvent(this, ChannelEventTopics.CREATE_CHANNEL, payload);
     }
     this._showCreateDialog = false;
+    this._createChannelInSpaceId = null;
   }
 
   private _onCreateCancel(): void {
@@ -353,12 +427,113 @@ export class ChannelNavElement extends LitElement {
     this._expandedSpaces = next;
   }
 
+  private _showContextMenu(e: MouseEvent, type: 'space' | 'channel', target: SpaceNode | QhorusChannel) {
+    e.preventDefault();
+    e.stopPropagation();
+    const clampedX = Math.min(e.clientX, window.innerWidth - 200);
+    const clampedY = Math.min(e.clientY, window.innerHeight - 200);
+    this._contextMenu = { x: clampedX, y: clampedY, type, target };
+    requestAnimationFrame(() => {
+      document.addEventListener('click', this._dismissContextMenu, { once: true });
+    });
+  }
+
+  private _dismissContextMenu = () => { this._contextMenu = null; };
+
+  private _startRename(spaceId: string, currentName: string) {
+    this._contextMenu = null;
+    this._renamingSpaceId = spaceId;
+    this._renameValue = currentName;
+  }
+
+  private _commitRename() {
+    if (this._renamingSpaceId && this._renameValue.trim()) {
+      emitPagesEvent(this, ChannelEventTopics.RENAME_SPACE, {
+        spaceId: this._renamingSpaceId, newName: this._renameValue.trim(),
+      });
+    }
+    this._renamingSpaceId = null;
+  }
+
+  private _handleRenameKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this._commitRename(); }
+    if (e.key === 'Escape') { e.preventDefault(); this._renamingSpaceId = null; }
+  }
+
+  private _handleCreateSpace() { this._showCreateSpaceDialog = true; }
+
+  private _onCreateSpaceConfirm(e: CustomEvent<{ reason?: string }>) {
+    const name = e.detail?.reason?.trim();
+    if (name) emitPagesEvent(this, ChannelEventTopics.CREATE_SPACE, { name });
+    this._showCreateSpaceDialog = false;
+  }
+
+  private _handleDeleteSpace(node: SpaceNode) {
+    this._contextMenu = null;
+    this._deleteSpaceTarget = node;
+    this._showDeleteSpaceDialog = true;
+  }
+
+  private _onDeleteSpaceConfirm() {
+    if (this._deleteSpaceTarget) {
+      emitPagesEvent(this, ChannelEventTopics.DELETE_SPACE, { spaceId: this._deleteSpaceTarget.space.id });
+    }
+    this._deleteSpaceTarget = null;
+    this._showDeleteSpaceDialog = false;
+  }
+
+  private _handleCreateChannelInSpace(spaceId: string) {
+    this._contextMenu = null;
+    this._createChannelInSpaceId = spaceId;
+    this._showCreateDialog = true;
+  }
+
+  private _emitMoveChannel(channelId: string, spaceId: string | null) {
+    emitPagesEvent(this, ChannelEventTopics.MOVE_CHANNEL_TO_SPACE, { channelId, spaceId });
+  }
+
+  private _renderContextMenu(): unknown {
+    if (!this._contextMenu) return nothing;
+    const { x, y, type, target } = this._contextMenu;
+    if (type === 'space') {
+      const node = target as SpaceNode;
+      return html`
+        <div class="context-menu" style="left:${x}px;top:${y}px" @click="${(e: Event) => e.stopPropagation()}">
+          <div class="context-menu-item" @click="${() => this._startRename(node.space.id, node.space.name)}">Rename</div>
+          <div class="context-menu-item danger" @click="${() => this._handleDeleteSpace(node)}">Delete</div>
+          <div class="context-menu-separator"></div>
+          <div class="context-menu-item" @click="${() => this._handleCreateChannelInSpace(node.space.id)}">Create Channel Here</div>
+        </div>`;
+    }
+    if (type === 'channel') {
+      const channel = target as QhorusChannel;
+      const spaces = this.channelTree?.spaces ?? [];
+      return html`
+        <div class="context-menu" style="left:${x}px;top:${y}px" @click="${(e: Event) => e.stopPropagation()}">
+          <div class="context-menu-item submenu-trigger">
+            Move to Space ▸
+            <div class="context-menu submenu">
+              ${spaces.filter(s => s.space.id !== channel.spaceId).map(s => html`
+                <div class="context-menu-item" @click="${() => { this._contextMenu = null; this._emitMoveChannel(channel.id, s.space.id); }}">${s.space.name}</div>
+              `)}
+              ${channel.spaceId ? html`
+                <div class="context-menu-separator"></div>
+                <div class="context-menu-item" @click="${() => { this._contextMenu = null; this._emitMoveChannel(channel.id, null); }}">No Space</div>
+              ` : nothing}
+            </div>
+          </div>
+        </div>`;
+    }
+    return nothing;
+  }
+
   private _renderChannelItem(channel: QhorusChannel): unknown {
     return html`
       <li class="channel-item ${this.selectedChannelId === channel.id ? 'selected' : ''}"
           role="option"
           aria-selected="${this.selectedChannelId === channel.id}"
-          @click="${() => this.handleChannelClick(channel.id)}">
+          @click="${() => this.handleChannelClick(channel.id)}"
+          @contextmenu="${(e: MouseEvent) => this._showContextMenu(e, 'channel', channel)}">
         <span class="channel-icon">${this.getChannelIcon(channel.semantic)}</span>
         <span class="channel-name">${channel.name}</span>
         ${channel.unreadCount ? html`<pages-badge variant="neutral" size="sm" label="${channel.unreadCount}"></pages-badge>` : nothing}
@@ -373,13 +548,22 @@ export class ChannelNavElement extends LitElement {
 
   private _renderSpaceGroup(node: SpaceNode): unknown {
     const expanded = this._expandedSpaces.has(node.space.id);
+    const renaming = this._renamingSpaceId === node.space.id;
     return html`
       <div class="space-group">
-        <div class="space-header" @click="${() => this._toggleSpace(node.space.id)}"
+        <div class="space-header"
+             @click="${renaming ? nothing : () => this._toggleSpace(node.space.id)}"
+             @contextmenu="${(e: MouseEvent) => this._showContextMenu(e, 'space', node)}"
              role="button" aria-expanded="${expanded}">
           <span class="space-disclosure">${expanded ? '▾' : '▸'}</span>
-          <span class="space-name">${node.space.name}</span>
-          ${node.unreadCount ? html`<pages-badge variant="neutral" size="sm" label="${node.unreadCount}"></pages-badge>` : nothing}
+          ${renaming ? html`
+            <input class="space-rename-input" type="text"
+              .value="${this._renameValue}"
+              @input="${(e: InputEvent) => { this._renameValue = (e.target as HTMLInputElement).value; }}"
+              @keydown="${this._handleRenameKeyDown}"
+              @blur="${this._commitRename}">
+          ` : html`<span class="space-name">${node.space.name}</span>`}
+          ${!renaming && node.unreadCount ? html`<pages-badge variant="neutral" size="sm" label="${node.unreadCount}"></pages-badge>` : nothing}
         </div>
         ${expanded ? html`
           <ul class="space-channels">
@@ -402,10 +586,15 @@ export class ChannelNavElement extends LitElement {
       ? tree.spaces.filter(s => s.space.id === this._spaceFilter)
       : tree.spaces;
     return html`
-      <select class="space-filter" @change="${this._onSpaceFilterChange}" .value="${this._spaceFilter}">
-        <option value="">All Spaces</option>
-        ${tree.spaces.map(s => html`<option value="${s.space.id}">${s.space.name}</option>`)}
-      </select>
+      <div class="space-filter-row">
+        <select class="space-filter" @change="${this._onSpaceFilterChange}" .value="${this._spaceFilter}">
+          <option value="">All Spaces</option>
+          ${tree.spaces.map(s => html`<option value="${s.space.id}">${s.space.name}</option>`)}
+        </select>
+        ${this.showCreate ? html`
+          <button class="create-space-btn" @click="${this._handleCreateSpace}" title="Create Space" aria-label="Create Space">+</button>
+        ` : nothing}
+      </div>
       <div class="channel-list" role="tree" tabindex="0" @keydown="${this._handleTreeKeyDown}">
         ${!this._spaceFilter && tree.ungrouped.length > 0 ? html`
           <ul class="ungrouped">
@@ -438,6 +627,28 @@ export class ChannelNavElement extends LitElement {
         @confirm=${this._onCreateConfirm}
         @cancel=${this._onCreateCancel}
       ></pages-confirm-dialog>
+      <pages-confirm-dialog class="create-space-dialog"
+        .open=${this._showCreateSpaceDialog}
+        heading="Create Space"
+        message="Enter a name for the new space."
+        confirmLabel="Create"
+        confirmVariant="success"
+        .showReason=${true}
+        @confirm=${this._onCreateSpaceConfirm}
+        @cancel=${() => { this._showCreateSpaceDialog = false; }}
+      ></pages-confirm-dialog>
+      <pages-confirm-dialog class="delete-space-dialog"
+        .open=${this._showDeleteSpaceDialog}
+        heading="Delete Space"
+        message=${this._deleteSpaceTarget
+          ? `Delete space "${this._deleteSpaceTarget.space.name}"? Its ${this._deleteSpaceTarget.channels.length} channel(s) will move to the top level.`
+          : ''}
+        confirmLabel="Delete"
+        confirmVariant="danger"
+        @confirm=${this._onDeleteSpaceConfirm}
+        @cancel=${() => { this._deleteSpaceTarget = null; this._showDeleteSpaceDialog = false; }}
+      ></pages-confirm-dialog>
+      ${this._renderContextMenu()}
     `;
   }
 

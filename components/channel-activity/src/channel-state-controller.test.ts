@@ -526,6 +526,114 @@ describe('ChannelStateController', () => {
     });
   });
 
+  describe('pendingSpaces', () => {
+    it('addPendingSpace makes empty space appear in channelTree', () => {
+      const { ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-new', name: 'New Space' });
+      const tree = ctrl.channelTree;
+      expect(tree.spaces).toHaveLength(1);
+      expect(tree.spaces[0]!.space.name).toBe('New Space');
+      expect(tree.spaces[0]!.channels).toHaveLength(0);
+    });
+
+    it('pending space survives snapshot when it has no channels', () => {
+      const { push, ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-new', name: 'Empty Space' });
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general')],
+      });
+      const tree = ctrl.channelTree;
+      const pending = tree.spaces.find(s => s.space.id === 'sp-new');
+      expect(pending).toBeDefined();
+      expect(pending!.space.name).toBe('Empty Space');
+    });
+
+    it('pending space is pruned when snapshot has channels in it', () => {
+      const { push, ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-1', name: 'My Space' });
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'work', { spaceId: 'sp-1', spaceName: 'My Space' })],
+      });
+      const tree = ctrl.channelTree;
+      expect(tree.spaces).toHaveLength(1);
+      expect(tree.spaces[0]!.channels).toHaveLength(1);
+    });
+
+    it('removePendingSpace removes the space from tree', () => {
+      const { ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-1', name: 'Temp' });
+      expect(ctrl.channelTree.spaces).toHaveLength(1);
+      ctrl.removePendingSpace('sp-1');
+      expect(ctrl.channelTree.spaces).toHaveLength(0);
+    });
+  });
+
+  describe('applyRenameSpace', () => {
+    it('updates spaceName on all matching channels', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [
+          channelRow('ch-1', 'work', { spaceId: 'sp-1', spaceName: 'Old Name' }),
+          channelRow('ch-2', 'observe', { spaceId: 'sp-1', spaceName: 'Old Name' }),
+          channelRow('ch-3', 'general'),
+        ],
+      });
+      ctrl.applyRenameSpace('sp-1', 'New Name');
+      expect(ctrl.channels[0]!.spaceName).toBe('New Name');
+      expect(ctrl.channels[1]!.spaceName).toBe('New Name');
+      expect(ctrl.channels[2]!.spaceName).toBeUndefined();
+    });
+
+    it('updates pending space name', () => {
+      const { ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-1', name: 'Old' });
+      ctrl.applyRenameSpace('sp-1', 'New');
+      expect(ctrl.channelTree.spaces[0]!.space.name).toBe('New');
+    });
+  });
+
+  describe('applyMoveChannel', () => {
+    it('updates channel spaceId and spaceName', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'general')],
+      });
+      ctrl.applyMoveChannel('ch-1', 'sp-1', 'Target Space');
+      expect(ctrl.channels[0]!.spaceId).toBe('sp-1');
+      expect(ctrl.channels[0]!.spaceName).toBe('Target Space');
+    });
+
+    it('unassigns channel from space with null', () => {
+      const { push, ctrl } = createPair();
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'work', { spaceId: 'sp-1', spaceName: 'Alpha' })],
+      });
+      ctrl.applyMoveChannel('ch-1', null, null);
+      expect(ctrl.channels[0]!.spaceId).toBeUndefined();
+      expect(ctrl.channels[0]!.spaceName).toBeUndefined();
+    });
+  });
+
+  describe('applyDeleteSpace', () => {
+    it('moves channels to ungrouped and removes pending space', () => {
+      const { push, ctrl } = createPair();
+      ctrl.addPendingSpace({ id: 'sp-1', name: 'Doomed' });
+      push.applyOp({
+        op: 'snapshot', dataset: 'channels',
+        rows: [channelRow('ch-1', 'work', { spaceId: 'sp-1', spaceName: 'Doomed' })],
+      });
+      ctrl.applyDeleteSpace('sp-1');
+      expect(ctrl.channels[0]!.spaceId).toBeUndefined();
+      expect(ctrl.channelTree.spaces).toHaveLength(0);
+      expect(ctrl.channelTree.ungrouped).toHaveLength(1);
+    });
+  });
+
   describe('host updates', () => {
     it('triggers host update on channel snapshot', () => {
       const { host, push } = createPair();

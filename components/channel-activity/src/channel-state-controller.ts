@@ -33,6 +33,7 @@ export class ChannelStateController implements ReactiveController {
 
   private _host: ReactiveControllerHost;
   private _currentUserId = '';
+  private _pendingSpaces: Space[] = [];
 
   constructor(host: ReactiveControllerHost, push: PushController) {
     this._host = host;
@@ -40,6 +41,45 @@ export class ChannelStateController implements ReactiveController {
     push.registerDatasetHandler('channels', (op) => { this._applyChannels(op); this._host.requestUpdate(); });
     push.registerDatasetHandler('topics', (op) => { this._applyTopics(op); this._host.requestUpdate(); });
     push.registerDatasetHandler('messages', (op) => { this._applyMessages(op); this._host.requestUpdate(); });
+  }
+
+  addPendingSpace(space: Space) {
+    this._pendingSpaces = [...this._pendingSpaces, space];
+    this._host.requestUpdate();
+  }
+
+  removePendingSpace(spaceId: string) {
+    this._pendingSpaces = this._pendingSpaces.filter(s => s.id !== spaceId);
+    this._host.requestUpdate();
+  }
+
+  applyRenameSpace(spaceId: string, newName: string) {
+    this.channels = this.channels.map(ch =>
+      ch.spaceId === spaceId ? { ...ch, spaceName: newName } : ch
+    );
+    this._pendingSpaces = this._pendingSpaces.map(s =>
+      s.id === spaceId ? { ...s, name: newName } : s
+    );
+    this._host.requestUpdate();
+  }
+
+  applyMoveChannel(channelId: string, spaceId: string | null, spaceName: string | null) {
+    this.channels = this.channels.map(ch => {
+      if (ch.id !== channelId) return ch;
+      if (spaceId) return { ...ch, spaceId, spaceName: spaceName ?? undefined } as typeof ch;
+      const { spaceId: _, spaceName: _s, parentSpaceId: _p, ...rest } = ch;
+      return rest as typeof ch;
+    });
+    this._host.requestUpdate();
+  }
+
+  applyDeleteSpace(spaceId: string) {
+    this.channels = this.channels.map(ch => {
+      if (ch.spaceId !== spaceId) return ch;
+      const { spaceId: _, spaceName: _s, parentSpaceId: _p, ...rest } = ch;
+      return rest as typeof ch;
+    });
+    this.removePendingSpace(spaceId);
   }
 
   get channelTree(): ChannelTree {
@@ -77,6 +117,12 @@ export class ChannelStateController implements ReactiveController {
     for (const root of roots) {
       const childrenUnread = root.children.reduce((sum, child) => sum + child.unreadCount, 0);
       (root as { unreadCount: number }).unreadCount += childrenUnread;
+    }
+
+    for (const ps of this._pendingSpaces) {
+      if (!spaceMap.has(ps.id)) {
+        roots.push({ space: ps, channels: [], unreadCount: 0, children: [] });
+      }
     }
 
     return { spaces: roots, ungrouped };
@@ -124,6 +170,8 @@ export class ChannelStateController implements ReactiveController {
   private _applyChannels(op: DatasetOp) {
     if (op.op === 'snapshot') {
       this.channels = (op.rows ?? []).map(r => this._toChannel(r));
+      const channelSpaceIds = new Set(this.channels.filter(ch => ch.spaceId).map(ch => ch.spaceId!));
+      this._pendingSpaces = this._pendingSpaces.filter(s => !channelSpaceIds.has(s.id));
     } else if (op.op === 'append' && op.rows) {
       this.channels = [...this.channels, ...op.rows.map(r => this._toChannel(r))];
     } else if (op.op === 'remove' && op.key) {

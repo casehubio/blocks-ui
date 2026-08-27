@@ -3,9 +3,9 @@ import { emitPagesEvent } from '@casehubio/pages-component';
 import { ChannelEventTopics } from './events.js';
 
 describe('ChannelEventTopics', () => {
-  it('all topic constants have channel: prefix', () => {
+  it('all topic constants have channel: or space: prefix', () => {
     for (const topic of Object.values(ChannelEventTopics)) {
-      expect(topic).toMatch(/^channel:/);
+      expect(topic).toMatch(/^(channel|space):/);
     }
   });
 
@@ -21,8 +21,8 @@ describe('ChannelEventTopics', () => {
     expect(ChannelEventTopics.CURSOR_RELOAD).toBe('channel:cursor-reload');
   });
 
-  it('has exactly 18 topics', () => {
-    expect(Object.keys(ChannelEventTopics).length).toBe(18);
+  it('has exactly 22 topics', () => {
+    expect(Object.keys(ChannelEventTopics).length).toBe(22);
   });
 
   it('topic event constants have channel: prefix', () => {
