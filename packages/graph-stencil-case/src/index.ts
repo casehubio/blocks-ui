@@ -38,11 +38,6 @@ export {
   FUNCTION_TYPE_KEYS, FUNCTION_TYPE_TO_YAML_KEY, CORE_WORKER_KEYS, MODEL_PROVIDERS,
 } from './worker-function/types.js';
 export { FUNCTION_TYPE_DEFAULTS, MCP_TRANSPORT_DEFAULTS, PROVIDER_DEFAULT } from './worker-function/defaults.js';
-export {
-  renderAgentForm, renderA2AForm, renderMcpForm,
-  renderSequenceForm, renderUnknownForm, renderAuthConfig,
-} from './worker-function/forms/index.js';
-export type { OnChange } from './worker-function/forms/index.js';
 export { milestoneSchema, goalSchema, subcaseSchema, bindingSchema, workerSchema } from './schemas/index.js';
 export { BlocksEnvMapEditorElement } from './editors/blocks-env-map-editor.js';
 export { BlocksSequenceEditorElement } from './editors/blocks-sequence-editor.js';

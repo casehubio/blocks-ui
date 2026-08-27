@@ -1,9 +1,12 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { toSwfGraph, applySwfPropertyEdit, registerSwfStencils } from '@casehubio/graph-stencil-swf';
+import { toSwfGraph, applySwfPropertyEdit, addSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/diagram-core';
 import type { AdapterResult } from '@casehubio/diagram-core';
+import type { EditPolicy } from '@casehubio/graph-renderer';
 import '@casehubio/graph-renderer';
+
+const swfEditPolicy = createSwfEditPolicy();
 
 @customElement('swf-diagram')
 export class SwfDiagram extends DiagramBaseMixin(LitElement) {
@@ -32,8 +35,12 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return { direction: this.layoutDirection, spacing: 40, containerPadding: 25, wrapping: true };
   }
 
-  protected _paletteTypes(): string[] {
-    return [];
+  protected override _editPolicy(): EditPolicy {
+    return swfEditPolicy;
+  }
+
+  protected _addElement(type: string): void {
+    this._currentYaml = addSwfTask(this._currentYaml, type);
   }
 
   protected _emptyTemplate(): string | null {
@@ -92,6 +99,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></diagram-toolbar>
         <div style="display: flex; flex: 1; overflow: hidden;">
+          ${this._renderStencilPalette()}
           <pages-graph-canvas
             .nodes=${filteredNodes}
             .edges=${filteredEdges}
@@ -106,12 +114,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           ></pages-graph-canvas>
           ${hasSelection && !isReadonly ? html`
             <div style="width: 300px; border-left: 1px solid var(--pages-border-color, #ddd); overflow-y: auto;">
-              <diagram-properties
-                .schema=${this._selectedSchema}
-                .data=${this._selectedData}
-                ?readonly=${isReadonly}
-                @property-change=${this._handlePropertyChange}
-              ></diagram-properties>
+              ${this._renderPropertyPanel()}
             </div>
           ` : nothing}
           ${this._adapterResult?.degraded ? html`
