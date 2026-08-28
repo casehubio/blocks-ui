@@ -1,4 +1,4 @@
-import { parseDocument, type YAMLSeq } from 'yaml';
+import { parseDocument, isMap, type YAMLSeq } from 'yaml';
 
 const SWF_TASK_DEFAULTS: Record<string, Record<string, unknown>> = {
   'swf-call': { call: 'http:get', with: {} },
@@ -40,6 +40,24 @@ export function addSwfTask(yaml: string, taskType: string): string {
   const entry = doc.createNode({ [stepName]: defaults });
   doSeq.add(entry);
 
+  return doc.toString();
+}
+
+export function removeSwfTask(yaml: string, taskName: string): string {
+  const doc = parseDocument(yaml);
+  const doSeq = doc.get('do') as YAMLSeq;
+  if (!doSeq) throw new Error('No do: block found in workflow YAML');
+
+  const idx = doSeq.items.findIndex((item: unknown) => {
+    if (isMap(item)) {
+      const firstKey = item.items[0]?.key;
+      return firstKey && String(firstKey) === taskName;
+    }
+    return false;
+  });
+
+  if (idx === -1) throw new Error(`Task '${taskName}' not found in do: block`);
+  doSeq.delete(idx);
   return doc.toString();
 }
 

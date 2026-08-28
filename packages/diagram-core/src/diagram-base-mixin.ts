@@ -1,7 +1,7 @@
 import { html, nothing, type LitElement, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { computeElkLayout, toReactFlowGraph } from '@casehubio/graph-renderer';
-import type { ElkLayoutOptions, ElkLayoutResult, EditPolicy } from '@casehubio/graph-renderer';
+import type { ElkLayoutOptions, ElkLayoutResult, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import type { PersistenceBackend, GraphModel, NodeDecoration } from '@casehubio/graph-core';
 import type { Node, Edge } from '@xyflow/react';
 import type { PropertyPaletteSource, EditorResolver } from '@casehubio/pages-property-palette';
@@ -62,6 +62,8 @@ export declare class DiagramBaseInterface {
   _handlePropertyChange: (e: Event) => void;
   _onPropertyChange(field: (string | number)[], value: unknown): void;
   _handlePaletteSelect: (e: Event) => void;
+  _handleMutation: (edit: GraphEdit) => void;
+  _applyGraphEdit(yaml: string, edit: GraphEdit): string;
   _exportDiagram(format: ExportFormat): Promise<void>;
   _renderError(): TemplateResult;
   _clearErrorAndRetry(): void;
@@ -118,8 +120,6 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
       field: (string | number)[],
       value: unknown,
     ): string;
-
-    protected abstract _addElement(type: string): void;
 
     protected abstract _emptyTemplate(): string | null;
 
@@ -186,14 +186,24 @@ export function DiagramBaseMixin<T extends Constructor<LitElement>>(Base: T) {
         const creatable = policy.getCreatableTypes(null, this._adapterResult?.model ?? emptyModel);
         if (!creatable.some(s => s.type === detail.item.type)) return;
       }
+      this._handleMutation({ type: 'addNode', nodeType: detail.item.type });
+    };
+
+    _handleMutation = (edit: GraphEdit): void => {
+      if (this.readonly) return;
       this._pushUndo();
-      this._addElement(detail.item.type);
-      if (this._lastLayout) {
-        this._updateWithoutLayout(this._currentYaml);
-      } else {
+      try {
+        this._currentYaml = this._applyGraphEdit(this._currentYaml, edit);
         this._fullRender(this._currentYaml);
+      } catch (e) {
+        this._currentYaml = this._undoStack.pop() ?? this._currentYaml;
+        this._error = `Edit failed: ${e}`;
       }
     };
+
+    protected _applyGraphEdit(_yaml: string, edit: GraphEdit): string {
+      throw new Error(`_applyGraphEdit not implemented for edit type: ${edit.type}`);
+    }
 
     protected _renderPropertyPanel(): TemplateResult {
       const source = this._propertyPaletteSource;

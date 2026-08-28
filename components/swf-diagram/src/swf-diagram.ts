@@ -1,10 +1,10 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { toSwfGraph, applySwfPropertyEdit, addSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
+import { toSwfGraph, applySwfPropertyEdit, addSwfTask, removeSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/diagram-core';
 import type { AdapterResult } from '@casehubio/diagram-core';
-import type { EditPolicy } from '@casehubio/graph-renderer';
+import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import '@casehubio/graph-renderer';
 
 const swfEditPolicy = createSwfEditPolicy();
@@ -77,8 +77,27 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return swfIconRenderer;
   }
 
-  protected _addElement(type: string): void {
-    this._currentYaml = addSwfTask(this._currentYaml, type);
+  protected override _applyGraphEdit(yaml: string, edit: GraphEdit): string {
+    switch (edit.type) {
+      case 'addNode':
+        return addSwfTask(yaml, edit.nodeType);
+      case 'removeNode': {
+        const node = this._adapterResult?.model.nodes.find(n => n.id === edit.nodeId);
+        const label = node?.properties['label'];
+        if (!label || typeof label !== 'string') throw new Error(`Cannot resolve task name for ${edit.nodeId}`);
+        return removeSwfTask(yaml, label);
+      }
+      case 'addEdge':
+        throw new Error('addEdge for SWF diagrams — not yet implemented');
+      case 'removeEdge':
+        throw new Error('removeEdge for SWF diagrams — not yet implemented');
+      case 'reconnectEdge':
+        throw new Error('reconnectEdge for SWF diagrams — not yet implemented');
+      case 'splitEdge':
+        throw new Error('splitEdge for SWF diagrams — not yet implemented');
+      default:
+        throw new Error(`Unsupported edit type: ${(edit as GraphEdit).type}`);
+    }
   }
 
   protected _emptyTemplate(): string | null {
@@ -143,6 +162,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           <pages-graph-canvas
             .nodes=${filteredNodes}
             .edges=${filteredEdges}
+            .editPolicy=${this._editPolicy()}
+            .onMutation=${this._handleMutation}
             role="img"
             aria-label="Workflow diagram"
             style="flex: 1; height: 100%; min-width: 0;"

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { applyPropertyEdit, addElement, removeElement, switchBindingTarget, switchFunctionType, switchMcpTransport, switchModelProvider, switchTriggerType } from './yaml-editor.js';
+import { applyPropertyEdit, addElement, removeElement, switchBindingTarget, switchFunctionType, switchMcpTransport, switchModelProvider, switchTriggerType, removeCaseEdge, addCaseEdge } from './yaml-editor.js';
 import { toGraph } from './case-adapter.js';
 import type { CaseDefinition } from '../types/case-definition.js';
 
@@ -408,5 +408,70 @@ describe('switchTriggerType', () => {
     const result = switchTriggerType(SAMPLE_YAML, ['spec', 'bindings', 0], 'cloudEvent');
     expect(result).toContain('name: scan');
     expect(result).toContain("capability: ocr");
+  });
+});
+
+describe('removeCaseEdge', () => {
+  it('clears capability field on binding', () => {
+    const result = removeCaseEdge(SAMPLE_YAML, ['spec', 'bindings', 0], 'capability');
+    const parsed = parseYaml(result) as CaseDefinition;
+    expect(parsed.spec.bindings[0].capability).toBeUndefined();
+    expect(parsed.spec.bindings[0].name).toBe('scan');
+  });
+
+  it('clears subCase field on binding', () => {
+    const yamlWithSubCase = `dsl: "1.0.0"
+namespace: test
+name: sample
+version: "1.0.0"
+spec:
+  bindings:
+    - name: scan
+      capability: ocr
+      subCase:
+        namespace: test
+        name: sub1
+  workers:
+    - name: ocr-worker
+      capabilities:
+        - ocr
+`;
+    const result = removeCaseEdge(yamlWithSubCase, ['spec', 'bindings', 0], 'subCase');
+    const parsed = parseYaml(result) as CaseDefinition;
+    expect(parsed.spec.bindings[0].subCase).toBeUndefined();
+    expect(parsed.spec.bindings[0].capability).toBe('ocr');
+  });
+});
+
+describe('addCaseEdge', () => {
+  it('sets capability field on binding', () => {
+    const yamlNoCap = `dsl: "1.0.0"
+namespace: test
+name: sample
+version: "1.0.0"
+spec:
+  bindings:
+    - name: scan
+      when: '.doc != null'
+  workers:
+    - name: ocr-worker
+      capabilities:
+        - ocr
+`;
+    const result = addCaseEdge(yamlNoCap, ['spec', 'bindings', 0], 'capability', 'newCap');
+    const parsed = parseYaml(result) as CaseDefinition;
+    expect(parsed.spec.bindings[0].capability).toBe('newCap');
+  });
+
+  it('overwrites existing capability', () => {
+    const result = addCaseEdge(SAMPLE_YAML, ['spec', 'bindings', 0], 'capability', 'replacedCap');
+    const parsed = parseYaml(result) as CaseDefinition;
+    expect(parsed.spec.bindings[0].capability).toBe('replacedCap');
+  });
+
+  it('preserves other binding fields', () => {
+    const result = addCaseEdge(SAMPLE_YAML, ['spec', 'bindings', 0], 'capability', 'newCap');
+    const parsed = parseYaml(result) as CaseDefinition;
+    expect(parsed.spec.bindings[0].name).toBe('scan');
   });
 });

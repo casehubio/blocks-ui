@@ -1,5 +1,5 @@
 export { toSwfGraph, wrapDoBlock } from './adapter/swf-adapter.js';
-export { applySwfPropertyEdit, addSwfTask } from './adapter/swf-yaml-editor.js';
+export { applySwfPropertyEdit, addSwfTask, removeSwfTask } from './adapter/swf-yaml-editor.js';
 export { createSwfEditPolicy } from './editing/swf-edit-policy.js';
 export { registerSwfStencils } from './stencils/index.js';
 export { swfTaskSchema } from './schemas/swf-task-schema';

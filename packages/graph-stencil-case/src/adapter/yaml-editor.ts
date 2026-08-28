@@ -163,3 +163,24 @@ export function switchTriggerType(
   on.set(newType, doc.createNode(TRIGGER_DEFAULTS[newType]));
   return doc.toString();
 }
+
+export function removeCaseEdge(
+  yaml: string,
+  bindingPath: readonly (string | number)[],
+  field: 'capability' | 'subCase',
+): string {
+  const doc = parseDocument(yaml);
+  doc.deleteIn([...bindingPath, field]);
+  return doc.toString();
+}
+
+export function addCaseEdge(
+  yaml: string,
+  bindingPath: readonly (string | number)[],
+  field: 'capability',
+  value: string,
+): string {
+  const doc = parseDocument(yaml);
+  doc.setIn([...bindingPath, field], value);
+  return doc.toString();
+}

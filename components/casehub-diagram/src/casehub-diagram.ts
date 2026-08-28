@@ -7,6 +7,8 @@ import {
   applyPropertyEdit,
   addElement,
   removeElement,
+  removeCaseEdge,
+  addCaseEdge,
   switchBindingTarget,
   switchFunctionType,
   switchMcpTransport,
@@ -28,7 +30,7 @@ import type {
   TriggerType,
 } from '@casehubio/graph-stencil-case';
 import { toReactFlowGraph } from '@casehubio/graph-renderer';
-import type { ElkLayoutOptions, EditPolicy } from '@casehubio/graph-renderer';
+import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import type { NodeDecoration } from '@casehubio/graph-core';
 import { edgesOf } from '@casehubio/graph-core';
 import { DiagramBaseMixin } from '@casehubio/diagram-core';
@@ -153,11 +155,50 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     };
   }
 
-  protected _addElement(type: string): void {
-    this._currentYaml = addElement(
-      this._currentYaml,
-      type as 'binding' | 'worker' | 'milestone' | 'goal',
-    );
+  protected override _applyGraphEdit(yaml: string, edit: GraphEdit): string {
+    switch (edit.type) {
+      case 'addNode':
+        return addElement(yaml, edit.nodeType as 'binding' | 'worker' | 'milestone' | 'goal');
+      case 'removeNode': {
+        const nodePath = this._adapterResult?.yamlPaths.get(edit.nodeId);
+        if (!nodePath) throw new Error(`No YAML path for node ${edit.nodeId}`);
+        return removeElement(yaml, nodePath);
+      }
+      case 'addEdge': {
+        const source = this._adapterResult?.model.nodes.find(n => n.id === edit.sourceId);
+        const target = this._adapterResult?.model.nodes.find(n => n.id === edit.targetId);
+        if (!source || !target) throw new Error('Source or target node not found');
+        const sourcePath = this._adapterResult?.yamlPaths.get(edit.sourceId);
+        if (!sourcePath) throw new Error(`No YAML path for ${edit.sourceId}`);
+        if (source.type === 'binding' && target.type === 'worker') {
+          const caps = target.properties['capabilities'] as string[] | undefined;
+          if (!caps || caps.length === 0) throw new Error('Target worker has no capabilities');
+          return addCaseEdge(yaml, sourcePath, 'capability', caps[0]!);
+        }
+        throw new Error(`Cannot create edge from ${source.type} to ${target.type}`);
+      }
+      case 'removeEdge': {
+        const parts = edit.edgeId.split('--');
+        const sourceId = parts[0];
+        const edgeType = parts[1];
+        if (!sourceId || !edgeType) throw new Error(`Cannot parse edge ID: ${edit.edgeId}`);
+        const sourcePath = this._adapterResult?.yamlPaths.get(sourceId);
+        if (!sourcePath) throw new Error(`No YAML path for source node ${sourceId}`);
+        if (edgeType === 'capability-dispatch') {
+          return removeCaseEdge(yaml, sourcePath, 'capability');
+        }
+        if (edgeType === 'subcase-spawn') {
+          return removeCaseEdge(yaml, sourcePath, 'subCase');
+        }
+        throw new Error(`Cannot delete ${edgeType} edges — they are derived from expressions`);
+      }
+      case 'reconnectEdge':
+        throw new Error('reconnectEdge for case diagrams — not yet implemented');
+      case 'splitEdge':
+        throw new Error('splitEdge for case diagrams — not yet implemented');
+      default:
+        throw new Error(`Unsupported edit type: ${(edit as GraphEdit).type}`);
+    }
   }
 
   protected _emptyTemplate(): string | null {
@@ -710,6 +751,8 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           <pages-graph-canvas
             .nodes=${this._nodes}
             .edges=${this._edges}
+            .editPolicy=${this._editPolicy()}
+            .onMutation=${this._handleMutation}
             .miniMapNodeColor=${caseMiniMapNodeColor}
             role="img"
             aria-label="Case definition diagram"

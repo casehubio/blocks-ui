@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { applySwfPropertyEdit, addSwfTask } from './swf-yaml-editor.js';
+import { applySwfPropertyEdit, addSwfTask, removeSwfTask } from './swf-yaml-editor.js';
 
 const SAMPLE_YAML = `document:
   dsl: "1.0.0"
@@ -95,5 +95,55 @@ do:
     const result = addSwfTask(SAMPLE_YAML, 'swf-call');
     expect(result).toContain('fetchData:');
     expect(result).toContain('method: GET');
+  });
+});
+
+const MULTI_STEP_YAML = `document:
+  dsl: "1.0.0"
+  namespace: test
+  name: sample
+  version: "1.0.0"
+do:
+  - step1:
+      call: http:get
+      with:
+        endpoint: /api/one
+  - step2:
+      call: http:post
+      with:
+        endpoint: /api/two
+  - step3:
+      set:
+        result: done
+`;
+
+describe('removeSwfTask', () => {
+  it('removes a named task from the do block', () => {
+    const result = removeSwfTask(MULTI_STEP_YAML, 'step2');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(2);
+    expect(result).not.toContain('step2');
+    expect(result).toContain('step1');
+    expect(result).toContain('step3');
+  });
+
+  it('throws when task not found', () => {
+    expect(() => removeSwfTask(MULTI_STEP_YAML, 'missing')).toThrow(/not found/i);
+  });
+
+  it('preserves other tasks when removing first', () => {
+    const result = removeSwfTask(MULTI_STEP_YAML, 'step1');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(2);
+    expect(result).toContain('step2');
+    expect(result).toContain('step3');
+  });
+
+  it('preserves other tasks when removing last', () => {
+    const result = removeSwfTask(MULTI_STEP_YAML, 'step3');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(2);
+    expect(result).toContain('step1');
+    expect(result).toContain('step2');
   });
 });
