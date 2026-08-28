@@ -2,7 +2,7 @@ import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity, UserSearchProvider } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin } from '@casehubio/pages-primitives/a11y';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';
 
@@ -137,7 +137,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <blocks-split-workbench selection-topic="work-item">
+      <pages-split-workbench selection-topic="work-item">
         <blocks-work-item-inbox slot="list"
           .endpoint=${this.endpoint}
           .identity=${this.identity}
@@ -147,7 +147,7 @@ export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
           .identity=${this.identity}
           .userSearchProvider=${this.userSearchProvider}
         ></blocks-work-item-detail>
-      </blocks-split-workbench>
+      </pages-split-workbench>
 
       ${this._renderKeyboardHints()}
       ${this._showShortcutOverlay ? this._renderShortcutOverlay() : ''}

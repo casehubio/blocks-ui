@@ -21,7 +21,7 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-list-pane": "workspace:*",
-    "@casehubio/blocks-ui-split-workbench": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*",
     "@casehubio/pages-data": "*",
     "@casehubio/pages-primitives": "*",

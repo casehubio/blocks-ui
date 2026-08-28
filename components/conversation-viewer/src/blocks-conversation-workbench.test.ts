@@ -51,7 +51,7 @@ describe('blocks-conversation-workbench', () => {
     const el = createElement();
     el.conversationState = MOCK_STATE;
     await el.updateComplete;
-    const sw = el.shadowRoot?.querySelector('blocks-split-workbench');
+    const sw = el.shadowRoot?.querySelector('pages-split-workbench');
     expect(sw).toBeTruthy();
   });
 
@@ -131,7 +131,7 @@ describe('blocks-conversation-workbench', () => {
     const el = createElement();
     el.configure({ conversationState: MOCK_STATE, selectionTopic: 'my-topic' });
     await el.updateComplete;
-    const sw = el.shadowRoot?.querySelector('blocks-split-workbench');
+    const sw = el.shadowRoot?.querySelector('pages-split-workbench');
     expect(sw).toBeTruthy();
     expect(el.selectionTopic).toBe('my-topic');
   });

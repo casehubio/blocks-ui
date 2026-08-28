@@ -4,7 +4,7 @@ import { onPagesEvent } from '@casehubio/pages-component';
 import { stringify } from 'yaml';
 import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
 import type { CasehubDiagram } from '@casehubio/blocks-ui-casehub-diagram';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-swf-diagram';
 
@@ -25,7 +25,7 @@ export class DiagramWorkbench extends LitElement {
 
   static override styles = css`
     :host { display: block; height: 100%; font-family: var(--pages-font-family, system-ui); }
-    blocks-split-workbench { height: 100%; }
+    pages-split-workbench { height: 100%; }
     .case-panel { height: 100%; overflow: hidden; }
     casehub-diagram { width: 100%; height: 100%; }
     .swf-panel { height: 100%; display: flex; flex-direction: column; }
@@ -87,7 +87,7 @@ export class DiagramWorkbench extends LitElement {
 
   override render(): TemplateResult {
     return html`
-      <blocks-split-workbench selection-topic="diagram">
+      <pages-split-workbench selection-topic="diagram">
         <div slot="list" class="case-panel">
           <casehub-diagram
             .yaml=${this.yaml}
@@ -108,7 +108,7 @@ export class DiagramWorkbench extends LitElement {
               ></swf-diagram>`
             : html`<div class="empty">Click ⤢ on a worker to inspect its workflow</div>`}
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 }

@@ -18,7 +18,7 @@
   "dependencies": {
     "@casehubio/blocks-ui-casehub-diagram": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/blocks-ui-split-workbench": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "@casehubio/blocks-ui-swf-diagram": "workspace:*",
     "lit": "^3.1.0"
   },

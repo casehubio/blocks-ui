@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/blocks-ui-event-trail": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "@casehubio/pages-data": "*",
     "@casehubio/pages-primitives": "*",
     "@casehubio/pages-table": "*",

@@ -23,7 +23,7 @@ function cleanupFixtures(): void {
 }
 
 function getEventTrail(el: AuditTrailViewer): HTMLElement | null {
-  return el.shadowRoot?.querySelector('blocks-event-trail') ?? null;
+  return el.shadowRoot?.querySelector('pages-event-trail') ?? null;
 }
 
 function getTable(el: AuditTrailViewer): HTMLElement | null {
@@ -229,12 +229,12 @@ describe('AuditTrailViewer', () => {
       await element.updateComplete;
     });
 
-    it('should render blocks-event-trail', () => {
+    it('should render pages-event-trail', () => {
       const eventTrail = getEventTrail(element);
       expect(eventTrail).not.toBeNull();
     });
 
-    it('should render pages-table via blocks-event-trail', async () => {
+    it('should render pages-table via pages-event-trail', async () => {
       const eventTrail = getEventTrail(element) as any;
       await eventTrail?.updateComplete;
       const table = getTable(element);

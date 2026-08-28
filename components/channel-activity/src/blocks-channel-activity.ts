@@ -21,7 +21,7 @@ import './channel-feed.js';
 import './channel-nav.js';
 import './channel-input.js';
 import './channel-topic-bar.js';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 
 const Base = KeyboardShortcutMixin(LiveRegionMixin(LitElement));
 
@@ -310,7 +310,7 @@ export class BlocksChannelActivityElement extends Base {
 
   override render() {
     return html`
-      <blocks-split-workbench selection-topic=${this.selectionTopic}>
+      <pages-split-workbench selection-topic=${this.selectionTopic}>
         <span slot="header">
           <button class="toggle-btn"
             aria-expanded=${this.sidebarOpen}
@@ -367,7 +367,7 @@ export class BlocksChannelActivityElement extends Base {
           </div>
           ${this._renderSidebar()}
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 }

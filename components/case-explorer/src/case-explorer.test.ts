@@ -107,7 +107,7 @@ describe('CaseExplorer', () => {
     const el = createExplorer();
     await el.updateComplete;
 
-    const workbench = el.shadowRoot!.querySelector('blocks-split-workbench');
+    const workbench = el.shadowRoot!.querySelector('pages-split-workbench');
     expect(workbench).toBeTruthy();
   });
 

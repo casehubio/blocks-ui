@@ -5,7 +5,7 @@ import type { ContributorDetail } from './types.js';
 import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { OUTCOME_COLUMNS, OUTCOME_TABLE_CONFIG, ID_COL } from './columns.js';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-trust-score-panel';
 import '@casehubio/blocks-ui-list-pane';
 
@@ -157,14 +157,14 @@ export class ContributorWorkbench extends LiveRegionMixin(LitElement) {
     }
 
     return html`
-      <blocks-split-workbench selection-topic="contributor-outcome">
+      <pages-split-workbench selection-topic="contributor-outcome">
         <div slot="list" class="left-panel">
           ${this._renderSummary()}
         </div>
         <div slot="detail" class="detail-panel">
           ${this._renderOutcomeList()}
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 

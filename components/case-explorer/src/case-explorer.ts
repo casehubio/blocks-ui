@@ -6,7 +6,7 @@ import { NavigationController } from './navigation-controller.js';
 import './entity-list.js';
 import './entity-detail.js';
 import './entity-tree.js';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import type { EntityTypeRegistration, EntityTreeNode, EntitySelection, NavigationState } from './types.js';
 
 @customElement('blocks-case-explorer')
@@ -142,7 +142,7 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
         ${this._renderToolbar(navState)}
         ${navState.breadcrumbs.length > 0 ? this._renderBreadcrumbs(navState) : nothing}
         <div class="content">
-          <blocks-split-workbench selection-topic=${this._selectionTopic}>
+          <pages-split-workbench selection-topic=${this._selectionTopic}>
             <div slot="list">
               ${navState.viewMode === 'list' && currentReg
                 ? html`<blocks-entity-list .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></blocks-entity-list>`
@@ -154,7 +154,7 @@ export class CaseExplorer extends LiveRegionMixin(LitElement) {
             <div slot="detail">
               <blocks-entity-detail .registration=${currentReg} .fetchFn=${this.fetchFn} selection-topic=${this._selectionTopic}></blocks-entity-detail>
             </div>
-          </blocks-split-workbench>
+          </pages-split-workbench>
         </div>
       </div>
     `;

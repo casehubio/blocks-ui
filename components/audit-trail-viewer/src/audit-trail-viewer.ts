@@ -5,7 +5,7 @@ import { renderPropertyTree, propertyTreeStyles } from '@casehubio/pages-ui-comp
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import type { LedgerEntry, VerificationResult, Attestation } from './types.js';
-import '@casehubio/blocks-ui-event-trail';
+import '@casehubio/pages-ui-components/event-trail';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { DataSource, DataSink } from '@casehubio/pages-data/dist/datasource/types.js';
@@ -245,7 +245,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
 
     return html`
       ${verifyBanner}
-      <blocks-event-trail
+      <pages-event-trail
         .endpoint=${this._buildLedgerEndpoint()}
         .columnDefs=${ENTRY_COL_DEFS}
         .columnConfig=${ENTRY_COL_CONFIG}
@@ -259,7 +259,7 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
         .getRowKey=${(row: TypedRow) => row.text(ID_COL)}
         @detail-change=${this._handleDetailChange}
         @data-loaded=${this._handleDataLoaded}
-      ></blocks-event-trail>
+      ></pages-event-trail>
     `;
   }
 

@@ -1,7 +1,7 @@
 import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { KeyboardShortcutMixin } from '@casehubio/pages-primitives/a11y';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-session-list';
 import '@casehubio/blocks-ui-session-detail';
 
@@ -13,7 +13,7 @@ export class SessionWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   static override styles = css`
     :host { display: block; height: 100%; width: 100%; font-family: var(--pages-font-family, system-ui); overflow: hidden; container-type: inline-size; }
-    blocks-split-workbench { height: 100%; }
+    pages-split-workbench { height: 100%; }
     .keyboard-hints { display: flex; gap: var(--pages-space-4, 16px); padding: var(--pages-space-2, 8px) var(--pages-space-4, 16px); background: var(--pages-neutral-2, #f5f5f5); border-top: 1px solid var(--pages-neutral-4, #d4d4d4); font-size: var(--pages-font-size-sm, 12px); color: var(--pages-neutral-7, #525252); overflow-x: auto; }
     .hint { display: flex; align-items: center; gap: var(--pages-space-1, 4px); white-space: nowrap; }
     .key { display: inline-block; padding: 2px 6px; background: var(--pages-neutral-3, #e5e5e5); border: 1px solid var(--pages-neutral-5, #a3a3a3); border-radius: 3px; font-family: monospace; font-size: 11px; font-weight: 600; }
@@ -41,10 +41,10 @@ export class SessionWorkbench extends KeyboardShortcutMixin(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <blocks-split-workbench selection-topic="session">
+      <pages-split-workbench selection-topic="session">
         <blocks-session-list slot="list" .endpoint=${this.endpoint}></blocks-session-list>
         <blocks-session-detail slot="detail" .endpoint=${this.endpoint}></blocks-session-detail>
-      </blocks-split-workbench>
+      </pages-split-workbench>
       ${this._renderKeyboardHints()}
       ${this._showShortcutOverlay ? this._renderShortcutOverlay() : ''}
     `;

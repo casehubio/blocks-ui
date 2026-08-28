@@ -8,7 +8,7 @@ import type {
   SubTaskFinding, FlagEntry, ObligationChain,
   GroundedFact, ConversationEntry,
 } from './types.js';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import './blocks-convergence-indicator.js';
 import './blocks-point-list.js';
 import './blocks-point-detail.js';
@@ -33,7 +33,7 @@ export class ConversationWorkbench extends KeyboardShortcutMixin(LiveRegionMixin
 
   static override styles = css`
     :host { display: block; height: 100%; font-family: var(--pages-font-family, system-ui); }
-    blocks-split-workbench { height: 100%; }
+    pages-split-workbench { height: 100%; }
     .left-panel { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
     .left-panel blocks-convergence-indicator {
       flex-shrink: 0; position: sticky; top: 0; z-index: 1;
@@ -118,7 +118,7 @@ export class ConversationWorkbench extends KeyboardShortcutMixin(LiveRegionMixin
 
   override render(): TemplateResult {
     return html`
-      <blocks-split-workbench selection-topic=${this.selectionTopic}>
+      <pages-split-workbench selection-topic=${this.selectionTopic}>
         <div slot="list" class="left-panel">
           <blocks-convergence-indicator
             .signal=${this.conversationState?.convergence}
@@ -134,7 +134,7 @@ export class ConversationWorkbench extends KeyboardShortcutMixin(LiveRegionMixin
         <div slot="detail" class="detail-panel">
           ${this._renderRightPane()}
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 

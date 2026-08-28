@@ -4,7 +4,7 @@ import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { onPagesEvent } from '@casehubio/pages-component';
 import { orchestrationEventsStrategy } from '@casehubio/blocks-ui-blocks-timeline';
 import type { ExecutionSnapshot, OrchestrationAuditEvent } from '@casehubio/blocks-ui-core';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-execution-monitor';
 import '@casehubio/blocks-ui-blocks-timeline';
 
@@ -24,7 +24,7 @@ export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
 
   static override styles = css`
     :host { display: block; height: 100%; font-family: var(--pages-font-family, system-ui); }
-    blocks-split-workbench { height: 100%; }
+    pages-split-workbench { height: 100%; }
     .monitor-panel { height: 100%; overflow-y: auto; padding: var(--pages-space-3, 12px); }
     .timeline-panel { height: 100%; overflow-y: auto; }
   `;
@@ -56,7 +56,7 @@ export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
     const timelineEndpoint = this.data ? undefined : (this.endpoint && this.executionId ? `${this.endpoint}/${this.executionId}/audit-events` : undefined);
 
     return html`
-      <blocks-split-workbench selection-topic=${this.selectionTopic}>
+      <pages-split-workbench selection-topic=${this.selectionTopic}>
         <div slot="list" class="monitor-panel">
           <blocks-execution-monitor
             .endpoint=${monitorEndpoint}
@@ -73,7 +73,7 @@ export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
             layout="vertical"
           ></blocks-timeline>
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 }

@@ -22,7 +22,7 @@
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-list-pane": "workspace:*",
     "@casehubio/blocks-ui-routing-rationale": "workspace:*",
-    "@casehubio/blocks-ui-split-workbench": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "@casehubio/blocks-ui-trust-feedback-display": "workspace:*",
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*",
     "@casehubio/pages-data": "*",

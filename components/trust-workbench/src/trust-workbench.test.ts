@@ -115,7 +115,7 @@ describe('blocks-trust-workbench', () => {
     it('renders split-workbench with trust-routing selection-topic', async () => {
       document.body.appendChild(el);
       await el.updateComplete;
-      const sw = el.shadowRoot!.querySelector('blocks-split-workbench');
+      const sw = el.shadowRoot!.querySelector('pages-split-workbench');
       expect(sw).toBeTruthy();
       expect(sw!.getAttribute('selection-topic')).toBe('trust-routing');
     });

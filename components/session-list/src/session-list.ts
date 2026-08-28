@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import '@casehubio/pages-table';
-import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
+import '@casehubio/pages-ui-components/status-badge';
 import type { TableColumnConfig, ColumnRenderer, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
@@ -52,7 +52,7 @@ export class SessionList extends SessionListBase {
   private _columnRenderers = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-      return html`<status-badge domain="session" state=${status} size="sm" showIcon></status-badge>`;
+      return html`<pages-status-badge domain="session" state=${status} size="sm" showIcon></pages-status-badge>`;
     }],
   ]) as ReadonlyMap<typeof NAME_COL | typeof STATUS_COL, ColumnRenderer>;
 

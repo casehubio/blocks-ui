@@ -17,7 +17,7 @@ describe('blocks-channel-activity', () => {
   it('renders split-workbench with nav and feed', async () => {
     await (el as any).updateComplete;
     const sr = el.shadowRoot!;
-    const workbench = sr.querySelector('blocks-split-workbench');
+    const workbench = sr.querySelector('pages-split-workbench');
     expect(workbench).toBeTruthy();
     expect(workbench!.getAttribute('selection-topic')).toBe('channel');
     const nav = sr.querySelector('blocks-channel-nav');
@@ -39,7 +39,7 @@ describe('blocks-channel-activity', () => {
   it('passes selectionTopic to split-workbench', async () => {
     (el as any).selectionTopic = 'my-channel';
     await (el as any).updateComplete;
-    const wb = el.shadowRoot!.querySelector('blocks-split-workbench');
+    const wb = el.shadowRoot!.querySelector('pages-split-workbench');
     expect(wb!.getAttribute('selection-topic')).toBe('my-channel');
   });
 

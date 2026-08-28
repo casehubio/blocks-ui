@@ -10,7 +10,7 @@ import type { RoutingRationaleData } from '@casehubio/blocks-ui-routing-rational
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { ID_COL, ROUTING_HISTORY_COLUMNS, ROUTING_HISTORY_TABLE_CONFIG, DEFAULT_ROUTING_RENDERERS } from './columns.js';
 import type { RoutingDecisionSummary, RoutingDecisionDetail } from './types.js';
-import '@casehubio/blocks-ui-split-workbench';
+import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-trust-score-panel';
 import '@casehubio/blocks-ui-list-pane';
 import '@casehubio/blocks-ui-routing-rationale';
@@ -202,7 +202,7 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <blocks-split-workbench selection-topic="trust-routing">
+      <pages-split-workbench selection-topic="trust-routing">
         <div slot="list" class="left-panel">
           <blocks-trust-score-panel
             mode="full"
@@ -222,7 +222,7 @@ export class TrustWorkbench extends LiveRegionMixin(LitElement) {
         <div slot="detail" class="detail-panel">
           ${this._renderDetail()}
         </div>
-      </blocks-split-workbench>
+      </pages-split-workbench>
     `;
   }
 

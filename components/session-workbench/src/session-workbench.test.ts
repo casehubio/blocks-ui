@@ -26,7 +26,7 @@ describe('blocks-session-workbench', () => {
   });
 
   it('renders split-workbench with session-list and session-detail', () => {
-    const split = el.shadowRoot!.querySelector('blocks-split-workbench');
+    const split = el.shadowRoot!.querySelector('pages-split-workbench');
     expect(split).toBeTruthy();
     expect(split!.getAttribute('selection-topic')).toBe('session');
     const list = el.shadowRoot!.querySelector('blocks-session-list');

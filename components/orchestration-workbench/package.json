@@ -19,7 +19,7 @@
     "@casehubio/blocks-ui-blocks-timeline": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-execution-monitor": "workspace:*",
-    "@casehubio/blocks-ui-split-workbench": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "@casehubio/pages-data": "*",
     "@casehubio/pages-primitives": "*",
     "lit": "^3.1.0"

@@ -82,7 +82,7 @@ describe('blocks-contributor-workbench', () => {
       await el.updateComplete;
       await vi.waitFor(() => expect(el._detail).toBeTruthy(), { timeout: 2000 });
       await el.updateComplete;
-      const sw = el.shadowRoot!.querySelector('blocks-split-workbench');
+      const sw = el.shadowRoot!.querySelector('pages-split-workbench');
       expect(sw).toBeTruthy();
     });
 
@@ -90,7 +90,7 @@ describe('blocks-contributor-workbench', () => {
       el.actorId = '';
       document.body.appendChild(el);
       await el.updateComplete;
-      const workbench = el.shadowRoot!.querySelector('blocks-split-workbench');
+      const workbench = el.shadowRoot!.querySelector('pages-split-workbench');
       expect(workbench).toBeNull();
     });
 

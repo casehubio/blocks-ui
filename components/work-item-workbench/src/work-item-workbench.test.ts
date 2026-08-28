@@ -65,7 +65,7 @@ describe('WorkItemWorkbench', () => {
     it('renders split-workbench internally', async () => {
       document.body.appendChild(element);
       await element.updateComplete;
-      const sw = element.shadowRoot!.querySelector('blocks-split-workbench');
+      const sw = element.shadowRoot!.querySelector('pages-split-workbench');
       expect(sw).toBeTruthy();
       expect(sw!.getAttribute('selection-topic')).toBe('work-item');
     });
