@@ -1,5 +1,5 @@
 import { registerStencil } from '@casehubio/graph-renderer';
-import { registerPropertySchema } from '@casehubio/diagram-core';
+import { registerPropertySchema } from '@casehubio/pages-diagram-core';
 import { dagNodeGrammar, renderDagNode } from './dag-node.js';
 import { dagNodeSchema, primitivePlanItemSchema, compoundPlanItemSchema } from '../schemas/index.js';
 

@@ -34,6 +34,7 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/graph-core": "*",
+    "@casehubio/pages-diagram-core": "*",
     "@casehubio/graph-renderer": "*",
     "@casehubio/pages-component": "*",
     "lit": "^3.3.3",

@@ -1,8 +1,6 @@
 export { toGraph } from './adapter/case-adapter.js';
 export type { AdapterResult } from './adapter/case-adapter.js';
 export { applyPropertyEdit, addElement, removeElement, switchBindingTarget, switchFunctionType, switchMcpTransport, switchModelProvider, switchTriggerType, removeCaseEdge, addCaseEdge } from './adapter/yaml-editor.js';
-export { GitHubBackend } from './persistence/github-backend.js';
-export type { GitHubBackendConfig } from './persistence/github-backend.js';
 export { registerCaseStencils } from './stencils/index.js';
 export { renderBinding, renderWorker, renderMilestone, renderGoal, renderSubCase } from './stencils/index.js';
 export { registerThumbnailRenderer, getThumbnailRenderer } from './thumbnail-registry.js';

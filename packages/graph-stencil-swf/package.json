@@ -27,8 +27,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@casehubio/diagram-core": "workspace:*",
     "@casehubio/graph-core": "*",
+    "@casehubio/pages-diagram-core": "*",
     "@openworkflowspec/sdk": "*",
     "lit": "^3.3.3",
     "yaml": "^2.7.0"

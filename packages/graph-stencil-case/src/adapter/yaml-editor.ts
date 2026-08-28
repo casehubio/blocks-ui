@@ -1,4 +1,5 @@
 import { parseDocument, parse as parseYaml, type YAMLMap } from 'yaml';
+import { yamlSetField, yamlDeleteField } from '@casehubio/pages-diagram-core';
 import type { WorkerFunctionType, McpTransportType, ModelProviderKey, TriggerType } from '../worker-function/types.js';
 import { FUNCTION_TYPE_KEYS, FUNCTION_TYPE_TO_YAML_KEY, MODEL_PROVIDERS, TRIGGER_TYPES } from '../worker-function/types.js';
 import { FUNCTION_TYPE_DEFAULTS, MCP_TRANSPORT_DEFAULTS, PROVIDER_DEFAULT } from '../worker-function/defaults.js';
@@ -9,16 +10,10 @@ export function applyPropertyEdit(
   field: readonly (string | number)[],
   value: unknown,
 ): string {
-  const doc = parseDocument(yaml);
   const fullPath = [...nodePath, ...field];
-
-  if (value === undefined) {
-    doc.deleteIn(fullPath);
-  } else {
-    doc.setIn(fullPath, value);
-  }
-
-  return doc.toString();
+  return value === undefined
+    ? yamlDeleteField(yaml, fullPath)
+    : yamlSetField(yaml, fullPath, value);
 }
 
 const ELEMENT_PATHS: Record<string, string> = {

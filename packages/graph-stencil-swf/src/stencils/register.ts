@@ -1,6 +1,6 @@
 import { html } from 'lit-html';
 import { registerStencil, registerEdgeType } from '@casehubio/graph-renderer';
-import { registerPropertySchema } from '@casehubio/diagram-core';
+import { registerPropertySchema } from '@casehubio/pages-diagram-core';
 import { swfTaskSchema } from '../schemas/swf-task-schema';
 import { callGrammar, renderCall } from './call.js';
 import { setGrammar, renderSet } from './set.js';
