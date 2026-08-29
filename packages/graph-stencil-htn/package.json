@@ -27,8 +27,8 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/graph-core": "*",
-    "@casehubio/pages-diagram-core": "*",
     "@casehubio/graph-renderer": "*",
+    "@casehubio/pages-diagram-core": "*",
     "lit-html": "^3.3.0"
   },
   "license": "Apache-2.0"

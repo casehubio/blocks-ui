@@ -1,1 +1,1 @@
-export { stateCategoryStyles, type CategoryStyle } from './category.js';
+export { stateCategoryStyles, type CategoryStyle } from '@casehubio/pages-ui-components/status-badge';

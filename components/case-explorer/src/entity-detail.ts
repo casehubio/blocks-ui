@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-data';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import './entity-command-bar.js';
 import type { EntityTypeRegistration, EntitySelection, DetailRenderer } from './types.js';

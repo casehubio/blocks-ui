@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent } from '@casehubio/pages-data';
 import type { Snapshot, TrailHighlight, DebateStreamEntry } from './types.js';
 
 @customElement('document-timeline')

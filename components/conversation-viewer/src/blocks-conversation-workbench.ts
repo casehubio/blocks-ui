@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing, type TemplateResult, type PropertyValue
 import { customElement, property, state } from 'lit/decorators.js';
 import { KeyboardShortcutMixin } from '@casehubio/pages-primitives/a11y';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-import { onPagesEvent, emitPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent, emitPagesEvent } from '@casehubio/pages-data';
 import type {
   ConversationState, ConversationPoint,
   SubTaskFinding, FlagEntry, ObligationChain,

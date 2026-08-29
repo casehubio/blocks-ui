@@ -4,7 +4,7 @@ import { zoom, zoomIdentity, type ZoomBehavior } from 'd3-zoom';
 import { drag } from 'd3-drag';
 import { select } from 'd3-selection';
 import type { GraphModel, GraphNode } from '@casehubio/graph-core';
-import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-data';
 import { lookupRelationshipType } from '@casehubio/blocks-ui-core';
 import { createSimulation, stopSimulation } from './force-layout.js';
 import { renderGraph, clearGraph, type RenderOptions } from './graph-renderer.js';

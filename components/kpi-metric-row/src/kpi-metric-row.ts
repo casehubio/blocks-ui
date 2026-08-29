@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { renderSparkline } from '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
 

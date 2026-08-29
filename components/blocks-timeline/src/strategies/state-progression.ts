@@ -81,8 +81,8 @@ export function stateProgressionStrategy(options?: {
           key: stage.key,
           label: stage.label,
           status: resolve(stage, data.currentState, transitions, stages),
-          timestamp: transition?.timestamp,
-          actor: transition?.actor,
+          ...(transition?.timestamp != null && { timestamp: transition.timestamp }),
+          ...(transition?.actor != null && { actor: transition.actor }),
         };
       });
     },

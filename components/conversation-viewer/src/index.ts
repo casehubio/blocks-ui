@@ -1,4 +1,4 @@
-import { registerStatus } from '@casehubio/blocks-ui-core';
+import { registerStatus } from '@casehubio/pages-ui-components/status-badge';
 
 registerStatus('conversation', 'OPEN',           { category: 'neutral',  icon: '○' });
 registerStatus('conversation', 'ACTIVE',         { category: 'info',     icon: '⟳' });

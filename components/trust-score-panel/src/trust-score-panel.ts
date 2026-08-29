@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { DataSourceMixin, TrendSourceMixin, emitPagesEvent } from '@casehubio/pages-component';
+import { DataSourceMixin, TrendSourceMixin } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { renderSparkline } from '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { TrustScoreResponse, TrustLevel } from './types.js';

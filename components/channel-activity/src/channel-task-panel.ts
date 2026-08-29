@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import type { QhorusMessage } from './types.js';
 import { isObligationCreating, isTerminalCommitmentState } from './types.js';
 import type { CommitmentState } from './types.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { ChannelEventTopics } from './events.js';
 import type { CommitmentRecord } from './commitment.js';
 

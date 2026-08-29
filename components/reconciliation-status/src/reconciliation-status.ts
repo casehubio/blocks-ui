@@ -1,6 +1,6 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { ReconciliationSnapshot, ClusterReconciliationStatus, NodeReconciliationStatus } from './types.js';

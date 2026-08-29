@@ -24,7 +24,8 @@
     "@casehubio/graph-work-registry": "portal:./.casehub-packages/packages/graph-work-registry",
     "@casehubio/pages-filter-bar": "portal:./.casehub-packages/packages/pages-filter-bar",
     "@casehubio/pages-property-palette": "portal:./.casehub-packages/packages/pages-property-palette",
-    "@casehubio/pages-diagram-palette": "portal:./.casehub-packages/packages/pages-diagram-palette"
+    "@casehubio/pages-diagram-palette": "portal:./.casehub-packages/packages/pages-diagram-palette",
+    "@casehubio/pages-diagram-core": "portal:./.casehub-packages/packages/pages-diagram-core"
   },
   "scripts": {
     "build": "yarn workspaces foreach -A --topological run build",

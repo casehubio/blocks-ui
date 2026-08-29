@@ -18,8 +18,8 @@
   "dependencies": {
     "@casehubio/blocks-ui-casehub-diagram": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-ui-components": "*",
     "@casehubio/blocks-ui-swf-diagram": "workspace:*",
+    "@casehubio/pages-ui-components": "*",
     "lit": "^3.1.0"
   },
   "devDependencies": {

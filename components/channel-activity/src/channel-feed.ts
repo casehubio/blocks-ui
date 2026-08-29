@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { QhorusMessage, QhorusTopic, Reaction, ActorType } from './types.js';
 import { isTerminalMessageType } from './types.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { LiveRegionMixin, KeyboardShortcutMixin, RovingTabindexMixin, FocusTrapMixin, type RovingDirection } from '@casehubio/pages-primitives/a11y';
 import { ChannelEventTopics } from './events.js';
 import './channel-message.js';

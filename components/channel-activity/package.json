@@ -21,7 +21,6 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/pages-ui-components": "*",
-    "@casehubio/pages-ui-components": "*",
     "dompurify": "^3.4.11",
     "emoji-picker-element": "^1.29.1",
     "lit": "^3.3.3",

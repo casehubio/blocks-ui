@@ -2,7 +2,7 @@ import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import '@casehubio/pages-viz';
-import type { FieldSchema } from '@casehubio/pages-viz';
+import type { FieldSchema } from '@casehubio/pages-ui-components';
 import type {
   DeliveryChannelDescriptor,
   NotificationPreferences,

@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { timerSubscribe, timerUnsubscribe, emitPagesEvent } from '@casehubio/pages-component';
+import { timerSubscribe, timerUnsubscribe } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 
 export const SlaIndicatorTopics = {
   STATE_CHANGED: 'sla.state-changed',

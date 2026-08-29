@@ -15,7 +15,7 @@ import type {
   QueueView,
   WorkItemQueueEvent,
 } from '@casehubio/blocks-ui-core';
-import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-data';
 import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import {
   WorkItemEventTopics,

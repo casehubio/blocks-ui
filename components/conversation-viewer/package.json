@@ -21,9 +21,9 @@
   "dependencies": {
     "@casehubio/blocks-ui-commitment-viz": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
-    "@casehubio/pages-ui-components": "*",
     "@casehubio/pages-component": "*",
     "@casehubio/pages-primitives": "*",
+    "@casehubio/pages-ui-components": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

@@ -18,9 +18,9 @@
   "dependencies": {
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/pages-data": "*",
-    "@casehubio/pages-ui-components": "*",
     "@casehubio/pages-primitives": "*",
     "@casehubio/pages-table": "*",
+    "@casehubio/pages-ui-components": "*",
     "lit": "^3.1.0"
   },
   "devDependencies": {

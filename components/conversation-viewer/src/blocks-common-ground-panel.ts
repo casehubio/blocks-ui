@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import type { CommonGroundState, GroundedFact, EpistemicStatus } from './types.js';
 import { EPISTEMIC_STATUSES } from './types.js';
 
