@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin, KeyboardShortcutMixin } from '@casehubio/pages-primitives/a11y';
-import { onPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent } from '@casehubio/pages-data';
 import type { PushController } from './push-controller.js';
 import type { MessagingConfig } from './messaging-controller.js';
 import type { ReactionConfig } from './reaction-controller.js';

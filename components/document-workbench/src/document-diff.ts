@@ -1,6 +1,6 @@
 import { LitElement, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent } from '@casehubio/pages-data';
 import { marked } from 'marked';
 import type { DiffSummary } from './types.js';
 

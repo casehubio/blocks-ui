@@ -1,6 +1,7 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DataSourceMixin, emitPagesEvent } from '@casehubio/pages-component';
+import { DataSourceMixin } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { createTypedFetchSource } from '@casehubio/pages-data';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';

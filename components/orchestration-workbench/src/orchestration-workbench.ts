@@ -1,7 +1,7 @@
 import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-import { onPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent } from '@casehubio/pages-data';
 import { orchestrationEventsStrategy } from '@casehubio/blocks-ui-blocks-timeline';
 import type { ExecutionSnapshot, OrchestrationAuditEvent } from '@casehubio/blocks-ui-core';
 import '@casehubio/pages-ui-components/split-workbench';

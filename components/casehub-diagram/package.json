@@ -25,10 +25,10 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
-    "@casehubio/pages-diagram-core": "*",
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",
     "@casehubio/graph-stencil-case": "workspace:*",
+    "@casehubio/pages-diagram-core": "*",
     "lit": "^3.3.3",
     "yaml": "^2.7.0"
   },

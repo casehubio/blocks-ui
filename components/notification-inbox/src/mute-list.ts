@@ -8,7 +8,7 @@ import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { FieldSchema } from '@casehubio/pages-viz';
+import type { FieldSchema } from '@casehubio/pages-ui-components';
 import type { MuteRule, MuteRuleInput } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';

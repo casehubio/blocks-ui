@@ -1,6 +1,6 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import type { ServiceCardData, ClusterDeploymentStatus } from './types.js';
 
 export const ServiceCardTopics = {

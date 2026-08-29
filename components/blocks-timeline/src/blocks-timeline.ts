@@ -7,7 +7,7 @@ export class BlocksTimeline extends PagesEventTimeline {
   override configure(props: Record<string, unknown>): void {
     if (props.identity !== undefined) {
       const id = props.identity as WorkIdentity;
-      this.headers = id?.tenancyId ? { 'X-Tenancy-ID': id.tenancyId } : undefined;
+      if (id?.tenancyId) this.headers = { 'X-Tenancy-ID': id.tenancyId };
     }
     super.configure(props);
   }

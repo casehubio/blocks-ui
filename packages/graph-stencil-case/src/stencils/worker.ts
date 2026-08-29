@@ -2,7 +2,7 @@ import { html, nothing } from 'lit-html';
 import { stringify } from 'yaml';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
-import { emitPagesEvent } from '@casehubio/graph-renderer';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { getThumbnailRenderer } from '../thumbnail-registry.js';
 import { detectFunctionType } from '../worker-function/detect.js';
 import type { WorkerFunctionType } from '../worker-function/types.js';

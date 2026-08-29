@@ -1,7 +1,7 @@
 import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 
 interface WorkItemRelation {
   readonly id: string;

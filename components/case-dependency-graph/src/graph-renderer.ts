@@ -1,5 +1,6 @@
 import { select } from 'd3-selection';
-import { lookupRelationshipType, lookupStatus, stateCategoryStyles } from '@casehubio/blocks-ui-core';
+import { lookupRelationshipType } from '@casehubio/blocks-ui-core';
+import { lookupStatus, stateCategoryStyles } from '@casehubio/pages-ui-components/status-badge';
 import type { GraphNode } from '@casehubio/graph-core';
 import type { SimNode, SimLink } from './types.js';
 

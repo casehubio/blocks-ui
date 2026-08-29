@@ -126,10 +126,10 @@ __metadata:
   resolution: "@casehubio/blocks-ui-audit-trail-viewer@workspace:components/audit-trail-viewer"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-event-trail": "workspace:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     "@esm-bundle/chai": "npm:^4.3.4-fix.0"
     "@open-wc/testing": "npm:^4.0.0"
     "@vitest/browser": "npm:^2.1.8"
@@ -240,11 +240,11 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-list-pane": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-component": "npm:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -256,10 +256,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-casehub-diagram@workspace:components/casehub-diagram"
   dependencies:
-    "@casehubio/diagram-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/graph-stencil-case": "workspace:*"
+    "@casehubio/pages-diagram-core": "npm:*"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
@@ -274,7 +274,6 @@ __metadata:
   resolution: "@casehubio/blocks-ui-channel-activity@workspace:components/channel-activity"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-ui-components": "npm:*"
     "@types/dompurify": "npm:^3.0.5"
     "@types/node": "npm:^22.0.0"
@@ -335,11 +334,11 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-list-pane": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -353,9 +352,9 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-commitment-viz": "workspace:*"
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-component": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -370,6 +369,7 @@ __metadata:
     "@casehubio/pages-component": "npm:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     "@casehubio/pages-ui-tokens": "npm:*"
     "@open-wc/testing": "npm:^4.0.0"
     jsdom: "npm:^29.1.1"
@@ -401,8 +401,8 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-casehub-diagram": "workspace:*"
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/blocks-ui-swf-diagram": "workspace:*"
+    "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
   languageName: unknown
@@ -439,18 +439,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-event-trail@workspace:*, @casehubio/blocks-ui-event-trail@workspace:components/event-trail":
+"@casehubio/blocks-ui-event-trail@workspace:components/event-trail":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-event-trail@workspace:components/event-trail"
-  dependencies:
-    "@casehubio/pages-component": "npm:*"
-    "@casehubio/pages-data": "npm:*"
-    "@casehubio/pages-filter-bar": "npm:*"
-    "@casehubio/pages-table": "npm:*"
-    jsdom: "npm:^26.0.0"
-    lit: "npm:^3.2.1"
-    typescript: "npm:~5.7.2"
-    vitest: "npm:^2.1.8"
   languageName: unknown
   linkType: soft
 
@@ -551,9 +542,9 @@ __metadata:
     "@casehubio/blocks-ui-blocks-timeline": "workspace:*"
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-execution-monitor": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
@@ -640,6 +631,7 @@ __metadata:
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
@@ -654,8 +646,8 @@ __metadata:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-session-detail": "workspace:*"
     "@casehubio/blocks-ui-session-list": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
@@ -704,18 +696,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-split-workbench@workspace:*, @casehubio/blocks-ui-split-workbench@workspace:components/split-workbench":
+"@casehubio/blocks-ui-split-workbench@workspace:components/split-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-split-workbench@workspace:components/split-workbench"
-  dependencies:
-    "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/pages-primitives": "npm:*"
-    "@open-wc/testing": "npm:^4.0.0"
-    jsdom: "npm:^25.0.0"
-    lit: "npm:^3.0.0"
-    rimraf: "npm:^6.1.0"
-    typescript: "npm:^5.6.0"
-    vitest: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -723,10 +706,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-swf-diagram@workspace:components/swf-diagram"
   dependencies:
-    "@casehubio/diagram-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/graph-stencil-swf": "workspace:*"
+    "@casehubio/pages-diagram-core": "npm:*"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
@@ -784,12 +767,12 @@ __metadata:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-list-pane": "workspace:*"
     "@casehubio/blocks-ui-routing-rationale": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/blocks-ui-trust-feedback-display": "workspace:*"
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"
     "@casehubio/pages-table": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.2.1"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
@@ -847,10 +830,10 @@ __metadata:
   resolution: "@casehubio/blocks-ui-work-item-workbench@workspace:components/work-item-workbench"
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-split-workbench": "workspace:*"
     "@casehubio/blocks-ui-work-item-detail": "workspace:*"
     "@casehubio/blocks-ui-work-item-inbox": "workspace:*"
     "@casehubio/pages-primitives": "npm:*"
+    "@casehubio/pages-ui-components": "npm:*"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
@@ -859,20 +842,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/diagram-core@workspace:*, @casehubio/diagram-core@workspace:packages/diagram-core":
+"@casehubio/diagram-core@workspace:packages/diagram-core":
   version: 0.0.0-use.local
   resolution: "@casehubio/diagram-core@workspace:packages/diagram-core"
-  dependencies:
-    "@casehubio/graph-core": "npm:*"
-    "@casehubio/graph-renderer": "npm:*"
-    "@casehubio/pages-diagram-palette": "npm:*"
-    "@casehubio/pages-property-palette": "npm:*"
-    html-to-image: "npm:1.11.11"
-    jsdom: "npm:^29.1.1"
-    lit: "npm:^3.3.3"
-    rimraf: "npm:^6.1.0"
-    typescript: "npm:^5.6.0"
-    vitest: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -888,10 +860,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-renderer@portal:./.casehub-packages/packages/graph-renderer::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "npm:0.1.0"
-    "@casehubio/graph-work-registry": "npm:0.1.0"
-    "@casehubio/pages-data": "npm:0.2.3"
-    "@casehubio/pages-ui-tokens": "npm:0.3.0"
+    "@casehubio/graph-core": "workspace:*"
+    "@casehubio/graph-work-registry": "workspace:*"
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-ui-tokens": "workspace:*"
     "@tisoap/react-flow-smart-edge": "npm:^5.0.0"
     "@xyflow/react": "npm:^12.4.0"
     elkjs: "npm:^0.9.3"
@@ -909,6 +881,7 @@ __metadata:
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/pages-component": "npm:*"
+    "@casehubio/pages-diagram-core": "npm:*"
     "@open-wc/testing": "npm:^4.0.0"
     "@types/react": "npm:^19.2.18"
     "@types/react-dom": "npm:^19.2.4"
@@ -934,6 +907,7 @@ __metadata:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
+    "@casehubio/pages-diagram-core": "npm:*"
     jsdom: "npm:^29.1.1"
     lit-html: "npm:^3.3.0"
     rimraf: "npm:^6.1.0"
@@ -946,8 +920,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-stencil-swf@workspace:packages/graph-stencil-swf"
   dependencies:
-    "@casehubio/diagram-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
+    "@casehubio/pages-diagram-core": "npm:*"
     "@open-wc/testing": "npm:^4.0.0"
     "@openworkflowspec/sdk": "npm:*"
     jsdom: "npm:^29.1.1"
@@ -963,7 +937,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-work-registry@portal:./.casehub-packages/packages/graph-work-registry::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-core": "workspace:*"
     "@types/json-schema": "npm:^7.0.15"
     yaml: "npm:^2.7.0"
   languageName: node
@@ -973,7 +947,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-data": "workspace:*"
   languageName: node
   linkType: soft
 
@@ -986,11 +960,25 @@ __metadata:
   languageName: node
   linkType: soft
 
+"@casehubio/pages-diagram-core@portal:./.casehub-packages/packages/pages-diagram-core::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-diagram-core@portal:./.casehub-packages/packages/pages-diagram-core::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/graph-core": "workspace:*"
+    "@casehubio/graph-renderer": "workspace:*"
+    "@casehubio/pages-diagram-palette": "workspace:*"
+    "@casehubio/pages-property-palette": "workspace:*"
+    html-to-image: "npm:1.11.11"
+    lit: "npm:^3.3.3"
+    yaml: "npm:^2.7.0"
+  languageName: node
+  linkType: soft
+
 "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-primitives": "npm:0.2.3"
+    "@casehubio/pages-primitives": "workspace:*"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -999,8 +987,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "npm:0.2.3"
-    "@casehubio/pages-ui-tokens": "npm:0.3.0"
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-ui-tokens": "workspace:*"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1017,7 +1005,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-ui-components": "npm:0.2.3"
+    "@casehubio/pages-ui-components": "workspace:*"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1026,9 +1014,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-table@portal:./.casehub-packages/packages/pages-table::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "npm:0.2.3"
-    "@casehubio/pages-data": "npm:0.2.3"
-    "@casehubio/pages-primitives": "npm:0.2.3"
+    "@casehubio/pages-component": "workspace:*"
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-primitives": "workspace:*"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1037,6 +1025,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-ui-components@portal:./.casehub-packages/packages/pages-ui-components::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
+    "@casehubio/pages-component": "workspace:*"
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-filter-bar": "workspace:*"
+    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-table": "workspace:*"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1055,9 +1048,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-viz@portal:./.casehub-packages/packages/pages-viz::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "npm:0.2.3"
-    "@casehubio/pages-data": "npm:0.2.3"
-    "@casehubio/pages-ui-components": "npm:0.2.3"
+    "@casehubio/pages-component": "workspace:*"
+    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-ui-components": "workspace:*"
     "@drdreo/heatmap": "npm:^1.4.1"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"

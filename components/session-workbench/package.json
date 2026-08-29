@@ -19,8 +19,8 @@
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-session-detail": "workspace:*",
     "@casehubio/blocks-ui-session-list": "workspace:*",
-    "@casehubio/pages-ui-components": "*",
     "@casehubio/pages-primitives": "*",
+    "@casehubio/pages-ui-components": "*",
     "lit": "^3.1.0"
   },
   "devDependencies": {

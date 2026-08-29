@@ -22,12 +22,12 @@
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-list-pane": "workspace:*",
     "@casehubio/blocks-ui-routing-rationale": "workspace:*",
-    "@casehubio/pages-ui-components": "*",
     "@casehubio/blocks-ui-trust-feedback-display": "workspace:*",
     "@casehubio/blocks-ui-trust-score-panel": "workspace:*",
     "@casehubio/pages-data": "*",
     "@casehubio/pages-primitives": "*",
     "@casehubio/pages-table": "*",
+    "@casehubio/pages-ui-components": "*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

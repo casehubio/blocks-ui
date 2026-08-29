@@ -80,15 +80,18 @@ export function eventChronologyStrategy(options?: {
 
   return {
     toNodes(data: CaseEvent[]): EventTimelineNode[] {
-      return data.map((event, i) => ({
-        key: `event-${i}`,
-        label: event.eventType.replace(/_/g, ' '),
-        status: 'completed' as const,
-        timestamp: event.timestamp,
-        actor: event.metadata?.workerName as string | undefined,
-        detail: event,
-        category: event.streamType,
-      }));
+      return data.map((event, i) => {
+        const actor = event.metadata?.workerName as string | undefined;
+        return {
+          key: `event-${i}`,
+          label: event.eventType.replace(/_/g, ' '),
+          status: 'completed' as const,
+          timestamp: event.timestamp,
+          ...(actor != null && { actor }),
+          detail: event,
+          category: event.streamType,
+        };
+      });
     },
     transformData(raw: unknown): CaseEvent[] {
       if (isPagedResponse(raw)) return raw.content;

@@ -1,6 +1,7 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { DataSourceMixin, emitPagesEvent } from '@casehubio/pages-component';
+import { DataSourceMixin } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import type { ColumnId, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { GroupingKey } from '@casehubio/pages-data/dist/dataset/group.js';
 import type { TableColumnConfig, ColumnRenderer, SelectionMode } from '@casehubio/pages-table';

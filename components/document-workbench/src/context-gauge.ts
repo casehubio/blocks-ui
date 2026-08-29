@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/pages-component';
+import { onPagesEvent } from '@casehubio/pages-data';
 import type { ContextUsagePayload } from './types.js';
 
 @customElement('context-gauge')
