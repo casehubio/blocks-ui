@@ -4,7 +4,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 import type { CommitmentState } from '@casehubio/blocks-ui-core';
 import { commitmentStateCategory, isTerminalCommitmentState } from '@casehubio/blocks-ui-core';
 import { pulseAnimation } from '@casehubio/pages-ui-tokens';
-import { stateCategoryStyles } from '@casehubio/blocks-ui-core';
+import { stateCategoryStyles } from '@casehubio/pages-ui-components';
 
 interface Milestone {
   label: string;
