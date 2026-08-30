@@ -65,7 +65,7 @@ describe('blocks-point-detail', () => {
     const el = createElement();
     el.point = MOCK_POINT;
     await el.updateComplete;
-    const badge = el.shadowRoot?.querySelector('status-badge');
+    const badge = el.shadowRoot?.querySelector('pages-status-badge');
     expect(badge).toBeTruthy();
     expect(badge?.getAttribute('state')).toBe('ACTIVE');
   });
