@@ -100,7 +100,7 @@ export class ChannelThreadElement extends LitElement {
           </pages-button>
           ${this._lastActivityAge() ? html`<span class="thread-age">${this._lastActivityAge()}</span>` : nothing}
           ${this.commitmentState ? html`
-            <commitment-state-pill .state=${this.commitmentState}></commitment-state-pill>
+            <pages-status-badge domain="commitment" .state=${this.commitmentState}></pages-status-badge>
           ` : nothing}
         </div>
         ${!this.collapsed ? html`

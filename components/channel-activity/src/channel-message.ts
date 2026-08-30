@@ -229,7 +229,7 @@ export class ChannelMessageElement extends LitElement {
           <div class="commitment-details">
             <div class="detail-row">
               <span class="detail-label">State:</span>
-              <commitment-state-pill .state=${this.commitmentState}></commitment-state-pill>
+              <pages-status-badge domain="commitment" .state=${this.commitmentState}></pages-status-badge>
             </div>
             ${m.deadline ? html`
               <div class="detail-row">
@@ -276,7 +276,7 @@ export class ChannelMessageElement extends LitElement {
           <span class="speech-act-badge badge-${category}">${m.messageType}</span>
         ` : nothing}
         ${this.commitmentState && isObligationCreating(m.messageType) ? html`
-          <commitment-state-pill .state=${this.commitmentState}></commitment-state-pill>
+          <pages-status-badge domain="commitment" .state=${this.commitmentState}></pages-status-badge>
         ` : nothing}
         <time datetime=${m.createdAt}>${this._formatTime(m.createdAt)}</time>
         <pages-button class="expand-toggle" variant="ghost" size="sm" @click=${this._toggle} aria-expanded=${this._expanded}>

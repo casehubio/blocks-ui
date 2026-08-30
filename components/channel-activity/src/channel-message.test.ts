@@ -96,7 +96,7 @@ describe('blocks-channel-message', () => {
     const el = await renderMessage({ message: { messageType: 'COMMAND', commitmentId: 'c-1' } });
     (el as any).commitmentState = 'OPEN';
     await (el as any).updateComplete;
-    const badge = el.shadowRoot!.querySelector('commitment-state-pill');
+    const badge = el.shadowRoot!.querySelector('pages-status-badge');
     expect(badge).toBeTruthy();
     expect((badge as any).state).toBe('OPEN');
   });

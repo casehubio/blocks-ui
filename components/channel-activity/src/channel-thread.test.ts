@@ -65,7 +65,7 @@ describe('blocks-channel-thread', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const pill = el.shadowRoot!.querySelector('commitment-state-pill');
+    const pill = el.shadowRoot!.querySelector('pages-status-badge');
     expect(pill).toBeTruthy();
     expect((pill as any).state).toBe('FULFILLED');
   });
@@ -103,7 +103,7 @@ describe('blocks-channel-thread', () => {
     expect(toggle!.getAttribute('aria-expanded')).toBe('false');
   });
 
-  it('renders commitment-state-pill with correct state for FULFILLED', async () => {
+  it('renders pages-status-badge with correct state for FULFILLED', async () => {
     const el = document.createElement('blocks-channel-thread') as any;
     el.rootMessage = msg('1', 'COMMAND', 'Task');
     el.replies = [msg('2', 'DONE', 'Done')];
@@ -112,7 +112,7 @@ describe('blocks-channel-thread', () => {
     document.body.appendChild(el);
     await el.updateComplete;
 
-    const pill = el.shadowRoot!.querySelector('commitment-state-pill') as any;
+    const pill = el.shadowRoot!.querySelector('pages-status-badge') as any;
     expect(pill).toBeTruthy();
     expect(pill.state).toBe('FULFILLED');
   });

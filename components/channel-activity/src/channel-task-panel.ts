@@ -6,6 +6,7 @@ import type { CommitmentState } from './types.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { ChannelEventTopics } from './events.js';
 import type { CommitmentRecord } from './commitment.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('blocks-channel-task-panel')
 export class ChannelTaskPanelElement extends LitElement {
@@ -170,7 +171,7 @@ export class ChannelTaskPanelElement extends LitElement {
       <div class="task-row ${isOverdue ? 'overdue' : ''} ${isSelected ? 'selected' : ''}"
            @click=${() => this._onRowClick(msg)}>
         <div class="task-header">
-          <commitment-state-pill .state=${state}></commitment-state-pill>
+          <pages-status-badge domain="commitment" .state=${state}></pages-status-badge>
           <span class="timestamp">${this._formatTime(msg.createdAt)}</span>
           ${isOverdue && record?.deadline ? html`
             <span class="deadline-indicator">overdue</span>

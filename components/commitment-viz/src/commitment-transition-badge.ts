@@ -1,7 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { TransitionRecord } from './types.js';
-import '@casehubio/blocks-ui-core';
+import '@casehubio/pages-ui-components';
 
 @customElement('commitment-transition-badge')
 export class CommitmentTransitionBadge extends LitElement {
@@ -31,9 +31,9 @@ export class CommitmentTransitionBadge extends LitElement {
 
     return html`
       <span aria-label="Transition from ${from} to ${to}">
-        <commitment-state-pill .state=${from} size="sm"></commitment-state-pill>
+        <pages-status-badge domain="commitment" .state=${from} size="sm"></pages-status-badge>
         <span class="arrow">→</span>
-        <commitment-state-pill .state=${to} size="sm"></commitment-state-pill>
+        <pages-status-badge domain="commitment" .state=${to} size="sm"></pages-status-badge>
       </span>
       ${!this.compact ? html`
         <span class="meta">

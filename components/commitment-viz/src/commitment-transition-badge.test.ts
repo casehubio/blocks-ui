@@ -34,7 +34,7 @@ describe('commitment-transition-badge', () => {
   it('renders from and to state pills', async () => {
     el.transition = sampleTransition;
     await el.updateComplete;
-    const pills = el.shadowRoot!.querySelectorAll('commitment-state-pill');
+    const pills = el.shadowRoot!.querySelectorAll('pages-status-badge');
     expect(pills.length).toBe(2);
   });
 
@@ -68,7 +68,7 @@ describe('commitment-transition-badge', () => {
   it('handles transition without actor', async () => {
     el.transition = { from: 'OPEN', to: 'EXPIRED', timestamp: '2026-07-14T08:15:00Z' };
     await el.updateComplete;
-    const pills = el.shadowRoot!.querySelectorAll('commitment-state-pill');
+    const pills = el.shadowRoot!.querySelectorAll('pages-status-badge');
     expect(pills.length).toBe(2);
   });
 

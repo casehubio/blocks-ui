@@ -5,6 +5,7 @@ import { messageTypeCategory, isObligationCreating } from './types.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { ChannelEventTopics } from './events.js';
 import type { CommitmentRecord } from './commitment.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('blocks-channel-correlation-panel')
 export class ChannelCorrelationPanelElement extends LitElement {
@@ -209,7 +210,7 @@ export class ChannelCorrelationPanelElement extends LitElement {
           <span class="sender">${msg.sender}</span>
           <span class="speech-act-badge badge-${category}">${msg.messageType}</span>
           ${isObligationCreating(msg.messageType) && record ? html`
-            <commitment-state-pill .state=${record.state}></commitment-state-pill>
+            <pages-status-badge domain="commitment" .state=${record.state}></pages-status-badge>
           ` : nothing}
           <span class="node-time">${this._formatTime(msg.createdAt)}</span>
         </div>
