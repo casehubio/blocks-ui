@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { detectFunctionType, detectMcpTransport, detectModelProvider, detectTriggerType } from './detect.js';
+import { detectFunctionType, detectMcpTransport, detectModelProvider, detectTriggerType, detectTargetType } from './detect.js';
 
 describe('detectFunctionType', () => {
   it('detects agent', () => {
@@ -102,5 +102,20 @@ describe('detectTriggerType', () => {
 
   it('returns null for unrecognised key', () => {
     expect(detectTriggerType({ customTrigger: {} })).toBeNull();
+  });
+});
+
+describe('detectTargetType', () => {
+  it('returns capability when capability key present', () => {
+    expect(detectTargetType({ capability: 'ocr' })).toBe('capability');
+  });
+  it('returns subCase when subCase key present', () => {
+    expect(detectTargetType({ subCase: { namespace: 'test', name: 'sub' } })).toBe('subCase');
+  });
+  it('returns humanTask when humanTask key present', () => {
+    expect(detectTargetType({ humanTask: { title: 'Review' } })).toBe('humanTask');
+  });
+  it('defaults to capability when no target key present', () => {
+    expect(detectTargetType({ name: 'b1' })).toBe('capability');
   });
 });

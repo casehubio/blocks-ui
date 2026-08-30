@@ -19,6 +19,7 @@ import {
   detectMcpTransport,
   detectModelProvider,
   detectTriggerType,
+  detectTargetType,
   toDecorations,
   FUNCTION_TYPE_TO_YAML_KEY,
 } from '@casehubio/graph-stencil-case';
@@ -28,6 +29,7 @@ import type {
   McpTransportType,
   ModelProviderKey,
   TriggerType,
+  TargetType,
 } from '@casehubio/graph-stencil-case';
 import { toReactFlowGraph } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
@@ -331,6 +333,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     if (disc === 'triggerType') return this._renderTriggerDiscriminator(ctx, schema);
     if (disc === '_provider') return this._renderProviderDiscriminator(ctx, schema);
     if (disc === '_transport') return this._renderTransportDiscriminator(ctx, schema);
+    if (disc === '_target') return this._renderTargetDiscriminator(ctx, schema);
 
     return html`<span>Unknown discriminator: ${disc}</span>`;
   }
@@ -544,40 +547,72 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     `;
   }
 
-  // --- Binding target selector ---
+  // --- Target type discriminator ---
 
-  private _selectedNodeType(): string {
-    if (!this._selectedNodeId || !this._adapterResult) return '';
-    const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
-    return node?.type ?? '';
-  }
-
-  private _currentTargetType(): 'capability' | 'subCase' | 'humanTask' | null {
-    if (this._selectedData['capability'] !== undefined) return 'capability';
-    if (this._selectedData['subCase'] !== undefined) return 'subCase';
-    if (this._selectedData['humanTask'] !== undefined) return 'humanTask';
-    return null;
-  }
-
-  private _renderTargetSelector(): TemplateResult | typeof nothing {
-    if (this._selectedNodeType() !== 'binding') return nothing;
-    const current = this._currentTargetType();
-    if (!current) return nothing;
+  private _renderTargetDiscriminator(
+    _ctx: FieldRenderContext,
+    schema: Record<string, any>,
+  ): TemplateResult {
+    const targetType = detectTargetType(this._selectedData);
+    const branches = schema.oneOf as Record<string, any>[];
+    const activeBranch = branches.find(b => b.properties?.['_target']?.const === targetType);
 
     return html`
-      <label style="font-size: 12px; color: var(--pages-neutral-12, #333); margin-bottom: 8px; display: block; padding: 0 8px;">
+      <label style="font-size: 12px; color: var(--pages-neutral-12, #333); display: block; margin-bottom: 8px;">
         Target type
         <select style="width: 100%; font-size: 12px; padding: 4px; margin-top: 2px;"
           ?disabled=${this.readonly}
           @change=${(e: Event) => {
-            const newTarget = (e.target as HTMLSelectElement).value as 'capability' | 'subCase' | 'humanTask';
-            if (newTarget !== current) this._switchBindingTarget(newTarget);
+            const newTarget = (e.target as HTMLSelectElement).value as TargetType;
+            if (newTarget !== targetType) this._switchBindingTarget(newTarget);
           }}>
-          <option value="capability" ?selected=${current === 'capability'}>Capability</option>
-          <option value="subCase" ?selected=${current === 'subCase'}>SubCase</option>
-          <option value="humanTask" ?selected=${current === 'humanTask'}>HumanTask</option>
+          ${branches.map(b => {
+            const val = b.properties?.['_target']?.const;
+            return html`<option value=${val} ?selected=${val === targetType}>${b.title ?? val}</option>`;
+          })}
         </select>
       </label>
+      ${activeBranch ? this._renderTargetBranchPalette(activeBranch, targetType) : nothing}
+    `;
+  }
+
+  private _renderTargetBranchPalette(
+    branch: Record<string, any>,
+    targetType: TargetType,
+  ): TemplateResult {
+    const subProps = { ...branch.properties };
+    delete subProps['_target'];
+
+    let subData: Record<string, unknown>;
+    let onChange: (field: (string | number)[], value: unknown) => void;
+
+    if (targetType === 'capability') {
+      const raw = this._selectedData['capability'];
+      subData = { capability: typeof raw === 'string' ? { name: raw } : (raw ?? {}) };
+      onChange = (field, value) => {
+        if (field[0] === 'capability' && field[1] === 'name') {
+          this._onPropertyChange(['capability'], value);
+        } else {
+          this._onPropertyChange(field, value);
+        }
+      };
+    } else {
+      subData = { [targetType]: (this._selectedData[targetType] ?? {}) as Record<string, unknown> };
+      onChange = (field, value) => this._onPropertyChange(field, value);
+    }
+
+    const nestedSource: PropertyPaletteSource = {
+      schema: { type: 'object', properties: subProps } as any,
+      data: subData,
+      readonly: this.readonly,
+      onChange,
+    };
+
+    return html`
+      <pages-property-palette
+        .source=${nestedSource}
+        .resolver=${this._editorResolver()}>
+      </pages-property-palette>
     `;
   }
 
@@ -768,7 +803,6 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
               ${this._renderDockHeader('Properties', 'right')}
               ${hasSelection ? html`
                 <div style="padding:8px;">
-                  ${this._renderTargetSelector()}
                   ${this._renderPropertyPanel()}
                 </div>
               ` : html`

@@ -40,3 +40,13 @@ export function detectTriggerType(
   }
   return null;
 }
+
+export type TargetType = 'capability' | 'subCase' | 'humanTask';
+
+export function detectTargetType(
+  data: Record<string, unknown>,
+): TargetType {
+  if (data['subCase'] !== undefined) return 'subCase';
+  if (data['humanTask'] !== undefined) return 'humanTask';
+  return 'capability';
+}

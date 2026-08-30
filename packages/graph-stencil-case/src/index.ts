@@ -26,7 +26,7 @@ export type {
   Trigger,
 } from './types/case-definition.js';
 
-export { detectFunctionType, detectMcpTransport, detectModelProvider, detectTriggerType } from './worker-function/detect.js';
+export { detectFunctionType, detectMcpTransport, detectModelProvider, detectTriggerType, detectTargetType, type TargetType } from './worker-function/detect.js';
 export type {
   WorkerFunctionType, AgentConfig, AgentModel, ProviderModelConfig,
   ModelProviderKey, A2AConfig, McpConfig, McpStdioConfig, McpHttpConfig,

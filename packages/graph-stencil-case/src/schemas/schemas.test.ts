@@ -98,6 +98,22 @@ describe('binding-schema', () => {
     }
   });
 
+  it('has targetType with oneOf and x-discriminator', () => {
+    const props = bindingSchema.properties as Record<string, any>;
+    expect(props.targetType).toBeDefined();
+    expect(props.targetType['x-discriminator']).toBe('_target');
+    expect(props.targetType.oneOf).toHaveLength(3);
+    const titles = props.targetType.oneOf.map((b: any) => b.title);
+    expect(titles).toEqual(['Capability', 'SubCase', 'HumanTask']);
+  });
+
+  it('no longer has top-level capability, subCase, humanTask properties', () => {
+    const props = bindingSchema.properties as Record<string, any>;
+    expect(props.capability).toBeUndefined();
+    expect(props.subCase).toBeUndefined();
+    expect(props.humanTask).toBeUndefined();
+  });
+
   it('has trigger (on) with oneOf and x-discriminator', () => {
     const props = bindingSchema.properties as Record<string, any>;
     expect(props.on.oneOf).toBeDefined();
@@ -116,15 +132,9 @@ describe('binding-schema', () => {
     expect(props.name['x-group']).toBe('Identity');
   });
 
-  it('groups capability as Configuration', () => {
+  it('groups targetType as Target', () => {
     const props = bindingSchema.properties as Record<string, any>;
-    expect(props.capability['x-group']).toBe('Configuration');
-  });
-
-  it('groups humanTask and subCase as Target', () => {
-    const props = bindingSchema.properties as Record<string, any>;
-    expect(props.humanTask['x-group']).toBe('Target');
-    expect(props.subCase['x-group']).toBe('Target');
+    expect(props.targetType['x-group']).toBe('Target');
   });
 
   it('has all Advanced fields from Binding type', () => {
