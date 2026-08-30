@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
+import '@casehubio/pages-ui-components';
 
 @customElement('casehub-diagram-toolbar')
 export class CasehubDiagramToolbar extends LitElement {
@@ -38,7 +38,7 @@ export class CasehubDiagramToolbar extends LitElement {
     ` : nothing;
 
     const caseBadge = this.caseStatus ? html`
-      <status-badge domain="case" state=${this.caseStatus} size="sm" showIcon></status-badge>
+      <pages-status-badge domain="case" state=${this.caseStatus} size="sm" showIcon></pages-status-badge>
     ` : nothing;
 
     const modeSection = this.runtimeAvailable ? html`

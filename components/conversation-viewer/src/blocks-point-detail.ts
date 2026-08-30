@@ -1,5 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import '@casehubio/pages-ui-components';
 import type { ConversationPoint, ConversationEntry, SubTaskFinding, FlagEntry, ObligationChain } from './types.js';
 import '@casehubio/blocks-ui-core';
 
@@ -129,7 +130,7 @@ export class PointDetail extends LitElement {
         <div class="detail-header">
           <div class="detail-topic-row">
             <span class="detail-topic">${topic}</span>
-            <status-badge domain="conversation" state=${status}></status-badge>
+            <pages-status-badge domain="conversation" state=${status}></pages-status-badge>
           </div>
           <div class="detail-badges">
             <span class="badge badge-priority">${classification.priority}</span>

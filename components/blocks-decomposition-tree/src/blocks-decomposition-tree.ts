@@ -1,6 +1,7 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { TemplateResult } from 'lit';
+import '@casehubio/pages-ui-components';
 import type {
   DecompositionSnapshot, TaskNodeSnapshot, LeafTaskSnapshot,
   CompoundTaskSnapshot, DecompositionMethodSnapshot, NodeStateSnapshot,
@@ -76,7 +77,7 @@ export class BlocksDecompositionTree extends LitElement {
           <span class="leaf-marker">●</span>
           <span>${leaf.description ?? leaf.id}</span>
           ${leaf.executorName ? html`<span class="executor-pill">${leaf.executorName}</span>` : nothing}
-          ${stateEntry ? html`<status-badge domain="node" .state=${stateEntry.kind.toUpperCase()}></status-badge>` : nothing}
+          ${stateEntry ? html`<pages-status-badge domain="node" .state=${stateEntry.kind.toUpperCase()}></pages-status-badge>` : nothing}
 
         </div>
       </li>

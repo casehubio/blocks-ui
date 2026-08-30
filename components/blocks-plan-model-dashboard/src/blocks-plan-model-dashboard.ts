@@ -1,5 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import '@casehubio/pages-ui-components';
 import type {
   CasePlanModelSnapshot, AgendaItem, SubCaseSnapshot, CompoundStatusSnapshot,
 } from '@casehubio/graph-stencil-htn';
@@ -47,7 +48,7 @@ export class BlocksPlanModelDashboard extends LitElement {
           ${agenda.map(item => html`
             <tr>
               <td>${item.bindingName}</td>
-              <td><status-badge domain="task" .state=${item.status}></status-badge></td>
+              <td><pages-status-badge domain="task" .state=${item.status}></pages-status-badge></td>
               <td>${item.description ?? ''}</td>
             </tr>
           `)}
@@ -83,7 +84,7 @@ export class BlocksPlanModelDashboard extends LitElement {
       ${subCases.map(sc => html`
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
           <span>${sc.namespace}/${sc.caseDefinition}</span>
-          ${sc.status != null ? html`<status-badge domain="case" .state=${sc.status}></status-badge>` : nothing}
+          ${sc.status != null ? html`<pages-status-badge domain="case" .state=${sc.status}></pages-status-badge>` : nothing}
         </div>
       `)}
     `;
@@ -97,7 +98,7 @@ export class BlocksPlanModelDashboard extends LitElement {
         ${compounds.map(c => html`
           <div style="display: flex; align-items: center; gap: 8px; padding: 4px 0;">
             <span style="font-weight: 500;">${c.name}</span>
-            <status-badge domain="task" .state=${c.status}></status-badge>
+            <pages-status-badge domain="task" .state=${c.status}></pages-status-badge>
             <div class="progress-bar" style="flex: 1; max-width: 200px;"
               role="progressbar"
               aria-valuenow="${c.completedCount}"

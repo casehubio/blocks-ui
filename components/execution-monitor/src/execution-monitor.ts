@@ -1,5 +1,6 @@
 import { LitElement, html, css, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
@@ -108,11 +109,11 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
   }
 
   private _renderStateBadge(state: ExecutionState): TemplateResult {
-    return html`<status-badge domain="execution" state=${state}></status-badge>`;
+    return html`<pages-status-badge domain="execution" state=${state}></pages-status-badge>`;
   }
 
   private _renderPatternBadge(pattern: PatternType): TemplateResult {
-    return html`<status-badge domain="pattern" state=${pattern}></status-badge>`;
+    return html`<pages-status-badge domain="pattern" state=${pattern}></pages-status-badge>`;
   }
 
   private _renderElapsed(): TemplateResult | typeof nothing {
@@ -152,7 +153,7 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
         <span class="agent-type-badge">${agent.type}</span>
         ${result
           ? html`
-            <status-badge domain="agent" state=${result.status}></status-badge>
+            <pages-status-badge domain="agent" state=${result.status}></pages-status-badge>
             ${result.duration != null ? html`<span class="agent-duration">${(result.duration / 1000).toFixed(1)}s</span>` : ''}
           `
           : html`<span class="agent-active">active</span>`

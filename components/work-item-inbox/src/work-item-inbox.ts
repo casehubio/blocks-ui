@@ -26,7 +26,7 @@ import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primiti
 import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
 import '@casehubio/pages-table';
-import '@casehubio/blocks-ui-core/status-badge/status-badge.js';
+import '@casehubio/pages-ui-components';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
@@ -128,7 +128,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
   private _columnRenderers: ReadonlyMap<ColumnId, ColumnRenderer> = new Map([
     [STATUS_COL, (cell: CellValue) => {
       const status = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
-      return html`<status-badge domain="workitem" state=${status} size="sm" showIcon></status-badge>`;
+      return html`<pages-status-badge domain="workitem" state=${status} size="sm" showIcon></pages-status-badge>`;
     }],
     [PRIORITY_COL, (cell: CellValue) => {
       const priority = cell.type === 'NULL' ? '' : (cell as { value: string }).value;
