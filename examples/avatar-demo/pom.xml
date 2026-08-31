@@ -90,6 +90,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <jvmArgs>--enable-native-access=ALL-UNNAMED</jvmArgs>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>io.smallrye</groupId>

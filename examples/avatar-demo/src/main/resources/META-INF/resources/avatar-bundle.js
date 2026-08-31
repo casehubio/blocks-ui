@@ -608,12 +608,14 @@ var AvatarWsController = class {
     this._shouldReconnect = true;
     this._pendingVisemes = null;
     this._audioCtx = null;
+    this._audioFramesSent = 0;
     this._host = host;
     this._wsUrl = config.wsUrl;
     this._reconnectMs = config.reconnectMs ?? 2e3;
     host.addController(this);
   }
   hostConnected() {
+    console.log("[WS] hostConnected \u2014 connecting");
     this._connect();
   }
   hostDisconnected() {
@@ -629,24 +631,30 @@ var AvatarWsController = class {
     this._host.connectionState = "connecting";
     this._host.requestUpdate();
     this._ws.onopen = () => {
+      console.log("[WS] onopen \u2014 connected");
       this._host.connectionState = "connected";
       this._host.requestUpdate();
     };
     this._ws.onmessage = (evt) => {
       if (typeof evt.data === "string") {
-        this._handleTextMessage(JSON.parse(evt.data));
+        const parsed = JSON.parse(evt.data);
+        console.log("[WS] recv text:", parsed.type, JSON.stringify(parsed).slice(0, 120));
+        this._handleTextMessage(parsed);
       } else {
+        console.log("[WS] recv binary:", evt.data.size || "unknown", "bytes");
         this._handleBinaryMessage(evt.data);
       }
     };
-    this._ws.onclose = () => {
+    this._ws.onclose = (evt) => {
+      console.log("[WS] onclose \u2014 code:", evt.code, "reason:", evt.reason, "wasClean:", evt.wasClean);
       this._host.connectionState = "disconnected";
       this._host.requestUpdate();
       if (this._shouldReconnect) {
         setTimeout(() => this._connect(), this._reconnectMs);
       }
     };
-    this._ws.onerror = () => {
+    this._ws.onerror = (evt) => {
+      console.error("[WS] onerror", evt);
       this._host.connectionState = "disconnected";
       this._host.requestUpdate();
     };
@@ -721,13 +729,18 @@ var AvatarWsController = class {
     return { audio, visemes, vtimes, vdurations };
   }
   sendStart(opts) {
-    this._send(JSON.stringify({ type: "start", ...opts }));
+    const msg = JSON.stringify({ type: "start", ...opts });
+    console.log("[WS] sendStart:", msg);
+    this._send(msg);
   }
   sendStop() {
+    console.log("[WS] sendStop");
     this._send(JSON.stringify({ type: "stop" }));
   }
   sendText(text, opts) {
-    this._send(JSON.stringify({ type: "text", text, ...opts }));
+    const msg = JSON.stringify({ type: "text", text, ...opts });
+    console.log("[WS] sendText:", msg);
+    this._send(msg);
   }
   sendAudio(buffer) {
     if (this._ws && this._ws.readyState === WebSocket.OPEN) {
@@ -737,6 +750,8 @@ var AvatarWsController = class {
   _send(data) {
     if (this._ws && this._ws.readyState === WebSocket.OPEN) {
       this._ws.send(data);
+    } else {
+      console.warn("[WS] send failed \u2014 readyState:", this._ws?.readyState);
     }
   }
 };
@@ -1014,11 +1029,14 @@ var CasehubSpeech = class extends i4 {
   async _startRecording() {
     if (this._recording || this._starting) return;
     this._starting = true;
+    console.log("[MIC] startRecording called");
     try {
       if (!this._audioCtx) this._audioCtx = new AudioContext();
+      console.log("[MIC] AudioContext sampleRate:", this._audioCtx.sampleRate);
       this._micStream = await navigator.mediaDevices.getUserMedia({
         audio: { sampleRate: this.sampleRate, channelCount: 1, echoCancellation: true, noiseSuppression: true }
       });
+      console.log("[MIC] getUserMedia succeeded");
       this._micSource = this._audioCtx.createMediaStreamSource(this._micStream);
       this._micProcessor = this._audioCtx.createScriptProcessor(4096, 1, 1);
       this._audioFrameCount = 0;
@@ -1033,21 +1051,24 @@ var CasehubSpeech = class extends i4 {
       };
       this._micSource.connect(this._micProcessor);
       this._micProcessor.connect(this._audioCtx.destination);
+      console.log("[MIC] dispatching speech:start, sampleRate:", this.sampleRate);
       this.dispatchEvent(new CustomEvent("speech:start", { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
       this._recording = true;
+      console.log("[MIC] recording=true, mic active");
     } catch (e5) {
       console.error("[casehub-speech] mic error:", e5);
     } finally {
       this._starting = false;
     }
   }
-  // Matches original: show Finishing, wait 500ms for trailing audio, then stop
   _stopRecording() {
     if (!this._recording) return;
+    console.log("[MIC] stopRecording called, frames sent:", this._audioFrameCount);
     this._finishing = true;
     this.requestUpdate();
     setTimeout(() => {
       this._recording = false;
+      console.log("[MIC] sending STOP after 500ms delay, total frames:", this._audioFrameCount);
       this._stopCapture();
       this.dispatchEvent(new CustomEvent("speech:stop", { detail: {}, bubbles: true, composed: true }));
       this._finishing = false;
@@ -1144,6 +1165,7 @@ var CasehubAvatarPanel = class extends i4 {
     this._timingText = "";
     this._showAvatar = true;
     this._modelPollTimer = null;
+    this._audioSendCount = 0;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1181,6 +1203,7 @@ var CasehubAvatarPanel = class extends i4 {
   }
   updated(changed) {
     if (changed.has("connectionState")) {
+      console.log("[PANEL] connectionState changed:", changed.get("connectionState"), "->", this.connectionState);
       switch (this.connectionState) {
         case "connecting":
           this._statusText = "Connecting...";
@@ -1195,6 +1218,7 @@ var CasehubAvatarPanel = class extends i4 {
     }
   }
   _onSpeechStart(e5) {
+    console.log("[PANEL] speech:start received, sending WS start");
     this._controller.sendStart({
       sampleRate: e5.detail.sampleRate,
       llmModel: this.llmModel,
@@ -1203,9 +1227,15 @@ var CasehubAvatarPanel = class extends i4 {
     this._statusText = "Listening...";
   }
   _onSpeechAudio(e5) {
+    this._audioSendCount++;
+    if (this._audioSendCount <= 3 || this._audioSendCount % 50 === 0) {
+      console.log("[PANEL] speech:audio #" + this._audioSendCount + ", buffer:", e5.detail.buffer.byteLength, "bytes");
+    }
     this._controller.sendAudio(e5.detail.buffer);
   }
   _onSpeechStop() {
+    console.log("[PANEL] speech:stop received, total audio frames sent:", this._audioSendCount);
+    this._audioSendCount = 0;
     this._controller.sendStop();
     this._statusText = "Processing speech...";
   }

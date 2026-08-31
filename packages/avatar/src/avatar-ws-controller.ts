@@ -23,7 +23,7 @@ export class AvatarWsController implements ReactiveController {
     host.addController(this);
   }
 
-  hostConnected() { this._connect(); }
+  hostConnected() { console.log('[WS] hostConnected — connecting'); this._connect(); }
 
   hostDisconnected() {
     this._shouldReconnect = false;
@@ -40,19 +40,24 @@ export class AvatarWsController implements ReactiveController {
     this._host.requestUpdate();
 
     this._ws.onopen = () => {
+      console.log('[WS] onopen — connected');
       this._host.connectionState = 'connected';
       this._host.requestUpdate();
     };
 
     this._ws.onmessage = (evt: MessageEvent) => {
       if (typeof evt.data === 'string') {
-        this._handleTextMessage(JSON.parse(evt.data));
+        const parsed = JSON.parse(evt.data);
+        console.log('[WS] recv text:', parsed.type, JSON.stringify(parsed).slice(0, 120));
+        this._handleTextMessage(parsed);
       } else {
+        console.log('[WS] recv binary:', (evt.data as Blob).size || 'unknown', 'bytes');
         this._handleBinaryMessage(evt.data as Blob);
       }
     };
 
-    this._ws.onclose = () => {
+    this._ws.onclose = (evt: CloseEvent) => {
+      console.log('[WS] onclose — code:', evt.code, 'reason:', evt.reason, 'wasClean:', evt.wasClean);
       this._host.connectionState = 'disconnected';
       this._host.requestUpdate();
       if (this._shouldReconnect) {
@@ -60,7 +65,8 @@ export class AvatarWsController implements ReactiveController {
       }
     };
 
-    this._ws.onerror = () => {
+    this._ws.onerror = (evt: Event) => {
+      console.error('[WS] onerror', evt);
       this._host.connectionState = 'disconnected';
       this._host.requestUpdate();
     };
@@ -143,15 +149,20 @@ export class AvatarWsController implements ReactiveController {
   }
 
   sendStart(opts: { sampleRate: number; llmModel?: string | undefined; ttsModel?: string | undefined }) {
-    this._send(JSON.stringify({ type: 'start', ...opts }));
+    const msg = JSON.stringify({ type: 'start', ...opts });
+    console.log('[WS] sendStart:', msg);
+    this._send(msg);
   }
 
   sendStop() {
+    console.log('[WS] sendStop');
     this._send(JSON.stringify({ type: 'stop' }));
   }
 
   sendText(text: string, opts?: { llmModel?: string; ttsModel?: string }) {
-    this._send(JSON.stringify({ type: 'text', text, ...opts }));
+    const msg = JSON.stringify({ type: 'text', text, ...opts });
+    console.log('[WS] sendText:', msg);
+    this._send(msg);
   }
 
   sendAudio(buffer: ArrayBuffer) {
@@ -160,9 +171,12 @@ export class AvatarWsController implements ReactiveController {
     }
   }
 
+  private _audioFramesSent = 0;
   private _send(data: string) {
     if (this._ws && this._ws.readyState === WebSocket.OPEN) {
       this._ws.send(data);
+    } else {
+      console.warn('[WS] send failed — readyState:', this._ws?.readyState);
     }
   }
 }

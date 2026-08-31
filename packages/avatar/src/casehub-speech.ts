@@ -59,11 +59,14 @@ export class CasehubSpeech extends LitElement {
   private async _startRecording() {
     if (this._recording || this._starting) return;
     this._starting = true;
+    console.log('[MIC] startRecording called');
     try {
       if (!this._audioCtx) this._audioCtx = new AudioContext();
+      console.log('[MIC] AudioContext sampleRate:', this._audioCtx.sampleRate);
       this._micStream = await navigator.mediaDevices.getUserMedia({
         audio: { sampleRate: this.sampleRate, channelCount: 1, echoCancellation: true, noiseSuppression: true } as MediaTrackConstraints,
       });
+      console.log('[MIC] getUserMedia succeeded');
       this._micSource = this._audioCtx.createMediaStreamSource(this._micStream);
       this._micProcessor = this._audioCtx.createScriptProcessor(4096, 1, 1);
       this._audioFrameCount = 0;
@@ -78,10 +81,10 @@ export class CasehubSpeech extends LitElement {
       };
       this._micSource.connect(this._micProcessor);
       this._micProcessor.connect(this._audioCtx.destination);
-      // Original order: send start FIRST, then set recording=true.
-      // onaudioprocess guard blocks audio frames until recording is true.
+      console.log('[MIC] dispatching speech:start, sampleRate:', this.sampleRate);
       this.dispatchEvent(new CustomEvent('speech:start', { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
       this._recording = true;
+      console.log('[MIC] recording=true, mic active');
     } catch (e) {
       console.error('[casehub-speech] mic error:', e);
     } finally {
@@ -89,13 +92,14 @@ export class CasehubSpeech extends LitElement {
     }
   }
 
-  // Matches original: show Finishing, wait 500ms for trailing audio, then stop
   private _stopRecording() {
     if (!this._recording) return;
+    console.log('[MIC] stopRecording called, frames sent:', this._audioFrameCount);
     this._finishing = true;
     this.requestUpdate();
     setTimeout(() => {
       this._recording = false;
+      console.log('[MIC] sending STOP after 500ms delay, total frames:', this._audioFrameCount);
       this._stopCapture();
       this.dispatchEvent(new CustomEvent('speech:stop', { detail: {}, bubbles: true, composed: true }));
       this._finishing = false;

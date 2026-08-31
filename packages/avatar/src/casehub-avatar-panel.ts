@@ -84,6 +84,7 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
 
   protected override updated(changed: Map<string, unknown>) {
     if (changed.has('connectionState')) {
+      console.log('[PANEL] connectionState changed:', changed.get('connectionState'), '->', this.connectionState);
       switch (this.connectionState) {
         case 'connecting': this._statusText = 'Connecting...'; break;
         case 'connected':
@@ -97,6 +98,7 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
   }
 
   private _onSpeechStart(e: CustomEvent) {
+    console.log('[PANEL] speech:start received, sending WS start');
     this._controller.sendStart({
       sampleRate: e.detail.sampleRate,
       llmModel: this.llmModel,
@@ -105,11 +107,18 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
     this._statusText = 'Listening...';
   }
 
+  private _audioSendCount = 0;
   private _onSpeechAudio(e: CustomEvent) {
+    this._audioSendCount++;
+    if (this._audioSendCount <= 3 || this._audioSendCount % 50 === 0) {
+      console.log('[PANEL] speech:audio #' + this._audioSendCount + ', buffer:', e.detail.buffer.byteLength, 'bytes');
+    }
     this._controller.sendAudio(e.detail.buffer);
   }
 
   private _onSpeechStop() {
+    console.log('[PANEL] speech:stop received, total audio frames sent:', this._audioSendCount);
+    this._audioSendCount = 0;
     this._controller.sendStop();
     this._statusText = 'Processing speech...';
   }
