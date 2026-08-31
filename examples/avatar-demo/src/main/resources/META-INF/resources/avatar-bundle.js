@@ -986,6 +986,11 @@ var CasehubSpeech = class extends i4 {
     super.disconnectedCallback();
     this._stopCapture();
   }
+  updated(changed) {
+    if (changed.has("disabled") && this.disabled && this._recording) {
+      this._stopRecording();
+    }
+  }
   async _startRecording() {
     if (this._recording || this._starting) return;
     this._starting = true;
@@ -1017,10 +1022,8 @@ var CasehubSpeech = class extends i4 {
   _stopRecording() {
     if (!this._recording) return;
     this._recording = false;
-    setTimeout(() => {
-      this._stopCapture();
-      this.dispatchEvent(new CustomEvent("speech:stop", { detail: {}, bubbles: true, composed: true }));
-    }, 500);
+    this._stopCapture();
+    this.dispatchEvent(new CustomEvent("speech:stop", { detail: {}, bubbles: true, composed: true }));
   }
   _stopCapture() {
     if (this._micProcessor) {

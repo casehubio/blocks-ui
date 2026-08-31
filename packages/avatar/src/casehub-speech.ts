@@ -48,6 +48,12 @@ export class CasehubSpeech extends LitElement {
     this._stopCapture();
   }
 
+  protected override updated(changed: Map<string, unknown>) {
+    if (changed.has('disabled') && this.disabled && this._recording) {
+      this._stopRecording();
+    }
+  }
+
   private async _startRecording() {
     if (this._recording || this._starting) return;
     this._starting = true;
@@ -80,10 +86,8 @@ export class CasehubSpeech extends LitElement {
   private _stopRecording() {
     if (!this._recording) return;
     this._recording = false;
-    setTimeout(() => {
-      this._stopCapture();
-      this.dispatchEvent(new CustomEvent('speech:stop', { detail: {}, bubbles: true, composed: true }));
-    }, 500);
+    this._stopCapture();
+    this.dispatchEvent(new CustomEvent('speech:stop', { detail: {}, bubbles: true, composed: true }));
   }
 
   private _stopCapture() {

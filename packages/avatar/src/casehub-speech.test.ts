@@ -91,7 +91,6 @@ describe('CasehubSpeech', () => {
 
     btn.click();
     await el.updateComplete;
-    await new Promise(r => setTimeout(r, 600));
 
     expect(stopEvents).toHaveLength(1);
     expect(btn.getAttribute('aria-pressed')).toBe('false');
