@@ -44,7 +44,7 @@ export default defineConfig({
       { find: '@casehubio/graph-stencil-htn', replacement: resolve(__dirname, '../packages/graph-stencil-htn/src') },
       { find: '@casehubio/graph-stencil-case', replacement: resolve(__dirname, '../packages/graph-stencil-case/src') },
       { find: '@casehubio/graph-stencil-swf', replacement: resolve(__dirname, '../packages/graph-stencil-swf/src') },
-      { find: '@casehubio/pages-diagram-core', replacement: resolve(__dirname, '../packages/diagram-core/src') },
+      { find: '@casehubio/pages-diagram-core', replacement: resolve(__dirname, '../.casehub-packages/packages/pages-diagram-core/src') },
       { find: /^@casehubio\/graph-renderer\/(.*)/, replacement: resolve(__dirname, '../.casehub-packages/packages/graph-renderer/src/$1') },
       { find: '@casehubio/graph-renderer', replacement: resolve(__dirname, '../.casehub-packages/packages/graph-renderer/src') },
       { find: '@drdreo/heatmap', replacement: resolve(__dirname, 'src/stubs/drdreo-heatmap.ts') },
