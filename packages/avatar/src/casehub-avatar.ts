@@ -83,39 +83,57 @@ export class CasehubAvatar extends LitElement {
     }
   }
 
+  // Matches original: if head is null, play audio without lip-sync via raw AudioContext.
+  // Original (line 265-267): if no meshes, source.onended = playNextQueued; return;
   private async _processQueue() {
-    if (this._processingQueue || !this._head) return;
+    if (this._processingQueue) return;
     this._processingQueue = true;
     while (this.audioQueue.length > 0) {
       const item = this.audioQueue[0]!;
       this._speaking = true;
-      // GE-20260827-a19839: speakAudio silently fails from microtask context
-      await new Promise<void>((resolve) => {
-        setTimeout(async () => {
-          try {
-            await this._head.speakAudio({
-              audio: item.audio,
-              visemes: item.visemes,
-              vtimes: item.vtimes,
-              vdurations: item.vdurations,
-            });
-          } catch (e) {
-            console.error('[casehub-avatar] speakAudio error:', e);
-          }
-          const waitForDone = () => {
-            if (this._head?.isSpeaking) {
-              requestAnimationFrame(waitForDone);
-            } else {
-              resolve();
+      if (this._head) {
+        // GE-20260827-a19839: speakAudio silently fails from microtask context
+        await new Promise<void>((resolve) => {
+          setTimeout(async () => {
+            try {
+              await this._head.speakAudio({
+                audio: item.audio,
+                visemes: item.visemes,
+                vtimes: item.vtimes,
+                vdurations: item.vdurations,
+              });
+            } catch (e) {
+              console.error('[casehub-avatar] speakAudio error:', e);
             }
-          };
-          waitForDone();
-        }, 0);
-      });
+            const waitForDone = () => {
+              if (this._head?.isSpeaking) {
+                requestAnimationFrame(waitForDone);
+              } else {
+                resolve();
+              }
+            };
+            waitForDone();
+          }, 0);
+        });
+      } else {
+        // Fallback: play audio without lip-sync via raw AudioContext
+        await this._playAudioRaw(item.audio);
+      }
       this.audioQueue = this.audioQueue.slice(1);
     }
     this._speaking = false;
     this._processingQueue = false;
+  }
+
+  private _playAudioRaw(audio: AudioBuffer): Promise<void> {
+    return new Promise((resolve) => {
+      const ctx = new AudioContext();
+      const source = ctx.createBufferSource();
+      source.buffer = audio;
+      source.connect(ctx.destination);
+      source.onended = () => resolve();
+      source.start();
+    });
   }
 
   protected override render() {

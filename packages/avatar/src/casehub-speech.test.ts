@@ -91,6 +91,9 @@ describe('CasehubSpeech', () => {
 
     btn.click();
     await el.updateComplete;
+    // Wait for 500ms trailing capture delay (matches original)
+    await new Promise(r => setTimeout(r, 600));
+    await el.updateComplete;
 
     expect(stopEvents).toHaveLength(1);
     expect(btn.getAttribute('aria-pressed')).toBe('false');

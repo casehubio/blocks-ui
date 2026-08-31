@@ -693,12 +693,13 @@ var AvatarWsController = class {
     }
   }
   async _handleBinaryMessage(data) {
+    const myVisemes = this._pendingVisemes;
+    this._pendingVisemes = null;
     if (!this._audioCtx) this._audioCtx = new AudioContext();
     try {
       const arrayBuf = data instanceof Blob ? await data.arrayBuffer() : data;
       const audioBuf = await this._audioCtx.decodeAudioData(arrayBuf.slice(0));
-      const item = this._buildPlaybackItem(audioBuf, this._pendingVisemes);
-      this._pendingVisemes = null;
+      const item = this._buildPlaybackItem(audioBuf, myVisemes);
       this._host.avatarAudioQueue = [...this._host.avatarAudioQueue, item];
       this._host.requestUpdate();
     } catch (e5) {
@@ -807,38 +808,54 @@ var CasehubAvatar = class extends i4 {
       this.setAttribute("aria-busy", "false");
     }
   }
+  // Matches original: if head is null, play audio without lip-sync via raw AudioContext.
+  // Original (line 265-267): if no meshes, source.onended = playNextQueued; return;
   async _processQueue() {
-    if (this._processingQueue || !this._head) return;
+    if (this._processingQueue) return;
     this._processingQueue = true;
     while (this.audioQueue.length > 0) {
       const item = this.audioQueue[0];
       this._speaking = true;
-      await new Promise((resolve) => {
-        setTimeout(async () => {
-          try {
-            await this._head.speakAudio({
-              audio: item.audio,
-              visemes: item.visemes,
-              vtimes: item.vtimes,
-              vdurations: item.vdurations
-            });
-          } catch (e5) {
-            console.error("[casehub-avatar] speakAudio error:", e5);
-          }
-          const waitForDone = () => {
-            if (this._head?.isSpeaking) {
-              requestAnimationFrame(waitForDone);
-            } else {
-              resolve();
+      if (this._head) {
+        await new Promise((resolve) => {
+          setTimeout(async () => {
+            try {
+              await this._head.speakAudio({
+                audio: item.audio,
+                visemes: item.visemes,
+                vtimes: item.vtimes,
+                vdurations: item.vdurations
+              });
+            } catch (e5) {
+              console.error("[casehub-avatar] speakAudio error:", e5);
             }
-          };
-          waitForDone();
-        }, 0);
-      });
+            const waitForDone = () => {
+              if (this._head?.isSpeaking) {
+                requestAnimationFrame(waitForDone);
+              } else {
+                resolve();
+              }
+            };
+            waitForDone();
+          }, 0);
+        });
+      } else {
+        await this._playAudioRaw(item.audio);
+      }
       this.audioQueue = this.audioQueue.slice(1);
     }
     this._speaking = false;
     this._processingQueue = false;
+  }
+  _playAudioRaw(audio) {
+    return new Promise((resolve) => {
+      const ctx = new AudioContext();
+      const source = ctx.createBufferSource();
+      source.buffer = audio;
+      source.connect(ctx.destination);
+      source.onended = () => resolve();
+      source.start();
+    });
   }
   render() {
     return b2`<div class="avatar-container"></div>`;
@@ -964,12 +981,15 @@ var CasehubSpeech = class extends i4 {
     this.sampleRate = 16e3;
     this.disabled = false;
     this._recording = false;
+    this._finishing = false;
     this._starting = false;
+    this._audioFrameCount = 0;
     this._micStream = null;
     this._micProcessor = null;
     this._micSource = null;
     this._audioCtx = null;
     this._handleClick = () => {
+      if (this._finishing) return;
       if (this._recording) this._stopRecording();
       else this._startRecording();
     };
@@ -987,7 +1007,7 @@ var CasehubSpeech = class extends i4 {
     this._stopCapture();
   }
   updated(changed) {
-    if (changed.has("disabled") && this.disabled && this._recording) {
+    if (changed.has("disabled") && this.disabled && this._recording && !this._finishing) {
       this._stopRecording();
     }
   }
@@ -1001,6 +1021,7 @@ var CasehubSpeech = class extends i4 {
       });
       this._micSource = this._audioCtx.createMediaStreamSource(this._micStream);
       this._micProcessor = this._audioCtx.createScriptProcessor(4096, 1, 1);
+      this._audioFrameCount = 0;
       this._micProcessor.onaudioprocess = (e5) => {
         if (!this._recording) return;
         const input = e5.inputBuffer.getChannelData(0);
@@ -1008,22 +1029,29 @@ var CasehubSpeech = class extends i4 {
         const buf = new ArrayBuffer(resampled.length * 4);
         new Float32Array(buf).set(resampled);
         this.dispatchEvent(new CustomEvent("speech:audio", { detail: { buffer: buf }, bubbles: true, composed: true }));
+        this._audioFrameCount++;
       };
       this._micSource.connect(this._micProcessor);
       this._micProcessor.connect(this._audioCtx.destination);
-      this._recording = true;
       this.dispatchEvent(new CustomEvent("speech:start", { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
+      this._recording = true;
     } catch (e5) {
       console.error("[casehub-speech] mic error:", e5);
     } finally {
       this._starting = false;
     }
   }
+  // Matches original: show Finishing, wait 500ms for trailing audio, then stop
   _stopRecording() {
     if (!this._recording) return;
-    this._recording = false;
-    this._stopCapture();
-    this.dispatchEvent(new CustomEvent("speech:stop", { detail: {}, bubbles: true, composed: true }));
+    this._finishing = true;
+    this.requestUpdate();
+    setTimeout(() => {
+      this._recording = false;
+      this._stopCapture();
+      this.dispatchEvent(new CustomEvent("speech:stop", { detail: {}, bubbles: true, composed: true }));
+      this._finishing = false;
+    }, 500);
   }
   _stopCapture() {
     if (this._micProcessor) {
@@ -1055,7 +1083,7 @@ var CasehubSpeech = class extends i4 {
         @click=${this._handleClick}
         ?disabled=${this.disabled}
         aria-pressed=${this._recording ? "true" : "false"}>
-        ${this._recording ? "Recording..." : "Mic"}
+        ${this._finishing ? "Finishing..." : this._recording ? "Recording..." : "Mic"}
       </button>
     `;
   }
@@ -1090,6 +1118,9 @@ __decorateClass([
 __decorateClass([
   r5()
 ], CasehubSpeech.prototype, "_recording", 2);
+__decorateClass([
+  r5()
+], CasehubSpeech.prototype, "_finishing", 2);
 CasehubSpeech = __decorateClass([
   t3("casehub-speech")
 ], CasehubSpeech);
@@ -1107,6 +1138,7 @@ var CasehubAvatarPanel = class extends i4 {
     this.turns = [];
     this.avatarAudioQueue = [];
     this.connectionState = "disconnected";
+    this._statusText = "Connecting...";
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1114,30 +1146,51 @@ var CasehubAvatarPanel = class extends i4 {
     this.setAttribute("aria-label", "Avatar conversation");
     this._controller = new AvatarWsController(this, { wsUrl: this.wsUrl });
   }
+  updated(changed) {
+    if (changed.has("connectionState")) {
+      switch (this.connectionState) {
+        case "connecting":
+          this._statusText = "Connecting...";
+          break;
+        case "connected":
+          this._statusText = "Connected";
+          break;
+        case "disconnected":
+          this._statusText = "Disconnected \u2014 reconnecting...";
+          break;
+      }
+    }
+  }
   _onSpeechStart(e5) {
     this._controller.sendStart({
       sampleRate: e5.detail.sampleRate,
       llmModel: this.llmModel,
       ttsModel: this.ttsModel
     });
+    this._statusText = "Listening...";
   }
   _onSpeechAudio(e5) {
     this._controller.sendAudio(e5.detail.buffer);
   }
   _onSpeechStop() {
     this._controller.sendStop();
+    this._statusText = "Processing speech...";
   }
-  get _statusText() {
-    switch (this.connectionState) {
-      case "connecting":
-        return "Connecting...";
-      case "connected":
-        return "Connected";
-      case "disconnected":
-        return "Disconnected";
-    }
+  // Matches original sendText (line 193-201)
+  _onSendText() {
+    const input = this.shadowRoot.querySelector("#msg");
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+    this._controller.sendText(text, { llmModel: this.llmModel, ttsModel: this.ttsModel });
+    input.value = "";
+    this._statusText = "Processing...";
+  }
+  _onInputKeydown(e5) {
+    if (e5.key === "Enter") this._onSendText();
   }
   render() {
+    const connected = this.connectionState === "connected";
     return b2`
       <casehub-avatar
         avatar-url=${this.avatarUrl}
@@ -1147,13 +1200,17 @@ var CasehubAvatarPanel = class extends i4 {
       </casehub-avatar>
       <div class="status">${this._statusText}</div>
       <casehub-transcript .turns=${this.turns}></casehub-transcript>
-      <div class="controls">
+      <div class="input-bar">
         <casehub-speech
-          ?disabled=${this.connectionState !== "connected"}
+          ?disabled=${!connected}
           @speech:start=${this._onSpeechStart}
           @speech:audio=${this._onSpeechAudio}
           @speech:stop=${this._onSpeechStop}>
         </casehub-speech>
+        <input id="msg" type="text" placeholder="Type a message..."
+          autocomplete="off" ?disabled=${!connected}
+          @keydown=${this._onInputKeydown}>
+        <button ?disabled=${!connected} @click=${this._onSendText}>Send</button>
       </div>
     `;
   }
@@ -1180,12 +1237,32 @@ CasehubAvatarPanel.styles = i`
       flex: 1;
       overflow-y: auto;
     }
-    .controls {
-      border-top: 1px solid var(--pages-neutral-5, #333);
-      padding: var(--pages-space-4, 16px);
+    .input-bar {
       display: flex;
-      justify-content: center;
+      gap: var(--pages-space-2, 8px);
+      padding: var(--pages-space-4, 16px);
+      border-top: 1px solid var(--pages-neutral-5, #333);
     }
+    .input-bar input {
+      flex: 1;
+      padding: var(--pages-space-3, 12px);
+      border-radius: 8px;
+      border: 1px solid var(--pages-neutral-5, #555);
+      background: var(--pages-surface-variant, #2a2a3e);
+      color: var(--pages-on-surface, #e0e0e0);
+      font-size: 1rem;
+    }
+    .input-bar input:focus { outline: none; border-color: var(--pages-primary, #2d5aa0); }
+    .input-bar button {
+      padding: var(--pages-space-3, 12px) var(--pages-space-6, 24px);
+      border-radius: 8px;
+      border: none;
+      background: var(--pages-primary, #2d5aa0);
+      color: var(--pages-on-primary, white);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .input-bar button:disabled { opacity: 0.5; cursor: default; }
   `;
 __decorateClass([
   n4({ type: String, attribute: "ws-url" })
@@ -1214,6 +1291,9 @@ __decorateClass([
 __decorateClass([
   r5()
 ], CasehubAvatarPanel.prototype, "connectionState", 2);
+__decorateClass([
+  r5()
+], CasehubAvatarPanel.prototype, "_statusText", 2);
 CasehubAvatarPanel = __decorateClass([
   t3("casehub-avatar-panel")
 ], CasehubAvatarPanel);

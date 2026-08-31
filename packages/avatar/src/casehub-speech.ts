@@ -7,7 +7,9 @@ export class CasehubSpeech extends LitElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
 
   @state() private _recording = false;
+  @state() private _finishing = false;
   private _starting = false;
+  private _audioFrameCount = 0;
   private _micStream: MediaStream | null = null;
   private _micProcessor: ScriptProcessorNode | null = null;
   private _micSource: MediaStreamAudioSourceNode | null = null;
@@ -49,7 +51,7 @@ export class CasehubSpeech extends LitElement {
   }
 
   protected override updated(changed: Map<string, unknown>) {
-    if (changed.has('disabled') && this.disabled && this._recording) {
+    if (changed.has('disabled') && this.disabled && this._recording && !this._finishing) {
       this._stopRecording();
     }
   }
@@ -64,6 +66,7 @@ export class CasehubSpeech extends LitElement {
       });
       this._micSource = this._audioCtx.createMediaStreamSource(this._micStream);
       this._micProcessor = this._audioCtx.createScriptProcessor(4096, 1, 1);
+      this._audioFrameCount = 0;
       this._micProcessor.onaudioprocess = (e: AudioProcessingEvent) => {
         if (!this._recording) return;
         const input = e.inputBuffer.getChannelData(0);
@@ -71,11 +74,14 @@ export class CasehubSpeech extends LitElement {
         const buf = new ArrayBuffer(resampled.length * 4);
         new Float32Array(buf).set(resampled);
         this.dispatchEvent(new CustomEvent('speech:audio', { detail: { buffer: buf }, bubbles: true, composed: true }));
+        this._audioFrameCount++;
       };
       this._micSource.connect(this._micProcessor);
       this._micProcessor.connect(this._audioCtx.destination);
-      this._recording = true;
+      // Original order: send start FIRST, then set recording=true.
+      // onaudioprocess guard blocks audio frames until recording is true.
       this.dispatchEvent(new CustomEvent('speech:start', { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
+      this._recording = true;
     } catch (e) {
       console.error('[casehub-speech] mic error:', e);
     } finally {
@@ -83,11 +89,17 @@ export class CasehubSpeech extends LitElement {
     }
   }
 
+  // Matches original: show Finishing, wait 500ms for trailing audio, then stop
   private _stopRecording() {
     if (!this._recording) return;
-    this._recording = false;
-    this._stopCapture();
-    this.dispatchEvent(new CustomEvent('speech:stop', { detail: {}, bubbles: true, composed: true }));
+    this._finishing = true;
+    this.requestUpdate();
+    setTimeout(() => {
+      this._recording = false;
+      this._stopCapture();
+      this.dispatchEvent(new CustomEvent('speech:stop', { detail: {}, bubbles: true, composed: true }));
+      this._finishing = false;
+    }, 500);
   }
 
   private _stopCapture() {
@@ -108,6 +120,7 @@ export class CasehubSpeech extends LitElement {
   }
 
   private _handleClick = () => {
+    if (this._finishing) return;
     if (this._recording) this._stopRecording(); else this._startRecording();
   };
 
@@ -117,7 +130,7 @@ export class CasehubSpeech extends LitElement {
         @click=${this._handleClick}
         ?disabled=${this.disabled}
         aria-pressed=${this._recording ? 'true' : 'false'}>
-        ${this._recording ? 'Recording...' : 'Mic'}
+        ${this._finishing ? 'Finishing...' : this._recording ? 'Recording...' : 'Mic'}
       </button>
     `;
   }

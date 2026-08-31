@@ -109,12 +109,17 @@ export class AvatarWsController implements ReactiveController {
   }
 
   private async _handleBinaryMessage(data: Blob | ArrayBuffer) {
+    // Capture visemes SYNCHRONOUSLY before any yield point (await).
+    // Prevents interleaving from overwriting pendingVisemes while
+    // we're decoding the audio blob. Matches original (lines 228-235).
+    const myVisemes = this._pendingVisemes;
+    this._pendingVisemes = null;
+
     if (!this._audioCtx) this._audioCtx = new AudioContext();
     try {
       const arrayBuf = data instanceof Blob ? await data.arrayBuffer() : data;
       const audioBuf = await this._audioCtx.decodeAudioData(arrayBuf.slice(0));
-      const item = this._buildPlaybackItem(audioBuf, this._pendingVisemes);
-      this._pendingVisemes = null;
+      const item = this._buildPlaybackItem(audioBuf, myVisemes);
       this._host.avatarAudioQueue = [...this._host.avatarAudioQueue, item];
       this._host.requestUpdate();
     } catch (e) {
