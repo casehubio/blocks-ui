@@ -15,61 +15,37 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
   @property({ type: String }) mood = 'neutral';
   @property({ type: String, attribute: 'llm-model' }) llmModel = 'claude-haiku-4-5@20251001';
   @property({ type: String, attribute: 'tts-model' }) ttsModel = 'lessac-medium';
+  @property({ type: Number }) speed = 0.9;
 
   @state() turns: ConversationTurn[] = [];
   @state() avatarAudioQueue: PlaybackItem[] = [];
   @state() connectionState: 'connecting' | 'connected' | 'disconnected' = 'disconnected';
   @state() private _statusText = 'Connecting...';
+  @state() private _modelStatus: Record<string, string> = {};
+  @state() private _timingText = '';
+  @state() private _showAvatar = true;
 
   private _controller!: AvatarWsController;
+  private _modelPollTimer: ReturnType<typeof setInterval> | null = null;
 
   static override readonly styles = css`
-    :host {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      background: var(--pages-surface, #1a1a2e);
-      color: var(--pages-on-surface, #e0e0e0);
-    }
-    casehub-avatar {
-      flex: 0 0 300px;
-      border-bottom: 1px solid var(--pages-neutral-5, #333);
-    }
-    .status {
-      padding: var(--pages-space-1, 4px) var(--pages-space-4, 16px);
-      font-size: 0.75rem;
-      color: var(--pages-neutral-7, #666);
-      text-align: center;
-    }
-    casehub-transcript {
-      flex: 1;
-      overflow-y: auto;
-    }
-    .input-bar {
-      display: flex;
-      gap: var(--pages-space-2, 8px);
-      padding: var(--pages-space-4, 16px);
-      border-top: 1px solid var(--pages-neutral-5, #333);
-    }
-    .input-bar input {
-      flex: 1;
-      padding: var(--pages-space-3, 12px);
-      border-radius: 8px;
-      border: 1px solid var(--pages-neutral-5, #555);
-      background: var(--pages-surface-variant, #2a2a3e);
-      color: var(--pages-on-surface, #e0e0e0);
-      font-size: 1rem;
-    }
-    .input-bar input:focus { outline: none; border-color: var(--pages-primary, #2d5aa0); }
-    .input-bar button {
-      padding: var(--pages-space-3, 12px) var(--pages-space-6, 24px);
-      border-radius: 8px;
-      border: none;
-      background: var(--pages-primary, #2d5aa0);
-      color: var(--pages-on-primary, white);
-      font-size: 1rem;
-      cursor: pointer;
-    }
+    :host { display: flex; flex-direction: column; height: 100%; background: #1a1a2e; color: #e0e0e0; font-family: system-ui, sans-serif; }
+    .controls { display: flex; gap: 1rem; padding: 0.5rem 1rem; border-bottom: 1px solid #333; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .controls label { font-size: 0.8rem; color: #999; }
+    .controls select { padding: 0.3rem 0.5rem; border-radius: 6px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 0.85rem; }
+    casehub-avatar { flex: 0 0 300px; border-bottom: 1px solid #333; }
+    casehub-avatar[hidden] { display: none; }
+    .model-status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #999; text-align: center; }
+    .model-status .downloading { color: #d9a547; }
+    .model-status .ready { color: #4a9; }
+    .status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #666; text-align: center; }
+    .timing { margin: 0.5rem 1rem; padding: 0.5rem 0.75rem; background: #1e1e32; border-radius: 8px; font-size: 0.8rem; font-family: monospace; }
+    .timing:empty { display: none; }
+    casehub-transcript { flex: 1; overflow-y: auto; }
+    .input-bar { display: flex; gap: 0.5rem; padding: 1rem; border-top: 1px solid #333; }
+    .input-bar input { flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 1rem; }
+    .input-bar input:focus { outline: none; border-color: #2d5aa0; }
+    .input-bar button { padding: 0.75rem 1.5rem; border-radius: 8px; border: none; background: #2d5aa0; color: white; font-size: 1rem; cursor: pointer; }
     .input-bar button:disabled { opacity: 0.5; cursor: default; }
   `;
 
@@ -78,6 +54,32 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
     this.setAttribute('role', 'region');
     this.setAttribute('aria-label', 'Avatar conversation');
     this._controller = new AvatarWsController(this, { wsUrl: this.wsUrl });
+    this._pollModelStatus();
+    this._modelPollTimer = setInterval(() => this._pollModelStatus(), 2000);
+    this.addEventListener('avatar:timing', ((e: CustomEvent) => {
+      const t = e.detail;
+      this._timingText = `Cleanup: ${t.cleanupMs}ms | LLM: ${t.llmMs}ms | TTS: ${t.ttsMs}ms | Total: ${t.totalMs}ms`;
+    }) as EventListener);
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._modelPollTimer) { clearInterval(this._modelPollTimer); this._modelPollTimer = null; }
+  }
+
+  private async _pollModelStatus() {
+    try {
+      const resp = await fetch('/api/models/status');
+      if (resp.ok) {
+        this._modelStatus = await resp.json() as Record<string, string>;
+        const total = Object.keys(this._modelStatus).length;
+        const ready = Object.values(this._modelStatus).filter(s => s === 'READY').length;
+        if (ready === total && this._modelPollTimer) {
+          clearInterval(this._modelPollTimer);
+          this._modelPollTimer = null;
+        }
+      }
+    } catch { /* ignore fetch errors */ }
   }
 
   protected override updated(changed: Map<string, unknown>) {
@@ -127,16 +129,74 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
     if (e.key === 'Enter') this._onSendText();
   }
 
+  private _onLlmChange(e: Event) { this.llmModel = (e.target as HTMLSelectElement).value; }
+  private _onTtsChange(e: Event) { this.ttsModel = (e.target as HTMLSelectElement).value; }
+  private _onSpeedChange(e: Event) { this.speed = parseFloat((e.target as HTMLInputElement).value); }
+
+  private get _modelStatusHtml() {
+    const entries = Object.entries(this._modelStatus);
+    if (entries.length === 0) return '';
+    const ready = entries.filter(([, s]) => s === 'READY').length;
+    const downloading = entries.filter(([, s]) => s === 'DOWNLOADING').length;
+    if (ready === entries.length) return html`<span class="ready">All voice models ready</span>`;
+    if (downloading > 0) return html`<span class="downloading">Downloading voice models: ${ready}/${entries.length} ready</span>`;
+    return '';
+  }
+
   protected override render() {
     const connected = this.connectionState === 'connected';
     return html`
+      <div class="controls">
+        <label>LLM: <select @change=${this._onLlmChange}>
+          <option value="claude-haiku-4-5@20251001" ?selected=${this.llmModel === 'claude-haiku-4-5@20251001'}>Haiku 4.5 (fast)</option>
+          <option value="claude-sonnet-4@20250514" ?selected=${this.llmModel === 'claude-sonnet-4@20250514'}>Sonnet 4</option>
+          <option value="claude-opus-4@20250514" ?selected=${this.llmModel === 'claude-opus-4@20250514'}>Opus 4</option>
+        </select></label>
+        <label>Voice: <select @change=${this._onTtsChange}>
+          <optgroup label="Piper VITS">
+            <option value="lessac-medium" ?selected=${this.ttsModel === 'lessac-medium'}>Lessac medium</option>
+            <option value="lessac-high">Lessac high</option>
+            <option value="amy">Amy (US)</option>
+            <option value="ryan">Ryan (US)</option>
+            <option value="jenny">Jenny (UK)</option>
+          </optgroup>
+          <optgroup label="Piper via sherpa">
+            <option value="sherpa:lessac-medium">Sherpa: Lessac</option>
+            <option value="sherpa:amy">Sherpa: Amy</option>
+            <option value="sherpa:ryan">Sherpa: Ryan</option>
+            <option value="sherpa:jenny">Sherpa: Jenny</option>
+          </optgroup>
+          <optgroup label="Kokoro StyleTTS2">
+            <option value="kokoro:af">Kokoro: AF (US)</option>
+            <option value="kokoro:af_bella">Kokoro: Bella</option>
+            <option value="kokoro:af_sarah">Kokoro: Sarah</option>
+            <option value="kokoro:am_adam">Kokoro: Adam</option>
+            <option value="kokoro:am_michael">Kokoro: Michael</option>
+            <option value="kokoro:bf_emma">Kokoro: Emma (UK)</option>
+            <option value="kokoro:bm_george">Kokoro: George (UK)</option>
+          </optgroup>
+          <optgroup label="Audio8 DualAR">
+            <option value="audio8">Audio8 0.1B (INT8)</option>
+            <option value="audio8:0.6b">Audio8 0.6B (INT4)</option>
+          </optgroup>
+          <optgroup label="CosyVoice3">
+            <option value="cosyvoice3">CosyVoice3 (24kHz)</option>
+          </optgroup>
+        </select></label>
+        <label>Speed: <input type="range" min="0.6" max="1.4" step="0.05" .value=${String(this.speed)}
+          @input=${this._onSpeedChange} style="width:80px;vertical-align:middle">
+          <span>${this.speed}x</span></label>
+      </div>
       <casehub-avatar
+        ?hidden=${!this._showAvatar}
         avatar-url=${this.avatarUrl}
         body=${this.body}
         mood=${this.mood}
         .audioQueue=${this.avatarAudioQueue}>
       </casehub-avatar>
+      <div class="model-status">${this._modelStatusHtml}</div>
       <div class="status">${this._statusText}</div>
+      <div class="timing">${this._timingText}</div>
       <casehub-transcript .turns=${this.turns}></casehub-transcript>
       <div class="input-bar">
         <casehub-speech
