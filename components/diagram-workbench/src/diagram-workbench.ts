@@ -4,7 +4,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent } from '@casehubio/pages-data';
 import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
 
-import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-swf-diagram';
 
@@ -13,7 +12,7 @@ const DIAGRAM_TAGS: Record<string, string> = {
   case: 'casehub-diagram',
 };
 
-interface DrillDownState {
+interface DrillDownLevel {
   name: string;
   yaml: string;
   diagramType: string;
@@ -25,32 +24,31 @@ export class DiagramWorkbench extends LitElement {
   @property() src = '';
   @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;
 
-  @state() private _drillDown: DrillDownState | null = null;
+  @state() private _stack: DrillDownLevel[] = [];
 
   private _unsubs: Array<() => void> = [];
 
   static override styles = css`
-    :host { display: block; height: 100%; font-family: var(--pages-font-family, system-ui); }
-    pages-split-workbench { height: 100%; }
-    .case-panel { height: 100%; overflow: hidden; }
-    casehub-diagram { width: 100%; height: 100%; }
-    .swf-panel { height: 100%; display: flex; flex-direction: column; }
-    .worker-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 12px; border-bottom: 1px solid var(--pages-border-color, #333);
-      background: var(--pages-neutral-3, #2a2a2a); font-weight: 600; font-size: 14px;
-      color: var(--pages-text-primary, #e5e5e5);
-    }
-    .worker-header button {
-      border: none; background: none; cursor: pointer; font-size: 16px;
-      color: var(--pages-text-secondary, #999); padding: 2px 6px; border-radius: 4px;
-    }
-    .worker-header button:hover { background: var(--pages-neutral-4, #3a3a3a); }
-    swf-diagram { flex: 1; min-height: 0; }
-    .empty {
+    :host { display: flex; height: 100%; font-family: var(--pages-font-family, system-ui); }
+    .workbench-row { display: flex; flex: 1; height: 100%; min-width: 0; }
+    .collapsed-strip {
+      width: 36px; min-width: 36px; height: 100%; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      height: 100%; color: var(--pages-text-tertiary, #999); font-style: italic;
+      border-right: 1px solid var(--pages-border-color, #333);
+      background: var(--pages-neutral-3, #2a2a2a);
+      transition: background 0.15s;
     }
+    .collapsed-strip:hover { background: var(--pages-neutral-4, #3a3a3a); }
+    .collapsed-strip span {
+      writing-mode: vertical-rl; text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+      color: var(--pages-text-secondary, #999);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-height: calc(100% - 16px);
+    }
+    .active-panel { flex: 1; height: 100%; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+    casehub-diagram, swf-diagram { width: 100%; height: 100%; }
   `;
 
   override connectedCallback(): void {
@@ -60,7 +58,7 @@ export class DiagramWorkbench extends LitElement {
     this._unsubs.push(
       onPagesEvent(this, 'diagram:drill-down:resolved', (payload: unknown) => {
         const p = payload as { name: string; yaml: string; diagramType: string };
-        this._drillDown = { name: p.name, yaml: p.yaml, diagramType: p.diagramType };
+        this._stack = [...this._stack, { name: p.name, yaml: p.yaml, diagramType: p.diagramType }];
       }),
     );
   }
@@ -76,55 +74,56 @@ export class DiagramWorkbench extends LitElement {
     if (props.src !== undefined) this.src = props.src as string;
   }
 
-  private _clearSelection(): void {
-    this._drillDown = null;
+  private _expandLevel(index: number): void {
+    this._stack = this._stack.slice(0, index);
   }
 
-  private _renderDrillDown(): TemplateResult | typeof nothing {
-    if (!this._drillDown) return nothing;
-    const tag = DIAGRAM_TAGS[this._drillDown.diagramType];
+  private _renderDiagram(level: DrillDownLevel): TemplateResult | typeof nothing {
+    const tag = DIAGRAM_TAGS[level.diagramType];
     if (!tag) {
-      return html`<div class="empty">Unknown diagram type: ${this._drillDown.diagramType}</div>`;
+      return html`<div style="padding:16px; color:var(--pages-text-tertiary,#999);">Unknown diagram type: ${level.diagramType}</div>`;
     }
     const tagLiteral = unsafeStatic(tag);
     return staticHtml`
       <${tagLiteral}
-        .yaml=${this._drillDown.yaml}
+        .yaml=${level.yaml}
         layout-direction="RIGHT">
       </${tagLiteral}>
     `;
   }
 
   override render(): TemplateResult {
-    if (!this._drillDown) {
-      return html`
-        <div class="case-panel">
-          <casehub-diagram
-            .yaml=${this.yaml}
-            .src=${this.src}
-            .runtimeState=${this.runtimeState}
-          ></casehub-diagram>
-        </div>
-      `;
-    }
+    const rootLevel: DrillDownLevel = {
+      name: 'Case Definition',
+      yaml: this.yaml,
+      diagramType: 'case',
+    };
+
+    const allLevels = [rootLevel, ...this._stack];
+    const activeIndex = allLevels.length - 1;
 
     return html`
-      <pages-split-workbench selection-topic="diagram">
-        <div slot="list" class="case-panel">
-          <casehub-diagram
-            .yaml=${this.yaml}
-            .src=${this.src}
-            .runtimeState=${this.runtimeState}
-          ></casehub-diagram>
-        </div>
-        <div slot="detail" class="swf-panel">
-          <div class="worker-header">
-            <span>${this._drillDown.name}</span>
-            <button @click=${() => this._clearSelection()} title="Close">✕</button>
-          </div>
-          ${this._renderDrillDown()}
-        </div>
-      </pages-split-workbench>
+      <div class="workbench-row">
+        ${allLevels.map((level, i) =>
+          i < activeIndex
+            ? html`
+              <div class="collapsed-strip"
+                title="${level.name} — click to expand"
+                @click=${() => this._expandLevel(i)}>
+                <span>${level.name}</span>
+              </div>`
+            : html`
+              <div class="active-panel">
+                ${level === rootLevel
+                  ? html`<casehub-diagram
+                      .yaml=${this.yaml}
+                      .src=${this.src}
+                      .runtimeState=${this.runtimeState}
+                    ></casehub-diagram>`
+                  : this._renderDiagram(level)}
+              </div>`
+        )}
+      </div>
     `;
   }
 }
