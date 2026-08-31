@@ -565,6 +565,48 @@ describe('blocks-channel-nav', () => {
     });
   });
 
+  describe('displayOrder sorting', () => {
+    it('renders channels in displayOrder when tree is pre-sorted', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = {
+        ungrouped: [],
+        spaces: [{
+          space: { id: 'sp1', name: 'Alpha' },
+          channels: [
+            { id: 'ch-a', name: 'alpha', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 0 },
+            { id: 'ch-b', name: 'bravo', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 1 },
+            { id: 'ch-c', name: 'charlie', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 2 },
+          ],
+          unreadCount: 0,
+          children: [],
+        }],
+      };
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.space-channels .channel-item');
+      expect(items[0]!.textContent).toContain('alpha');
+      expect(items[1]!.textContent).toContain('bravo');
+      expect(items[2]!.textContent).toContain('charlie');
+    });
+
+    it('channelTree getter sorts by displayOrder (nulls last, then name)', async () => {
+      const { ChannelStateController } = await import('./channel-state-controller.js');
+      const host = { addController: vi.fn(), requestUpdate: vi.fn() };
+      const push = { registerDatasetHandler: vi.fn() };
+      const ctrl = new ChannelStateController(host, push);
+      ctrl.channels = [
+        { id: 'ch-c', name: 'charlie', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 2 },
+        { id: 'ch-a', name: 'alpha', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 0 },
+        { id: 'ch-z', name: 'zulu', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0 },
+        { id: 'ch-b', name: 'bravo', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 1 },
+      ];
+      const tree = ctrl.channelTree;
+      const names = tree.spaces[0]!.channels.map((ch: any) => ch.name);
+      expect(names).toEqual(['alpha', 'bravo', 'charlie', 'zulu']);
+    });
+  });
+
   describe('context menu', () => {
     const mockTree: ChannelTree = {
       ungrouped: [
