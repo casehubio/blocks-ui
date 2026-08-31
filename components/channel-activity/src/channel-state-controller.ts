@@ -217,7 +217,7 @@ export class ChannelStateController implements ReactiveController {
       const updated = this._toChannel(op.row);
       this.channels = this.channels.map(c =>
         c.id === op.key
-          ? { ...updated, unreadCount: existing?.unreadCount ?? updated.unreadCount }
+          ? { ...updated, unreadCount: existing?.unreadCount ?? updated.unreadCount ?? 0 }
           : c);
     } else if (op.op === 'remove' && op.key) {
       this.channels = this.channels.filter(c => c.id !== op.key);
