@@ -35,6 +35,9 @@ import { toReactFlowGraph } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import type { NodeDecoration } from '@casehubio/graph-core';
 import { edgesOf } from '@casehubio/graph-core';
+import { emitPagesEvent } from '@casehubio/pages-data';
+import { detectDiagramType } from '@casehubio/blocks-ui-core';
+import { stringify } from 'yaml';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult } from '@casehubio/pages-diagram-core';
 import type { PropertyPaletteSource, EditorResolver, FieldRenderContext } from '@casehubio/pages-property-palette';
@@ -668,6 +671,65 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     this._updateSelectedNode();
   }
 
+  // --- Drill-down resolution ---
+
+  private async _handleDrillDown(payload: {
+    nodeId: string;
+    nodeName: string;
+    definitionRef?: string;
+    doBlock?: unknown;
+  }): Promise<void> {
+    const { nodeName, definitionRef, doBlock } = payload;
+
+    let yaml: string;
+    let diagramType: string;
+
+    if (definitionRef?.startsWith('#')) {
+      const defName = definitionRef.slice(1);
+      const defs = (this._adapterResult as any)?.definitions as
+        Record<string, unknown> | undefined;
+      const fragment = defs?.[defName];
+      if (!fragment) {
+        this._error = `Definition '${defName}' not found`;
+        return;
+      }
+      yaml = stringify(fragment);
+      diagramType = detectDiagramType(yaml);
+    } else if (definitionRef) {
+      try {
+        yaml = await this._fetchDefinition(definitionRef);
+        diagramType = detectDiagramType(yaml);
+      } catch (e) {
+        this._error = `Failed to load ${definitionRef}: ${e}`;
+        return;
+      }
+    } else if (doBlock) {
+      yaml = stringify({
+        document: { dsl: '1.0.0', namespace: 'embedded', name: 'worker-do', version: '1.0.0' },
+        do: doBlock,
+      });
+      diagramType = 'swf';
+    } else {
+      return;
+    }
+
+    emitPagesEvent(this, 'diagram:drill-down:resolved', {
+      name: nodeName,
+      yaml,
+      diagramType,
+    });
+  }
+
+  private async _fetchDefinition(path: string): Promise<string> {
+    const base = this.src
+      ? new URL(this.src, window.location.href)
+      : new URL(window.location.href);
+    const url = new URL(path, base);
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return res.text();
+  }
+
   // --- Public API ---
 
   getNodeProperties(nodeId: string): Record<string, unknown> | undefined {
@@ -796,6 +858,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
               const topic = e.detail?.topic as string | undefined;
               if (topic === 'graph:node:click') this._handleNodeClick(e);
               if (topic === 'graph:selection:change') this._handleSelectionChange(e);
+              if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
             }}
           ></pages-graph-canvas>
           ${this._propertiesOpen ? html`

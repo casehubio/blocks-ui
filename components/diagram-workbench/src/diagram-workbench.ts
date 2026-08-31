@@ -1,16 +1,22 @@
-import { LitElement, html, css, type TemplateResult } from 'lit';
+import { LitElement, html, css, nothing, type TemplateResult } from 'lit';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent } from '@casehubio/pages-data';
-import { stringify } from 'yaml';
 import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
-import type { CasehubDiagram } from '@casehubio/blocks-ui-casehub-diagram';
+
 import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-swf-diagram';
 
-interface SelectedWorker {
+const DIAGRAM_TAGS: Record<string, string> = {
+  swf: 'swf-diagram',
+  case: 'casehub-diagram',
+};
+
+interface DrillDownState {
   name: string;
   yaml: string;
+  diagramType: string;
 }
 
 @customElement('blocks-diagram-workbench')
@@ -19,7 +25,7 @@ export class DiagramWorkbench extends LitElement {
   @property() src = '';
   @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;
 
-  @state() private _selectedWorker: SelectedWorker | null = null;
+  @state() private _drillDown: DrillDownState | null = null;
 
   private _unsubs: Array<() => void> = [];
 
@@ -52,20 +58,9 @@ export class DiagramWorkbench extends LitElement {
     this.setAttribute('role', 'region');
     this.setAttribute('aria-label', 'Diagram workbench');
     this._unsubs.push(
-      onPagesEvent(this, 'diagram:worker-drill-down', (payload: unknown) => {
-        const p = payload as { workerName: string; doYaml: string };
-        this._selectedWorker = { name: p.workerName, yaml: p.doYaml };
-      }),
-      onPagesEvent(this, 'graph:node:click', (payload: unknown) => {
-        const p = payload as { nodeId: string; nodeType: string };
-        if (!p.nodeId.startsWith('worker:')) return;
-        const caseDiag = this.renderRoot.querySelector('casehub-diagram') as CasehubDiagram | null;
-        const props = caseDiag?.getNodeProperties(p.nodeId);
-        const doBlock = props?.do;
-        if (!doBlock) return;
-        const name = String(props.name ?? p.nodeId.replace('worker:', ''));
-        const doYaml = stringify({ document: { dsl: '1.0.0', namespace: 'embedded', name: 'worker-do', version: '1.0.0' }, do: doBlock });
-        this._selectedWorker = { name, yaml: doYaml };
+      onPagesEvent(this, 'diagram:drill-down:resolved', (payload: unknown) => {
+        const p = payload as { name: string; yaml: string; diagramType: string };
+        this._drillDown = { name: p.name, yaml: p.yaml, diagramType: p.diagramType };
       }),
     );
   }
@@ -82,7 +77,22 @@ export class DiagramWorkbench extends LitElement {
   }
 
   private _clearSelection(): void {
-    this._selectedWorker = null;
+    this._drillDown = null;
+  }
+
+  private _renderDrillDown(): TemplateResult | typeof nothing {
+    if (!this._drillDown) return nothing;
+    const tag = DIAGRAM_TAGS[this._drillDown.diagramType];
+    if (!tag) {
+      return html`<div class="empty">Unknown diagram type: ${this._drillDown.diagramType}</div>`;
+    }
+    const tagLiteral = unsafeStatic(tag);
+    return staticHtml`
+      <${tagLiteral}
+        .yaml=${this._drillDown.yaml}
+        layout-direction="RIGHT">
+      </${tagLiteral}>
+    `;
   }
 
   override render(): TemplateResult {
@@ -96,17 +106,14 @@ export class DiagramWorkbench extends LitElement {
           ></casehub-diagram>
         </div>
         <div slot="detail" class="swf-panel">
-          ${this._selectedWorker
+          ${this._drillDown
             ? html`
               <div class="worker-header">
-                <span>${this._selectedWorker.name}</span>
+                <span>${this._drillDown.name}</span>
                 <button @click=${() => this._clearSelection()} title="Close">✕</button>
               </div>
-              <swf-diagram
-                .yaml=${this._selectedWorker.yaml}
-                layout-direction="RIGHT"
-              ></swf-diagram>`
-            : html`<div class="empty">Click ⤢ on a worker to inspect its workflow</div>`}
+              ${this._renderDrillDown()}`
+            : html`<div class="empty">Click ⤢ on a worker to inspect its definition</div>`}
         </div>
       </pages-split-workbench>
     `;

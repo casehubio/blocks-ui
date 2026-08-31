@@ -144,5 +144,12 @@ export function toGraph(yaml: string): AdapterResult {
     goalIndex++;
   }
 
-  return { model: createGraph(nodes, edges), yamlPaths };
+  const definitions = (def as Record<string, unknown>)['definitions'] as
+    Record<string, unknown> | undefined;
+
+  return {
+    model: createGraph(nodes, edges),
+    yamlPaths,
+    ...(definitions ? { definitions } : {}),
+  };
 }

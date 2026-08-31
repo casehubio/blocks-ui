@@ -77,3 +77,46 @@ describe.skipIf(!HAS_ENGINE)('toGraph', () => {
     expect(yamlPaths.get('goal:processingComplete')).toEqual(['spec', 'goals', 0]);
   });
 });
+
+describe('definitions block', () => {
+  it('preserves definitions block in adapter result', () => {
+    const yamlWithDefs = `dsl: "1.0.0"
+namespace: test
+name: test-case
+version: "1.0.0"
+spec:
+  bindings:
+    - name: b1
+      capability: cap1
+  workers:
+    - name: w1
+      capabilities: [cap1]
+definitions:
+  my-flow:
+    do:
+      - step1:
+          set: { x: 1 }
+`;
+    const result = toGraph(yamlWithDefs);
+    expect((result as any).definitions).toBeDefined();
+    expect((result as any).definitions['my-flow']).toBeDefined();
+    expect((result as any).definitions['my-flow'].do).toBeDefined();
+  });
+
+  it('returns undefined definitions when none present', () => {
+    const yaml = `dsl: "1.0.0"
+namespace: test
+name: test-case
+version: "1.0.0"
+spec:
+  bindings:
+    - name: b1
+      capability: cap1
+  workers:
+    - name: w1
+      capabilities: [cap1]
+`;
+    const result = toGraph(yaml);
+    expect((result as any).definitions).toBeUndefined();
+  });
+});

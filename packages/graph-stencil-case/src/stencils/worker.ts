@@ -1,5 +1,4 @@
 import { html, nothing } from 'lit-html';
-import { stringify } from 'yaml';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
@@ -31,6 +30,8 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
   const caps = (data['capabilities'] as string[] | undefined) ?? [];
   const desc = data['description'] ? String(data['description']).slice(0, 60) : '';
   const doBlock = data['do'];
+  const definitionRef = data['definitionRef'] as string | undefined;
+  const hasDrillDown = doBlock || definitionRef;
   const hasThumbnail = doBlock && getThumbnailRenderer('swf');
   const fnType = detectFunctionType(data as Record<string, unknown>);
   const badge = BADGE_CONFIG[fnType];
@@ -40,11 +41,11 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
       <div style="display: flex; align-items: center; gap: 6px;">
         <div style="font-weight: 700; color: var(--pages-neutral-12, #111); flex: 1;">${name}</div>
         <span style="font-size: 10px; padding: 2px 6px; border-radius: 3px; background: ${badge.bg}; color: ${badge.fg}; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;">${badge.label}</span>
-        ${doBlock ? html`
+        ${hasDrillDown ? html`
           <button
             style="border: none; background: none; cursor: pointer; font-size: 13px; color: var(--pages-accent-9, #2563eb); padding: 0 2px;"
-            title="Open SWF diagram"
-            @click=${(e: Event) => { e.stopPropagation(); emitDrillDown(e.target as HTMLElement, node.id, name, doBlock); }}
+            title="Drill down"
+            @click=${(e: Event) => { e.stopPropagation(); emitDrillDown(e.target as HTMLElement, node.id, name, doBlock, definitionRef); }}
           >⤢</button>
         ` : nothing}
       </div>
@@ -61,19 +62,18 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
   `;
 }
 
-function emitDrillDown(target: HTMLElement, workerId: string, workerName: string, doBlock: unknown): void {
-  const doYaml = wrapDoBlockForEvent(doBlock);
-  emitPagesEvent(target, 'diagram:worker-drill-down', {
-    workerId,
-    workerName,
-    doYaml,
-  });
-}
-
-function wrapDoBlockForEvent(doBlock: unknown): string {
-  return stringify({
-    document: { dsl: '1.0.0', namespace: 'embedded', name: 'worker-do', version: '1.0.0' },
-    do: doBlock,
+function emitDrillDown(
+  target: HTMLElement,
+  workerId: string,
+  workerName: string,
+  doBlock: unknown | undefined,
+  definitionRef: string | undefined,
+): void {
+  emitPagesEvent(target, 'diagram:drill-down', {
+    nodeId: workerId,
+    nodeName: workerName,
+    definitionRef,
+    doBlock,
   });
 }
 
