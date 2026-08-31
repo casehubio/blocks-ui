@@ -49,6 +49,7 @@ const NAV: NavCategory[] = [
       { id: 'commitment-viz', label: 'Commitment Viz', hash: '#components/commitment-viz' },
       { id: 'case-dependency-graph', label: 'Case Dependency Graph', hash: '#components/case-dependency-graph' },
       { id: 'contributor-workbench', label: 'Contributor Workbench', hash: '#components/contributor-workbench' },
+      { id: 'avatar', label: 'Avatar', hash: '#components/avatar' },
     ],
   },
   {
@@ -244,6 +245,7 @@ export class ExampleShell extends LitElement {
       case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
       case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
       case '#composed/conversation-viewer': return html`<blocks-example-conversation-viewer></blocks-example-conversation-viewer>`;
+      case '#components/avatar': return html`<blocks-example-avatar></blocks-example-avatar>`;
       case '#components/contributor-workbench': return html`<blocks-example-contributor-workbench></blocks-example-contributor-workbench>`;
       case '#orchestration/decomposition-tree': return html`<blocks-example-decomposition-tree></blocks-example-decomposition-tree>`;
       case '#orchestration/plan-item-tree': return html`<blocks-example-plan-item-tree></blocks-example-plan-item-tree>`;
