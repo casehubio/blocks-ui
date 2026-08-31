@@ -964,10 +964,15 @@ var CasehubSpeech = class extends i4 {
     this.sampleRate = 16e3;
     this.disabled = false;
     this._recording = false;
+    this._starting = false;
     this._micStream = null;
     this._micProcessor = null;
     this._micSource = null;
     this._audioCtx = null;
+    this._handleClick = () => {
+      if (this._recording) this._stopRecording();
+      else this._startRecording();
+    };
   }
   get recording() {
     return this._recording;
@@ -982,7 +987,8 @@ var CasehubSpeech = class extends i4 {
     this._stopCapture();
   }
   async _startRecording() {
-    if (this._recording) return;
+    if (this._recording || this._starting) return;
+    this._starting = true;
     try {
       if (!this._audioCtx) this._audioCtx = new AudioContext();
       this._micStream = await navigator.mediaDevices.getUserMedia({
@@ -1004,6 +1010,8 @@ var CasehubSpeech = class extends i4 {
       this.dispatchEvent(new CustomEvent("speech:start", { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
     } catch (e5) {
       console.error("[casehub-speech] mic error:", e5);
+    } finally {
+      this._starting = false;
     }
   }
   _stopRecording() {
@@ -1037,10 +1045,6 @@ var CasehubSpeech = class extends i4 {
       out[i5] = input[Math.round(i5 * ratio)];
     }
     return out;
-  }
-  _handleClick() {
-    if (this._recording) this._stopRecording();
-    else this._startRecording();
   }
   render() {
     return b2`

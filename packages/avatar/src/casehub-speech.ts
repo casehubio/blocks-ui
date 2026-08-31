@@ -7,6 +7,7 @@ export class CasehubSpeech extends LitElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
 
   @state() private _recording = false;
+  private _starting = false;
   private _micStream: MediaStream | null = null;
   private _micProcessor: ScriptProcessorNode | null = null;
   private _micSource: MediaStreamAudioSourceNode | null = null;
@@ -48,7 +49,8 @@ export class CasehubSpeech extends LitElement {
   }
 
   private async _startRecording() {
-    if (this._recording) return;
+    if (this._recording || this._starting) return;
+    this._starting = true;
     try {
       if (!this._audioCtx) this._audioCtx = new AudioContext();
       this._micStream = await navigator.mediaDevices.getUserMedia({
@@ -70,6 +72,8 @@ export class CasehubSpeech extends LitElement {
       this.dispatchEvent(new CustomEvent('speech:start', { detail: { sampleRate: this.sampleRate }, bubbles: true, composed: true }));
     } catch (e) {
       console.error('[casehub-speech] mic error:', e);
+    } finally {
+      this._starting = false;
     }
   }
 
@@ -99,9 +103,9 @@ export class CasehubSpeech extends LitElement {
     return out;
   }
 
-  private _handleClick() {
+  private _handleClick = () => {
     if (this._recording) this._stopRecording(); else this._startRecording();
-  }
+  };
 
   protected override render() {
     return html`
