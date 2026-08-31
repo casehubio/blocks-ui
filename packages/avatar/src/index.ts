@@ -5,3 +5,5 @@ export type {
   AvatarConfig,
   AvatarMessage,
 } from './types.js';
+
+export { CasehubTranscript } from './casehub-transcript.js';
