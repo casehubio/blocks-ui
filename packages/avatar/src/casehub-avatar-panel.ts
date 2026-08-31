@@ -13,8 +13,8 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
   @property({ type: String, attribute: 'avatar-url' }) avatarUrl = '';
   @property({ type: String }) body: 'M' | 'F' = 'F';
   @property({ type: String }) mood = 'neutral';
-  @property({ type: String, attribute: 'llm-model' }) llmModel: string | undefined;
-  @property({ type: String, attribute: 'tts-model' }) ttsModel: string | undefined;
+  @property({ type: String, attribute: 'llm-model' }) llmModel = 'claude-haiku-4-5@20251001';
+  @property({ type: String, attribute: 'tts-model' }) ttsModel = 'lessac-medium';
 
   @state() turns: ConversationTurn[] = [];
   @state() avatarAudioQueue: PlaybackItem[] = [];
