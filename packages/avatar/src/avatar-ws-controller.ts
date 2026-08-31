@@ -137,7 +137,7 @@ export class AvatarWsController implements ReactiveController {
     return { audio, visemes, vtimes, vdurations };
   }
 
-  sendStart(opts: { sampleRate: number; llmModel?: string; ttsModel?: string }) {
+  sendStart(opts: { sampleRate: number; llmModel?: string | undefined; ttsModel?: string | undefined }) {
     this._send(JSON.stringify({ type: 'start', ...opts }));
   }
 
