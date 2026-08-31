@@ -74,6 +74,19 @@ export class DiagramWorkbench extends LitElement {
     if (props.src !== undefined) this.src = props.src as string;
   }
 
+  private _prevStackLength = 0;
+
+  override updated(changed: Map<string, unknown>): void {
+    if (this._stack.length !== this._prevStackLength) {
+      this._prevStackLength = this._stack.length;
+      if (this._stack.length > 0) {
+        requestAnimationFrame(() => {
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+        });
+      }
+    }
+  }
+
   private _expandLevel(index: number): void {
     this._stack = this._stack.slice(0, index);
   }
@@ -87,7 +100,8 @@ export class DiagramWorkbench extends LitElement {
     return staticHtml`
       <${tagLiteral}
         .yaml=${level.yaml}
-        layout-direction="RIGHT">
+        layout-direction="RIGHT"
+        readonly>
       </${tagLiteral}>
     `;
   }
