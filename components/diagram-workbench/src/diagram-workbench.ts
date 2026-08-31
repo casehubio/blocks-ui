@@ -96,6 +96,18 @@ export class DiagramWorkbench extends LitElement {
   }
 
   override render(): TemplateResult {
+    if (!this._drillDown) {
+      return html`
+        <div class="case-panel">
+          <casehub-diagram
+            .yaml=${this.yaml}
+            .src=${this.src}
+            .runtimeState=${this.runtimeState}
+          ></casehub-diagram>
+        </div>
+      `;
+    }
+
     return html`
       <pages-split-workbench selection-topic="diagram">
         <div slot="list" class="case-panel">
@@ -106,14 +118,11 @@ export class DiagramWorkbench extends LitElement {
           ></casehub-diagram>
         </div>
         <div slot="detail" class="swf-panel">
-          ${this._drillDown
-            ? html`
-              <div class="worker-header">
-                <span>${this._drillDown.name}</span>
-                <button @click=${() => this._clearSelection()} title="Close">✕</button>
-              </div>
-              ${this._renderDrillDown()}`
-            : html`<div class="empty">Click ⤢ on a worker to inspect its definition</div>`}
+          <div class="worker-header">
+            <span>${this._drillDown.name}</span>
+            <button @click=${() => this._clearSelection()} title="Close">✕</button>
+          </div>
+          ${this._renderDrillDown()}
         </div>
       </pages-split-workbench>
     `;
