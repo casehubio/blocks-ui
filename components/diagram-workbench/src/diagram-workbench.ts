@@ -79,11 +79,10 @@ export class DiagramWorkbench extends LitElement {
   override updated(changed: Map<string, unknown>): void {
     if (this._stack.length !== this._prevStackLength) {
       this._prevStackLength = this._stack.length;
-      if (this._stack.length > 0) {
-        requestAnimationFrame(() => {
-          setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
-        });
-      }
+      requestAnimationFrame(() => {
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 500);
+      });
     }
   }
 
