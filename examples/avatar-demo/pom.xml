@@ -13,7 +13,7 @@
   <properties>
     <maven.compiler.release>22</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <quarkus.platform.version>3.22.3</quarkus.platform.version>
+    <quarkus.platform.version>3.32.2</quarkus.platform.version>
     <casehub-blocks.version>0.2-SNAPSHOT</casehub-blocks.version>
   </properties>
 
