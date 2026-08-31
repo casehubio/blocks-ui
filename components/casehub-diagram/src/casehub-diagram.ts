@@ -730,6 +730,22 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     return res.text();
   }
 
+  private _handlePropertyDrillDown(): void {
+    if (!this._selectedNodeId || !this._adapterResult) return;
+    const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
+    if (!node) return;
+    const props = node.properties;
+    const payload: { nodeId: string; nodeName: string; definitionRef?: string; doBlock?: unknown } = {
+      nodeId: node.id,
+      nodeName: String(props['name'] ?? ''),
+    };
+    const ref = props['definitionRef'] as string | undefined;
+    if (ref !== undefined) payload.definitionRef = ref;
+    const doBlock = props['do'];
+    if (doBlock !== undefined) payload.doBlock = doBlock;
+    this._handleDrillDown(payload);
+  }
+
   // --- Public API ---
 
   getNodeProperties(nodeId: string): Record<string, unknown> | undefined {
@@ -865,7 +881,9 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
             <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
               ${this._renderDockHeader('Properties', 'right')}
               ${hasSelection ? html`
-                <div style="padding:8px;">
+                <div style="padding:8px;" @pages-event=${(e: CustomEvent) => {
+                  if (e.detail?.topic === 'diagram:property-drill-down') this._handlePropertyDrillDown();
+                }}>
                   ${this._renderPropertyPanel()}
                 </div>
               ` : html`

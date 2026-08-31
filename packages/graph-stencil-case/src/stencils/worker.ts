@@ -43,7 +43,7 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
         <span style="font-size: 10px; padding: 2px 6px; border-radius: 3px; background: ${badge.bg}; color: ${badge.fg}; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;">${badge.label}</span>
         ${hasDrillDown ? html`
           <button
-            style="border: none; background: none; cursor: pointer; font-size: 13px; color: var(--pages-accent-9, #2563eb); padding: 0 2px;"
+            style="border: none; background: none; cursor: pointer; font-size: 13px; color: var(--pages-accent-9, #2563eb); padding: 2px 4px; position: relative; z-index: 10;"
             title="Drill down"
             @click=${(e: Event) => { e.stopPropagation(); emitDrillDown(e.target as HTMLElement, node.id, name, doBlock, definitionRef); }}
           >⤢</button>
