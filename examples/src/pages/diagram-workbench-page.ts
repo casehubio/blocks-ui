@@ -133,6 +133,7 @@ spec:
       agent:
         model: gpt-4o
         instructions: Determine claim routing
+      definitionRef: '#routing-workflow'
   milestones:
     - name: risk-assessed
       condition: "fraud-detection.complete && sanctions-screening.complete"
@@ -143,6 +144,32 @@ spec:
       expression:
         all:
           - decision-made
+definitions:
+  routing-workflow:
+    document:
+      dsl: "1.0.0"
+      namespace: insurance
+      name: routing-workflow
+      version: "1.0.0"
+    do:
+      - evaluateComplexity:
+          call: http
+          with:
+            method: post
+            endpoint:
+              uri: https://api.internal/routing/complexity
+      - determineRoute:
+          switch:
+            - when: \${.evaluateComplexity.output.level == 'high'}
+              then: escalateToSenior
+            - when: \${.evaluateComplexity.output.level == 'low'}
+              then: autoApprove
+      - assignAdjuster:
+          call: http
+          with:
+            method: post
+            endpoint:
+              uri: https://api.internal/routing/assign
 `;
 
 @customElement('blocks-example-diagram-workbench')
@@ -159,9 +186,9 @@ export class DiagramWorkbenchPage extends LitElement {
   override render() {
     return html`
       <h2>Diagram Workbench</h2>
-      <p>Combined case + SWF diagram with stencil palettes and property panels in both panes.
-        Click ⤢ on a worker node to inspect its workflow in the right pane.
-        Property palette updates when switching between case (left) and SWF (right) selections.</p>
+      <p>Orthogonal diagram drill-down. Click ⤢ on any worker to inspect its definition.
+        Workers with inline do: blocks and definitionRef (#routing-workflow) both drill down.
+        The right pane renders the appropriate diagram type automatically.</p>
       <div class="workbench-container">
         <blocks-diagram-workbench .yaml=${YAML}></blocks-diagram-workbench>
       </div>
