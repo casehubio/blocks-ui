@@ -6,10 +6,12 @@ import type { CaseRuntimeState } from '@casehubio/graph-stencil-case';
 
 import '@casehubio/blocks-ui-casehub-diagram';
 import '@casehubio/blocks-ui-swf-diagram';
+import '@casehubio/blocks-ui-htn-diagram';
 
 const DIAGRAM_TAGS: Record<string, string> = {
   swf: 'swf-diagram',
   case: 'casehub-diagram',
+  htn: 'htn-diagram',
 };
 
 interface DrillDownLevel {

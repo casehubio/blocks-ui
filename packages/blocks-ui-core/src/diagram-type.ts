@@ -6,6 +6,7 @@ export function detectDiagramType(yaml: string): string {
     if (!parsed || typeof parsed !== 'object') return 'unknown';
 
     const spec = parsed['spec'] as Record<string, unknown> | undefined;
+    if (spec?.['decomposition']) return 'htn';
     if (spec && (spec['bindings'] || spec['workers'])) return 'case';
 
     if (parsed['document'] && parsed['do']) return 'swf';

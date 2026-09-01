@@ -134,6 +134,42 @@ spec:
         model: gpt-4o
         instructions: Determine claim routing
       definitionRef: '#routing-workflow'
+  decomposition:
+    root:
+      name: claim-processing
+      methods:
+        - guardLabel: "Standard path"
+          guard: ".claimValue < 50000"
+          tasks:
+            - name: validate
+              capability: schema-validation
+            - name: assess-risk
+              methods:
+                - guardLabel: "Auto-assess"
+                  guard: ".riskLevel == 'low'"
+                  tasks:
+                    - name: ml-scoring
+                      capability: fraud-scoring
+                - guardLabel: "Manual review"
+                  guard: ".riskLevel == 'high'"
+                  tasks:
+                    - name: manual-review
+                      capability: fraud-scoring
+                    - name: sanctions-check
+                      capability: sanctions-check
+            - name: route
+              capability: claim-routing
+        - guardLabel: "High-value path"
+          guard: ".claimValue >= 50000"
+          tasks:
+            - name: validate
+              capability: schema-validation
+            - name: full-investigation
+              capability: fraud-scoring
+            - name: compliance-review
+              capability: sanctions-check
+            - name: senior-routing
+              capability: claim-routing
   milestones:
     - name: risk-assessed
       condition: "fraud-detection.complete && sanctions-screening.complete"

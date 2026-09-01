@@ -43,4 +43,21 @@ describe('detectDiagramType', () => {
     expect(detectDiagramType('')).toBe('unknown');
     expect(detectDiagramType('not: valid: yaml: [')).toBe('unknown');
   });
+
+  it('detects HTN decomposition', () => {
+    const HTN_YAML = `dsl: "1.0.0"
+namespace: test
+name: my-case
+spec:
+  decomposition:
+    root:
+      name: investigate
+      methods:
+        - guard: ".severity == 'high'"
+          tasks:
+            - name: triage
+              capability: triage-assessment
+`;
+    expect(detectDiagramType(HTN_YAML)).toBe('htn');
+  });
 });

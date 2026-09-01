@@ -39,6 +39,7 @@ export default defineConfig({
       { find: '@casehubio/blocks-ui-contributor-workbench', replacement: resolve(__dirname, '../components/contributor-workbench/src') },
       { find: '@casehubio/blocks-ui-casehub-diagram', replacement: resolve(__dirname, '../components/casehub-diagram/src/casehub-diagram.ts') },
       { find: '@casehubio/blocks-ui-swf-diagram', replacement: resolve(__dirname, '../components/swf-diagram/src/swf-diagram.ts') },
+      { find: '@casehubio/blocks-ui-htn-diagram', replacement: resolve(__dirname, '../components/htn-diagram/src/htn-diagram.ts') },
       { find: '@casehubio/blocks-ui-diagram-workbench', replacement: resolve(__dirname, '../components/diagram-workbench/src/index.ts') },
       { find: '@tisoap/react-flow-smart-edge', replacement: resolve(__dirname, '../node_modules/@tisoap/react-flow-smart-edge/dist/index.mjs') },
       { find: '@casehubio/graph-stencil-htn', replacement: resolve(__dirname, '../packages/graph-stencil-htn/src') },

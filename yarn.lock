@@ -405,6 +405,7 @@ __metadata:
     "@casehubio/pages-ui-components": "npm:*"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
+    vitest: "npm:^3.2.0"
   languageName: unknown
   linkType: soft
 
@@ -485,6 +486,20 @@ __metadata:
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
     vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-htn-diagram@workspace:components/htn-diagram":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-htn-diagram@workspace:components/htn-diagram"
+  dependencies:
+    "@casehubio/graph-core": "npm:*"
+    "@casehubio/graph-renderer": "npm:*"
+    "@casehubio/graph-stencil-htn": "workspace:*"
+    "@casehubio/pages-diagram-core": "npm:*"
+    lit: "npm:^3.3.3"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
   languageName: unknown
   linkType: soft
 
@@ -7204,7 +7219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.0.0":
+"vitest@npm:^3.0.0, vitest@npm:^3.2.0":
   version: 3.2.7
   resolution: "vitest@npm:3.2.7"
   dependencies:

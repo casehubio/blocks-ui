@@ -22,3 +22,4 @@ proj
 .worktrees
 .worktrees/
 .claude/
+*.png

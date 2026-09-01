@@ -730,6 +730,18 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     return res.text();
   }
 
+  private _hasDecomposition(): boolean {
+    return this._currentYaml.includes('decomposition:');
+  }
+
+  private _drillToDecomposition(): void {
+    emitPagesEvent(this, 'diagram:drill-down:resolved', {
+      name: 'HTN Decomposition',
+      yaml: this._currentYaml,
+      diagramType: 'htn',
+    });
+  }
+
   private _handlePropertyDrillDown(): void {
     if (!this._selectedNodeId || !this._adapterResult) return;
     const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
@@ -852,6 +864,12 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           @toolbar-mode-change=${this._handleModeChange}
           @toolbar-export=${(e: CustomEvent<{ format: 'svg' | 'png' }>) => this._exportDiagram(e.detail.format)}
         ></casehub-diagram-toolbar>
+        ${this._hasDecomposition() ? html`
+          <div style="padding: 4px 8px; border-bottom: 1px solid var(--pages-neutral-4,#e5e7eb); display: flex; gap: 8px;">
+            <button style="font-size: 12px; padding: 3px 10px; border: 1px solid var(--pages-accent-9,#5470c6); border-radius: 4px; background: transparent; color: var(--pages-accent-9,#5470c6); cursor: pointer;"
+              @click=${() => this._drillToDecomposition()}>🔀 View HTN Decomposition</button>
+          </div>
+        ` : nothing}
         <div style="display: flex; flex: 1; overflow: hidden;">
           ${this._paletteOpen ? html`
             <div style="border-right:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
