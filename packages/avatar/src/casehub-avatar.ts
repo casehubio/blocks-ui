@@ -61,9 +61,13 @@ export class CasehubAvatar extends LitElement {
     this._visemeMeshes = null;
   }
 
+  private _internalQueue: PlaybackItem[] = [];
+
   protected override updated(changed: Map<string, unknown>) {
-    if (changed.has('audioQueue') && this.audioQueue.length > 0 && !this._processingQueue) {
-      this._processQueue();
+    if (changed.has('audioQueue') && this.audioQueue.length > 0) {
+      this._internalQueue.push(...this.audioQueue);
+      this.dispatchEvent(new CustomEvent('avatar:queue-accepted', { bubbles: true, composed: true }));
+      if (!this._processingQueue) this._processQueue();
     }
   }
 
@@ -97,9 +101,14 @@ export class CasehubAvatar extends LitElement {
 
   private _discoverVisemeMeshes(): VisemeMesh[] | null {
     if (this._visemeMeshes) return this._visemeMeshes;
-    if (!this._head) return null;
+    if (!this._head) { console.log('[AVATAR] no head instance'); return null; }
     const scene = this._head.scene ?? this._head._scene ?? this._head.model ?? this._head._model;
-    if (!scene?.traverse) return null;
+    if (!scene?.traverse) {
+      const keys = Object.keys(this._head).filter(k => !k.startsWith('_'));
+      const privKeys = Object.keys(this._head).filter(k => k.startsWith('_') && (k.includes('scene') || k.includes('model') || k.includes('mesh') || k.includes('avatar')));
+      console.log('[AVATAR] no scene found. Public keys:', keys.join(', '), '| Relevant private:', privKeys.join(', '));
+      return null;
+    }
     const meshes: VisemeMesh[] = [];
     scene.traverse((o: any) => {
       if (o.morphTargetDictionary) {
@@ -110,18 +119,22 @@ export class CasehubAvatar extends LitElement {
         if (Object.keys(dict).length > 0) meshes.push({ mesh: o, dict });
       }
     });
-    if (meshes.length > 0) this._visemeMeshes = meshes;
+    if (meshes.length > 0) {
+      console.log('[AVATAR] discovered', meshes.length, 'viseme meshes with', Object.keys(meshes[0]!.dict).length, 'targets each');
+      this._visemeMeshes = meshes;
+    } else {
+      console.log('[AVATAR] scene found but no viseme morph targets');
+    }
     return this._visemeMeshes;
   }
 
   private async _processQueue() {
     if (this._processingQueue) return;
     this._processingQueue = true;
-    while (this.audioQueue.length > 0) {
-      const item = this.audioQueue[0]!;
+    while (this._internalQueue.length > 0) {
+      const item = this._internalQueue.shift()!;
       this._speaking = true;
       await this._playItem(item);
-      this.audioQueue = this.audioQueue.slice(1);
     }
     this._speaking = false;
     this._processingQueue = false;

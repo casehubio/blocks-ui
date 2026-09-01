@@ -202,7 +202,8 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
         body=${this.body}
         mood=${this.mood}
         .speed=${this.speed}
-        .audioQueue=${this.avatarAudioQueue}>
+        .audioQueue=${this.avatarAudioQueue}
+        @avatar:queue-accepted=${() => { this.avatarAudioQueue = []; }}>
       </casehub-avatar>
       <div class="model-status">${this._modelStatusHtml}</div>
       <div class="status">${this._statusText}</div>

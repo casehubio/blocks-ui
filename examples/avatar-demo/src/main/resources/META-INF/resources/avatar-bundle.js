@@ -601,330 +601,6 @@ function r5(r6) {
   return n4({ ...r6, state: true, attribute: false });
 }
 
-// packages/avatar/src/avatar-ws-controller.ts
-var AvatarWsController = class {
-  constructor(host, config) {
-    this._ws = null;
-    this._shouldReconnect = true;
-    this._pendingVisemes = null;
-    this._audioCtx = null;
-    this._audioFramesSent = 0;
-    this._host = host;
-    this._wsUrl = config.wsUrl;
-    this._reconnectMs = config.reconnectMs ?? 2e3;
-    host.addController(this);
-  }
-  hostConnected() {
-    console.log("[WS] hostConnected \u2014 connecting");
-    this._connect();
-  }
-  hostDisconnected() {
-    this._shouldReconnect = false;
-    this._ws?.close();
-    this._ws = null;
-  }
-  _connect() {
-    const proto = globalThis.location?.protocol === "https:" ? "wss:" : "ws:";
-    const host = globalThis.location?.host ?? "localhost";
-    const url = this._wsUrl.startsWith("ws") ? this._wsUrl : `${proto}//${host}${this._wsUrl}`;
-    this._ws = new WebSocket(url);
-    this._host.connectionState = "connecting";
-    this._host.requestUpdate();
-    this._ws.onopen = () => {
-      console.log("[WS] onopen \u2014 connected");
-      this._host.connectionState = "connected";
-      this._host.requestUpdate();
-    };
-    this._ws.onmessage = (evt) => {
-      if (typeof evt.data === "string") {
-        const parsed = JSON.parse(evt.data);
-        console.log("[WS] recv text:", parsed.type, JSON.stringify(parsed).slice(0, 120));
-        this._handleTextMessage(parsed);
-      } else {
-        console.log("[WS] recv binary:", evt.data.size || "unknown", "bytes");
-        this._handleBinaryMessage(evt.data);
-      }
-    };
-    this._ws.onclose = (evt) => {
-      console.log("[WS] onclose \u2014 code:", evt.code, "reason:", evt.reason, "wasClean:", evt.wasClean);
-      this._host.connectionState = "disconnected";
-      this._host.requestUpdate();
-      if (this._shouldReconnect) {
-        setTimeout(() => this._connect(), this._reconnectMs);
-      }
-    };
-    this._ws.onerror = (evt) => {
-      console.error("[WS] onerror", evt);
-      this._host.connectionState = "disconnected";
-      this._host.requestUpdate();
-    };
-  }
-  _handleTextMessage(msg) {
-    switch (msg.type) {
-      case "partial": {
-        const last = this._host.turns[this._host.turns.length - 1];
-        if (last && last.role === "user" && last.status === "partial") {
-          this._host.turns = [...this._host.turns.slice(0, -1), { role: "user", text: msg.text, status: "partial" }];
-        } else {
-          this._host.turns = [...this._host.turns, { role: "user", text: msg.text, status: "partial" }];
-        }
-        this._host.requestUpdate();
-        break;
-      }
-      case "transcript": {
-        const last = this._host.turns[this._host.turns.length - 1];
-        if (last && last.role === "user" && last.status === "partial") {
-          this._host.turns = [...this._host.turns.slice(0, -1), { role: "user", text: msg.text, status: "final" }];
-        } else {
-          this._host.turns = [...this._host.turns, { role: "user", text: msg.text, status: "final" }];
-        }
-        this._host.requestUpdate();
-        break;
-      }
-      case "response":
-        this._host.turns = [...this._host.turns, { role: "avatar", text: msg.text, status: "final" }];
-        this._host.requestUpdate();
-        break;
-      case "phonemes":
-        this._pendingVisemes = msg.data ?? null;
-        break;
-      case "timing":
-        if (this._host instanceof EventTarget) {
-          this._host.dispatchEvent(new CustomEvent("avatar:timing", { detail: msg, bubbles: true, composed: true }));
-        }
-        break;
-      case "error":
-        if (this._host instanceof EventTarget) {
-          this._host.dispatchEvent(new CustomEvent("avatar:error", { detail: { message: msg.message }, bubbles: true, composed: true }));
-        }
-        break;
-    }
-  }
-  async _handleBinaryMessage(data) {
-    const myVisemes = this._pendingVisemes;
-    this._pendingVisemes = null;
-    if (!this._audioCtx) this._audioCtx = new AudioContext();
-    try {
-      const arrayBuf = data instanceof Blob ? await data.arrayBuffer() : data;
-      const audioBuf = await this._audioCtx.decodeAudioData(arrayBuf.slice(0));
-      const item = this._buildPlaybackItem(audioBuf, myVisemes);
-      this._host.avatarAudioQueue = [...this._host.avatarAudioQueue, item];
-      this._host.requestUpdate();
-    } catch (e5) {
-      console.error("[AvatarWsController] audio decode error:", e5);
-    }
-  }
-  _buildPlaybackItem(audio, frames) {
-    if (!frames || frames.length === 0) {
-      return { audio, visemes: ["sil"], vtimes: [0], vdurations: [audio.duration] };
-    }
-    const visemes = [];
-    const vtimes = [];
-    const vdurations = [];
-    for (const f3 of frames) {
-      visemes.push(f3.viseme);
-      vtimes.push(f3.startMs / 1e3);
-      vdurations.push((f3.endMs - f3.startMs) / 1e3);
-    }
-    return { audio, visemes, vtimes, vdurations };
-  }
-  sendStart(opts) {
-    const msg = JSON.stringify({ type: "start", ...opts });
-    console.log("[WS] sendStart:", msg);
-    this._send(msg);
-  }
-  sendStop() {
-    console.log("[WS] sendStop");
-    this._send(JSON.stringify({ type: "stop" }));
-  }
-  sendText(text, opts) {
-    const msg = JSON.stringify({ type: "text", text, ...opts });
-    console.log("[WS] sendText:", msg);
-    this._send(msg);
-  }
-  sendAudio(buffer) {
-    if (this._ws && this._ws.readyState === WebSocket.OPEN) {
-      this._ws.send(buffer);
-    }
-  }
-  _send(data) {
-    if (this._ws && this._ws.readyState === WebSocket.OPEN) {
-      this._ws.send(data);
-    } else {
-      console.warn("[WS] send failed \u2014 readyState:", this._ws?.readyState);
-    }
-  }
-};
-
-// packages/avatar/src/casehub-avatar.ts
-var CasehubAvatar = class extends i4 {
-  constructor() {
-    super(...arguments);
-    this.avatarUrl = "";
-    this.body = "F";
-    this.mood = "neutral";
-    this.cameraView = "head";
-    this.cameraRotate = true;
-    this.cameraZoom = true;
-    this.cameraPan = true;
-    this.lipsyncLang = "en";
-    this.audioQueue = [];
-    this._loading = true;
-    this._speaking = false;
-    this._head = null;
-    this._processingQueue = false;
-  }
-  get loading() {
-    return this._loading;
-  }
-  get speaking() {
-    return this._speaking;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute("role", "img");
-    this.setAttribute("aria-label", "3D avatar");
-    this.setAttribute("aria-busy", "true");
-    this._initTalkingHead();
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._head = null;
-  }
-  updated(changed) {
-    if (changed.has("audioQueue") && this.audioQueue.length > 0 && !this._processingQueue) {
-      this._processQueue();
-    }
-  }
-  async _initTalkingHead() {
-    try {
-      const { TalkingHead } = await import("talkinghead");
-      const container = this.shadowRoot.querySelector(".avatar-container");
-      if (!container) return;
-      this._head = new TalkingHead(container, {
-        ttsEndpoint: null,
-        lipsyncModules: [this.lipsyncLang],
-        cameraView: this.cameraView,
-        cameraRotateEnable: this.cameraRotate,
-        cameraZoomEnable: this.cameraZoom,
-        cameraPanEnable: this.cameraPan
-      });
-      await this._head.showAvatar({
-        url: this.avatarUrl,
-        body: this.body,
-        avatarMood: this.mood,
-        lipsyncLang: this.lipsyncLang
-      });
-      this._loading = false;
-      this.setAttribute("aria-busy", "false");
-    } catch (e5) {
-      console.error("[casehub-avatar] init error:", e5);
-      this._loading = false;
-      this.setAttribute("aria-busy", "false");
-    }
-  }
-  // Matches original: if head is null, play audio without lip-sync via raw AudioContext.
-  // Original (line 265-267): if no meshes, source.onended = playNextQueued; return;
-  async _processQueue() {
-    if (this._processingQueue) return;
-    this._processingQueue = true;
-    while (this.audioQueue.length > 0) {
-      const item = this.audioQueue[0];
-      this._speaking = true;
-      if (this._head) {
-        await new Promise((resolve) => {
-          setTimeout(async () => {
-            try {
-              await this._head.speakAudio({
-                audio: item.audio,
-                visemes: item.visemes,
-                vtimes: item.vtimes,
-                vdurations: item.vdurations
-              });
-            } catch (e5) {
-              console.error("[casehub-avatar] speakAudio error:", e5);
-            }
-            const waitForDone = () => {
-              if (this._head?.isSpeaking) {
-                requestAnimationFrame(waitForDone);
-              } else {
-                resolve();
-              }
-            };
-            waitForDone();
-          }, 0);
-        });
-      } else {
-        await this._playAudioRaw(item.audio);
-      }
-      this.audioQueue = this.audioQueue.slice(1);
-    }
-    this._speaking = false;
-    this._processingQueue = false;
-  }
-  _playAudioRaw(audio) {
-    return new Promise((resolve) => {
-      const ctx = new AudioContext();
-      const source = ctx.createBufferSource();
-      source.buffer = audio;
-      source.connect(ctx.destination);
-      source.onended = () => resolve();
-      source.start();
-    });
-  }
-  render() {
-    return b2`<div class="avatar-container"></div>`;
-  }
-};
-CasehubAvatar.styles = i`
-    :host {
-      display: block;
-      position: relative;
-      background: var(--pages-surface, #111);
-    }
-    .avatar-container {
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-    }
-  `;
-__decorateClass([
-  n4({ type: String, attribute: "avatar-url" })
-], CasehubAvatar.prototype, "avatarUrl", 2);
-__decorateClass([
-  n4({ type: String })
-], CasehubAvatar.prototype, "body", 2);
-__decorateClass([
-  n4({ type: String })
-], CasehubAvatar.prototype, "mood", 2);
-__decorateClass([
-  n4({ type: String, attribute: "camera-view" })
-], CasehubAvatar.prototype, "cameraView", 2);
-__decorateClass([
-  n4({ type: Boolean, attribute: "camera-rotate" })
-], CasehubAvatar.prototype, "cameraRotate", 2);
-__decorateClass([
-  n4({ type: Boolean, attribute: "camera-zoom" })
-], CasehubAvatar.prototype, "cameraZoom", 2);
-__decorateClass([
-  n4({ type: Boolean, attribute: "camera-pan" })
-], CasehubAvatar.prototype, "cameraPan", 2);
-__decorateClass([
-  n4({ type: String, attribute: "lipsync-lang" })
-], CasehubAvatar.prototype, "lipsyncLang", 2);
-__decorateClass([
-  n4({ type: Array })
-], CasehubAvatar.prototype, "audioQueue", 2);
-__decorateClass([
-  r5()
-], CasehubAvatar.prototype, "_loading", 2);
-__decorateClass([
-  r5()
-], CasehubAvatar.prototype, "_speaking", 2);
-CasehubAvatar = __decorateClass([
-  t3("casehub-avatar")
-], CasehubAvatar);
-
 // packages/avatar/src/casehub-transcript.ts
 var CasehubTranscript = class extends i4 {
   constructor() {
@@ -1102,7 +778,7 @@ var CasehubSpeech = class extends i4 {
     return b2`
       <button
         @click=${this._handleClick}
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this._finishing}
         aria-pressed=${this._recording ? "true" : "false"}>
         ${this._finishing ? "Finishing..." : this._recording ? "Recording..." : "Mic"}
       </button>
@@ -1145,6 +821,377 @@ __decorateClass([
 CasehubSpeech = __decorateClass([
   t3("casehub-speech")
 ], CasehubSpeech);
+
+// packages/avatar/src/avatar-ws-controller.ts
+var AvatarWsController = class {
+  constructor(host, config) {
+    this._ws = null;
+    this._shouldReconnect = true;
+    this._pendingVisemes = null;
+    this._audioCtx = null;
+    this._audioFramesSent = 0;
+    this._host = host;
+    this._wsUrl = config.wsUrl;
+    this._reconnectMs = config.reconnectMs ?? 2e3;
+    host.addController(this);
+  }
+  hostConnected() {
+    console.log("[WS] hostConnected \u2014 connecting");
+    this._connect();
+  }
+  hostDisconnected() {
+    this._shouldReconnect = false;
+    this._ws?.close();
+    this._ws = null;
+  }
+  _connect() {
+    const proto = globalThis.location?.protocol === "https:" ? "wss:" : "ws:";
+    const host = globalThis.location?.host ?? "localhost";
+    const url = this._wsUrl.startsWith("ws") ? this._wsUrl : `${proto}//${host}${this._wsUrl}`;
+    this._ws = new WebSocket(url);
+    this._host.connectionState = "connecting";
+    this._host.requestUpdate();
+    this._ws.onopen = () => {
+      console.log("[WS] onopen \u2014 connected");
+      this._host.connectionState = "connected";
+      this._host.requestUpdate();
+    };
+    this._ws.onmessage = (evt) => {
+      if (typeof evt.data === "string") {
+        const parsed = JSON.parse(evt.data);
+        console.log("[WS] recv text:", parsed.type, JSON.stringify(parsed).slice(0, 120));
+        this._handleTextMessage(parsed);
+      } else {
+        console.log("[WS] recv binary:", evt.data.size || "unknown", "bytes");
+        this._handleBinaryMessage(evt.data);
+      }
+    };
+    this._ws.onclose = (evt) => {
+      console.log("[WS] onclose \u2014 code:", evt?.code, "reason:", evt?.reason, "wasClean:", evt?.wasClean);
+      this._host.connectionState = "disconnected";
+      this._host.requestUpdate();
+      if (this._shouldReconnect) {
+        setTimeout(() => this._connect(), this._reconnectMs);
+      }
+    };
+    this._ws.onerror = (evt) => {
+      console.error("[WS] onerror", evt);
+      this._host.connectionState = "disconnected";
+      this._host.requestUpdate();
+    };
+  }
+  _handleTextMessage(msg) {
+    switch (msg.type) {
+      case "partial": {
+        const last = this._host.turns[this._host.turns.length - 1];
+        if (last && last.role === "user" && last.status === "partial") {
+          this._host.turns = [...this._host.turns.slice(0, -1), { role: "user", text: msg.text, status: "partial" }];
+        } else {
+          this._host.turns = [...this._host.turns, { role: "user", text: msg.text, status: "partial" }];
+        }
+        this._host.requestUpdate();
+        break;
+      }
+      case "transcript": {
+        const last = this._host.turns[this._host.turns.length - 1];
+        if (last && last.role === "user" && last.status === "partial") {
+          this._host.turns = [...this._host.turns.slice(0, -1), { role: "user", text: msg.text, status: "final" }];
+        } else {
+          this._host.turns = [...this._host.turns, { role: "user", text: msg.text, status: "final" }];
+        }
+        this._host.requestUpdate();
+        break;
+      }
+      case "response":
+        this._host.turns = [...this._host.turns, { role: "avatar", text: msg.text, status: "final" }];
+        this._host.requestUpdate();
+        break;
+      case "phonemes":
+        this._pendingVisemes = msg.data ?? null;
+        break;
+      case "timing":
+        if (this._host instanceof EventTarget) {
+          this._host.dispatchEvent(new CustomEvent("avatar:timing", { detail: msg, bubbles: true, composed: true }));
+        }
+        break;
+      case "error":
+        if (this._host instanceof EventTarget) {
+          this._host.dispatchEvent(new CustomEvent("avatar:error", { detail: { message: msg.message }, bubbles: true, composed: true }));
+        }
+        break;
+    }
+  }
+  async _handleBinaryMessage(data) {
+    const myVisemes = this._pendingVisemes;
+    this._pendingVisemes = null;
+    if (!this._audioCtx) this._audioCtx = new AudioContext();
+    try {
+      const arrayBuf = data instanceof Blob ? await data.arrayBuffer() : data;
+      const audioBuf = await this._audioCtx.decodeAudioData(arrayBuf.slice(0));
+      const item = this._buildPlaybackItem(audioBuf, myVisemes);
+      this._host.avatarAudioQueue = [...this._host.avatarAudioQueue, item];
+      this._host.requestUpdate();
+    } catch (e5) {
+      console.error("[AvatarWsController] audio decode error:", e5);
+    }
+  }
+  _buildPlaybackItem(audio, frames) {
+    return { audio, timeline: frames && frames.length > 0 ? frames : null };
+  }
+  sendStart(opts) {
+    const msg = JSON.stringify({ type: "start", ...opts });
+    console.log("[WS] sendStart:", msg);
+    this._send(msg);
+  }
+  sendStop() {
+    console.log("[WS] sendStop");
+    this._send(JSON.stringify({ type: "stop" }));
+  }
+  sendText(text, opts) {
+    const msg = JSON.stringify({ type: "text", text, ...opts });
+    console.log("[WS] sendText:", msg);
+    this._send(msg);
+  }
+  sendAudio(buffer) {
+    if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+      this._ws.send(buffer);
+    }
+  }
+  _send(data) {
+    if (this._ws && this._ws.readyState === WebSocket.OPEN) {
+      this._ws.send(data);
+    } else {
+      console.warn("[WS] send failed \u2014 readyState:", this._ws?.readyState);
+    }
+  }
+};
+
+// packages/avatar/src/casehub-avatar.ts
+var CasehubAvatar = class extends i4 {
+  constructor() {
+    super(...arguments);
+    this.avatarUrl = "";
+    this.body = "F";
+    this.mood = "neutral";
+    this.cameraView = "head";
+    this.cameraRotate = true;
+    this.cameraZoom = true;
+    this.cameraPan = true;
+    this.lipsyncLang = "en";
+    this.speed = 0.9;
+    this.audioQueue = [];
+    this._loading = true;
+    this._speaking = false;
+    this._head = null;
+    this._processingQueue = false;
+    this._audioCtx = null;
+    this._visemeMeshes = null;
+    this._internalQueue = [];
+  }
+  get loading() {
+    return this._loading;
+  }
+  get speaking() {
+    return this._speaking;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute("role", "img");
+    this.setAttribute("aria-label", "3D avatar");
+    this.setAttribute("aria-busy", "true");
+    this._initTalkingHead();
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._head = null;
+    this._visemeMeshes = null;
+  }
+  updated(changed) {
+    if (changed.has("audioQueue") && this.audioQueue.length > 0) {
+      this._internalQueue.push(...this.audioQueue);
+      this.dispatchEvent(new CustomEvent("avatar:queue-accepted", { bubbles: true, composed: true }));
+      if (!this._processingQueue) this._processQueue();
+    }
+  }
+  async _initTalkingHead() {
+    try {
+      const { TalkingHead } = await import("talkinghead");
+      const container = this.shadowRoot.querySelector(".avatar-container");
+      if (!container) return;
+      this._head = new TalkingHead(container, {
+        ttsEndpoint: null,
+        lipsyncModules: [this.lipsyncLang],
+        cameraView: this.cameraView,
+        cameraRotateEnable: this.cameraRotate,
+        cameraZoomEnable: this.cameraZoom,
+        cameraPanEnable: this.cameraPan
+      });
+      await this._head.showAvatar({
+        url: this.avatarUrl,
+        body: this.body,
+        avatarMood: this.mood,
+        lipsyncLang: this.lipsyncLang
+      });
+      this._loading = false;
+      this.setAttribute("aria-busy", "false");
+    } catch (e5) {
+      console.error("[casehub-avatar] init error:", e5);
+      this._loading = false;
+      this.setAttribute("aria-busy", "false");
+    }
+  }
+  _discoverVisemeMeshes() {
+    if (this._visemeMeshes) return this._visemeMeshes;
+    if (!this._head) {
+      console.log("[AVATAR] no head instance");
+      return null;
+    }
+    const scene = this._head.scene ?? this._head._scene ?? this._head.model ?? this._head._model;
+    if (!scene?.traverse) {
+      const keys = Object.keys(this._head).filter((k2) => !k2.startsWith("_"));
+      const privKeys = Object.keys(this._head).filter((k2) => k2.startsWith("_") && (k2.includes("scene") || k2.includes("model") || k2.includes("mesh") || k2.includes("avatar")));
+      console.log("[AVATAR] no scene found. Public keys:", keys.join(", "), "| Relevant private:", privKeys.join(", "));
+      return null;
+    }
+    const meshes = [];
+    scene.traverse((o6) => {
+      if (o6.morphTargetDictionary) {
+        const dict = {};
+        for (const k2 in o6.morphTargetDictionary) {
+          if (k2.startsWith("viseme_")) dict[k2] = o6.morphTargetDictionary[k2];
+        }
+        if (Object.keys(dict).length > 0) meshes.push({ mesh: o6, dict });
+      }
+    });
+    if (meshes.length > 0) {
+      console.log("[AVATAR] discovered", meshes.length, "viseme meshes with", Object.keys(meshes[0].dict).length, "targets each");
+      this._visemeMeshes = meshes;
+    } else {
+      console.log("[AVATAR] scene found but no viseme morph targets");
+    }
+    return this._visemeMeshes;
+  }
+  async _processQueue() {
+    if (this._processingQueue) return;
+    this._processingQueue = true;
+    while (this._internalQueue.length > 0) {
+      const item = this._internalQueue.shift();
+      this._speaking = true;
+      await this._playItem(item);
+    }
+    this._speaking = false;
+    this._processingQueue = false;
+  }
+  _playItem(item) {
+    return new Promise((resolve) => {
+      if (!this._audioCtx) this._audioCtx = new AudioContext();
+      const ctx = this._audioCtx;
+      const source = ctx.createBufferSource();
+      source.buffer = item.audio;
+      source.playbackRate.value = this.speed;
+      source.connect(ctx.destination);
+      source.start();
+      const meshes = item.timeline ? this._discoverVisemeMeshes() : null;
+      if (!meshes) {
+        source.onended = () => resolve();
+        return;
+      }
+      const timeline = item.timeline;
+      const startTime = ctx.currentTime;
+      const rate = this.speed;
+      let animating = true;
+      const animate = () => {
+        if (!animating) return;
+        const elapsed = (ctx.currentTime - startTime) * 1e3 * rate;
+        let activeViseme = "sil";
+        let activeWeight = 0;
+        for (let i5 = timeline.length - 1; i5 >= 0; i5--) {
+          if (elapsed >= timeline[i5].startMs && elapsed < timeline[i5].endMs) {
+            activeViseme = timeline[i5].viseme;
+            activeWeight = timeline[i5].weight ?? 1;
+            break;
+          }
+        }
+        for (const m2 of meshes) {
+          for (const k2 in m2.dict) {
+            const idx = m2.dict[k2];
+            const target = k2 === `viseme_${activeViseme}` ? activeWeight : 0;
+            const current = m2.mesh.morphTargetInfluences[idx] ?? 0;
+            const lerp = target > current ? CasehubAvatar.ATTACK : CasehubAvatar.DECAY;
+            m2.mesh.morphTargetInfluences[idx] = current + (target - current) * lerp;
+          }
+        }
+        requestAnimationFrame(animate);
+      };
+      source.onended = () => {
+        setTimeout(() => {
+          animating = false;
+          for (const m2 of meshes) {
+            for (const k2 in m2.dict) m2.mesh.morphTargetInfluences[m2.dict[k2]] = 0;
+          }
+          resolve();
+        }, 300);
+      };
+      requestAnimationFrame(animate);
+    });
+  }
+  render() {
+    return b2`<div class="avatar-container"></div>`;
+  }
+};
+CasehubAvatar.ATTACK = 0.35;
+CasehubAvatar.DECAY = 0.12;
+CasehubAvatar.styles = i`
+    :host {
+      display: block;
+      position: relative;
+      background: var(--pages-surface, #111);
+    }
+    .avatar-container {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+    }
+  `;
+__decorateClass([
+  n4({ type: String, attribute: "avatar-url" })
+], CasehubAvatar.prototype, "avatarUrl", 2);
+__decorateClass([
+  n4({ type: String })
+], CasehubAvatar.prototype, "body", 2);
+__decorateClass([
+  n4({ type: String })
+], CasehubAvatar.prototype, "mood", 2);
+__decorateClass([
+  n4({ type: String, attribute: "camera-view" })
+], CasehubAvatar.prototype, "cameraView", 2);
+__decorateClass([
+  n4({ type: Boolean, attribute: "camera-rotate" })
+], CasehubAvatar.prototype, "cameraRotate", 2);
+__decorateClass([
+  n4({ type: Boolean, attribute: "camera-zoom" })
+], CasehubAvatar.prototype, "cameraZoom", 2);
+__decorateClass([
+  n4({ type: Boolean, attribute: "camera-pan" })
+], CasehubAvatar.prototype, "cameraPan", 2);
+__decorateClass([
+  n4({ type: String, attribute: "lipsync-lang" })
+], CasehubAvatar.prototype, "lipsyncLang", 2);
+__decorateClass([
+  n4({ type: Number })
+], CasehubAvatar.prototype, "speed", 2);
+__decorateClass([
+  n4({ type: Array })
+], CasehubAvatar.prototype, "audioQueue", 2);
+__decorateClass([
+  r5()
+], CasehubAvatar.prototype, "_loading", 2);
+__decorateClass([
+  r5()
+], CasehubAvatar.prototype, "_speaking", 2);
+CasehubAvatar = __decorateClass([
+  t3("casehub-avatar")
+], CasehubAvatar);
 
 // packages/avatar/src/casehub-avatar-panel.ts
 var CasehubAvatarPanel = class extends i4 {
@@ -1319,7 +1366,11 @@ var CasehubAvatarPanel = class extends i4 {
         avatar-url=${this.avatarUrl}
         body=${this.body}
         mood=${this.mood}
-        .audioQueue=${this.avatarAudioQueue}>
+        .speed=${this.speed}
+        .audioQueue=${this.avatarAudioQueue}
+        @avatar:queue-accepted=${() => {
+      this.avatarAudioQueue = [];
+    }}>
       </casehub-avatar>
       <div class="model-status">${this._modelStatusHtml}</div>
       <div class="status">${this._statusText}</div>
@@ -1406,7 +1457,11 @@ CasehubAvatarPanel = __decorateClass([
   t3("casehub-avatar-panel")
 ], CasehubAvatarPanel);
 export {
-  CasehubAvatarPanel
+  AvatarWsController,
+  CasehubAvatar,
+  CasehubAvatarPanel,
+  CasehubSpeech,
+  CasehubTranscript
 };
 /*! Bundled license information:
 
