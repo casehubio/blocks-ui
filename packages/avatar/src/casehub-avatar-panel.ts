@@ -7,6 +7,41 @@ import './casehub-avatar.js';
 import './casehub-transcript.js';
 import './casehub-speech.js';
 
+interface VoiceOption { value: string; label: string; mos: string; warn?: string }
+interface VoiceGroup { label: string; voices: VoiceOption[] }
+
+const VOICE_GROUPS: VoiceGroup[] = [
+  { label: 'Piper VITS — MOS ~3.7', voices: [
+    { value: 'lessac-medium', label: 'Lessac medium', mos: '3.6' },
+    { value: 'lessac-high', label: 'Lessac high', mos: '3.9' },
+    { value: 'amy', label: 'Amy (US)', mos: '3.7' },
+    { value: 'ryan', label: 'Ryan (US)', mos: '3.8' },
+    { value: 'jenny', label: 'Jenny (UK)', mos: '3.7' },
+  ]},
+  { label: 'Piper via sherpa — MOS ~3.7', voices: [
+    { value: 'sherpa:lessac-medium', label: 'Sherpa: Lessac', mos: '3.6' },
+    { value: 'sherpa:amy', label: 'Sherpa: Amy', mos: '3.7' },
+    { value: 'sherpa:ryan', label: 'Sherpa: Ryan', mos: '3.8' },
+    { value: 'sherpa:jenny', label: 'Sherpa: Jenny', mos: '3.7' },
+  ]},
+  { label: 'Kokoro StyleTTS2 — MOS ~4.3', voices: [
+    { value: 'kokoro:af', label: 'Kokoro: AF (US)', mos: '4.3' },
+    { value: 'kokoro:af_bella', label: 'Kokoro: Bella', mos: '4.2' },
+    { value: 'kokoro:af_sarah', label: 'Kokoro: Sarah', mos: '4.3' },
+    { value: 'kokoro:am_adam', label: 'Kokoro: Adam', mos: '4.2' },
+    { value: 'kokoro:am_michael', label: 'Kokoro: Michael', mos: '4.1' },
+    { value: 'kokoro:bf_emma', label: 'Kokoro: Emma (UK)', mos: '4.3' },
+    { value: 'kokoro:bm_george', label: 'Kokoro: George (UK)', mos: '4.2' },
+  ]},
+  { label: 'Audio8 DualAR — preview', voices: [
+    { value: 'audio8', label: 'Audio8 0.1B (INT8)', mos: '~2.8', warn: 'slow' },
+    { value: 'audio8:0.6b', label: 'Audio8 0.6B (INT4)', mos: '~3.2', warn: 'slow' },
+  ]},
+  { label: 'CosyVoice3 — voice cloning', voices: [
+    { value: 'cosyvoice3', label: 'CosyVoice3 (24kHz)', mos: 'clone', warn: 'slow' },
+  ]},
+];
+
 @customElement('casehub-avatar-panel')
 export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
   @property({ type: String, attribute: 'ws-url' }) wsUrl = '/ws/avatar';
@@ -162,35 +197,20 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
           <option value="claude-opus-4@20250514" ?selected=${this.llmModel === 'claude-opus-4@20250514'}>Opus 4</option>
         </select></label>
         <label>Voice: <select @change=${this._onTtsChange}>
-          <optgroup label="Piper VITS">
-            <option value="lessac-medium" ?selected=${this.ttsModel === 'lessac-medium'}>Lessac medium</option>
-            <option value="lessac-high">Lessac high</option>
-            <option value="amy">Amy (US)</option>
-            <option value="ryan">Ryan (US)</option>
-            <option value="jenny">Jenny (UK)</option>
-          </optgroup>
-          <optgroup label="Piper via sherpa">
-            <option value="sherpa:lessac-medium">Sherpa: Lessac</option>
-            <option value="sherpa:amy">Sherpa: Amy</option>
-            <option value="sherpa:ryan">Sherpa: Ryan</option>
-            <option value="sherpa:jenny">Sherpa: Jenny</option>
-          </optgroup>
-          <optgroup label="Kokoro StyleTTS2">
-            <option value="kokoro:af">Kokoro: AF (US)</option>
-            <option value="kokoro:af_bella">Kokoro: Bella</option>
-            <option value="kokoro:af_sarah">Kokoro: Sarah</option>
-            <option value="kokoro:am_adam">Kokoro: Adam</option>
-            <option value="kokoro:am_michael">Kokoro: Michael</option>
-            <option value="kokoro:bf_emma">Kokoro: Emma (UK)</option>
-            <option value="kokoro:bm_george">Kokoro: George (UK)</option>
-          </optgroup>
-          <optgroup label="Audio8 DualAR">
-            <option value="audio8">Audio8 0.1B (INT8)</option>
-            <option value="audio8:0.6b">Audio8 0.6B (INT4)</option>
-          </optgroup>
-          <optgroup label="CosyVoice3">
-            <option value="cosyvoice3">CosyVoice3 (24kHz)</option>
-          </optgroup>
+          ${VOICE_GROUPS.map(g => html`
+            <optgroup label=${g.label}>
+              ${g.voices.map(v => {
+                const st = this._modelStatus[v.value];
+                const unavailable = st != null && st !== 'READY';
+                const suffix = st === 'DOWNLOADING' ? ' (downloading...)' : st === 'ERROR' ? ' (error)' : '';
+                const warn = v.warn ? ` ⚠️ ${v.warn}` : '';
+                return html`<option value=${v.value}
+                  ?selected=${this.ttsModel === v.value}
+                  ?disabled=${unavailable}
+                  >${v.label} ▸ MOS ${v.mos}${warn}${suffix}</option>`;
+              })}
+            </optgroup>
+          `)}
         </select></label>
         <label>Speed: <input type="range" min="0.6" max="1.4" step="0.05" .value=${String(this.speed)}
           @input=${this._onSpeedChange} style="width:80px;vertical-align:middle">
