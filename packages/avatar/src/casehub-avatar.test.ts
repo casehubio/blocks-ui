@@ -1,15 +1,11 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import type { PlaybackItem } from './types.js';
 
 const mockShowAvatar = vi.fn().mockResolvedValue(undefined);
-const mockSpeakAudio = vi.fn().mockResolvedValue(undefined);
-let mockIsSpeaking = false;
 
 vi.mock('talkinghead', () => ({
   TalkingHead: class {
     showAvatar = mockShowAvatar;
-    speakAudio = mockSpeakAudio;
-    get isSpeaking() { return mockIsSpeaking; }
+    scene = null;
   },
 }));
 
@@ -26,7 +22,6 @@ async function createElement(avatarUrl = './test.glb') {
 afterEach(() => {
   document.body.innerHTML = '';
   vi.clearAllMocks();
-  mockIsSpeaking = false;
 });
 
 describe('CasehubAvatar', () => {
@@ -56,6 +51,7 @@ describe('CasehubAvatar', () => {
     expect(el.cameraZoom).toBe(true);
     expect(el.cameraPan).toBe(true);
     expect(el.lipsyncLang).toBe('en');
+    expect(el.speed).toBe(0.9);
   });
 
   it('calls TalkingHead showAvatar on init', async () => {
@@ -70,25 +66,5 @@ describe('CasehubAvatar', () => {
     const el = await createElement();
     await new Promise(r => setTimeout(r, 50));
     expect(el.getAttribute('aria-busy')).toBe('false');
-  });
-
-  it('audioQueue triggers speakAudio via setTimeout', async () => {
-    const el = await createElement();
-    await new Promise(r => setTimeout(r, 50));
-
-    const mockAudio = { duration: 1.0 } as AudioBuffer;
-    const item: PlaybackItem = {
-      audio: mockAudio,
-      visemes: ['aa', 'PP'],
-      vtimes: [0, 0.1],
-      vdurations: [0.1, 0.1],
-    };
-    el.audioQueue = [item];
-    await el.updateComplete;
-    await new Promise(r => setTimeout(r, 50));
-
-    expect(mockSpeakAudio).toHaveBeenCalledWith(
-      expect.objectContaining({ audio: mockAudio, visemes: ['aa', 'PP'] })
-    );
   });
 });

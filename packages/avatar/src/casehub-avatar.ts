@@ -1,6 +1,11 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { PlaybackItem } from './types.js';
+import type { PlaybackItem, VisemeFrame } from './types.js';
+
+interface VisemeMesh {
+  mesh: { morphTargetInfluences: number[] };
+  dict: Record<string, number>;
+}
 
 @customElement('casehub-avatar')
 export class CasehubAvatar extends LitElement {
@@ -12,6 +17,7 @@ export class CasehubAvatar extends LitElement {
   @property({ type: Boolean, attribute: 'camera-zoom' }) cameraZoom = true;
   @property({ type: Boolean, attribute: 'camera-pan' }) cameraPan = true;
   @property({ type: String, attribute: 'lipsync-lang' }) lipsyncLang = 'en';
+  @property({ type: Number }) speed = 0.9;
   @property({ type: Array }) audioQueue: PlaybackItem[] = [];
 
   @state() private _loading = true;
@@ -19,6 +25,11 @@ export class CasehubAvatar extends LitElement {
 
   private _head: any = null;
   private _processingQueue = false;
+  private _audioCtx: AudioContext | null = null;
+  private _visemeMeshes: VisemeMesh[] | null = null;
+
+  private static readonly ATTACK = 0.35;
+  private static readonly DECAY = 0.12;
 
   get loading() { return this._loading; }
   get speaking() { return this._speaking; }
@@ -47,6 +58,7 @@ export class CasehubAvatar extends LitElement {
   override disconnectedCallback() {
     super.disconnectedCallback();
     this._head = null;
+    this._visemeMeshes = null;
   }
 
   protected override updated(changed: Map<string, unknown>) {
@@ -83,56 +95,93 @@ export class CasehubAvatar extends LitElement {
     }
   }
 
-  // Matches original: if head is null, play audio without lip-sync via raw AudioContext.
-  // Original (line 265-267): if no meshes, source.onended = playNextQueued; return;
+  private _discoverVisemeMeshes(): VisemeMesh[] | null {
+    if (this._visemeMeshes) return this._visemeMeshes;
+    if (!this._head) return null;
+    const scene = this._head.scene ?? this._head._scene ?? this._head.model ?? this._head._model;
+    if (!scene?.traverse) return null;
+    const meshes: VisemeMesh[] = [];
+    scene.traverse((o: any) => {
+      if (o.morphTargetDictionary) {
+        const dict: Record<string, number> = {};
+        for (const k in o.morphTargetDictionary) {
+          if (k.startsWith('viseme_')) dict[k] = o.morphTargetDictionary[k];
+        }
+        if (Object.keys(dict).length > 0) meshes.push({ mesh: o, dict });
+      }
+    });
+    if (meshes.length > 0) this._visemeMeshes = meshes;
+    return this._visemeMeshes;
+  }
+
   private async _processQueue() {
     if (this._processingQueue) return;
     this._processingQueue = true;
     while (this.audioQueue.length > 0) {
       const item = this.audioQueue[0]!;
       this._speaking = true;
-      if (this._head) {
-        // GE-20260827-a19839: speakAudio silently fails from microtask context
-        await new Promise<void>((resolve) => {
-          setTimeout(async () => {
-            try {
-              await this._head.speakAudio({
-                audio: item.audio,
-                visemes: item.visemes,
-                vtimes: item.vtimes,
-                vdurations: item.vdurations,
-              });
-            } catch (e) {
-              console.error('[casehub-avatar] speakAudio error:', e);
-            }
-            const waitForDone = () => {
-              if (this._head?.isSpeaking) {
-                requestAnimationFrame(waitForDone);
-              } else {
-                resolve();
-              }
-            };
-            waitForDone();
-          }, 0);
-        });
-      } else {
-        // Fallback: play audio without lip-sync via raw AudioContext
-        await this._playAudioRaw(item.audio);
-      }
+      await this._playItem(item);
       this.audioQueue = this.audioQueue.slice(1);
     }
     this._speaking = false;
     this._processingQueue = false;
   }
 
-  private _playAudioRaw(audio: AudioBuffer): Promise<void> {
+  private _playItem(item: PlaybackItem): Promise<void> {
     return new Promise((resolve) => {
-      const ctx = new AudioContext();
+      if (!this._audioCtx) this._audioCtx = new AudioContext();
+      const ctx = this._audioCtx;
       const source = ctx.createBufferSource();
-      source.buffer = audio;
+      source.buffer = item.audio;
+      source.playbackRate.value = this.speed;
       source.connect(ctx.destination);
-      source.onended = () => resolve();
       source.start();
+
+      const meshes = item.timeline ? this._discoverVisemeMeshes() : null;
+      if (!meshes) {
+        source.onended = () => resolve();
+        return;
+      }
+
+      const timeline = item.timeline!;
+      const startTime = ctx.currentTime;
+      const rate = this.speed;
+      let animating = true;
+
+      const animate = () => {
+        if (!animating) return;
+        const elapsed = (ctx.currentTime - startTime) * 1000 * rate;
+        let activeViseme = 'sil';
+        let activeWeight = 0;
+        for (let i = timeline.length - 1; i >= 0; i--) {
+          if (elapsed >= timeline[i]!.startMs && elapsed < timeline[i]!.endMs) {
+            activeViseme = timeline[i]!.viseme;
+            activeWeight = timeline[i]!.weight ?? 1.0;
+            break;
+          }
+        }
+        for (const m of meshes) {
+          for (const k in m.dict) {
+            const idx = m.dict[k]!;
+            const target = k === `viseme_${activeViseme}` ? activeWeight : 0;
+            const current = m.mesh.morphTargetInfluences[idx] ?? 0;
+            const lerp = target > current ? CasehubAvatar.ATTACK : CasehubAvatar.DECAY;
+            m.mesh.morphTargetInfluences[idx] = current + (target - current) * lerp;
+          }
+        }
+        requestAnimationFrame(animate);
+      };
+
+      source.onended = () => {
+        setTimeout(() => {
+          animating = false;
+          for (const m of meshes) {
+            for (const k in m.dict) m.mesh.morphTargetInfluences[m.dict[k]!] = 0;
+          }
+          resolve();
+        }, 300);
+      };
+      requestAnimationFrame(animate);
     });
   }
 

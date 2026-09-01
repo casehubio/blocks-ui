@@ -7,9 +7,7 @@ export interface VisemeFrame {
 
 export interface PlaybackItem {
   audio: AudioBuffer;
-  visemes: string[];
-  vtimes: number[];
-  vdurations: number[];
+  timeline: VisemeFrame[] | null;
 }
 
 export interface ConversationTurn {

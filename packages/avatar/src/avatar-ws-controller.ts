@@ -57,7 +57,7 @@ export class AvatarWsController implements ReactiveController {
     };
 
     this._ws.onclose = (evt: CloseEvent) => {
-      console.log('[WS] onclose — code:', evt.code, 'reason:', evt.reason, 'wasClean:', evt.wasClean);
+      console.log('[WS] onclose — code:', evt?.code, 'reason:', evt?.reason, 'wasClean:', evt?.wasClean);
       this._host.connectionState = 'disconnected';
       this._host.requestUpdate();
       if (this._shouldReconnect) {
@@ -134,18 +134,7 @@ export class AvatarWsController implements ReactiveController {
   }
 
   private _buildPlaybackItem(audio: AudioBuffer, frames: VisemeFrame[] | null): PlaybackItem {
-    if (!frames || frames.length === 0) {
-      return { audio, visemes: ['sil'], vtimes: [0], vdurations: [audio.duration] };
-    }
-    const visemes: string[] = [];
-    const vtimes: number[] = [];
-    const vdurations: number[] = [];
-    for (const f of frames) {
-      visemes.push(f.viseme);
-      vtimes.push(f.startMs / 1000);
-      vdurations.push((f.endMs - f.startMs) / 1000);
-    }
-    return { audio, visemes, vtimes, vdurations };
+    return { audio, timeline: frames && frames.length > 0 ? frames : null };
   }
 
   sendStart(opts: { sampleRate: number; llmModel?: string | undefined; ttsModel?: string | undefined }) {
