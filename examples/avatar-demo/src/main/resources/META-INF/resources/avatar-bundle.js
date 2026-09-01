@@ -1210,19 +1210,29 @@ var VOICE_GROUPS = [
   ] },
   { label: "Kokoro StyleTTS2 \u2014 MOS ~4.3", voices: [
     { value: "kokoro:af", label: "Kokoro: AF (US)", mos: "4.3" },
-    { value: "kokoro:af_bella", label: "Kokoro: Bella", mos: "4.2" },
-    { value: "kokoro:af_sarah", label: "Kokoro: Sarah", mos: "4.3" },
-    { value: "kokoro:am_adam", label: "Kokoro: Adam", mos: "4.2" },
-    { value: "kokoro:am_michael", label: "Kokoro: Michael", mos: "4.1" },
+    { value: "kokoro:af_bella", label: "Kokoro: Bella (US)", mos: "4.2" },
+    { value: "kokoro:af_nicole", label: "Kokoro: Nicole (US)", mos: "4.3" },
+    { value: "kokoro:af_sarah", label: "Kokoro: Sarah (US)", mos: "4.3" },
+    { value: "kokoro:af_sky", label: "Kokoro: Sky (US)", mos: "4.3" },
+    { value: "kokoro:am_adam", label: "Kokoro: Adam (US)", mos: "4.2" },
+    { value: "kokoro:am_michael", label: "Kokoro: Michael (US)", mos: "4.1" },
     { value: "kokoro:bf_emma", label: "Kokoro: Emma (UK)", mos: "4.3" },
-    { value: "kokoro:bm_george", label: "Kokoro: George (UK)", mos: "4.2" }
+    { value: "kokoro:bf_isabella", label: "Kokoro: Isabella (UK)", mos: "4.2" },
+    { value: "kokoro:bm_george", label: "Kokoro: George (UK)", mos: "4.2" },
+    { value: "kokoro:bm_lewis", label: "Kokoro: Lewis (UK)", mos: "4.1" }
   ] },
-  { label: "Audio8 DualAR \u2014 preview", voices: [
-    { value: "audio8", label: "Audio8 0.1B (INT8)", mos: "~2.8", warn: "slow" },
-    { value: "audio8:0.6b", label: "Audio8 0.6B (INT4)", mos: "~3.2", warn: "slow" }
+  // Audio8 uses OnnxRuntimeLibrary which loads sherpa-onnx's ORT 1.27.1.
+  // DualAR autoregressive inference is CPU-only and extremely slow (~10s/sentence).
+  // Models load but synthesis may fail with ORT API version conflicts.
+  { label: "Audio8 DualAR \u2014 preview (ORT conflict)", voices: [
+    { value: "audio8", label: "Audio8 0.1B (INT8)", mos: "~2.8", warn: "slow", broken: "ORT 1.27 conflict" },
+    { value: "audio8:0.6b", label: "Audio8 0.6B (INT4)", mos: "~3.2", warn: "slow", broken: "ORT 1.27 conflict" }
   ] },
-  { label: "CosyVoice3 \u2014 voice cloning", voices: [
-    { value: "cosyvoice3", label: "CosyVoice3 (24kHz)", mos: "clone", warn: "slow" }
+  // CosyVoice3 needs ORT 1.18.0 for FP16 models (SimplifiedLayerNormFusion crash,
+  // precision cast errors in ORT 1.21+). Pinned via ~/.casehub/ort-1.18.0/ but
+  // sherpa-onnx loads ORT 1.27.1 first, poisoning the process. See blocks#217.
+  { label: "CosyVoice3 \u2014 voice cloning (ORT conflict)", voices: [
+    { value: "cosyvoice3", label: "CosyVoice3 (24kHz)", mos: "clone", warn: "slow", broken: "needs ORT 1.18.0" }
   ] }
 ];
 var CasehubAvatarPanel = class extends i4 {
@@ -1362,12 +1372,13 @@ var CasehubAvatarPanel = class extends i4 {
             <optgroup label=${g2.label}>
               ${g2.voices.map((v2) => {
       const st = this._modelStatus[v2.value];
-      const unavailable = st != null && st !== "READY";
-      const suffix = st === "DOWNLOADING" ? " (downloading...)" : st === "ERROR" ? " (error)" : "";
+      const stUnavail = st != null && st !== "READY";
+      const disabled = !!v2.broken || stUnavail;
+      const suffix = v2.broken ? ` (${v2.broken})` : st === "DOWNLOADING" ? " (downloading...)" : st === "ERROR" ? " (error)" : "";
       const warn = v2.warn ? ` \u26A0\uFE0F ${v2.warn}` : "";
       return b2`<option value=${v2.value}
                   ?selected=${this.ttsModel === v2.value}
-                  ?disabled=${unavailable}
+                  ?disabled=${disabled}
                   >${v2.label} ▸ MOS ${v2.mos}${warn}${suffix}</option>`;
     })}
             </optgroup>
