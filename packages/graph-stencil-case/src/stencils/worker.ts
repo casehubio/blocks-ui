@@ -37,7 +37,7 @@ export function renderWorker(node: GraphNode, _decoration?: NodeDecoration): Ste
   const badge = BADGE_CONFIG[fnType];
 
   return html`
-    <div style="padding: 10px 14px; border: 2px solid var(--pages-neutral-7, #6b7280); background: var(--pages-neutral-2, #f5f5f5); min-width: 200px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px;">
+    <div style="padding: 10px 14px; border: 2px solid var(--pages-neutral-7, #6b7280); background: var(--pages-neutral-2, #f5f5f5); min-width: 200px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px; position: relative; z-index: 5;">
       <div style="display: flex; align-items: center; gap: 6px;">
         <div style="font-weight: 700; color: var(--pages-neutral-12, #111); flex: 1;">${name}</div>
         <span style="font-size: 10px; padding: 2px 6px; border-radius: 3px; background: ${badge.bg}; color: ${badge.fg}; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;">${badge.label}</span>

@@ -26,7 +26,7 @@ export function renderCall(node: GraphNode, _decoration?: NodeDecoration): Stenc
   const definitionRef = node.properties['definitionRef'] as string | undefined;
 
   return html`
-    <div style="padding: 8px 12px; border: 2px solid var(--pages-border-strong, #888); background: var(--pages-surface-raised, #f8f8f8); border-top: 3px solid var(--pages-accent-color, #4a9eff); min-width: 160px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px;">
+    <div style="padding: 8px 12px; border: 2px solid var(--pages-border-strong, #888); background: var(--pages-surface-raised, #f8f8f8); border-top: 3px solid var(--pages-accent-color, #4a9eff); min-width: 160px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px; position: relative; z-index: 5;">
       <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--pages-text-color, #333);">
         <span>${icon}</span>
         <span style="flex:1;">${label}</span>

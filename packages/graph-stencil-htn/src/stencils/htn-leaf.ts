@@ -16,7 +16,7 @@ export function renderHtnLeaf(node: GraphNode, _decoration?: NodeDecoration): St
   const capability = node.properties['capability'] as string | undefined;
   const definitionRef = node.properties['definitionRef'] as string | undefined;
   return html`
-    <div style="padding: 10px 14px; border: 2px solid #059669; background: #ecfdf5; min-width: 150px; border-radius: 4px; font-family: var(--pages-font-family, sans-serif); font-size: 13px;">
+    <div style="padding: 10px 14px; border: 2px solid #059669; background: #ecfdf5; min-width: 150px; border-radius: 4px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; position: relative; z-index: 5;">
       <div style="display: flex; align-items: center; gap: 6px;">
         <span style="font-weight: 600; color: #064e3b; flex: 1;">${name}</span>
         ${definitionRef ? html`
