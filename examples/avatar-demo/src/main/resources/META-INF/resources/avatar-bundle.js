@@ -1,14 +1,3 @@
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i5 = decorators.length - 1, decorator; i5 >= 0; i5--)
-    if (decorator = decorators[i5])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result) __defProp(target, key, result);
-  return result;
-};
-
 // node_modules/@lit/reactive-element/css-tag.js
 var t = globalThis;
 var e = t.ShadowRoot && (void 0 === t.ShadyCSS || t.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype;
@@ -601,33 +590,20 @@ function r5(r6) {
   return n4({ ...r6, state: true, attribute: false });
 }
 
-// packages/avatar/src/casehub-transcript.ts
-var CasehubTranscript = class extends i4 {
+// packages/avatar/dist/casehub-transcript.js
+var __decorate = function(decorators, target, key, desc) {
+  var c4 = arguments.length, r6 = c4 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r6 = Reflect.decorate(decorators, target, key, desc);
+  else for (var i5 = decorators.length - 1; i5 >= 0; i5--) if (d3 = decorators[i5]) r6 = (c4 < 3 ? d3(r6) : c4 > 3 ? d3(target, key, r6) : d3(target, key)) || r6;
+  return c4 > 3 && r6 && Object.defineProperty(target, key, r6), r6;
+};
+var CasehubTranscript = class CasehubTranscript2 extends i4 {
   constructor() {
     super(...arguments);
     this.turns = [];
   }
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute("role", "log");
-    this.setAttribute("aria-live", "polite");
-    this.setAttribute("aria-label", "Conversation transcript");
-  }
-  updated() {
-    this.scrollTop = this.scrollHeight;
-  }
-  render() {
-    return b2`${this.turns.map(
-      (turn) => b2`
-        <div class="turn ${turn.role} ${turn.status === "partial" ? "partial" : ""}"
-             aria-label="${turn.role === "user" ? "You said" : "Avatar said"}: ${turn.text}">
-          ${turn.text}
-        </div>
-      `
-    )}`;
-  }
-};
-CasehubTranscript.styles = i`
+  static {
+    this.styles = i`
     :host {
       display: flex;
       flex-direction: column;
@@ -658,15 +634,40 @@ CasehubTranscript.styles = i`
       font-style: italic;
     }
   `;
-__decorateClass([
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute("role", "log");
+    this.setAttribute("aria-live", "polite");
+    this.setAttribute("aria-label", "Conversation transcript");
+  }
+  updated() {
+    this.scrollTop = this.scrollHeight;
+  }
+  render() {
+    return b2`${this.turns.map((turn) => b2`
+        <div class="turn ${turn.role} ${turn.status === "partial" ? "partial" : ""}"
+             aria-label="${turn.role === "user" ? "You said" : "Avatar said"}: ${turn.text}">
+          ${turn.text}
+        </div>
+      `)}`;
+  }
+};
+__decorate([
   n4({ type: Array })
-], CasehubTranscript.prototype, "turns", 2);
-CasehubTranscript = __decorateClass([
+], CasehubTranscript.prototype, "turns", void 0);
+CasehubTranscript = __decorate([
   t3("casehub-transcript")
 ], CasehubTranscript);
 
-// packages/avatar/src/casehub-speech.ts
-var CasehubSpeech = class extends i4 {
+// packages/avatar/dist/casehub-speech.js
+var __decorate2 = function(decorators, target, key, desc) {
+  var c4 = arguments.length, r6 = c4 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r6 = Reflect.decorate(decorators, target, key, desc);
+  else for (var i5 = decorators.length - 1; i5 >= 0; i5--) if (d3 = decorators[i5]) r6 = (c4 < 3 ? d3(r6) : c4 > 3 ? d3(target, key, r6) : d3(target, key)) || r6;
+  return c4 > 3 && r6 && Object.defineProperty(target, key, r6), r6;
+};
+var CasehubSpeech = class CasehubSpeech2 extends i4 {
   constructor() {
     super(...arguments);
     this.sampleRate = 16e3;
@@ -680,13 +681,39 @@ var CasehubSpeech = class extends i4 {
     this._micSource = null;
     this._audioCtx = null;
     this._handleClick = () => {
-      if (this._finishing) return;
-      if (this._recording) this._stopRecording();
-      else this._startRecording();
+      if (this._finishing)
+        return;
+      if (this._recording)
+        this._stopRecording();
+      else
+        this._startRecording();
     };
   }
   get recording() {
     return this._recording;
+  }
+  static {
+    this.styles = i`
+    :host { display: inline-block; }
+    button {
+      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
+      border-radius: 8px;
+      border: 2px solid var(--pages-neutral-5, #555);
+      background: var(--pages-surface, #2a2a3e);
+      color: var(--pages-on-surface, #e0e0e0);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button[aria-pressed="true"] {
+      background: var(--pages-error, #d64);
+      border-color: var(--pages-error, #d64);
+      color: var(--pages-on-error, white);
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+  `;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -703,11 +730,13 @@ var CasehubSpeech = class extends i4 {
     }
   }
   async _startRecording() {
-    if (this._recording || this._starting) return;
+    if (this._recording || this._starting)
+      return;
     this._starting = true;
     console.log("[MIC] startRecording called");
     try {
-      if (!this._audioCtx) this._audioCtx = new AudioContext();
+      if (!this._audioCtx)
+        this._audioCtx = new AudioContext();
       console.log("[MIC] AudioContext sampleRate:", this._audioCtx.sampleRate);
       this._micStream = await navigator.mediaDevices.getUserMedia({
         audio: { sampleRate: this.sampleRate, channelCount: 1, echoCancellation: true, noiseSuppression: true }
@@ -717,7 +746,8 @@ var CasehubSpeech = class extends i4 {
       this._micProcessor = this._audioCtx.createScriptProcessor(4096, 1, 1);
       this._audioFrameCount = 0;
       this._micProcessor.onaudioprocess = (e5) => {
-        if (!this._recording) return;
+        if (!this._recording)
+          return;
         const input = e5.inputBuffer.getChannelData(0);
         const resampled = this._resampleTo16k(input, this._audioCtx.sampleRate);
         const buf = new ArrayBuffer(resampled.length * 4);
@@ -738,7 +768,8 @@ var CasehubSpeech = class extends i4 {
     }
   }
   _stopRecording() {
-    if (!this._recording) return;
+    if (!this._recording)
+      return;
     console.log("[MIC] stopRecording called, frames sent:", this._audioFrameCount);
     this._finishing = true;
     this.requestUpdate();
@@ -765,7 +796,8 @@ var CasehubSpeech = class extends i4 {
     }
   }
   _resampleTo16k(input, fromRate) {
-    if (fromRate === 16e3) return input;
+    if (fromRate === 16e3)
+      return input;
     const ratio = fromRate / 16e3;
     const len = Math.round(input.length / ratio);
     const out = new Float32Array(len);
@@ -785,44 +817,23 @@ var CasehubSpeech = class extends i4 {
     `;
   }
 };
-CasehubSpeech.styles = i`
-    :host { display: inline-block; }
-    button {
-      padding: var(--pages-space-3, 12px) var(--pages-space-4, 16px);
-      border-radius: 8px;
-      border: 2px solid var(--pages-neutral-5, #555);
-      background: var(--pages-surface, #2a2a3e);
-      color: var(--pages-on-surface, #e0e0e0);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    button:disabled { opacity: 0.5; cursor: default; }
-    button[aria-pressed="true"] {
-      background: var(--pages-error, #d64);
-      border-color: var(--pages-error, #d64);
-      color: var(--pages-on-error, white);
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
-  `;
-__decorateClass([
+__decorate2([
   n4({ type: Number, attribute: "sample-rate" })
-], CasehubSpeech.prototype, "sampleRate", 2);
-__decorateClass([
+], CasehubSpeech.prototype, "sampleRate", void 0);
+__decorate2([
   n4({ type: Boolean, reflect: true })
-], CasehubSpeech.prototype, "disabled", 2);
-__decorateClass([
+], CasehubSpeech.prototype, "disabled", void 0);
+__decorate2([
   r5()
-], CasehubSpeech.prototype, "_recording", 2);
-__decorateClass([
+], CasehubSpeech.prototype, "_recording", void 0);
+__decorate2([
   r5()
-], CasehubSpeech.prototype, "_finishing", 2);
-CasehubSpeech = __decorateClass([
+], CasehubSpeech.prototype, "_finishing", void 0);
+CasehubSpeech = __decorate2([
   t3("casehub-speech")
 ], CasehubSpeech);
 
-// packages/avatar/src/avatar-ws-controller.ts
+// packages/avatar/dist/avatar-ws-controller.js
 var AvatarWsController = class {
   constructor(host, config) {
     this._ws = null;
@@ -924,7 +935,8 @@ var AvatarWsController = class {
   async _handleBinaryMessage(data) {
     const myVisemes = this._pendingVisemes;
     this._pendingVisemes = null;
-    if (!this._audioCtx) this._audioCtx = new AudioContext();
+    if (!this._audioCtx)
+      this._audioCtx = new AudioContext();
     try {
       const arrayBuf = data instanceof Blob ? await data.arrayBuffer() : data;
       const audioBuf = await this._audioCtx.decodeAudioData(arrayBuf.slice(0));
@@ -966,8 +978,15 @@ var AvatarWsController = class {
   }
 };
 
-// packages/avatar/src/casehub-avatar.ts
-var CasehubAvatar = class extends i4 {
+// packages/avatar/dist/casehub-avatar.js
+var __decorate3 = function(decorators, target, key, desc) {
+  var c4 = arguments.length, r6 = c4 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r6 = Reflect.decorate(decorators, target, key, desc);
+  else for (var i5 = decorators.length - 1; i5 >= 0; i5--) if (d3 = decorators[i5]) r6 = (c4 < 3 ? d3(r6) : c4 > 3 ? d3(target, key, r6) : d3(target, key)) || r6;
+  return c4 > 3 && r6 && Object.defineProperty(target, key, r6), r6;
+};
+var CasehubAvatar_1;
+var CasehubAvatar = class CasehubAvatar2 extends i4 {
   constructor() {
     super(...arguments);
     this.avatarUrl = "";
@@ -988,11 +1007,34 @@ var CasehubAvatar = class extends i4 {
     this._visemeMeshes = null;
     this._internalQueue = [];
   }
+  static {
+    CasehubAvatar_1 = this;
+  }
+  static {
+    this.ATTACK = 0.35;
+  }
+  static {
+    this.DECAY = 0.12;
+  }
   get loading() {
     return this._loading;
   }
   get speaking() {
     return this._speaking;
+  }
+  static {
+    this.styles = i`
+    :host {
+      display: block;
+      position: relative;
+      background: var(--pages-surface, #111);
+    }
+    .avatar-container {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+    }
+  `;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1010,14 +1052,16 @@ var CasehubAvatar = class extends i4 {
     if (changed.has("audioQueue") && this.audioQueue.length > 0) {
       this._internalQueue.push(...this.audioQueue);
       this.dispatchEvent(new CustomEvent("avatar:queue-accepted", { bubbles: true, composed: true }));
-      if (!this._processingQueue) this._processQueue();
+      if (!this._processingQueue)
+        this._processQueue();
     }
   }
   async _initTalkingHead() {
     try {
       const { TalkingHead } = await import("talkinghead");
       const container = this.shadowRoot.querySelector(".avatar-container");
-      if (!container) return;
+      if (!container)
+        return;
       this._head = new TalkingHead(container, {
         ttsEndpoint: null,
         lipsyncModules: [this.lipsyncLang],
@@ -1041,7 +1085,8 @@ var CasehubAvatar = class extends i4 {
     }
   }
   _discoverVisemeMeshes() {
-    if (this._visemeMeshes) return this._visemeMeshes;
+    if (this._visemeMeshes)
+      return this._visemeMeshes;
     if (!this._head) {
       console.log("[AVATAR] no head instance");
       return null;
@@ -1058,9 +1103,11 @@ var CasehubAvatar = class extends i4 {
       if (o6.morphTargetDictionary) {
         const dict = {};
         for (const k2 in o6.morphTargetDictionary) {
-          if (k2.startsWith("viseme_")) dict[k2] = o6.morphTargetDictionary[k2];
+          if (k2.startsWith("viseme_"))
+            dict[k2] = o6.morphTargetDictionary[k2];
         }
-        if (Object.keys(dict).length > 0) meshes.push({ mesh: o6, dict });
+        if (Object.keys(dict).length > 0)
+          meshes.push({ mesh: o6, dict });
       }
     });
     if (meshes.length > 0) {
@@ -1072,7 +1119,8 @@ var CasehubAvatar = class extends i4 {
     return this._visemeMeshes;
   }
   async _processQueue() {
-    if (this._processingQueue) return;
+    if (this._processingQueue)
+      return;
     this._processingQueue = true;
     while (this._internalQueue.length > 0) {
       const item = this._internalQueue.shift();
@@ -1084,7 +1132,8 @@ var CasehubAvatar = class extends i4 {
   }
   _playItem(item) {
     return new Promise((resolve) => {
-      if (!this._audioCtx) this._audioCtx = new AudioContext();
+      if (!this._audioCtx)
+        this._audioCtx = new AudioContext();
       const ctx = this._audioCtx;
       const source = ctx.createBufferSource();
       source.buffer = item.audio;
@@ -1101,7 +1150,8 @@ var CasehubAvatar = class extends i4 {
       const rate = this.speed;
       let animating = true;
       const animate = () => {
-        if (!animating) return;
+        if (!animating)
+          return;
         const elapsed = (ctx.currentTime - startTime) * 1e3 * rate;
         let activeViseme = "sil";
         let activeWeight = 0;
@@ -1117,7 +1167,7 @@ var CasehubAvatar = class extends i4 {
             const idx = m2.dict[k2];
             const target = k2 === `viseme_${activeViseme}` ? activeWeight : 0;
             const current = m2.mesh.morphTargetInfluences[idx] ?? 0;
-            const lerp = target > current ? CasehubAvatar.ATTACK : CasehubAvatar.DECAY;
+            const lerp = target > current ? CasehubAvatar_1.ATTACK : CasehubAvatar_1.DECAY;
             m2.mesh.morphTargetInfluences[idx] = current + (target - current) * lerp;
           }
         }
@@ -1127,7 +1177,8 @@ var CasehubAvatar = class extends i4 {
         setTimeout(() => {
           animating = false;
           for (const m2 of meshes) {
-            for (const k2 in m2.dict) m2.mesh.morphTargetInfluences[m2.dict[k2]] = 0;
+            for (const k2 in m2.dict)
+              m2.mesh.morphTargetInfluences[m2.dict[k2]] = 0;
           }
           resolve();
         }, 300);
@@ -1139,61 +1190,53 @@ var CasehubAvatar = class extends i4 {
     return b2`<div class="avatar-container"></div>`;
   }
 };
-CasehubAvatar.ATTACK = 0.35;
-CasehubAvatar.DECAY = 0.12;
-CasehubAvatar.styles = i`
-    :host {
-      display: block;
-      position: relative;
-      background: var(--pages-surface, #111);
-    }
-    .avatar-container {
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-    }
-  `;
-__decorateClass([
+__decorate3([
   n4({ type: String, attribute: "avatar-url" })
-], CasehubAvatar.prototype, "avatarUrl", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "avatarUrl", void 0);
+__decorate3([
   n4({ type: String })
-], CasehubAvatar.prototype, "body", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "body", void 0);
+__decorate3([
   n4({ type: String })
-], CasehubAvatar.prototype, "mood", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "mood", void 0);
+__decorate3([
   n4({ type: String, attribute: "camera-view" })
-], CasehubAvatar.prototype, "cameraView", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "cameraView", void 0);
+__decorate3([
   n4({ type: Boolean, attribute: "camera-rotate" })
-], CasehubAvatar.prototype, "cameraRotate", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "cameraRotate", void 0);
+__decorate3([
   n4({ type: Boolean, attribute: "camera-zoom" })
-], CasehubAvatar.prototype, "cameraZoom", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "cameraZoom", void 0);
+__decorate3([
   n4({ type: Boolean, attribute: "camera-pan" })
-], CasehubAvatar.prototype, "cameraPan", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "cameraPan", void 0);
+__decorate3([
   n4({ type: String, attribute: "lipsync-lang" })
-], CasehubAvatar.prototype, "lipsyncLang", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "lipsyncLang", void 0);
+__decorate3([
   n4({ type: Number })
-], CasehubAvatar.prototype, "speed", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "speed", void 0);
+__decorate3([
   n4({ type: Array })
-], CasehubAvatar.prototype, "audioQueue", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "audioQueue", void 0);
+__decorate3([
   r5()
-], CasehubAvatar.prototype, "_loading", 2);
-__decorateClass([
+], CasehubAvatar.prototype, "_loading", void 0);
+__decorate3([
   r5()
-], CasehubAvatar.prototype, "_speaking", 2);
-CasehubAvatar = __decorateClass([
+], CasehubAvatar.prototype, "_speaking", void 0);
+CasehubAvatar = CasehubAvatar_1 = __decorate3([
   t3("casehub-avatar")
 ], CasehubAvatar);
 
-// packages/avatar/src/casehub-avatar-panel.ts
+// packages/avatar/dist/casehub-avatar-panel.js
+var __decorate4 = function(decorators, target, key, desc) {
+  var c4 = arguments.length, r6 = c4 < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d3;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r6 = Reflect.decorate(decorators, target, key, desc);
+  else for (var i5 = decorators.length - 1; i5 >= 0; i5--) if (d3 = decorators[i5]) r6 = (c4 < 3 ? d3(r6) : c4 > 3 ? d3(target, key, r6) : d3(target, key)) || r6;
+  return c4 > 3 && r6 && Object.defineProperty(target, key, r6), r6;
+};
 var VOICE_GROUPS = [
   { label: "Piper VITS \u2014 MOS ~3.7", voices: [
     { value: "lessac-medium", label: "Lessac medium", mos: "3.6" },
@@ -1208,34 +1251,69 @@ var VOICE_GROUPS = [
     { value: "sherpa:ryan", label: "Sherpa: Ryan", mos: "3.8" },
     { value: "sherpa:jenny", label: "Sherpa: Jenny", mos: "3.7" }
   ] },
-  { label: "Kokoro StyleTTS2 \u2014 MOS ~4.3", voices: [
-    { value: "kokoro:af", label: "Kokoro: AF (US)", mos: "4.3" },
-    { value: "kokoro:af_bella", label: "Kokoro: Bella (US)", mos: "4.2" },
-    { value: "kokoro:af_nicole", label: "Kokoro: Nicole (US)", mos: "4.3" },
-    { value: "kokoro:af_sarah", label: "Kokoro: Sarah (US)", mos: "4.3" },
-    { value: "kokoro:af_sky", label: "Kokoro: Sky (US)", mos: "4.3" },
-    { value: "kokoro:am_adam", label: "Kokoro: Adam (US)", mos: "4.2" },
-    { value: "kokoro:am_michael", label: "Kokoro: Michael (US)", mos: "4.1" },
-    { value: "kokoro:bf_emma", label: "Kokoro: Emma (UK)", mos: "4.3" },
-    { value: "kokoro:bf_isabella", label: "Kokoro: Isabella (UK)", mos: "4.2" },
-    { value: "kokoro:bm_george", label: "Kokoro: George (UK)", mos: "4.2" },
-    { value: "kokoro:bm_lewis", label: "Kokoro: Lewis (UK)", mos: "4.1" }
+  { label: "Kokoro v1.0 \u2014 American English \u2640 \u2014 MOS ~4.3", voices: [
+    { value: "kokoro:af_alloy", label: "Alloy", mos: "4.2" },
+    { value: "kokoro:af_aoede", label: "Aoede", mos: "4.2" },
+    { value: "kokoro:af_bella", label: "Bella", mos: "4.2" },
+    { value: "kokoro:af_heart", label: "Heart \u2605", mos: "4.5" },
+    { value: "kokoro:af_jessica", label: "Jessica", mos: "4.3" },
+    { value: "kokoro:af_kore", label: "Kore", mos: "4.3" },
+    { value: "kokoro:af_nicole", label: "Nicole", mos: "4.3" },
+    { value: "kokoro:af_nova", label: "Nova", mos: "4.3" },
+    { value: "kokoro:af_river", label: "River", mos: "4.2" },
+    { value: "kokoro:af_sarah", label: "Sarah", mos: "4.3" },
+    { value: "kokoro:af_sky", label: "Sky", mos: "4.3" }
   ] },
-  // Audio8 uses OnnxRuntimeLibrary which loads sherpa-onnx's ORT 1.27.1.
-  // DualAR autoregressive inference is CPU-only and extremely slow (~10s/sentence).
-  // Models load but synthesis may fail with ORT API version conflicts.
-  { label: "Audio8 DualAR \u2014 preview (ORT conflict)", voices: [
-    { value: "audio8", label: "Audio8 0.1B (INT8)", mos: "~2.8", warn: "slow", broken: "ORT 1.27 conflict" },
-    { value: "audio8:0.6b", label: "Audio8 0.6B (INT4)", mos: "~3.2", warn: "slow", broken: "ORT 1.27 conflict" }
+  { label: "Kokoro v1.0 \u2014 American English \u2642 \u2014 MOS ~4.2", voices: [
+    { value: "kokoro:am_adam", label: "Adam", mos: "4.2" },
+    { value: "kokoro:am_echo", label: "Echo", mos: "4.1" },
+    { value: "kokoro:am_eric", label: "Eric", mos: "4.2" },
+    { value: "kokoro:am_fenrir", label: "Fenrir", mos: "4.1" },
+    { value: "kokoro:am_liam", label: "Liam", mos: "4.2" },
+    { value: "kokoro:am_michael", label: "Michael", mos: "4.1" },
+    { value: "kokoro:am_onyx", label: "Onyx", mos: "4.2" },
+    { value: "kokoro:am_puck", label: "Puck", mos: "4.1" },
+    { value: "kokoro:am_santa", label: "Santa", mos: "4.0" }
   ] },
-  // CosyVoice3 needs ORT 1.18.0 for FP16 models (SimplifiedLayerNormFusion crash,
-  // precision cast errors in ORT 1.21+). Pinned via ~/.casehub/ort-1.18.0/ but
-  // sherpa-onnx loads ORT 1.27.1 first, poisoning the process. See blocks#217.
-  { label: "CosyVoice3 \u2014 voice cloning (ORT conflict)", voices: [
-    { value: "cosyvoice3", label: "CosyVoice3 (24kHz)", mos: "clone", warn: "slow", broken: "needs ORT 1.18.0" }
+  { label: "Kokoro v1.0 \u2014 British English \u2014 MOS ~4.2", voices: [
+    { value: "kokoro:bf_alice", label: "Alice \u2640", mos: "4.2" },
+    { value: "kokoro:bf_emma", label: "Emma \u2640", mos: "4.3" },
+    { value: "kokoro:bf_isabella", label: "Isabella \u2640", mos: "4.2" },
+    { value: "kokoro:bf_lily", label: "Lily \u2640", mos: "4.2" },
+    { value: "kokoro:bm_daniel", label: "Daniel \u2642", mos: "4.1" },
+    { value: "kokoro:bm_fable", label: "Fable \u2642", mos: "4.1" },
+    { value: "kokoro:bm_george", label: "George \u2642", mos: "4.2" },
+    { value: "kokoro:bm_lewis", label: "Lewis \u2642", mos: "4.1" }
+  ] },
+  { label: "Kokoro v1.0 \u2014 Other Languages \u2014 MOS ~4.0", voices: [
+    { value: "kokoro:ef_dora", label: "Dora (ES) \u2640", mos: "4.0" },
+    { value: "kokoro:em_alex", label: "Alex (ES) \u2642", mos: "4.0" },
+    { value: "kokoro:ff_siwis", label: "Siwis (FR) \u2640", mos: "4.0" },
+    { value: "kokoro:hf_alpha", label: "Alpha (HI) \u2640", mos: "3.9" },
+    { value: "kokoro:hf_beta", label: "Beta (HI) \u2640", mos: "3.9" },
+    { value: "kokoro:hm_omega", label: "Omega (HI) \u2642", mos: "3.9" },
+    { value: "kokoro:hm_psi", label: "Psi (HI) \u2642", mos: "3.9" },
+    { value: "kokoro:if_sara", label: "Sara (IT) \u2640", mos: "4.0" },
+    { value: "kokoro:im_nicola", label: "Nicola (IT) \u2642", mos: "4.0" },
+    { value: "kokoro:jf_alpha", label: "Alpha (JA) \u2640", mos: "4.0" },
+    { value: "kokoro:jf_gongitsune", label: "Gongitsune (JA) \u2640", mos: "4.0" },
+    { value: "kokoro:jf_nezumi", label: "Nezumi (JA) \u2640", mos: "4.0" },
+    { value: "kokoro:jf_tebukuro", label: "Tebukuro (JA) \u2640", mos: "4.0" },
+    { value: "kokoro:jm_kumo", label: "Kumo (JA) \u2642", mos: "4.0" },
+    { value: "kokoro:pf_dora", label: "Dora (PT) \u2640", mos: "4.0" },
+    { value: "kokoro:pm_alex", label: "Alex (PT) \u2642", mos: "4.0" },
+    { value: "kokoro:pm_santa", label: "Santa (PT) \u2642", mos: "3.9" },
+    { value: "kokoro:zf_xiaobei", label: "Xiaobei (ZH) \u2640", mos: "4.0" },
+    { value: "kokoro:zf_xiaoni", label: "Xiaoni (ZH) \u2640", mos: "4.0" },
+    { value: "kokoro:zf_xiaoxiao", label: "Xiaoxiao (ZH) \u2640", mos: "4.0" },
+    { value: "kokoro:zf_xiaoyi", label: "Xiaoyi (ZH) \u2640", mos: "4.0" },
+    { value: "kokoro:zm_yunjian", label: "Yunjian (ZH) \u2642", mos: "4.0" },
+    { value: "kokoro:zm_yunxi", label: "Yunxi (ZH) \u2642", mos: "4.0" },
+    { value: "kokoro:zm_yunxia", label: "Yunxia (ZH) \u2642", mos: "4.0" },
+    { value: "kokoro:zm_yunyang", label: "Yunyang (ZH) \u2642", mos: "4.0" }
   ] }
 ];
-var CasehubAvatarPanel = class extends i4 {
+var CasehubAvatarPanel = class CasehubAvatarPanel2 extends i4 {
   constructor() {
     super(...arguments);
     this.wsUrl = "/ws/avatar";
@@ -1254,6 +1332,28 @@ var CasehubAvatarPanel = class extends i4 {
     this._showAvatar = true;
     this._modelPollTimer = null;
     this._audioSendCount = 0;
+  }
+  static {
+    this.styles = i`
+    :host { display: flex; flex-direction: column; height: 100%; background: #1a1a2e; color: #e0e0e0; font-family: system-ui, sans-serif; }
+    .controls { display: flex; gap: 1rem; padding: 0.5rem 1rem; border-bottom: 1px solid #333; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .controls label { font-size: 0.8rem; color: #999; }
+    .controls select { padding: 0.3rem 0.5rem; border-radius: 6px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 0.85rem; }
+    casehub-avatar { flex: 0 0 300px; border-bottom: 1px solid #333; }
+    casehub-avatar[hidden] { display: none; }
+    .model-status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #999; text-align: center; }
+    .model-status .downloading { color: #d9a547; }
+    .model-status .ready { color: #4a9; }
+    .status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #666; text-align: center; }
+    .timing { margin: 0.5rem 1rem; padding: 0.5rem 0.75rem; background: #1e1e32; border-radius: 8px; font-size: 0.8rem; font-family: monospace; }
+    .timing:empty { display: none; }
+    casehub-transcript { flex: 1; overflow-y: auto; }
+    .input-bar { display: flex; gap: 0.5rem; padding: 1rem; border-top: 1px solid #333; }
+    .input-bar input { flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 1rem; }
+    .input-bar input:focus { outline: none; border-color: #2d5aa0; }
+    .input-bar button { padding: 0.75rem 1.5rem; border-radius: 8px; border: none; background: #2d5aa0; color: white; font-size: 1rem; cursor: pointer; }
+    .input-bar button:disabled { opacity: 0.5; cursor: default; }
+  `;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1330,15 +1430,18 @@ var CasehubAvatarPanel = class extends i4 {
   // Matches original sendText (line 193-201)
   _onSendText() {
     const input = this.shadowRoot.querySelector("#msg");
-    if (!input) return;
+    if (!input)
+      return;
     const text = input.value.trim();
-    if (!text) return;
+    if (!text)
+      return;
     this._controller.sendText(text, { llmModel: this.llmModel, ttsModel: this.ttsModel });
     input.value = "";
     this._statusText = "Processing...";
   }
   _onInputKeydown(e5) {
-    if (e5.key === "Enter") this._onSendText();
+    if (e5.key === "Enter")
+      this._onSendText();
   }
   _onLlmChange(e5) {
     this.llmModel = e5.target.value;
@@ -1351,11 +1454,14 @@ var CasehubAvatarPanel = class extends i4 {
   }
   get _modelStatusHtml() {
     const entries = Object.entries(this._modelStatus);
-    if (entries.length === 0) return "";
+    if (entries.length === 0)
+      return "";
     const ready = entries.filter(([, s4]) => s4 === "READY").length;
     const downloading = entries.filter(([, s4]) => s4 === "DOWNLOADING").length;
-    if (ready === entries.length) return b2`<span class="ready">All voice models ready</span>`;
-    if (downloading > 0) return b2`<span class="downloading">Downloading voice models: ${ready}/${entries.length} ready</span>`;
+    if (ready === entries.length)
+      return b2`<span class="ready">All voice models ready</span>`;
+    if (downloading > 0)
+      return b2`<span class="downloading">Downloading voice models: ${ready}/${entries.length} ready</span>`;
     return "";
   }
   render() {
@@ -1418,69 +1524,49 @@ var CasehubAvatarPanel = class extends i4 {
     `;
   }
 };
-CasehubAvatarPanel.styles = i`
-    :host { display: flex; flex-direction: column; height: 100%; background: #1a1a2e; color: #e0e0e0; font-family: system-ui, sans-serif; }
-    .controls { display: flex; gap: 1rem; padding: 0.5rem 1rem; border-bottom: 1px solid #333; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .controls label { font-size: 0.8rem; color: #999; }
-    .controls select { padding: 0.3rem 0.5rem; border-radius: 6px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 0.85rem; }
-    casehub-avatar { flex: 0 0 300px; border-bottom: 1px solid #333; }
-    casehub-avatar[hidden] { display: none; }
-    .model-status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #999; text-align: center; }
-    .model-status .downloading { color: #d9a547; }
-    .model-status .ready { color: #4a9; }
-    .status { padding: 0.25rem 1rem; font-size: 0.75rem; color: #666; text-align: center; }
-    .timing { margin: 0.5rem 1rem; padding: 0.5rem 0.75rem; background: #1e1e32; border-radius: 8px; font-size: 0.8rem; font-family: monospace; }
-    .timing:empty { display: none; }
-    casehub-transcript { flex: 1; overflow-y: auto; }
-    .input-bar { display: flex; gap: 0.5rem; padding: 1rem; border-top: 1px solid #333; }
-    .input-bar input { flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #555; background: #2a2a3e; color: #e0e0e0; font-size: 1rem; }
-    .input-bar input:focus { outline: none; border-color: #2d5aa0; }
-    .input-bar button { padding: 0.75rem 1.5rem; border-radius: 8px; border: none; background: #2d5aa0; color: white; font-size: 1rem; cursor: pointer; }
-    .input-bar button:disabled { opacity: 0.5; cursor: default; }
-  `;
-__decorateClass([
+__decorate4([
   n4({ type: String, attribute: "ws-url" })
-], CasehubAvatarPanel.prototype, "wsUrl", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "wsUrl", void 0);
+__decorate4([
   n4({ type: String, attribute: "avatar-url" })
-], CasehubAvatarPanel.prototype, "avatarUrl", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "avatarUrl", void 0);
+__decorate4([
   n4({ type: String })
-], CasehubAvatarPanel.prototype, "body", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "body", void 0);
+__decorate4([
   n4({ type: String })
-], CasehubAvatarPanel.prototype, "mood", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "mood", void 0);
+__decorate4([
   n4({ type: String, attribute: "llm-model" })
-], CasehubAvatarPanel.prototype, "llmModel", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "llmModel", void 0);
+__decorate4([
   n4({ type: String, attribute: "tts-model" })
-], CasehubAvatarPanel.prototype, "ttsModel", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "ttsModel", void 0);
+__decorate4([
   n4({ type: Number })
-], CasehubAvatarPanel.prototype, "speed", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "speed", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "turns", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "turns", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "avatarAudioQueue", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "avatarAudioQueue", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "connectionState", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "connectionState", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "_statusText", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "_statusText", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "_modelStatus", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "_modelStatus", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "_timingText", 2);
-__decorateClass([
+], CasehubAvatarPanel.prototype, "_timingText", void 0);
+__decorate4([
   r5()
-], CasehubAvatarPanel.prototype, "_showAvatar", 2);
-CasehubAvatarPanel = __decorateClass([
+], CasehubAvatarPanel.prototype, "_showAvatar", void 0);
+CasehubAvatarPanel = __decorate4([
   t3("casehub-avatar-panel")
 ], CasehubAvatarPanel);
 export {
