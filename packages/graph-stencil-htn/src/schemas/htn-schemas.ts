@@ -21,5 +21,6 @@ export const htnLeafSchema = {
   properties: {
     name: { type: 'string', 'x-group': 'Identity', 'x-order': 0 },
     capability: { type: 'string', 'x-group': 'Identity', 'x-order': 1, 'x-help': 'Capability reference' },
+    definitionRef: { type: 'string', 'x-group': 'Definition', 'x-order': 10, 'x-help': 'Reference to diagram definition' },
   },
 } as const;

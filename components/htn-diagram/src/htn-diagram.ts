@@ -75,6 +75,25 @@ export class HtnDiagram extends DiagramBaseMixin(LitElement) {
     emitPagesEvent(this, 'diagram:drill-down:resolved', { name: nodeName, yaml, diagramType });
   }
 
+  private _selectedHasDefinition(): boolean {
+    if (!this._selectedNodeId || !this._adapterResult) return false;
+    const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
+    return !!(node?.properties['definitionRef'] || node?.properties['do']);
+  }
+
+  private _handlePropertyDrillDown(): void {
+    if (!this._selectedNodeId || !this._adapterResult) return;
+    const node = this._adapterResult.model.nodes.find(n => n.id === this._selectedNodeId);
+    if (!node) return;
+    const payload: { nodeId: string; nodeName: string; definitionRef?: string } = {
+      nodeId: node.id,
+      nodeName: String(node.properties['name'] ?? ''),
+    };
+    const ref = node.properties['definitionRef'] as string | undefined;
+    if (ref !== undefined) payload.definitionRef = ref;
+    this._handleDrillDown(payload);
+  }
+
   override render() {
     if (this._error) return this._renderError();
     return html`
@@ -95,6 +114,12 @@ export class HtnDiagram extends DiagramBaseMixin(LitElement) {
         ${this._selectedNodeId ? html`
           <div style="width:280px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); overflow-y:auto; padding:8px;">
             ${this._renderPropertyPanel()}
+            ${this._selectedHasDefinition() ? html`
+              <div style="padding: 8px 0; border-top: 1px solid var(--pages-neutral-4,#e5e7eb); margin-top: 8px;">
+                <a style="font-size: 13px; color: var(--pages-accent-9, #2563eb); cursor: pointer; text-decoration: none;"
+                  @click=${() => this._handlePropertyDrillDown()}>Drill down ⤢</a>
+              </div>
+            ` : nothing}
           </div>
         ` : nothing}
       </div>
