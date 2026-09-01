@@ -185,7 +185,7 @@ public class SpeechProducers {
     }
 
     @Produces
-    @ApplicationScoped
+    @jakarta.inject.Singleton
     io.casehub.blocks.speech.StreamingSpeechToTextService stt() {
         try {
             if (io.casehub.blocks.speech.sherpa.WhisperLibrary.isAvailable()) {
@@ -197,6 +197,16 @@ public class SpeechProducers {
         }
         LOG.log(System.Logger.Level.INFO, "Using Zipformer streaming STT");
         return io.casehub.blocks.speech.sherpa.SherpaOnnxStreamingSpeechToText.withDefaults();}
+
+    void eagerNativeInit(@jakarta.enterprise.event.Observes io.quarkus.runtime.StartupEvent event,
+                         io.casehub.blocks.speech.StreamingSpeechToTextService stt,
+                         io.casehub.blocks.speech.ws.TtsModelRegistry ttsRegistry) {
+        // ORT is not thread-safe for concurrent Env creation on ARM64 (GE-20260803-e363e6).
+        // Forcing eager init here serialises all ORT environment creation at startup.
+        LOG.log(System.Logger.Level.INFO, "Speech services pre-initialised — STT: "
+                + stt.getClass().getSimpleName() + ", TTS models: " + ttsRegistry.models().size());
+    }
+
 
     @Produces
     @jakarta.inject.Singleton
