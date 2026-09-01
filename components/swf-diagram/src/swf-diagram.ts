@@ -208,7 +208,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
               if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
             }}
           ></pages-graph-canvas>
-          ${hasSelection && !isReadonly ? html`
+          ${hasSelection ? html`
             <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
               <div style="padding:6px 10px; border-bottom:1px solid var(--pages-neutral-4,#e5e7eb); background:var(--pages-neutral-2,#f8f9fa);">
                 <span style="font-size:12px; font-weight:600; color:var(--pages-neutral-11,#374151); text-transform:uppercase; letter-spacing:0.5px;">Properties</span>
