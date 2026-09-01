@@ -11,6 +11,7 @@ public class SpeechProducers {
 
     private static final System.Logger LOG           = System.getLogger("speech-demo");
     private static final String        DEFAULT_MODEL = "claude-haiku-4-5@20251001";
+    private volatile boolean whisperActive;
 
     @Produces
     @ApplicationScoped
@@ -190,6 +191,7 @@ public class SpeechProducers {
         try {
             io.casehub.blocks.speech.sherpa.WhisperLibrary.load();
             LOG.log(System.Logger.Level.INFO, "Using WhisperSpeechToText");
+            whisperActive = true;
             return io.casehub.blocks.speech.sherpa.WhisperSpeechToText.withDefaults();
         } catch (Throwable e) {
             LOG.log(System.Logger.Level.WARNING, "Whisper unavailable, falling back to Zipformer: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
@@ -261,7 +263,7 @@ public class SpeechProducers {
             io.casehub.blocks.speech.sherpa.correction.TranscriptCorrector corrector,
             io.casehub.blocks.speech.sherpa.correction.ConversationVocabulary vocabulary) {
         return new io.casehub.blocks.speech.ws.CorrectionHooks(
-                corrector::correct,
+                whisperActive ? text -> text : corrector::correct,
                 response -> {
                     vocabulary.addFromText(response);
                     corrector.addVocabulary(vocabulary.terms().toArray(String[]::new));
