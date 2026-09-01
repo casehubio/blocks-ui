@@ -12,6 +12,7 @@ interface HtnTask {
   capability?: string;
   definitionRef?: string;
   methods?: HtnMethod[];
+  [k: string]: unknown;
 }
 
 interface HtnMethod {
@@ -21,6 +22,7 @@ interface HtnMethod {
   estimatedCost?: number;
   estimatedDuration?: string;
   tasks: HtnTask[];
+  [k: string]: unknown;
 }
 
 export function htnYamlToGraph(yaml: string): HtnAdapterResult {
@@ -44,7 +46,7 @@ export function htnYamlToGraph(yaml: string): HtnAdapterResult {
       nodes.push({
         id,
         type: 'htn-compound',
-        properties: { name: task.name, methodCount: task.methods!.length },
+        properties: { ...task, methods: undefined, methodCount: task.methods!.length },
       });
       yamlPaths.set(id, [...path]);
 
@@ -53,13 +55,7 @@ export function htnYamlToGraph(yaml: string): HtnAdapterResult {
         nodes.push({
           id: methodId,
           type: 'htn-method',
-          properties: {
-            guardLabel: method.guardLabel ?? '',
-            guard: method.guard ?? '',
-            strategy: method.strategy,
-            estimatedCost: method.estimatedCost,
-            estimatedDuration: method.estimatedDuration,
-          },
+          properties: { ...method, tasks: undefined, guardLabel: method.guardLabel ?? '', guard: method.guard ?? '' },
         });
         yamlPaths.set(methodId, [...path, 'methods', mi]);
 
@@ -84,7 +80,7 @@ export function htnYamlToGraph(yaml: string): HtnAdapterResult {
       nodes.push({
         id,
         type: 'htn-leaf',
-        properties: { name: task.name, capability: task.capability, definitionRef: task.definitionRef },
+        properties: { ...task },
       });
       yamlPaths.set(id, [...path]);
     }
