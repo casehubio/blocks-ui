@@ -10,6 +10,7 @@ export interface HtnAdapterResult {
 interface HtnTask {
   name: string;
   capability?: string;
+  definitionRef?: string;
   methods?: HtnMethod[];
 }
 
@@ -83,7 +84,7 @@ export function htnYamlToGraph(yaml: string): HtnAdapterResult {
       nodes.push({
         id,
         type: 'htn-leaf',
-        properties: { name: task.name, capability: task.capability },
+        properties: { name: task.name, capability: task.capability, definitionRef: task.definitionRef },
       });
       yamlPaths.set(id, [...path]);
     }
@@ -93,5 +94,11 @@ export function htnYamlToGraph(yaml: string): HtnAdapterResult {
 
   walkTask(decomposition.root, ['spec', 'decomposition', 'root']);
 
-  return { model: createGraph(nodes, edges), yamlPaths };
+  const definitions = parsed['definitions'] as Record<string, unknown> | undefined;
+
+  return {
+    model: createGraph(nodes, edges),
+    yamlPaths,
+    ...(definitions ? { definitions } : {}),
+  };
 }

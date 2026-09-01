@@ -1,6 +1,7 @@
-import { html } from 'lit-html';
+import { html, nothing } from 'lit-html';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
+import { emitPagesEvent } from '@casehubio/pages-data';
 
 const CALL_ICONS: Record<string, string> = {
   http: '\u{1F310}',
@@ -22,12 +23,21 @@ export function renderCall(node: GraphNode, _decoration?: NodeDecoration): Stenc
   const callType = String(node.properties['call'] ?? 'function');
   const icon = CALL_ICONS[callType] ?? '\u{1F4DE}';
   const label = node.properties['label'] ? String(node.properties['label']) : callType;
+  const definitionRef = node.properties['definitionRef'] as string | undefined;
 
   return html`
     <div style="padding: 8px 12px; border: 2px solid var(--pages-border-strong, #888); background: var(--pages-surface-raised, #f8f8f8); border-top: 3px solid var(--pages-accent-color, #4a9eff); min-width: 160px; font-family: var(--pages-font-family, sans-serif); font-size: 13px; border-radius: 4px;">
       <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--pages-text-color, #333);">
         <span>${icon}</span>
-        <span>${label}</span>
+        <span style="flex:1;">${label}</span>
+        ${definitionRef ? html`
+          <button style="border: none; background: none; cursor: pointer; font-size: 13px; color: var(--pages-accent-9, #2563eb); padding: 2px 4px; position: relative; z-index: 10;"
+            title="Drill down"
+            @click=${(e: Event) => {
+              e.stopPropagation();
+              emitPagesEvent(e.target as HTMLElement, 'diagram:drill-down', { nodeId: node.id, nodeName: label, definitionRef });
+            }}>⤢</button>
+        ` : nothing}
       </div>
       <div style="color: var(--pages-text-secondary, #666); font-size: 11px; margin-top: 2px;">call: ${callType}</div>
     </div>

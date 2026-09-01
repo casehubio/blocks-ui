@@ -1,8 +1,11 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { stringify } from 'yaml';
 import { htnYamlToGraph, registerHtnStencils } from '@casehubio/graph-stencil-htn';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult } from '@casehubio/pages-diagram-core';
+import { emitPagesEvent } from '@casehubio/pages-data';
+import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import '@casehubio/graph-renderer';
 
 @customElement('htn-diagram')
@@ -39,6 +42,39 @@ export class HtnDiagram extends DiagramBaseMixin(LitElement) {
     return null;
   }
 
+  private async _handleDrillDown(payload: {
+    nodeId: string; nodeName: string; definitionRef?: string;
+  }): Promise<void> {
+    const { nodeName, definitionRef } = payload;
+    if (!definitionRef) return;
+
+    let yaml: string;
+    let diagramType: string;
+
+    if (definitionRef.startsWith('#')) {
+      const defName = definitionRef.slice(1);
+      const defs = (this._adapterResult as any)?.definitions as Record<string, unknown> | undefined;
+      const fragment = defs?.[defName];
+      if (!fragment) { this._error = `Definition '${defName}' not found`; return; }
+      yaml = stringify(fragment);
+      diagramType = detectDiagramType(yaml);
+    } else {
+      try {
+        const base = this.src ? new URL(this.src, window.location.href) : new URL(window.location.href);
+        const url = new URL(definitionRef, base);
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error(`${res.status}`);
+        yaml = await res.text();
+        diagramType = detectDiagramType(yaml);
+      } catch (e) {
+        this._error = `Failed to load ${definitionRef}: ${e}`;
+        return;
+      }
+    }
+
+    emitPagesEvent(this, 'diagram:drill-down:resolved', { name: nodeName, yaml, diagramType });
+  }
+
   override render() {
     if (this._error) return this._renderError();
     return html`
@@ -53,6 +89,7 @@ export class HtnDiagram extends DiagramBaseMixin(LitElement) {
             const topic = e.detail?.topic as string | undefined;
             if (topic === 'graph:node:click') this._handleNodeClick(e);
             if (topic === 'graph:selection:change') this._handleSelectionChange(e);
+            if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
           }}
         ></pages-graph-canvas>
         ${this._selectedNodeId ? html`

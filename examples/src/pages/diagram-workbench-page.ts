@@ -150,6 +150,7 @@ spec:
                   tasks:
                     - name: ml-scoring
                       capability: fraud-scoring
+                      definitionRef: '#ml-scoring-flow'
                 - guardLabel: "Manual review"
                   guard: ".riskLevel == 'high'"
                   tasks:
@@ -168,6 +169,7 @@ spec:
               capability: fraud-scoring
             - name: compliance-review
               capability: sanctions-check
+              definitionRef: '#compliance-case'
             - name: senior-routing
               capability: claim-routing
   milestones:
@@ -206,6 +208,64 @@ definitions:
             method: post
             endpoint:
               uri: https://api.internal/routing/assign
+      - planAssignment:
+          call: casehub:dispatch
+          definitionRef: '#assignment-plan'
+  ml-scoring-flow:
+    document:
+      dsl: "1.0.0"
+      namespace: insurance
+      name: ml-scoring-flow
+      version: "1.0.0"
+    do:
+      - loadModel:
+          call: http
+          with:
+            method: get
+            endpoint:
+              uri: https://api.internal/ml/load
+      - runInference:
+          call: http
+          with:
+            method: post
+            endpoint:
+              uri: https://api.internal/ml/infer
+      - normaliseScore:
+          set:
+            score: \${.runInference.output.score / 100}
+  compliance-case:
+    dsl: "1.0.0"
+    namespace: insurance
+    name: compliance-sub-case
+    spec:
+      bindings:
+        - name: doc-check
+          capability: document-verification
+      workers:
+        - name: doc-verifier
+          capabilities:
+            - document-verification
+  assignment-plan:
+    dsl: "1.0.0"
+    namespace: insurance
+    name: assignment-plan
+    spec:
+      decomposition:
+        root:
+          name: assign-adjuster
+          methods:
+            - guardLabel: "By expertise"
+              guard: ".claimType != null"
+              tasks:
+                - name: match-expertise
+                  capability: adjuster-matching
+                - name: notify-adjuster
+                  capability: notifications
+            - guardLabel: "Round-robin"
+              guard: ".claimType == null"
+              tasks:
+                - name: next-available
+                  capability: adjuster-pool
 `;
 
 @customElement('blocks-example-diagram-workbench')

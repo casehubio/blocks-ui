@@ -32,7 +32,10 @@ export function toSwfGraph(yaml: string): AdapterResult {
   const edges = rawEdges.map(e => clampEdgeToContainerBoundary(e, parentMap));
   const model = createGraph(nodes, edges);
 
-  return degraded ? { model, yamlPaths, degraded } : { model, yamlPaths };
+  const definitions = (raw as Record<string, unknown>)['definitions'] as Record<string, unknown> | undefined;
+
+  const base = { model, yamlPaths, ...(definitions ? { definitions } : {}) };
+  return degraded ? { ...base, degraded } : base;
 }
 
 function mapNode(sdkNode: FlatGraphNode): GraphNode {

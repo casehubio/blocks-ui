@@ -5,6 +5,9 @@ import { toSwfGraph, applySwfPropertyEdit, addSwfTask, removeSwfTask, registerSw
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
+import { emitPagesEvent } from '@casehubio/pages-data';
+import { detectDiagramType } from '@casehubio/blocks-ui-core';
+import { stringify } from 'yaml';
 import '@casehubio/graph-renderer';
 
 const swfEditPolicy = createSwfEditPolicy();
@@ -104,6 +107,37 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return null;
   }
 
+  private async _handleDrillDown(payload: {
+    nodeId: string; nodeName: string; definitionRef?: string;
+  }): Promise<void> {
+    const { nodeName, definitionRef } = payload;
+    if (!definitionRef) return;
+
+    let yaml: string;
+    let diagramType: string;
+
+    if (definitionRef.startsWith('#')) {
+      const defs = (this._adapterResult as any)?.definitions as Record<string, unknown> | undefined;
+      const fragment = defs?.[definitionRef.slice(1)];
+      if (!fragment) { this._error = `Definition '${definitionRef.slice(1)}' not found`; return; }
+      yaml = stringify(fragment);
+      diagramType = detectDiagramType(yaml);
+    } else {
+      try {
+        const base = this.src ? new URL(this.src, window.location.href) : new URL(window.location.href);
+        const res = await fetch(new URL(definitionRef, base).toString());
+        if (!res.ok) throw new Error(`${res.status}`);
+        yaml = await res.text();
+        diagramType = detectDiagramType(yaml);
+      } catch (e) {
+        this._error = `Failed to load ${definitionRef}: ${e}`;
+        return;
+      }
+    }
+
+    emitPagesEvent(this, 'diagram:drill-down:resolved', { name: nodeName, yaml, diagramType });
+  }
+
   private _computeFilteredEdges() {
     const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
     return this._edges.filter(e => {
@@ -171,6 +205,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
               const topic = e.detail?.topic as string | undefined;
               if (topic === 'graph:node:click') this._handleNodeClick(e);
               if (topic === 'graph:selection:change') this._handleSelectionChange(e);
+              if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
             }}
           ></pages-graph-canvas>
           ${hasSelection && !isReadonly ? html`
