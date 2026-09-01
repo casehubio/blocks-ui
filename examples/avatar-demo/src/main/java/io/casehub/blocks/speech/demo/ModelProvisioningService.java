@@ -22,11 +22,7 @@ public class ModelProvisioningService {
             "jenny", "vits-piper-en_GB-jenny_dioco-medium"));
 
     static final Map<String, String> KOKORO_MODELS = new LinkedHashMap<>(Map.of(
-            "kokoro", "kokoro-en-v0_19"));
-
-    static final Map<String, String> AUDIO8_MODELS = new LinkedHashMap<>(Map.of(
-            "audio8", "0.1b",
-            "audio8:0.6b", "0.6b"));
+            "kokoro", "kokoro-multi-lang-v1_0"));
 
     private static final System.Logger LOG = System.getLogger("speech-demo.provisioning");
 
@@ -40,7 +36,7 @@ public class ModelProvisioningService {
     void init() {
         MODELS.keySet().forEach(key -> statuses.put(key, ModelStatus.PENDING));
         KOKORO_MODELS.keySet().forEach(key -> statuses.put(key, ModelStatus.PENDING));
-        AUDIO8_MODELS.keySet().forEach(key -> statuses.put(key, ModelStatus.PENDING));
+
         statuses.put("streaming-stt", ModelStatus.PENDING);}
 
     void provisionAll() {
@@ -50,9 +46,7 @@ public class ModelProvisioningService {
         for (var entry : KOKORO_MODELS.entrySet()) {
             provisionEntry(entry.getKey(), () -> provisionKokoro(entry.getValue()));
         }
-        for (var entry : AUDIO8_MODELS.entrySet()) {
-            provisionEntry(entry.getKey(), () -> provisionAudio8(entry.getValue()));
-        }
+
         provisionEntry("streaming-stt", this::provisionStreamingStt);}
 
     void provision(String modelName) {
@@ -76,9 +70,6 @@ public class ModelProvisioningService {
         io.casehub.blocks.speech.sherpa.KokoroTextToSpeech.ensureProvisioned();
     }
 
-    void provisionAudio8(String variant) {
-        io.casehub.blocks.speech.sherpa.Audio8TextToSpeech.ensureProvisioned(variant);
-    }
 
     void provisionStreamingStt() {
         io.casehub.blocks.speech.sherpa.SherpaOnnxStreamingSpeechToText.ensureProvisioned();
