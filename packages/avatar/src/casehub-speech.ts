@@ -132,7 +132,7 @@ export class CasehubSpeech extends LitElement {
     return html`
       <button
         @click=${this._handleClick}
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this._finishing}
         aria-pressed=${this._recording ? 'true' : 'false'}>
         ${this._finishing ? 'Finishing...' : this._recording ? 'Recording...' : 'Mic'}
       </button>
