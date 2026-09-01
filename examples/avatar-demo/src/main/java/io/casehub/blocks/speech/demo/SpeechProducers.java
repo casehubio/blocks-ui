@@ -188,12 +188,11 @@ public class SpeechProducers {
     @jakarta.inject.Singleton
     io.casehub.blocks.speech.StreamingSpeechToTextService stt() {
         try {
-            if (io.casehub.blocks.speech.sherpa.WhisperLibrary.isAvailable()) {
-                LOG.log(System.Logger.Level.INFO, "Using WhisperSpeechToText");
-                return io.casehub.blocks.speech.sherpa.WhisperSpeechToText.withDefaults();
-            }
-        } catch (Exception e) {
-            LOG.log(System.Logger.Level.WARNING, "Whisper init failed, falling back: " + e.getMessage());
+            io.casehub.blocks.speech.sherpa.WhisperLibrary.load();
+            LOG.log(System.Logger.Level.INFO, "Using WhisperSpeechToText");
+            return io.casehub.blocks.speech.sherpa.WhisperSpeechToText.withDefaults();
+        } catch (Throwable e) {
+            LOG.log(System.Logger.Level.WARNING, "Whisper unavailable, falling back to Zipformer: " + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
         }
         LOG.log(System.Logger.Level.INFO, "Using Zipformer streaming STT");
         return io.casehub.blocks.speech.sherpa.SherpaOnnxStreamingSpeechToText.withDefaults();}

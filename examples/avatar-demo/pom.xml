@@ -92,6 +92,9 @@
         </executions>
         <configuration>
           <jvmArgs>--enable-native-access=ALL-UNNAMED</jvmArgs>
+          <systemProperties>
+            <whisper.native.dir>${user.home}/.casehub/native/whisper/no-metal</whisper.native.dir>
+          </systemProperties>
         </configuration>
       </plugin>
       <plugin>
