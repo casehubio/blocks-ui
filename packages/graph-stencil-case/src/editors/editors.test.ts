@@ -47,13 +47,13 @@ describe('blocks-swf-link', () => {
     expect(customElements.get('blocks-swf-link')).toBe(BlocksSwfLinkElement);
   });
 
-  it('renders drill-down text with aria-label', async () => {
+  it('renders drill-down link with aria-label', async () => {
     const el = new BlocksSwfLinkElement();
     document.body.appendChild(el);
     await el.updateComplete;
-    const span = el.shadowRoot!.querySelector('span');
-    expect(span?.textContent).toContain('SWF drill-down');
-    expect(span?.getAttribute('aria-label')).toBe('Edit via SWF drill-down');
+    const link = el.shadowRoot!.querySelector('a');
+    expect(link?.textContent).toContain('Drill down');
+    expect(link?.getAttribute('aria-label')).toBe('Drill down to definition');
     el.remove();
   });
 });

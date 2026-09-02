@@ -10,7 +10,6 @@
   "include": ["src/**/*"],
   "references": [
     { "path": "../../packages/blocks-ui-core" },
-    { "path": "../split-workbench" },
     { "path": "../work-item-inbox" },
     { "path": "../work-item-detail" }
   ]

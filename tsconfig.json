@@ -12,7 +12,6 @@
     { "path": "components/list-pane/tsconfig.build.json" },
     { "path": "components/notification-inbox/tsconfig.build.json" },
     { "path": "components/sla-indicator/tsconfig.build.json" },
-    { "path": "components/split-workbench/tsconfig.build.json" },
     { "path": "components/trust-score-panel/tsconfig.build.json" },
     { "path": "components/work-item-detail/tsconfig.build.json" },
     { "path": "components/work-item-inbox/tsconfig.build.json" },

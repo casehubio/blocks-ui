@@ -43,6 +43,9 @@ describe('lookupStatus', () => {
       ['node', ['PENDING', 'DISPATCHED', 'COMPLETED', 'FAILED', 'SKIPPED', 'CANCELLED']],
       ['session', ['ACTIVE', 'WAITING', 'IDLE']],
       ['commitment', ['OPEN', 'ACKNOWLEDGED', 'FULFILLED', 'FAILED', 'DECLINED', 'DELEGATED', 'EXPIRED']],
+      ['execution', ['IDLE', 'RUNNING', 'WAITING_FOR_AGENT', 'WAITING_FOR_EVENT', 'COMPLETE', 'FAULTED', 'CANCELLED']],
+      ['agent', ['SUCCESS', 'FAILURE', 'TIMEOUT', 'DECLINED']],
+      ['pattern', ['SEQUENCE', 'PARALLEL', 'LOOP', 'CONDITIONAL', 'SUPERVISOR', 'DEBATE', 'VOTING', 'HTN']],
     ];
 
     for (const [domain, states] of domains) {

@@ -214,7 +214,7 @@ export class ChannelMessageElement extends LitElement {
             ${this._truncate(this.parentMessage.content, 80)}
           </div>
         ` : nothing}
-        ${m.artefactRefs.length > 0 ? html`
+        ${m.artefactRefs?.length ? html`
           ${m.artefactRefs.map(ref => html`
             <div class="artefact-detail">
               <span data-type=${ref.type}>${ref.label}</span>
@@ -289,7 +289,7 @@ export class ChannelMessageElement extends LitElement {
           ↳ Delegated to <strong>${m.target}</strong>
         </div>
       ` : nothing}
-      ${m.artefactRefs.length > 0 ? html`
+      ${m.artefactRefs?.length ? html`
         <div class="artefact-chips">
           ${m.artefactRefs.map(ref => html`
             <span class="artefact-chip" data-type=${ref.type}

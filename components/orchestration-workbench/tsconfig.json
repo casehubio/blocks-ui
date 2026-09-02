@@ -11,7 +11,6 @@
   "references": [
     { "path": "../../packages/blocks-ui-core" },
     { "path": "../blocks-timeline" },
-    { "path": "../execution-monitor" },
-    { "path": "../split-workbench" }
+    { "path": "../execution-monitor" }
   ]
 }

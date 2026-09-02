@@ -32,8 +32,8 @@ describe('casehub-diagram-toolbar', () => {
   });
 
   it('hides save button when hasBackend is false', () => {
-    const btn = el.shadowRoot!.querySelector('button');
-    expect(btn).toBeNull();
+    const btns = Array.from(el.shadowRoot!.querySelectorAll('button'));
+    expect(btns.some(b => b.textContent!.trim() === 'Save')).toBe(false);
   });
 
   it('emits toolbar-save on save button click', async () => {

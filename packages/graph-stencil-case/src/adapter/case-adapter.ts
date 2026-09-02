@@ -55,6 +55,17 @@ export function toGraph(yaml: string): AdapterResult {
           source: nodeId,
           target: workerNodeId,
         });
+      } else if (!binding.subCase) {
+        const extId = `external:${capName}`;
+        if (!nodes.some(n => n.id === extId)) {
+          nodes.push({ id: extId, type: 'external', properties: { name: capName } });
+        }
+        edges.push({
+          id: `${nodeId}--capability-dispatch--${extId}`,
+          type: 'capability-dispatch',
+          source: nodeId,
+          target: extId,
+        });
       }
     }
 

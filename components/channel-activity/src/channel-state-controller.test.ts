@@ -22,12 +22,12 @@ function createPair() {
 
 function channelRow(id: string, name: string, opts?: {
   description?: string; spaceId?: string; spaceName?: string; parentSpaceId?: string;
-  unreadCount?: string;
+  displayOrder?: string; unreadCount?: string;
 }): unknown[] {
   return [
     id, name, '', opts?.description ?? '', 'false',
     opts?.spaceId ?? '', opts?.spaceName ?? '', opts?.parentSpaceId ?? '',
-    opts?.unreadCount ?? '',
+    opts?.displayOrder ?? '', opts?.unreadCount ?? '',
   ];
 }
 

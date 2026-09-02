@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { emitPagesEvent } from '@casehubio/pages-component';
+import { emitPagesEvent } from '@casehubio/pages-data';
 import { ChannelEventTopics } from './events.js';
 
 describe('ChannelEventTopics', () => {

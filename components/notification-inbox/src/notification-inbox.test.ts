@@ -460,7 +460,7 @@ describe('blocks-notification-inbox', () => {
     await el.updateComplete;
 
     // Confirm dialog should be open
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog') as any;
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog') as any;
     expect(dialog).toBeTruthy();
     expect(dialog.open).toBe(true);
   });

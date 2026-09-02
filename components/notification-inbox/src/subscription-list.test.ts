@@ -238,7 +238,7 @@ describe('blocks-subscription-list', () => {
     el.handleDelete('sub-1');
     await el.updateComplete;
 
-    const dialog = el.shadowRoot!.querySelector('blocks-confirm-dialog');
+    const dialog = el.shadowRoot!.querySelector('pages-confirm-dialog');
     expect(dialog).toBeTruthy();
     expect(dialog!.open).toBe(true);
     expect(dialog!.heading).toContain('Delete');

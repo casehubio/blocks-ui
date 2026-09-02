@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest';
+import '@casehubio/blocks-ui-core';
 import { toDecoration, BADGE_COLORS } from './decoration.js';
 
 describe('toDecoration', () => {
