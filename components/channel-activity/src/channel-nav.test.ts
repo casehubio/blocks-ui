@@ -565,6 +565,48 @@ describe('blocks-channel-nav', () => {
     });
   });
 
+  describe('displayOrder sorting', () => {
+    it('renders channels in displayOrder when tree is pre-sorted', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = {
+        ungrouped: [],
+        spaces: [{
+          space: { id: 'sp1', name: 'Alpha' },
+          channels: [
+            { id: 'ch-a', name: 'alpha', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 0 },
+            { id: 'ch-b', name: 'bravo', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 1 },
+            { id: 'ch-c', name: 'charlie', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 2 },
+          ],
+          unreadCount: 0,
+          children: [],
+        }],
+      };
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.space-channels .channel-item');
+      expect(items[0]!.textContent).toContain('alpha');
+      expect(items[1]!.textContent).toContain('bravo');
+      expect(items[2]!.textContent).toContain('charlie');
+    });
+
+    it('channelTree getter sorts by displayOrder (nulls last, then name)', async () => {
+      const { ChannelStateController } = await import('./channel-state-controller.js');
+      const host = { addController: vi.fn(), requestUpdate: vi.fn() };
+      const push = { registerDatasetHandler: vi.fn() };
+      const ctrl = new ChannelStateController(host, push);
+      ctrl.channels = [
+        { id: 'ch-c', name: 'charlie', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 2 },
+        { id: 'ch-a', name: 'alpha', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 0 },
+        { id: 'ch-z', name: 'zulu', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0 },
+        { id: 'ch-b', name: 'bravo', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 1 },
+      ];
+      const tree = ctrl.channelTree;
+      const names = tree.spaces[0]!.channels.map((ch: any) => ch.name);
+      expect(names).toEqual(['alpha', 'bravo', 'charlie', 'zulu']);
+    });
+  });
+
   describe('context menu', () => {
     const mockTree: ChannelTree = {
       ungrouped: [
@@ -778,6 +820,111 @@ describe('blocks-channel-nav', () => {
 
       const btn = el.shadowRoot!.querySelector('.create-space-btn');
       expect(btn).toBeTruthy();
+    });
+  });
+
+  describe('drag and drop', () => {
+    const dndTree: ChannelTree = {
+      ungrouped: [
+        { id: 'ch-ug', name: 'general', semantic: 'APPEND', paused: false, unreadCount: 0, displayOrder: 0 },
+      ],
+      spaces: [{
+        space: { id: 'sp1', name: 'Alpha' },
+        channels: [
+          { id: 'ch-a', name: 'alpha', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 0 },
+          { id: 'ch-b', name: 'bravo', semantic: 'APPEND', paused: false, spaceId: 'sp1', spaceName: 'Alpha', unreadCount: 0, displayOrder: 1 },
+        ],
+        unreadCount: 0,
+        children: [],
+      }, {
+        space: { id: 'sp2', name: 'Beta' },
+        channels: [
+          { id: 'ch-c', name: 'charlie', semantic: 'APPEND', paused: false, spaceId: 'sp2', spaceName: 'Beta', unreadCount: 0, displayOrder: 0 },
+        ],
+        unreadCount: 0,
+        children: [],
+      }],
+    };
+
+    it('sets draggable on channel items in tree mode', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = dndTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.channel-item');
+      for (const item of items) {
+        expect(item.getAttribute('draggable')).toBe('true');
+      }
+    });
+
+    it('adds dragging class on dragstart', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = dndTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.channel-item');
+      const item = items[1] as HTMLElement; // first space channel
+      const startEvt = new Event('dragstart', { bubbles: true }) as any;
+      startEvt.dataTransfer = { effectAllowed: '', setData: vi.fn() };
+      item.dispatchEvent(startEvt);
+      await (el as any).updateComplete;
+
+      expect(item.classList.contains('dragging')).toBe(true);
+    });
+
+    it('clears dragging state on dragend', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = dndTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      const items = el.shadowRoot!.querySelectorAll('.channel-item');
+      const item = items[1] as HTMLElement;
+      const startEvt = new Event('dragstart', { bubbles: true }) as any;
+      startEvt.dataTransfer = { effectAllowed: '', setData: vi.fn() };
+      item.dispatchEvent(startEvt);
+      await (el as any).updateComplete;
+      expect(item.classList.contains('dragging')).toBe(true);
+
+      item.dispatchEvent(new Event('dragend', { bubbles: true }));
+      await (el as any).updateComplete;
+      expect(item.classList.contains('dragging')).toBe(false);
+    });
+
+    it('highlights space header as drop target', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = dndTree;
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      (el as any)._dragChannelId = 'ch-a';
+      (el as any)._dropTarget = { spaceId: 'sp2', position: -1 };
+      await (el as any).updateComplete;
+
+      const headers = el.shadowRoot!.querySelectorAll('.space-header');
+      expect(headers[1]!.classList.contains('drop-target')).toBe(true);
+      expect(headers[0]!.classList.contains('drop-target')).toBe(false);
+    });
+
+    it('shows empty ungrouped drop zone during drag when all channels are in spaces', async () => {
+      el = document.createElement('blocks-channel-nav');
+      (el as any).channelTree = {
+        ungrouped: [],
+        spaces: dndTree.spaces,
+      };
+      document.body.appendChild(el);
+      await (el as any).updateComplete;
+
+      expect(el.shadowRoot!.querySelector('.drop-placeholder')).toBeNull();
+
+      (el as any)._dragChannelId = 'ch-a';
+      await (el as any).updateComplete;
+
+      const placeholder = el.shadowRoot!.querySelector('.drop-placeholder');
+      expect(placeholder).toBeTruthy();
+      expect(placeholder!.textContent).toContain('Drop here');
     });
   });
 });

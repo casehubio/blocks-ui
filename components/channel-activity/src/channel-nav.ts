@@ -28,6 +28,8 @@ export class ChannelNavElement extends LitElement {
   @state() private _showDeleteSpaceDialog = false;
   @state() private _deleteSpaceTarget: SpaceNode | null = null;
   @state() private _createChannelInSpaceId: string | null = null;
+  @state() private _dragChannelId: string | null = null;
+  @state() private _dropTarget: { spaceId: string | null; position: number } | null = null;
 
   static override readonly styles = css`
     :host {
@@ -231,6 +233,28 @@ export class ChannelNavElement extends LitElement {
       height: 1px;
       background: var(--pages-neutral-4, #e5e5e5);
       margin: var(--pages-space-1, 4px) 0;
+    }
+    .channel-item[draggable="true"] { cursor: grab; }
+    .channel-item.dragging { opacity: 0.4; }
+    .drop-indicator {
+      height: 2px;
+      background: var(--pages-accent-9, #0ea5e9);
+      margin: 0 var(--pages-space-2, 8px);
+      border-radius: 1px;
+    }
+    .space-header.drop-target {
+      background: var(--pages-accent-3, #e0f2fe);
+      outline: 2px dashed var(--pages-accent-7, #818cf8);
+      outline-offset: -2px;
+    }
+    .drop-placeholder {
+      padding: var(--pages-space-3, 12px);
+      text-align: center;
+      font-size: 12px;
+      color: var(--pages-neutral-8, #888);
+      border: 2px dashed var(--pages-neutral-5, #d4d4d4);
+      border-radius: var(--pages-radius-1, 4px);
+      list-style: none;
     }
     .submenu-trigger { position: relative; }
     .submenu-trigger .submenu { display: none; }
@@ -488,6 +512,80 @@ export class ChannelNavElement extends LitElement {
     this._showCreateDialog = true;
   }
 
+  private _onDragStart(e: DragEvent, channel: QhorusChannel) {
+    this._dragChannelId = channel.id;
+    e.dataTransfer!.effectAllowed = 'move';
+    e.dataTransfer!.setData('text/plain', channel.id);
+  }
+
+  private _onDragEnd() {
+    this._dragChannelId = null;
+    this._dropTarget = null;
+  }
+
+  private _onChannelDragOver(e: DragEvent, spaceId: string | null, index: number) {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    let position = e.clientY < midY ? index : index + 1;
+    if (this._dragChannelId) {
+      const sourceIndex = this._getDragSourceIndex(spaceId);
+      if (sourceIndex !== -1 && sourceIndex < position) {
+        position--;
+      }
+    }
+    this._dropTarget = { spaceId, position };
+  }
+
+  private _onSpaceHeaderDragOver(e: DragEvent, spaceId: string) {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+    this._dropTarget = { spaceId, position: -1 };
+  }
+
+  private _onDragLeave(e: DragEvent) {
+    const related = e.relatedTarget as Node | null;
+    if (!related || !(e.currentTarget as HTMLElement).contains(related)) {
+      this._dropTarget = null;
+    }
+  }
+
+  private _onUngroupedAreaDragOver(e: DragEvent) {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+    this._dropTarget = { spaceId: null, position: 0 };
+  }
+
+  private _getDragSourceIndex(spaceId: string | null): number {
+    if (!this._dragChannelId || !this.channelTree) return -1;
+    if (!spaceId) {
+      return this.channelTree.ungrouped.findIndex(ch => ch.id === this._dragChannelId);
+    }
+    const findSpace = (nodes: SpaceNode[]): SpaceNode | undefined => {
+      for (const n of nodes) {
+        if (n.space.id === spaceId) return n;
+        const child = findSpace(n.children);
+        if (child) return child;
+      }
+      return undefined;
+    };
+    const node = findSpace(this.channelTree.spaces);
+    return node?.channels.findIndex(ch => ch.id === this._dragChannelId) ?? -1;
+  }
+
+  private _onDrop(e: DragEvent) {
+    e.preventDefault();
+    if (!this._dragChannelId || !this._dropTarget) return;
+    const { spaceId, position } = this._dropTarget;
+    const pos = position === -1 ? undefined : position;
+    emitPagesEvent(this, ChannelEventTopics.MOVE_CHANNEL_TO_SPACE, {
+      channelId: this._dragChannelId, spaceId, position: pos,
+    });
+    this._dragChannelId = null;
+    this._dropTarget = null;
+  }
+
   private _emitMoveChannel(channelId: string, spaceId: string | null) {
     emitPagesEvent(this, ChannelEventTopics.MOVE_CHANNEL_TO_SPACE, { channelId, spaceId });
   }
@@ -527,13 +625,21 @@ export class ChannelNavElement extends LitElement {
     return nothing;
   }
 
-  private _renderChannelItem(channel: QhorusChannel): unknown {
+  private _renderChannelItem(channel: QhorusChannel, spaceId: string | null = null, index: number = 0): unknown {
+    const isDropBefore = this._dropTarget?.spaceId === spaceId && this._dropTarget?.position === index;
+    const isDropAfter = this._dropTarget?.spaceId === spaceId && this._dropTarget?.position === index + 1;
     return html`
-      <li class="channel-item ${this.selectedChannelId === channel.id ? 'selected' : ''}"
+      ${isDropBefore ? html`<li class="drop-indicator"></li>` : nothing}
+      <li class="channel-item ${this.selectedChannelId === channel.id ? 'selected' : ''} ${this._dragChannelId === channel.id ? 'dragging' : ''}"
           role="option"
+          draggable="true"
           aria-selected="${this.selectedChannelId === channel.id}"
           @click="${() => this.handleChannelClick(channel.id)}"
-          @contextmenu="${(e: MouseEvent) => this._showContextMenu(e, 'channel', channel)}">
+          @contextmenu="${(e: MouseEvent) => this._showContextMenu(e, 'channel', channel)}"
+          @dragstart="${(e: DragEvent) => this._onDragStart(e, channel)}"
+          @dragend="${this._onDragEnd}"
+          @dragover="${(e: DragEvent) => this._onChannelDragOver(e, spaceId, index)}"
+          @drop="${this._onDrop}">
         <span class="channel-icon">${this.getChannelIcon(channel.semantic)}</span>
         <span class="channel-name">${channel.name}</span>
         ${channel.unreadCount ? html`<pages-badge variant="neutral" size="sm" label="${channel.unreadCount}"></pages-badge>` : nothing}
@@ -543,6 +649,7 @@ export class ChannelNavElement extends LitElement {
             @click="${(e: MouseEvent) => this.handleDeleteClick(e, channel)}">✕</pages-button>
         ` : nothing}
       </li>
+      ${isDropAfter ? html`<li class="drop-indicator"></li>` : nothing}
     `;
   }
 
@@ -551,9 +658,12 @@ export class ChannelNavElement extends LitElement {
     const renaming = this._renamingSpaceId === node.space.id;
     return html`
       <div class="space-group">
-        <div class="space-header"
+        <div class="space-header ${this._dropTarget?.spaceId === node.space.id && this._dropTarget?.position === -1 ? 'drop-target' : ''}"
              @click="${renaming ? nothing : () => this._toggleSpace(node.space.id)}"
              @contextmenu="${(e: MouseEvent) => this._showContextMenu(e, 'space', node)}"
+             @dragover="${(e: DragEvent) => this._onSpaceHeaderDragOver(e, node.space.id)}"
+             @drop="${this._onDrop}"
+             @dragleave="${this._onDragLeave}"
              role="button" aria-expanded="${expanded}">
           <span class="space-disclosure">${expanded ? '▾' : '▸'}</span>
           ${renaming ? html`
@@ -567,7 +677,7 @@ export class ChannelNavElement extends LitElement {
         </div>
         ${expanded ? html`
           <ul class="space-channels">
-            ${node.channels.map(ch => this._renderChannelItem(ch))}
+            ${node.channels.map((ch, i) => this._renderChannelItem(ch, node.space.id, i))}
           </ul>
           ${node.children.map(child => this._renderSpaceGroup(child))}
         ` : nothing}
@@ -596,9 +706,17 @@ export class ChannelNavElement extends LitElement {
         ` : nothing}
       </div>
       <div class="channel-list" role="tree" tabindex="0" @keydown="${this._handleTreeKeyDown}">
-        ${!this._spaceFilter && tree.ungrouped.length > 0 ? html`
+        ${!this._spaceFilter && (tree.ungrouped.length > 0 || this._dragChannelId) ? html`
           <ul class="ungrouped">
-            ${tree.ungrouped.map(ch => this._renderChannelItem(ch))}
+            ${tree.ungrouped.map((ch, i) => this._renderChannelItem(ch, null, i))}
+            ${tree.ungrouped.length === 0 && this._dragChannelId ? html`
+              <li class="drop-placeholder"
+                  @dragover="${this._onUngroupedAreaDragOver}"
+                  @drop="${this._onDrop}"
+                  @dragleave="${this._onDragLeave}">
+                Drop here to remove from space
+              </li>
+            ` : nothing}
           </ul>
         ` : nothing}
         ${filteredSpaces.map(node => this._renderSpaceGroup(node))}

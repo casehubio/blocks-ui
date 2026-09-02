@@ -63,12 +63,39 @@ export class ChannelStateController implements ReactiveController {
     this._host.requestUpdate();
   }
 
-  applyMoveChannel(channelId: string, spaceId: string | null, spaceName: string | null) {
+  applyMoveChannel(channelId: string, spaceId: string | null, spaceName: string | null, position?: number) {
+    const channel = this.channels.find(ch => ch.id === channelId);
+    if (!channel) return;
+
+    let moved: QhorusChannel;
+    if (spaceId) {
+      moved = { ...channel, spaceId, spaceName: spaceName ?? undefined } as QhorusChannel;
+    } else {
+      const { spaceId: _, spaceName: _s, parentSpaceId: _p, ...rest } = channel;
+      moved = rest as QhorusChannel;
+    }
+
+    const siblings = this.channels
+      .filter(ch => ch.id !== channelId && (spaceId ? ch.spaceId === spaceId : !ch.spaceId))
+      .sort((a, b) => {
+        const oa = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        const ob = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+        return oa !== ob ? oa - ob : a.name.localeCompare(b.name);
+      });
+
+    const pos = Math.min(position ?? siblings.length, siblings.length);
+    siblings.splice(pos, 0, moved);
+
+    const reordered = new Map(siblings.map((ch, i) => [ch.id, i]));
+
     this.channels = this.channels.map(ch => {
-      if (ch.id !== channelId) return ch;
-      if (spaceId) return { ...ch, spaceId, spaceName: spaceName ?? undefined } as typeof ch;
-      const { spaceId: _, spaceName: _s, parentSpaceId: _p, ...rest } = ch;
-      return rest as typeof ch;
+      const newOrder = reordered.get(ch.id);
+      if (newOrder !== undefined) {
+        return ch.id === channelId
+          ? { ...moved, displayOrder: newOrder } as QhorusChannel
+          : { ...ch, displayOrder: newOrder };
+      }
+      return ch;
     });
     this._host.requestUpdate();
   }
@@ -125,6 +152,17 @@ export class ChannelStateController implements ReactiveController {
       }
     }
 
+    const sortByOrder = (a: QhorusChannel, b: QhorusChannel) => {
+      const oa = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      const ob = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      if (oa !== ob) return oa - ob;
+      return a.name.localeCompare(b.name);
+    };
+    for (const node of spaceMap.values()) {
+      node.channels.sort(sortByOrder);
+    }
+    ungrouped.sort(sortByOrder);
+
     return { spaces: roots, ungrouped };
   }
 
@@ -174,6 +212,13 @@ export class ChannelStateController implements ReactiveController {
       this._pendingSpaces = this._pendingSpaces.filter(s => !channelSpaceIds.has(s.id));
     } else if (op.op === 'append' && op.rows) {
       this.channels = [...this.channels, ...op.rows.map(r => this._toChannel(r))];
+    } else if (op.op === 'replace' && op.row && op.key) {
+      const existing = this.channels.find(c => c.id === op.key);
+      const updated = this._toChannel(op.row);
+      this.channels = this.channels.map(c =>
+        c.id === op.key
+          ? { ...updated, unreadCount: existing?.unreadCount ?? updated.unreadCount ?? 0 }
+          : c);
     } else if (op.op === 'remove' && op.key) {
       this.channels = this.channels.filter(c => c.id !== op.key);
     }
@@ -185,11 +230,13 @@ export class ChannelStateController implements ReactiveController {
     const spaceId = row[5] as string;
     const spaceName = row[6] as string;
     const parentSpaceId = row[7] as string;
-    const unreadCount = row[8] as string;
+    const displayOrder = row[8] as string;
+    const unreadCount = row[9] as string;
     if (desc) (ch as { description: string }).description = desc;
     if (spaceId) (ch as { spaceId: string }).spaceId = spaceId;
     if (spaceName) (ch as { spaceName: string }).spaceName = spaceName;
     if (parentSpaceId) (ch as { parentSpaceId: string }).parentSpaceId = parentSpaceId;
+    if (displayOrder) (ch as { displayOrder: number }).displayOrder = parseInt(displayOrder, 10);
     if (unreadCount) (ch as { unreadCount: number }).unreadCount = parseInt(unreadCount, 10) || 0;
     return ch;
   }

@@ -111,4 +111,5 @@ export interface DeleteSpacePayload {
 export interface MoveChannelToSpacePayload {
   readonly channelId: string;
   readonly spaceId: string | null;
+  readonly position?: number;
 }
