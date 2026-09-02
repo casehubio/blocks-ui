@@ -22,5 +22,5 @@ proj
 .worktrees
 .worktrees/
 .claude/
-*.png
+/*.png
 tmp/
