@@ -3,7 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import '@casehubio/blocks-ui-core';
 import '@casehubio/pages-viz';
-import type { FieldSchema } from '@casehubio/pages-ui-components';
+type FieldSchema = Record<string, unknown>;
 import type { ErasureReceipt } from './types.js';
 
 export const GdprErasureTopics = {
