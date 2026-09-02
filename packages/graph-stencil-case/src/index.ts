@@ -12,6 +12,8 @@ export type {
   MilestoneSnapshot,
   TaskStatus,
   MilestoneLifecycleStatus,
+  TrustScoreSnapshot,
+  AdaptiveDecisionSnapshot,
 } from './runtime/types.js';
 export type {
   CaseDefinition,

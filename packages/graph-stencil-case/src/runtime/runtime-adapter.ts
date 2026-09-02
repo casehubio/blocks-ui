@@ -1,5 +1,5 @@
 import type { NodeDecoration } from '@casehubio/graph-core';
-import type { CaseRuntimeState, PlanItemSnapshot } from './types.js';
+import type { CaseRuntimeState, PlanItemSnapshot, TrustScoreSnapshot, AdaptiveDecisionSnapshot } from './types.js';
 import { toDecoration } from './decoration.js';
 import {
   TERMINAL_SEVERITY,
@@ -71,5 +71,42 @@ export function toDecorations(state: CaseRuntimeState): ReadonlyMap<string, Node
     decorations.set(`milestone:${milestone.name}`, { ...base, tooltip: milestone.status.toLowerCase() });
   }
 
+  if (state.trustScores) {
+    for (const ts of state.trustScores) {
+      const key = `binding:${ts.bindingName}`;
+      const existing = decorations.get(key);
+      if (existing) {
+        decorations.set(key, {
+          ...existing,
+          pills: [{ text: String(ts.score), color: trustScoreColor(ts.score) }],
+        });
+      }
+    }
+  }
+
+  if (state.adaptiveDecisions) {
+    for (const ad of state.adaptiveDecisions) {
+      if (!ad.fired || !ad.affectedBindings) continue;
+      for (const bindingName of ad.affectedBindings) {
+        const key = `binding:${bindingName}`;
+        const existing = decorations.get(key);
+        if (existing) {
+          const adaptiveTooltip = `⚡ ${ad.trigger}: ${ad.condition}`;
+          const currentTooltip = existing.tooltip ?? '';
+          decorations.set(key, {
+            ...existing,
+            tooltip: currentTooltip ? `${currentTooltip}\n${adaptiveTooltip}` : adaptiveTooltip,
+          });
+        }
+      }
+    }
+  }
+
   return decorations;
+}
+
+function trustScoreColor(score: number): string {
+  if (score >= 80) return '#22c55e';
+  if (score >= 50) return '#eab308';
+  return '#ef4444';
 }

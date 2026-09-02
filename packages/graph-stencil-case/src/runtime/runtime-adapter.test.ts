@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest';
 import '@casehubio/blocks-ui-core';
 import { toDecorations } from './runtime-adapter.js';
-import type { CaseRuntimeState, PlanItemSnapshot } from './types.js';
+import type { CaseRuntimeState, PlanItemSnapshot, TrustScoreSnapshot, AdaptiveDecisionSnapshot } from './types.js';
 
 function makeState(
   planItems: PlanItemSnapshot[] = [],
@@ -13,6 +13,20 @@ function makeState(
 
 function planItem(bindingName: string, status: string, createdAt = '2026-08-04T10:00:00Z'): PlanItemSnapshot {
   return { id: `pi-${bindingName}-${status}`, bindingName, status: status as PlanItemSnapshot['status'], createdAt };
+}
+
+function makeStateWithTrust(
+  planItems: PlanItemSnapshot[] = [],
+  trustScores: TrustScoreSnapshot[] = [],
+): CaseRuntimeState {
+  return { planItems, milestones: [], timestamp: '2026-08-04T10:00:00Z', trustScores };
+}
+
+function makeStateWithAdaptive(
+  planItems: PlanItemSnapshot[] = [],
+  adaptiveDecisions: AdaptiveDecisionSnapshot[] = [],
+): CaseRuntimeState {
+  return { planItems, milestones: [], timestamp: '2026-08-04T10:00:00Z', adaptiveDecisions };
 }
 
 describe('toDecorations', () => {
@@ -113,5 +127,99 @@ describe('toDecorations', () => {
     ]));
     expect(result.get('binding:b1')!.badge!.icon).toBe('▶');
     expect(result.get('binding:b2')!.badge!.icon).toBe('✓');
+  });
+});
+
+describe('toDecorations — trust scores', () => {
+  it('adds trust score pill to binding decoration', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('extract-text', 'RUNNING')],
+      [{ bindingName: 'extract-text', workerId: 'w1', score: 85 }],
+    ));
+    const dec = result.get('binding:extract-text');
+    expect(dec).toBeDefined();
+    expect(dec!.pills).toBeDefined();
+    expect(dec!.pills).toHaveLength(1);
+    expect(dec!.pills![0].text).toBe('85');
+    expect(dec!.pills![0].color).toBe('#22c55e');
+  });
+
+  it('uses amber for moderate trust score', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('b1', 'COMPLETED')],
+      [{ bindingName: 'b1', workerId: 'w1', score: 65 }],
+    ));
+    expect(result.get('binding:b1')!.pills![0].color).toBe('#eab308');
+  });
+
+  it('uses red for low trust score', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('b1', 'COMPLETED')],
+      [{ bindingName: 'b1', workerId: 'w1', score: 30 }],
+    ));
+    expect(result.get('binding:b1')!.pills![0].color).toBe('#ef4444');
+  });
+
+  it('skips trust pill when no matching binding in plan items', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('b1', 'RUNNING')],
+      [{ bindingName: 'b-other', workerId: 'w1', score: 90 }],
+    ));
+    expect(result.get('binding:b1')!.pills).toBeUndefined();
+  });
+
+  it('handles boundary score 80 as green', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('b1', 'COMPLETED')],
+      [{ bindingName: 'b1', workerId: 'w1', score: 80 }],
+    ));
+    expect(result.get('binding:b1')!.pills![0].color).toBe('#22c55e');
+  });
+
+  it('handles boundary score 50 as amber', () => {
+    const result = toDecorations(makeStateWithTrust(
+      [planItem('b1', 'COMPLETED')],
+      [{ bindingName: 'b1', workerId: 'w1', score: 50 }],
+    ));
+    expect(result.get('binding:b1')!.pills![0].color).toBe('#eab308');
+  });
+});
+
+describe('toDecorations — adaptive decisions', () => {
+  it('adds tooltip for fired adaptive decision on affected binding', () => {
+    const result = toDecorations(makeStateWithAdaptive(
+      [planItem('b1', 'RUNNING')],
+      [{
+        trigger: 'trust-drop', condition: 'score < 50', fired: true,
+        timestamp: '2026-08-04T10:01:00Z', affectedBindings: ['b1'],
+      }],
+    ));
+    const dec = result.get('binding:b1');
+    expect(dec!.tooltip).toContain('trust-drop');
+    expect(dec!.tooltip).toContain('score < 50');
+  });
+
+  it('does not modify decoration for unfired adaptive decision', () => {
+    const result = toDecorations(makeStateWithAdaptive(
+      [planItem('b1', 'RUNNING')],
+      [{
+        trigger: 'trust-drop', condition: 'score < 50', fired: false,
+        timestamp: '2026-08-04T10:01:00Z', affectedBindings: ['b1'],
+      }],
+    ));
+    const dec = result.get('binding:b1');
+    expect(dec!.tooltip).toBe('running');
+  });
+
+  it('handles adaptive decision with no affectedBindings', () => {
+    const result = toDecorations(makeStateWithAdaptive(
+      [planItem('b1', 'RUNNING')],
+      [{
+        trigger: 'trust-drop', condition: 'score < 50', fired: true,
+        timestamp: '2026-08-04T10:01:00Z',
+      }],
+    ));
+    const dec = result.get('binding:b1');
+    expect(dec!.tooltip).toBe('running');
   });
 });
