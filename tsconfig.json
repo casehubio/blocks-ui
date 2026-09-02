@@ -29,6 +29,7 @@
     { "path": "components/preferences-editor/tsconfig.build.json" },
     { "path": "packages/graph-stencil-htn/tsconfig.build.json" },
     { "path": "components/blocks-dag-viewer/tsconfig.build.json" },
+    { "path": "components/case-flow-viewer/tsconfig.build.json" },
     { "path": "components/blocks-decomposition-tree/tsconfig.build.json" },
     { "path": "components/blocks-plan-item-tree/tsconfig.build.json" },
     { "path": "components/blocks-plan-model-dashboard/tsconfig.build.json" },
