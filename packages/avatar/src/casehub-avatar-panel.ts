@@ -94,7 +94,7 @@ export class CasehubAvatarPanel extends LitElement implements AvatarWsHost {
   @property({ type: String }) body: 'M' | 'F' = 'F';
   @property({ type: String }) mood = 'neutral';
   @property({ type: String, attribute: 'llm-model' }) llmModel = 'claude-haiku-4-5@20251001';
-  @property({ type: String, attribute: 'tts-model' }) ttsModel = 'lessac-medium';
+  @property({ type: String, attribute: 'tts-model' }) ttsModel = 'kokoro:af_heart';
   @property({ type: Number }) speed = 0.9;
 
   @state() turns: ConversationTurn[] = [];
