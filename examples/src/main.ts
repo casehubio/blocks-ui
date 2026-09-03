@@ -53,6 +53,7 @@ const PAGE_MODULES = [
   './pages/diagram-workbench-page.js',
   './pages/diagram-export-page.js',
   './pages/avatar-page.js',
+  './pages/worker-task-pane-page.js',
 ];
 
 async function bootstrap() {

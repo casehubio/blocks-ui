@@ -78,6 +78,7 @@ const NAV: NavCategory[] = [
       { id: 'workbench', label: 'Full Workbench', hash: '#composed/workbench' },
       { id: 'trust-workbench', label: 'Trust Workbench', hash: '#composed/trust-workbench' },
       { id: 'conversation-viewer', label: 'Conversation Viewer', hash: '#composed/conversation-viewer' },
+      { id: 'worker-task-pane', label: 'Worker Task Pane', hash: '#composed/worker-task-pane' },
     ],
   },
   {
@@ -245,6 +246,7 @@ export class ExampleShell extends LitElement {
       case '#composed/workbench': return html`<blocks-example-workbench></blocks-example-workbench>`;
       case '#composed/trust-workbench': return html`<blocks-example-trust-workbench></blocks-example-trust-workbench>`;
       case '#composed/conversation-viewer': return html`<blocks-example-conversation-viewer></blocks-example-conversation-viewer>`;
+      case '#composed/worker-task-pane': return html`<blocks-example-worker-task-pane></blocks-example-worker-task-pane>`;
       case '#components/avatar': return html`<blocks-example-avatar></blocks-example-avatar>`;
       case '#components/contributor-workbench': return html`<blocks-example-contributor-workbench></blocks-example-contributor-workbench>`;
       case '#orchestration/decomposition-tree': return html`<blocks-example-decomposition-tree></blocks-example-decomposition-tree>`;
