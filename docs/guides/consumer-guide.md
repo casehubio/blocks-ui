@@ -64,6 +64,7 @@ Domain-aware but app-agnostic — components know about trust scores, case timel
 | `conversation-viewer` | Conversation protocol viewer — convergence indicator, common ground panel, point list, point detail, conversation workbench. Structured deliberation UI with property-based data delivery. | Beta |
 | `casehub-diagram` | Visual diagram editor for CaseDefinition YAML — extends DiagramBaseMixin, case-specific palette, property panel with binding target selector + worker function type editor (agent/a2a/mcp/sequence/flow sub-forms, pop-out prompt dialog), structural editing, runtime overlay with status badges, worker inline expand | Beta |
 | `swf-diagram` | Standalone SWF workflow diagram — extends DiagramBaseMixin, schema-driven property editing, degraded mode banner. Read-only + property editing (no structural editing). | Beta |
+| `blocks-case-flow-viewer` | Read-only case flow DAG viewer — extends DiagramBaseMixin in readonly mode, composes toGraph + toDecorations from graph-stencil-case. Trust score pills, adaptive decision badges, parallel group ELK partitioning. Toolbar with stats, staleness, export. | Beta |
 | `work-item-row` | Single work item row (legacy — inbox now uses pages-table) | Deprecated |
 
 **Maturity levels:**
@@ -252,6 +253,31 @@ registerThumbnailRenderer('swf', createSwfThumbnailRenderer());
 **Drill-down:** Worker nodes emit `diagram:worker-drill-down` pages-event with `workerId`, `workerName`, `doYaml`. The hosting app handles navigation to `swf-diagram`.
 
 **Worker function types:** Worker stencils display a coloured badge indicating the function type (agent, flow, a2a, mcp, seq, ext). The property panel shows a function type selector and type-specific configuration forms when a worker node is selected. Supported types: Agent (prompt, model provider config), A2A (endpoint, skill, auth), MCP (stdio/HTTP transport, auth), Sequence (ordered worker list with drag-reorder), Flow (drill-down to SWF diagram). Unknown function keys render as read-only JSON. The `casehub-diagram-properties` component accepts `selectedType` and `workerNames` properties to enable the function section.
+
+### blocks-case-flow-viewer
+
+Read-only case flow DAG viewer — the viewer counterpart to `casehub-diagram`. Composes the same rendering pipeline (`toGraph`, `toDecorations`, case stencils, ELK layout, `pages-graph-canvas`) without the editor machinery.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `yaml` | `string` | CaseDefinition YAML string to render |
+| `src` | `string` | URL to fetch CaseDefinition YAML from |
+| `runtimeState` | `CaseRuntimeState \| null` | Runtime state for decoration overlay (status badges, trust score pills, adaptive decision badges) |
+| `selectionTopic` | `string` | Topic name for node click selection events |
+
+**Runtime features:** Trust score pills (green/amber/red by threshold), adaptive decision highlighting (tooltip on fired decisions), parallel group layout (ELK partitioning). All controlled via optional fields on `CaseRuntimeState`.
+
+**Usage:**
+
+```html
+<blocks-case-flow-viewer
+  src="/api/cases/${caseId}/definition"
+  .runtimeState=${runtimeState}
+  selection-topic="case-flow">
+</blocks-case-flow-viewer>
+```
 
 ---
 
