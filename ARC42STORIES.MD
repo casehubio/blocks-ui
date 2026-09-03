@@ -159,6 +159,8 @@ Critical rule: **render callbacks use inline styles**, not CSS classes. Callback
 | Case Exploration | case-explorer (entity-list, entity-detail, entity-tree, entity-command-bar) | Registration-based entity types, cursor-aware fetch, three-tier renderer resolution, lazy-loading tree, breadcrumbs |
 | Notification | notification-inbox (bell, inbox, subscription-list) | Unread badge, tabs/filters/SSE, subscription CRUD |
 | Data Display | blocks-timeline, grouped-data-view, kpi-metric-row, similarity-panel | Pluggable timeline strategies, grouped tables, metric cards with sparklines |
+| Diagram & Graph | casehub-diagram, swf-diagram, blocks-case-flow-viewer, blocks-dag-viewer, diagram-workbench | Case/SWF editors (DiagramBaseMixin), read-only viewers, ELK layout, graph-stencil-case/swf/htn adapters |
+| Orchestration | execution-monitor, orchestration-workbench, blocks-decomposition-tree, blocks-plan-item-tree, blocks-plan-model-dashboard | SSE execution state, agent roster, HTN decomposition tree, plan item hierarchy, case plan model dashboard |
 | Governance | approval-gate, gdpr-erasure-action | Structured decision point with quorum, three-phase erasure form |
 
 ### The Promotion Pipeline
