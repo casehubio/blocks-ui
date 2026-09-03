@@ -1,79 +1,16 @@
-# blocks-ui Workspace
+# CLAUDE.md
+
 **Name:** casehub-blocks-ui
-
-**Physical path:** `/Users/mdproctor/claude/casehub/blocks-ui/CLAUDE.md`
-**Symlinked at:** `/Users/mdproctor/claude/public/casehub/blocks-ui/CLAUDE.md`
-**Project repo:** `/Users/mdproctor/claude/casehub/blocks-ui`
-**Workspace:** `/Users/mdproctor/claude/public/casehub/blocks-ui`
-**Workspace type:** public
-
-**DSL parity:** YAML and Java are peer representations — see [DSL Style Guide](https://raw.githubusercontent.com/casehubio/parent/main/docs/DSL-STYLE-GUIDE.md) §YAML/Java Parity Principle
-
-## Session Start
-
-Run `add-dir /Users/mdproctor/claude/casehub/blocks-ui` before any other work.
-
-## Artifact Locations
-
-| Skill | Writes to |
-|-------|-----------|
-| brainstorming (specs) | `specs/` |
-| writing-plans (plans) | `plans/` |
-| handover | `HANDOFF.md` |
-| idea-log | `IDEAS.md` |
-| design-snapshot | `snapshots/` |
-| adr | `adr/` |
-| write-blog | `blog/` |
-
-## Structure
-
-- `HANDOFF.md` — session handover (single file, overwritten each session)
-- `IDEAS.md` — idea log (single file)
-- `specs/` — brainstorming / design specs (superpowers output)
-- `plans/` — implementation plans (superpowers output)
-- `snapshots/` — design snapshots with INDEX.md (auto-pruned, max 10)
-- `adr/` — architecture decision records with INDEX.md
-- `blog/` — project diary entries with INDEX.md
-- `design/` — epic journal (created by `epic` at branch start)
-
-## Git Discipline
-
-Two git repositories are active in every session:
-- **Workspace** (`/Users/mdproctor/claude/public/casehub/blocks-ui`) — methodology artifacts: handover, blog (staging before publish), plans, snapshots
-- **Project repo** (`/Users/mdproctor/claude/casehub/blocks-ui`) — source code, ADRs (`docs/adr/`), specs
-
-Never rely on CWD for git operations — the session may have started in either repo. Always use explicit paths:
-```bash
-git -C /Users/mdproctor/claude/public/casehub/blocks-ui ...   # workspace artifacts
-git -C /Users/mdproctor/claude/casehub/blocks-ui ...           # project artifacts
-```
-The file path determines the repo: if the file lives under `Workspace`, use the workspace path; if under `Project repo`, use the project path.
-
-## Rules
-
-- All methodology artifacts go here, not in the project repo
-- Promotion to project repo is always explicit — never automatic
-- Workspace branches mirror project branches — switch both together
-
-## Routing
-
-| Artifact   | Destination | Notes |
-|------------|-------------|-------|
-| adr        | project     | lands in `docs/adr/` |
-| blog       | project     | lands in `docs/blog/` — promoted at work end |
-| design     | project     | journal file lives in workspace design/; DESIGN.md merge target is project docs/DESIGN.md |
-| snapshots  | workspace   | |
-| specs      | project     | lands in docs/specs/ |
-| plans      | workspace   | |
-| handover   | workspace   | |
-
----
-
-# CaseHub Blocks UI
 
 ## Project Type
 
 type: custom
+
+## Work Tracking
+
+Issue tracking: enabled
+GitHub repo: casehubio/blocks-ui
+Changelog: GitHub Releases
 
 ## What This Project Is
 
@@ -149,37 +86,37 @@ yarn typecheck
 | `components/compliance-summary/` | Regulation compliance grid — status badges (MET/PARTIAL/GAP/BREACHED), evidence links via pages-table. Dual data mode. Promoted from clinical. |
 | `components/grouped-data-view/` | Grouped data view — items grouped by column key with per-group pages-table rendering, DataSourceMixin, group styling. Thin wrapper over pages-grouped-view. |
 | `components/routing-rationale/` | Routing rationale — trust-weighted assignment explanation: score vs threshold with borderline margin, alternatives table with phase badges, policy summary. DataSourceMixin + LiveRegionMixin, inline-styled column renderers, renderCandidate callback, dual-data mode. |
-| `components/trust-feedback-display/` | Post-gate trust score delta — decision/attestation badges, trust before→after with directional arrow, full card and compact inline modes. Complements trust-score-panel. Promoted from clinical. |
+| `components/trust-feedback-display/` | Post-gate trust score delta — decision/attestation badges, trust before/after with directional arrow, full card and compact inline modes. Complements trust-score-panel. Promoted from clinical. |
 | `components/trust-workbench/` | Trust workbench — composes trust-score-panel + list-pane (left) and routing-rationale + trust-feedback-display (right) in split-workbench. Capability drill-down filters routing history. Inline data mode for demos. Three consumption tiers. |
 | `components/sla-breach-policy/` | SLA breach escalation tiers — active tier highlighting, optional embedded sla-indicator countdown via deadline prop, shared pulseAnimation. Complements sla-indicator. Promoted from clinical. |
-| `components/gdpr-erasure-action/` | GDPR data erasure form — three-phase (input → blocks-confirm-dialog confirmation → receipt), customisable subjectLabel and reasonOptions. Extends LitElement directly (no DataSourceMixin). Promoted from clinical. |
-| `components/commitment-viz/` | Commitment lifecycle visualization — transition badges (`commitment-transition-badge`), range bars (compact/detailed modes), `decorateCommitmentRanges` pure function for feed decoration metadata. Props-driven, decoupled from channel-activity. Types and commitment-state-pill re-exported from blocks-ui-core (pill promoted in #101). |
-| `components/channel-activity/` | Qhorus channel activity — message feed with sender grouping and threading, channel nav with keyboard navigation, member panel with presence, message input with speech-act type selector, emoji reactions, stale cursor detection. Promoted from connectors chat-demo. Convenience wrapper: `<blocks-channel-activity>` composes nav + feed + input + topic-bar in split-workbench with tabbed sidebar (members/tasks/artifacts/correlations), controller lifecycle from PushController, all 18 event topics routed. Three tiers: standalone, panel-hosted (configure()), inline data. Extension points: formatSender, renderContent, renderContextHeader, renderError, allowedTypes/deniedTypes filtering (per protocol PP-20260713-8ea1af), channel-nav layout (sidebar/dropdown), showCreate/showDelete toggles |
-| `components/case-flow-viewer/` | Case flow viewer — read-only case definition DAG with runtime decorations (trust score pills, adaptive decision badges, parallel groups). Extends DiagramBaseMixin in readonly mode, composes toGraph + toDecorations from graph-stencil-case. Toolbar with stats, staleness, case status badge, SVG/PNG export. |
-| `components/case-explorer/` | Composable case explorer — universal entity browser with registration-based entity types. Generic components: entity-list (cursor-aware fetch, list-pane data-property mode), entity-detail (three-tier renderer resolution: sub-type → entity-type → default), entity-tree (collapsible hierarchy with lazy loading, ARIA tree, M-of-N groups), entity-command-bar (MCP-tools-style dynamic commands with confirmation), case-explorer (full split-workbench composition with NavigationController, entity type tabs, list/tree mode, breadcrumbs). Presets: caseInstanceType, workerType, caseDefinitionType, gateType, channelType. Convenience wrappers: case-instance-list, worker-list, case-definition-browser, case-detail-panel, worker-detail-panel. Domain customisation via columnRenderers, detailRenderer, detailRendererMap, nodeRenderer, filters. |
-| `components/preferences-editor/` | Preferences editor — tree-table UI for scope-aware preference management. Scope hierarchy (system → tenant → team → user) with preference key-value pairs as leaves. Type-aware inline editors (string, integer, number, boolean, duration, enum) driven by PreferenceSchemaDescriptor from platform REST API. Inheritance computation (local, inherited, overridden, default) with source scope badges. PreferencesApi REST client, ValueEditor sub-component. |
-| `components/session-list/` | Session list — claudony session table with status badges (ACTIVE/WAITING/IDLE), inline spawn form, delete/restart actions with failure recovery. Uses raw array + fromRows pattern (like work-item-inbox), emitPagesEvent for selection/change events. Types: SessionResponse, SessionStatus, CreateSessionRequest, GitStatusResponse, PortStatus. |
-| `components/session-detail/` | Session detail — tabbed detail pane for a selected session: Terminal (polling output), Git (branch/PR/checks), Health (port status via pages-table), Events (SSE via SSEManager). Tab lifecycle manages timers and SSE connections. Listens for session:selected/deselected events. |
-| `components/execution-monitor/` | Execution monitor — SSE-driven live execution state for orchestration framework. State badge (7 states), pattern badge (8 types), execution model summary, agent roster with type/result badges. Dual data mode (SSE endpoint + inline property). Staleness detection. Render callbacks: renderAgent, renderModel. |
-| `components/orchestration-workbench/` | Orchestration workbench — composes execution-monitor (left) + blocks-timeline with orchestration-events strategy (right) in split-workbench. Selection coordination between agent roster and audit timeline. Three consumption tiers (standalone, panel-hosted, inline). |
-| `packages/diagram-core/` | Shared diagram orchestration — DiagramBaseMixin (undo/redo, render pipeline, dirty tracking, persistence, keyboard shortcuts, src fetch, error/degraded/readonly modes, SVG/PNG export via `exportDiagram`), DiagramToolbar (save/dirty, Export SVG/PNG buttons), DiagramProperties (generic schema-driven property panel), schema registry (registerPropertySchema/getPropertySchema — Map-based lookup used by `_updateSelectedNode()`), editors (blocks-prompt-editor, blocks-json-editor stubs for x-editor-component fields), form utilities (field-renderer, validation, trigger-editor, nested-group, property-form) |
-| `packages/graph-stencil-case/` | Case domain adapter (YAML ↔ graph), structural stencils (Binding, Worker with SWF thumbnail + drill-down + function type badge, Milestone, Goal, SubCase) registered via pages StencilDescriptor API, ThumbnailRenderer SPI (registerThumbnailRenderer/getThumbnailRenderer), runtime module (RuntimeAdapter — toDecorations with active-worst-first aggregation, TaskStatus/MilestoneLifecycleStatus badge mappings, CaseRuntimeState types), GitHubBackend persistence, YAML editor (addElement, removeElement, switchBindingTarget, applyPropertyEdit, switchFunctionType, switchMcpTransport, switchModelProvider), worker-function module (WorkerFunctionType detection, AgentConfig/A2AConfig/McpConfig/AuthConfig types, function type defaults, form renderers for agent/a2a/mcp/sequence/unknown + shared auth config) |
-| `packages/graph-stencil-swf/` | SWF domain adapter (toSwfGraph — dual YAML walk with SDK buildFlatGraph, type prefixing, degraded mode), SWF stencils (call with sub-type icons, set, switch, raise, try, try-catch, boundary nodes, generic fallback), edge types (flow, switch-case), applySwfPropertyEdit (CST-preserving), swfTaskSchema (static JSON Schema with x-group/x-order/x-visibility annotations per $def, in schemas/ dir), createSwfThumbnailRenderer (SVG thumbnail with caching) |
-| `packages/graph-stencil-htn/` | HTN/DAG domain adapter — TypeScript types mirroring engine sealed interfaces (TaskNodeSnapshot, DagPlanSnapshot, DagNodeSnapshot, NodeStateSnapshot, DagResultSnapshot, PlanItemDefinition, CasePlanModelSnapshot), DAG adapter (dagToGraph with entry/exit detection and taskIdToGraphNodeId index), dag-node stencil (join indicators, executor badges), runtime module (dagToDecorations via node: status domain, nodeStatesToTaskStates bridge), local toDecoration (duplicated from graph-stencil-case per §13) |
-| `components/casehub-diagram/` | CaseHub visual diagram — editor component for CaseDefinition YAML. Extends DiagramBaseMixin from diagram-core. Case-specific: stencil registration, palette (add nodes), runtime overlay (runtimeState, design/runtime mode toggle, staleness indicator), binding target switching, structural editing (add/remove/switchTarget with dependency checks), worker inline expand with ELK per-node size overrides. |
-| `components/diagram-workbench/` | Diagram workbench — split-pane composition of casehub-diagram (left) and swf-diagram (right). Click a worker node's ⤢ to drill down to its SWF workflow. Three consumption tiers. |
-| `components/blocks-dag-viewer/` | DAG execution graph viewer — read-only graph wrapping pages-graph-canvas with ELK layout. Toolbar with dispatch mode badge, summary stats, staleness timer (setInterval + disconnectedCallback cleanup). Decoration-only update path (skip ELK on dagResult change). Async render guard using DagPlanSnapshot.timestamp as plan identity. Node selection via selectionTopic with taskId payload. |
-| `components/blocks-decomposition-tree/` | HTN decomposition tree — recursive ARIA tree for CompoundTask → DecompositionMethod → children hierarchy. 8 strategy badge colours + unknown fallback, guard label display, selectedMethodIndex highlighting, nodeStates-driven status badges on leaves. Render callbacks (renderLeaf, renderMethod) per component-customisation protocol PP-20260713-8ea1af. Tree ↔ DAG coordination via shared selectionTopic with taskId. |
-| `components/blocks-plan-item-tree/` | PlanItemDefinition tree — recursive ARIA tree for Primitive/Compound plan item hierarchy. CompletionSemantics badges (All/M-of-N/FirstWins), DispatchMode pills (ORCHESTRATED/CHOREOGRAPHED), repeatable indicators, entry condition display. Render callbacks (renderPrimitive, renderCompound). |
-| `components/blocks-plan-model-dashboard/` | CasePlanModel dashboard — card-based grid layout: agenda table with status badges, focus area with rationale, resource budget key-value pairs, sub-case list with case status, compound definition progress bars. |
-| `components/session-workbench/` | Session workbench — composition shell for session management. Composes session-list + session-detail in split-workbench with selection-topic="session". KeyboardShortcutMixin for overlay. configure() method for hostPanel integration. |
-| `components/conversation-viewer/` | Conversation protocol viewer — convergence indicator (status bar with confidence fill + state colour), common ground panel (three-column epistemic layout: established/pending/disputed), point list (round-grouped with selection events), point detail (entry thread, sub-task findings, obligation chains via commitment-viz, flags), conversation workbench (split-workbench composition with KeyboardShortcutMixin + LiveRegionMixin, stale selection guard, configure() for hostPanel). Property-based data delivery (ConversationState). |
-| `components/swf-diagram/` | SWF workflow diagram — standalone canvas for Serverless Workflow YAML. Extends DiagramBaseMixin, delegates to toSwfGraph/applySwfPropertyEdit, defaults schema to swfTaskSchema. No structural editing (read-only + property editing). Degraded mode banner when YAML path sync fails. |
-| `components/service-card/` | Per-service health card — status badge (RUNNING/DEGRADED/DEPLOYING/FAULTED/ABSENT), replicas, image, per-cluster deployment status with readyReplicas/desiredReplicas. Dual data mode (data prop or endpoint fetch). Event: service-card.selected. |
-| `components/cluster-panel/` | Cluster management panel — cluster list with connectivity status badges, registration form (name, apiUrl, namespace, type), connectivity test, delete. Dual data mode. Readonly mode hides mutation actions. Events: cluster.registered, cluster.deleted, cluster.tested. |
-| `components/reconciliation-status/` | Desired vs actual reconciliation — per-cluster sections with per-node status grid (nodeType, desired spec, actual state, status badge). SSE live updates via SSEManager. Trigger reconciliation button. Events: reconciliation.node-selected, reconciliation.trigger-requested. |
-| `components/dimension-dashboard/` | Multi-dimension status dashboard — N dimensions with severity badges (OK/LOW/MEDIUM/HIGH/CRITICAL), active response counts, compact layout option for sidebar use. Dual data mode. Event: dimension.selected. |
-| `components/topology-viewer/` | Service dependency DAG — topology graph with status-coloured nodes, replica badges, edge labels. Converts TopologySnapshot to GraphModel (graph-core). SSE live updates for node status changes. Graph canvas integration point stubbed (same pattern as blocks-dag-viewer). Event: topology.node-selected. |
+| `components/gdpr-erasure-action/` | GDPR data erasure form — three-phase (input / confirmation / receipt), customisable subjectLabel and reasonOptions. Extends LitElement directly (no DataSourceMixin). Promoted from clinical. |
+| `components/commitment-viz/` | Commitment lifecycle visualization — transition badges, range bars (compact/detailed modes), decorateCommitmentRanges pure function for feed decoration metadata. Props-driven, decoupled from channel-activity. Types and commitment-state-pill re-exported from blocks-ui-core. |
+| `components/channel-activity/` | Qhorus channel activity — message feed with sender grouping and threading, channel nav with keyboard navigation, member panel with presence, message input with speech-act type selector, emoji reactions, stale cursor detection. Convenience wrapper composes nav + feed + input + topic-bar in split-workbench with tabbed sidebar. Three tiers: standalone, panel-hosted, inline data. |
+| `components/case-flow-viewer/` | Case flow viewer — read-only case definition DAG with runtime decorations (trust score pills, adaptive decision badges, parallel groups). Extends DiagramBaseMixin in readonly mode. Toolbar with stats, staleness, case status badge, SVG/PNG export. |
+| `components/case-explorer/` | Composable case explorer — universal entity browser with registration-based entity types. Generic components: entity-list, entity-detail, entity-tree, entity-command-bar, case-explorer. Presets: caseInstanceType, workerType, caseDefinitionType, gateType, channelType. |
+| `components/preferences-editor/` | Preferences editor — tree-table UI for scope-aware preference management. Scope hierarchy (system/tenant/team/user) with type-aware inline editors driven by PreferenceSchemaDescriptor from platform REST API. |
+| `components/session-list/` | Session list — claudony session table with status badges, inline spawn form, delete/restart actions with failure recovery. |
+| `components/session-detail/` | Session detail — tabbed detail pane: Terminal, Git, Health, Events tabs. Tab lifecycle manages timers and SSE connections. |
+| `components/execution-monitor/` | Execution monitor — SSE-driven live execution state for orchestration framework. State badge, pattern badge, execution model summary, agent roster. Dual data mode. Staleness detection. |
+| `components/orchestration-workbench/` | Orchestration workbench — composes execution-monitor + blocks-timeline with orchestration-events strategy in split-workbench. Three consumption tiers. |
+| `packages/diagram-core/` | Shared diagram orchestration — DiagramBaseMixin (undo/redo, render pipeline, dirty tracking, persistence, keyboard shortcuts, src fetch, error/degraded/readonly modes, SVG/PNG export), DiagramToolbar, DiagramProperties, schema registry, form utilities |
+| `packages/graph-stencil-case/` | Case domain adapter (YAML / graph), structural stencils, ThumbnailRenderer SPI, runtime module, GitHubBackend persistence, YAML editor, worker-function module |
+| `packages/graph-stencil-swf/` | SWF domain adapter, SWF stencils, edge types, applySwfPropertyEdit (CST-preserving), swfTaskSchema, createSwfThumbnailRenderer |
+| `packages/graph-stencil-htn/` | HTN/DAG domain adapter — TypeScript types mirroring engine sealed interfaces, DAG adapter, dag-node stencil, runtime module |
+| `components/casehub-diagram/` | CaseHub visual diagram — editor component for CaseDefinition YAML. Extends DiagramBaseMixin. Case-specific stencil registration, palette, runtime overlay, structural editing with dependency checks. |
+| `components/diagram-workbench/` | Diagram workbench — split-pane composition of casehub-diagram + swf-diagram. Click worker node to drill down to SWF workflow. Three consumption tiers. |
+| `components/blocks-dag-viewer/` | DAG execution graph viewer — read-only graph wrapping pages-graph-canvas with ELK layout. Toolbar with dispatch mode badge, summary stats, staleness timer. |
+| `components/blocks-decomposition-tree/` | HTN decomposition tree — recursive ARIA tree for CompoundTask / DecompositionMethod / children hierarchy. Strategy badges, guard labels, nodeStates-driven status badges. |
+| `components/blocks-plan-item-tree/` | PlanItemDefinition tree — recursive ARIA tree for Primitive/Compound plan item hierarchy. CompletionSemantics badges, DispatchMode pills, repeatable indicators. |
+| `components/blocks-plan-model-dashboard/` | CasePlanModel dashboard — card-based grid layout: agenda table, focus area, resource budget, sub-case list, compound definition progress bars. |
+| `components/session-workbench/` | Session workbench — composition shell for session management. Composes session-list + session-detail in split-workbench. |
+| `components/conversation-viewer/` | Conversation protocol viewer — convergence indicator, common ground panel, point list, point detail, conversation workbench. Property-based data delivery. |
+| `components/swf-diagram/` | SWF workflow diagram — standalone canvas for Serverless Workflow YAML. Extends DiagramBaseMixin. No structural editing (read-only + property editing). |
+| `components/service-card/` | Per-service health card — status badge, replicas, image, per-cluster deployment status. Dual data mode. |
+| `components/cluster-panel/` | Cluster management panel — cluster list, registration form, connectivity test, delete. Dual data mode. Readonly mode. |
+| `components/reconciliation-status/` | Desired vs actual reconciliation — per-cluster sections with per-node status grid. SSE live updates. |
+| `components/dimension-dashboard/` | Multi-dimension status dashboard — N dimensions with severity badges, active response counts, compact layout. Dual data mode. |
+| `components/topology-viewer/` | Service dependency DAG — topology graph with status-coloured nodes, replica badges, edge labels. SSE live updates. |
 
 ## Design Philosophy
 
@@ -243,9 +180,3 @@ filtering or dropping commits that touch these paths.
 |------|------------|
 | `CLAUDE.md` | Project conventions |
 | `docs/` | Documentation |
-
-## Work Tracking
-
-Issue tracking: enabled
-GitHub repo: casehubio/blocks-ui
-Changelog: GitHub Releases
