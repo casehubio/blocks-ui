@@ -1,8 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { onPagesEvent } from '@casehubio/pages-data';
-import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { onPagesEvent, EventStream } from '@casehubio/pages-data';
 import '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
@@ -31,17 +29,12 @@ export class SessionDetail extends LitElement {
   @state() private _loading = false;
   @state() private _error: string | null = null;
 
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
+
   private _terminalTimer: ReturnType<typeof setInterval> | null = null;
   private _healthTimer: ReturnType<typeof setInterval> | null = null;
-  private _sseManager = new SSEManager();
-  private _sseUrl: string | null = null;
-  private _sseHandler = (event: SSEEvent) => {
-    this._events = [...this._events, {
-      timestamp: new Date().toISOString(),
-      type: String((event.data as Record<string, unknown>)['type'] ?? 'event'),
-      data: JSON.stringify(event.data),
-    }];
-  };
+  private _pushStream: EventStream | null = null;
   private _unsubs: Array<() => void> = [];
 
   override connectedCallback(): void {
@@ -79,7 +72,7 @@ export class SessionDetail extends LitElement {
   private _teardownAll(): void {
     if (this._terminalTimer) { clearInterval(this._terminalTimer); this._terminalTimer = null; }
     if (this._healthTimer) { clearInterval(this._healthTimer); this._healthTimer = null; }
-    if (this._sseUrl) { this._sseManager.unsubscribe(this._sseUrl, this._sseHandler); this._sseUrl = null; }
+    if (this._pushStream) { this._pushStream.disconnect(); this._pushStream = null; }
   }
 
   private _activateTab(tab: TabId): void {
@@ -100,8 +93,23 @@ export class SessionDetail extends LitElement {
         this._healthTimer = setInterval(() => { this._fetchHealth(); }, 10000);
         break;
       case 'events':
-        this._sseUrl = `${this.endpoint}/${this.sessionId}/case-events`;
-        this._sseManager.subscribe(this._sseUrl, this._sseHandler);
+        if (this.pushUrl && this.sessionId) {
+          const topics = this.pushTopics.length ? this.pushTopics : [`session:${this.sessionId}:events:*`];
+          this._pushStream = new EventStream(this.pushUrl, topics, {
+            onChange: () => {
+              const latest = this._pushStream?.latest;
+              if (latest) {
+                const payload = latest as Record<string, unknown>;
+                this._events = [...this._events, {
+                  timestamp: new Date().toISOString(),
+                  type: String(payload['type'] ?? 'event'),
+                  data: JSON.stringify(payload),
+                }];
+              }
+            },
+          });
+          this._pushStream.connect();
+        }
         break;
     }
   }

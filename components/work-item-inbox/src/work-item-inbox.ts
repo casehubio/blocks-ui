@@ -23,8 +23,7 @@ import {
   WorkEventType as WorkEventTypeEnum,
 } from '@casehubio/blocks-ui-core';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives';
-import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { EventStream } from '@casehubio/pages-data';
 import '@casehubio/pages-table';
 import '@casehubio/pages-ui-components';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
@@ -112,11 +111,12 @@ export class WorkItemInbox extends WorkItemInboxBase {
   @state() private _queueError: string | null = null;
   private _queueFetchController: AbortController | null = null;
   private _unsubscribeQueueScope?: () => void;
-  private _queueSSECleanup: (() => void) | null = null;
+  private _queuePushCleanup: (() => void) | null = null;
 
-  // SSE
-  private sseManager = new SSEManager();
-  private sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
+  private _pushStream: EventStream | null = null;
+  private _queuePushStream: EventStream | null = null;
 
   private static _priorityColors: Record<string, string> = {
     urgent: 'background: var(--pages-danger-4, #fee2e2); color: var(--pages-danger-11, #991b1b);',
@@ -443,7 +443,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
       this.items = this.data;
     } else if (this.endpoint != null) {
       this.fetchItems();
-      this.subscribeSSE();
+      this._setupPush();
     }
 
     this._unsubscribeQueueScope = onPagesEvent<QueueScopeChangedPayload>(
@@ -455,9 +455,9 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    this.unsubscribeSSE();
+    this._teardownPush();
     this._unsubscribeQueueScope?.();
-    this._unsubscribeQueueSSE();
+    this._teardownQueuePush();
     this._queueFetchController?.abort();
     this.removeEventListener('keydown', this._handleEscapeKey);
   }
@@ -469,35 +469,39 @@ export class WorkItemInbox extends WorkItemInboxBase {
     if (props.mode) this.mode = props.mode;
   }
 
-  private subscribeSSE() {
-    if (this.endpoint == null) return;
-    const url = `${this.endpoint}/workitems/events`;
-    this.sseManager.subscribe(url, this.sseHandler);
+  private _setupPush(): void {
+    this._teardownPush();
+    if (!this.pushUrl) return;
+    const topics = this.pushTopics.length ? this.pushTopics : ['work-items:lifecycle:*'];
+    this._pushStream = new EventStream(this.pushUrl, topics, {
+      onChange: () => {
+        const event = this._pushStream?.latest;
+        if (event) this._handlePushEvent(event as WorkItemLifecycleEvent);
+      },
+    });
+    this._pushStream.connect();
     this.announce('Live updates connected');
   }
 
-  private unsubscribeSSE() {
-    if (this.endpoint == null) return;
-    const url = `${this.endpoint}/workitems/events`;
-    this.sseManager.unsubscribe(url, this.sseHandler);
+  private _teardownPush(): void {
+    this._pushStream?.disconnect();
+    this._pushStream = null;
   }
 
-  private handleSSEEvent(event: SSEEvent) {
-    // Map SSE event type to WorkEventType
-    const data = event.data as WorkItemLifecycleEvent;
+  private _handlePushEvent(data: WorkItemLifecycleEvent): void {
     const eventType = data.type as WorkEventType;
+    const workItemId = data.workItemId;
+    if (!workItemId) return;
 
-    // Item appears (add row with entry animation)
     if (
       eventType === WorkEventTypeEnum.CREATED ||
       eventType === WorkEventTypeEnum.ASSIGNED ||
       eventType === WorkEventTypeEnum.SLA_REASSIGNED
     ) {
-      this.handleItemAppears(data.workItemId);
+      this.handleItemAppears(workItemId);
       return;
     }
 
-    // Item disappears (remove row with exit animation)
     if (
       eventType === WorkEventTypeEnum.COMPLETED ||
       eventType === WorkEventTypeEnum.REJECTED ||
@@ -507,11 +511,10 @@ export class WorkItemInbox extends WorkItemInboxBase {
       eventType === WorkEventTypeEnum.EXPIRED ||
       eventType === WorkEventTypeEnum.ESCALATED
     ) {
-      this.handleItemDisappears(data.workItemId);
+      this.handleItemDisappears(workItemId);
       return;
     }
 
-    // Item updated (refresh row in place)
     if (
       eventType === WorkEventTypeEnum.STARTED ||
       eventType === WorkEventTypeEnum.SUSPENDED ||
@@ -525,20 +528,18 @@ export class WorkItemInbox extends WorkItemInboxBase {
       eventType === WorkEventTypeEnum.SLA_EXTENDED ||
       eventType === WorkEventTypeEnum.MANUALLY_ESCALATED
     ) {
-      this.handleItemUpdated(data.workItemId);
+      this.handleItemUpdated(workItemId);
       return;
     }
 
-    // Label change (refresh if affects current filter)
     if (
       eventType === WorkEventTypeEnum.LABEL_ADDED ||
       eventType === WorkEventTypeEnum.LABEL_REMOVED
     ) {
-      this.handleItemUpdated(data.workItemId);
+      this.handleItemUpdated(workItemId);
       return;
     }
 
-    // Metadata only (no visual change in list, but refresh summary)
     if (
       eventType === WorkEventTypeEnum.SPAWNED ||
       eventType === WorkEventTypeEnum.SIGNAL_RECEIVED ||
@@ -805,7 +806,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
         // Full success
         this.selectedItems.clear();
         this.announce(`${succeeded.length} items claimed successfully`);
-        // Items will refresh via SSE
+        // Items will refresh via push
       } else {
         // Partial failure
         const failedIds = new Set(failed.map((r) => r.id));
@@ -860,7 +861,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
         // Full success
         this.selectedItems.clear();
         this.announce(`${succeeded.length} items cancelled`);
-        // Items will refresh via SSE
+        // Items will refresh via push
       } else {
         // Partial failure
         const failedIds = new Set(failed.map((r) => r.id));
@@ -949,7 +950,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      // Optimistic update - item will move to my-work via SSE or next fetch
+      // Optimistic update - item will move to my-work via push or next fetch
       this.items = this.items.map((item) =>
         item.item.id === workItemId
           ? {
@@ -977,7 +978,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
     this._queueFetchController = null;
 
     if (!payload.queue) {
-      this._unsubscribeQueueSSE();
+      this._teardownQueuePush();
       this._queueScope = null;
       this._queueLoading = false;
       this._queueError = null;
@@ -1006,7 +1007,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
 
       this._queueScope = this._buildQueueScope(payload.queue, wrapped);
       this._queueLoading = false;
-      this._subscribeQueueSSE(payload.queue.id);
+      this._setupQueuePush(payload.queue.id);
     } catch (e) {
       if ((e as Error).name === 'AbortError') return;
       this._queueError = e instanceof Error ? e.message : 'Failed to load queue';
@@ -1038,26 +1039,25 @@ export class WorkItemInbox extends WorkItemInboxBase {
     return { queue, items, statusCounts, priorityCounts, overdueCount, breachCount };
   }
 
-  private _subscribeQueueSSE(queueId: string) {
-    this._unsubscribeQueueSSE();
-    if (!this.endpoint) return;
-    const url = `${this.endpoint}/queues/${queueId}/events`;
-    const handler = (event: SSEEvent) => this._handleQueueSSEEvent(event);
-    this.sseManager.subscribe(url, handler);
-    this._queueSSECleanup = () => {
-      this.sseManager.unsubscribe(url, handler);
-      this._queueSSECleanup = null;
-    };
+  private _setupQueuePush(queueId: string): void {
+    this._teardownQueuePush();
+    if (!this.pushUrl) return;
+    this._queuePushStream = new EventStream(this.pushUrl, [`work-items:queue:${queueId}:*`], {
+      onChange: () => {
+        const event = this._queuePushStream?.latest;
+        if (event) this._handleQueuePushEvent(event as WorkItemQueueEvent);
+      },
+    });
+    this._queuePushStream.connect();
   }
 
-  private _unsubscribeQueueSSE() {
-    this._queueSSECleanup?.();
-    this._queueSSECleanup = null;
+  private _teardownQueuePush(): void {
+    this._queuePushStream?.disconnect();
+    this._queuePushStream = null;
   }
 
-  private async _handleQueueSSEEvent(event: SSEEvent) {
+  private async _handleQueuePushEvent(data: WorkItemQueueEvent): Promise<void> {
     if (!this._queueScope) return;
-    const data = event.data as WorkItemQueueEvent;
     if (data.queueViewId !== this._queueScope.queue.id) return;
     if (data.eventType === 'ADDED') await this._handleQueueItemAdded(data.workItemId);
     else if (data.eventType === 'REMOVED') this._handleQueueItemRemoved(data.workItemId);

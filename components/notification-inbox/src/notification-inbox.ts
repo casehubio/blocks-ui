@@ -3,8 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import { PagesConfirmDialog } from '@casehubio/pages-ui-components';
 import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { EventStream } from '@casehubio/pages-data';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
@@ -110,8 +109,8 @@ export class NotificationInbox extends NotificationInboxBase {
   /** Injectable fetch for testing */
   fetchFn: typeof fetch = fetch;
 
-  /** Injectable SSEManager — creates default if not provided */
-  sseManager: SSEManager = new SSEManager();
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
 
   // Internal state
   @state() private activeTab: InboxTab = 'inbox';
@@ -138,7 +137,7 @@ export class NotificationInbox extends NotificationInboxBase {
 
   // API
   private api?: NotificationApi;
-  private sseHandler?: ((event: SSEEvent) => void) | undefined;
+  private _pushStream: EventStream<Notification> | null = null;
 
   // Column renderers for pages-table
   private _columnRenderers = NOTIFICATION_RENDERERS;
@@ -419,13 +418,13 @@ export class NotificationInbox extends NotificationInboxBase {
     } else if (this.endpoint != null) {
       this.api = new NotificationApi(this.endpoint, this.fetchFn);
       this.fetchItems();
-      this.subscribeSSE();
+      if (this.pushUrl) this._setupPush();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.unsubscribeSSE();
+    this._teardownPush();
   }
 
   // --- Data fetching ---
@@ -485,58 +484,40 @@ export class NotificationInbox extends NotificationInboxBase {
     }
   }
 
-  // --- SSE ---
+  // --- Push ---
 
-  private subscribeSSE(): void {
-    if (this.endpoint == null) return;
-
-    const url = `${this.endpoint}/notifications/stream`;
-    this.sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
-    this.sseManager.subscribe(url, this.sseHandler, {
-      eventNames: ['notification', 'notification-updated', 'unread-count'],
+  private _setupPush(): void {
+    this._teardownPush();
+    if (!this.pushUrl) return;
+    const topics = this.pushTopics.length ? this.pushTopics : ['notifications:*'];
+    this._pushStream = new EventStream<Notification>(this.pushUrl, topics, {
+      onChange: () => {
+        const event = this._pushStream?.latest;
+        if (event) this._handlePushEvent(event);
+      },
     });
+    this._pushStream.connect();
   }
 
-  private unsubscribeSSE(): void {
-    if (this.endpoint == null || this.sseHandler == null) return;
-
-    const url = `${this.endpoint}/notifications/stream`;
-    this.sseManager.unsubscribe(url, this.sseHandler);
-    this.sseHandler = undefined;
+  private _teardownPush(): void {
+    this._pushStream?.disconnect();
+    this._pushStream = null;
   }
 
-  private handleSSEEvent(event: SSEEvent): void {
-    if (event.type === 'notification') {
-      const notification = event.data as Notification;
-      if (!notification || typeof notification.id !== 'string') return;
+  private _handlePushEvent(notification: Notification): void {
+    if (!notification || typeof notification.id !== 'string') return;
 
-      // Deduplicate: if already exists, update in place
-      const existingIndex = this.items.findIndex(n => n.id === notification.id);
-      if (existingIndex !== -1) {
-        this.items = [
-          ...this.items.slice(0, existingIndex),
-          notification,
-          ...this.items.slice(existingIndex + 1),
-        ];
-      } else {
-        // Prepend new notification
-        this.items = [notification, ...this.items];
-        this.announce(`New notification: ${notification.title}`);
-      }
-    } else if (event.type === 'notification-updated') {
-      const updated = event.data as Notification;
-      if (!updated || typeof updated.id !== 'string') return;
-
-      const index = this.items.findIndex(n => n.id === updated.id);
-      if (index !== -1) {
-        this.items = [
-          ...this.items.slice(0, index),
-          updated,
-          ...this.items.slice(index + 1),
-        ];
-      }
+    const existingIndex = this.items.findIndex(n => n.id === notification.id);
+    if (existingIndex !== -1) {
+      this.items = [
+        ...this.items.slice(0, existingIndex),
+        notification,
+        ...this.items.slice(existingIndex + 1),
+      ];
+    } else {
+      this.items = [notification, ...this.items];
+      this.announce(`New notification: ${notification.title}`);
     }
-    // unread-count events are handled by notification-bell, not inbox
   }
 
   // --- Filtering ---

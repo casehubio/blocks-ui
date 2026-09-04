@@ -3,8 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import { emitPagesEvent } from '@casehubio/pages-data';
-import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { EventStreamController } from '@casehubio/pages-component';
 import type {
   ExecutionSnapshot, ExecutionState, AgentRef, AgentResult,
   ExecutionModel, PatternType,
@@ -24,22 +23,17 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
   @property({ type: Number, attribute: 'stale-threshold-ms' }) staleThresholdMs = 30000;
   @property({ attribute: false }) renderAgent?: (agent: AgentRef, result?: AgentResult) => TemplateResult | undefined;
   @property({ attribute: false }) renderModel?: (model: ExecutionModel) => TemplateResult | undefined;
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
 
   @state() private _snapshot: ExecutionSnapshot | undefined;
   @state() private _stale = false;
   @state() private _connected = false;
 
-  private _sseManager = new SSEManager();
-  private _sseUrl: string | null = null;
+  private _pushStream: EventStreamController<ExecutionSnapshot> | null = null;
+  private _lastPushEvent: ExecutionSnapshot | undefined = undefined;
   private _staleTimer: ReturnType<typeof setInterval> | null = null;
   private _lastUpdateTime = 0;
-
-  private _sseHandler = (event: SSEEvent) => {
-    this._snapshot = event.data as ExecutionSnapshot;
-    this._stale = false;
-    this._connected = true;
-    this._lastUpdateTime = Date.now();
-  };
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -50,7 +44,7 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this._teardownSSE();
+    this._pushStream = null;
     this._stopStaleTimer();
   }
 
@@ -60,31 +54,36 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
       this._snapshot = this.data;
       this._stale = false;
     }
-    if (changed.has('endpoint') || changed.has('executionId')) {
-      this._reconnectSSE();
+    if (changed.has('endpoint') || changed.has('executionId') || changed.has('pushUrl') || changed.has('pushTopics')) {
+      this._reconnectPush();
+    }
+    const latest = this._pushStream?.latest;
+    if (latest !== undefined && latest !== this._lastPushEvent) {
+      this._lastPushEvent = latest;
+      this._snapshot = latest;
+      this._stale = false;
+      this._lastUpdateTime = Date.now();
+    }
+    if (this._pushStream) {
+      this._connected = this._pushStream.status === 'connected';
     }
   }
 
-  private _reconnectSSE(): void {
-    this._teardownSSE();
+  private _reconnectPush(): void {
+    this._pushStream = null;
     if (!this.data) this._snapshot = undefined;
-    if (!this.endpoint || !this.executionId || this.data) return;
-    this._sseUrl = `${this.endpoint}/${this.executionId}/state`;
-    this._sseManager.subscribe(this._sseUrl, this._sseHandler);
-    this._lastUpdateTime = Date.now();
-  }
-
-  private _teardownSSE(): void {
-    if (this._sseUrl) {
-      this._sseManager.unsubscribe(this._sseUrl, this._sseHandler);
-      this._sseUrl = null;
+    if (this.data) return;
+    if (this.pushUrl && this.executionId) {
+      const topics = this.pushTopics.length ? this.pushTopics : [`execution:${this.executionId}:*`];
+      this._pushStream = new EventStreamController<ExecutionSnapshot>(this, this.pushUrl, topics);
+      this._lastUpdateTime = Date.now();
     }
     this._connected = false;
   }
 
   private _startStaleTimer(): void {
     this._staleTimer = setInterval(() => {
-      if (!this._sseUrl || !this._connected) return;
+      if (!this._pushStream || !this._connected) return;
       const elapsed = Date.now() - this._lastUpdateTime;
       if (elapsed > this.staleThresholdMs) {
         this._stale = true;
@@ -181,9 +180,9 @@ export class ExecutionMonitor extends LiveRegionMixin(LitElement) {
   }
 
   override render(): TemplateResult {
-    this.setAttribute('aria-busy', String(!this._snapshot && !!this._sseUrl));
+    this.setAttribute('aria-busy', String(!this._snapshot && !!this._pushStream));
     if (!this._snapshot) {
-      if (this._sseUrl) return html`<div class="loading">Connecting...</div>`;
+      if (this._pushStream) return html`<div class="loading">Connecting...</div>`;
       return html`<div class="placeholder">No execution data</div>`;
     }
     const s = this._snapshot;

@@ -1372,7 +1372,7 @@ describe('queue scope', () => {
   });
 });
 
-describe('queue SSE lifecycle', () => {
+describe('queue push lifecycle', () => {
   let el: HTMLElement & { identity: WorkIdentity; data: WorkItemRootResponse[] };
 
   beforeEach(async () => {
@@ -1385,17 +1385,14 @@ describe('queue SSE lifecycle', () => {
 
   afterEach(() => el.remove());
 
-  it('has _subscribeQueueSSE method', async () => {
+  it('has _setupQueuePush method', async () => {
     const inbox = el as any;
-    expect(typeof inbox._subscribeQueueSSE).toBe('function');
+    expect(typeof inbox._setupQueuePush).toBe('function');
   });
 
-  it('sets _queueSSECleanup when subscribing', async () => {
+  it('creates queue push stream when pushUrl is set', async () => {
     const inbox = el as any;
-    inbox.endpoint = 'http://localhost:8080';
-    // Mock sseManager.subscribe to avoid EventSource
-    const mockSubscribe = vi.fn();
-    inbox.sseManager.subscribe = mockSubscribe;
+    inbox.pushUrl = 'ws://localhost/api/push';
     inbox._queueScope = {
       queue: { id: 'q1', name: 'Test', labelPattern: 'domain=test', scope: null },
       items: [],
@@ -1404,15 +1401,15 @@ describe('queue SSE lifecycle', () => {
       overdueCount: 0,
       breachCount: 0,
     };
-    inbox._subscribeQueueSSE('q1');
-    expect(inbox._queueSSECleanup).not.toBeNull();
+    inbox._setupQueuePush('q1');
+    expect(inbox._queuePushStream).not.toBeNull();
+    inbox._teardownQueuePush();
   });
 
-  it('clears _queueSSECleanup when unsubscribing', async () => {
+  it('clears queue push stream when tearing down', async () => {
     const inbox = el as any;
-    inbox._subscribeQueueSSE('q1');
-    inbox._unsubscribeQueueSSE();
-    expect(inbox._queueSSECleanup).toBeNull();
+    inbox._teardownQueuePush();
+    expect(inbox._queuePushStream).toBeNull();
   });
 });
 

@@ -171,24 +171,18 @@ describe('blocks-notification-bell', () => {
     expect(el.open).toBe(false);
   });
 
-  it('subscribes to SSE on connectedCallback with named events', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ count: 0 }),
-    });
-
+  it('has pushUrl and pushTopics properties and no SSEManager', async () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
     await el.updateComplete;
 
-    const subs = mockSSEManager.getSubscriptions('http://localhost:8080/notifications/stream');
-    expect(subs.length).toBe(1);
-    expect(subs[0]!.options?.eventNames).toEqual(['notification', 'notification-updated', 'unread-count']);
+    expect(el.pushUrl).toBeDefined();
+    expect(el.pushTopics).toBeDefined();
+    expect((el as any).sseManager).toBeUndefined();
   });
 
-  it('updates unreadCount from SSE unread-count event', async () => {
+  it('does not create push stream when pushUrl is empty', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ count: 5 }),
@@ -197,49 +191,9 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
-    await el.updateComplete;
-    await new Promise(resolve => setTimeout(resolve, 10));
-
-    let badge = el.shadowRoot!.querySelector('.badge');
-    expect(badge!.textContent).toBe('5');
-
-    mockSSEManager.emit('http://localhost:8080/notifications/stream', {
-      type: 'unread-count',
-      data: { count: 10 },
-    });
-
     await el.updateComplete;
 
-    badge = el.shadowRoot!.querySelector('.badge');
-    expect(badge!.textContent).toBe('10');
-  });
-
-  it('increments count optimistically on SSE notification event', async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ count: 5 }),
-    });
-
-    const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
-    el.endpoint = 'http://localhost:8080';
-    el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
-    await el.updateComplete;
-    await new Promise(resolve => setTimeout(resolve, 10));
-
-    let badge = el.shadowRoot!.querySelector('.badge');
-    expect(badge!.textContent).toBe('5');
-
-    mockSSEManager.emit('http://localhost:8080/notifications/stream', {
-      type: 'notification',
-      data: { id: 'n1', title: 'New notification' },
-    });
-
-    await el.updateComplete;
-
-    badge = el.shadowRoot!.querySelector('.badge');
-    expect(badge!.textContent).toBe('6');
+    expect((el as any)._pushStream).toBeNull();
   });
 
   it('aria-label includes count when unread', async () => {

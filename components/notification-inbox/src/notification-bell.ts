@@ -2,7 +2,7 @@ import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import { FocusTrapMixin, KeyboardShortcutMixin } from '@casehubio/pages-primitives/a11y';
-import type { SSEManager, SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { EventStreamController } from '@casehubio/pages-component';
 import { NotificationApi } from './api.js';
 
 /**
@@ -19,13 +19,14 @@ export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitEl
   /** Injectable fetch for testing */
   fetchFn: typeof fetch = fetch;
 
-  /** Injectable SSEManager for testing */
-  sseManager?: SSEManager;
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
 
   @state() private unreadCount = 0;
 
   private api?: NotificationApi;
-  private sseHandler?: ((event: SSEEvent) => void) | undefined;
+  private _pushStream: EventStreamController<{ count: number }> | null = null;
+  private _lastPushEvent: { count: number } | undefined = undefined;
   private buttonRef?: HTMLButtonElement | undefined;
 
   static override styles = css`
@@ -99,25 +100,34 @@ export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitEl
     if (this.endpoint != null) {
       this.api = new NotificationApi(this.endpoint, this.fetchFn);
       this.loadUnreadCount();
-      if (this.sseManager != null) this.subscribeSSE();
+      this._setupPush();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('keydown', this.handleKeydown);
-    this.unsubscribeSSE();
+    this._pushStream = null;
   }
 
   override updated(changed: PropertyValues<this>): void {
     super.updated(changed);
 
-    if (changed.has('endpoint')) {
-      this.unsubscribeSSE();
+    if (changed.has('endpoint') || changed.has('pushUrl') || changed.has('pushTopics')) {
+      this._pushStream = null;
       if (this.endpoint != null) {
         this.api = new NotificationApi(this.endpoint, this.fetchFn);
         this.loadUnreadCount();
-        if (this.sseManager != null) this.subscribeSSE();
+        this._setupPush();
+      }
+    }
+
+    // Detect push event for unread count
+    const latest = this._pushStream?.latest;
+    if (latest !== undefined && latest !== this._lastPushEvent) {
+      this._lastPushEvent = latest;
+      if (typeof latest.count === 'number') {
+        this.unreadCount = latest.count;
       }
     }
 
@@ -144,33 +154,10 @@ export class NotificationBell extends KeyboardShortcutMixin(FocusTrapMixin(LitEl
     }
   }
 
-  private subscribeSSE(): void {
-    if (this.endpoint == null || this.sseManager == null) return;
-
-    const url = `${this.endpoint}/notifications/stream`;
-    this.sseHandler = (event: SSEEvent) => this.handleSSEEvent(event);
-    this.sseManager.subscribe(url, this.sseHandler, {
-      eventNames: ['notification', 'notification-updated', 'unread-count'],
-    });
-  }
-
-  private unsubscribeSSE(): void {
-    if (this.endpoint == null || this.sseManager == null || this.sseHandler == null) return;
-
-    const url = `${this.endpoint}/notifications/stream`;
-    this.sseManager.unsubscribe(url, this.sseHandler);
-    this.sseHandler = undefined;
-  }
-
-  private handleSSEEvent(event: SSEEvent): void {
-    if (event.type === 'unread-count') {
-      const data = event.data as { count: number };
-      if (typeof data.count === 'number') {
-        this.unreadCount = data.count;
-      }
-    } else if (event.type === 'notification') {
-      this.unreadCount++;
-    }
+  private _setupPush(): void {
+    if (!this.pushUrl) return;
+    const topics = this.pushTopics.length ? this.pushTopics : ['notifications:unread-count'];
+    this._pushStream = new EventStreamController<{ count: number }>(this, this.pushUrl, topics);
   }
 
   private handleKeydown = (e: KeyboardEvent): void => {

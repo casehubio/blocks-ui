@@ -1,8 +1,7 @@
 import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
-import type { SSEEvent } from '@casehubio/pages-data/dist/sse/sse-manager.js';
-import { SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import { EventStreamController } from '@casehubio/pages-component';
 import type { ReconciliationSnapshot, ClusterReconciliationStatus, NodeReconciliationStatus } from './types.js';
 
 export const ReconciliationStatusTopics = {
@@ -22,21 +21,20 @@ const NODE_STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
 export class ReconciliationStatus extends LitElement {
   @property({ attribute: false }) data: ReconciliationSnapshot | null = null;
   @property() endpoint?: string;
-  @property({ attribute: 'sse-endpoint' }) sseEndpoint?: string;
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
 
   @state() private _fetchedData: ReconciliationSnapshot | null = null;
   @state() private _loading = false;
+
+  private _pushStream: EventStreamController<ReconciliationSnapshot> | null = null;
+  private _lastPushEvent: ReconciliationSnapshot | undefined = undefined;
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', 'region');
     this.setAttribute('aria-label', 'Reconciliation status');
   }
-
-  private _sseManager = new SSEManager();
-  private _sseHandler = (event: SSEEvent) => {
-    this.data = event.data as ReconciliationSnapshot;
-  };
 
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
@@ -124,9 +122,7 @@ export class ReconciliationStatus extends LitElement {
   `;
 
   override disconnectedCallback(): void {
-    if (this.sseEndpoint) {
-      this._sseManager.unsubscribe(this.sseEndpoint, this._sseHandler);
-    }
+    this._pushStream = null;
     super.disconnectedCallback();
   }
 
@@ -134,10 +130,16 @@ export class ReconciliationStatus extends LitElement {
     if (changed.has('endpoint') && this.endpoint && !this.data) {
       this._fetchFromEndpoint();
     }
-    if (changed.has('sseEndpoint')) {
-      const old = changed.get('sseEndpoint') as string | undefined;
-      if (old) this._sseManager.unsubscribe(old, this._sseHandler);
-      if (this.sseEndpoint) this._sseManager.subscribe(this.sseEndpoint, this._sseHandler);
+    if (changed.has('pushUrl') || changed.has('pushTopics')) {
+      this._pushStream = null;
+      if (this.pushUrl && this.pushTopics.length) {
+        this._pushStream = new EventStreamController<ReconciliationSnapshot>(this, this.pushUrl, this.pushTopics);
+      }
+    }
+    const latest = this._pushStream?.latest;
+    if (latest !== undefined && latest !== this._lastPushEvent) {
+      this._lastPushEvent = latest;
+      this.data = latest;
     }
   }
 

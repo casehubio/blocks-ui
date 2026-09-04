@@ -508,87 +508,59 @@ describe('blocks-notification-inbox', () => {
     expect(cursorCall).toBeTruthy();
   });
 
-  // --- 16. Prepends SSE notification events, deduplicates by id ---
-  it('prepends SSE notification events, deduplicates by id', async () => {
+  // --- 16. Push support properties ---
+  it('has pushUrl and pushTopics properties and no SSEManager', async () => {
     const fetchFn = mockFetchResponses(new Map([
       ['notifications', { ok: true, data: { notifications: [...MOCK_NOTIFICATIONS], nextCursor: null } }],
     ]));
 
-    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn, sseManager: mockSSE });
+    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn });
+    await el.updateComplete;
+
+    expect(el.pushUrl).toBeDefined();
+    expect(el.pushTopics).toBeDefined();
+    expect((el as any).sseManager).toBeUndefined();
+    expect((el as any).sseHandler).toBeUndefined();
+  });
+
+  // --- 17. No push stream when pushUrl empty ---
+  it('does not create push stream when pushUrl is empty', async () => {
+    const fetchFn = mockFetchResponses(new Map([
+      ['notifications', { ok: true, data: { notifications: [...MOCK_NOTIFICATIONS], nextCursor: null } }],
+    ]));
+
+    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn });
+    await el.updateComplete;
+
+    expect((el as any)._pushStream).toBeNull();
+  });
+
+  // --- 18. Push handler applies new notifications ---
+  it('_handlePushEvent prepends new notification and deduplicates', async () => {
+    const fetchFn = mockFetchResponses(new Map([
+      ['notifications', { ok: true, data: { notifications: [...MOCK_NOTIFICATIONS], nextCursor: null } }],
+    ]));
+
+    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn });
     await el.updateComplete;
     await new Promise(r => setTimeout(r, 20));
 
     const table = () => el.shadowRoot!.querySelector('pages-table') as any;
     const initialCount = table()?.dataSet?.rows?.length ?? 0;
 
-    // SSE: new notification (not a duplicate)
+    // Call handler directly with new notification
     const newNotif = makeNotification({ id: 'n-new', title: 'Brand new', severity: 'INFO', status: 'UNREAD' });
-    mockSSE.emit('http://localhost:8080/notifications/stream', {
-      type: 'notification',
-      data: newNotif,
-    });
+    (el as any)._handlePushEvent(newNotif);
     await el.updateComplete;
 
     expect(table()?.dataSet?.rows?.length).toBe(initialCount + 1);
-    // New item should be first
-    expect(table()?.dataSet?.rows?.length).toBeGreaterThan(0);
 
-    // SSE: duplicate of existing notification (n1)
+    // Duplicate should not increase count
     const dupeNotif = makeNotification({ id: 'n1', title: 'Updated title', severity: 'URGENT', status: 'UNREAD' });
-    mockSSE.emit('http://localhost:8080/notifications/stream', {
-      type: 'notification',
-      data: dupeNotif,
-    });
+    (el as any)._handlePushEvent(dupeNotif);
     await el.updateComplete;
 
-    // Count should not increase for duplicate
     expect(table()?.dataSet?.rows?.length).toBe(initialCount + 1);
-  });
-
-  // --- 17. Updates local item on SSE notification-updated event ---
-  it('updates local item on SSE notification-updated event', async () => {
-    const fetchFn = mockFetchResponses(new Map([
-      ['notifications', { ok: true, data: { notifications: [...MOCK_NOTIFICATIONS], nextCursor: null } }],
-    ]));
-
-    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn, sseManager: mockSSE });
-    await el.updateComplete;
-    await new Promise(r => setTimeout(r, 20));
-
-    // SSE: update existing notification
-    const updatedNotif = makeNotification({ id: 'n1', title: 'Updated title', severity: 'URGENT', status: 'READ' });
-    mockSSE.emit('http://localhost:8080/notifications/stream', {
-      type: 'notification-updated',
-      data: updatedNotif,
-    });
-    await el.updateComplete;
-
-    const table = el.shadowRoot!.querySelector('pages-table') as any;
-    expect(table?.dataSet?.rows?.length).toBeGreaterThan(0);
-  });
-
-  // --- 18. Announces new notifications via LiveRegionMixin ---
-  it('announces new notifications via LiveRegionMixin', async () => {
-    const fetchFn = mockFetchResponses(new Map([
-      ['notifications', { ok: true, data: { notifications: [...MOCK_NOTIFICATIONS], nextCursor: null } }],
-    ]));
-
-    const el = await createElement({ endpoint: 'http://localhost:8080', mockFetch: fetchFn, sseManager: mockSSE });
-    await el.updateComplete;
-    await new Promise(r => setTimeout(r, 20));
-
-    const announceSpy = vi.spyOn(el, 'announce');
-
-    // SSE: new notification
-    const newNotif = makeNotification({ id: 'n-announce', title: 'Announce me', severity: 'INFO', status: 'UNREAD' });
-    mockSSE.emit('http://localhost:8080/notifications/stream', {
-      type: 'notification',
-      data: newNotif,
-    });
-
-    expect(announceSpy).toHaveBeenCalled();
-    const message = announceSpy.mock.calls[0]![0];
-    expect(message).toContain('notification');
   });
 
   describe('relativeTime formatting', () => {
