@@ -16,6 +16,8 @@ type ListPaneEl = HTMLElement & {
   loading: boolean;
   error: string;
   dataSet: TypedDataSet | undefined;
+  pushUrl: string;
+  pushTopics: string[];
   refresh(): void;
   updateComplete: Promise<boolean>;
 };
@@ -312,6 +314,32 @@ describe('blocks-list-pane', () => {
       await el.updateComplete;
       await flush();
       expect(fetchFn).toHaveBeenCalledWith('/api/other', expect.anything());
+    });
+  });
+
+  describe('push support', () => {
+    it('has pushUrl and pushTopics properties defaulting to empty', async () => {
+      el = document.createElement('blocks-list-pane') as unknown as ListPaneEl;
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(el.pushUrl).toBe('');
+      expect(el.pushTopics).toEqual([]);
+    });
+
+    it('does not create EventStreamController when pushUrl is empty', async () => {
+      el = document.createElement('blocks-list-pane') as unknown as ListPaneEl;
+      el.pushTopics = ['items:*'];
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect((el as any)._pushStream).toBeNull();
+    });
+
+    it('does not create EventStreamController when pushTopics is empty', async () => {
+      el = document.createElement('blocks-list-pane') as unknown as ListPaneEl;
+      el.pushUrl = 'ws://localhost/api/push';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect((el as any)._pushStream).toBeNull();
     });
   });
 });
