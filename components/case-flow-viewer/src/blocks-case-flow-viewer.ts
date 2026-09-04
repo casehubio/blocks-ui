@@ -73,7 +73,7 @@ export class BlocksCaseFlowViewer extends DiagramBaseMixin(LitElement) {
         partitions.set(`binding:${bindingName}`, i);
       }
     }
-    return { ...base, partitions };
+    return { ...base, partitions } as ElkLayoutOptions & { partitions: Map<string, number> };
   }
 
   private _computeStats() {
