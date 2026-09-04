@@ -151,7 +151,7 @@ Critical rule: **render callbacks use inline styles**, not CSS classes. Callback
 
 | Domain | Components | Key Features |
 |---|---|---|
-| Work Management | work-item-inbox, work-item-detail, work-item-row, work-item-workbench | Queue pill bar, scope context bar, filter bar with counts, three-tab perspective (My/Claimable/All), SSE lifecycle |
+| Work Management | work-item-inbox, work-item-detail, work-item-row, work-item-workbench, worker-task-pane | Queue pill bar, scope context bar, filter bar with counts, three-tab perspective (My/Claimable/All), SSE lifecycle; specialist task queue with workspace registry, claim/respond/decline, identity filtering |
 | Layout Primitives | split-workbench, list-pane, detail-pane | Generic split-pane, draggable divider, responsive collapse, ARIA regions, selection events |
 | Trust & Compliance | trust-score-panel, trust-feedback-display, trust-workbench, compliance-summary, routing-rationale | SVG gauge, capability breakdown, trend sparkline, trust-weighted routing explanation |
 | Audit & SLA | audit-trail-viewer, sla-indicator, sla-breach-policy | Merkle verification banner, attestations, countdown, breach state, escalation tiers |
