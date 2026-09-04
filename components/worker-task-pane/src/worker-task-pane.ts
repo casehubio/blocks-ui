@@ -63,7 +63,7 @@ export class BlocksWorkerTaskPane extends WorkerTaskPaneBase {
 
   @state() private _items: WorkerTaskResponse[] = [];
   @state() private _selectedItem: WorkerTaskResponse | null = null;
-  @state() private _tableDataSet?: TypedDataSet;
+  @state() private _tableDataSet: TypedDataSet | undefined;
   @state() private _loading = false;
   @state() private _error: string | null = null;
   @state() private _claimed = false;
