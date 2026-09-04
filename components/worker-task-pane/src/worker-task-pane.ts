@@ -195,7 +195,7 @@ export class BlocksWorkerTaskPane extends WorkerTaskPaneBase {
   private _renderListPane(): TemplateResult {
     return html`
       <blocks-list-pane
-        .dataSet=${this._tableDataSet}
+        .dataSet=${this._tableDataSet!}
         .columnConfig=${this.columnConfig ?? DEFAULT_COL_CONFIG}
         .columnRenderers=${this.columnRenderers}
         .getRowKey=${this.getRowKey ?? this._defaultGetRowKey}
