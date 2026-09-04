@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { renderSparkline } from '@casehubio/pages-ui-components';
 import { LiveRegionMixin } from '@casehubio/pages-primitives';
+import { EventStreamController } from '@casehubio/pages-component';
 
 export const KpiMetricRowTopics = {
   CARD_CLICKED: 'kpi.card-clicked',
@@ -27,10 +28,14 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
   @property({ type: Number }) columns: number | null = null;
   @property({ type: String, reflect: true }) density: 'comfortable' | 'compact' | 'dense' = 'comfortable';
   @property({ type: Number, attribute: 'refresh-interval' }) refreshInterval: number | null = null;
+  @property({ attribute: 'push-url' }) pushUrl = '';
+  @property({ attribute: false }) pushTopics: string[] = [];
 
   @state() private _loading = false;
   @state() private _error: string | null = null;
   private _refreshTimer: ReturnType<typeof setInterval> | null = null;
+  private _pushStream: EventStreamController<MetricDefinition> | null = null;
+  private _lastPushEvent: MetricDefinition | undefined = undefined;
 
   static override styles = css`
     :host { display: block; font-family: var(--pages-font-family, system-ui); }
@@ -146,16 +151,27 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this._setupPush();
     this._startRefreshTimer();
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this._stopRefreshTimer();
+    this._pushStream = null;
+  }
+
+  private _setupPush(): void {
+    this._pushStream = null;
+    if (this.pushUrl && this.pushTopics.length) {
+      this._pushStream = new EventStreamController<MetricDefinition>(this, this.pushUrl, this.pushTopics);
+      this._stopRefreshTimer();
+    }
   }
 
   private _startRefreshTimer(): void {
     this._stopRefreshTimer();
+    if (this.pushUrl) return;
     if (this.refreshInterval && this.refreshInterval > 0 && this.endpoint) {
       this._refreshTimer = setInterval(() => this._fetchMetrics(), this.refreshInterval);
     }
@@ -191,8 +207,26 @@ export class KpiMetricRow extends LiveRegionMixin(LitElement) {
     if (changed.has('endpoint') && this.endpoint) {
       this._fetchMetrics();
     }
+    if (changed.has('pushUrl') || changed.has('pushTopics')) {
+      this._setupPush();
+    }
     if (changed.has('refreshInterval') || changed.has('endpoint')) {
       this._startRefreshTimer();
+    }
+    const latest = this._pushStream?.latest;
+    if (latest !== undefined && latest !== this._lastPushEvent) {
+      this._lastPushEvent = latest;
+      this._applyMetricUpdate(latest);
+    }
+  }
+
+  private _applyMetricUpdate(update: MetricDefinition): void {
+    const index = this.metrics.findIndex(m => m.key === update.key);
+    if (index >= 0) {
+      this.metrics = [...this.metrics.slice(0, index), update, ...this.metrics.slice(index + 1)];
+      this.announce(`${update.label ?? update.key} updated`);
+    } else {
+      this.metrics = [...this.metrics, update];
     }
   }
 

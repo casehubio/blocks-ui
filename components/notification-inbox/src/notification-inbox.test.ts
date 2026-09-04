@@ -134,7 +134,7 @@ async function createElement(opts: {
   if (opts.data) el.data = opts.data;
   if (opts.endpoint) el.endpoint = opts.endpoint;
   if (opts.mockFetch) el.fetchFn = opts.mockFetch;
-  if (opts.sseManager) el.sseManager = opts.sseManager as unknown as SSEManager;
+  // sseManager removed — push via EventStream
   el.identity = { userId: 'user-1', displayName: 'Test User', groups: [] };
   fixture(el);
   await el.updateComplete;

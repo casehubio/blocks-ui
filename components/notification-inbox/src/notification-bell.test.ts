@@ -71,7 +71,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button');
@@ -90,7 +90,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -108,7 +108,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -126,7 +126,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button')!;
@@ -157,7 +157,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     el.open = true;
     await el.updateComplete;
 
@@ -205,7 +205,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
     await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -222,7 +222,7 @@ describe('blocks-notification-bell', () => {
     const el = fixture(document.createElement('blocks-notification-bell')) as NotificationBell;
     el.endpoint = 'http://localhost:8080';
     el.fetchFn = mockFetch;
-    el.sseManager = mockSSEManager as unknown as SSEManager;
+
     await el.updateComplete;
 
     const button = el.shadowRoot!.querySelector('button')!;
