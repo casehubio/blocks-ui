@@ -8,3 +8,4 @@ import './work-item-detail.js';
 import './detail-action-bar.js';
 import './detail-activity-tab.js';
 import './detail-relations-tab.js';
+export type { WorkItemDetailProps } from './work-item-detail.js';

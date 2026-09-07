@@ -20,6 +20,10 @@ const COMPLETION_COLORS: Record<string, string> = {
   'FirstWins': '#a855f7',
 };
 
+export interface PlanItemTreeProps {
+  definition: PlanItemDefinition | null;
+}
+
 @customElement('blocks-plan-item-tree')
 export class BlocksPlanItemTree extends LitElement {
   @property({ type: Object }) definition: PlanItemDefinition | null = null;

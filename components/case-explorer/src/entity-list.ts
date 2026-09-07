@@ -16,6 +16,12 @@ export const EntityListTopics = {
   ENTITY_SELECTED: 'entity.selected',
 } as const;
 
+export interface EntityListProps {
+  endpoint: string;
+  selectionTopic: string;
+  pageSize: number;
+}
+
 @customElement('blocks-entity-list')
 export class EntityList extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) registration?: EntityTypeRegistration;

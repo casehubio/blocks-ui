@@ -79,6 +79,11 @@ const NOTIFICATION_RENDERERS: ReadonlyMap<ColumnId, ColumnRenderer> = new Map<Co
 
 const NotificationInboxBase = PushMixin(LiveRegionMixin(KeyboardShortcutMixin(LitElement)));
 
+export interface NotificationInboxProps {
+  endpoint?: string;
+  identity?: WorkIdentity;
+}
+
 @customElement('blocks-notification-inbox')
 export class NotificationInbox extends NotificationInboxBase {
   @property({ type: String }) endpoint?: string;

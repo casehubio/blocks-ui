@@ -9,3 +9,4 @@ export type {
   TabDefinition,
 } from './types.js';
 export { WorkerTaskEventTopics } from './types.js';
+export type { WorkerTaskPaneProps } from './worker-task-pane.js';

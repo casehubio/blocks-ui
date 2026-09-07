@@ -16,6 +16,13 @@ function entryTypeCategory(entryType: string): EntryCategory {
   }
 }
 
+export interface PointDetailProps {
+  point?: ConversationPoint;
+  findings: SubTaskFinding[];
+  flags: FlagEntry[];
+  obligations: ObligationChain[];
+}
+
 @customElement('blocks-point-detail')
 export class PointDetail extends LitElement {
   @property({ attribute: false }) point?: ConversationPoint;

@@ -42,6 +42,12 @@ function getOutcomeColors(outcome: string): string {
   return '';
 }
 
+export interface SimilarityPanelProps {
+  ariaLabel: string | null;
+  data: Precedent[] | null;
+  emptyMessage: string;
+}
+
 @customElement('blocks-similarity-panel')
 export class SimilarityPanel extends DataSourceMixin(LitElement) {
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = 'Similar cases';

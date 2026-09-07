@@ -55,6 +55,15 @@ function formatAriaLabel(ms: number): string {
   return `${parts.join(' ')} remaining`;
 }
 
+export interface SlaIndicatorProps {
+  deadline: string;
+  slaWindow: number | null;
+  warningThreshold: number;
+  criticalThreshold: number;
+  escalationStage: string | null;
+  compact: boolean;
+}
+
 @customElement('blocks-sla-indicator')
 export class SlaIndicator extends LitElement {
   @property({ type: String }) deadline = '';

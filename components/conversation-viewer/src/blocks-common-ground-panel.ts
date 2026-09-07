@@ -17,6 +17,11 @@ const COLUMNS: readonly ColumnDef[] = [
   { status: 'DISPUTED', label: 'Disputed', headerClass: 'header-disputed', emptyText: 'No disputed points' },
 ];
 
+export interface CommonGroundPanelProps {
+  commonGround?: CommonGroundState;
+  factTopic: string;
+}
+
 @customElement('blocks-common-ground-panel')
 export class CommonGroundPanel extends LitElement {
   @property({ attribute: false }) commonGround?: CommonGroundState;

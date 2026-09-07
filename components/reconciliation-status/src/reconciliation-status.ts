@@ -17,6 +17,11 @@ const NODE_STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
   ABSENT: { bg: 'var(--pages-neutral-3, #e9ecef)', fg: 'var(--pages-neutral-11, #495057)' },
 };
 
+export interface ReconciliationStatusProps {
+  data: ReconciliationSnapshot | null;
+  endpoint?: string;
+}
+
 @customElement('blocks-reconciliation-status')
 export class ReconciliationStatus extends PushMixin(LitElement) {
   @property({ attribute: false }) data: ReconciliationSnapshot | null = null;

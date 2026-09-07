@@ -34,6 +34,12 @@ function toGraphModel(snapshot: TopologySnapshot): GraphModel {
   };
 }
 
+export interface TopologyViewerProps {
+  data: TopologySnapshot | null;
+  endpoint?: string;
+  selectionTopic: string;
+}
+
 @customElement('blocks-topology-viewer')
 export class TopologyViewer extends PushMixin(LitElement) {
   @property({ attribute: false }) data: TopologySnapshot | null = null;

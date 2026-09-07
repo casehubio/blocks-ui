@@ -4,6 +4,12 @@ import { pulseAnimation } from '@casehubio/pages-ui-tokens';
 import '@casehubio/blocks-ui-sla-indicator';
 import type { TierDefinition } from './types.js';
 
+export interface SlaBreachPolicyProps {
+  tiers: TierDefinition[];
+  timeRemaining: number;
+  deadline: string;
+}
+
 @customElement('blocks-sla-breach-policy')
 export class SlaBreachPolicy extends LitElement {
   @property({ attribute: false }) tiers: TierDefinition[] = [];

@@ -80,6 +80,13 @@ const INBOX_COL_CONFIG: readonly TableColumnConfig[] = [
 
 const WorkItemInboxBase = PushMixin(LiveRegionMixin(KeyboardShortcutMixin(LitElement)));
 
+export interface WorkItemInboxProps {
+  identity: WorkIdentity;
+  endpoint?: string;
+  data?: WorkItemRootResponse[];
+  mode: InboxMode;
+}
+
 @customElement('blocks-work-item-inbox')
 export class WorkItemInbox extends WorkItemInboxBase {
   @property({ type: Object }) identity!: WorkIdentity;

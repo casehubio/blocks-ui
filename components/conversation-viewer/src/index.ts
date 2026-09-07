@@ -20,3 +20,8 @@ export { CommonGroundPanel } from './blocks-common-ground-panel.js';
 export { PointList } from './blocks-point-list.js';
 export { PointDetail } from './blocks-point-detail.js';
 export { ConversationWorkbench } from './blocks-conversation-workbench.js';
+export type { ConvergenceIndicatorProps } from './blocks-convergence-indicator.js';
+export type { CommonGroundPanelProps } from './blocks-common-ground-panel.js';
+export type { ConversationWorkbenchProps } from './blocks-conversation-workbench.js';
+export type { PointListProps } from './blocks-point-list.js';
+export type { PointDetailProps } from './blocks-point-detail.js';

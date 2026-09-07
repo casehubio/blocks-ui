@@ -9,6 +9,10 @@ import './entity-tree.js';
 import '@casehubio/pages-ui-components/split-workbench';
 import type { EntityTypeRegistration, EntityTreeNode, EntitySelection, NavigationState } from './types.js';
 
+export interface CaseExplorerProps {
+  entityTypes: readonly EntityTypeRegistration[];
+}
+
 @customElement('blocks-case-explorer')
 export class CaseExplorer extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) entityTypes: readonly EntityTypeRegistration[] = [];

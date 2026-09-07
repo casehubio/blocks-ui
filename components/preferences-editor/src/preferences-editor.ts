@@ -24,6 +24,10 @@ const ROW_TYPE_COL = columnId('rowType');
 const QN_COL = columnId('qualifiedName');
 const SCOPE_COL = columnId('scope');
 
+export interface PreferencesEditorProps {
+  endpoint: string;
+}
+
 @customElement('blocks-preferences-editor')
 export class PreferencesEditor extends LitElement {
   @property({ attribute: false }) scopeTree: readonly ScopeNode[] = [];

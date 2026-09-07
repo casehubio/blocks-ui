@@ -4,6 +4,11 @@ import type { TransitionRecord } from './types.js';
 import '@casehubio/pages-ui-components';
 import { formatTimestamp } from '@casehubio/blocks-ui-core';
 
+export interface CommitmentTransitionBadgeProps {
+  transition?: TransitionRecord;
+  compact: boolean;
+}
+
 @customElement('commitment-transition-badge')
 export class CommitmentTransitionBadge extends LitElement {
   @property({ type: Object }) transition?: TransitionRecord;

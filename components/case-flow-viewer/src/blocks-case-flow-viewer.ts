@@ -13,6 +13,11 @@ import type { ElkLayoutOptions } from '@casehubio/graph-renderer';
 import '@casehubio/graph-renderer';
 import './blocks-case-flow-toolbar.js';
 
+export interface CaseFlowViewerProps {
+  runtimeState: CaseRuntimeState | null;
+  selectionTopic: string;
+}
+
 @customElement('blocks-case-flow-viewer')
 export class BlocksCaseFlowViewer extends DiagramBaseMixin(LitElement) {
   @property({ attribute: false }) runtimeState: CaseRuntimeState | null = null;

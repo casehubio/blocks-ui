@@ -44,6 +44,11 @@ const STATUS_COLORS: Record<string, string> = {
   BREACHED: 'background: var(--pages-danger-3, #f8d7da); color: var(--pages-danger-11, #721c24);',
 };
 
+export interface ComplianceSummaryProps {
+  ariaLabel: string | null;
+  requirements: RequirementDefinition[] | null;
+}
+
 @customElement('blocks-compliance-summary')
 export class ComplianceSummary extends DataSourceMixin(LitElement) {
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = 'Compliance status';

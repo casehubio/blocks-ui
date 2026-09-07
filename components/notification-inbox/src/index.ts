@@ -13,3 +13,7 @@ export { ChannelPreferences } from './channel-preferences.js';
 export { MuteList } from './mute-list.js';
 export { SnoozeControl } from './snooze-control.js';
 export { NotificationPreferencesEl } from './notification-preferences.js';
+export type { NotificationInboxProps } from './notification-inbox.js';
+export type { NotificationBellProps } from './notification-bell.js';
+export type { SubscriptionEditorProps } from './subscription-editor.js';
+export type { NotificationPreferencesProps } from './notification-preferences.js';

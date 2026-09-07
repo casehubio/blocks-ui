@@ -11,6 +11,12 @@ const CATEGORY_MAP: Record<string, EntryCategory> = {
   danger: 'error', neutral: 'neutral', warning: 'warning', transfer: 'accent',
 };
 
+export interface PointListProps {
+  points: ConversationPoint[];
+  currentRound: number;
+  selectionTopic: string;
+}
+
 @customElement('blocks-point-list')
 export class PointList extends LitElement {
   @property({ attribute: false }) points: ConversationPoint[] = [];

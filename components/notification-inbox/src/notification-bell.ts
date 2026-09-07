@@ -10,6 +10,12 @@ import { NotificationApi } from './api.js';
  *
  * Connects to platform SSE endpoint for real-time badge updates.
  */
+export interface NotificationBellProps {
+  endpoint?: string;
+  identity?: WorkIdentity;
+  open: boolean;
+}
+
 @customElement('blocks-notification-bell')
 export class NotificationBell extends PushMixin(KeyboardShortcutMixin(FocusTrapMixin(LitElement))) {
   @property({ type: String }) endpoint?: string;

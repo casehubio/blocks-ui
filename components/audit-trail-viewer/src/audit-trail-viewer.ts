@@ -65,6 +65,13 @@ const ENTRY_RENDERERS = new Map<ColumnId, (cell: CellValue, row: TypedRow) => un
   }],
 ]);
 
+export interface AuditTrailViewerProps {
+  endpoint?: string;
+  identity?: WorkIdentity;
+  subjectId?: string;
+  actorId?: string;
+}
+
 @customElement('blocks-audit-trail-viewer')
 export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint?: string;
@@ -130,11 +137,11 @@ export class AuditTrailViewer extends LiveRegionMixin(LitElement) {
     this.verify.endpoint = verifyUrl.toString();
   }
 
-  configure(props: Record<string, unknown>): void {
-    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
-    if (props.subjectId !== undefined) this.subjectId = props.subjectId as string;
-    if (props.actorId !== undefined) this.actorId = props.actorId as string;
-    if (props.identity !== undefined) this.identity = props.identity as WorkIdentity;
+  configure(props: Partial<AuditTrailViewerProps>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint;
+    if (props.subjectId !== undefined) this.subjectId = props.subjectId;
+    if (props.actorId !== undefined) this.actorId = props.actorId;
+    if (props.identity !== undefined) this.identity = props.identity;
     queueMicrotask(() => {
       this._updateVerifyEndpoint();
       this.verify.refresh();

@@ -35,6 +35,10 @@ const SESSION_COL_CONFIG: readonly TableColumnConfig[] = [
 
 const SessionListBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
 
+export interface SessionListProps {
+  endpoint: string;
+}
+
 @customElement('blocks-session-list')
 export class SessionList extends SessionListBase {
   @property({ type: String }) endpoint = '';

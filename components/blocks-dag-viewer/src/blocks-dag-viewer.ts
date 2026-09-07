@@ -11,6 +11,13 @@ import { emitPagesEvent } from '@casehubio/pages-data';
 import '@casehubio/graph-renderer';
 import './blocks-dag-toolbar.js';
 
+export interface DagViewerProps {
+  dagPlan: DagPlanSnapshot | null;
+  dagResult: DagResultSnapshot | null;
+  dispatchMode: DagDispatchMode | null;
+  selectionTopic: string;
+}
+
 @customElement('blocks-dag-viewer')
 export class BlocksDagViewer extends LitElement {
   @property({ type: Object }) dagPlan: DagPlanSnapshot | null = null;

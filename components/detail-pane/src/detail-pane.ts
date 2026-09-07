@@ -4,6 +4,12 @@ import { onPagesEvent } from '@casehubio/pages-data';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { TabDefinition } from './types.js';
 
+export interface DetailPaneProps {
+  tabs: TabDefinition[];
+  selectionTopic: string;
+  emptyMessage: string;
+}
+
 @customElement('blocks-detail-pane')
 export class DetailPane extends LiveRegionMixin(LitElement) {
   @property({ type: Array }) tabs: TabDefinition[] = [];
@@ -13,10 +19,10 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
   @state() private _item: unknown = null;
   @state() private _activeTabId = '';
 
-  configure(props: Record<string, unknown>): void {
+  configure(props: Partial<DetailPaneProps>): void {
     if (props.tabs !== undefined) this.tabs = props.tabs as TabDefinition[];
-    if (props.selectionTopic !== undefined) this.selectionTopic = props.selectionTopic as string;
-    if (props.emptyMessage !== undefined) this.emptyMessage = props.emptyMessage as string;
+    if (props.selectionTopic !== undefined) this.selectionTopic = props.selectionTopic;
+    if (props.emptyMessage !== undefined) this.emptyMessage = props.emptyMessage;
   }
 
   private _tabElements = new Map<string, HTMLElement>();

@@ -14,6 +14,11 @@ const STATE_COLOURS: Record<ConvergenceState, string> = {
 
 const TERMINAL_STATES: ReadonlySet<ConvergenceState> = new Set(['CONSENSUS', 'DEADLOCK']);
 
+export interface ConvergenceIndicatorProps {
+  signal?: ConvergenceSignal;
+  size: 'sm' | 'md';
+}
+
 @customElement('blocks-convergence-indicator')
 export class ConvergenceIndicator extends LitElement {
   @property({ attribute: false }) signal?: ConvergenceSignal;

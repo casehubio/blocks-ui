@@ -48,6 +48,13 @@ const RELATION_INVERSES: Record<string, string> = {
   'RELATES_TO': 'RELATES_TO',
 };
 
+export interface WorkItemDetailProps {
+  endpoint: string | null;
+  workItemId: string | null;
+  identity: WorkIdentity | null;
+  data: WorkItemResponse | null;
+}
+
 @customElement('blocks-work-item-detail')
 export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String }) endpoint: string | null = null;
@@ -441,9 +448,9 @@ export class WorkItemDetail extends LiveRegionMixin(FocusTrapMixin(LitElement)) 
     }
   }
 
-  configure(props: Record<string, unknown>): void {
-    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
-    if (props.workItemId) this.workItemId = props.workItemId as string;
+  configure(props: Partial<WorkItemDetailProps>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint;
+    if (props.workItemId) this.workItemId = props.workItemId;
     if (props.identity) this.identity = props.identity as WorkIdentity;
     if (props.userSearchProvider) this.userSearchProvider = props.userSearchProvider as UserSearchProvider;
     if (props.data) this.data = props.data as WorkItemResponse;

@@ -20,6 +20,12 @@ interface DrillDownLevel {
   diagramType: string;
 }
 
+export interface DiagramWorkbenchProps {
+  yaml: string;
+  src: string;
+  runtimeState: CaseRuntimeState | null;
+}
+
 @customElement('blocks-diagram-workbench')
 export class DiagramWorkbench extends LitElement {
   @property() yaml = '';
@@ -71,9 +77,9 @@ export class DiagramWorkbench extends LitElement {
     super.disconnectedCallback();
   }
 
-  configure(props: Record<string, unknown>): void {
-    if (props.yaml !== undefined) this.yaml = props.yaml as string;
-    if (props.src !== undefined) this.src = props.src as string;
+  configure(props: Partial<DiagramWorkbenchProps>): void {
+    if (props.yaml !== undefined) this.yaml = props.yaml;
+    if (props.src !== undefined) this.src = props.src;
   }
 
   private _prevStackLength = 0;

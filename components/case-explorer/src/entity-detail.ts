@@ -6,6 +6,10 @@ import './entity-command-bar.js';
 import type { EntityTypeRegistration, EntitySelection, DetailRenderer } from './types.js';
 import { DEFAULT_READER } from './readers.js';
 
+export interface EntityDetailProps {
+  selectionTopic: string;
+}
+
 @customElement('blocks-entity-detail')
 export class EntityDetail extends LiveRegionMixin(LitElement) {
   @property({ attribute: false }) registration: EntityTypeRegistration | undefined;

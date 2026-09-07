@@ -19,6 +19,15 @@ interface PagesGroupedViewHost extends HTMLElement {
   setGetRowClass(v: ((row: import('@casehubio/pages-data/dist/dataset/types.js').TypedRow) => string) | undefined): void;
 }
 
+export interface GroupedDataViewProps {
+  ariaLabel: string | null;
+  groupBy: string;
+  groupOrder?: string[];
+  preset: 'sectioned' | 'spreadsheet' | 'list';
+  defaultExpanded: boolean;
+  sortable: boolean;
+}
+
 @customElement('blocks-grouped-data-view')
 export class GroupedDataView extends DataSourceMixin(LitElement) {
   @property({ type: String, reflect: true, attribute: 'aria-label' }) override ariaLabel: string | null = 'Grouped data';
@@ -137,9 +146,9 @@ export class GroupedDataView extends DataSourceMixin(LitElement) {
     }
   }
 
-  override configure(props: Record<string, unknown>): void {
-    if (props.groupBy !== undefined) this.groupBy = props.groupBy as string;
-    if (props.groupOrder !== undefined) this.groupOrder = props.groupOrder as string[];
+  override configure(props: Partial<GroupedDataViewProps>): void {
+    if (props.groupBy !== undefined) this.groupBy = props.groupBy;
+    if (props.groupOrder !== undefined) this.groupOrder = props.groupOrder;
     if (props.groupConfig !== undefined) this.groupConfig = props.groupConfig as Map<string, GroupStyleConfig>;
     if (props.groupStyle !== undefined) this.groupStyle = props.groupStyle as (name: string) => GroupStyleConfig | undefined;
     if (props.columnConfig !== undefined) this.columnConfig = props.columnConfig as readonly TableColumnConfig[];

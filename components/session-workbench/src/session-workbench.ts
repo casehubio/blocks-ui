@@ -5,6 +5,10 @@ import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-session-list';
 import '@casehubio/blocks-ui-session-detail';
 
+export interface SessionWorkbenchProps {
+  endpoint: string;
+}
+
 @customElement('blocks-session-workbench')
 export class SessionWorkbench extends KeyboardShortcutMixin(LitElement) {
   @property({ type: String }) endpoint = '';

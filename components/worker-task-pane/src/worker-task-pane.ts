@@ -42,6 +42,19 @@ const DEFAULT_COL_CONFIG: readonly TableColumnConfig[] = [
 
 const WorkerTaskPaneBase = LiveRegionMixin(KeyboardShortcutMixin(LitElement));
 
+export interface WorkerTaskPaneProps {
+  layout: 'split' | 'stacked';
+  endpoint: string;
+  selectionTopic: string;
+  identity: WorkIdentity;
+  respondEndpoint: string;
+  declineReasons: string[];
+  claimEndpoint: string;
+  eventStreamEndpoint: string;
+  showContext: boolean;
+  showWorkspace: boolean;
+}
+
 @customElement('blocks-worker-task-pane')
 export class BlocksWorkerTaskPane extends WorkerTaskPaneBase {
   @property() layout: 'split' | 'stacked' = 'split';

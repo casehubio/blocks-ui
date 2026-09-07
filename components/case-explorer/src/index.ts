@@ -12,3 +12,7 @@ export { WorkerList } from './convenience/worker-list.js';
 export { CaseDefinitionBrowser } from './convenience/case-definition-browser.js';
 export { CaseDetailPanel } from './convenience/case-detail-panel.js';
 export { WorkerDetailPanel } from './convenience/worker-detail-panel.js';
+export type { CaseExplorerProps } from './case-explorer.js';
+export type { EntityListProps } from './entity-list.js';
+export type { EntityDetailProps } from './entity-detail.js';
+export type { EntityTreeProps } from './entity-tree.js';

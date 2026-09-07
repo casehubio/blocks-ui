@@ -5,6 +5,11 @@ import './channel-preferences.js';
 import './mute-list.js';
 import './snooze-control.js';
 
+export interface NotificationPreferencesProps {
+  endpoint?: string;
+  identity?: WorkIdentity;
+}
+
 @customElement('blocks-notification-preferences')
 export class NotificationPreferencesEl extends LitElement {
   @property({ type: String }) endpoint?: string;

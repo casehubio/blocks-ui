@@ -15,6 +15,11 @@ const LANE_COLORS: Record<string, string> = {
   TRIAGE: 'var(--pages-warning-9, #d97706)',
 };
 
+export interface ContributorWorkbenchProps {
+  endpoint: string;
+  actorId: string;
+}
+
 @customElement('blocks-contributor-workbench')
 export class ContributorWorkbench extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint = '';

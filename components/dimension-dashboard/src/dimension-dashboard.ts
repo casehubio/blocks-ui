@@ -15,6 +15,12 @@ const SEVERITY_COLORS: Record<DimensionSeverity, { bg: string; fg: string }> = {
   CRITICAL: { bg: 'var(--pages-danger-3, #f8d7da)', fg: 'var(--pages-danger-11, #721c24)' },
 };
 
+export interface DimensionDashboardProps {
+  data: DimensionDashboardData | null;
+  endpoint?: string;
+  compact: boolean;
+}
+
 @customElement('blocks-dimension-dashboard')
 export class DimensionDashboard extends LitElement {
   @property({ attribute: false }) data: DimensionDashboardData | null = null;

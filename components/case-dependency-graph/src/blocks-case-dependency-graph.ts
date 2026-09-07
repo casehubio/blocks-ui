@@ -14,6 +14,11 @@ import './blocks-dependency-toolbar.js';
 
 type Simulation = ReturnType<typeof createSimulation>;
 
+export interface CaseDependencyGraphProps {
+  endpoint?: string;
+  selectionTopic: string;
+}
+
 @customElement('blocks-case-dependency-graph')
 export class BlocksCaseDependencyGraph extends LitElement {
   @property({ type: String }) endpoint: string | undefined;

@@ -20,6 +20,11 @@ export const STRATEGY_COLORS: Record<string, string> = {
   '_unknown': '#9ca3af',
 };
 
+export interface DecompositionTreeProps {
+  decomposition: DecompositionSnapshot | null;
+  selectionTopic: string;
+}
+
 @customElement('blocks-decomposition-tree')
 export class BlocksDecompositionTree extends LitElement {
   @property({ type: Object }) decomposition: DecompositionSnapshot | null = null;

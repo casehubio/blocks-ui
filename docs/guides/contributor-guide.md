@@ -54,6 +54,16 @@ Portal resolutions are declared in the root `package.json`:
 
 ## Full Module Details
 
+### blocks-ui-schema (`packages/blocks-ui-schema`)
+
+Auto-generated Zod schemas for all blocks-ui component properties. `BlocksComponentRegistry` in `src/registry.ts` maps element tag names to their Props interfaces. A ts-morph generator (`scripts/generate-schemas.ts`) reads the registry and produces `component-schemas.generated.ts` with per-component Zod schemas and a `blocksComponentSchemaMap`. The generator uses `tsconfig.generator.json` (with `paths` mapping packages to source) to resolve types without requiring a full build. Staleness test ensures generated schemas stay in sync. Registry completeness test ensures every `blocks-*` element has an entry.
+
+When adding a new component:
+1. Export a `FooProps` interface from the component's index.ts
+2. Add `import type` and registry entry in `src/registry.ts`
+3. Add `workspace:*` devDependency in `package.json`
+4. Run `yarn workspace @casehubio/blocks-ui-schema run generate`
+
 ### blocks-ui-core (`packages/blocks-ui-core`)
 
 Core shared utilities re-exported from pages and domain-specific to blocks-ui:

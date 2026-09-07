@@ -10,6 +10,12 @@ export const GdprErasureTopics = {
   ERASURE_COMPLETED: 'gdpr.erasure-completed',
 } as const;
 
+export interface GdprErasureActionProps {
+  endpoint: string;
+  subjectLabel: string;
+  reasonOptions: string[];
+}
+
 @customElement('blocks-gdpr-erasure-action')
 export class GdprErasureAction extends LitElement {
   @property({ type: String }) endpoint = '';

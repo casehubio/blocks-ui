@@ -49,6 +49,11 @@ interface SubscriptionFormData {
   template: NotificationTemplate;
 }
 
+export interface SubscriptionEditorProps {
+  endpoint?: string;
+  identity?: WorkIdentity;
+}
+
 @customElement('blocks-subscription-editor')
 export class SubscriptionEditor extends LitElement {
   @property({ type: String }) endpoint?: string;

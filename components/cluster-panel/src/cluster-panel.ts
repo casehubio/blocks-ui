@@ -15,6 +15,12 @@ const STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
   UNKNOWN: { bg: 'var(--pages-neutral-3, #e9ecef)', fg: 'var(--pages-neutral-11, #495057)' },
 };
 
+export interface ClusterPanelProps {
+  data: ClusterInfo[] | null;
+  endpoint?: string;
+  readonly: boolean;
+}
+
 @customElement('blocks-cluster-panel')
 export class ClusterPanel extends LitElement {
   @property({ attribute: false }) data: ClusterInfo[] | null = null;

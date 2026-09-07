@@ -5,6 +5,10 @@ import type {
   CasePlanModelSnapshot, AgendaItem, SubCaseSnapshot, CompoundStatusSnapshot,
 } from '@casehubio/graph-stencil-htn';
 
+export interface PlanModelDashboardProps {
+  planModel: CasePlanModelSnapshot | null;
+}
+
 @customElement('blocks-plan-model-dashboard')
 export class BlocksPlanModelDashboard extends LitElement {
   @property({ type: Object }) planModel: CasePlanModelSnapshot | null = null;

@@ -6,6 +6,11 @@ import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-work-item-inbox';
 import '@casehubio/blocks-ui-work-item-detail';
 
+export interface WorkItemWorkbenchProps {
+  identity: WorkIdentity;
+  endpoint: string;
+}
+
 @customElement('blocks-work-item-workbench')
 export class WorkItemWorkbench extends KeyboardShortcutMixin(LitElement) {
   @property({ type: Object }) identity!: WorkIdentity;

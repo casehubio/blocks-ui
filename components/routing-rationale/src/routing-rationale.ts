@@ -111,6 +111,12 @@ function buildColumnRenderers(policy: RoutingRationaleData['policy'], selectedId
   ]);
 }
 
+export interface RoutingRationaleProps {
+  data: RoutingRationaleData | null;
+  scoreLabel: string;
+  capabilityLabel?: string;
+}
+
 @customElement('blocks-routing-rationale')
 export class RoutingRationale extends DataSourceMixin(LiveRegionMixin(LitElement)) {
   @property({ attribute: false }) data: RoutingRationaleData | null = null;

@@ -17,6 +17,12 @@ const HEALTH_COL_DEFS = [
   { id: columnId('responseMs'), name: 'Response (ms)', type: ColumnType.NUMBER, getValue: (r: PortStatus) => r.responseMs },
 ] as const;
 
+export interface SessionDetailProps {
+  endpoint: string;
+  sessionId?: string;
+  eventsPushUrl: string;
+}
+
 @customElement('blocks-session-detail')
 export class SessionDetail extends PushMixin(LitElement) {
   @property({ type: String }) endpoint = '';

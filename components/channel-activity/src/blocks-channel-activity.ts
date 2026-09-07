@@ -25,6 +25,23 @@ import '@casehubio/pages-ui-components/split-workbench';
 
 const Base = KeyboardShortcutMixin(LiveRegionMixin(LitElement));
 
+export interface ChannelActivityProps {
+  selectionTopic: string;
+  channelNavLayout: 'sidebar' | 'dropdown';
+  sidebarOpen: boolean;
+  currentActorId?: string;
+  autoScroll: boolean;
+  staleCursorMinutes: number;
+  terminalDimming: boolean;
+  eventStyling: boolean;
+  viewMode: 'flat' | 'threaded' | 'topics';
+  selectedMessageId?: string;
+  showTypeSelector: boolean;
+  showTopicSelector: boolean;
+  showCreate: boolean;
+  showDelete: boolean;
+}
+
 @customElement('blocks-channel-activity')
 export class BlocksChannelActivityElement extends Base {
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = 'channel';
@@ -104,7 +121,7 @@ export class BlocksChannelActivityElement extends Base {
     }
   }
 
-  configure(props: Record<string, unknown>) {
+  configure(props: Partial<ChannelActivityProps>) {
     Object.assign(this, props);
     this.requestUpdate();
   }

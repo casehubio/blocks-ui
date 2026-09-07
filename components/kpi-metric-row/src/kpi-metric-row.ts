@@ -21,6 +21,14 @@ export interface MetricDefinition {
 
 const TREND_ARROWS: Record<string, string> = { up: '▲', down: '▼', stable: '—' };
 
+export interface KpiMetricRowProps {
+  metrics: MetricDefinition[];
+  endpoint: string | null;
+  columns: number | null;
+  density: 'comfortable' | 'compact' | 'dense';
+  refreshInterval: number | null;
+}
+
 @customElement('blocks-kpi-metric-row')
 export class KpiMetricRow extends PushMixin(LiveRegionMixin(LitElement)) {
   @property({ type: Array }) metrics: MetricDefinition[] = [];

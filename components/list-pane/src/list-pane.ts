@@ -6,6 +6,12 @@ import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import '@casehubio/pages-table';
 import type { TypedRow, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
 
+export interface ListPaneProps {
+  selectionTopic: string;
+  emptyMessage: string;
+  pageSize: number;
+}
+
 @customElement('blocks-list-pane')
 export class ListPane extends PushMixin(DataSourceMixin(LitElement)) {
   @property({ attribute: false }) columnConfig?: readonly TableColumnConfig[];

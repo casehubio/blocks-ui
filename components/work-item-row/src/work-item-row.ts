@@ -3,6 +3,10 @@ import { customElement, property } from 'lit/decorators.js';
 import type { WorkItemResponse } from '@casehubio/blocks-ui-core';
 import { formatTimestamp } from '@casehubio/blocks-ui-core';
 
+export interface WorkItemRowProps {
+  item: WorkItemResponse;
+}
+
 @customElement('blocks-work-item-row')
 export class WorkItemRow extends LitElement {
   @property({ type: Object }) item!: WorkItemResponse;

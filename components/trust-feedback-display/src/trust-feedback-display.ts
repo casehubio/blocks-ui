@@ -2,6 +2,11 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { GateDecision } from './types.js';
 
+export interface TrustFeedbackDisplayProps {
+  gateDecision: GateDecision | null;
+  compact: boolean;
+}
+
 @customElement('blocks-trust-feedback-display')
 export class TrustFeedbackDisplay extends LitElement {
   @property({ attribute: false }) gateDecision: GateDecision | null = null;

@@ -16,6 +16,11 @@ import '@casehubio/blocks-ui-list-pane';
 import '@casehubio/blocks-ui-routing-rationale';
 import '@casehubio/blocks-ui-trust-feedback-display';
 
+export interface TrustWorkbenchProps {
+  endpoint: string;
+  actorId: string;
+}
+
 @customElement('blocks-trust-workbench')
 export class TrustWorkbench extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint = '';

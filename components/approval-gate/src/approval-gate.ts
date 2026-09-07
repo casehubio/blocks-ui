@@ -48,6 +48,21 @@ const DEFAULT_OUTCOMES: OutcomeDefinition[] = [
   { key: 'reject', label: 'Reject', variant: 'danger' },
 ];
 
+export interface ApprovalGateProps {
+  gateId: string;
+  endpoint: string;
+  identity: WorkIdentity;
+  prompt: string;
+  contextText: string;
+  outcomes: OutcomeDefinition[];
+  quorum: QuorumConfig | null;
+  deadline: string | null;
+  slaWindow: number | null;
+  history: GateDecision[];
+  data: Record<string, unknown> | null;
+  requireConfirmation: boolean;
+}
+
 @customElement('blocks-approval-gate')
 export class ApprovalGate extends LiveRegionMixin(FocusTrapMixin(LitElement)) {
   @property({ type: String, attribute: 'gate-id' }) gateId = '';

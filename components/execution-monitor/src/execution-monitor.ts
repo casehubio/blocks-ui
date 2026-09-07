@@ -14,6 +14,14 @@ export const ExecutionMonitorTopics = {
   AGENT_SELECTED: 'execution.agent-selected',
 } as const;
 
+export interface ExecutionMonitorProps {
+  endpoint?: string;
+  executionId?: string;
+  data?: ExecutionSnapshot;
+  selectionTopic?: string;
+  staleThresholdMs: number;
+}
+
 @customElement('blocks-execution-monitor')
 export class ExecutionMonitor extends PushMixin(LiveRegionMixin(LitElement)) {
   @property({ type: String }) endpoint?: string;
@@ -183,9 +191,9 @@ export class ExecutionMonitor extends PushMixin(LiveRegionMixin(LitElement)) {
     `;
   }
 
-  configure(props: Record<string, unknown>): void {
-    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
-    if (props.executionId !== undefined) this.executionId = props.executionId as string;
+  configure(props: Partial<ExecutionMonitorProps>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint;
+    if (props.executionId !== undefined) this.executionId = props.executionId;
   }
 
   static override styles = css`

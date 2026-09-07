@@ -14,6 +14,12 @@ import './blocks-point-list.js';
 import './blocks-point-detail.js';
 import './blocks-common-ground-panel.js';
 
+export interface ConversationWorkbenchProps {
+  conversationState?: ConversationState;
+  selectionTopic: string;
+  factTopic: string;
+}
+
 @customElement('blocks-conversation-workbench')
 export class ConversationWorkbench extends KeyboardShortcutMixin(LiveRegionMixin(LitElement)) {
   @property({ attribute: false }) conversationState?: ConversationState;

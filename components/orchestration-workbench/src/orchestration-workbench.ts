@@ -13,6 +13,12 @@ export interface OrchestrationWorkbenchData {
   readonly events: OrchestrationAuditEvent[];
 }
 
+export interface OrchestrationWorkbenchProps {
+  endpoint: string;
+  executionId?: string;
+  selectionTopic: string;
+}
+
 @customElement('blocks-orchestration-workbench')
 export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
   @property({ type: String }) endpoint = '';
@@ -46,9 +52,9 @@ export class OrchestrationWorkbench extends LiveRegionMixin(LitElement) {
     this._unsubs = [];
   }
 
-  configure(props: Record<string, unknown>): void {
-    if (props.endpoint !== undefined) this.endpoint = props.endpoint as string;
-    if (props.executionId !== undefined) this.executionId = props.executionId as string;
+  configure(props: Partial<OrchestrationWorkbenchProps>): void {
+    if (props.endpoint !== undefined) this.endpoint = props.endpoint;
+    if (props.executionId !== undefined) this.executionId = props.executionId;
   }
 
   override render(): TemplateResult {

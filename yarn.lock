@@ -105,7 +105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@casehubio/blocks-ui-approval-gate@workspace:components/approval-gate":
+"@casehubio/blocks-ui-approval-gate@workspace:*, @casehubio/blocks-ui-approval-gate@workspace:components/approval-gate":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-approval-gate@workspace:components/approval-gate"
   dependencies:
@@ -121,7 +121,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-audit-trail-viewer@workspace:components/audit-trail-viewer":
+"@casehubio/blocks-ui-audit-trail-viewer@workspace:*, @casehubio/blocks-ui-audit-trail-viewer@workspace:components/audit-trail-viewer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-audit-trail-viewer@workspace:components/audit-trail-viewer"
   dependencies:
@@ -156,7 +156,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-blocks-dag-viewer@workspace:components/blocks-dag-viewer":
+"@casehubio/blocks-ui-blocks-dag-viewer@workspace:*, @casehubio/blocks-ui-blocks-dag-viewer@workspace:components/blocks-dag-viewer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-dag-viewer@workspace:components/blocks-dag-viewer"
   dependencies:
@@ -172,7 +172,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-blocks-decomposition-tree@workspace:components/blocks-decomposition-tree":
+"@casehubio/blocks-ui-blocks-decomposition-tree@workspace:*, @casehubio/blocks-ui-blocks-decomposition-tree@workspace:components/blocks-decomposition-tree":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-decomposition-tree@workspace:components/blocks-decomposition-tree"
   dependencies:
@@ -186,7 +186,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-blocks-plan-item-tree@workspace:components/blocks-plan-item-tree":
+"@casehubio/blocks-ui-blocks-plan-item-tree@workspace:*, @casehubio/blocks-ui-blocks-plan-item-tree@workspace:components/blocks-plan-item-tree":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-plan-item-tree@workspace:components/blocks-plan-item-tree"
   dependencies:
@@ -200,7 +200,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:components/blocks-plan-model-dashboard":
+"@casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:*, @casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:components/blocks-plan-model-dashboard":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-blocks-plan-model-dashboard@workspace:components/blocks-plan-model-dashboard"
   dependencies:
@@ -228,7 +228,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-case-dependency-graph@workspace:components/case-dependency-graph":
+"@casehubio/blocks-ui-case-dependency-graph@workspace:*, @casehubio/blocks-ui-case-dependency-graph@workspace:components/case-dependency-graph":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-case-dependency-graph@workspace:components/case-dependency-graph"
   dependencies:
@@ -249,7 +249,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-case-explorer@workspace:components/case-explorer":
+"@casehubio/blocks-ui-case-explorer@workspace:*, @casehubio/blocks-ui-case-explorer@workspace:components/case-explorer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-case-explorer@workspace:components/case-explorer"
   dependencies:
@@ -267,7 +267,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-case-flow-viewer@workspace:components/case-flow-viewer":
+"@casehubio/blocks-ui-case-flow-viewer@workspace:*, @casehubio/blocks-ui-case-flow-viewer@workspace:components/case-flow-viewer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-case-flow-viewer@workspace:components/case-flow-viewer"
   dependencies:
@@ -302,7 +302,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-channel-activity@workspace:components/channel-activity":
+"@casehubio/blocks-ui-channel-activity@workspace:*, @casehubio/blocks-ui-channel-activity@workspace:components/channel-activity":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-channel-activity@workspace:components/channel-activity"
   dependencies:
@@ -321,7 +321,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-cluster-panel@workspace:components/cluster-panel":
+"@casehubio/blocks-ui-cluster-panel@workspace:*, @casehubio/blocks-ui-cluster-panel@workspace:components/cluster-panel":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-cluster-panel@workspace:components/cluster-panel"
   dependencies:
@@ -347,7 +347,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-compliance-summary@workspace:components/compliance-summary":
+"@casehubio/blocks-ui-compliance-summary@workspace:*, @casehubio/blocks-ui-compliance-summary@workspace:components/compliance-summary":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-compliance-summary@workspace:components/compliance-summary"
   dependencies:
@@ -361,7 +361,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench":
+"@casehubio/blocks-ui-contributor-workbench@workspace:*, @casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-contributor-workbench@workspace:components/contributor-workbench"
   dependencies:
@@ -379,7 +379,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-conversation-viewer@workspace:components/conversation-viewer":
+"@casehubio/blocks-ui-conversation-viewer@workspace:*, @casehubio/blocks-ui-conversation-viewer@workspace:components/conversation-viewer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-conversation-viewer@workspace:components/conversation-viewer"
   dependencies:
@@ -428,7 +428,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-diagram-workbench@workspace:components/diagram-workbench":
+"@casehubio/blocks-ui-diagram-workbench@workspace:*, @casehubio/blocks-ui-diagram-workbench@workspace:components/diagram-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-diagram-workbench@workspace:components/diagram-workbench"
   dependencies:
@@ -442,7 +442,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-dimension-dashboard@workspace:components/dimension-dashboard":
+"@casehubio/blocks-ui-dimension-dashboard@workspace:*, @casehubio/blocks-ui-dimension-dashboard@workspace:components/dimension-dashboard":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-dimension-dashboard@workspace:components/dimension-dashboard"
   dependencies:
@@ -493,7 +493,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action":
+"@casehubio/blocks-ui-gdpr-erasure-action@workspace:*, @casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-gdpr-erasure-action@workspace:components/gdpr-erasure-action"
   dependencies:
@@ -506,7 +506,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-grouped-data-view@workspace:components/grouped-data-view":
+"@casehubio/blocks-ui-grouped-data-view@workspace:*, @casehubio/blocks-ui-grouped-data-view@workspace:components/grouped-data-view":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-grouped-data-view@workspace:components/grouped-data-view"
   dependencies:
@@ -536,7 +536,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row":
+"@casehubio/blocks-ui-kpi-metric-row@workspace:*, @casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-kpi-metric-row@workspace:components/kpi-metric-row"
   dependencies:
@@ -565,7 +565,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-notification-inbox@workspace:components/notification-inbox":
+"@casehubio/blocks-ui-notification-inbox@workspace:*, @casehubio/blocks-ui-notification-inbox@workspace:components/notification-inbox":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-notification-inbox@workspace:components/notification-inbox"
   dependencies:
@@ -583,7 +583,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-orchestration-workbench@workspace:components/orchestration-workbench":
+"@casehubio/blocks-ui-orchestration-workbench@workspace:*, @casehubio/blocks-ui-orchestration-workbench@workspace:components/orchestration-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-orchestration-workbench@workspace:components/orchestration-workbench"
   dependencies:
@@ -600,7 +600,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-preferences-editor@workspace:components/preferences-editor":
+"@casehubio/blocks-ui-preferences-editor@workspace:*, @casehubio/blocks-ui-preferences-editor@workspace:components/preferences-editor":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-preferences-editor@workspace:components/preferences-editor"
   dependencies:
@@ -614,7 +614,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-reconciliation-status@workspace:components/reconciliation-status":
+"@casehubio/blocks-ui-reconciliation-status@workspace:*, @casehubio/blocks-ui-reconciliation-status@workspace:components/reconciliation-status":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-reconciliation-status@workspace:components/reconciliation-status"
   dependencies:
@@ -643,7 +643,66 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-service-card@workspace:components/service-card":
+"@casehubio/blocks-ui-schema@workspace:packages/blocks-ui-schema":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-schema@workspace:packages/blocks-ui-schema"
+  dependencies:
+    "@casehubio/blocks-ui-approval-gate": "workspace:*"
+    "@casehubio/blocks-ui-audit-trail-viewer": "workspace:*"
+    "@casehubio/blocks-ui-blocks-dag-viewer": "workspace:*"
+    "@casehubio/blocks-ui-blocks-decomposition-tree": "workspace:*"
+    "@casehubio/blocks-ui-blocks-plan-item-tree": "workspace:*"
+    "@casehubio/blocks-ui-blocks-plan-model-dashboard": "workspace:*"
+    "@casehubio/blocks-ui-blocks-timeline": "workspace:*"
+    "@casehubio/blocks-ui-case-dependency-graph": "workspace:*"
+    "@casehubio/blocks-ui-case-explorer": "workspace:*"
+    "@casehubio/blocks-ui-case-flow-viewer": "workspace:*"
+    "@casehubio/blocks-ui-channel-activity": "workspace:*"
+    "@casehubio/blocks-ui-cluster-panel": "workspace:*"
+    "@casehubio/blocks-ui-commitment-viz": "workspace:*"
+    "@casehubio/blocks-ui-compliance-summary": "workspace:*"
+    "@casehubio/blocks-ui-contributor-workbench": "workspace:*"
+    "@casehubio/blocks-ui-conversation-viewer": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/blocks-ui-detail-pane": "workspace:*"
+    "@casehubio/blocks-ui-diagram-workbench": "workspace:*"
+    "@casehubio/blocks-ui-dimension-dashboard": "workspace:*"
+    "@casehubio/blocks-ui-execution-monitor": "workspace:*"
+    "@casehubio/blocks-ui-gdpr-erasure-action": "workspace:*"
+    "@casehubio/blocks-ui-grouped-data-view": "workspace:*"
+    "@casehubio/blocks-ui-kpi-metric-row": "workspace:*"
+    "@casehubio/blocks-ui-list-pane": "workspace:*"
+    "@casehubio/blocks-ui-notification-inbox": "workspace:*"
+    "@casehubio/blocks-ui-orchestration-workbench": "workspace:*"
+    "@casehubio/blocks-ui-preferences-editor": "workspace:*"
+    "@casehubio/blocks-ui-reconciliation-status": "workspace:*"
+    "@casehubio/blocks-ui-routing-rationale": "workspace:*"
+    "@casehubio/blocks-ui-service-card": "workspace:*"
+    "@casehubio/blocks-ui-session-detail": "workspace:*"
+    "@casehubio/blocks-ui-session-list": "workspace:*"
+    "@casehubio/blocks-ui-session-workbench": "workspace:*"
+    "@casehubio/blocks-ui-similarity-panel": "workspace:*"
+    "@casehubio/blocks-ui-sla-breach-policy": "workspace:*"
+    "@casehubio/blocks-ui-sla-indicator": "workspace:*"
+    "@casehubio/blocks-ui-topology-viewer": "workspace:*"
+    "@casehubio/blocks-ui-trust-feedback-display": "workspace:*"
+    "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
+    "@casehubio/blocks-ui-trust-workbench": "workspace:*"
+    "@casehubio/blocks-ui-work-item-detail": "workspace:*"
+    "@casehubio/blocks-ui-work-item-inbox": "workspace:*"
+    "@casehubio/blocks-ui-work-item-row": "workspace:*"
+    "@casehubio/blocks-ui-work-item-workbench": "workspace:*"
+    "@casehubio/blocks-ui-worker-task-pane": "workspace:*"
+    rimraf: "npm:^6.1.0"
+    ts-morph: "npm:^24.0.0"
+    tsx: "npm:^4.19.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.2.1"
+    zod: "npm:^3.23.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-service-card@workspace:*, @casehubio/blocks-ui-service-card@workspace:components/service-card":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-service-card@workspace:components/service-card"
   dependencies:
@@ -687,7 +746,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-session-workbench@workspace:components/session-workbench":
+"@casehubio/blocks-ui-session-workbench@workspace:*, @casehubio/blocks-ui-session-workbench@workspace:components/session-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-session-workbench@workspace:components/session-workbench"
   dependencies:
@@ -703,7 +762,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-similarity-panel@workspace:components/similarity-panel":
+"@casehubio/blocks-ui-similarity-panel@workspace:*, @casehubio/blocks-ui-similarity-panel@workspace:components/similarity-panel":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-similarity-panel@workspace:components/similarity-panel"
   dependencies:
@@ -717,7 +776,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-sla-breach-policy@workspace:components/sla-breach-policy":
+"@casehubio/blocks-ui-sla-breach-policy@workspace:*, @casehubio/blocks-ui-sla-breach-policy@workspace:components/sla-breach-policy":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-sla-breach-policy@workspace:components/sla-breach-policy"
   dependencies:
@@ -766,7 +825,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-topology-viewer@workspace:components/topology-viewer":
+"@casehubio/blocks-ui-topology-viewer@workspace:*, @casehubio/blocks-ui-topology-viewer@workspace:components/topology-viewer":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-topology-viewer@workspace:components/topology-viewer"
   dependencies:
@@ -808,7 +867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-trust-workbench@workspace:components/trust-workbench":
+"@casehubio/blocks-ui-trust-workbench@workspace:*, @casehubio/blocks-ui-trust-workbench@workspace:components/trust-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-trust-workbench@workspace:components/trust-workbench"
   dependencies:
@@ -859,7 +918,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-work-item-row@workspace:components/work-item-row":
+"@casehubio/blocks-ui-work-item-row@workspace:*, @casehubio/blocks-ui-work-item-row@workspace:components/work-item-row":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-work-item-row@workspace:components/work-item-row"
   dependencies:
@@ -873,7 +932,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-work-item-workbench@workspace:components/work-item-workbench":
+"@casehubio/blocks-ui-work-item-workbench@workspace:*, @casehubio/blocks-ui-work-item-workbench@workspace:components/work-item-workbench":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-work-item-workbench@workspace:components/work-item-workbench"
   dependencies:
@@ -890,7 +949,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-worker-task-pane@workspace:components/worker-task-pane":
+"@casehubio/blocks-ui-worker-task-pane@workspace:*, @casehubio/blocks-ui-worker-task-pane@workspace:components/worker-task-pane":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-worker-task-pane@workspace:components/worker-task-pane"
   dependencies:
@@ -2414,6 +2473,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ts-morph/common@npm:~0.25.0":
+  version: 0.25.0
+  resolution: "@ts-morph/common@npm:0.25.0"
+  dependencies:
+    minimatch: "npm:^9.0.4"
+    path-browserify: "npm:^1.0.1"
+    tinyglobby: "npm:^0.2.9"
+  checksum: 10c0/c67e66db678e44886e9823e6482834acebfae0ea52ccbfa2af1ca9abfe5a9774dad6e852c8f480909bc196175f17e15454af71d7a41a1c137db09e74f046a830
+  languageName: node
+  linkType: hard
+
 "@tweenjs/tween.js@npm:~23.1.3":
   version: 23.1.3
   resolution: "@tweenjs/tween.js@npm:23.1.3"
@@ -3464,6 +3534,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"balanced-match@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "balanced-match@npm:1.0.2"
+  checksum: 10c0/9308baf0a7e4838a82bbfd11e01b1cb0f0cf2893bc1676c27c2a8c0e70cbae1c59120c3268517a8ae7fb6376b4639ef81ca22582611dbee4ed28df945134aaee
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^4.0.2":
   version: 4.0.4
   resolution: "balanced-match@npm:4.0.4"
@@ -3477,6 +3554,15 @@ __metadata:
   dependencies:
     require-from-string: "npm:^2.0.2"
   checksum: 10c0/fdddea4aa4120a34285486f2267526cd9298b6e8b773ad25e765d4f104b6d7437ab4ba542e6939e3ac834a7570bcf121ee2cf6d3ae7cd7082c4b5bedc8f271e1
+  languageName: node
+  linkType: hard
+
+"brace-expansion@npm:^2.0.2":
+  version: 2.1.4
+  resolution: "brace-expansion@npm:2.1.4"
+  dependencies:
+    balanced-match: "npm:^1.0.0"
+  checksum: 10c0/6c0a0e2573eac1dc565b52b1e1bfbeba39bf1830d106ebbc61ff1eaefcf610e9111cd3baa091addd18e33292135c99e019d3184d966389d85dc958fdcdc1449f
   languageName: node
   linkType: hard
 
@@ -3660,6 +3746,13 @@ __metadata:
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: 10c0/c0e85ea0ca8bf0a50cbdca82efc5af0301240ca88ebe3644a6ffb8ffe911f34d40f8fbcf8f1d52c5ddd66706abd4d3bfcd64259f1e8e2371d4f47573b0dc8c28
+  languageName: node
+  linkType: hard
+
+"code-block-writer@npm:^13.0.3":
+  version: 13.0.3
+  resolution: "code-block-writer@npm:13.0.3"
+  checksum: 10c0/87db97b37583f71cfd7eced8bf3f0a0a0ca53af912751a734372b36c08cd27f3e8a4878ec05591c0cd9ae11bea8add1423e132d660edd86aab952656dd41fd66
   languageName: node
   linkType: hard
 
@@ -5706,6 +5799,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^9.0.4":
+  version: 9.0.9
+  resolution: "minimatch@npm:9.0.9"
+  dependencies:
+    brace-expansion: "npm:^2.0.2"
+  checksum: 10c0/0b6a58530dbb00361745aa6c8cffaba4c90f551afe7c734830bd95fd88ebf469dd7355a027824ea1d09e37181cfeb0a797fb17df60c15ac174303ac110eb7e86
+  languageName: node
+  linkType: hard
+
 "minimist@npm:^1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
@@ -5980,6 +6082,13 @@ __metadata:
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
   checksum: 10c0/90dd4760d6f6174adb9f20cf0965ae12e23879b5f5464f38e92fce8073354341e4b3b76fa3d878351efe7d01e617121955284cfd002ab087fba1a0726ec0b4f5
+  languageName: node
+  linkType: hard
+
+"path-browserify@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "path-browserify@npm:1.0.1"
+  checksum: 10c0/8b8c3fd5c66bd340272180590ae4ff139769e9ab79522e2eb82e3d571a89b8117c04147f65ad066dccfb42fcad902e5b7d794b3d35e0fd840491a8ddbedf8c66
   languageName: node
   linkType: hard
 
@@ -6902,6 +7011,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-morph@npm:^24.0.0":
+  version: 24.0.0
+  resolution: "ts-morph@npm:24.0.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.25.0"
+    code-block-writer: "npm:^13.0.3"
+  checksum: 10c0/2a0813ba428a154966d4038901f6c32457a60870936b23778f2629433257f87d1881fc4ecae7b791a223a88c2edf96aaac9fb0f88bf34d3c652af8c09c4f43bc
+  languageName: node
+  linkType: hard
+
 "tslib@npm:2.3.0":
   version: 2.3.0
   resolution: "tslib@npm:2.3.0"
@@ -6920,6 +7039,21 @@ __metadata:
   version: 1.0.6
   resolution: "tsscmp@npm:1.0.6"
   checksum: 10c0/2f79a9455e7e3e8071995f98cdf3487ccfc91b760bec21a9abb4d90519557eafaa37246e87c92fa8bf3fef8fd30cfd0cc3c4212bb929baa9fb62494bfa4d24b2
+  languageName: node
+  linkType: hard
+
+"tsx@npm:^4.19.0":
+  version: 4.23.13
+  resolution: "tsx@npm:4.23.13"
+  dependencies:
+    esbuild: "npm:~0.28.0"
+    fsevents: "npm:~2.3.3"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10c0/dc99c8988b42ec2443963a0b9051f42d068bc7e2a44e82f3b94b40539a991c5c01ea3ee049cf317d1040b2245711dd4c64ace9ac875f3b07edee29f610702e3c
   languageName: node
   linkType: hard
 
@@ -7352,7 +7486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.0.0, vitest@npm:^3.2.0":
+"vitest@npm:^3.0.0, vitest@npm:^3.2.0, vitest@npm:^3.2.1":
   version: 3.2.7
   resolution: "vitest@npm:3.2.7"
   dependencies:

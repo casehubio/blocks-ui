@@ -12,6 +12,15 @@ interface Milestone {
   status: 'completed' | 'active' | 'pending';
 }
 
+export interface CommitmentRangeBarProps {
+  state?: CommitmentState;
+  createdAt?: string;
+  resolvedAt?: string;
+  acknowledgedAt?: string;
+  deadline?: string;
+  mode: 'compact' | 'detailed';
+}
+
 @customElement('commitment-range-bar')
 export class CommitmentRangeBar extends LitElement {
   @property({ type: String }) state?: CommitmentState;

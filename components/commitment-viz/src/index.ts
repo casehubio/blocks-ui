@@ -4,3 +4,5 @@ export type { DecorableMessage, TransitionRecord, RangeDecoration } from './type
 export { CommitmentTransitionBadge } from './commitment-transition-badge.js';
 export { CommitmentRangeBar } from './commitment-range-bar.js';
 export { decorateCommitmentRanges } from './range-decorator.js';
+export type { CommitmentRangeBarProps } from './commitment-range-bar.js';
+export type { CommitmentTransitionBadgeProps } from './commitment-transition-badge.js';

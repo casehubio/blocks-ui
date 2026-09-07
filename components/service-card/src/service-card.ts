@@ -22,6 +22,11 @@ const CLUSTER_STATUS_COLORS: Record<string, string> = {
   unknown: 'var(--pages-neutral-9, #888)',
 };
 
+export interface ServiceCardProps {
+  data: ServiceCardData | null;
+  endpoint?: string;
+}
+
 @customElement('blocks-service-card')
 export class ServiceCard extends LitElement {
   @property({ attribute: false }) data: ServiceCardData | null = null;

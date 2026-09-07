@@ -23,6 +23,13 @@ const TRUST_LEVEL_COLORS: Record<string, string> = {
   none: 'var(--color-neutral, #ccc)',
 };
 
+export interface TrustScorePanelProps {
+  actorId?: string;
+  mode: 'full' | 'compact';
+  score?: number;
+  trustLevel?: TrustLevel;
+}
+
 @customElement('blocks-trust-score-panel')
 export class TrustScorePanel extends TrendSourceMixin(DataSourceMixin(LiveRegionMixin(LitElement))) {
   @property({ type: String, attribute: 'actor-id' }) actorId?: string;
