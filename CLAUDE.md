@@ -107,6 +107,7 @@ yarn typecheck
 | `packages/graph-stencil-case/` | Case domain adapter (YAML / graph), structural stencils, ThumbnailRenderer SPI, runtime module, GitHubBackend persistence, YAML editor, worker-function module |
 | `packages/graph-stencil-swf/` | SWF domain adapter, SWF stencils, edge types, applySwfPropertyEdit (CST-preserving), swfTaskSchema, createSwfThumbnailRenderer |
 | `packages/graph-stencil-htn/` | HTN/DAG domain adapter — TypeScript types mirroring engine sealed interfaces, DAG adapter, dag-node stencil, runtime module |
+| `packages/graph-stencil-org/` | Eidos org domain adapter — toOrgGraph (YAML→GraphModel with compound nodes), 2 stencils (org-unit container, org-agent), 6 edge types (per RelationshipKind), CST-preserving YAML editor, edit policy, archetype detection (10 heuristics with priority ordering), layout strategy mapping (10 ELK configurations) |
 | `components/casehub-diagram/` | CaseHub visual diagram — editor component for CaseDefinition YAML. Extends DiagramBaseMixin. Case-specific stencil registration, palette, runtime overlay, structural editing with dependency checks. |
 | `components/diagram-workbench/` | Diagram workbench — split-pane composition of casehub-diagram + swf-diagram. Click worker node to drill down to SWF workflow. Three consumption tiers. |
 | `components/blocks-dag-viewer/` | DAG execution graph viewer — read-only graph wrapping pages-graph-canvas with ELK layout. Toolbar with dispatch mode badge, summary stats, staleness timer. |
@@ -116,6 +117,7 @@ yarn typecheck
 | `components/session-workbench/` | Session workbench — composition shell for session management. Composes session-list + session-detail in split-workbench. |
 | `components/conversation-viewer/` | Conversation protocol viewer — convergence indicator, common ground panel, point list, point detail, conversation workbench. Property-based data delivery. |
 | `components/swf-diagram/` | SWF workflow diagram — standalone canvas for Serverless Workflow YAML. Extends DiagramBaseMixin. No structural editing (read-only + property editing). |
+| `components/org-diagram/` | Eidos org structure diagram — editor component for organizational YAML. Extends DiagramBaseMixin. Archetype-aware layout (10 strategies via ELK), org-specific toolbar with layout dropdown and archetype badge, stencil palette, property panel. |
 | `components/service-card/` | Per-service health card — status badge, replicas, image, per-cluster deployment status. Dual data mode. |
 | `components/cluster-panel/` | Cluster management panel — cluster list, registration form, connectivity test, delete. Dual data mode. Readonly mode. |
 | `components/reconciliation-status/` | Desired vs actual reconciliation — per-cluster sections with per-node status grid. EventStreamController push updates. |
