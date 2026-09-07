@@ -52,6 +52,7 @@ const PAGE_MODULES = [
   './pages/casehub-diagram-page.js',
   './pages/diagram-workbench-page.js',
   './pages/diagram-export-page.js',
+  './pages/org-diagram-page.js',
   './pages/avatar-page.js',
   './pages/worker-task-pane-page.js',
   './pages/rendering-primitives-page.js',
