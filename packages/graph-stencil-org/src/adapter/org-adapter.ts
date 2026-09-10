@@ -138,10 +138,7 @@ export function toOrgGraph(yaml: string): OrgAdapterResult {
     yamlPaths.set(edgeId, ['organization', 'relationships', i]);
   }
 
-  const hasFlowEdges = edges.some(e => {
-    const kind = e.properties?.['kind'] as string | undefined;
-    return kind === 'ESCALATES_TO' || kind === 'DELEGATES_TO';
-  });
+  const hasDelegateTo = edges.some(e => e.properties?.['kind'] === 'DELEGATES_TO');
   const delegatePairs = new Set<string>();
   for (const edge of edges) {
     if (edge.properties?.['kind'] === 'DELEGATES_TO') {
@@ -150,9 +147,9 @@ export function toOrgGraph(yaml: string): OrgAdapterResult {
   }
   for (const edge of edges) {
     const kind = edge.properties?.['kind'] as string | undefined;
-    if (kind === 'BACKS_UP') {
+    if (kind === 'BACKS_UP' || kind === 'ESCALATES_TO') {
       (edge.properties as Record<string, unknown>)['excludeFromLayout'] = true;
-    } else if (hasFlowEdges && kind === 'SUPERVISES') {
+    } else if (hasDelegateTo && kind === 'SUPERVISES') {
       (edge.properties as Record<string, unknown>)['excludeFromLayout'] = true;
     } else if (kind === 'REPORTS_TO' && delegatePairs.has(`${edge.target}→${edge.source}`)) {
       const srcNode = nodes.find(n => n.id === edge.source);

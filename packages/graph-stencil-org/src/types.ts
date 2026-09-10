@@ -75,3 +75,52 @@ export interface OrgStructureYaml {
     relationships: AgentRelationship[];
   };
 }
+
+export interface DispositionAxes {
+  autonomy?: string;
+  ruleFollowing?: string;
+  socialOrient?: string;
+  riskAppetite?: string;
+  conflictMode?: string;
+}
+
+export interface AgentDescriptor {
+  slot?: string;
+  capabilities?: AgentCapability[];
+  disposition?: Partial<DispositionAxes>;
+  goals?: AgentGoal[];
+  constraints?: AgentConstraint[];
+  briefing?: string;
+}
+
+export interface OrgAgentNodeData {
+  agentId: string;
+  role?: string;
+  roleVocabulary?: string;
+  unitId: string;
+  label: string;
+  slot?: string;
+  capabilities?: AgentCapability[];
+  disposition?: Partial<DispositionAxes>;
+  supervisionTargets?: string[];
+  escalationChain?: string[];
+  backupAgents?: { agentId: string; scope?: string; direction: 'backs' | 'backed-by' }[];
+  attestationGrants?: { targetAgentId: string; scope?: string; dimensions: string[]; signalTypes?: string[] }[];
+  unitKind?: string;
+  unitColorStart?: string;
+  unitColorEnd?: string;
+}
+
+export interface OrgUnitNodeData {
+  unitId: string;
+  name: string;
+  kind?: string;
+  kindVocabulary?: string;
+  label: string;
+  memberCount: number;
+  capabilities: AgentCapability[];
+  goals: AgentGoal[];
+  constraints: AgentConstraint[];
+  kindColorStart?: string;
+  kindColorEnd?: string;
+}
