@@ -882,6 +882,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           <pages-graph-canvas
             .nodes=${this._nodes}
             .edges=${this._edges}
+            .model=${this._adapterResult?.model}
             .editPolicy=${this._editPolicy()}
             .onMutation=${this._handleMutation}
             .miniMapNodeColor=${caseMiniMapNodeColor}
@@ -893,6 +894,8 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
               if (topic === 'graph:node:click') this._handleNodeClick(e);
               if (topic === 'graph:selection:change') this._handleSelectionChange(e);
               if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
+              if (topic === 'graph:pane:click') this._showPickerAtPaneClick(e.detail?.payload);
+              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(e.detail?.payload);
             }}
           ></pages-graph-canvas>
           ${this._propertiesOpen ? html`
@@ -914,6 +917,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
         </div>
         ${this._showConflict ? this._renderConflictDialog() : nothing}
         ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}
+        ${this._renderNodePicker()}
       </div>
     `;
   }

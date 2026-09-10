@@ -141,8 +141,10 @@ export class ExampleShell extends LitElement {
       background: none;
       width: 100%;
       text-align: left;
+      outline: none;
     }
     .nav-item:hover { background: var(--pages-neutral-3, #eee); color: var(--pages-neutral-12, #111); }
+    .nav-item:focus-visible { outline: 2px solid var(--pages-accent-9, #2563eb); outline-offset: -2px; }
     .nav-item.active { background: var(--pages-accent-3, #e0e7ff); color: var(--pages-accent-11, #1e40af); font-weight: 500; }
 
     .controls { margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--pages-neutral-5, #e0e0e0); display: flex; gap: 8px; }
@@ -166,6 +168,40 @@ export class ExampleShell extends LitElement {
 
   private onHashChange = (): void => {
     this.currentPage = location.hash;
+  };
+
+  private get _allItems(): NavItem[] {
+    return NAV.flatMap(cat => cat.items);
+  }
+
+  private _handleNavKeydown = (e: KeyboardEvent): void => {
+    const items = this._allItems;
+    const currentIndex = items.findIndex(i => i.hash === this.currentPage);
+    let nextIndex = -1;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (currentIndex >= 0) {
+        location.hash = items[currentIndex].hash;
+      }
+      return;
+    } else {
+      return;
+    }
+
+    if (nextIndex >= 0) {
+      location.hash = items[nextIndex].hash;
+      this.updateComplete.then(() => {
+        const buttons = this.shadowRoot?.querySelectorAll('.nav-item');
+        (buttons?.[nextIndex] as HTMLElement)?.focus();
+      });
+    }
   };
 
   private applyCurrentTheme(): void {
@@ -192,15 +228,20 @@ export class ExampleShell extends LitElement {
     return html`
       <nav class="sidebar">
         <div class="sidebar-header">blocks-ui Examples</div>
+        <div role="listbox" aria-label="Example pages" @keydown=${this._handleNavKeydown}>
         ${NAV.map(cat => html`
           <div class="category">${cat.label}</div>
           ${cat.items.map(item => html`
             <button class="nav-item ${this.currentPage === item.hash ? 'active' : ''}"
+              role="option"
+              aria-selected=${this.currentPage === item.hash}
+              tabindex=${this.currentPage === item.hash ? 0 : -1}
               @click=${() => { location.hash = item.hash; }}>
               ${item.label}
             </button>
           `)}
         `)}
+        </div>
         <div class="controls">
           <pages-theme-picker></pages-theme-picker>
           <button class="toggle ${this.density === 'compact' ? 'active' : ''}" @click=${() => this.toggleDensity()}>

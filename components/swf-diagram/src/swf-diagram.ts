@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { toSwfGraph, applySwfPropertyEdit, addSwfTask, removeSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
+import { toSwfGraph, applySwfPropertyEdit, addSwfTask, removeSwfTask, moveSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
@@ -89,6 +89,17 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
         const label = node?.properties['label'];
         if (!label || typeof label !== 'string') throw new Error(`Cannot resolve task name for ${edit.nodeId}`);
         return removeSwfTask(yaml, label);
+      }
+      case 'moveNodeToEdge': {
+        const draggedNode = this._adapterResult?.model.nodes.find(n => n.id === edit.nodeId);
+        const draggedName = draggedNode?.properties['label'];
+        if (!draggedName || typeof draggedName !== 'string') throw new Error(`Cannot resolve task name for ${edit.nodeId}`);
+        const targetEdge = this._adapterResult?.model.edges.find(e => e.id === edit.edgeId);
+        const targetNode = targetEdge ? this._adapterResult?.model.nodes.find(n => n.id === targetEdge.target) : undefined;
+        const sourceNode = targetEdge ? this._adapterResult?.model.nodes.find(n => n.id === targetEdge.source) : undefined;
+        const targetName = targetNode?.properties['label'];
+        const sourceName = sourceNode?.properties['label'];
+        return moveSwfTask(yaml, draggedName, typeof targetName === 'string' ? targetName : null, typeof sourceName === 'string' ? sourceName : undefined);
       }
       case 'addEdge':
         throw new Error('addEdge for SWF diagrams — not yet implemented');
@@ -216,6 +227,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           <pages-graph-canvas
             .nodes=${filteredNodes}
             .edges=${filteredEdges}
+            .model=${this._adapterResult?.model}
             .editPolicy=${this._editPolicy()}
             .onMutation=${this._handleMutation}
             role="img"
@@ -226,6 +238,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
               if (topic === 'graph:node:click') this._handleNodeClick(e);
               if (topic === 'graph:selection:change') this._handleSelectionChange(e);
               if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
+              if (topic === 'graph:pane:click') this._showPickerAtPaneClick(e.detail?.payload);
+              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(e.detail?.payload);
             }}
           ></pages-graph-canvas>
           ${hasSelection ? html`
@@ -251,6 +265,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
           ` : nothing}
         </div>
         ${this._showConflict ? this._renderConflictDialog() : nothing}
+        ${this._renderNodePicker()}
       </div>
     `;
   }

@@ -56,6 +56,13 @@ export function createSwfEditPolicy(): EditPolicy {
       return true;
     },
 
+    canSpliceOntoEdge(edge: GraphEdge, node: GraphNode, _model: GraphModel): boolean {
+      if (NON_DELETABLE.has(node.type)) return false;
+      const targetId = edge.target;
+      if (targetId === node.id) return false;
+      return true;
+    },
+
     getInsertableTypes(_edge: GraphEdge, _model: GraphModel): StencilTypeInfo[] {
       return [];
     },
