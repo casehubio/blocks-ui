@@ -13,8 +13,26 @@ export {
   addMember, removeMember, addRelationship, removeRelationship,
 } from './adapter/yaml-editor.js';
 export { createOrgEditPolicy } from './editing/org-edit-policy.js';
-export { detectArchetype } from './layout/archetype-detection.js';
-export type { ArchetypeHint, ArchetypeName, OrgLayoutStrategy } from './layout/archetype-detection.js';
-export { orgLayoutOptions } from './layout/layout-strategy.js';
-export type { OrgElkLayoutOptions, ElkAlgorithm } from './layout/layout-strategy.js';
 export { computeRadialLayout } from './layout/radial-layout.js';
+export type { AgentDescriptor, DispositionAxes, OrgAgentNodeData, OrgUnitNodeData } from './types.js';
+export { enrichWithDescriptors } from './adapter/enrichment.js';
+export { computeDerivedData } from './adapter/derived-data.js';
+export type { DerivedOrgData, SupervisionEntry } from './adapter/derived-data.js';
+export { resolveKindColors, DEFAULT_KIND_PALETTE } from './adapter/kind-colors.js';
+export { applyCollapsedUnits } from './adapter/collapse.js';
+export { applyOrgEdgeLabels } from './adapter/edge-labels.js';
+export { applySelectionHighlight } from './adapter/selection-highlight.js';
+
+// ─── Layout Rule Engine ─────────────────────────────────────────────
+export { OrgLayoutEngine } from './layout/engine.js';
+export type { PreLayoutResult, PostLayoutResult } from './layout/engine.js';
+export { orgClassificationRules } from './layout/classification-rules.js';
+export { sizingClassifier, orgLayoutRules, orgHardConstraints, AGENT_WIDTH, DISPOSITION_SHORT_NAMES } from './layout/layout-rules.js';
+export { createFactBase } from './layout/fact-base.js';
+export type {
+  Phase, Fact, FactBase, ClassificationRule, LayoutRule, HardConstraint,
+  CompositionReport, LayoutExplanation, RuleSelection,
+  LayoutNode, LayoutEdge, LayoutViolation,
+  ArchetypeHint, ArchetypeName, OrgLayoutStrategy,
+  OrgElkLayoutOptions, ElkAlgorithm,
+} from './layout/types.js';
