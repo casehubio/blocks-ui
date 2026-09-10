@@ -12,16 +12,27 @@ import {
   removeRelationship,
   removeMember,
   createOrgEditPolicy,
-  detectArchetype,
-  orgLayoutOptions,
+  enrichWithDescriptors,
+  computeDerivedData,
+  resolveKindColors,
+  applyCollapsedUnits,
+  applyOrgEdgeLabels,
+  applySelectionHighlight,
+  computeRadialLayout,
+  OrgLayoutEngine,
+  orgClassificationRules,
+  sizingClassifier,
+  orgLayoutRules,
+  orgHardConstraints,
 } from '@casehubio/graph-stencil-org';
-import { computeRadialLayout } from '../../../packages/graph-stencil-org/src/layout/radial-layout.js';
 import type {
-  OrgAdapterResult,
   ArchetypeHint,
   OrgLayoutStrategy,
+  AgentDescriptor,
+  DerivedOrgData,
+  FactBase,
 } from '@casehubio/graph-stencil-org';
-import { toReactFlowGraph, computeElkLayout, validateEdgeRouting } from '@casehubio/graph-renderer';
+import { toReactFlowGraph, computeElkLayout } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, ElkLayoutResult, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
@@ -29,6 +40,15 @@ import type { AdapterResult } from '@casehubio/pages-diagram-core';
 import '@casehubio/graph-renderer';
 import '@casehubio/pages-diagram-palette';
 import './blocks-org-diagram-toolbar.js';
+import './panels/escalation-chain-panel.js';
+import './panels/supervision-chain-panel.js';
+import './panels/attestation-panel.js';
+import './panels/org-legend.js';
+import './panels/tooltip.js';
+import './panels/edge-tooltip.js';
+import type { OrgTooltip } from './panels/tooltip.js';
+import type { OrgEdgeTooltip } from './panels/edge-tooltip.js';
+import type { OrgAgentNodeData } from '@casehubio/graph-stencil-org';
 
 const orgEditPolicy = createOrgEditPolicy();
 
@@ -62,17 +82,48 @@ function orgIconRenderer(icon: string): TemplateResult {
   return html`<span style="width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;">${icon}</span>`;
 }
 
+export interface OrgDiagramProps {
+  yaml?: string;
+  src?: string;
+  agents?: Record<string, AgentDescriptor>;
+  kindColors?: Record<string, { start: string; end: string }>;
+  layoutStrategy?: OrgLayoutStrategy | 'auto';
+  selectionTopic?: string;
+  readonly?: boolean;
+}
+
 @customElement('blocks-org-diagram')
 export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   @property({ attribute: 'selection-topic' }) selectionTopic = '';
   @property() layoutStrategy: OrgLayoutStrategy | 'auto' = 'auto';
+  @property({ type: Object }) agents: Record<string, AgentDescriptor> | undefined;
+  @property({ type: Object }) kindColors: Record<string, { start: string; end: string }> | undefined;
 
   @state() private _archetypeHint: ArchetypeHint | null = null;
   @state() private _paletteOpen = true;
   @state() private _propertiesOpen = true;
+  @state() private _collapsedUnits = new Set<string>();
+  @state() private _legendOpen = false;
+  @state() private _showEscalation = true;
+  @state() private _showSupervision = true;
+  @state() private _showAttestation = true;
+  private _derivedData: DerivedOrgData | null = null;
+  private _baseEdges: any[] = [];
+  private _computedNodeSizes: ReadonlyMap<string, { width: number; height: number }> = new Map();
   @state() private _chooserState: { x: number; y: number; sourceNodeId?: string | undefined } | null = null;
   private _lastPointerX = 0;
   private _lastPointerY = 0;
+  private _engine: OrgLayoutEngine;
+  private _lastFacts: FactBase | null = null;
+
+  constructor() {
+    super();
+    this._engine = new OrgLayoutEngine();
+    for (const r of orgClassificationRules()) this._engine.register(r);
+    this._engine.register(sizingClassifier());
+    for (const r of orgLayoutRules()) this._engine.register(r);
+    for (const c of orgHardConstraints()) this._engine.register(c);
+  }
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -82,9 +133,27 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   }
 
   protected _adaptYaml(yaml: string): AdapterResult {
-    const result = toOrgGraph(yaml);
-    this._archetypeHint = detectArchetype(result.model);
-    return result;
+    const base = toOrgGraph(yaml);
+    let model = this.agents
+      ? enrichWithDescriptors(base.model, this.agents)
+      : base.model;
+    const derived = computeDerivedData(model);
+    this._derivedData = derived;
+    model = resolveKindColors(derived.model, this.kindColors);
+    const { model: layoutModel, yamlPaths } = this._collapsedUnits.size > 0
+      ? applyCollapsedUnits(model, base.yamlPaths, this._collapsedUnits)
+      : { model, yamlPaths: base.yamlPaths };
+    const pre = this._engine.preLayout(layoutModel);
+    this._computedNodeSizes = pre.nodeSizes;
+    this._archetypeHint = pre.archetype;
+    this._lastFacts = pre.facts;
+    return { model: layoutModel, yamlPaths };
+  }
+
+  private _updateEdgeStyles(): void {
+    let edges = applyOrgEdgeLabels(this._baseEdges);
+    edges = applySelectionHighlight(edges, this._selectedNodeId || undefined);
+    (this as any)._edges = edges;
   }
 
   protected _applyPropertyEdit(
@@ -212,15 +281,16 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   };
 
   private _buildElkOpts(strategy: OrgLayoutStrategy): ElkLayoutOptions {
-    const orgOpts = orgLayoutOptions(strategy);
+    const orgOpts = this._engine.elkOptions(strategy);
     const opts: ElkLayoutOptions = {
       algorithm: orgOpts.algorithm,
       spacing: orgOpts.spacing,
-      headerHeight: 48,
+      headerHeight: 68,
     };
     if (orgOpts.direction !== undefined) opts.direction = orgOpts.direction;
     if (orgOpts.containerPadding !== undefined) opts.containerPadding = orgOpts.containerPadding;
     if (orgOpts.elkOptions !== undefined) opts.elkOptions = orgOpts.elkOptions;
+    if (this._computedNodeSizes.size > 0) opts.nodeSizes = this._computedNodeSizes;
     return opts;
   }
 
@@ -228,13 +298,9 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     const strategy = this.layoutStrategy === 'auto'
       ? (this._archetypeHint?.layout ?? 'force')
       : this.layoutStrategy;
-    return this._buildElkOpts(strategy);
-  }
-
-  private _autoLayoutCandidates(): OrgLayoutStrategy[] {
-    const primary = this._archetypeHint?.layout ?? 'force';
-    const ALL: OrgLayoutStrategy[] = ['hub-spoke', 'star', 'tree', 'layered', 'force', 'flow', 'circular', 'nested', 'radial', 'grid'];
-    return [primary, ...ALL.filter(s => s !== primary)];
+    const opts = this._buildElkOpts(strategy);
+    if (this._computedNodeSizes.size > 0) opts.nodeSizes = this._computedNodeSizes;
+    return opts;
   }
 
   override async _fullRender(yamlStr: string): Promise<void> {
@@ -248,60 +314,31 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
       const result = this._adaptYaml(yamlStr);
       (this as any)._adapterResult = result;
 
-      let bestLayout: ElkLayoutResult | undefined;
-      let bestOpts: ElkLayoutOptions | undefined;
-      let bestViolations = Infinity;
-      let bestTotalDist = Infinity;
+      let layout: ElkLayoutResult | undefined;
+      let layoutOpts!: ElkLayoutOptions;
 
       if (this.layoutStrategy === 'auto') {
-        const scoreLayout = (layout: ElkLayoutResult, dir?: string) => {
-          const { nodes, edges } = toReactFlowGraph(result.model, layout, this._decorations(), dir);
-          const validation = validateEdgeRouting(nodes, edges);
-          const violations = validation.violations.length;
-          const totalDist = edges.reduce((sum, e) => {
-            const sn = nodes.find(n => n.id === e.source);
-            const tn = nodes.find(n => n.id === e.target);
-            if (!sn || !tn) return sum;
-            return sum + Math.sqrt((sn.position.x - tn.position.x) ** 2 + (sn.position.y - tn.position.y) ** 2);
-          }, 0);
-          return { violations, totalDist };
-        };
+        const primary = this._archetypeHint?.layout ?? 'force';
 
-        const tryLayout = (layout: ElkLayoutResult, opts: ElkLayoutOptions, dir?: string) => {
-          const { violations, totalDist } = scoreLayout(layout, dir);
-          if (violations < bestViolations || (violations === bestViolations && totalDist < bestTotalDist)) {
-            bestViolations = violations;
-            bestTotalDist = totalDist;
-            bestLayout = layout;
-            bestOpts = opts;
-          }
-        };
-
-        if (this._archetypeHint?.layout === 'hub-spoke' || this._archetypeHint?.layout === 'circular') {
+        if (primary === 'hub-spoke' || primary === 'circular') {
           try {
-            const radialLayout = computeRadialLayout(result.model);
-            const radialOpts: ElkLayoutOptions = { spacing: 120 };
-            tryLayout(radialLayout, radialOpts);
-          } catch { /* skip */ }
+            layout = computeRadialLayout(result.model);
+            layoutOpts = { spacing: 120 };
+          } catch { /* fall through to ELK */ }
         }
 
-        if (bestViolations > 0 || !bestLayout) {
-          const candidates = this._autoLayoutCandidates();
-          for (const strategy of candidates) {
-            const opts = this._buildElkOpts(strategy);
-            try {
-              const layout = await computeElkLayout(result.model, opts);
-              const dir = opts.direction ?? (['layered', 'mrtree'].includes(opts.algorithm ?? '') ? 'DOWN' : undefined);
-              tryLayout(layout, opts, dir);
-              if (bestViolations === 0) break;
-            } catch { /* skip failing algorithm */ }
+        if (!layout) {
+          layoutOpts = this._buildElkOpts(primary);
+          try {
+            layout = await computeElkLayout(result.model, layoutOpts);
+          } catch {
+            layoutOpts = this._buildElkOpts('force');
+            layout = await computeElkLayout(result.model, layoutOpts);
           }
         }
-      }
-
-      if (!bestLayout || !bestOpts) {
-        bestOpts = this._layoutOptions();
-        bestLayout = await computeElkLayout(result.model, bestOpts);
+      } else {
+        layoutOpts = this._layoutOptions();
+        layout = await computeElkLayout(result.model, layoutOpts);
       }
 
       if ((this as any)._adapterResult !== result) {
@@ -309,11 +346,15 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
         await this._fullRender((this as any)._currentYaml);
         return;
       }
-      (this as any)._lastLayout = bestLayout;
-      const dir = bestOpts.direction ?? (['layered', 'mrtree'].includes(bestOpts.algorithm ?? '') ? 'DOWN' : undefined);
-      const { nodes, edges } = toReactFlowGraph(result.model, bestLayout, this._decorations(), dir);
+      (this as any)._lastLayout = layout;
+      const dir = layoutOpts.direction ?? (['layered', 'mrtree'].includes(layoutOpts.algorithm ?? '') ? 'DOWN' : undefined);
+      const { nodes, edges } = toReactFlowGraph(result.model, layout!, this._decorations(), dir);
+      if (this._lastFacts) {
+        this._engine.postLayout(nodes as any, edges as any, this._lastFacts);
+      }
       (this as any)._nodes = nodes;
-      (this as any)._edges = edges;
+      this._baseEdges = edges;
+      this._updateEdgeStyles();
     } catch (e) {
       (this as any)._error = String(e);
     } finally {
@@ -411,6 +452,58 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     });
   }
 
+  private _onNodeHover = (nodeId: string, event: MouseEvent): void => {
+    if (!this._adapterResult) return;
+    const node = this._adapterResult.model.nodes.find(n => n.id === nodeId);
+    if (!node || node.type !== 'org-agent') return;
+    const tooltip = this.renderRoot?.querySelector('org-tooltip') as OrgTooltip | null;
+    if (tooltip) {
+      const rect = (this as HTMLElement).getBoundingClientRect();
+      tooltip.show(node.properties as unknown as OrgAgentNodeData, event.clientX - rect.left, event.clientY - rect.top - 20);
+    }
+  };
+
+  private _onNodeHoverEnd = (): void => {
+    const tooltip = this.renderRoot?.querySelector('org-tooltip') as OrgTooltip | null;
+    if (tooltip) tooltip.scheduleDismiss();
+  };
+
+  private _onEdgeHover = (edgeId: string, edgeType: string, label: string, clientX: number, clientY: number): void => {
+    const edgeTooltip = this.renderRoot?.querySelector('org-edge-tooltip') as OrgEdgeTooltip | null;
+    if (edgeTooltip) {
+      const rect = (this as HTMLElement).getBoundingClientRect();
+      edgeTooltip.show(label, edgeType, clientX - rect.left, clientY - rect.top - 20);
+    }
+  };
+
+  private _onEdgeHoverEnd = (): void => {
+    const edgeTooltip = this.renderRoot?.querySelector('org-edge-tooltip') as OrgEdgeTooltip | null;
+    if (edgeTooltip) edgeTooltip.scheduleDismiss();
+  };
+
+  private _onPanelAgentClick = (e: CustomEvent<{ agentId: string }>): void => {
+    const agentId = e.detail.agentId;
+    if (!this._adapterResult) return;
+    const node = this._adapterResult.model.nodes.find(
+      n => n.type === 'org-agent' && n.properties['agentId'] === agentId,
+    );
+    if (node) {
+      (this as any)._selectedNodeId = node.id;
+      this._updateEdgeStyles();
+      this.requestUpdate();
+    }
+  };
+
+  private _toggleUnitCollapse(unitId: string): void {
+    const next = new Set(this._collapsedUnits);
+    if (next.has(unitId)) next.delete(unitId);
+    else next.add(unitId);
+    this._collapsedUnits = next;
+    if (this._adapterResult) {
+      this._fullRender(this._currentYaml);
+    }
+  }
+
   private _onLayoutChange(e: CustomEvent<{ strategy: OrgLayoutStrategy | 'auto' }>): void {
     this.layoutStrategy = e.detail.strategy;
     if (this._adapterResult) {
@@ -480,6 +573,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
             <pages-graph-canvas
               .nodes=${this._nodes}
               .edges=${this._edges}
+              .model=${this._adapterResult?.model}
               .editPolicy=${this._editPolicy()}
               .onMutation=${this._handleMutation}
               .miniMapNodeColor=${orgMiniMapNodeColor}
@@ -490,9 +584,13 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
                 const topic = e.detail?.topic as string | undefined;
                 const payload = e.detail?.payload ?? e.detail;
                 if (topic === 'graph:node:click') this._handleNodeClick(e);
-                if (topic === 'graph:selection:change') this._handleSelectionChange(e);
-                if (topic === 'graph:pane:click') this._onPaneClick();
+                if (topic === 'graph:selection:change') { const prev = this._selectedNodeId; this._handleSelectionChange(e); if (this._selectedNodeId !== prev) this._updateEdgeStyles(); }
+                if (topic === 'graph:pane:click') { this._onPaneClick(); this._onNodeHoverEnd(); }
                 if (topic === 'graph:connect:end-on-empty') this._onConnectEndOnEmpty(payload);
+                if (topic === 'graph:node:mouseenter') { const nodeId = payload?.nodeId as string | undefined; if (nodeId) this._onNodeHover(nodeId, e as unknown as MouseEvent); }
+                if (topic === 'graph:node:mouseleave') this._onNodeHoverEnd();
+                if (topic === 'graph:edge:mouseenter') { this._onEdgeHover(payload?.edgeId as string, payload?.edgeType as string, payload?.label as string, payload?.clientX as number, payload?.clientY as number); }
+                if (topic === 'graph:edge:mouseleave') this._onEdgeHoverEnd();
               }}
             ></pages-graph-canvas>
             ${this._chooserState ? html`
@@ -521,6 +619,65 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
             </div>
           ` : this._renderCollapsedDock('Properties', '☰', 'right')}
         </div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 8px 2px 8px;flex-shrink:0;">
+          ${this._derivedData?.escalationChains.length ? html`
+            <button
+              style="font-size:9px;padding:3px 10px;border-radius:12px;border:1px solid ${this._showEscalation ? '#c53030' : '#cbd5e0'};background:${this._showEscalation ? '#fff5f5' : 'transparent'};color:${this._showEscalation ? '#c53030' : '#718096'};cursor:pointer;font-weight:600;"
+              aria-pressed=${this._showEscalation}
+              @click=${() => { this._showEscalation = !this._showEscalation; }}
+            >ESC</button>
+          ` : nothing}
+          ${this._derivedData?.supervisionSummary.length ? html`
+            <button
+              style="font-size:9px;padding:3px 10px;border-radius:12px;border:1px solid ${this._showSupervision ? '#2b6cb0' : '#cbd5e0'};background:${this._showSupervision ? '#ebf8ff' : 'transparent'};color:${this._showSupervision ? '#2b6cb0' : '#718096'};cursor:pointer;font-weight:600;"
+              aria-pressed=${this._showSupervision}
+              @click=${() => { this._showSupervision = !this._showSupervision; }}
+            >SUP</button>
+          ` : nothing}
+          ${this._derivedData?.attestationSummary.length ? html`
+            <button
+              style="font-size:9px;padding:3px 10px;border-radius:12px;border:1px solid ${this._showAttestation ? '#6b21a8' : '#cbd5e0'};background:${this._showAttestation ? '#f3e8ff' : 'transparent'};color:${this._showAttestation ? '#6b21a8' : '#718096'};cursor:pointer;font-weight:600;"
+              aria-pressed=${this._showAttestation}
+              @click=${() => { this._showAttestation = !this._showAttestation; }}
+            >ATT</button>
+          ` : nothing}
+          <button
+            style="font-size:9px;padding:3px 10px;border-radius:12px;border:1px solid ${this._legendOpen ? '#4a5568' : '#cbd5e0'};background:${this._legendOpen ? '#edf2f7' : 'transparent'};color:${this._legendOpen ? '#4a5568' : '#718096'};cursor:pointer;font-weight:600;"
+            aria-pressed=${this._legendOpen}
+            @click=${() => { this._legendOpen = !this._legendOpen; }}
+          >LGD</button>
+        </div>
+        <div style="display:flex;gap:8px;padding:4px 8px 8px 8px;flex-shrink:0;overflow-x:auto;flex-wrap:wrap;">
+          ${this._showEscalation && this._derivedData?.escalationChains.length ? html`
+            <org-escalation-chain-panel
+              style="flex:1;min-width:200px;"
+              .chains=${this._derivedData.escalationChains}
+              .highlightAgent=${this._selectedNodeId ? this._adapterResult?.model.nodes.find(n => n.id === this._selectedNodeId)?.properties['agentId'] as string : undefined}
+              @agent-click=${this._onPanelAgentClick}
+            ></org-escalation-chain-panel>
+          ` : nothing}
+          ${this._showSupervision && this._derivedData?.supervisionSummary.length ? html`
+            <org-supervision-chain-panel
+              style="flex:1;min-width:200px;"
+              .entries=${this._derivedData.supervisionSummary}
+              .highlightAgent=${this._selectedNodeId ? this._adapterResult?.model.nodes.find(n => n.id === this._selectedNodeId)?.properties['agentId'] as string : undefined}
+              @agent-click=${this._onPanelAgentClick}
+            ></org-supervision-chain-panel>
+          ` : nothing}
+          ${this._showAttestation && this._derivedData?.attestationSummary.length ? html`
+            <org-attestation-panel
+              style="flex:1;min-width:200px;"
+              .grants=${this._derivedData.attestationSummary}
+              .highlightAgent=${this._selectedNodeId ? this._adapterResult?.model.nodes.find(n => n.id === this._selectedNodeId)?.properties['agentId'] as string : undefined}
+              @agent-click=${this._onPanelAgentClick}
+            ></org-attestation-panel>
+          ` : nothing}
+          ${this._legendOpen ? html`
+            <org-legend style="flex:1;min-width:200px;" .kindColors=${this.kindColors ?? {}}></org-legend>
+          ` : nothing}
+        </div>
+        <org-tooltip></org-tooltip>
+        <org-edge-tooltip></org-edge-tooltip>
         ${this._showConflict ? this._renderConflictDialog() : nothing}
         ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}
       </div>

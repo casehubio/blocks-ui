@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { toOrgGraph, orgLayoutOptions, detectArchetype, registerOrgStencils } from '@casehubio/graph-stencil-org';
+import { toOrgGraph, registerOrgStencils, orgClassificationRules, sizingClassifier, orgLayoutRules, orgHardConstraints } from '@casehubio/graph-stencil-org';
+import { LayoutEngine } from '@casehubio/graph-renderer';
 import { computeElkLayout } from '@casehubio/graph-renderer/layout/elk-layout.js';
 import type { ElkLayoutOptions } from '@casehubio/graph-renderer/layout/elk-layout.js';
 import { toReactFlowGraph } from '@casehubio/graph-renderer/mapping.js';
 import { validateEdgeRouting } from '@casehubio/graph-renderer/edge-routing-validator.js';
-import type { OrgLayoutStrategy } from '@casehubio/graph-stencil-org';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -19,11 +19,20 @@ function loadArchetype(name: string): string {
   return readFileSync(resolve(ARCHETYPES_DIR, `${name}.yaml`), 'utf-8');
 }
 
+function buildEngine(): LayoutEngine {
+  const engine = new LayoutEngine();
+  for (const r of orgClassificationRules()) engine.register(r);
+  engine.register(sizingClassifier());
+  for (const r of orgLayoutRules()) engine.register(r);
+  for (const c of orgHardConstraints()) engine.register(c);
+  return engine;
+}
+
 async function renderOrgDiagram(yaml: string) {
   const { model } = toOrgGraph(yaml);
-  const hint = detectArchetype(model);
-  const strategy: OrgLayoutStrategy = hint.layout;
-  const orgOpts = orgLayoutOptions(strategy);
+  const engine = buildEngine();
+  const pre = engine.preLayout(model);
+  const orgOpts = engine.elkOptions(pre.strategy);
   const opts: ElkLayoutOptions = {
     algorithm: orgOpts.algorithm,
     spacing: orgOpts.spacing,

@@ -10,8 +10,8 @@
     "registry": "https://npm.pkg.github.com"
   },
   "type": "module",
-  "main": "dist/blocks-org-diagram.js",
-  "types": "dist/blocks-org-diagram.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",

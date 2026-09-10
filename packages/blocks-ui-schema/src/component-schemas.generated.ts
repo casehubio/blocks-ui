@@ -1114,6 +1114,39 @@ export const commitmentTransitionBadgePropsSchema = z.object({
   compact: z.boolean(),
 });
 
+export const orgDiagramPropsSchema = z.object({
+  yaml: z.string().optional(),
+  src: z.string().optional(),
+  agents: z.record(z.object({
+      slot: z.string().optional(),
+      capabilities: z.array(z.object({
+          name: z.string(),
+          description: z.string().optional(),
+        })).optional(),
+      disposition: z.object({}).optional(),
+      goals: z.array(z.object({
+          name: z.string(),
+          description: z.string().optional(),
+          priority: z.string().optional(),
+          visibility: z.string().optional(),
+        })).optional(),
+      constraints: z.array(z.object({
+          name: z.string(),
+          description: z.string().optional(),
+          severity: z.string().optional(),
+          visibility: z.string().optional(),
+        })).optional(),
+      briefing: z.string().optional(),
+    })).optional(),
+  kindColors: z.record(z.object({
+      start: z.string(),
+      end: z.string(),
+    })).optional(),
+  layoutStrategy: z.enum(["star", "tree", "circular", "layered", "nested", "hub-spoke", "flow", "radial", "grid", "force", "auto"]).optional(),
+  selectionTopic: z.string().optional(),
+  readonly: z.boolean().optional(),
+});
+
 export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map([
   ["blocks-sla-indicator", slaIndicatorPropsSchema] as [string, z.ZodType],
   ["blocks-execution-monitor", executionMonitorPropsSchema] as [string, z.ZodType],
@@ -1170,4 +1203,5 @@ export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map(
   ["blocks-contributor-workbench", contributorWorkbenchPropsSchema] as [string, z.ZodType],
   ["commitment-range-bar", commitmentRangeBarPropsSchema] as [string, z.ZodType],
   ["commitment-transition-badge", commitmentTransitionBadgePropsSchema] as [string, z.ZodType],
+  ["blocks-org-diagram", orgDiagramPropsSchema] as [string, z.ZodType],
 ]);
