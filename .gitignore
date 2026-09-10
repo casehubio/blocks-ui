@@ -24,4 +24,5 @@ proj
 .claude/
 /*.png
 tmp/
+test-results/
 hs_err_pid*.log
