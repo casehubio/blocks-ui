@@ -1,11 +1,10 @@
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.0.21"
-    id("org.jetbrains.intellij.platform") version "2.5.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.21"
+    id("org.jetbrains.intellij.platform")
 }
 
-group = "io.casehub.intellij"
-version = "0.1.0"
+group = providers.gradleProperty("pluginGroup").get()
+version = providers.gradleProperty("pluginVersion").get()
 
 repositories {
     mavenCentral()
@@ -16,12 +15,37 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        intellijIdeaCommunity("2025.1")
-        bundledPlugin("com.redhat.devtools.lsp4ij")
-        instrumentationTools()
+        intellijIdeaCommunity(providers.gradleProperty("platformVersion").get())
+        plugin("com.redhat.devtools.lsp4ij", providers.gradleProperty("lsp4ijVersion").get())
     }
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        id = "io.casehub.yaml"
+        name = providers.gradleProperty("pluginName")
+        version = providers.gradleProperty("pluginVersion")
+        ideaVersion {
+            sinceBuild = "242"
+        }
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+}
+
+val copyServerBundle = tasks.register<Copy>("copyServerBundle") {
+    from("../../packages/lsp-schemas/dist/server-node.bundle.cjs")
+    into(layout.buildDirectory.dir("resources/main/server"))
+}
+
+tasks.named("processResources") {
+    dependsOn(copyServerBundle)
 }
