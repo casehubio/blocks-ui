@@ -149,6 +149,19 @@ describe('CaseDefinition generation', () => {
   });
 });
 
+describe('SWF generation', () => {
+  it('generated schema parses a valid SWF document', async () => {
+    const { swfDocumentSchema } = await import(
+      '../src/schemas/swf.generated.js'
+    );
+    const result = swfDocumentSchema.safeParse({
+      document: { dsl: '1.0', name: 'test-workflow' },
+      do: [{ callTask: { call: 'http', with: { uri: 'https://example.com' } } }],
+    });
+    expect(result.success).toBe(true);
+  });
+});
+
 describe('Org generation', () => {
   it('generated schema parses a valid org document', async () => {
     const { orgDocumentSchema } = await import(
@@ -223,6 +236,19 @@ describe('HTN generation', () => {
           },
         },
       },
+    });
+    expect(result.success).toBe(true);
+  });
+});
+
+describe('SWF generation', () => {
+  it('generated schema parses a valid SWF document', async () => {
+    const { swfDocumentSchema } = await import(
+      '../src/schemas/swf.generated.js'
+    );
+    const result = swfDocumentSchema.safeParse({
+      document: { dsl: '1.0', name: 'test-workflow' },
+      do: [{ callTask: { call: 'http', with: { uri: 'https://example.com' } } }],
     });
     expect(result.success).toBe(true);
   });

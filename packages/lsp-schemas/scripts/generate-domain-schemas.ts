@@ -183,6 +183,13 @@ export function propToZodField(
   const type = prop.getTypeAtLocation(decl);
   if (isFunction(type)) return '';
 
+  const typeText = type.getText();
+  if (typeText === 'unknown' || typeText === 'unknown | undefined') {
+    const suffix = prop.isOptional() ? '.optional()' : '';
+    const safeName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name) ? name : `"${name}"`;
+    return `${safeName}: z.unknown()${suffix}`;
+  }
+
   const isOptional = prop.isOptional();
   const baseType = isOptional ? type.getNonNullableType() : type;
   let zodType = typeToZod(baseType, depth, visited);
@@ -253,6 +260,13 @@ export const FORMATS: FormatConfig[] = [
     sourceFile: '../../graph-stencil-htn/src/types/htn-yaml.ts',
     outputFile: '../src/schemas/htn.generated.ts',
     exportName: 'htnDocumentSchema',
+  },
+  {
+    formatId: 'swf',
+    rootTypeName: 'SwfDocumentYaml',
+    sourceFile: '../../graph-stencil-swf/src/swf-yaml.ts',
+    outputFile: '../src/schemas/swf.generated.ts',
+    exportName: 'swfDocumentSchema',
   },
 ];
 

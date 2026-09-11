@@ -1,6 +1,6 @@
 import { parseDocument, isMap, isSeq, isScalar, type YAMLMap, type YAMLSeq, type Scalar } from 'yaml';
 import type { FormatRegistration, SymbolOccurrence } from '@casehubio/pages-lsp';
-import { swfDocumentSchema } from '../schemas/swf.js';
+import { swfDocumentSchema } from '../schemas/swf.generated.js';
 import { scalarRange } from '../utils.js';
 
 const FLOW_DIRECTIVES = new Set(['continue', 'exit', 'end']);
