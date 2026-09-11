@@ -91,3 +91,50 @@ describe('propToZodField — index signature stripping', () => {
     expect(fields[0]).toContain('label: z.string()');
   });
 });
+
+describe('CaseDefinition generation', () => {
+  it('generated schema parses a valid case definition', async () => {
+    const { caseDefinitionDocumentSchema } = await import(
+      '../src/schemas/case-definition.generated.js'
+    );
+    const result = caseDefinitionDocumentSchema.safeParse({
+      dsl: '1.0',
+      namespace: 'test',
+      name: 'TestCase',
+      version: '1.0.0',
+      spec: {
+        capabilities: [{ name: 'cap1' }],
+        bindings: [{
+          name: 'b1',
+          on: { contextChange: { filter: '.status == "active"' } },
+          capability: 'cap1',
+        }],
+        workers: [{
+          name: 'w1',
+          capabilities: ['cap1'],
+        }],
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('generated schema validates binding trigger types', async () => {
+    const { caseDefinitionDocumentSchema } = await import(
+      '../src/schemas/case-definition.generated.js'
+    );
+    const result = caseDefinitionDocumentSchema.safeParse({
+      dsl: '1.0',
+      namespace: 'test',
+      name: 'TestCase',
+      version: '1.0.0',
+      spec: {
+        bindings: [{
+          name: 'b1',
+          on: { cloudEvent: 'my.event.type' },
+          capability: 'cap1',
+        }],
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+});

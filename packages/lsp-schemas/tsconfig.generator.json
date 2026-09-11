@@ -19,6 +19,7 @@
   "include": [
     "../graph-stencil-case/src/**/*.ts",
     "../graph-stencil-htn/src/**/*.ts",
-    "../graph-stencil-org/src/**/*.ts"
+    "../graph-stencil-org/src/**/*.ts",
+    "../graph-stencil-swf/src/**/*.ts"
   ]
 }

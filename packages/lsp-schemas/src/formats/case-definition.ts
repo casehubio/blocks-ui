@@ -1,6 +1,6 @@
 import { parseDocument, isMap, isSeq, isScalar, type YAMLMap, type YAMLSeq, type Scalar } from 'yaml';
 import type { FormatRegistration, SymbolOccurrence } from '@casehubio/pages-lsp';
-import { caseDefinitionDocumentSchema } from '../schemas/case-definition.js';
+import { caseDefinitionDocumentSchema } from '../schemas/case-definition.generated.js';
 import { scalarRange } from '../utils.js';
 
 const caseDefinitionSymbolExtractor = (content: string): SymbolOccurrence[] => {

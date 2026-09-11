@@ -44,7 +44,7 @@ function getSchemaVarName(symbolName: string): string {
 }
 
 export function typeToZod(type: Type, depth: number, visited: Set<string>): string {
-  if (depth > 10) return 'z.unknown()';
+  if (depth > 15) return 'z.unknown()';
 
   const text = type.getText();
 
@@ -83,6 +83,15 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
 
   if (type.isTuple()) {
     const elements = type.getTupleElements();
+    if (elements.length >= 2) {
+      const allSame = elements.every(e => e.getText() === elements[0].getText());
+      if (allSame) {
+        return `z.array(${typeToZod(elements[0], depth + 1, visited)})`;
+      }
+    }
+    if (elements.length === 1) {
+      return `z.array(${typeToZod(elements[0], depth + 1, visited)})`;
+    }
     const zodElements = elements.map(e => typeToZod(e, depth + 1, visited));
     return `z.tuple([${zodElements.join(', ')}])`;
   }
@@ -98,6 +107,28 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
     return 'z.record(z.unknown())';
   }
 
+  if (type.isIntersection()) {
+    const intersectionTypes = type.getIntersectionTypes();
+    const objectTypes = intersectionTypes.filter(t => t.isObject());
+    if (objectTypes.length > 0) {
+      const allProps = new Map<string, MorphSymbol>();
+      for (const prop of type.getProperties()) {
+        allProps.set(prop.getName(), prop);
+      }
+      const nonIndexProps = [...allProps.values()].filter(
+        p => !isIndexSignature(p) && !p.getName().startsWith('__@'),
+      );
+      if (nonIndexProps.length === 0) return 'z.object({})';
+      const fields = nonIndexProps
+        .map(p => propToZodField(p, depth + 1, visited))
+        .filter(Boolean);
+      if (fields.length === 0) return 'z.object({})';
+      const indent = '  '.repeat(depth + 2);
+      const closingIndent = '  '.repeat(depth + 1);
+      return `z.object({\n${indent}${fields.join(`,\n${indent}`)},\n${closingIndent}})`;
+    }
+  }
+
   if (type.isObject() && !type.isArray()) {
     const stringIndexType = type.getStringIndexType();
     const props = type.getProperties();
@@ -107,11 +138,12 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
     }
 
     const symbol = type.getSymbol() || type.getAliasSymbol();
-    const symbolId = symbol?.getFullyQualifiedName() ?? '';
+    const symbolName = symbol?.getName() ?? '';
+    const isAnonymous = !symbolName || symbolName.startsWith('__');
+    const symbolId = isAnonymous ? '' : (symbol?.getFullyQualifiedName() ?? '');
 
     if (symbolId && visited.has(symbolId)) {
-      const name = symbol!.getName();
-      return `${getSchemaVarName(name)}`;
+      return `z.lazy(() => ${getSchemaVarName(symbolName)})`;
     }
 
     if (symbolId) visited.add(symbolId);
@@ -191,7 +223,15 @@ export function generateFormatSchema(
   return `${generateHeader(config.sourceFile)}\nexport const ${config.exportName} = ${zodCode};\n`;
 }
 
-export const FORMATS: FormatConfig[] = [];
+export const FORMATS: FormatConfig[] = [
+  {
+    formatId: 'caseDefinition',
+    rootTypeName: 'CaseHub',
+    sourceFile: '../../graph-stencil-case/src/types/generated/case-definition.ts',
+    outputFile: '../src/schemas/case-definition.generated.ts',
+    exportName: 'caseDefinitionDocumentSchema',
+  },
+];
 
 if (typeof process !== 'undefined' && process.argv[1] &&
     import.meta.url === `file://${process.argv[1]}`) {
