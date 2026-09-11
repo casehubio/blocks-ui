@@ -231,6 +231,13 @@ export const FORMATS: FormatConfig[] = [
     outputFile: '../src/schemas/case-definition.generated.ts',
     exportName: 'caseDefinitionDocumentSchema',
   },
+  {
+    formatId: 'org',
+    rootTypeName: 'OrgStructureYaml',
+    sourceFile: '../../graph-stencil-org/src/types.ts',
+    outputFile: '../src/schemas/org.generated.ts',
+    exportName: 'orgDocumentSchema',
+  },
 ];
 
 if (typeof process !== 'undefined' && process.argv[1] &&

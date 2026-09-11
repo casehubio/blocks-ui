@@ -1,6 +1,6 @@
 import { parseDocument, isMap, isSeq, isScalar, type YAMLMap, type YAMLSeq, type Scalar } from 'yaml';
 import type { FormatRegistration, SymbolOccurrence } from '@casehubio/pages-lsp';
-import { orgDocumentSchema } from '../schemas/org.js';
+import { orgDocumentSchema } from '../schemas/org.generated.js';
 import { scalarRange } from '../utils.js';
 
 const orgSymbolExtractor = (content: string): SymbolOccurrence[] => {

@@ -118,6 +118,16 @@ describe('CaseDefinition generation', () => {
     expect(result.success).toBe(true);
   });
 
+  it('generated schema rejects missing required fields', async () => {
+    const { caseDefinitionDocumentSchema } = await import(
+      '../src/schemas/case-definition.generated.js'
+    );
+    const result = caseDefinitionDocumentSchema.safeParse({
+      spec: {},
+    });
+    expect(result.success).toBe(false);
+  });
+
   it('generated schema validates binding trigger types', async () => {
     const { caseDefinitionDocumentSchema } = await import(
       '../src/schemas/case-definition.generated.js'
@@ -136,5 +146,51 @@ describe('CaseDefinition generation', () => {
       },
     });
     expect(result.success).toBe(true);
+  });
+});
+
+describe('Org generation', () => {
+  it('generated schema parses a valid org document', async () => {
+    const { orgDocumentSchema } = await import(
+      '../src/schemas/org.generated.js'
+    );
+    const result = orgDocumentSchema.safeParse({
+      organization: {
+        units: [{
+          unitId: 'u1',
+          name: 'Engineering',
+          tenancyId: 't1',
+          members: [{ agentId: 'a1' }],
+          capabilities: [{ name: 'coding' }],
+          goals: [{ name: 'ship' }],
+          constraints: [{ name: 'budget' }],
+        }],
+        relationships: [{
+          sourceAgentId: 'a1',
+          targetAgentId: 'a2',
+          kind: 'SUPERVISES',
+          tenancyId: 't1',
+        }],
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects invalid relationship kind', async () => {
+    const { orgDocumentSchema } = await import(
+      '../src/schemas/org.generated.js'
+    );
+    const result = orgDocumentSchema.safeParse({
+      organization: {
+        units: [],
+        relationships: [{
+          sourceAgentId: 'a1',
+          targetAgentId: 'a2',
+          kind: 'INVALID_KIND',
+          tenancyId: 't1',
+        }],
+      },
+    });
+    expect(result.success).toBe(false);
   });
 });
