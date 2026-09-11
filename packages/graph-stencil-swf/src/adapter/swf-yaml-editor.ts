@@ -1,5 +1,5 @@
 import { parseDocument, isMap, type YAMLSeq } from 'yaml';
-import { yamlSetField, yamlDeleteField } from '@casehubio/pages-diagram-core';
+import { yamlSetOrDelete } from '@casehubio/pages-lsp';
 
 const SWF_TASK_DEFAULTS: Record<string, Record<string, unknown>> = {
   'swf-call': { call: 'http:get', with: {} },
@@ -130,8 +130,5 @@ export function applySwfPropertyEdit(
   field: (string | number)[],
   value: unknown,
 ): string {
-  const fullPath = [...nodePath, ...field];
-  return value === undefined
-    ? yamlDeleteField(yaml, fullPath)
-    : yamlSetField(yaml, fullPath, value);
+  return yamlSetOrDelete(yaml, nodePath, field, value);
 }

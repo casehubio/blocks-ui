@@ -29,6 +29,7 @@
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",
     "@casehubio/pages-diagram-core": "*",
+    "@casehubio/pages-lsp": "workspace:*",
     "lit-html": "^3.3.0",
     "yaml": "^2.7.0"
   },

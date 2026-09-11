@@ -1,0 +1,54 @@
+{
+  "name": "casehub-yaml",
+  "displayName": "CaseHub YAML",
+  "description": "Language intelligence for CaseHub YAML formats — completion, diagnostics, hover, rename",
+  "version": "0.1.0",
+  "publisher": "casehubio",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:yaml",
+    "workspaceContains:**/*.page.yaml",
+    "workspaceContains:**/*.case.yaml",
+    "workspaceContains:**/*.swf.yaml",
+    "workspaceContains:**/*.htn.yaml",
+    "workspaceContains:**/*.org.yaml"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "casehub-yaml",
+        "aliases": [
+          "CaseHub YAML"
+        ],
+        "extensions": [
+          ".page.yaml",
+          ".dash.yaml",
+          ".case.yaml",
+          ".swf.yaml",
+          ".htn.yaml",
+          ".org.yaml"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@casehubio/lsp-schemas": "workspace:*",
+    "vscode-languageclient": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "Apache-2.0"
+}

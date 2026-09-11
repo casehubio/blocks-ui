@@ -1,4 +1,5 @@
 import { parseDocument } from 'yaml';
+import { yamlSetOrDelete } from '@casehubio/pages-lsp';
 import type { Membership } from '../types.js';
 
 export function applyOrgPropertyEdit(
@@ -7,9 +8,7 @@ export function applyOrgPropertyEdit(
   field: (string | number)[],
   value: unknown,
 ): string {
-  const doc = parseDocument(yaml);
-  doc.setIn([...nodePath, ...field], value);
-  return doc.toString();
+  return yamlSetOrDelete(yaml, nodePath, field, value);
 }
 
 export function addOrgUnit(

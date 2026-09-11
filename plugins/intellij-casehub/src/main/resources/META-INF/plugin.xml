@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>io.casehub.intellij.casehub-yaml</id>
+    <name>CaseHub YAML</name>
+    <vendor>CaseHub</vendor>
+    <description>Language intelligence for CaseHub YAML formats</description>
+
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.redhat.devtools.lsp4ij</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+            name="CaseHub YAML"
+            implementationClass="io.casehub.intellij.CaseHubYamlFileType"
+            fieldName="INSTANCE"
+            language="yaml"
+            extensions="page.yaml;dash.yaml;case.yaml;swf.yaml;htn.yaml;org.yaml"/>
+        <fileTypeDetector
+            implementation="io.casehub.intellij.CaseHubYamlFileDetector"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="casehub-yaml"
+                name="CaseHub YAML"
+                factoryClass="io.casehub.intellij.CaseHubLspServerDescriptor"/>
+        <languageMapping language="yaml"
+                         serverId="casehub-yaml"/>
+    </extensions>
+</idea-plugin>

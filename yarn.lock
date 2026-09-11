@@ -1021,6 +1021,7 @@ __metadata:
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/pages-component": "npm:*"
     "@casehubio/pages-diagram-core": "npm:*"
+    "@casehubio/pages-lsp": "workspace:*"
     "@open-wc/testing": "npm:^4.0.0"
     "@types/react": "npm:^19.2.18"
     "@types/react-dom": "npm:^19.2.4"
@@ -1063,6 +1064,7 @@ __metadata:
     "@casehubio/graph-core": "npm:*"
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/pages-diagram-core": "npm:*"
+    "@casehubio/pages-lsp": "workspace:*"
     jsdom: "npm:^29.1.1"
     lit-html: "npm:^3.3.0"
     rimraf: "npm:^6.1.0"
@@ -1078,6 +1080,7 @@ __metadata:
   dependencies:
     "@casehubio/graph-core": "npm:*"
     "@casehubio/pages-diagram-core": "npm:*"
+    "@casehubio/pages-lsp": "workspace:*"
     "@open-wc/testing": "npm:^4.0.0"
     "@openworkflowspec/sdk": "npm:*"
     jsdom: "npm:^29.1.1"
@@ -1097,6 +1100,21 @@ __metadata:
     "@types/json-schema": "npm:^7.0.15"
     yaml: "npm:^2.7.0"
   languageName: node
+  linkType: soft
+
+"@casehubio/lsp-schemas@workspace:*, @casehubio/lsp-schemas@workspace:packages/lsp-schemas":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/lsp-schemas@workspace:packages/lsp-schemas"
+  dependencies:
+    "@casehubio/pages-lsp": "workspace:*"
+    "@casehubio/pages-schema": "workspace:*"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.2.1"
+    vscode-languageserver: "npm:^10.0.0"
+    yaml: "npm:^2.7.1"
+    zod: "npm:^3.24.4"
+  languageName: unknown
   linkType: soft
 
 "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A.":
@@ -1149,6 +1167,18 @@ __metadata:
   languageName: node
   linkType: soft
 
+"@casehubio/pages-lsp@portal:./.casehub-packages/packages/pages-lsp::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-lsp@portal:./.casehub-packages/packages/pages-lsp::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/pages-schema": "workspace:*"
+    vscode-languageserver: "npm:^10.0.0"
+    vscode-languageserver-textdocument: "npm:^1.0.12"
+    yaml: "npm:^2.7.1"
+    zod: "npm:^3.24.4"
+  languageName: node
+  linkType: soft
+
 "@casehubio/pages-primitives@portal:./.casehub-packages/packages/pages-primitives::locator=casehub-blocks-ui%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-primitives@portal:./.casehub-packages/packages/pages-primitives::locator=casehub-blocks-ui%40workspace%3A."
@@ -1163,6 +1193,15 @@ __metadata:
   dependencies:
     "@casehubio/pages-ui-components": "npm:0.2.3"
     lit: "npm:^3.3.3"
+  languageName: node
+  linkType: soft
+
+"@casehubio/pages-schema@portal:./.casehub-packages/packages/pages-schema::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/pages-schema@portal:./.casehub-packages/packages/pages-schema::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    "@casehubio/pages-data": "workspace:*"
+    zod: "npm:^3.23.0"
   languageName: node
   linkType: soft
 
@@ -2998,6 +3037,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/vscode@npm:^1.85.0":
+  version: 1.137.0
+  resolution: "@types/vscode@npm:1.137.0"
+  checksum: 10c0/b016852a1de288e3016a77a677a77f8d458d2a0964ea9b06fa394464d6d7f66de2b408b54e1089ea13eebc02c95c9a6d0baceef15afda362a2d2fca93bfbf0b1
+  languageName: node
+  linkType: hard
+
 "@types/webxr@npm:*":
   version: 0.5.24
   resolution: "@types/webxr@npm:0.5.24"
@@ -3610,6 +3656,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"brace-expansion@npm:^5.0.8":
+  version: 5.0.9
+  resolution: "brace-expansion@npm:5.0.9"
+  dependencies:
+    balanced-match: "npm:^4.0.2"
+  checksum: 10c0/3dea38884a1c3c8b1c9c44a7402a0c76fca460f70cffb3127242b0b4cbf4472019e022ade021eec44838ff19f1dac2625dfd11dd459d7e1e055b0698a8d52fec
+  languageName: node
+  linkType: hard
+
 "braces@npm:^3.0.3":
   version: 3.0.3
   resolution: "braces@npm:3.0.3"
@@ -3668,6 +3723,17 @@ __metadata:
   resolution: "casehub-blocks-ui@workspace:."
   dependencies:
     "@tisoap/react-flow-smart-edge": "npm:^5.0.0"
+  languageName: unknown
+  linkType: soft
+
+"casehub-yaml@workspace:plugins/vscode-casehub":
+  version: 0.0.0-use.local
+  resolution: "casehub-yaml@workspace:plugins/vscode-casehub"
+  dependencies:
+    "@casehubio/lsp-schemas": "workspace:*"
+    "@types/vscode": "npm:^1.85.0"
+    typescript: "npm:^5.6.0"
+    vscode-languageclient: "npm:^10.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5834,6 +5900,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.2.6":
+  version: 10.2.6
+  resolution: "minimatch@npm:10.2.6"
+  dependencies:
+    brace-expansion: "npm:^5.0.8"
+  checksum: 10c0/4559a836243b98bd4d17ea9f7edae698717c76399eea7be374f3737f33164e4907f19e9726891ddeb122f750a5a7fa80d2ac43e851d6e5984dc4ff42ec127d3a
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^9.0.4":
   version: 9.0.9
   resolution: "minimatch@npm:9.0.9"
@@ -6364,7 +6439,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^6.1.0":
+"rimraf@npm:^6.0.1, rimraf@npm:^6.1.0":
   version: 6.1.3
   resolution: "rimraf@npm:6.1.3"
   dependencies:
@@ -6590,7 +6665,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.5, semver@npm:^7.5.3, semver@npm:^7.8.5":
+"semver@npm:^7.3.5, semver@npm:^7.5.3, semver@npm:^7.8.1, semver@npm:^7.8.5":
   version: 7.8.5
   resolution: "semver@npm:7.8.5"
   bin:
@@ -7645,6 +7720,60 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vscode-jsonrpc@npm:9.0.2":
+  version: 9.0.2
+  resolution: "vscode-jsonrpc@npm:9.0.2"
+  checksum: 10c0/5eb4a902a4aa5b13655ea997dfdad6d5760df6acfd0388d7fccb641dff719af3ee1b9d99dc7548e21fe62e356f6b196c0bd37590f813137c7d9b6670fa22b237
+  languageName: node
+  linkType: hard
+
+"vscode-languageclient@npm:^10.0.0":
+  version: 10.1.1
+  resolution: "vscode-languageclient@npm:10.1.1"
+  dependencies:
+    minimatch: "npm:^10.2.6"
+    semver: "npm:^7.8.1"
+    vscode-languageserver-protocol: "npm:3.18.3"
+    vscode-languageserver-textdocument: "npm:1.0.14"
+  checksum: 10c0/6855a808825a3ccaa787f134ed1e380502b429bf7c55ae7f884d5bc860b58d36266e909f3a4c956c0ce3856a12428556d6019413cf727f54dc8bc335b7de7724
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-protocol@npm:3.18.3":
+  version: 3.18.3
+  resolution: "vscode-languageserver-protocol@npm:3.18.3"
+  dependencies:
+    vscode-jsonrpc: "npm:9.0.2"
+    vscode-languageserver-types: "npm:3.18.3"
+  checksum: 10c0/4bff493ec34caf16eebdbfbc2baa4f35e909340344ff22d5165277b4d2a2221d821eec3bd1edb12403cdbb6f8c5af7eae0fbc9865f21ff93445f54a90e558306
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-textdocument@npm:1.0.14, vscode-languageserver-textdocument@npm:^1.0.12":
+  version: 1.0.14
+  resolution: "vscode-languageserver-textdocument@npm:1.0.14"
+  checksum: 10c0/06a4c6cc82d1f84be6240fcbd48d50c536dfecb1c60e9e7eadcf6bad40c5a4de288f4f1262e09f2be007ec2c96f4acbf3ce3eb139bc0e7c28c16571d1e382f2f
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver-types@npm:3.18.3":
+  version: 3.18.3
+  resolution: "vscode-languageserver-types@npm:3.18.3"
+  checksum: 10c0/a750da5edbfb08a009b9fcfd780accff17c6312658eab7fcd29baf1bf8318578fdcd4de87a1e25754af7aec72aa5ee9218712614763f27e93313c85768ea17bf
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver@npm:^10.0.0":
+  version: 10.1.1
+  resolution: "vscode-languageserver@npm:10.1.1"
+  dependencies:
+    vscode-languageserver-protocol: "npm:3.18.3"
+  bin:
+    installServerIntoExtension: bin/installServerIntoExtension
+  checksum: 10c0/b8b73ce7c6ee6d80cc4d61e4bd28c45cbb0756f48f1e618ab10d7ff25286c869cf2d2ad8cc61cccf04d997b5f996bbd829ef26203adb200be1baedbab20c2a8a
+  languageName: node
+  linkType: hard
+
 "w3c-xmlserializer@npm:^5.0.0":
   version: 5.0.0
   resolution: "w3c-xmlserializer@npm:5.0.0"
@@ -7833,7 +7962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.7.0":
+"yaml@npm:^2.7.0, yaml@npm:^2.7.1":
   version: 2.9.0
   resolution: "yaml@npm:2.9.0"
   bin:
@@ -7871,7 +8000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.23.0":
+"zod@npm:^3.23.0, zod@npm:^3.24.4":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c

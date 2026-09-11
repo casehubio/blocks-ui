@@ -1,5 +1,5 @@
 import { parseDocument, parse as parseYaml, type YAMLMap } from 'yaml';
-import { yamlSetField, yamlDeleteField } from '@casehubio/pages-diagram-core';
+import { yamlSetOrDelete, yamlSwitchVariant, yamlAppendWithUniqueName } from '@casehubio/pages-lsp';
 import type { WorkerFunctionType, McpTransportType, ModelProviderKey, TriggerType } from '../worker-function/types.js';
 import { FUNCTION_TYPE_KEYS, FUNCTION_TYPE_TO_YAML_KEY, MODEL_PROVIDERS, TRIGGER_TYPES } from '../worker-function/types.js';
 import { FUNCTION_TYPE_DEFAULTS, MCP_TRANSPORT_DEFAULTS, PROVIDER_DEFAULT } from '../worker-function/defaults.js';
@@ -10,10 +10,7 @@ export function applyPropertyEdit(
   field: readonly (string | number)[],
   value: unknown,
 ): string {
-  const fullPath = [...nodePath, ...field];
-  return value === undefined
-    ? yamlDeleteField(yaml, fullPath)
-    : yamlSetField(yaml, fullPath, value);
+  return yamlSetOrDelete(yaml, nodePath, field, value);
 }
 
 const ELEMENT_PATHS: Record<string, string> = {
@@ -78,12 +75,10 @@ export function switchBindingTarget(
   bindingPath: readonly (string | number)[],
   targetType: 'capability' | 'subCase' | 'humanTask',
 ): string {
-  const doc = parseDocument(yaml);
-  for (const key of ['capability', 'subCase', 'humanTask']) {
-    doc.deleteIn([...bindingPath, key]);
-  }
-  doc.setIn([...bindingPath, targetType], TARGET_DEFAULTS[targetType]);
-  return doc.toString();
+  return yamlSwitchVariant(yaml, bindingPath,
+    ['capability', 'subCase', 'humanTask'],
+    targetType, TARGET_DEFAULTS[targetType],
+  );
 }
 
 export function switchFunctionType(
@@ -91,17 +86,14 @@ export function switchFunctionType(
   nodePath: readonly (string | number)[],
   newType: WorkerFunctionType,
 ): string {
-  const doc = parseDocument(yaml);
-  const node = doc.getIn(nodePath) as YAMLMap;
-  for (const key of FUNCTION_TYPE_KEYS) {
-    if (node.has(key)) node.delete(key);
-  }
   const yamlKey = FUNCTION_TYPE_TO_YAML_KEY[newType];
-  if (yamlKey != null) {
-    const defaultValue = FUNCTION_TYPE_DEFAULTS[newType];
-    node.set(yamlKey, doc.createNode(defaultValue));
+  if (yamlKey == null) {
+    return yamlSwitchVariant(yaml, nodePath, [...FUNCTION_TYPE_KEYS], '', undefined);
   }
-  return doc.toString();
+  return yamlSwitchVariant(yaml, nodePath,
+    [...FUNCTION_TYPE_KEYS],
+    yamlKey, FUNCTION_TYPE_DEFAULTS[newType],
+  );
 }
 
 export function switchMcpTransport(
@@ -109,13 +101,13 @@ export function switchMcpTransport(
   nodePath: readonly (string | number)[],
   newTransport: McpTransportType,
 ): string {
+  const defaults = MCP_TRANSPORT_DEFAULTS[newTransport];
   const doc = parseDocument(yaml);
   const mcpPath = [...nodePath, 'mcp'];
   const mcp = doc.getIn(mcpPath) as YAMLMap;
   for (const key of ['command', 'env', 'url', 'auth']) {
     if (mcp.has(key)) mcp.delete(key);
   }
-  const defaults = MCP_TRANSPORT_DEFAULTS[newTransport];
   for (const [k, v] of Object.entries(defaults)) {
     mcp.set(k, doc.createNode(v));
   }
@@ -127,14 +119,10 @@ export function switchModelProvider(
   nodePath: readonly (string | number)[],
   newProvider: ModelProviderKey,
 ): string {
-  const doc = parseDocument(yaml);
-  const modelPath = [...nodePath, 'agent', 'model'];
-  const model = doc.getIn(modelPath) as YAMLMap;
-  for (const key of MODEL_PROVIDERS) {
-    if (model.has(key)) model.delete(key);
-  }
-  model.set(newProvider, doc.createNode(PROVIDER_DEFAULT));
-  return doc.toString();
+  return yamlSwitchVariant(yaml, [...nodePath, 'agent', 'model'],
+    [...MODEL_PROVIDERS],
+    newProvider, PROVIDER_DEFAULT,
+  );
 }
 
 const TRIGGER_DEFAULTS: Record<TriggerType, unknown> = {
@@ -149,14 +137,10 @@ export function switchTriggerType(
   bindingPath: readonly (string | number)[],
   newType: TriggerType,
 ): string {
-  const doc = parseDocument(yaml);
-  const onPath = [...bindingPath, 'on'];
-  const on = doc.getIn(onPath) as YAMLMap;
-  for (const key of TRIGGER_TYPES) {
-    if (on.has(key)) on.delete(key);
-  }
-  on.set(newType, doc.createNode(TRIGGER_DEFAULTS[newType]));
-  return doc.toString();
+  return yamlSwitchVariant(yaml, [...bindingPath, 'on'],
+    [...TRIGGER_TYPES],
+    newType, TRIGGER_DEFAULTS[newType],
+  );
 }
 
 export function removeCaseEdge(

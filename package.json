@@ -8,7 +8,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "components/*"
+    "components/*",
+    "plugins/vscode-casehub"
   ],
   "packageManager": "yarn@4.10.3",
   "resolutions": {
@@ -25,7 +26,9 @@
     "@casehubio/pages-filter-bar": "portal:./.casehub-packages/packages/pages-filter-bar",
     "@casehubio/pages-property-palette": "portal:./.casehub-packages/packages/pages-property-palette",
     "@casehubio/pages-diagram-palette": "portal:./.casehub-packages/packages/pages-diagram-palette",
-    "@casehubio/pages-diagram-core": "portal:./.casehub-packages/packages/pages-diagram-core"
+    "@casehubio/pages-diagram-core": "portal:./.casehub-packages/packages/pages-diagram-core",
+    "@casehubio/pages-lsp": "portal:./.casehub-packages/packages/pages-lsp",
+    "@casehubio/pages-schema": "portal:./.casehub-packages/packages/pages-schema"
   },
   "scripts": {
     "build": "yarn workspaces foreach -A --topological run build",
