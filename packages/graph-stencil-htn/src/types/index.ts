@@ -19,3 +19,7 @@ export type {
 export type {
   AgendaItem, SubCaseSnapshot, CasePlanModelSnapshot, CompoundStatusSnapshot,
 } from './plan-model.js';
+
+export type {
+  HtnDocumentYaml, HtnTaskYaml, HtnMethodYaml,
+} from './htn-yaml.js';

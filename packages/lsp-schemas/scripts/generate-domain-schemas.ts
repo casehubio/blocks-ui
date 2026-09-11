@@ -35,8 +35,7 @@ function isIndexSignature(prop: MorphSymbol): boolean {
   return decl.getKind() === SyntaxKind.IndexSignature;
 }
 
-const namedSchemas = new Map<string, string>();
-let schemaCounter = 0;
+const lazyRefs = new Map<string, Type>();
 
 function getSchemaVarName(symbolName: string): string {
   const base = symbolName.charAt(0).toLowerCase() + symbolName.slice(1);
@@ -143,6 +142,7 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
     const symbolId = isAnonymous ? '' : (symbol?.getFullyQualifiedName() ?? '');
 
     if (symbolId && visited.has(symbolId)) {
+      lazyRefs.set(symbolName, type);
       return `z.lazy(() => ${getSchemaVarName(symbolName)})`;
     }
 
@@ -218,9 +218,18 @@ export function generateFormatSchema(
     rootType = iface.getType();
   }
 
+  lazyRefs.clear();
   const visited = new Set<string>();
   const zodCode = typeToZod(rootType, 0, visited);
-  return `${generateHeader(config.sourceFile)}\nexport const ${config.exportName} = ${zodCode};\n`;
+
+  let prelude = '';
+  for (const [name, lazyType] of lazyRefs) {
+    const lazyVisited = new Set<string>();
+    const innerZod = typeToZod(lazyType, 0, lazyVisited);
+    prelude += `const ${getSchemaVarName(name)}: z.ZodType<unknown> = z.lazy(() => ${innerZod});\n\n`;
+  }
+
+  return `${generateHeader(config.sourceFile)}\n${prelude}export const ${config.exportName} = ${zodCode};\n`;
 }
 
 export const FORMATS: FormatConfig[] = [
@@ -237,6 +246,13 @@ export const FORMATS: FormatConfig[] = [
     sourceFile: '../../graph-stencil-org/src/types.ts',
     outputFile: '../src/schemas/org.generated.ts',
     exportName: 'orgDocumentSchema',
+  },
+  {
+    formatId: 'htn',
+    rootTypeName: 'HtnDocumentYaml',
+    sourceFile: '../../graph-stencil-htn/src/types/htn-yaml.ts',
+    outputFile: '../src/schemas/htn.generated.ts',
+    exportName: 'htnDocumentSchema',
   },
 ];
 

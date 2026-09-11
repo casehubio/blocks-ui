@@ -1,5 +1,5 @@
 import type { FormatRegistration } from '@casehubio/pages-lsp';
-import { htnDocumentSchema } from '../schemas/htn.js';
+import { htnDocumentSchema } from '../schemas/htn.generated.js';
 
 export const htnFormat: FormatRegistration = {
   formatId: 'htn',

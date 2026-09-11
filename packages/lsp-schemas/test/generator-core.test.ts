@@ -194,3 +194,36 @@ describe('Org generation', () => {
     expect(result.success).toBe(false);
   });
 });
+
+describe('HTN generation', () => {
+  it('generated schema parses a valid HTN document with recursion', async () => {
+    const { htnDocumentSchema } = await import(
+      '../src/schemas/htn.generated.js'
+    );
+    const result = htnDocumentSchema.safeParse({
+      dsl: '1.0',
+      namespace: 'test',
+      name: 'TestHTN',
+      spec: {
+        decomposition: {
+          root: {
+            name: 'root-task',
+            methods: [{
+              guard: '.status == "active"',
+              tasks: [{
+                name: 'leaf-task',
+                capability: 'cap1',
+              }, {
+                name: 'compound-task',
+                methods: [{
+                  tasks: [{ name: 'nested-leaf', capability: 'cap2' }],
+                }],
+              }],
+            }],
+          },
+        },
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+});
