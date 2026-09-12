@@ -9,7 +9,6 @@
     <h3>Supported formats</h3>
     <ul>
         <li><b>*.page.yaml</b> — Page definitions</li>
-        <li><b>*.dash.yaml</b> — Page definitions (transition)</li>
         <li><b>*.case.yaml</b> — Case definitions</li>
         <li><b>*.swf.yaml</b> — Serverless Workflow</li>
         <li><b>*.htn.yaml</b> — HTN task networks</li>
@@ -49,7 +48,7 @@
             ]]></description>
         </server>
 
-        <fileNamePatternMapping patterns="*.page.yaml;*.dash.yaml"
+        <fileNamePatternMapping patterns="*.page.yaml"
                                 serverId="casehub-yaml"
                                 languageId="yaml"/>
         <fileNamePatternMapping patterns="*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"
