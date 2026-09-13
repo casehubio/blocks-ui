@@ -17,6 +17,7 @@ dependencies {
     intellijPlatform {
         intellijIdeaCommunity(providers.gradleProperty("platformVersion").get())
         plugin("com.redhat.devtools.lsp4ij", providers.gradleProperty("lsp4ijVersion").get())
+        bundledPlugin("org.jetbrains.plugins.yaml")
     }
 }
 
