@@ -11,7 +11,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import org.jetbrains.yaml.YAMLParserDefinition
-import org.jetbrains.yaml.psi.impl.YAMLFileImpl
 
 class CaseHubYamlParserDefinition : ParserDefinition {
 
@@ -30,5 +29,5 @@ class CaseHubYamlParserDefinition : ParserDefinition {
 
     override fun createElement(node: ASTNode?): PsiElement = delegate.createElement(node)
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile = YAMLFileImpl(viewProvider)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile = CaseHubYamlFile(viewProvider)
 }
