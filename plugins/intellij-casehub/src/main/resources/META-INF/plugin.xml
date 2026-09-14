@@ -67,6 +67,11 @@
                 language="CaseHubYAML"
                 implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
                 order="first"/>
+
+        <completion.contributor
+                language="CaseHubYAML"
+                implementationClass="io.casehub.intellij.CaseHubCompletionContributor"
+                order="first"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
