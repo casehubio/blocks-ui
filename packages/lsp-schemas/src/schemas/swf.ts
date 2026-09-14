@@ -8,7 +8,7 @@ const documentInfoSchema = z.object({
 }).passthrough();
 
 const callTaskSchema = z.object({
-  call: z.string(),
+  call: z.enum(['http', 'grpc', 'asyncapi', 'openapi']),
   with: z.record(z.unknown()).optional(),
   output: z.unknown().optional(),
   then: z.string().optional(),

@@ -15,8 +15,6 @@
         <li><b>*.org.yaml</b> — Org structure</li>
     </ul>
 
-    <p>This plugin supersedes <b>CaseHub Pages</b> — install one or the other, not both.</p>
-
     <h3>Requirements</h3>
     <ul>
         <li>Node.js 18+ on PATH</li>
@@ -31,7 +29,6 @@
         <li>Schema-driven completion, diagnostics, hover for all five CaseHub YAML formats</li>
         <li>Rename, find references, go to definition</li>
         <li>jq expression intelligence</li>
-        <li>Bundled LSP server with domain schema registration</li>
     </ul>
     ]]></change-notes>
 
@@ -40,36 +37,8 @@
     <depends>org.jetbrains.plugins.yaml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType
-                name="CaseHub YAML"
-                implementationClass="io.casehub.intellij.CaseHubYamlFileType"
-                fieldName="INSTANCE"
-                language="CaseHubYAML"
-                patterns="*.page.yaml;*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"/>
-
-        <lang.parserDefinition
-                language="CaseHubYAML"
-                implementationClass="io.casehub.intellij.CaseHubYamlParserDefinition"/>
-
-        <lang.syntaxHighlighter
-                language="CaseHubYAML"
-                implementationClass="org.jetbrains.yaml.YAMLSyntaxHighlighter"/>
-
-        <lang.braceMatcher
-                language="CaseHubYAML"
-                implementationClass="org.jetbrains.yaml.YAMLPairedBraceMatcher"/>
-
-        <lang.commenter
-                language="CaseHubYAML"
-                implementationClass="org.jetbrains.yaml.YAMLCommenter"/>
-
-        <lang.foldingBuilder
-                language="CaseHubYAML"
-                implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
-                order="first"/>
-
         <completion.contributor
-                language="CaseHubYAML"
+                language="yaml"
                 implementationClass="io.casehub.intellij.CaseHubCompletionContributor"
                 order="first"/>
     </extensions>
@@ -80,13 +49,8 @@
                 factoryClass="io.casehub.intellij.CaseHubLspServerDescriptor">
             <description><![CDATA[
             LSP server for CaseHub YAML formats — Page, CaseDefinition, SWF, HTN, Org Structure.
-            Provides schema-driven completion, diagnostics, hover, rename, and cross-file references.
             ]]></description>
         </server>
-
-        <languageMapping language="CaseHubYAML"
-                         serverId="casehub-yaml"
-                         languageId="yaml"/>
 
         <fileNamePatternMapping patterns="*.page.yaml;*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"
                                 serverId="casehub-yaml"
