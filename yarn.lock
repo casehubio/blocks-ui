@@ -565,6 +565,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/blocks-ui-narrative-timeline@workspace:components/narrative-timeline":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-narrative-timeline@workspace:components/narrative-timeline"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-component": "npm:*"
+    "@casehubio/pages-data": "npm:*"
+    "@casehubio/pages-primitives": "npm:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-notification-inbox@workspace:*, @casehubio/blocks-ui-notification-inbox@workspace:components/notification-inbox":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-notification-inbox@workspace:components/notification-inbox"
