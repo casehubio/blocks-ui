@@ -28,7 +28,10 @@
     "@casehubio/pages-diagram-palette": "portal:./.casehub-packages/packages/pages-diagram-palette",
     "@casehubio/pages-diagram-core": "portal:./.casehub-packages/packages/pages-diagram-core",
     "@casehubio/pages-lsp": "portal:./.casehub-packages/packages/pages-lsp",
-    "@casehubio/pages-schema": "portal:./.casehub-packages/packages/pages-schema"
+    "@casehubio/pages-schema": "portal:./.casehub-packages/packages/pages-schema",
+    "@casehubio/yaml-core": "portal:./.casehub-packages/packages/yaml-core",
+    "@casehubio/pages-aria": "portal:./.casehub-packages/packages/pages-aria",
+    "@casehubio/pages-document": "portal:./.casehub-packages/packages/pages-document"
   },
   "scripts": {
     "build": "yarn workspaces foreach -A --topological run build",

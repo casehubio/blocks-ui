@@ -894,8 +894,8 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
               if (topic === 'graph:node:click') this._handleNodeClick(e);
               if (topic === 'graph:selection:change') this._handleSelectionChange(e);
               if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
-              if (topic === 'graph:pane:click') this._showPickerAtPaneClick(e.detail?.payload);
-              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(e.detail?.payload);
+              if (topic === 'graph:pane:click') this._showPickerAtPaneClick?.(e.detail?.payload);
+              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd?.(e.detail?.payload);
             }}
           ></pages-graph-canvas>
           ${this._propertiesOpen ? html`

@@ -1014,11 +1014,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-renderer@portal:./.casehub-packages/packages/graph-renderer::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
-    "@casehubio/graph-work-registry": "workspace:*"
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-work-registry": "npm:0.1.0"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     "@tisoap/react-flow-smart-edge": "npm:^5.0.0"
     "@xyflow/react": "npm:^12.4.0"
     elkjs: "npm:^0.9.3"
@@ -1113,7 +1113,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-work-registry@portal:./.casehub-packages/packages/graph-work-registry::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
     "@types/json-schema": "npm:^7.0.15"
     yaml: "npm:^2.7.0"
   languageName: node
@@ -1141,7 +1141,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
   languageName: node
   linkType: soft
 
@@ -1158,10 +1158,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-core@portal:./.casehub-packages/packages/pages-diagram-core::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
-    "@casehubio/graph-renderer": "workspace:*"
-    "@casehubio/pages-diagram-palette": "workspace:*"
-    "@casehubio/pages-property-palette": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-renderer": "npm:0.1.0"
+    "@casehubio/pages-diagram-palette": "npm:0.1.0"
+    "@casehubio/pages-property-palette": "npm:0.1.0"
     lit: "npm:^3.3.3"
     yaml: "npm:^2.7.0"
   languageName: node
@@ -1171,7 +1171,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1180,8 +1180,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1190,7 +1190,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-lsp@portal:./.casehub-packages/packages/pages-lsp::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-schema": "workspace:*"
+    "@casehubio/pages-schema": "npm:0.1.0"
+    "@casehubio/yaml-core": "npm:0.2.0"
     vscode-languageserver: "npm:^10.0.0"
     vscode-languageserver-textdocument: "npm:^1.0.12"
     yaml: "npm:^2.7.1"
@@ -1204,6 +1205,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-primitives@portal:./.casehub-packages/packages/pages-primitives::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
+    "@casehubio/pages-component": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1212,7 +1214,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-ui-components": "workspace:*"
+    "@casehubio/pages-ui-components": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1221,7 +1223,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-schema@portal:./.casehub-packages/packages/pages-schema::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/yaml-core": "npm:0.2.0"
     zod: "npm:^3.23.0"
   languageName: node
   linkType: soft
@@ -1230,9 +1233,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-table@portal:./.casehub-packages/packages/pages-table::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1241,11 +1244,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-ui-components@portal:./.casehub-packages/packages/pages-ui-components::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-filter-bar": "workspace:*"
-    "@casehubio/pages-primitives": "workspace:*"
-    "@casehubio/pages-table": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-filter-bar": "npm:0.1.0"
+    "@casehubio/pages-primitives": "npm:0.2.3"
+    "@casehubio/pages-table": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1264,13 +1267,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-viz@portal:./.casehub-packages/packages/pages-viz::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-property-palette": "workspace:*"
-    "@casehubio/pages-ui-components": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-property-palette": "npm:0.1.0"
+    "@casehubio/pages-ui-components": "npm:0.2.3"
     "@drdreo/heatmap": "npm:^1.4.1"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"
+  languageName: node
+  linkType: soft
+
+"@casehubio/yaml-core@portal:./.casehub-packages/packages/yaml-core::locator=casehub-blocks-ui%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/yaml-core@portal:./.casehub-packages/packages/yaml-core::locator=casehub-blocks-ui%40workspace%3A."
+  dependencies:
+    zod: "npm:^3.23.0"
   languageName: node
   linkType: soft
 

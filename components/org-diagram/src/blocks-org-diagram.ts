@@ -570,7 +570,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
             </div>
           ` : this._renderCollapsedDock('Stencils', '⊞', 'left')}
           <div style="position:relative;flex:1;height:100%;min-width:0;" @pointerdown=${this._onCanvasPointerDown}>
-            <pages-graph-canvas
+            <graph-canvas-core
               .nodes=${this._nodes}
               .edges=${this._edges}
               .model=${this._adapterResult?.model}
@@ -592,7 +592,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
                 if (topic === 'graph:edge:mouseenter') { this._onEdgeHover(payload?.edgeId as string, payload?.edgeType as string, payload?.label as string, payload?.clientX as number, payload?.clientY as number); }
                 if (topic === 'graph:edge:mouseleave') this._onEdgeHoverEnd();
               }}
-            ></pages-graph-canvas>
+            ></graph-canvas-core>
             ${this._chooserState ? html`
               <div style="position:absolute;left:${this._chooserState.x}px;top:${this._chooserState.y}px;z-index:10;">
                 <pages-node-chooser
