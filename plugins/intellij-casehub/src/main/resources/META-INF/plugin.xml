@@ -82,5 +82,9 @@
         <languageMapping language="CaseHubYAML"
                          serverId="casehub-yaml"
                          languageId="yaml"/>
+
+        <fileNamePatternMapping patterns="*.page.yaml;*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"
+                                serverId="casehub-yaml"
+                                languageId="yaml"/>
     </extensions>
 </idea-plugin>

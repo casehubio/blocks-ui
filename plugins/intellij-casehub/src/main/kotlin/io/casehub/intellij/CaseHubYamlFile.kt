@@ -1,10 +1,9 @@
 package io.casehub.intellij
 
-import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.psi.FileViewProvider
+import org.jetbrains.yaml.psi.impl.YAMLFileImpl
 
-class CaseHubYamlFile(viewProvider: FileViewProvider) :
-    PsiFileBase(viewProvider, CaseHubYamlLanguage.INSTANCE) {
+class CaseHubYamlFile(viewProvider: FileViewProvider) : YAMLFileImpl(viewProvider) {
 
     override fun getFileType() = CaseHubYamlFileType.INSTANCE
 }
