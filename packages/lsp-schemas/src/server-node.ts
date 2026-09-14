@@ -32,13 +32,17 @@ const handler = createServerHandler(registry);
 
 connection.onInitialize(() => ({
   capabilities: {
-    textDocumentSync: TextDocumentSyncKind.Full,
+    textDocumentSync: {
+      openClose: true,
+      change: TextDocumentSyncKind.Full,
+    },
     completionProvider: handler.capabilities.completionProvider,
     hoverProvider: handler.capabilities.hoverProvider,
     renameProvider: { prepareProvider: true },
     definitionProvider: true,
     referencesProvider: true,
   },
+  serverInfo: { name: 'CaseHub YAML LSP' },
 }));
 
 function toLspDiagnostics(notification: ReturnType<typeof handler.onDidOpen>): PublishDiagnosticsParams {
@@ -71,7 +75,9 @@ connection.onCompletion((params): CompletionItem[] => {
   return handler.onCompletion(params.textDocument.uri, params.position).map(c => ({
     label: c.label,
     kind: c.kind as CompletionItemKind,
-    ...(c.insertText ? { insertText: c.insertText } : {}),
+    ...(c.textEdit
+      ? { textEdit: { range: c.textEdit.range, newText: c.textEdit.newText } }
+      : c.insertText ? { insertText: c.insertText } : {}),
     ...(c.detail ? { detail: c.detail } : {}),
   }));
 });

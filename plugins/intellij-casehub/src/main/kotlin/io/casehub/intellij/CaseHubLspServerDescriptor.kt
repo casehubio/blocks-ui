@@ -34,9 +34,18 @@ class CaseHubLanguageServer(private val project: Project) : OSProcessStreamConne
     }
 
     private fun findNode(): String? {
-        val names = if (System.getProperty("os.name").lowercase().contains("win"))
-            listOf("node.exe") else listOf("node")
-        val pathDirs = System.getenv("PATH")?.split(File.pathSeparator) ?: return null
+        val isWin = System.getProperty("os.name").lowercase().contains("win")
+        val names = if (isWin) listOf("node.exe") else listOf("node")
+
+        val pathDirs = (System.getenv("PATH")?.split(File.pathSeparator) ?: emptyList())
+            .toMutableList()
+
+        if (!isWin) {
+            for (fallback in listOf("/usr/local/bin", "/opt/homebrew/bin", "/opt/homebrew/opt/node/bin")) {
+                if (fallback !in pathDirs) pathDirs.add(fallback)
+            }
+        }
+
         for (dir in pathDirs) {
             for (name in names) {
                 val f = File(dir, name)
@@ -49,8 +58,6 @@ class CaseHubLanguageServer(private val project: Project) : OSProcessStreamConne
     private fun extractServer(): Path {
         val targetDir = Path.of(System.getProperty("java.io.tmpdir"), "casehub-lsp")
         val targetFile = targetDir.resolve("server-node.bundle.cjs")
-
-        if (Files.exists(targetFile)) return targetFile
 
         val resource = javaClass.getResourceAsStream("/server/server-node.bundle.cjs")
             ?: throw IllegalStateException("CaseHub LSP server bundle not found in plugin resources.")
