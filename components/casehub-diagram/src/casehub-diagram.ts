@@ -917,7 +917,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
         </div>
         ${this._showConflict ? this._renderConflictDialog() : nothing}
         ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}
-        ${this._renderNodePicker()}
+        ${typeof this._renderNodePicker === 'function' ? this._renderNodePicker() : nothing}
       </div>
     `;
   }
