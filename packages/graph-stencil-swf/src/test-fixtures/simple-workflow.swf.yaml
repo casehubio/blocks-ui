@@ -4,8 +4,7 @@ document:
   name: simple
   version: "1.0.0"
 do:
-  - call: http
-      
+  - 
   - fetchData:
       call: http
       with:

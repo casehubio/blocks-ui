@@ -64,6 +64,49 @@ describe('SWF format', () => {
     expect(edits.length).toBeGreaterThanOrEqual(2);
   });
 
+  it('returns no completions at do: level (record keys are user-defined task names)', () => {
+    const registry = createSchemaRegistry();
+    registry.register(swfFormat);
+    const content = 'do:\n  ';
+    const items = handleCompletion('file:///t.swf.yaml', content, { line: 1, character: 2 }, registry);
+    expect(items).toEqual([]);
+  });
+
+  it('completes task properties inside a named task', () => {
+    const registry = createSchemaRegistry();
+    registry.register(swfFormat);
+    const content = 'do:\n  - fetchData:\n      ';
+    const items = handleCompletion('file:///t.swf.yaml', content, { line: 2, character: 6 }, registry);
+    const labels = items.map(i => i.label);
+    expect(labels.length).toBeGreaterThan(0);
+    expect(labels.some(l => l.includes('call'))).toBe(true);
+  });
+
+  it('narrows to call-task properties when call: is sibling', () => {
+    const registry = createSchemaRegistry();
+    registry.register(swfFormat);
+    const content = 'do:\n  - fetchData:\n      call: http\n      ';
+    const items = handleCompletion('file:///t.swf.yaml', content, { line: 3, character: 6 }, registry);
+    const labels = items.map(i => i.label);
+    expect(labels).toContain('with');
+    expect(labels).toContain('output');
+    expect(labels).not.toContain('call');
+    expect(labels).not.toContain('set');
+    expect(labels).not.toContain('switch');
+  });
+
+  it('suggests enum values for call: field', () => {
+    const registry = createSchemaRegistry();
+    registry.register(swfFormat);
+    const content = 'do:\n  - fetchData:\n      call: ';
+    const items = handleCompletion('file:///t.swf.yaml', content, { line: 2, character: 12 }, registry);
+    const labels = items.map(i => i.label);
+    expect(labels).toContain('http');
+    expect(labels).toContain('grpc');
+    expect(labels).toContain('asyncapi');
+    expect(labels).toContain('openapi');
+  });
+
   it('does not treat flow directives as references', () => {
     const registry = createSchemaRegistry();
     registry.register(swfFormat);
