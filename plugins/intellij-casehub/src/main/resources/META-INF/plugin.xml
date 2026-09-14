@@ -36,13 +36,6 @@
     <depends>com.redhat.devtools.lsp4ij</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <completion.contributor
-                language="yaml"
-                implementationClass="io.casehub.intellij.CaseHubCompletionContributor"
-                order="first"/>
-    </extensions>
-
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
         <server id="casehub-yaml"
                 name="CaseHub YAML"
