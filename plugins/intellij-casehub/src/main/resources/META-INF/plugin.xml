@@ -49,4 +49,10 @@
                                 serverId="casehub-yaml"
                                 languageId="yaml"/>
     </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <weigher key="completion"
+                 implementationClass="io.casehub.intellij.completion.CaseHubYamlCompletionWeigher"
+                 id="casehubYamlWeigher"/>
+    </extensions>
 </idea-plugin>
