@@ -64,12 +64,16 @@ describe('SWF format', () => {
     expect(edits.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('returns no completions at do: level (record keys are user-defined task names)', () => {
+  it('returns task body completions at do: array item level', () => {
     const registry = createSchemaRegistry();
     registry.register(swfFormat);
     const content = 'do:\n  ';
     const items = handleCompletion('file:///t.swf.yaml', content, { line: 1, character: 2 }, registry);
-    expect(items).toEqual([]);
+    const labels = items.map(i => i.label.replace(/^- /, ''));
+    expect(labels).toContain('call');
+    expect(labels).toContain('set');
+    expect(labels).toContain('switch');
+    expect(labels).toContain('raise');
   });
 
   it('completes task properties inside a named task', () => {

@@ -36,6 +36,36 @@
     <depends>com.redhat.devtools.lsp4ij</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="CaseHub YAML"
+                implementationClass="io.casehub.intellij.CaseHubYamlFileType"
+                fieldName="INSTANCE"
+                language="CaseHubYAML"
+                patterns="*.page.yaml;*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"/>
+
+        <lang.parserDefinition
+                language="CaseHubYAML"
+                implementationClass="io.casehub.intellij.CaseHubYamlParserDefinition"/>
+
+        <lang.syntaxHighlighter
+                language="CaseHubYAML"
+                implementationClass="org.jetbrains.yaml.YAMLSyntaxHighlighter"/>
+
+        <lang.braceMatcher
+                language="CaseHubYAML"
+                implementationClass="org.jetbrains.yaml.YAMLPairedBraceMatcher"/>
+
+        <lang.commenter
+                language="CaseHubYAML"
+                implementationClass="org.jetbrains.yaml.YAMLCommenter"/>
+
+        <lang.foldingBuilder
+                language="CaseHubYAML"
+                implementationClass="com.redhat.devtools.lsp4ij.features.foldingRange.LSPFoldingRangeBuilder"
+                order="first"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
         <server id="casehub-yaml"
                 name="CaseHub YAML"
@@ -45,14 +75,8 @@
             ]]></description>
         </server>
 
-        <fileNamePatternMapping patterns="*.page.yaml;*.case.yaml;*.swf.yaml;*.htn.yaml;*.org.yaml"
-                                serverId="casehub-yaml"
-                                languageId="yaml"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <weigher key="completion"
-                 implementationClass="io.casehub.intellij.completion.CaseHubYamlCompletionWeigher"
-                 id="casehubYamlWeigher"/>
+        <languageMapping language="CaseHubYAML"
+                         serverId="casehub-yaml"
+                         languageId="yaml"/>
     </extensions>
 </idea-plugin>

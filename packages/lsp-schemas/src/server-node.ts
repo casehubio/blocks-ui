@@ -21,6 +21,13 @@ import { swfFormat } from './formats/swf.js';
 import { htnFormat } from './formats/htn.js';
 import { orgFormat } from './formats/org.js';
 
+import { appendFileSync } from 'node:fs';
+const log = (msg: string) => {
+  const line = `[${new Date().toISOString()}] ${msg}\n`;
+  process.stderr.write(`[casehub-yaml-lsp] ${msg}\n`);
+  try { appendFileSync('/tmp/casehub-yaml-lsp.log', line); } catch {}
+};
+
 const connection = createConnection(ProposedFeatures.all);
 const registry = createSchemaRegistry();
 registry.register(pageFormat);
@@ -28,9 +35,12 @@ registry.register(caseDefinitionFormat);
 registry.register(swfFormat);
 registry.register(htnFormat);
 registry.register(orgFormat);
+log('registered formats: page, caseDefinition, swf, htn, org');
 const handler = createServerHandler(registry);
 
-connection.onInitialize(() => ({
+connection.onInitialize((params) => {
+  log(`initialize: rootUri=${params.rootUri ?? 'none'}`);
+  return {
   capabilities: {
     textDocumentSync: {
       openClose: true,
@@ -43,7 +53,8 @@ connection.onInitialize(() => ({
     referencesProvider: true,
   },
   serverInfo: { name: 'CaseHub YAML LSP' },
-}));
+};
+});
 
 function toLspDiagnostics(notification: ReturnType<typeof handler.onDidOpen>): PublishDiagnosticsParams {
   return {
@@ -58,6 +69,7 @@ function toLspDiagnostics(notification: ReturnType<typeof handler.onDidOpen>): P
 }
 
 connection.onDidOpenTextDocument((params) => {
+  log(`didOpen: ${params.textDocument.uri} (lang=${params.textDocument.languageId})`);
   connection.sendDiagnostics(toLspDiagnostics(handler.onDidOpen(params.textDocument.uri, params.textDocument.text)));
 });
 
@@ -72,7 +84,11 @@ connection.onDidCloseTextDocument((params) => {
 });
 
 connection.onCompletion((params): CompletionItem[] => {
-  return handler.onCompletion(params.textDocument.uri, params.position).map(c => ({
+  log(`completion: ${params.textDocument.uri} at ${params.position.line}:${params.position.character}`);
+
+  const items = handler.onCompletion(params.textDocument.uri, params.position);
+  log(`completion: returning ${items.length} items`);
+  return items.map(c => ({
     label: c.label,
     kind: c.kind as CompletionItemKind,
     ...(c.textEdit
