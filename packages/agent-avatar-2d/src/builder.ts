@@ -2,6 +2,23 @@ import type { AvatarCollection, AvatarSize, FamilyPalette, HeadFaceSpec, PartAss
 import { DetailLevel, DETAIL_TIERS } from './types.js';
 import { HEAD_FACE_SPECS, CANONICAL_FACE } from './config-table.js';
 
+interface TempleRect { x: number; y: number; w: number; h: number; }
+interface TempleFill { left: TempleRect; right: TempleRect; }
+
+const TEMPLE_FILLS: Record<string, TempleFill> = {
+  'soft-oval':  { left: { x: 68, y: 32, w: 14, h: 12 }, right: { x: 118, y: 32, w: 14, h: 12 } },
+  'weathered':  { left: { x: 64, y: 34, w: 14, h: 14 }, right: { x: 122, y: 34, w: 14, h: 14 } },
+  'square-jaw': { left: { x: 62, y: 34, w: 16, h: 14 }, right: { x: 122, y: 34, w: 16, h: 14 } },
+  'standard':   { left: { x: 64, y: 34, w: 14, h: 14 }, right: { x: 122, y: 34, w: 14, h: 14 } },
+  'strong-sym': { left: { x: 64, y: 34, w: 14, h: 14 }, right: { x: 122, y: 34, w: 14, h: 14 } },
+  'diamond':    { left: { x: 66, y: 36, w: 14, h: 14 }, right: { x: 120, y: 36, w: 14, h: 14 } },
+  'fallback':   { left: { x: 64, y: 34, w: 14, h: 14 }, right: { x: 122, y: 34, w: 14, h: 14 } },
+  'angular':    { left: { x: 62, y: 34, w: 16, h: 14 }, right: { x: 122, y: 34, w: 16, h: 14 } },
+  'round':      { left: { x: 62, y: 36, w: 18, h: 16 }, right: { x: 120, y: 36, w: 18, h: 16 } },
+  'heart':      { left: { x: 64, y: 36, w: 16, h: 14 }, right: { x: 120, y: 36, w: 16, h: 14 } },
+  'round-wide': { left: { x: 56, y: 42, w: 20, h: 16 }, right: { x: 124, y: 42, w: 20, h: 16 } },
+};
+
 const LAYER_ORDER: readonly string[] = [
   'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
 ];
@@ -184,7 +201,18 @@ export function buildAvatar(
   const layers = collectLayers(config, detail, collection);
   const sorted = sortByLayerOrder(layers);
   const spec = HEAD_FACE_SPECS[config.head] ?? CANONICAL_FACE;
-  const inner = sorted.map(l => renderLayer(l, spec)).join('\n');
+  const rendered = sorted.map(l => renderLayer(l, spec));
+  const temple = TEMPLE_FILLS[config.head];
+  if (temple) {
+    const headIdx = sorted.findIndex(l => l.category === 'head');
+    if (headIdx >= 0) {
+      const tl = temple.left;
+      const tr = temple.right;
+      const fill = `  <g data-part="temple-fill"><rect x="${tl.x}" y="${tl.y}" width="${tl.w}" height="${tl.h}" fill="var(--hair-color)"/><rect x="${tr.x}" y="${tr.y}" width="${tr.w}" height="${tr.h}" fill="var(--hair-color)"/></g>`;
+      rendered.splice(headIdx + 1, 0, fill);
+    }
+  }
+  const inner = rendered.join('\n');
   const raw = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img">\n${inner}\n</svg>`;
   return applyPalette(raw, palette);
 }
