@@ -25,3 +25,6 @@ export { buildAvatar } from './builder.js';
 export { registerCollection, getCollection } from './collections/registry.js';
 export { resolveModifiers } from './modifiers.js';
 export type { ModifierInput } from './modifiers.js';
+export { AgentAvatar } from './agent-avatar.js';
+export type { AgentAvatarProps } from './agent-avatar.js';
+export { mythicCollection } from './collections/mythic/index.js';
