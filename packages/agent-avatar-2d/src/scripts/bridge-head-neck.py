@@ -76,6 +76,14 @@ def bridge_neck(symbol_text):
 
     return symbol_text[:neck_comment_idx] + bridge + '\n  ' + symbol_text[neck_comment_idx:]
 
+def soften_aa_corners(symbol_text):
+    """Make skin-coloured AA corner pixels semi-transparent."""
+    return re.sub(
+        r'(<rect x="\d+" y="\d+" width="2" height="2" fill="var\(--skin\)")/>',
+        r'\1 opacity="0.5"/>',
+        symbol_text
+    )
+
 def process(content):
     def replace_head(m):
         full = m.group(0)
@@ -86,6 +94,7 @@ def process(content):
         if result != full:
             head_name = sym_id.split(':')[1]
             print(f'  Bridged gap in {sym_id}')
+        result = soften_aa_corners(result)
         return result
     return re.sub(r'<symbol id="([^"]+)"[^>]*>[\s\S]*?</symbol>', replace_head, content)
 
