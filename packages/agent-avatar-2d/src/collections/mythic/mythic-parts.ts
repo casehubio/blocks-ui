@@ -391,37 +391,37 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Jacket bottom hem line -->
   <rect x="56" y="232" width="88" height="2" fill="#000" opacity="0.1"/>
   </g>`],
-  ['costume:business', `<!-- Business suit: formal jacket, shirt, tie -->
+  ['costume:business', `<!-- Business suit: formal jacket (y=118, matches armour for Hero) -->
   <clipPath id="biz-clip">
-    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,118 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
-  <rect x="56" y="120" width="22" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,118 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v18 h-80 v-18 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="118" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="118" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="112" width="22" height="8" fill="var(--primary)"/>
+  <rect x="56" y="112" width="22" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="122" y="112" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#biz-clip)">
-  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
-  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
-  <rect x="136" y="128" width="14" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="46" y="120" width="12" height="118" fill="#000" opacity="0.16"/>
+  <rect x="58" y="122" width="6" height="108" fill="#000" opacity="0.08"/>
+  <rect x="136" y="120" width="14" height="28" fill="#fff" opacity="0.08"/>
   <!-- Lapels -->
-  <rect x="80" y="128" width="8" height="34" fill="var(--primary)"/>
-  <rect x="112" y="128" width="8" height="34" fill="var(--primary)"/>
-  <rect x="82" y="128" width="6" height="32" fill="#fff" opacity="0.1"/>
-  <rect x="114" y="128" width="6" height="32" fill="#fff" opacity="0.1"/>
+  <rect x="80" y="120" width="8" height="36" fill="var(--primary)"/>
+  <rect x="112" y="120" width="8" height="36" fill="var(--primary)"/>
+  <rect x="82" y="120" width="6" height="34" fill="#fff" opacity="0.1"/>
+  <rect x="114" y="120" width="6" height="34" fill="#fff" opacity="0.1"/>
   <!-- Shirt -->
-  <rect x="88" y="128" width="24" height="72" fill="#e8e4e0"/>
+  <rect x="88" y="120" width="24" height="80" fill="#e8e4e0"/>
   <!-- Tie -->
-  <rect x="96" y="126" width="8" height="4" fill="var(--accent)"/>
-  <rect x="97" y="130" width="6" height="40" fill="var(--accent)"/>
-  <rect x="98" y="170" width="4" height="4" fill="var(--accent)"/>
+  <rect x="96" y="118" width="8" height="4" fill="var(--accent)"/>
+  <rect x="97" y="122" width="6" height="42" fill="var(--accent)"/>
+  <rect x="98" y="164" width="4" height="4" fill="var(--accent)"/>
   </g>
   <!-- Arms -->
-  <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
-  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.06"/>`],
+  <rect x="46" y="140" width="14" height="52" fill="var(--primary)"/>
+  <rect x="140" y="140" width="14" height="52" fill="var(--primary)"/>
+  <rect x="46" y="140" width="14" height="4" fill="#000" opacity="0.06"/>
+  <rect x="140" y="140" width="14" height="4" fill="#000" opacity="0.06"/>`],
   ['costume:diplomatic', `<!-- Diplomatic suit: clean, pocket square -->
   <clipPath id="diplo-clip">
     <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
@@ -458,35 +458,35 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
   <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
   <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.06"/>`],
-  ['costume:explorer-jacket', `<!-- Explorer jacket: rugged, pocketed -->
+  ['costume:explorer-jacket', `<!-- Explorer jacket: rugged (y=120, matches utility-vest) -->
   <clipPath id="explore-clip">
-    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
-  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,120 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="114" width="22" height="8" fill="var(--primary)"/>
+  <rect x="122" y="114" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#explore-clip)">
-  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
-  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
-  <rect x="136" y="128" width="14" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="46" y="122" width="12" height="116" fill="#000" opacity="0.16"/>
+  <rect x="58" y="124" width="6" height="106" fill="#000" opacity="0.08"/>
+  <rect x="136" y="122" width="14" height="28" fill="#fff" opacity="0.08"/>
   <!-- Collar -->
-  <rect x="80" y="122" width="40" height="10" fill="var(--primary)"/>
-  <rect x="82" y="122" width="36" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="80" y="116" width="40" height="10" fill="var(--primary)"/>
+  <rect x="82" y="116" width="36" height="2" fill="#fff" opacity="0.06"/>
   <!-- Pockets -->
   <rect x="70" y="164" width="16" height="12" fill="var(--secondary)"/>
   <rect x="70" y="164" width="16" height="2" fill="#000" opacity="0.15"/>
   <rect x="114" y="164" width="16" height="12" fill="var(--secondary)"/>
   <rect x="114" y="164" width="16" height="2" fill="#000" opacity="0.15"/>
   <!-- Zipper line -->
-  <rect x="99" y="130" width="2" height="70" fill="#000" opacity="0.15"/>
+  <rect x="99" y="124" width="2" height="76" fill="#000" opacity="0.15"/>
   </g>
   <!-- Arms -->
-  <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
-  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.06"/>`],
+  <rect x="46" y="142" width="14" height="50" fill="var(--primary)"/>
+  <rect x="140" y="142" width="14" height="50" fill="var(--primary)"/>
+  <rect x="46" y="142" width="14" height="4" fill="#000" opacity="0.06"/>
+  <rect x="140" y="142" width="14" height="4" fill="#000" opacity="0.06"/>`],
   ['costume:formal-sash', `<clipPath id="sash-clip">
     <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
@@ -553,38 +553,36 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Hem -->
   <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
   </g>`],
-  ['costume:hoodie', `<!-- Hoodie: casual, hood around neck -->
+  ['costume:hoodie', `<!-- Hoodie: casual (y=112, matches performer for Jester) -->
   <clipPath id="hoodie-clip">
-    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,112 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v24 h-80 v-24 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
-  <!-- Shoulder notch -->
-  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
-  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,112 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v24 h-80 v-24 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="112" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="112" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="106" width="22" height="8" fill="var(--primary)"/>
+  <rect x="122" y="106" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#hoodie-clip)">
-  <!-- Gradient shading -->
-  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
-  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
-  <rect x="136" y="128" width="12" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="46" y="114" width="12" height="124" fill="#000" opacity="0.16"/>
+  <rect x="58" y="116" width="6" height="114" fill="#000" opacity="0.08"/>
+  <rect x="136" y="114" width="12" height="28" fill="#fff" opacity="0.08"/>
   <!-- Hood (around neck) -->
-  <rect x="72" y="122" width="56" height="14" fill="var(--primary)"/>
-  <rect x="68" y="126" width="8" height="10" fill="var(--primary)"/>
-  <rect x="124" y="126" width="8" height="10" fill="var(--primary)"/>
-  <rect x="74" y="124" width="52" height="2" fill="#fff" opacity="0.08"/>
-  <rect x="72" y="134" width="56" height="2" fill="#000" opacity="0.12"/>
+  <rect x="72" y="108" width="56" height="14" fill="var(--primary)"/>
+  <rect x="68" y="112" width="8" height="10" fill="var(--primary)"/>
+  <rect x="124" y="112" width="8" height="10" fill="var(--primary)"/>
+  <rect x="74" y="110" width="52" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="72" y="120" width="56" height="2" fill="#000" opacity="0.12"/>
   <!-- Zipper -->
-  <rect x="99" y="136" width="2" height="40" fill="#000" opacity="0.12"/>
+  <rect x="99" y="122" width="2" height="54" fill="#000" opacity="0.12"/>
   <!-- Kangaroo pocket -->
-  <rect x="82" y="176" width="36" height="16" fill="var(--secondary)" opacity="0.4"/>
-  <rect x="82" y="176" width="36" height="2" fill="#000" opacity="0.1"/>
+  <rect x="82" y="170" width="36" height="16" fill="var(--secondary)" opacity="0.4"/>
+  <rect x="82" y="170" width="36" height="2" fill="#000" opacity="0.1"/>
   </g>
   <!-- Arms (sleeved) -->
-  <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
-  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.08"/>
-  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.08"/>`],
+  <rect x="46" y="134" width="14" height="58" fill="var(--primary)"/>
+  <rect x="140" y="134" width="14" height="58" fill="var(--primary)"/>
+  <rect x="46" y="134" width="14" height="4" fill="#000" opacity="0.08"/>
+  <rect x="140" y="134" width="14" height="4" fill="#000" opacity="0.08"/>`],
   ['costume:lab-coat', `<clipPath id="labcoat-clip">
     <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
@@ -802,32 +800,32 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Hem -->
   <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
   </g>`],
-  ['costume:polo', `<!-- Polo shirt: collared casual -->
+  ['costume:polo', `<!-- Polo shirt: collared casual (y=120, matches plain-shirt) -->
   <clipPath id="polo-clip">
-    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
-  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,120 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="114" width="22" height="8" fill="var(--primary)"/>
+  <rect x="122" y="114" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#polo-clip)">
-  <rect x="46" y="128" width="10" height="110" fill="#000" opacity="0.12"/>
-  <rect x="136" y="128" width="12" height="28" fill="#fff" opacity="0.06"/>
+  <rect x="46" y="122" width="10" height="116" fill="#000" opacity="0.12"/>
+  <rect x="136" y="122" width="12" height="28" fill="#fff" opacity="0.06"/>
   <!-- Collar -->
-  <rect x="82" y="120" width="36" height="10" fill="var(--primary)"/>
-  <rect x="80" y="122" width="4" height="6" fill="var(--primary)"/>
-  <rect x="116" y="122" width="4" height="6" fill="var(--primary)"/>
-  <rect x="84" y="120" width="32" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="82" y="114" width="36" height="10" fill="var(--primary)"/>
+  <rect x="80" y="116" width="4" height="6" fill="var(--primary)"/>
+  <rect x="116" y="116" width="4" height="6" fill="var(--primary)"/>
+  <rect x="84" y="114" width="32" height="2" fill="#fff" opacity="0.1"/>
   <!-- Placket -->
-  <rect x="96" y="128" width="8" height="24" fill="var(--primary)"/>
-  <rect x="97" y="130" width="6" height="20" fill="#000" opacity="0.06"/>
+  <rect x="96" y="122" width="8" height="24" fill="var(--primary)"/>
+  <rect x="97" y="124" width="6" height="20" fill="#000" opacity="0.06"/>
+  <rect x="98" y="128" width="4" height="2" fill="var(--secondary)"/>
   <rect x="98" y="134" width="4" height="2" fill="var(--secondary)"/>
-  <rect x="98" y="140" width="4" height="2" fill="var(--secondary)"/>
   </g>
   <!-- Arms (skin — short sleeves) -->
-  <rect x="48" y="148" width="14" height="44" fill="var(--skin)"/>
-  <rect x="138" y="148" width="14" height="44" fill="var(--skin)"/>`],
+  <rect x="48" y="142" width="14" height="50" fill="var(--skin)"/>
+  <rect x="138" y="142" width="14" height="50" fill="var(--skin)"/>`],
   ['costume:robes', `<clipPath id="robes-clip">
     <path d="M 38,126 h124 v8 h-2 v32 h-4 v20 h-2 v16 h-2 v14 h-2 v14 h-2 v10 h-88 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-2 v-20 h-4 v-32 h-2 z"/>
   </clipPath>
@@ -1241,32 +1239,32 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Hem -->
   <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
   </g>`],
-  ['costume:vest-cross', `<!-- Vest + cross: sturdy vest with caregiver symbol -->
+  ['costume:vest-cross', `<!-- Vest + cross: sturdy vest (y=114, matches soft-wrap) -->
   <clipPath id="vest-clip">
-    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,114 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v22 h-80 v-22 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
-  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
-  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,114 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v22 h-80 v-22 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="114" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="114" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="108" width="22" height="8" fill="var(--primary)"/>
+  <rect x="122" y="108" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#vest-clip)">
-  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.14"/>
-  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.06"/>
-  <rect x="136" y="128" width="12" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="46" y="116" width="12" height="122" fill="#000" opacity="0.14"/>
+  <rect x="58" y="118" width="6" height="112" fill="#000" opacity="0.06"/>
+  <rect x="136" y="116" width="12" height="28" fill="#fff" opacity="0.08"/>
   <!-- Collar -->
-  <rect x="82" y="122" width="36" height="10" fill="var(--primary)"/>
-  <rect x="78" y="126" width="8" height="6" fill="var(--primary)"/>
-  <rect x="114" y="126" width="8" height="6" fill="var(--primary)"/>
-  <rect x="84" y="122" width="32" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="82" y="110" width="36" height="10" fill="var(--primary)"/>
+  <rect x="78" y="114" width="8" height="6" fill="var(--primary)"/>
+  <rect x="114" y="114" width="8" height="6" fill="var(--primary)"/>
+  <rect x="84" y="110" width="32" height="2" fill="#fff" opacity="0.08"/>
   <!-- Cross symbol -->
-  <rect x="96" y="158" width="8" height="24" fill="#cc2222"/>
-  <rect x="90" y="164" width="20" height="8" fill="#cc2222"/>
-  <rect x="96" y="160" width="8" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="96" y="152" width="8" height="24" fill="#cc2222"/>
+  <rect x="90" y="158" width="20" height="8" fill="#cc2222"/>
+  <rect x="96" y="154" width="8" height="2" fill="#fff" opacity="0.15"/>
   </g>
   <!-- Arm fills (skin — vest is sleeveless) -->
-  <rect x="48" y="148" width="14" height="44" fill="var(--skin)"/>
-  <rect x="138" y="148" width="14" height="44" fill="var(--skin)"/>`],
+  <rect x="48" y="136" width="14" height="56" fill="var(--skin)"/>
+  <rect x="138" y="136" width="14" height="56" fill="var(--skin)"/>`],
   ['expression:angry-vein', `<!-- Angry vein: throbbing cross-mark at temple -->
   <rect x="124" y="42" width="8" height="2" fill="#cc4444" opacity="0.6"/>
   <rect x="126" y="40" width="2" height="6" fill="#cc4444" opacity="0.6"/>
@@ -1897,7 +1895,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin shadow -->
   <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
     <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
-    <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
   <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
@@ -1993,7 +1990,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin shadow -->
   <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
     <rect x="90" y="92" width="20" height="4" fill="var(--skin)"/>
-    <rect x="90" y="92" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
   <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
@@ -2029,7 +2025,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin shadow -->
   <rect x="84" y="86" width="32" height="2" fill="#000" opacity="0.1"/>
     <rect x="90" y="90" width="20" height="2" fill="var(--skin)"/>
-    <rect x="90" y="90" width="20" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="92" width="20" height="36" fill="var(--skin)"/>
   <rect x="88" y="96" width="4" height="28" fill="var(--skin)"/>
@@ -2057,7 +2052,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
-    <rect x="90" y="110" width="20" height="2" fill="var(--skin)"/>
     <rect x="90" y="110" width="20" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
@@ -2095,7 +2089,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin -->
   <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.1"/>
     <rect x="88" y="100" width="24" height="2" fill="var(--skin)"/>
-    <rect x="88" y="100" width="24" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="88" y="102" width="24" height="26" fill="var(--skin)"/>
   <rect x="86" y="106" width="4" height="18" fill="var(--skin)"/>
@@ -2124,7 +2117,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin shadow -->
   <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
     <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
-    <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
   <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
@@ -2151,7 +2143,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="96" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="102" width="24" height="2" fill="#000" opacity="0.1"/>
-    <rect x="90" y="98" width="20" height="8" fill="var(--skin)"/>
     <rect x="90" y="98" width="20" height="8" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="106" width="20" height="20" fill="var(--skin)"/>
