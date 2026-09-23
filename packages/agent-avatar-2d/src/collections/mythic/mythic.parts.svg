@@ -2945,50 +2945,76 @@
 
 <symbol id="costume:hoodie" viewBox="0 0 200 240">
   <!-- Hoodie: casual, hood around neck -->
-  <!-- Shoulders -->
-  <rect x="56" y="134" width="88" height="6" fill="var(--primary)"/>
-  <!-- Torso -->
-  <rect x="62" y="140" width="76" height="60" fill="var(--primary)"/>
-  <rect x="56" y="138" width="10" height="52" fill="var(--primary)"/>
-  <rect x="134" y="138" width="10" height="52" fill="var(--primary)"/>
+  <clipPath id="hoodie-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <!-- Shoulder notch -->
+  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
+  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#hoodie-clip)">
+  <!-- Gradient shading -->
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
+  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
+  <rect x="136" y="128" width="12" height="28" fill="#fff" opacity="0.08"/>
   <!-- Hood (around neck) -->
   <rect x="72" y="122" width="56" height="14" fill="var(--primary)"/>
   <rect x="68" y="126" width="8" height="10" fill="var(--primary)"/>
   <rect x="124" y="126" width="8" height="10" fill="var(--primary)"/>
   <rect x="74" y="124" width="52" height="2" fill="#fff" opacity="0.08"/>
-  <!-- Kangaroo pocket -->
-  <rect x="82" y="176" width="36" height="16" fill="var(--secondary)" opacity="0.5"/>
-  <rect x="82" y="176" width="36" height="2" fill="#000" opacity="0.1"/>
+  <rect x="72" y="134" width="56" height="2" fill="#000" opacity="0.12"/>
   <!-- Zipper -->
   <rect x="99" y="136" width="2" height="40" fill="#000" opacity="0.12"/>
+  <!-- Kangaroo pocket -->
+  <rect x="82" y="176" width="36" height="16" fill="var(--secondary)" opacity="0.4"/>
+  <rect x="82" y="176" width="36" height="2" fill="#000" opacity="0.1"/>
+  </g>
   <!-- Arms (sleeved) -->
   <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
   <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
+  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.08"/>
+  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.08"/>
 </symbol>
 
 <symbol id="costume:diplomatic" viewBox="0 0 200 240">
   <!-- Diplomatic suit: clean, pocket square -->
-  <!-- Shoulders -->
-  <rect x="56" y="134" width="88" height="6" fill="var(--primary)"/>
-  <!-- Torso -->
-  <rect x="62" y="140" width="76" height="60" fill="var(--primary)"/>
-  <rect x="56" y="138" width="10" height="52" fill="var(--primary)"/>
-  <rect x="134" y="138" width="10" height="52" fill="var(--primary)"/>
+  <clipPath id="diplo-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <!-- Shoulder notch -->
+  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
+  <rect x="56" y="120" width="22" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#diplo-clip)">
+  <!-- Gradient shading -->
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
+  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
+  <rect x="136" y="128" width="14" height="28" fill="#fff" opacity="0.08"/>
   <!-- Lapels -->
-  <rect x="80" y="136" width="8" height="30" fill="var(--primary)"/>
-  <rect x="112" y="136" width="8" height="30" fill="var(--primary)"/>
-  <rect x="82" y="136" width="6" height="28" fill="#fff" opacity="0.08"/>
-  <rect x="114" y="136" width="6" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="80" y="128" width="8" height="34" fill="var(--primary)"/>
+  <rect x="112" y="128" width="8" height="34" fill="var(--primary)"/>
+  <rect x="82" y="128" width="6" height="32" fill="#fff" opacity="0.08"/>
+  <rect x="114" y="128" width="6" height="32" fill="#fff" opacity="0.08"/>
   <!-- Shirt -->
-  <rect x="88" y="136" width="24" height="64" fill="#e8e4e0"/>
-  <!-- Tie (subtle) -->
-  <rect x="97" y="136" width="6" height="36" fill="var(--secondary)"/>
+  <rect x="88" y="128" width="24" height="72" fill="#e8e4e0"/>
+  <!-- Tie -->
+  <rect x="96" y="126" width="8" height="4" fill="var(--secondary)"/>
+  <rect x="97" y="130" width="6" height="38" fill="var(--secondary)"/>
+  <rect x="98" y="168" width="4" height="4" fill="var(--secondary)"/>
   <!-- Pocket square -->
-  <rect x="70" y="156" width="8" height="4" fill="#e8e4e0"/>
-  <rect x="72" y="154" width="4" height="4" fill="#e8e4e0"/>
+  <rect x="70" y="152" width="8" height="4" fill="#e8e4e0"/>
+  <rect x="72" y="150" width="4" height="4" fill="#e8e4e0"/>
+  </g>
   <!-- Arms -->
   <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
   <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
+  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
+  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
 </symbol>
 
 <symbol id="prop:notebook" viewBox="0 0 200 240">
