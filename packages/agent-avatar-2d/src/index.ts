@@ -21,3 +21,7 @@ export { FAMILY_PALETTES } from './palettes.js';
 export { ARCHETYPE_CONFIGS, ARCHETYPE_INDEX } from './config-table.js';
 export { encodePreset, encodeCustom, decodeCode } from './code.js';
 export type { DecodedAvatar } from './code.js';
+export { buildAvatar } from './builder.js';
+export { registerCollection, getCollection } from './collections/registry.js';
+export { resolveModifiers } from './modifiers.js';
+export type { ModifierInput } from './modifiers.js';

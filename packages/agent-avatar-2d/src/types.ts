@@ -15,12 +15,14 @@ export const AVATAR_SIZES: Record<AvatarSize, number> = {
   lg: 128,
 };
 
-export const enum DetailLevel {
-  XS = 0,
-  SM = 1,
-  MD = 2,
-  LG = 3,
-}
+export const DetailLevel = {
+  XS: 0,
+  SM: 1,
+  MD: 2,
+  LG: 3,
+} as const;
+
+export type DetailLevel = typeof DetailLevel[keyof typeof DetailLevel];
 
 export const DETAIL_TIERS: Record<AvatarSize, DetailLevel> = {
   xs: DetailLevel.XS,
