@@ -38,14 +38,30 @@ const HATS = [
   'baseball-cap', 'beret', 'crown', 'explorer', 'flower-crown', 'jester',
 ] as const;
 
+const EYES = [
+  'almond', 'deep-set', 'large', 'narrow', 'round', 'standard',
+] as const;
+
+const NOSES = [
+  'aquiline', 'broad', 'button', 'narrow', 'prominent', 'subtle',
+] as const;
+
+const MOUTHS = [
+  'line-neutral', 'line-stern', 'line-wide', 'lips-full', 'lips-natural',
+  'small', 'smile', 'smirk',
+] as const;
+
 const EXPRESSIONS = [
   'angry-vein', 'dazed-spirals', 'flat-brows', 'furrowed-brows',
   'heart-eyes', 'idea-spark', 'raised-brow', 'rosy-cheeks',
   'sparkle-eyes', 'squint-joy', 'starry-eyes', 'sweat-drop', 'wink',
 ] as const;
 
-// Bit layout (30 bits total, packed into 5 base64url chars = 30 bits):
+// Bit layout (40 bits total, packed into 7 base64url chars = 42 bits):
 //   head:       4 bits (0-10, 11 values)
+//   eyes:       3 bits (0-5,  6 values)
+//   nose:       3 bits (0-5,  6 values)
+//   mouth:      3 bits (0-7,  8 values)
 //   hair:       4 bits (0-14, 15 values)
 //   facialHair: 3 bits (0-7,  8 values)
 //   costume:    5 bits (0-19, 20 values)
@@ -53,6 +69,7 @@ const EXPRESSIONS = [
 //   glasses:    4 bits (0-8,  8 values + null=0, shifted by 1)
 //   hat:        3 bits (0-6,  6 values + null=0, shifted by 1)
 //   expression: 4 bits (0-13, 13 values + null=0, shifted by 1)
+//   padding:    1 bit
 
 const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -62,31 +79,42 @@ function indexOf<T>(arr: readonly T[], val: T): number {
   return i;
 }
 
-function packBits(assignment: PartAssignment): number {
-  let bits = 0;
-  bits = (bits << 4) | indexOf(HEADS, assignment.head);
-  bits = (bits << 4) | indexOf(HAIRS, assignment.hair);
-  bits = (bits << 3) | indexOf(FACIAL_HAIRS, assignment.facialHair);
-  bits = (bits << 5) | indexOf(COSTUMES, assignment.costume);
-  bits = (bits << 3) | indexOf(EYEBROWS, assignment.eyebrows);
-  bits = (bits << 4) | (assignment.glasses ? indexOf(GLASSES, assignment.glasses) + 1 : 0);
-  bits = (bits << 3) | (assignment.hat ? indexOf(HATS, assignment.hat) + 1 : 0);
-  bits = (bits << 4) | (assignment.expression ? indexOf(EXPRESSIONS, assignment.expression) + 1 : 0);
+function packBits(assignment: PartAssignment): bigint {
+  let bits = 0n;
+  bits = (bits << 4n) | BigInt(indexOf(HEADS, assignment.head));
+  bits = (bits << 3n) | BigInt(indexOf(EYES, assignment.eyes));
+  bits = (bits << 3n) | BigInt(indexOf(NOSES, assignment.nose));
+  bits = (bits << 3n) | BigInt(indexOf(MOUTHS, assignment.mouth));
+  bits = (bits << 4n) | BigInt(indexOf(HAIRS, assignment.hair));
+  bits = (bits << 3n) | BigInt(indexOf(FACIAL_HAIRS, assignment.facialHair));
+  bits = (bits << 5n) | BigInt(indexOf(COSTUMES, assignment.costume));
+  bits = (bits << 3n) | BigInt(indexOf(EYEBROWS, assignment.eyebrows));
+  bits = (bits << 4n) | BigInt(assignment.glasses ? indexOf(GLASSES, assignment.glasses) + 1 : 0);
+  bits = (bits << 3n) | BigInt(assignment.hat ? indexOf(HATS, assignment.hat) + 1 : 0);
+  bits = (bits << 4n) | BigInt(assignment.expression ? indexOf(EXPRESSIONS, assignment.expression) + 1 : 0);
+  bits = bits << 1n;
   return bits;
 }
 
-function unpackBits(bits: number): Omit<PartAssignment, 'props' | 'accessories'> {
-  const expression = bits & 0xF; bits >>>= 4;
-  const hat = bits & 0x7; bits >>>= 3;
-  const glasses = bits & 0xF; bits >>>= 4;
-  const eyebrows = bits & 0x7; bits >>>= 3;
-  const costume = bits & 0x1F; bits >>>= 5;
-  const facialHair = bits & 0x7; bits >>>= 3;
-  const hair = bits & 0xF; bits >>>= 4;
-  const head = bits & 0xF;
+function unpackBits(bits: bigint): Omit<PartAssignment, 'props' | 'accessories'> {
+  bits >>= 1n;
+  const expression = Number(bits & 0xFn); bits >>= 4n;
+  const hat = Number(bits & 0x7n); bits >>= 3n;
+  const glasses = Number(bits & 0xFn); bits >>= 4n;
+  const eyebrows = Number(bits & 0x7n); bits >>= 3n;
+  const costume = Number(bits & 0x1Fn); bits >>= 5n;
+  const facialHair = Number(bits & 0x7n); bits >>= 3n;
+  const hair = Number(bits & 0xFn); bits >>= 4n;
+  const mouth = Number(bits & 0x7n); bits >>= 3n;
+  const nose = Number(bits & 0x7n); bits >>= 3n;
+  const eyes = Number(bits & 0x7n); bits >>= 3n;
+  const head = Number(bits & 0xFn);
 
   return {
     head: HEADS[head]!,
+    eyes: EYES[eyes]!,
+    nose: NOSES[nose]!,
+    mouth: MOUTHS[mouth]!,
     hair: HAIRS[hair]!,
     facialHair: FACIAL_HAIRS[facialHair]!,
     costume: COSTUMES[costume]!,
@@ -97,18 +125,18 @@ function unpackBits(bits: number): Omit<PartAssignment, 'props' | 'accessories'>
   };
 }
 
-function toBase64(n: number, len: number): string {
+function toBase64(n: bigint, len: number): string {
   let s = '';
   for (let i = len - 1; i >= 0; i--) {
-    s += B64[(n >>> (i * 6)) & 0x3F];
+    s += B64[Number((n >> BigInt(i * 6)) & 0x3Fn)];
   }
   return s;
 }
 
-function fromBase64(s: string): number {
-  let n = 0;
+function fromBase64(s: string): bigint {
+  let n = 0n;
   for (let i = 0; i < s.length; i++) {
-    n = (n << 6) | B64.indexOf(s[i]!);
+    n = (n << 6n) | BigInt(B64.indexOf(s[i]!));
   }
   return n;
 }
@@ -121,7 +149,7 @@ export function encodePreset(archetypeKey: string, collection = 'mythic'): strin
 
 export function encodeCustom(assignment: PartAssignment, collection = 'mythic'): string {
   const bits = packBits(assignment);
-  return `${collection}:C${toBase64(bits, 5)}`;
+  return `${collection}:C${toBase64(bits, 7)}`;
 }
 
 export interface DecodedAvatar {
