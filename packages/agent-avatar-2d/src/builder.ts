@@ -172,7 +172,34 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
     return `  <g ${tag}>${inner}</g>`;
   }
 
-  return `  <g ${tag}>${l.content}</g>`;
+  const scaled = l.category === 'prop' ? scaleSmallProp(l.content) : l.content;
+  return `  <g ${tag}>${scaled}</g>`;
+}
+
+const MIN_PROP_AREA = 400;
+const TARGET_PROP_DIM = 26;
+
+function scaleSmallProp(content: string): string {
+  const re = /\bx="(\d+)"\s+y="(\d+)"\s+width="(\d+)"\s+height="(\d+)"/g;
+  let minX = Infinity, minY = Infinity, maxX = 0, maxY = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content)) !== null) {
+    const x = parseInt(m[1]!, 10), y = parseInt(m[2]!, 10);
+    const w = parseInt(m[3]!, 10), h = parseInt(m[4]!, 10);
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x + w);
+    maxY = Math.max(maxY, y + h);
+  }
+  if (minX === Infinity) return content;
+  const bw = maxX - minX;
+  const bh = maxY - minY;
+  if (bw * bh >= MIN_PROP_AREA) return content;
+  const scale = Math.min(TARGET_PROP_DIM / bw, TARGET_PROP_DIM / bh);
+  if (scale <= 1.15) return content;
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  return `<g transform="translate(${cx},${cy}) scale(${scale.toFixed(2)}) translate(${-cx},${-cy})">${content}</g>`;
 }
 
 let _uid = 0;
