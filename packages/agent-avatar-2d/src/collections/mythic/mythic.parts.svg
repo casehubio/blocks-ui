@@ -9,6 +9,15 @@
 <symbol id="head:oval" viewBox="0 0 200 240">
   <!-- Tinted outline -->
   <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="66" y="26" width="16" height="2" fill="var(--skin)"/>
+  <rect x="118" y="26" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="28" width="12" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="30" width="8" height="2" fill="var(--skin)"/>
+  <rect x="126" y="30" width="12" height="2" fill="var(--skin)"/>
+  <rect x="66" y="32" width="4" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="8" height="2" fill="var(--skin)"/>
   <!-- Anti-alias pixels at corners (mid-tone) -->
   <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
   <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
@@ -45,8 +54,7 @@
 </symbol>
 
 <!-- HAIR: wild-einstein (Sage/Mentor) -->
-<symbol id="hair:wild-einstein" viewBox="0 0 200 240">
-  <!-- Main mass -->
+<symbol id="hair:wild-einstein" viewBox="0 0 200 240">  <!-- Main mass -->
   <path d="M 48,22 h8 v-4 h10 v-2 h80 v2 h10 v4 h8 v6 h-4 v4 h4 v10 h-4 v8 h-4 v4 h-8 v4 h-100 v-4 h-8 v-4 h-4 v-8 h-4 v-10 h4 v-4 h-4 v-6 h8 z" fill="var(--hair-color)"/>
   <!-- Frizz tufts left -->
   <rect x="42" y="30" width="6" height="10" fill="var(--hair-color)"/>
@@ -74,8 +82,7 @@
 </symbol>
 
 <!-- HAIR: long-flowing (Sage/Shaman) -->
-<symbol id="hair:long-flowing" viewBox="0 0 200 240">
-  <!-- Top cap -->
+<symbol id="hair:long-flowing" viewBox="0 0 200 240">  <!-- Top cap -->
   <path d="M 72,22 h56 v2 h6 v2 h4 v2 h4 v2 h2 v8 h-88 v-8 h2 v-2 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
   <!-- Left flowing side -->
   <rect x="56" y="38" width="16" height="70" fill="var(--hair-color)"/>
@@ -104,8 +111,7 @@
 </symbol>
 
 <!-- HAIR: bald-sides (Sage/Detective, Sage/Scientist) -->
-<symbol id="hair:bald-sides" viewBox="0 0 200 240">
-  <!-- Left side patch -->
+<symbol id="hair:bald-sides" viewBox="0 0 200 240">  <!-- Left side patch -->
   <rect x="62" y="44" width="8" height="30" fill="var(--hair-color)"/>
   <rect x="60" y="42" width="6" height="4" fill="var(--hair-color)"/>
   <rect x="64" y="74" width="4" height="6" fill="var(--hair-color)" opacity="0.5"/>
@@ -135,8 +141,7 @@
 </symbol>
 
 <!-- HAIR: cropped-fringe (Sage/Translator) -->
-<symbol id="hair:cropped-fringe" viewBox="0 0 200 240">
-  <!-- Top cap -->
+<symbol id="hair:cropped-fringe" viewBox="0 0 200 240">  <!-- Top cap -->
   <path d="M 72,22 h56 v2 h6 v2 h4 v2 h4 v10 h-84 v-10 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
   <!-- Fringe hanging forward -->
   <rect x="72" y="38" width="36" height="10" fill="var(--hair-color)"/>
@@ -690,6 +695,13 @@
 <symbol id="head:square-jaw" viewBox="0 0 200 240">
   <!-- Outline: wide jaw, flat chin -->
   <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="76" y="34" width="2" height="2" fill="var(--skin)"/>
   <rect x="122" y="34" width="2" height="2" fill="var(--skin)"/>
@@ -730,6 +742,15 @@
 <symbol id="head:angular" viewBox="0 0 200 240">
   <!-- Outline: sharp edges, asymmetric -->
   <path d="M 82,34 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="66" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="118" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="122" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="66" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="126" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="66" y="40" width="4" height="2" fill="var(--skin)"/>
+  <rect x="130" y="40" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="80" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="124" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
@@ -768,6 +789,17 @@
 <symbol id="head:round" viewBox="0 0 200 240">
   <!-- Outline: circular, soft -->
   <path d="M 78,38 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="38" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="38" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="40" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="40" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="42" width="10" height="2" fill="var(--skin)"/>
+  <rect x="130" y="42" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="44" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="44" width="6" height="2" fill="var(--skin)"/>
+  <rect x="62" y="46" width="4" height="2" fill="var(--skin)"/>
+  <rect x="134" y="46" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="76" y="38" width="2" height="2" fill="var(--skin)"/>
   <rect x="122" y="38" width="2" height="2" fill="var(--skin)"/>
@@ -808,6 +840,15 @@
 <symbol id="head:round-wide" viewBox="0 0 200 240">
   <!-- Outline: widest, most animated -->
   <path d="M 72,46 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="58" y="46" width="14" height="2" fill="var(--skin)"/>
+  <rect x="128" y="46" width="14" height="2" fill="var(--skin)"/>
+  <rect x="58" y="48" width="10" height="2" fill="var(--skin)"/>
+  <rect x="132" y="48" width="10" height="2" fill="var(--skin)"/>
+  <rect x="58" y="50" width="6" height="2" fill="var(--skin)"/>
+  <rect x="136" y="50" width="6" height="2" fill="var(--skin)"/>
+  <rect x="58" y="52" width="4" height="2" fill="var(--skin)"/>
+  <rect x="138" y="52" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="70" y="46" width="2" height="2" fill="var(--skin)"/>
   <rect x="128" y="46" width="2" height="2" fill="var(--skin)"/>
@@ -1097,8 +1138,7 @@
 <!-- ================================================ -->
 <!-- HAIR: mohawk (Rebel family)                      -->
 <!-- ================================================ -->
-<symbol id="hair:mohawk" viewBox="0 0 200 240">
-  <!-- Central spike mass -->
+<symbol id="hair:mohawk" viewBox="0 0 200 240">  <!-- Central spike mass -->
   <rect x="88" y="6" width="24" height="4" fill="var(--hair-color)"/>
   <rect x="86" y="10" width="28" height="6" fill="var(--hair-color)"/>
   <rect x="84" y="16" width="32" height="8" fill="var(--hair-color)"/>
@@ -1127,8 +1167,7 @@
 <!-- ================================================ -->
 <!-- HAIR: shoulder-wavy (Caregiver/Angel)            -->
 <!-- ================================================ -->
-<symbol id="hair:shoulder-wavy" viewBox="0 0 200 240">
-  <!-- Top cap -->
+<symbol id="hair:shoulder-wavy" viewBox="0 0 200 240">  <!-- Top cap -->
   <path d="M 70,22 h60 v2 h6 v2 h4 v2 h4 v2 h2 v10 h-92 v-10 h2 v-2 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
   <!-- Left flowing side -->
   <rect x="56" y="38" width="10" height="60" fill="var(--hair-color)"/>
@@ -1266,6 +1305,15 @@
 <symbol id="head:diamond" viewBox="0 0 200 240">
   <!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
   <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="32" width="16" height="2" fill="var(--skin)"/>
+  <rect x="120" y="32" width="16" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="124" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="64" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="128" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="64" y="38" width="6" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="6" height="2" fill="var(--skin)"/>
   <clipPath id="diamond-face-clip">
     <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
   </clipPath>
@@ -1295,6 +1343,15 @@
 
 <symbol id="head:heart" viewBox="0 0 200 240">
   <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="40" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="40" width="6" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="62" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="60" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1320,6 +1377,15 @@
 
 <symbol id="head:soft-oval" viewBox="0 0 200 240">
   <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="28" width="14" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="14" height="2" fill="var(--skin)"/>
+  <rect x="64" y="30" width="10" height="2" fill="var(--skin)"/>
+  <rect x="126" y="30" width="10" height="2" fill="var(--skin)"/>
+  <rect x="64" y="32" width="6" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="6" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="4" height="2" fill="var(--skin)"/>
+  <rect x="132" y="34" width="4" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="66" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="68" width="2" height="8" fill="var(--skin)"/>
@@ -1347,6 +1413,13 @@
 
 <symbol id="head:strong-sym" viewBox="0 0 200 240">
   <path d="M 74,34 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="38" width="6" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="62" y="64" width="4" height="14" fill="var(--skin)"/>
   <rect x="60" y="66" width="2" height="10" fill="var(--skin)"/>
@@ -1374,6 +1447,13 @@
 
 <symbol id="head:weathered" viewBox="0 0 200 240">
   <path d="M 80,30 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="30" width="16" height="2" fill="var(--skin)"/>
+  <rect x="120" y="30" width="16" height="2" fill="var(--skin)"/>
+  <rect x="64" y="32" width="12" height="2" fill="var(--skin)"/>
+  <rect x="124" y="32" width="12" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="8" height="2" fill="var(--skin)"/>
+  <rect x="128" y="34" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1405,6 +1485,13 @@
 
 <symbol id="head:standard" viewBox="0 0 200 240">
   <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1432,6 +1519,13 @@
 
 <symbol id="head:fallback" viewBox="0 0 200 240">
   <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1853,8 +1947,7 @@
 <!-- REMAINING HAIR                                   -->
 <!-- ================================================ -->
 
-<symbol id="hair:slicked" viewBox="0 0 200 240">
-  <path d="M 66,30 h68 v2 h6 v2 h4 v2 h4 v10 h-92 v-10 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+<symbol id="hair:slicked" viewBox="0 0 200 240">  <path d="M 66,30 h68 v2 h6 v2 h4 v2 h4 v10 h-92 v-10 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="70" y="32" width="60" height="2" fill="#000" opacity="0.12"/>
   <rect x="72" y="36" width="56" height="2" fill="#000" opacity="0.08"/>
   <rect x="74" y="40" width="52" height="2" fill="#000" opacity="0.06"/>
@@ -1862,16 +1955,14 @@
   <rect x="68" y="34" width="6" height="8" fill="#000" opacity="0.12"/>
 </symbol>
 
-<symbol id="hair:pixie" viewBox="0 0 200 240">
-  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-4 v4 h-82 v-4 h-4 v-10 h4 v-2 h6 v-2 h2 z" fill="var(--hair-color)"/>
+<symbol id="hair:pixie" viewBox="0 0 200 240">  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-4 v4 h-82 v-4 h-4 v-10 h4 v-2 h6 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="70" y="26" width="6" height="4" fill="var(--hair-color)"/>
   <rect x="106" y="24" width="6" height="4" fill="var(--hair-color)"/>
   <rect x="66" y="34" width="6" height="8" fill="#000" opacity="0.12"/>
   <rect x="130" y="30" width="6" height="8" fill="#fff" opacity="0.1"/>
 </symbol>
 
-<symbol id="hair:ponytail" viewBox="0 0 200 240">
-  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+<symbol id="hair:ponytail" viewBox="0 0 200 240">  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
   <rect x="136" y="38" width="10" height="10" fill="var(--hair-color)"/>
   <rect x="140" y="48" width="10" height="16" fill="var(--hair-color)"/>
   <rect x="142" y="64" width="8" height="16" fill="var(--hair-color)"/>
@@ -1881,8 +1972,7 @@
   <rect x="140" y="56" width="2" height="16" fill="#000" opacity="0.08"/>
 </symbol>
 
-<symbol id="hair:braids" viewBox="0 0 200 240">
-  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+<symbol id="hair:braids" viewBox="0 0 200 240">  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
   <!-- Left braid -->
   <rect x="58" y="42" width="8" height="10" fill="var(--hair-color)"/>
   <rect x="54" y="52" width="8" height="10" fill="var(--hair-color)"/>
@@ -1897,8 +1987,7 @@
   <rect x="140" y="44" width="4" height="8" fill="#fff" opacity="0.08"/>
 </symbol>
 
-<symbol id="hair:windswept" viewBox="0 0 200 240">
-  <path d="M 64,26 h72 v2 h8 v2 h6 v4 h-4 v4 h-92 v-6 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+<symbol id="hair:windswept" viewBox="0 0 200 240">  <path d="M 64,26 h72 v2 h8 v2 h6 v4 h-4 v4 h-92 v-6 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="146" y="26" width="10" height="4" fill="var(--hair-color)"/>
   <rect x="150" y="30" width="8" height="4" fill="var(--hair-color)"/>
   <rect x="148" y="22" width="6" height="6" fill="var(--hair-color)"/>
@@ -1906,8 +1995,7 @@
   <rect x="140" y="26" width="6" height="6" fill="#fff" opacity="0.1"/>
 </symbol>
 
-<symbol id="hair:afro-short" viewBox="0 0 200 240">
-  <path d="M 58,24 h84 v2 h6 v2 h4 v2 h4 v18 h-106 v-18 h4 v-2 h4 v-2 h-2 z" fill="var(--hair-color)"/>
+<symbol id="hair:afro-short" viewBox="0 0 200 240">  <path d="M 58,24 h84 v2 h6 v2 h4 v2 h4 v18 h-106 v-18 h4 v-2 h4 v-2 h-2 z" fill="var(--hair-color)"/>
   <rect x="60" y="28" width="4" height="4" fill="#000" opacity="0.12"/>
   <rect x="76" y="26" width="4" height="4" fill="#000" opacity="0.08"/>
   <rect x="94" y="28" width="4" height="4" fill="#000" opacity="0.06"/>
@@ -1917,8 +2005,7 @@
   <rect x="126" y="24" width="8" height="4" fill="#fff" opacity="0.08"/>
 </symbol>
 
-<symbol id="hair:messy-bun" viewBox="0 0 200 240">
-  <rect x="82" y="12" width="36" height="6" fill="var(--hair-color)"/>
+<symbol id="hair:messy-bun" viewBox="0 0 200 240">  <rect x="82" y="12" width="36" height="6" fill="var(--hair-color)"/>
   <rect x="78" y="18" width="44" height="10" fill="var(--hair-color)"/>
   <rect x="82" y="28" width="36" height="4" fill="var(--hair-color)"/>
   <path d="M 66,30 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
@@ -1930,9 +2017,7 @@
   <rect x="66" y="32" width="6" height="8" fill="#000" opacity="0.12"/>
 </symbol>
 
-<symbol id="hair:undercut" viewBox="0 0 200 240">
-  <path d="M 76,22 h52 v2 h6 v2 h4 v12 h-72 v-4 h-4 v-6 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
-  <rect x="64" y="34" width="14" height="4" fill="var(--hair-color)"/>
+<symbol id="hair:undercut" viewBox="0 0 200 240">  <path d="M 76,22 h52 v2 h6 v2 h4 v12 h-72 v-4 h-4 v-6 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
   <rect x="60" y="38" width="8" height="4" fill="var(--hair-color)" opacity="0.5"/>
   <!-- Shaved sides -->
   <rect x="60" y="40" width="8" height="12" fill="var(--skin)" opacity="0.35"/>
@@ -1941,8 +2026,7 @@
   <rect x="124" y="24" width="8" height="6" fill="#fff" opacity="0.1"/>
 </symbol>
 
-<symbol id="hair:buzz" viewBox="0 0 200 240">
-  <path d="M 68,30 h64 v2 h6 v2 h4 v2 h4 v8 h-88 v-8 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+<symbol id="hair:buzz" viewBox="0 0 200 240">  <path d="M 68,30 h64 v2 h6 v2 h4 v2 h4 v8 h-88 v-8 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="72" y="32" width="4" height="4" fill="#000" opacity="0.08"/>
   <rect x="88" y="30" width="4" height="4" fill="#000" opacity="0.06"/>
   <rect x="104" y="32" width="4" height="4" fill="#000" opacity="0.06"/>

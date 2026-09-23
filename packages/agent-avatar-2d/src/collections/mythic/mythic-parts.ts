@@ -1666,7 +1666,6 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="130" y="32" width="8" height="6" fill="#fff" opacity="0.1"/>
   <rect x="68" y="34" width="6" height="8" fill="#000" opacity="0.12"/>`],
   ['hair:undercut', `<path d="M 76,22 h52 v2 h6 v2 h4 v12 h-72 v-4 h-4 v-6 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
-  <rect x="64" y="34" width="14" height="4" fill="var(--hair-color)"/>
   <rect x="60" y="38" width="8" height="4" fill="var(--hair-color)" opacity="0.5"/>
   <!-- Shaved sides -->
   <rect x="60" y="40" width="8" height="12" fill="var(--skin)" opacity="0.35"/>
@@ -1756,6 +1755,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="96" y="0" width="6" height="6" fill="#f0c040"/>`],
   ['head:angular', `<!-- Outline: sharp edges, asymmetric -->
   <path d="M 82,34 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="66" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="118" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="122" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="66" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="126" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="66" y="40" width="4" height="2" fill="var(--skin)"/>
+  <rect x="130" y="40" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="80" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="124" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
@@ -1788,6 +1796,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- no neck shading -->`],
   ['head:diamond', `<!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
   <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="32" width="16" height="2" fill="var(--skin)"/>
+  <rect x="120" y="32" width="16" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="124" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="64" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="128" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="64" y="38" width="6" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="6" height="2" fill="var(--skin)"/>
   <clipPath id="diamond-face-clip">
     <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
   </clipPath>
@@ -1814,6 +1831,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="90" y="106" width="4" height="22" fill="var(--skin)"/>
   <rect x="106" y="106" width="4" height="22" fill="var(--skin)"/>`],
   ['head:fallback', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1838,6 +1862,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="118" width="4" height="12" fill="var(--skin)"/>
   <rect x="108" y="118" width="4" height="12" fill="var(--skin)"/>`],
   ['head:heart', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="40" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="40" width="6" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="62" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="60" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1861,6 +1894,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="108" y="106" width="4" height="24" fill="var(--skin)"/>`],
   ['head:oval', `<!-- Tinted outline -->
   <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="66" y="26" width="16" height="2" fill="var(--skin)"/>
+  <rect x="118" y="26" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="28" width="12" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="16" height="2" fill="var(--skin)"/>
+  <rect x="66" y="30" width="8" height="2" fill="var(--skin)"/>
+  <rect x="126" y="30" width="12" height="2" fill="var(--skin)"/>
+  <rect x="66" y="32" width="4" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="8" height="2" fill="var(--skin)"/>
   <!-- Anti-alias pixels at corners (mid-tone) -->
   <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
   <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
@@ -1896,6 +1938,17 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>`],
   ['head:round', `<!-- Outline: circular, soft -->
   <path d="M 78,38 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="38" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="38" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="40" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="40" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="42" width="10" height="2" fill="var(--skin)"/>
+  <rect x="130" y="42" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="44" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="44" width="6" height="2" fill="var(--skin)"/>
+  <rect x="62" y="46" width="4" height="2" fill="var(--skin)"/>
+  <rect x="134" y="46" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="76" y="38" width="2" height="2" fill="var(--skin)"/>
   <rect x="122" y="38" width="2" height="2" fill="var(--skin)"/>
@@ -1930,6 +1983,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- no neck shading -->`],
   ['head:round-wide', `<!-- Outline: widest, most animated -->
   <path d="M 72,46 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="58" y="46" width="14" height="2" fill="var(--skin)"/>
+  <rect x="128" y="46" width="14" height="2" fill="var(--skin)"/>
+  <rect x="58" y="48" width="10" height="2" fill="var(--skin)"/>
+  <rect x="132" y="48" width="10" height="2" fill="var(--skin)"/>
+  <rect x="58" y="50" width="6" height="2" fill="var(--skin)"/>
+  <rect x="136" y="50" width="6" height="2" fill="var(--skin)"/>
+  <rect x="58" y="52" width="4" height="2" fill="var(--skin)"/>
+  <rect x="138" y="52" width="4" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="70" y="46" width="2" height="2" fill="var(--skin)"/>
   <rect x="128" y="46" width="2" height="2" fill="var(--skin)"/>
@@ -1961,6 +2023,15 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="108" y="108" width="4" height="28" fill="var(--skin)"/>
   <!-- no neck shading -->`],
   ['head:soft-oval', `<path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="28" width="14" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="14" height="2" fill="var(--skin)"/>
+  <rect x="64" y="30" width="10" height="2" fill="var(--skin)"/>
+  <rect x="126" y="30" width="10" height="2" fill="var(--skin)"/>
+  <rect x="64" y="32" width="6" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="6" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="4" height="2" fill="var(--skin)"/>
+  <rect x="132" y="34" width="4" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="66" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="68" width="2" height="8" fill="var(--skin)"/>
@@ -1986,6 +2057,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="108" y="118" width="4" height="8" fill="var(--skin)"/>`],
   ['head:square-jaw', `<!-- Outline: wide jaw, flat chin -->
   <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="76" y="34" width="2" height="2" fill="var(--skin)"/>
   <rect x="122" y="34" width="2" height="2" fill="var(--skin)"/>
@@ -2019,6 +2097,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="110" y="112" width="4" height="18" fill="var(--skin)"/>
   <!-- no neck shading -->`],
   ['head:standard', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -2043,6 +2128,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="118" width="4" height="12" fill="var(--skin)"/>
   <rect x="108" y="118" width="4" height="12" fill="var(--skin)"/>`],
   ['head:strong-sym', `<path d="M 74,34 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="62" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="126" y="34" width="12" height="2" fill="var(--skin)"/>
+  <rect x="62" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="130" y="36" width="8" height="2" fill="var(--skin)"/>
+  <rect x="62" y="38" width="6" height="2" fill="var(--skin)"/>
+  <rect x="132" y="38" width="6" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="62" y="64" width="4" height="14" fill="var(--skin)"/>
   <rect x="60" y="66" width="2" height="10" fill="var(--skin)"/>
@@ -2067,6 +2159,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="116" width="4" height="14" fill="var(--skin)"/>
   <rect x="108" y="116" width="4" height="14" fill="var(--skin)"/>`],
   ['head:weathered', `<path d="M 80,30 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Temple fills: skin between outline and ears -->
+  <rect x="64" y="30" width="16" height="2" fill="var(--skin)"/>
+  <rect x="120" y="30" width="16" height="2" fill="var(--skin)"/>
+  <rect x="64" y="32" width="12" height="2" fill="var(--skin)"/>
+  <rect x="124" y="32" width="12" height="2" fill="var(--skin)"/>
+  <rect x="64" y="34" width="8" height="2" fill="var(--skin)"/>
+  <rect x="128" y="34" width="8" height="2" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
