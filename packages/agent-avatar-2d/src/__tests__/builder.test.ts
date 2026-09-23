@@ -8,6 +8,9 @@ import type { AvatarCollection } from '../types.js';
 function stubCollection(): AvatarCollection {
   const parts = new Map<string, string>();
   parts.set('head:oval', '<ellipse cx="100" cy="95" rx="38" ry="42" fill="var(--skin)"/>');
+  parts.set('eyes:narrow', '<g><ellipse cx="85" cy="90" rx="7" ry="3" fill="white"/><ellipse cx="85" cy="90" rx="3" ry="2" fill="var(--iris)"/></g>');
+  parts.set('nose:aquiline', '<path d="M100,92 L100,104 L96,106" fill="none" stroke="rgba(0,0,0,0.2)"/>');
+  parts.set('mouth:line-neutral', '<line x1="90" y1="114" x2="110" y2="114" stroke="rgba(0,0,0,0.3)"/>');
   parts.set('hair:bald-sides', '<path d="M62,88 Q62,55 80,50" fill="var(--hair-color)"/>');
   parts.set('costume:blazer-tie', '<path d="M60,240 L60,160" fill="var(--primary)"/>');
   parts.set('brow:thin-arched', '<path d="M74,81 Q80,77 96,80" fill="none" stroke="var(--hair-color)"/>');
@@ -55,6 +58,8 @@ describe('buildAvatar', () => {
     expect(svg).not.toContain('var(--secondary)');
     expect(svg).not.toContain('var(--accent)');
     expect(svg).not.toContain('var(--hair-color)');
+    expect(svg).not.toContain('var(--iris)');
+    expect(svg).not.toContain('var(--iris-dark)');
   });
 
   it('xs size omits props and glasses', () => {
@@ -75,16 +80,22 @@ describe('buildAvatar', () => {
     expect(svg).toContain('magnifying');
   });
 
-  it('layers are in correct z-order: costume → head → hair', () => {
+  it('layers are in correct z-order: costume → head → eyes → nose → mouth → hair', () => {
     const config = ARCHETYPE_CONFIGS['Sage/Detective']!;
     const palette = FAMILY_PALETTES['Sage']!;
     const registry = getCollection('stub')!;
     const svg = buildAvatar(config, palette, 'lg', registry);
-    const costumeIdx = svg.indexOf('M60,240');
-    const headIdx = svg.indexOf('cx="100" cy="95"');
-    const hairIdx = svg.indexOf('M62,88');
+    const costumeIdx = svg.indexOf('data-part="costume:');
+    const headIdx = svg.indexOf('data-part="head:');
+    const eyesIdx = svg.indexOf('data-part="eyes:');
+    const noseIdx = svg.indexOf('data-part="nose:');
+    const mouthIdx = svg.indexOf('data-part="mouth:');
+    const hairIdx = svg.indexOf('data-part="hair:');
     expect(costumeIdx).toBeLessThan(headIdx);
-    expect(headIdx).toBeLessThan(hairIdx);
+    expect(headIdx).toBeLessThan(eyesIdx);
+    expect(eyesIdx).toBeLessThan(noseIdx);
+    expect(noseIdx).toBeLessThan(mouthIdx);
+    expect(mouthIdx).toBeLessThan(hairIdx);
   });
 
   it('gracefully handles missing parts', () => {

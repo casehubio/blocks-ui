@@ -33,6 +33,9 @@ export const DETAIL_TIERS: Record<AvatarSize, DetailLevel> = {
 
 export interface PartAssignment {
   readonly head: string;
+  readonly eyes: string;
+  readonly nose: string;
+  readonly mouth: string;
   readonly hair: string;
   readonly facialHair: string;
   readonly costume: string;
@@ -50,6 +53,8 @@ export interface FamilyPalette {
   readonly accent: string;
   readonly skin: string;
   readonly hairColor: string;
+  readonly iris: string;
+  readonly irisDark: string;
 }
 
 export interface AxisExpression {

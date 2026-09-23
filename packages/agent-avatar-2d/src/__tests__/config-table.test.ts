@@ -13,7 +13,7 @@ describe('FAMILY_PALETTES', () => {
     }
   });
 
-  it('every palette has all 5 colour fields', () => {
+  it('every palette has all 7 colour fields', () => {
     for (const family of ARCHETYPE_FAMILIES) {
       const p = FAMILY_PALETTES[family]!;
       expect(p.primary).toBeTruthy();
@@ -21,6 +21,8 @@ describe('FAMILY_PALETTES', () => {
       expect(p.accent).toBeTruthy();
       expect(p.skin).toBeTruthy();
       expect(p.hairColor).toBeTruthy();
+      expect(p.iris).toBeTruthy();
+      expect(p.irisDark).toBeTruthy();
     }
   });
 });
@@ -33,6 +35,9 @@ describe('ARCHETYPE_CONFIGS', () => {
   it('every entry has all required fields including hat and expression', () => {
     for (const [key, config] of Object.entries(ARCHETYPE_CONFIGS)) {
       expect(config.head, `${key}.head`).toBeTruthy();
+      expect(config.eyes, `${key}.eyes`).toBeTruthy();
+      expect(config.nose, `${key}.nose`).toBeTruthy();
+      expect(config.mouth, `${key}.mouth`).toBeTruthy();
       expect(config.hair, `${key}.hair`).toBeTruthy();
       expect(config.costume, `${key}.costume`).toBeTruthy();
       expect(config.eyebrows, `${key}.eyebrows`).toBeTruthy();

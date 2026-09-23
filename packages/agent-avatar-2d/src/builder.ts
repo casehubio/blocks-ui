@@ -2,7 +2,7 @@ import type { AvatarCollection, AvatarSize, FamilyPalette, PartAssignment } from
 import { DetailLevel, DETAIL_TIERS } from './types.js';
 
 const LAYER_ORDER: readonly string[] = [
-  'costume', 'head', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
+  'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
 ];
 
 interface Layer {
@@ -23,6 +23,9 @@ function collectLayers(config: PartAssignment, detail: DetailLevel, collection: 
 
   add('costume', config.costume);
   add('head', config.head);
+  add('eyes', config.eyes);
+  add('nose', config.nose);
+  add('mouth', config.mouth);
   add('hair', config.hair);
 
   if (detail >= DetailLevel.MD) {
@@ -62,7 +65,9 @@ function applyPalette(svg: string, palette: FamilyPalette): string {
     .replaceAll('var(--primary)', palette.primary)
     .replaceAll('var(--secondary)', palette.secondary)
     .replaceAll('var(--accent)', palette.accent)
-    .replaceAll('var(--hair-color)', palette.hairColor);
+    .replaceAll('var(--hair-color)', palette.hairColor)
+    .replaceAll('var(--iris)', palette.iris)
+    .replaceAll('var(--iris-dark)', palette.irisDark);
 }
 
 function sortByLayerOrder(layers: Layer[]): Layer[] {
