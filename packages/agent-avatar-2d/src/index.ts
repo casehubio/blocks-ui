@@ -16,3 +16,6 @@ export type {
   PartAssignment,
   PartModifiers,
 } from './types.js';
+
+export { FAMILY_PALETTES } from './palettes.js';
+export { ARCHETYPE_CONFIGS, ARCHETYPE_INDEX } from './config-table.js';
