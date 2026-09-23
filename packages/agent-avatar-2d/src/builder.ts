@@ -175,6 +175,8 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   return `  <g ${tag}>${l.content}</g>`;
 }
 
+let _uid = 0;
+
 export function buildAvatar(
   config: PartAssignment,
   palette: FamilyPalette,
@@ -185,7 +187,9 @@ export function buildAvatar(
   const layers = collectLayers(config, detail, collection);
   const sorted = sortByLayerOrder(layers);
   const spec = HEAD_FACE_SPECS[config.head] ?? CANONICAL_FACE;
-  const inner = sorted.map(l => renderLayer(l, spec)).join('\n');
+  const uid = _uid++;
+  let inner = sorted.map(l => renderLayer(l, spec)).join('\n');
+  inner = inner.replace(/id="([^"]+)"/g, (_, id) => `id="${id}-${uid}"`).replace(/url\(#([^)]+)\)/g, (_, id) => `url(#${id}-${uid})`);
   const raw = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img">\n${inner}\n</svg>`;
   return applyPalette(raw, palette);
 }
