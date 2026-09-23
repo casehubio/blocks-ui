@@ -1837,7 +1837,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="90" y="114" width="20" height="18" fill="var(--skin)"/>
   <rect x="88" y="118" width="4" height="12" fill="var(--skin)"/>
   <rect x="108" y="118" width="4" height="12" fill="var(--skin)"/>`],
-  ['head:heart', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  ['head:heart', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="62" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="60" y="70" width="2" height="8" fill="var(--skin)"/>
@@ -1860,7 +1860,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="106" width="4" height="24" fill="var(--skin)"/>
   <rect x="108" y="106" width="4" height="24" fill="var(--skin)"/>`],
   ['head:oval', `<!-- Tinted outline -->
-  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
   <!-- Anti-alias pixels at corners (mid-tone) -->
   <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
   <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
@@ -1895,7 +1895,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="118" width="4" height="10" fill="var(--skin)"/>
   <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>`],
   ['head:round', `<!-- Outline: circular, soft -->
-  <path d="M 78,38 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <path d="M 78,38 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h2 v-2 z" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="76" y="38" width="2" height="2" fill="var(--skin)"/>
   <rect x="122" y="38" width="2" height="2" fill="var(--skin)"/>
@@ -1929,7 +1929,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="108" y="108" width="4" height="24" fill="var(--skin)"/>
   <!-- no neck shading -->`],
   ['head:round-wide', `<!-- Outline: widest, most animated -->
-  <path d="M 72,46 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <path d="M 72,46 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
   <!-- AA corners -->
   <rect x="70" y="46" width="2" height="2" fill="var(--skin)"/>
   <rect x="128" y="46" width="2" height="2" fill="var(--skin)"/>
@@ -1960,7 +1960,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="88" y="108" width="4" height="28" fill="var(--skin)"/>
   <rect x="108" y="108" width="4" height="28" fill="var(--skin)"/>
   <!-- no neck shading -->`],
-  ['head:soft-oval', `<path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  ['head:soft-oval', `<path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
   <!-- Ears -->
   <rect x="64" y="66" width="4" height="12" fill="var(--skin)"/>
   <rect x="62" y="68" width="2" height="8" fill="var(--skin)"/>
