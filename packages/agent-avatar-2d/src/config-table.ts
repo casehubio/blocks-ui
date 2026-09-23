@@ -84,3 +84,18 @@ export const ARCHETYPE_CONFIGS: Record<string, PartAssignment> = {
 };
 
 export const ARCHETYPE_INDEX: readonly string[] = Object.keys(ARCHETYPE_CONFIGS).sort();
+
+export const HEAD_FACE_OFFSET: Record<string, number> = {
+  'oval': 0,
+  'soft-oval': 2,
+  'weathered': 4,
+  'square-jaw': 6,
+  'standard': 6,
+  'strong-sym': 6,
+  'diamond': 6,
+  'fallback': 6,
+  'angular': 8,
+  'round': 8,
+  'heart': 8,
+  'round-wide': 12,
+};

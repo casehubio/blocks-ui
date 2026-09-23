@@ -18,7 +18,7 @@ export type {
 } from './types.js';
 
 export { FAMILY_PALETTES } from './palettes.js';
-export { ARCHETYPE_CONFIGS, ARCHETYPE_INDEX } from './config-table.js';
+export { ARCHETYPE_CONFIGS, ARCHETYPE_INDEX, HEAD_FACE_OFFSET } from './config-table.js';
 export { encodePreset, encodeCustom, decodeCode } from './code.js';
 export type { DecodedAvatar } from './code.js';
 export { buildAvatar } from './builder.js';

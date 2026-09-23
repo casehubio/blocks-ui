@@ -1,5 +1,8 @@
 import type { AvatarCollection, AvatarSize, FamilyPalette, PartAssignment } from './types.js';
 import { DetailLevel, DETAIL_TIERS } from './types.js';
+import { HEAD_FACE_OFFSET } from './config-table.js';
+
+const FACE_PARTS = new Set(['eyes', 'nose', 'mouth', 'brow', 'expression', 'glasses', 'beard', 'hat']);
 
 const LAYER_ORDER: readonly string[] = [
   'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
@@ -87,7 +90,14 @@ export function buildAvatar(
   const detail = DETAIL_TIERS[size];
   const layers = collectLayers(config, detail, collection);
   const sorted = sortByLayerOrder(layers);
-  const inner = sorted.map(l => `  <g data-part="${l.category}:${l.partId}">${l.content}</g>`).join('\n');
+  const faceOffset = HEAD_FACE_OFFSET[config.head] ?? 0;
+  const inner = sorted.map(l => {
+    const shift = FACE_PARTS.has(l.category) && faceOffset > 0;
+    const attrs = shift
+      ? ` data-part="${l.category}:${l.partId}" transform="translate(0,${faceOffset})"`
+      : ` data-part="${l.category}:${l.partId}"`;
+    return `  <g${attrs}>${l.content}</g>`;
+  }).join('\n');
   const raw = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img">\n${inner}\n</svg>`;
   return applyPalette(raw, palette);
 }
