@@ -1,12 +1,57 @@
-import type { AvatarCollection, AvatarSize, FamilyPalette, PartAssignment } from './types.js';
+import type { AvatarCollection, AvatarSize, FamilyPalette, HeadFaceSpec, PartAssignment } from './types.js';
 import { DetailLevel, DETAIL_TIERS } from './types.js';
-import { HEAD_FACE_OFFSET } from './config-table.js';
-
-const FACE_PARTS = new Set(['eyes', 'nose', 'mouth', 'brow', 'expression', 'glasses', 'beard', 'hat']);
+import { HEAD_FACE_SPECS, CANONICAL_FACE } from './config-table.js';
 
 const LAYER_ORDER: readonly string[] = [
   'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
 ];
+
+type PosGroup = 'eye-split' | 'nose' | 'mouth' | 'hat' | 'none';
+
+function posGroup(category: string): PosGroup {
+  switch (category) {
+    case 'eyes': case 'brow': case 'glasses': case 'expression':
+      return 'eye-split';
+    case 'nose':
+      return 'nose';
+    case 'mouth': case 'beard':
+      return 'mouth';
+    case 'hat':
+      return 'hat';
+    default:
+      return 'none';
+  }
+}
+
+function splitAtRightEye(content: string): [string, string] {
+  const idx = content.indexOf('<!-- Right eye');
+  if (idx !== -1) return [content.substring(0, idx), content.substring(idx)];
+  return splitByCenter(content);
+}
+
+function splitByCenter(content: string): [string, string] {
+  const lines = content.split('\n');
+  const left: string[] = [];
+  const right: string[] = [];
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('<!--')) continue;
+    const xMatch = trimmed.match(/\bx="(\d+(?:\.\d+)?)"/);
+    const widthMatch = trimmed.match(/\bwidth="(\d+(?:\.\d+)?)"/);
+    if (xMatch && widthMatch) {
+      const centerX = parseFloat(xMatch[1]!) + parseFloat(widthMatch[1]!) / 2;
+      (centerX < 100 ? left : right).push(line);
+    } else {
+      left.push(line);
+    }
+  }
+  return [left.join('\n'), right.join('\n')];
+}
+
+function wrapTranslate(content: string, dx: number, dy: number): string {
+  if (dx === 0 && dy === 0) return content;
+  return `<g transform="translate(${dx},${dy})">${content}</g>`;
+}
 
 interface Layer {
   readonly category: string;
@@ -81,6 +126,54 @@ function sortByLayerOrder(layers: Layer[]): Layer[] {
   });
 }
 
+function renderLayer(l: Layer, spec: HeadFaceSpec): string {
+  const tag = `data-part="${l.category}:${l.partId}"`;
+  const group = posGroup(l.category);
+
+  if (group === 'eye-split') {
+    const eyeYDelta = spec.eyeY - CANONICAL_FACE.eyeY;
+    const leftXDelta = spec.eyeLeftX - CANONICAL_FACE.eyeLeftX;
+    const rightXDelta = spec.eyeRightX - CANONICAL_FACE.eyeRightX;
+
+    if (leftXDelta === 0 && rightXDelta === 0 && eyeYDelta === 0) {
+      return `  <g ${tag}>${l.content}</g>`;
+    }
+
+    const [leftContent, rightContent] = l.category === 'eyes'
+      ? splitAtRightEye(l.content)
+      : splitByCenter(l.content);
+
+    const hasLeft = leftContent.trim().length > 0;
+    const hasRight = rightContent.trim().length > 0;
+
+    if (!hasLeft && !hasRight) return `  <g ${tag}>${l.content}</g>`;
+
+    const parts: string[] = [];
+    if (hasLeft) parts.push(wrapTranslate(leftContent, leftXDelta, eyeYDelta));
+    if (hasRight) parts.push(wrapTranslate(rightContent, rightXDelta, eyeYDelta));
+    return `  <g ${tag}>${parts.join('')}</g>`;
+  }
+
+  if (group === 'nose') {
+    const dy = spec.noseY - CANONICAL_FACE.noseY;
+    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
+  }
+
+  if (group === 'mouth') {
+    const dy = spec.mouthY - CANONICAL_FACE.mouthY;
+    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
+  }
+
+  if (group === 'hat') {
+    const inner = spec.yOffset !== 0 ? wrapTranslate(l.content, 0, spec.yOffset) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
+  }
+
+  return `  <g ${tag}>${l.content}</g>`;
+}
+
 export function buildAvatar(
   config: PartAssignment,
   palette: FamilyPalette,
@@ -90,14 +183,8 @@ export function buildAvatar(
   const detail = DETAIL_TIERS[size];
   const layers = collectLayers(config, detail, collection);
   const sorted = sortByLayerOrder(layers);
-  const faceOffset = HEAD_FACE_OFFSET[config.head] ?? 0;
-  const inner = sorted.map(l => {
-    const shift = FACE_PARTS.has(l.category) && faceOffset > 0;
-    const attrs = shift
-      ? ` data-part="${l.category}:${l.partId}" transform="translate(0,${faceOffset})"`
-      : ` data-part="${l.category}:${l.partId}"`;
-    return `  <g${attrs}>${l.content}</g>`;
-  }).join('\n');
+  const spec = HEAD_FACE_SPECS[config.head] ?? CANONICAL_FACE;
+  const inner = sorted.map(l => renderLayer(l, spec)).join('\n');
   const raw = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" role="img">\n${inner}\n</svg>`;
   return applyPalette(raw, palette);
 }

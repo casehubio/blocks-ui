@@ -1666,6 +1666,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="130" y="32" width="8" height="6" fill="#fff" opacity="0.1"/>
   <rect x="68" y="34" width="6" height="8" fill="#000" opacity="0.12"/>`],
   ['hair:undercut', `<path d="M 76,22 h52 v2 h6 v2 h4 v12 h-72 v-4 h-4 v-6 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+  <rect x="64" y="34" width="14" height="4" fill="var(--hair-color)"/>
   <rect x="60" y="38" width="8" height="4" fill="var(--hair-color)" opacity="0.5"/>
   <!-- Shaved sides -->
   <rect x="60" y="40" width="8" height="12" fill="var(--skin)" opacity="0.35"/>
@@ -1753,156 +1754,121 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="66" y="4" width="6" height="6" fill="#f0c040"/>
   <rect x="126" y="4" width="6" height="6" fill="#f0c040"/>
   <rect x="96" y="0" width="6" height="6" fill="#f0c040"/>`],
-  ['head:angular', `<!-- Outline: sharp edges, asymmetric -->
-  <path d="M 82,34 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="66" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="118" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="66" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="122" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="66" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="126" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="66" y="40" width="4" height="2" fill="var(--skin)"/>
-  <rect x="130" y="40" width="4" height="2" fill="var(--skin)"/>
+  ['head:angular', `<g transform="translate(0,8)">
+  <!-- Outline: sharp edges, asymmetric -->
+  <path d="M 82,26 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
   <!-- AA corners -->
-  <rect x="80" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
-  <rect x="124" y="34" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="80" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="124" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <!-- Skin fill -->
   <!-- Ears -->
-  <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="132" y="66" width="4" height="12" fill="var(--skin)"/>
-  <rect x="136" y="68" width="2" height="8" fill="var(--skin)"/>
+  <rect x="64" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="58" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="60" width="2" height="8" fill="var(--skin)"/>
   <!-- Ear outlines -->
-  <rect x="62" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="62" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="66" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="68" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="76" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush (visible) -->
-  <rect x="72" y="80" width="10" height="10" fill="#cc7766" opacity="0.18"/>
-  <rect x="118" y="80" width="10" height="10" fill="#cc7766" opacity="0.14"/>
-  <!-- Chin shadow -->
-  <rect x="86" y="102" width="28" height="2" fill="#000" opacity="0.12"/>
-  <!-- Jawline definition (angular head feature) -->
-  <rect x="70" y="92" width="6" height="2" fill="#000" opacity="0.08"/>
-  <rect x="124" y="90" width="6" height="2" fill="#000" opacity="0.06"/>
-  <!-- Neck -->
-  <rect x="90" y="108" width="20" height="28" fill="var(--skin)"/>
-  <rect x="88" y="112" width="4" height="20" fill="var(--skin)"/>
-  <rect x="108" y="112" width="4" height="20" fill="var(--skin)"/>
-  <!-- no neck shading -->`],
-  ['head:diamond', `<!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
-  <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="64" y="32" width="16" height="2" fill="var(--skin)"/>
-  <rect x="120" y="32" width="16" height="2" fill="var(--skin)"/>
-  <rect x="64" y="34" width="12" height="2" fill="var(--skin)"/>
-  <rect x="124" y="34" width="12" height="2" fill="var(--skin)"/>
-  <rect x="64" y="36" width="8" height="2" fill="var(--skin)"/>
-  <rect x="128" y="36" width="8" height="2" fill="var(--skin)"/>
-  <rect x="64" y="38" width="6" height="2" fill="var(--skin)"/>
-  <rect x="130" y="38" width="6" height="2" fill="var(--skin)"/>
-  <clipPath id="diamond-face-clip">
-    <path d="M 80,32 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
-  </clipPath>
-  <rect x="62" y="32" width="76" height="72" fill="var(--skin)" clip-path="url(#diamond-face-clip)"/>
-  <!-- Ears -->
-  <rect x="62" y="66" width="4" height="14" fill="var(--skin)"/>
-  <rect x="60" y="68" width="2" height="10" fill="var(--skin)"/>
-  <rect x="60" y="68" width="2" height="10" fill="#000" opacity="0.1"/>
-  <rect x="134" y="66" width="4" height="14" fill="var(--skin)"/>
-  <rect x="138" y="68" width="2" height="10" fill="var(--skin)"/>
-  <rect x="136" y="70" width="4" height="4" fill="#fff" opacity="0.06"/>
-  <!-- Ear outlines -->
-  <rect x="60" y="66" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="58" y="68" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="66" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="68" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush -->
-  <rect x="76" y="84" width="10" height="10" fill="#cc7766" opacity="0.18"/>
-  <rect x="114" y="84" width="10" height="10" fill="#cc7766" opacity="0.14"/>
-  <!-- Neck -->
-  <rect x="94" y="102" width="12" height="30" fill="var(--skin)"/>
-  <rect x="90" y="106" width="4" height="22" fill="var(--skin)"/>
-  <rect x="106" y="106" width="4" height="22" fill="var(--skin)"/>`],
-  ['head:fallback', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
-  <!-- Ears -->
-  <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="136" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="134" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
-  <!-- Ear outlines -->
-  <rect x="62" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="62" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="8" fill="#3a2520" opacity="0.7"/>
   <rect x="136" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush -->
-  <rect x="78" y="104" width="8" height="8" fill="#cc7766" opacity="0.15"/>
-  <rect x="116" y="104" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="72" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="72" width="10" height="10" fill="#cc7766" opacity="0.14"/>
   <!-- Chin shadow -->
-  <rect x="88" y="110" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="86" y="94" width="28" height="2" fill="#000" opacity="0.12"/>
+  <!-- Jawline definition (angular head feature) -->
+  <rect x="70" y="84" width="6" height="2" fill="#000" opacity="0.08"/>
+  <rect x="124" y="82" width="6" height="2" fill="#000" opacity="0.06"/>
   <!-- Neck -->
-  <rect x="90" y="114" width="20" height="18" fill="var(--skin)"/>
-  <rect x="88" y="118" width="4" height="12" fill="var(--skin)"/>
-  <rect x="108" y="118" width="4" height="12" fill="var(--skin)"/>`],
-  ['head:heart', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="62" y="40" width="6" height="2" fill="var(--skin)"/>
-  <rect x="132" y="40" width="6" height="2" fill="var(--skin)"/>
+  <rect x="90" y="100" width="20" height="28" fill="var(--skin)"/>
+  <rect x="88" y="104" width="4" height="20" fill="var(--skin)"/>
+  <rect x="108" y="104" width="4" height="20" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>`],
+  ['head:diamond', `<g transform="translate(0,6)">
+  <!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <clipPath id="diamond-face-clip">
+    <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
+  </clipPath>
+  <rect x="62" y="26" width="76" height="72" fill="var(--skin)" clip-path="url(#diamond-face-clip)"/>
   <!-- Ears -->
-  <rect x="62" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="136" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="140" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="138" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
-  <rect x="60" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="58" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="142" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <!-- Cheek blush -->
-  <rect x="76" y="84" width="10" height="10" fill="#cc7766" opacity="0.18"/>
-  <rect x="114" y="84" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <rect x="76" y="78" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="78" width="10" height="10" fill="#cc7766" opacity="0.14"/>
   <!-- Neck -->
-  <rect x="90" y="102" width="20" height="32" fill="var(--skin)"/>
-  <rect x="88" y="106" width="4" height="24" fill="var(--skin)"/>
-  <rect x="108" y="106" width="4" height="24" fill="var(--skin)"/>`],
+  <rect x="94" y="96" width="12" height="30" fill="var(--skin)"/>
+  <rect x="90" y="100" width="4" height="22" fill="var(--skin)"/>
+  <rect x="106" y="100" width="4" height="22" fill="var(--skin)"/>
+  </g>`],
+  ['head:fallback', `<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>`],
+  ['head:heart', `<g transform="translate(0,8)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="136" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="140" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="138" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Neck -->
+  <rect x="90" y="94" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="98" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="98" width="4" height="24" fill="var(--skin)"/>
+  </g>`],
   ['head:oval', `<!-- Tinted outline -->
-  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="66" y="26" width="16" height="2" fill="var(--skin)"/>
-  <rect x="118" y="26" width="16" height="2" fill="var(--skin)"/>
-  <rect x="66" y="28" width="12" height="2" fill="var(--skin)"/>
-  <rect x="122" y="28" width="16" height="2" fill="var(--skin)"/>
-  <rect x="66" y="30" width="8" height="2" fill="var(--skin)"/>
-  <rect x="126" y="30" width="12" height="2" fill="var(--skin)"/>
-  <rect x="66" y="32" width="4" height="2" fill="var(--skin)"/>
-  <rect x="130" y="32" width="8" height="2" fill="var(--skin)"/>
+  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
   <!-- Anti-alias pixels at corners (mid-tone) -->
   <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
   <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
@@ -1936,263 +1902,220 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="90" y="116" width="20" height="14" fill="var(--skin)"/>
   <rect x="88" y="118" width="4" height="10" fill="var(--skin)"/>
   <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>`],
-  ['head:round', `<!-- Outline: circular, soft -->
-  <path d="M 78,38 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h2 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="38" width="16" height="2" fill="var(--skin)"/>
-  <rect x="122" y="38" width="16" height="2" fill="var(--skin)"/>
-  <rect x="62" y="40" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="40" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="42" width="10" height="2" fill="var(--skin)"/>
-  <rect x="130" y="42" width="8" height="2" fill="var(--skin)"/>
-  <rect x="62" y="44" width="6" height="2" fill="var(--skin)"/>
-  <rect x="132" y="44" width="6" height="2" fill="var(--skin)"/>
-  <rect x="62" y="46" width="4" height="2" fill="var(--skin)"/>
-  <rect x="134" y="46" width="4" height="2" fill="var(--skin)"/>
+  ['head:round', `<g transform="translate(0,8)">
+  <!-- Outline: circular, soft -->
+  <path d="M 78,30 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
   <!-- AA corners -->
-  <rect x="76" y="38" width="2" height="2" fill="var(--skin)"/>
-  <rect x="122" y="38" width="2" height="2" fill="var(--skin)"/>
-  <rect x="76" y="94" width="2" height="2" fill="#3a2520" opacity="0.3"/>
-  <rect x="122" y="94" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="76" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="76" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="122" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <!-- Skin fill -->
   <!-- Ears -->
-  <rect x="62" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="10" fill="#000" opacity="0.1"/>
-  <rect x="134" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="138" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="136" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
-  <rect x="60" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="58" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <!-- Cheek blush (warmer, visible — Caregiver warmth) -->
-  <rect x="72" y="78" width="10" height="12" fill="#cc7766" opacity="0.2"/>
-  <rect x="74" y="76" width="6" height="4" fill="#cc7766" opacity="0.12"/>
-  <rect x="118" y="78" width="10" height="12" fill="#cc7766" opacity="0.16"/>
-  <rect x="120" y="76" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <rect x="72" y="70" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="74" y="68" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="118" y="70" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="120" y="68" width="6" height="4" fill="#cc7766" opacity="0.1"/>
   <!-- Chin shadow -->
-  <rect x="86" y="98" width="28" height="2" fill="#000" opacity="0.1"/>
+  <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
   <!-- Neck -->
-  <rect x="90" y="104" width="20" height="32" fill="var(--skin)"/>
-  <rect x="88" y="108" width="4" height="24" fill="var(--skin)"/>
-  <rect x="108" y="108" width="4" height="24" fill="var(--skin)"/>
-  <!-- no neck shading -->`],
-  ['head:round-wide', `<!-- Outline: widest, most animated -->
-  <path d="M 72,46 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h2 v-2 h-2 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="58" y="46" width="14" height="2" fill="var(--skin)"/>
-  <rect x="128" y="46" width="14" height="2" fill="var(--skin)"/>
-  <rect x="58" y="48" width="10" height="2" fill="var(--skin)"/>
-  <rect x="132" y="48" width="10" height="2" fill="var(--skin)"/>
-  <rect x="58" y="50" width="6" height="2" fill="var(--skin)"/>
-  <rect x="136" y="50" width="6" height="2" fill="var(--skin)"/>
-  <rect x="58" y="52" width="4" height="2" fill="var(--skin)"/>
-  <rect x="138" y="52" width="4" height="2" fill="var(--skin)"/>
+  <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="100" width="4" height="24" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>`],
+  ['head:round-wide', `<g transform="translate(0,12)">
+  <!-- Outline: widest, most animated -->
+  <path d="M 72,34 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
   <!-- AA corners -->
-  <rect x="70" y="46" width="2" height="2" fill="var(--skin)"/>
-  <rect x="128" y="46" width="2" height="2" fill="var(--skin)"/>
+  <rect x="70" y="34" width="2" height="2" fill="var(--skin)"/>
+  <rect x="128" y="34" width="2" height="2" fill="var(--skin)"/>
   <!-- Skin fill -->
   <!-- Ears -->
-  <rect x="56" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="54" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="54" y="70" width="2" height="10" fill="#000" opacity="0.1"/>
-  <rect x="140" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="144" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="142" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="56" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="140" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="144" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="142" y="60" width="4" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
+  <rect x="54" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="52" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
   <rect x="54" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="52" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="54" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="144" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="146" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
   <rect x="144" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="146" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="144" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <!-- Cheek blush (big, rosy — animated face) -->
-  <rect x="66" y="78" width="10" height="12" fill="#cc7766" opacity="0.2"/>
-  <rect x="68" y="76" width="6" height="4" fill="#cc7766" opacity="0.12"/>
-  <rect x="124" y="78" width="10" height="12" fill="#cc7766" opacity="0.16"/>
-  <rect x="126" y="76" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <rect x="66" y="66" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="68" y="64" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="124" y="66" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="126" y="64" width="6" height="4" fill="#cc7766" opacity="0.1"/>
   <!-- Chin shadow -->
-  <rect x="84" y="98" width="32" height="2" fill="#000" opacity="0.1"/>
+  <rect x="84" y="86" width="32" height="2" fill="#000" opacity="0.1"/>
   <!-- Neck -->
-  <rect x="90" y="104" width="20" height="36" fill="var(--skin)"/>
-  <rect x="88" y="108" width="4" height="28" fill="var(--skin)"/>
-  <rect x="108" y="108" width="4" height="28" fill="var(--skin)"/>
-  <!-- no neck shading -->`],
-  ['head:soft-oval', `<path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h2 v-2 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="64" y="28" width="14" height="2" fill="var(--skin)"/>
-  <rect x="122" y="28" width="14" height="2" fill="var(--skin)"/>
-  <rect x="64" y="30" width="10" height="2" fill="var(--skin)"/>
-  <rect x="126" y="30" width="10" height="2" fill="var(--skin)"/>
-  <rect x="64" y="32" width="6" height="2" fill="var(--skin)"/>
-  <rect x="130" y="32" width="6" height="2" fill="var(--skin)"/>
-  <rect x="64" y="34" width="4" height="2" fill="var(--skin)"/>
-  <rect x="132" y="34" width="4" height="2" fill="var(--skin)"/>
+  <rect x="90" y="92" width="20" height="36" fill="var(--skin)"/>
+  <rect x="88" y="96" width="4" height="28" fill="var(--skin)"/>
+  <rect x="108" y="96" width="4" height="28" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>`],
+  ['head:soft-oval', `<g transform="translate(0,2)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
   <!-- Ears -->
-  <rect x="64" y="66" width="4" height="12" fill="var(--skin)"/>
-  <rect x="62" y="68" width="2" height="8" fill="var(--skin)"/>
-  <rect x="62" y="68" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="134" y="66" width="4" height="12" fill="var(--skin)"/>
-  <rect x="138" y="68" width="2" height="8" fill="var(--skin)"/>
-  <rect x="136" y="70" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="134" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="138" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="136" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
-  <rect x="62" y="66" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="68" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="62" y="76" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="66" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="68" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="76" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <!-- Cheek blush -->
-  <rect x="78" y="102" width="8" height="8" fill="#cc7766" opacity="0.15"/>
-  <rect x="116" y="102" width="8" height="8" fill="#cc7766" opacity="0.12"/>
-  <!-- Chin shadow -->
-  <rect x="88" y="110" width="24" height="2" fill="#000" opacity="0.1"/>
-  <!-- Neck -->
-  <rect x="90" y="114" width="20" height="14" fill="var(--skin)"/>
-  <rect x="88" y="118" width="4" height="8" fill="var(--skin)"/>
-  <rect x="108" y="118" width="4" height="8" fill="var(--skin)"/>`],
-  ['head:square-jaw', `<!-- Outline: wide jaw, flat chin -->
-  <path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
-  <!-- AA corners -->
-  <rect x="76" y="34" width="2" height="2" fill="var(--skin)"/>
-  <rect x="122" y="34" width="2" height="2" fill="var(--skin)"/>
-  <!-- Skin fill -->
-  <!-- Ears -->
-  <rect x="62" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="60" y="70" width="2" height="10" fill="#000" opacity="0.1"/>
-  <rect x="134" y="68" width="4" height="14" fill="var(--skin)"/>
-  <rect x="138" y="70" width="2" height="10" fill="var(--skin)"/>
-  <rect x="136" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
-  <!-- Ear outlines -->
-  <rect x="60" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="58" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="70" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="80" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush (visible) -->
-  <rect x="72" y="82" width="10" height="10" fill="#cc7766" opacity="0.18"/>
-  <rect x="118" y="82" width="10" height="10" fill="#cc7766" opacity="0.14"/>
-  <!-- Jaw shadow (strong — square jaw is defined by this) -->
-  <rect x="68" y="94" width="64" height="2" fill="#000" opacity="0.1"/>
-  <rect x="66" y="96" width="8" height="6" fill="#000" opacity="0.14"/>
-  <rect x="126" y="96" width="8" height="6" fill="#000" opacity="0.06"/>
-  <!-- Chin -->
-  <rect x="84" y="102" width="32" height="2" fill="#000" opacity="0.1"/>
-  <!-- Neck -->
-  <rect x="88" y="108" width="24" height="26" fill="var(--skin)"/>
-  <rect x="86" y="112" width="4" height="18" fill="var(--skin)"/>
-  <rect x="110" y="112" width="4" height="18" fill="var(--skin)"/>
-  <!-- no neck shading -->`],
-  ['head:standard', `<path d="M 78,34 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="122" y="34" width="16" height="2" fill="var(--skin)"/>
-  <rect x="62" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="36" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="38" width="8" height="2" fill="var(--skin)"/>
-  <rect x="130" y="38" width="8" height="2" fill="var(--skin)"/>
-  <!-- Ears -->
-  <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="136" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="134" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
-  <!-- Ear outlines -->
-  <rect x="62" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="62" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush -->
-  <rect x="78" y="104" width="8" height="8" fill="#cc7766" opacity="0.15"/>
-  <rect x="116" y="104" width="8" height="8" fill="#cc7766" opacity="0.12"/>
-  <!-- Chin shadow -->
-  <rect x="88" y="110" width="24" height="2" fill="#000" opacity="0.1"/>
-  <!-- Neck -->
-  <rect x="90" y="114" width="20" height="18" fill="var(--skin)"/>
-  <rect x="88" y="118" width="4" height="12" fill="var(--skin)"/>
-  <rect x="108" y="118" width="4" height="12" fill="var(--skin)"/>`],
-  ['head:strong-sym', `<path d="M 74,34 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="62" y="34" width="12" height="2" fill="var(--skin)"/>
-  <rect x="126" y="34" width="12" height="2" fill="var(--skin)"/>
-  <rect x="62" y="36" width="8" height="2" fill="var(--skin)"/>
-  <rect x="130" y="36" width="8" height="2" fill="var(--skin)"/>
-  <rect x="62" y="38" width="6" height="2" fill="var(--skin)"/>
-  <rect x="132" y="38" width="6" height="2" fill="var(--skin)"/>
-  <!-- Ears -->
-  <rect x="62" y="64" width="4" height="14" fill="var(--skin)"/>
-  <rect x="60" y="66" width="2" height="10" fill="var(--skin)"/>
-  <rect x="60" y="66" width="2" height="10" fill="#000" opacity="0.1"/>
-  <rect x="136" y="64" width="4" height="14" fill="var(--skin)"/>
-  <rect x="140" y="66" width="2" height="10" fill="var(--skin)"/>
-  <rect x="138" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
-  <!-- Ear outlines -->
-  <rect x="60" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="58" y="66" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="76" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="142" y="66" width="2" height="10" fill="#3a2520" opacity="0.7"/>
-  <rect x="140" y="76" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush -->
-  <rect x="76" y="102" width="8" height="8" fill="#cc7766" opacity="0.15"/>
-  <rect x="116" y="102" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
   <!-- Neck -->
-  <rect x="90" y="112" width="20" height="20" fill="var(--skin)"/>
-  <rect x="88" y="116" width="4" height="14" fill="var(--skin)"/>
-  <rect x="108" y="116" width="4" height="14" fill="var(--skin)"/>`],
-  ['head:weathered', `<path d="M 80,30 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
-  <!-- Temple fills: skin between outline and ears -->
-  <rect x="64" y="30" width="16" height="2" fill="var(--skin)"/>
-  <rect x="120" y="30" width="16" height="2" fill="var(--skin)"/>
-  <rect x="64" y="32" width="12" height="2" fill="var(--skin)"/>
-  <rect x="124" y="32" width="12" height="2" fill="var(--skin)"/>
-  <rect x="64" y="34" width="8" height="2" fill="var(--skin)"/>
-  <rect x="128" y="34" width="8" height="2" fill="var(--skin)"/>
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
+  </g>`],
+  ['head:square-jaw', `<g transform="translate(0,6)">
+  <!-- Outline: wide jaw, flat chin -->
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="76" y="28" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="2" height="2" fill="var(--skin)"/>
+  <!-- Skin fill -->
   <!-- Ears -->
-  <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="62" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
-  <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
-  <rect x="136" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="134" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
-  <rect x="62" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="60" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="62" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <rect x="138" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
-  <rect x="136" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush -->
-  <rect x="78" y="104" width="8" height="8" fill="#cc7766" opacity="0.15"/>
-  <rect x="116" y="104" width="8" height="8" fill="#cc7766" opacity="0.12"/>
-  <!-- Chin shadow -->
-  <rect x="88" y="112" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="60" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Jaw shadow (strong — square jaw is defined by this) -->
+  <rect x="68" y="88" width="64" height="2" fill="#000" opacity="0.1"/>
+  <rect x="66" y="90" width="8" height="6" fill="#000" opacity="0.14"/>
+  <rect x="126" y="90" width="8" height="6" fill="#000" opacity="0.06"/>
+  <!-- Chin -->
+  <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.1"/>
   <!-- Neck -->
-  <rect x="90" y="116" width="20" height="14" fill="var(--skin)"/>
-  <rect x="88" y="120" width="4" height="8" fill="var(--skin)"/>
-  <rect x="108" y="120" width="4" height="8" fill="var(--skin)"/>
+  <rect x="88" y="102" width="24" height="26" fill="var(--skin)"/>
+  <rect x="86" y="106" width="4" height="18" fill="var(--skin)"/>
+  <rect x="110" y="106" width="4" height="18" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>`],
+  ['head:standard', `<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>`],
+  ['head:strong-sym', `<g transform="translate(0,6)">
+  <path d="M 74,28 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="136" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="140" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="138" y="62" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="96" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="96" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="102" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="106" width="20" height="20" fill="var(--skin)"/>
+  <rect x="88" y="110" width="4" height="14" fill="var(--skin)"/>
+  <rect x="108" y="110" width="4" height="14" fill="var(--skin)"/>
+  </g>`],
+  ['head:weathered', `<g transform="translate(0,4)">
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
   <!-- Weathering lines -->
-  <rect x="66" y="54" width="4" height="2" fill="#000" opacity="0.08"/>
-  <rect x="128" y="52" width="4" height="2" fill="#000" opacity="0.06"/>
-  <rect x="64" y="84" width="4" height="2" fill="#000" opacity="0.06"/>`],
+  <rect x="66" y="50" width="4" height="2" fill="#000" opacity="0.08"/>
+  <rect x="128" y="48" width="4" height="2" fill="#000" opacity="0.06"/>
+  <rect x="64" y="80" width="4" height="2" fill="#000" opacity="0.06"/>
+  </g>`],
   ['mouth:line-neutral', `<!-- Line neutral: 20px dark crease, male default -->
   <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
   <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.15"/>

@@ -1,4 +1,4 @@
-import type { PartAssignment } from './types.js';
+import type { HeadFaceSpec, PartAssignment } from './types.js';
 
 function pa(
   head: string, eyes: string, nose: string, mouth: string,
@@ -85,17 +85,19 @@ export const ARCHETYPE_CONFIGS: Record<string, PartAssignment> = {
 
 export const ARCHETYPE_INDEX: readonly string[] = Object.keys(ARCHETYPE_CONFIGS).sort();
 
-export const HEAD_FACE_OFFSET: Record<string, number> = {
-  'oval': 0,
-  'soft-oval': 2,
-  'weathered': 4,
-  'square-jaw': 6,
-  'standard': 6,
-  'strong-sym': 6,
-  'diamond': 6,
-  'fallback': 6,
-  'angular': 8,
-  'round': 8,
-  'heart': 8,
-  'round-wide': 12,
+export const HEAD_FACE_SPECS: Record<string, HeadFaceSpec> = {
+  'oval':       { yOffset: 0,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 104, noseY: 80, mouthY: 96 },
+  'soft-oval':  { yOffset: 2,  eyeY: 66, eyeLeftX: 82,  eyeRightX: 106, noseY: 80, mouthY: 90 },
+  'weathered':  { yOffset: 4,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 82, mouthY: 92 },
+  'square-jaw': { yOffset: 6,  eyeY: 68, eyeLeftX: 78,  eyeRightX: 106, noseY: 80, mouthY: 94 },
+  'standard':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94 },
+  'strong-sym': { yOffset: 6,  eyeY: 66, eyeLeftX: 80,  eyeRightX: 106, noseY: 82, mouthY: 94 },
+  'diamond':    { yOffset: 6,  eyeY: 72, eyeLeftX: 80,  eyeRightX: 106, noseY: 86, mouthY: 98 },
+  'fallback':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94 },
+  'angular':    { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 80, mouthY: 96 },
+  'round':      { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 78, mouthY: 92 },
+  'heart':      { yOffset: 8,  eyeY: 70, eyeLeftX: 82,  eyeRightX: 106, noseY: 86, mouthY: 96 },
+  'round-wide': { yOffset: 12, eyeY: 68, eyeLeftX: 74,  eyeRightX: 110, noseY: 80, mouthY: 90 },
 };
+
+export const CANONICAL_FACE: HeadFaceSpec = HEAD_FACE_SPECS['oval']!;

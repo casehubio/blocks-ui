@@ -86,6 +86,15 @@ export interface AvatarPayload {
   readonly code?: string;
 }
 
+export interface HeadFaceSpec {
+  readonly yOffset: number;
+  readonly eyeY: number;
+  readonly eyeLeftX: number;
+  readonly eyeRightX: number;
+  readonly noseY: number;
+  readonly mouthY: number;
+}
+
 export interface AvatarCollection {
   readonly id: string;
   readonly partsUrl: string;
