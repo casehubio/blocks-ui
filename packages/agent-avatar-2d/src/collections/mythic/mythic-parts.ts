@@ -1838,6 +1838,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
   <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
@@ -1932,6 +1933,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="120" y="68" width="6" height="4" fill="#cc7766" opacity="0.1"/>
   <!-- Chin shadow -->
   <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="92" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
   <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
@@ -1966,6 +1968,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="126" y="64" width="6" height="4" fill="#cc7766" opacity="0.1"/>
   <!-- Chin shadow -->
   <rect x="84" y="86" width="32" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="90" width="20" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="92" width="20" height="36" fill="var(--skin)"/>
   <rect x="88" y="96" width="4" height="28" fill="var(--skin)"/>
@@ -1993,6 +1996,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="110" width="20" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
   <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
@@ -2028,6 +2032,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="126" y="90" width="8" height="6" fill="#000" opacity="0.06"/>
   <!-- Chin -->
   <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.1"/>
+    <rect x="88" y="100" width="24" height="2" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="88" y="102" width="24" height="26" fill="var(--skin)"/>
   <rect x="86" y="106" width="4" height="18" fill="var(--skin)"/>
@@ -2055,6 +2060,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="104" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
   <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
@@ -2081,6 +2087,7 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="116" y="96" width="8" height="8" fill="#cc7766" opacity="0.12"/>
   <!-- Chin shadow -->
   <rect x="88" y="102" width="24" height="2" fill="#000" opacity="0.1"/>
+    <rect x="90" y="98" width="20" height="8" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="106" width="20" height="20" fill="var(--skin)"/>
   <rect x="88" y="110" width="4" height="14" fill="var(--skin)"/>
