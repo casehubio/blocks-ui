@@ -391,37 +391,37 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Jacket bottom hem line -->
   <rect x="56" y="232" width="88" height="2" fill="#000" opacity="0.1"/>
   </g>`],
-  ['costume:business', `<!-- Business suit: formal jacket (y=118, matches armour for Hero) -->
+  ['costume:business', `<!-- Business suit: formal jacket (y=126, matches robes/lab-coat/smock majority) -->
   <clipPath id="biz-clip">
-    <path d="M 42,118 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
   </clipPath>
-  <path d="M 46,118 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v18 h-80 v-18 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
-  <rect x="42" y="118" width="6" height="8" fill="var(--primary)"/>
-  <rect x="152" y="118" width="6" height="8" fill="var(--primary)"/>
-  <rect x="56" y="112" width="22" height="8" fill="var(--primary)"/>
-  <rect x="56" y="112" width="22" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="122" y="112" width="22" height="8" fill="var(--primary)"/>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="56" y="120" width="22" height="8" fill="var(--primary)"/>
+  <rect x="56" y="120" width="22" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="122" y="120" width="22" height="8" fill="var(--primary)"/>
   <g clip-path="url(#biz-clip)">
-  <rect x="46" y="120" width="12" height="118" fill="#000" opacity="0.16"/>
-  <rect x="58" y="122" width="6" height="108" fill="#000" opacity="0.08"/>
-  <rect x="136" y="120" width="14" height="28" fill="#fff" opacity="0.08"/>
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.16"/>
+  <rect x="58" y="130" width="6" height="100" fill="#000" opacity="0.08"/>
+  <rect x="136" y="128" width="14" height="28" fill="#fff" opacity="0.08"/>
   <!-- Lapels -->
-  <rect x="80" y="120" width="8" height="36" fill="var(--primary)"/>
-  <rect x="112" y="120" width="8" height="36" fill="var(--primary)"/>
-  <rect x="82" y="120" width="6" height="34" fill="#fff" opacity="0.1"/>
-  <rect x="114" y="120" width="6" height="34" fill="#fff" opacity="0.1"/>
+  <rect x="80" y="128" width="8" height="34" fill="var(--primary)"/>
+  <rect x="112" y="128" width="8" height="34" fill="var(--primary)"/>
+  <rect x="82" y="128" width="6" height="32" fill="#fff" opacity="0.1"/>
+  <rect x="114" y="128" width="6" height="32" fill="#fff" opacity="0.1"/>
   <!-- Shirt -->
-  <rect x="88" y="120" width="24" height="80" fill="#e8e4e0"/>
+  <rect x="88" y="128" width="24" height="72" fill="#e8e4e0"/>
   <!-- Tie -->
-  <rect x="96" y="118" width="8" height="4" fill="var(--accent)"/>
-  <rect x="97" y="122" width="6" height="42" fill="var(--accent)"/>
-  <rect x="98" y="164" width="4" height="4" fill="var(--accent)"/>
+  <rect x="96" y="126" width="8" height="4" fill="var(--accent)"/>
+  <rect x="97" y="130" width="6" height="40" fill="var(--accent)"/>
+  <rect x="98" y="170" width="4" height="4" fill="var(--accent)"/>
   </g>
   <!-- Arms -->
-  <rect x="46" y="140" width="14" height="52" fill="var(--primary)"/>
-  <rect x="140" y="140" width="14" height="52" fill="var(--primary)"/>
-  <rect x="46" y="140" width="14" height="4" fill="#000" opacity="0.06"/>
-  <rect x="140" y="140" width="14" height="4" fill="#000" opacity="0.06"/>`],
+  <rect x="46" y="148" width="14" height="44" fill="var(--primary)"/>
+  <rect x="140" y="148" width="14" height="44" fill="var(--primary)"/>
+  <rect x="46" y="148" width="14" height="4" fill="#000" opacity="0.06"/>
+  <rect x="140" y="148" width="14" height="4" fill="#000" opacity="0.06"/>`],
   ['costume:diplomatic', `<!-- Diplomatic suit: clean, pocket square -->
   <clipPath id="diplo-clip">
     <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
