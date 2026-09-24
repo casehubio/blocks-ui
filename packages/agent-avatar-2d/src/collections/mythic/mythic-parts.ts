@@ -1741,37 +1741,39 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="102" y="70" width="2" height="2" fill="#000" opacity="0.2"/>
   <rect x="118" y="70" width="2" height="2" fill="#000" opacity="0.2"/>
   <rect x="106" y="74" width="10" height="2" fill="#000" opacity="0.1"/>`],
-  ['eyes:almond', `<!-- Almond eyes: 16x8 tapered sclera, 6x6 iris — elegant -->
+  ['eyes:almond', `<!-- Almond eyes: elegant, tapered -->
+  <!-- Left brow shadow -->
+  <rect x="80" y="66" width="18" height="2" fill="#000" opacity="0.2"/>
   <!-- Left eye -->
   <rect x="82" y="68" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
   <rect x="80" y="70" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
   <rect x="96" y="70" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
-  <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="82" y="74" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="80" y="68" width="18" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="88" y="70" width="6" height="6" fill="var(--iris)"/>
   <rect x="90" y="70" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="89" y="71" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="90" y="72" width="4" height="4" fill="#111"/>
   <rect x="88" y="70" width="2" height="2" fill="#fff"/>
-  <rect x="90" y="70" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <!-- Left lower lid + outer corner -->
-  <rect x="82" y="76" width="14" height="2" fill="#000" opacity="0.05"/>
-  <rect x="96" y="72" width="2" height="4" fill="#000" opacity="0.05"/>
+  <!-- Outer corner -->
+  <rect x="96" y="72" width="2" height="4" fill="#000" opacity="0.1"/>
+  <!-- Right brow shadow -->
+  <rect x="102" y="66" width="18" height="2" fill="#000" opacity="0.18"/>
   <!-- Right eye -->
   <rect x="104" y="68" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
   <rect x="102" y="70" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
   <rect x="118" y="70" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
-  <rect x="104" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="104" y="74" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="102" y="68" width="18" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="108" y="70" width="6" height="6" fill="var(--iris)"/>
   <rect x="110" y="70" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="109" y="71" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="110" y="72" width="4" height="4" fill="#111"/>
   <rect x="108" y="70" width="2" height="2" fill="#fff"/>
-  <rect x="110" y="70" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <!-- Right lower lid + inner corner -->
-  <rect x="104" y="76" width="14" height="2" fill="#000" opacity="0.05"/>
-  <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.05"/>`],
+  <!-- Inner corner -->
+  <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.1"/>`],
   ['eyes:deep-set', `<!-- Deep-set eyes: heavy brow shadow, sunken sockets -->
   <!-- Left brow ridge shadow — THICK, defines the deep-set look -->
   <rect x="78" y="64" width="20" height="6" fill="#000" opacity="0.3"/>
@@ -1814,103 +1816,115 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="102" y="72" width="2" height="6" fill="#000" opacity="0.12"/>
   <!-- Right under-eye bag -->
   <rect x="104" y="78" width="14" height="2" fill="#000" opacity="0.12"/>`],
-  ['eyes:large', `<!-- Large eyes: 16x12 sclera, 8x8 iris — animated, expressive -->
+  ['eyes:large', `<!-- Large eyes: wide, animated — thick lids -->
+  <!-- Left brow shadow -->
+  <rect x="78" y="64" width="20" height="2" fill="#000" opacity="0.18"/>
   <!-- Left eye -->
   <rect x="80" y="66" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
-  <rect x="80" y="66" width="16" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="80" y="76" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="78" y="66" width="20" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="80" y="78" width="16" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="84" y="68" width="8" height="8" fill="var(--iris)"/>
   <rect x="86" y="68" width="6" height="8" fill="var(--iris-dark)"/>
-  <rect x="85" y="69" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="88" y="70" width="4" height="6" fill="#111"/>
   <rect x="84" y="68" width="2" height="2" fill="#fff"/>
-  <rect x="86" y="68" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <rect x="80" y="78" width="16" height="2" fill="#000" opacity="0.05"/>
+  <!-- Right brow shadow -->
+  <rect x="102" y="64" width="20" height="2" fill="#000" opacity="0.15"/>
   <!-- Right eye -->
   <rect x="104" y="66" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
-  <rect x="104" y="66" width="16" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="104" y="76" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="102" y="66" width="20" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="104" y="78" width="16" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="108" y="68" width="8" height="8" fill="var(--iris)"/>
   <rect x="110" y="68" width="6" height="8" fill="var(--iris-dark)"/>
-  <rect x="109" y="69" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="112" y="70" width="4" height="6" fill="#111"/>
-  <rect x="108" y="68" width="2" height="2" fill="#fff"/>
-  <rect x="110" y="68" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <rect x="104" y="78" width="16" height="2" fill="#000" opacity="0.05"/>`],
-  ['eyes:narrow', `<!-- Narrow eyes: 14x6 sclera, 6x4 iris — hooded, determined -->
+  <rect x="108" y="68" width="2" height="2" fill="#fff"/>`],
+  ['eyes:narrow', `<!-- Narrow eyes: hooded, heavy-lidded, intense -->
+  <!-- Left heavy lid shadow -->
+  <rect x="78" y="66" width="20" height="4" fill="#000" opacity="0.25"/>
   <!-- Left eye -->
   <rect x="82" y="70" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
-  <rect x="82" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
-  <rect x="82" y="74" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid — squinting -->
+  <rect x="80" y="70" width="18" height="2" fill="#3a2520" opacity="0.85"/>
+  <!-- Lower lid -->
+  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="88" y="70" width="6" height="4" fill="var(--iris)"/>
   <rect x="90" y="70" width="4" height="4" fill="var(--iris-dark)"/>
-  <rect x="89" y="70" width="2" height="2" fill="var(--iris)" opacity="0.4"/>
   <rect x="90" y="70" width="4" height="4" fill="#111" opacity="0.6"/>
   <rect x="88" y="70" width="2" height="2" fill="#fff"/>
-  <!-- Heavy lid — deeper shadow -->
+  <!-- Heavy skin lid -->
   <rect x="80" y="68" width="18" height="2" fill="var(--skin)"/>
-  <rect x="80" y="68" width="18" height="2" fill="#000" opacity="0.08"/>
-  <!-- Left outer corner crease -->
-  <rect x="96" y="70" width="2" height="4" fill="#000" opacity="0.06"/>
+  <!-- Outer corner crease -->
+  <rect x="96" y="72" width="2" height="4" fill="#000" opacity="0.12"/>
+  <!-- Right heavy lid shadow -->
+  <rect x="102" y="66" width="20" height="4" fill="#000" opacity="0.22"/>
   <!-- Right eye -->
   <rect x="104" y="70" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
-  <rect x="104" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
-  <rect x="104" y="74" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid — squinting -->
+  <rect x="102" y="70" width="18" height="2" fill="#3a2520" opacity="0.85"/>
+  <!-- Lower lid -->
+  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="108" y="70" width="6" height="4" fill="var(--iris)"/>
   <rect x="110" y="70" width="4" height="4" fill="var(--iris-dark)"/>
-  <rect x="109" y="70" width="2" height="2" fill="var(--iris)" opacity="0.4"/>
   <rect x="110" y="70" width="4" height="4" fill="#111" opacity="0.6"/>
   <rect x="108" y="70" width="2" height="2" fill="#fff"/>
   <rect x="102" y="68" width="18" height="2" fill="var(--skin)"/>
-  <rect x="102" y="68" width="18" height="2" fill="#000" opacity="0.08"/>
-  <!-- Right inner corner crease -->
-  <rect x="102" y="70" width="2" height="4" fill="#000" opacity="0.06"/>`],
-  ['eyes:round', `<!-- Round eyes: 10x10 sclera, 6x6 iris — innocent, wide-eyed -->
+  <!-- Inner corner crease -->
+  <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.12"/>`],
+  ['eyes:round', `<!-- Round eyes: wide-open, innocent -->
+  <!-- Left brow shadow -->
+  <rect x="82" y="64" width="14" height="2" fill="#000" opacity="0.15"/>
   <!-- Left eye -->
   <rect x="84" y="66" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
-  <rect x="84" y="66" width="10" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="84" y="74" width="10" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="82" y="66" width="14" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Lower lid -->
+  <rect x="84" y="76" width="10" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="86" y="68" width="6" height="6" fill="var(--iris)"/>
   <rect x="88" y="68" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="87" y="69" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="88" y="70" width="4" height="4" fill="#111"/>
   <rect x="86" y="68" width="2" height="2" fill="#fff"/>
   <rect x="88" y="68" width="2" height="2" fill="#fff" opacity="0.35"/>
-  <rect x="84" y="76" width="10" height="2" fill="#000" opacity="0.04"/>
+  <!-- Right brow shadow -->
+  <rect x="104" y="64" width="14" height="2" fill="#000" opacity="0.12"/>
   <!-- Right eye -->
   <rect x="106" y="66" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
-  <rect x="106" y="66" width="10" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="106" y="74" width="10" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="104" y="66" width="14" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Lower lid -->
+  <rect x="106" y="76" width="10" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="108" y="68" width="6" height="6" fill="var(--iris)"/>
   <rect x="110" y="68" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="109" y="69" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="110" y="70" width="4" height="4" fill="#111"/>
   <rect x="108" y="68" width="2" height="2" fill="#fff"/>
-  <rect x="110" y="68" width="2" height="2" fill="#fff" opacity="0.35"/>
-  <rect x="106" y="76" width="10" height="2" fill="#000" opacity="0.04"/>`],
-  ['eyes:standard', `<!-- Standard eyes: 14x10 sclera, 6x6 iris -->
+  <rect x="110" y="68" width="2" height="2" fill="#fff" opacity="0.35"/>`],
+  ['eyes:standard', `<!-- Standard eyes: visible lids -->
+  <!-- Left brow shadow -->
+  <rect x="80" y="66" width="18" height="2" fill="#000" opacity="0.2"/>
   <!-- Left eye -->
   <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
-  <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="80" y="68" width="18" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="82" y="78" width="14" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="88" y="70" width="6" height="6" fill="var(--iris)"/>
   <rect x="90" y="70" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="89" y="71" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="90" y="72" width="4" height="4" fill="#111"/>
   <rect x="88" y="70" width="2" height="2" fill="#fff"/>
-  <rect x="90" y="70" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <rect x="82" y="78" width="14" height="2" fill="#000" opacity="0.05"/>
+  <!-- Right brow shadow -->
+  <rect x="102" y="66" width="18" height="2" fill="#000" opacity="0.18"/>
   <!-- Right eye -->
   <rect x="104" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
-  <rect x="104" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
-  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Thick upper lid -->
+  <rect x="102" y="68" width="18" height="2" fill="#3a2520" opacity="0.75"/>
+  <!-- Lower lid -->
+  <rect x="104" y="78" width="14" height="2" fill="#3a2520" opacity="0.25"/>
   <rect x="108" y="70" width="6" height="6" fill="var(--iris)"/>
   <rect x="110" y="70" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="109" y="71" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="110" y="72" width="4" height="4" fill="#111"/>
-  <rect x="108" y="70" width="2" height="2" fill="#fff"/>
-  <rect x="110" y="70" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <rect x="104" y="78" width="14" height="2" fill="#000" opacity="0.05"/>`],
+  <rect x="108" y="70" width="2" height="2" fill="#fff"/>`],
   ['glasses:aviator', `<path d="M 72,64 h22 v2 h2 v14 h-2 v2 h-4 v2 h-8 v-2 h-8 v-2 h-2 v-14 h2 z" fill="var(--secondary)" opacity="0.3" stroke="#111" stroke-width="2"/>
   <path d="M 106,64 h22 v2 h2 v14 h-2 v2 h-4 v2 h-8 v-2 h-8 v-2 h-2 v-14 h2 z" fill="var(--secondary)" opacity="0.3" stroke="#111" stroke-width="2"/>
   <rect x="94" y="66" width="12" height="2" fill="#111"/>
@@ -2971,54 +2985,56 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="128" y="48" width="4" height="2" fill="#000" opacity="0.06"/>
   <rect x="64" y="80" width="4" height="2" fill="#000" opacity="0.06"/>
   </g>`],
-  ['mouth:line-neutral', `<!-- Line neutral: 20px dark crease -->
-  <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.05"/>
-  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
-  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
-  <rect x="110" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
-  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
-  <rect x="96" y="98" width="8" height="2" fill="#fff" opacity="0.04"/>
-  <rect x="94" y="100" width="12" height="2" fill="#000" opacity="0.03"/>`],
-  ['mouth:line-stern', `<!-- Line stern: 16px downturned, serious -->
-  <rect x="94" y="94" width="12" height="2" fill="#000" opacity="0.06"/>
-  <rect x="92" y="96" width="16" height="2" fill="#000" opacity="0.35"/>
-  <rect x="90" y="98" width="4" height="2" fill="#000" opacity="0.2"/>
-  <rect x="106" y="98" width="4" height="2" fill="#000" opacity="0.2"/>
-  <rect x="94" y="98" width="12" height="2" fill="#000" opacity="0.08"/>
-  <rect x="96" y="100" width="8" height="2" fill="#000" opacity="0.04"/>`],
-  ['mouth:line-wide', `<!-- Line wide: 32px grin, expressive -->
-  <rect x="88" y="94" width="24" height="2" fill="#000" opacity="0.05"/>
-  <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.3"/>
-  <rect x="82" y="94" width="2" height="2" fill="#000" opacity="0.12"/>
-  <rect x="116" y="94" width="2" height="2" fill="#000" opacity="0.12"/>
-  <rect x="88" y="98" width="24" height="2" fill="#000" opacity="0.08"/>
-  <rect x="92" y="98" width="16" height="2" fill="#fff" opacity="0.04"/>
-  <rect x="90" y="100" width="20" height="2" fill="#000" opacity="0.03"/>`],
-  ['mouth:lips-full', `<!-- Lips full: 22px prominent rose, cupid's bow -->
-  <rect x="92" y="92" width="6" height="2" fill="#cc7777" opacity="0.35"/>
-  <rect x="102" y="92" width="6" height="2" fill="#cc7777" opacity="0.35"/>
-  <rect x="98" y="91" width="4" height="2" fill="#cc7777" opacity="0.2"/>
-  <rect x="89" y="94" width="22" height="2" fill="#cc7777" opacity="0.45"/>
-  <rect x="89" y="96" width="22" height="4" fill="#cc7777" opacity="0.55"/>
-  <rect x="87" y="96" width="2" height="2" fill="#cc7777" opacity="0.25"/>
-  <rect x="111" y="96" width="2" height="2" fill="#cc7777" opacity="0.25"/>
+  ['mouth:line-neutral', `<!-- Line neutral: visible lip form -->
+  <rect x="90" y="94" width="20" height="2" fill="#8a5a4a" opacity="0.25"/>
+  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.4"/>
+  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="110" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="98" width="20" height="2" fill="#8a5a4a" opacity="0.2"/>
+  <rect x="94" y="98" width="12" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="94" y="100" width="12" height="2" fill="#000" opacity="0.06"/>`],
+  ['mouth:line-stern', `<!-- Line stern: hard, downturned -->
+  <rect x="92" y="94" width="16" height="2" fill="#8a5a4a" opacity="0.2"/>
+  <rect x="92" y="96" width="16" height="2" fill="#000" opacity="0.45"/>
+  <rect x="90" y="98" width="4" height="2" fill="#000" opacity="0.3"/>
+  <rect x="106" y="98" width="4" height="2" fill="#000" opacity="0.3"/>
+  <rect x="94" y="98" width="12" height="2" fill="#8a5a4a" opacity="0.15"/>
+  <rect x="96" y="100" width="8" height="2" fill="#000" opacity="0.06"/>`],
+  ['mouth:line-wide', `<!-- Line wide: big grin -->
+  <rect x="86" y="94" width="28" height="2" fill="#8a5a4a" opacity="0.25"/>
+  <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.4"/>
+  <rect x="82" y="94" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="116" y="94" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="86" y="98" width="28" height="2" fill="#8a5a4a" opacity="0.2"/>
+  <rect x="90" y="98" width="20" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="88" y="100" width="24" height="2" fill="#000" opacity="0.05"/>`],
+  ['mouth:lips-full', `<!-- Lips full: prominent, visible rose -->
+  <rect x="92" y="92" width="6" height="2" fill="#cc7777" opacity="0.5"/>
+  <rect x="102" y="92" width="6" height="2" fill="#cc7777" opacity="0.5"/>
+  <rect x="98" y="91" width="4" height="2" fill="#cc7777" opacity="0.3"/>
+  <rect x="89" y="94" width="22" height="2" fill="#cc7777" opacity="0.6"/>
+  <rect x="89" y="96" width="22" height="4" fill="#cc7777" opacity="0.7"/>
+  <rect x="87" y="96" width="2" height="2" fill="#cc7777" opacity="0.35"/>
+  <rect x="111" y="96" width="2" height="2" fill="#cc7777" opacity="0.35"/>
+  <!-- Lip crease -->
+  <rect x="89" y="96" width="22" height="2" fill="#000" opacity="0.15"/>
   <!-- Lower lip highlight -->
-  <rect x="95" y="97" width="10" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="93" y="100" width="14" height="2" fill="#000" opacity="0.08"/>`],
-  ['mouth:lips-natural', `<!-- Lips natural: 20px subtle rose -->
-  <rect x="92" y="93" width="16" height="2" fill="#cc8888" opacity="0.15"/>
-  <rect x="90" y="94" width="20" height="2" fill="#cc8888" opacity="0.25"/>
-  <rect x="90" y="96" width="20" height="4" fill="#cc8888" opacity="0.4"/>
-  <rect x="88" y="96" width="2" height="2" fill="#cc8888" opacity="0.2"/>
-  <rect x="110" y="96" width="2" height="2" fill="#cc8888" opacity="0.2"/>
+  <rect x="93" y="97" width="14" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="93" y="100" width="14" height="2" fill="#000" opacity="0.1"/>`],
+  ['mouth:lips-natural', `<!-- Lips natural: visible soft rose -->
+  <rect x="90" y="94" width="20" height="2" fill="#cc8888" opacity="0.35"/>
+  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="96" width="20" height="4" fill="#cc8888" opacity="0.5"/>
+  <rect x="88" y="96" width="2" height="2" fill="#cc8888" opacity="0.3"/>
+  <rect x="110" y="96" width="2" height="2" fill="#cc8888" opacity="0.3"/>
   <!-- Lower lip highlight -->
-  <rect x="94" y="97" width="12" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="92" y="100" width="16" height="2" fill="#000" opacity="0.06"/>`],
-  ['mouth:small', `<!-- Small: 14px, quiet, reserved -->
-  <rect x="95" y="94" width="10" height="2" fill="#000" opacity="0.04"/>
-  <rect x="93" y="96" width="14" height="2" fill="#000" opacity="0.25"/>
-  <rect x="95" y="98" width="10" height="2" fill="#000" opacity="0.06"/>
-  <rect x="97" y="98" width="6" height="2" fill="#fff" opacity="0.03"/>`],
+  <rect x="94" y="97" width="12" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="92" y="100" width="16" height="2" fill="#000" opacity="0.08"/>`],
+  ['mouth:small', `<!-- Small: quiet but visible -->
+  <rect x="93" y="94" width="14" height="2" fill="#8a5a4a" opacity="0.15"/>
+  <rect x="93" y="96" width="14" height="2" fill="#000" opacity="0.35"/>
+  <rect x="95" y="98" width="10" height="2" fill="#8a5a4a" opacity="0.15"/>
+  <rect x="97" y="98" width="6" height="2" fill="#fff" opacity="0.05"/>`],
   ['mouth:smile', `<!-- Smile: warm, visible lip color -->
   <!-- Upper lip — rose-tinted, visible -->
   <rect x="90" y="94" width="20" height="2" fill="#8a5a4a" opacity="0.4"/>
@@ -3035,51 +3051,51 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Chin shadow -->
   <rect x="94" y="102" width="12" height="2" fill="#000" opacity="0.08"/>
   <rect x="96" y="104" width="8" height="2" fill="#000" opacity="0.05"/>`],
-  ['mouth:smirk', `<!-- Smirk: 18px asymmetric, cocky -->
-  <rect x="92" y="94" width="14" height="2" fill="#000" opacity="0.05"/>
-  <rect x="90" y="96" width="18" height="2" fill="#000" opacity="0.3"/>
-  <rect x="106" y="94" width="4" height="2" fill="#000" opacity="0.2"/>
-  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.1"/>
-  <rect x="92" y="98" width="14" height="2" fill="#000" opacity="0.08"/>
-  <rect x="96" y="98" width="8" height="2" fill="#fff" opacity="0.04"/>
-  <rect x="94" y="100" width="10" height="2" fill="#000" opacity="0.03"/>`],
-  ['nose:aquiline', `<!-- Aquiline nose: 12px pronounced, distinguished -->
-  <rect x="94" y="76" width="4" height="16" fill="#000" opacity="0.08"/>
-  <rect x="96" y="76" width="8" height="16" fill="#000" opacity="0.1"/>
-  <rect x="102" y="76" width="2" height="10" fill="#fff" opacity="0.08"/>
-  <rect x="104" y="78" width="2" height="6" fill="#fff" opacity="0.05"/>
-  <rect x="92" y="80" width="4" height="10" fill="#000" opacity="0.07"/>
-  <rect x="104" y="80" width="4" height="8" fill="#000" opacity="0.04"/>
-  <rect x="94" y="90" width="4" height="2" fill="#000" opacity="0.22"/>
-  <rect x="100" y="92" width="4" height="2" fill="#000" opacity="0.18"/>
-  <rect x="98" y="90" width="4" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>`],
-  ['nose:broad', `<!-- Broad nose: 8px flat, wide base (16px) -->
-  <rect x="94" y="80" width="4" height="10" fill="#000" opacity="0.08"/>
-  <rect x="96" y="80" width="8" height="10" fill="#000" opacity="0.1"/>
-  <rect x="102" y="80" width="2" height="6" fill="#fff" opacity="0.06"/>
-  <rect x="90" y="84" width="6" height="6" fill="#000" opacity="0.07"/>
-  <rect x="104" y="84" width="6" height="6" fill="#000" opacity="0.05"/>
-  <rect x="92" y="88" width="4" height="4" fill="#000" opacity="0.2"/>
-  <rect x="104" y="88" width="4" height="4" fill="#000" opacity="0.16"/>
-  <rect x="98" y="88" width="4" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="90" y="92" width="20" height="2" fill="#000" opacity="0.08"/>`],
-  ['nose:button', `<!-- Button nose: short, round, youthful -->
-  <rect x="96" y="84" width="8" height="6" fill="#000" opacity="0.1"/>
-  <rect x="94" y="86" width="4" height="4" fill="#000" opacity="0.07"/>
-  <rect x="102" y="86" width="4" height="4" fill="#000" opacity="0.05"/>
-  <rect x="102" y="84" width="2" height="4" fill="#fff" opacity="0.06"/>
-  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
-  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
-  <rect x="98" y="86" width="4" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="94" y="90" width="12" height="2" fill="#000" opacity="0.06"/>`],
-  ['nose:narrow', `<!-- Narrow nose: 4px very faint, refined -->
-  <rect x="96" y="80" width="4" height="10" fill="#000" opacity="0.05"/>
-  <rect x="98" y="80" width="4" height="10" fill="#000" opacity="0.06"/>
-  <rect x="100" y="80" width="2" height="6" fill="#fff" opacity="0.06"/>
-  <rect x="98" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
-  <rect x="100" y="88" width="2" height="2" fill="#000" opacity="0.08"/>
-  <rect x="96" y="90" width="8" height="2" fill="#000" opacity="0.04"/>`],
+  ['mouth:smirk', `<!-- Smirk: asymmetric, bold -->
+  <rect x="90" y="94" width="18" height="2" fill="#8a5a4a" opacity="0.25"/>
+  <rect x="90" y="96" width="18" height="2" fill="#000" opacity="0.4"/>
+  <rect x="106" y="94" width="4" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="90" y="98" width="18" height="2" fill="#8a5a4a" opacity="0.2"/>
+  <rect x="94" y="98" width="10" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="94" y="100" width="10" height="2" fill="#000" opacity="0.06"/>`],
+  ['nose:aquiline', `<!-- Aquiline nose: BOLD hooked shape -->
+  <rect x="94" y="76" width="4" height="16" fill="#000" opacity="0.2"/>
+  <rect x="96" y="76" width="8" height="16" fill="#000" opacity="0.18"/>
+  <rect x="102" y="76" width="2" height="12" fill="#fff" opacity="0.15"/>
+  <rect x="104" y="78" width="2" height="8" fill="#fff" opacity="0.1"/>
+  <rect x="90" y="82" width="6" height="10" fill="#000" opacity="0.12"/>
+  <rect x="104" y="82" width="4" height="8" fill="#000" opacity="0.06"/>
+  <rect x="92" y="88" width="4" height="4" fill="#000" opacity="0.4"/>
+  <rect x="104" y="90" width="4" height="2" fill="#000" opacity="0.3"/>
+  <rect x="96" y="88" width="8" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="90" y="92" width="20" height="2" fill="#000" opacity="0.15"/>`],
+  ['nose:broad', `<!-- Broad nose: BOLD wide, flat -->
+  <rect x="94" y="80" width="4" height="10" fill="#000" opacity="0.18"/>
+  <rect x="96" y="80" width="8" height="10" fill="#000" opacity="0.15"/>
+  <rect x="102" y="80" width="2" height="6" fill="#fff" opacity="0.1"/>
+  <rect x="88" y="84" width="8" height="8" fill="#000" opacity="0.12"/>
+  <rect x="104" y="84" width="8" height="8" fill="#000" opacity="0.08"/>
+  <rect x="90" y="88" width="4" height="4" fill="#000" opacity="0.4"/>
+  <rect x="106" y="88" width="4" height="4" fill="#000" opacity="0.3"/>
+  <rect x="96" y="88" width="8" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="88" y="92" width="24" height="2" fill="#000" opacity="0.12"/>`],
+  ['nose:button', `<!-- Button nose: BOLD round tip -->
+  <rect x="94" y="84" width="12" height="8" fill="#000" opacity="0.15"/>
+  <rect x="92" y="86" width="4" height="4" fill="#000" opacity="0.1"/>
+  <rect x="104" y="86" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="102" y="84" width="2" height="4" fill="#fff" opacity="0.1"/>
+  <rect x="94" y="88" width="2" height="2" fill="#000" opacity="0.35"/>
+  <rect x="104" y="88" width="2" height="2" fill="#000" opacity="0.25"/>
+  <rect x="96" y="86" width="8" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.1"/>`],
+  ['nose:narrow', `<!-- Narrow nose: BOLD thin, refined -->
+  <rect x="96" y="80" width="4" height="12" fill="#000" opacity="0.12"/>
+  <rect x="98" y="80" width="4" height="12" fill="#000" opacity="0.1"/>
+  <rect x="100" y="80" width="2" height="8" fill="#fff" opacity="0.1"/>
+  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.3"/>
+  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="96" y="90" width="8" height="2" fill="#000" opacity="0.08"/>`],
   ['nose:prominent', `<!-- Prominent nose: BOLD visible shape -->
   <!-- Bridge — left shadow (defines nose shape) -->
   <rect x="94" y="76" width="4" height="16" fill="#000" opacity="0.25"/>
@@ -3100,13 +3116,13 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="98" y="88" width="4" height="2" fill="#fff" opacity="0.12"/>
   <!-- Nose base shadow line -->
   <rect x="90" y="92" width="20" height="2" fill="#000" opacity="0.15"/>`],
-  ['nose:subtle', `<!-- Subtle nose: 4px bridge, small nostrils -->
-  <rect x="96" y="82" width="4" height="8" fill="#000" opacity="0.06"/>
-  <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.08"/>
-  <rect x="100" y="82" width="2" height="4" fill="#fff" opacity="0.05"/>
-  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.14"/>
-  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
-  <rect x="96" y="90" width="8" height="2" fill="#000" opacity="0.05"/>`],
+  ['nose:subtle', `<!-- Subtle nose: BOLD small but visible -->
+  <rect x="96" y="82" width="4" height="8" fill="#000" opacity="0.12"/>
+  <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.14"/>
+  <rect x="100" y="82" width="2" height="4" fill="#fff" opacity="0.1"/>
+  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.3"/>
+  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="90" width="12" height="2" fill="#000" opacity="0.08"/>`],
   ['prop:address-book', `<!-- Address book: tabbed book -->
   <rect x="150" y="172" width="16" height="22" fill="var(--primary)"/>
   <rect x="150" y="172" width="2" height="22" fill="#000" opacity="0.2"/>
