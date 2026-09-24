@@ -1,4 +1,4 @@
-import type { HeadFaceSpec, PartAssignment } from './types.js';
+import type { HeadFaceSpec, PartAssignment, PartPositionDelta } from './types.js';
 
 function pa(
   head: string, eyes: string, nose: string, mouth: string,
@@ -101,3 +101,13 @@ export const HEAD_FACE_SPECS: Record<string, HeadFaceSpec> = {
 };
 
 export const CANONICAL_FACE: HeadFaceSpec = HEAD_FACE_SPECS['oval']!;
+
+export const PART_DELTAS: Record<string, PartPositionDelta> = {
+  'hair:pixie':          { dy: 2 },
+  'hair:cropped-fringe': { dy: 2 },
+  'hat:beret':           { dy: 2 },
+  'nose:button':         { dy: -2 },
+  'nose:aquiline':       { dy: 2 },
+  'mouth:lips-full':     { dy: 2 },
+  'eyes:deep-set':       { dy: -2 },
+};

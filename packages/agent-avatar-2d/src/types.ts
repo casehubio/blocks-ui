@@ -95,6 +95,11 @@ export interface HeadFaceSpec {
   readonly mouthY: number;
 }
 
+export interface PartPositionDelta {
+  readonly dx?: number;
+  readonly dy?: number;
+}
+
 export interface AvatarCollection {
   readonly id: string;
   readonly partsUrl: string;

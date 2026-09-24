@@ -1,6 +1,6 @@
 import type { AvatarCollection, AvatarSize, FamilyPalette, HeadFaceSpec, PartAssignment } from './types.js';
 import { DetailLevel, DETAIL_TIERS } from './types.js';
-import { HEAD_FACE_SPECS, CANONICAL_FACE } from './config-table.js';
+import { HEAD_FACE_SPECS, CANONICAL_FACE, PART_DELTAS } from './config-table.js';
 
 
 const LAYER_ORDER: readonly string[] = [
@@ -131,15 +131,21 @@ function sortByLayerOrder(layers: Layer[]): Layer[] {
   });
 }
 
+function partDelta(l: Layer): { dx: number; dy: number } {
+  const d = PART_DELTAS[`${l.category}:${l.partId}`];
+  return { dx: d?.dx ?? 0, dy: d?.dy ?? 0 };
+}
+
 function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   const tag = `data-part="${l.category}:${l.partId}"`;
   const group = posGroup(l.category);
   const faceLift = Math.round(spec.yOffset * -0.2);
+  const pd = partDelta(l);
 
   if (group === 'eye-split') {
-    const eyeYDelta = spec.eyeY - CANONICAL_FACE.eyeY + faceLift;
-    const leftXDelta = spec.eyeLeftX - CANONICAL_FACE.eyeLeftX;
-    const rightXDelta = spec.eyeRightX - CANONICAL_FACE.eyeRightX;
+    const eyeYDelta = spec.eyeY - CANONICAL_FACE.eyeY + faceLift + pd.dy;
+    const leftXDelta = spec.eyeLeftX - CANONICAL_FACE.eyeLeftX + pd.dx;
+    const rightXDelta = spec.eyeRightX - CANONICAL_FACE.eyeRightX + pd.dx;
 
     if (leftXDelta === 0 && rightXDelta === 0 && eyeYDelta === 0) {
       return `  <g ${tag}>${l.content}</g>`;
@@ -161,29 +167,34 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   }
 
   if (group === 'nose') {
-    const dy = spec.noseY - CANONICAL_FACE.noseY + faceLift;
-    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    const dy = spec.noseY - CANONICAL_FACE.noseY + faceLift + pd.dy;
+    const dx = pd.dx;
+    const inner = (dx !== 0 || dy !== 0) ? wrapTranslate(l.content, dx, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'mouth') {
-    const dy = spec.mouthY - CANONICAL_FACE.mouthY + faceLift;
-    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    const dy = spec.mouthY - CANONICAL_FACE.mouthY + faceLift + pd.dy;
+    const dx = pd.dx;
+    const inner = (dx !== 0 || dy !== 0) ? wrapTranslate(l.content, dx, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'beard') {
-    return `  <g ${tag}>${l.content}</g>`;
+    const inner = (pd.dx !== 0 || pd.dy !== 0) ? wrapTranslate(l.content, pd.dx, pd.dy) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'hair') {
-    const dy = hairShift(l.content, spec.yOffset);
-    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    const dy = hairShift(l.content, spec.yOffset) + pd.dy;
+    const inner = (pd.dx !== 0 || dy !== 0) ? wrapTranslate(l.content, pd.dx, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'hat') {
-    const inner = spec.yOffset !== 0 ? wrapTranslate(l.content, 0, spec.yOffset) : l.content;
+    const dy = spec.yOffset + pd.dy;
+    const dx = pd.dx;
+    const inner = (dx !== 0 || dy !== 0) ? wrapTranslate(l.content, dx, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
