@@ -176,8 +176,8 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   return `  <g ${tag}>${scaled}</g>`;
 }
 
-const MIN_PROP_AREA = 400;
-const TARGET_PROP_DIM = 26;
+const TARGET_PROP_AREA = 600;
+const MAX_PROP_SCALE = 3;
 
 function scaleSmallProp(content: string): string {
   const re = /\bx="(\d+)"\s+y="(\d+)"\s+width="(\d+)"\s+height="(\d+)"/g;
@@ -194,9 +194,9 @@ function scaleSmallProp(content: string): string {
   if (minX === Infinity) return content;
   const bw = maxX - minX;
   const bh = maxY - minY;
-  if (bw * bh >= MIN_PROP_AREA) return content;
-  const scale = Math.min(TARGET_PROP_DIM / bw, TARGET_PROP_DIM / bh);
-  if (scale <= 1.15) return content;
+  const area = bw * bh;
+  if (area >= TARGET_PROP_AREA) return content;
+  const scale = Math.min(Math.sqrt(TARGET_PROP_AREA / area), MAX_PROP_SCALE);
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
   return `<g transform="translate(${cx},${cy}) scale(${scale.toFixed(2)}) translate(${-cx},${-cy})">${content}</g>`;
