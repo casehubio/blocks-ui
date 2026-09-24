@@ -7,7 +7,7 @@ const LAYER_ORDER: readonly string[] = [
   'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
 ];
 
-type PosGroup = 'eye-split' | 'nose' | 'mouth' | 'hat' | 'none';
+type PosGroup = 'eye-split' | 'nose' | 'mouth' | 'hat' | 'hair' | 'none';
 
 function posGroup(category: string): PosGroup {
   switch (category) {
@@ -17,8 +17,10 @@ function posGroup(category: string): PosGroup {
       return 'nose';
     case 'mouth': case 'beard':
       return 'mouth';
-    case 'hat': case 'hair':
+    case 'hat':
       return 'hat';
+    case 'hair':
+      return 'hair';
     default:
       return 'none';
   }
@@ -163,6 +165,12 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
 
   if (group === 'mouth') {
     const dy = spec.mouthY - CANONICAL_FACE.mouthY;
+    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
+  }
+
+  if (group === 'hair') {
+    const dy = Math.round(spec.yOffset * 0.6);
     const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }

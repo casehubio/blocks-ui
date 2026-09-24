@@ -255,15 +255,29 @@ sym('mouth:small', """  <!-- Small: 14px, quiet, reserved (gender-neutral) -->
 # HATS (6 types) — sit on top of head, y=6-30
 # ============================================================
 
-sym('hat:flower-crown', """  <!-- Flower crown: floral ring on top of head -->
-  <rect x="76" y="22" width="48" height="6" fill="#4a8a4a" opacity="0.8"/>
-  <rect x="80" y="20" width="6" height="6" fill="#e85080"/>
-  <rect x="90" y="18" width="6" height="6" fill="#f0c040"/>
-  <rect x="100" y="20" width="6" height="6" fill="#e85080"/>
-  <rect x="110" y="18" width="6" height="6" fill="#f0c040"/>
-  <rect x="86" y="20" width="4" height="4" fill="#50a050"/>
-  <rect x="96" y="20" width="4" height="4" fill="#50a050"/>
-  <rect x="106" y="20" width="4" height="4" fill="#50a050"/>""")
+sym('hat:flower-crown', """  <!-- Flower crown: woven vine with flowers -->
+  <!-- Vine band (thin, organic) -->
+  <rect x="76" y="24" width="48" height="4" fill="#3a7a3a"/>
+  <rect x="74" y="24" width="4" height="4" fill="#3a7a3a" opacity="0.6"/>
+  <rect x="124" y="24" width="4" height="4" fill="#3a7a3a" opacity="0.6"/>
+  <rect x="78" y="26" width="44" height="2" fill="#2a5a2a" opacity="0.5"/>
+  <!-- Leaves (alternating, organic) -->
+  <rect x="84" y="22" width="4" height="4" fill="#4a9a4a"/>
+  <rect x="94" y="22" width="4" height="4" fill="#4a9a4a"/>
+  <rect x="104" y="22" width="4" height="4" fill="#4a9a4a"/>
+  <rect x="114" y="22" width="4" height="4" fill="#4a9a4a"/>
+  <!-- Flowers (daisy shape: center + petals) -->
+  <rect x="80" y="20" width="2" height="2" fill="#e85080"/>
+  <rect x="78" y="18" width="6" height="2" fill="#f0a0b0"/>
+  <rect x="80" y="16" width="2" height="2" fill="#f0a0b0"/>
+  <rect x="80" y="22" width="2" height="2" fill="#f0a0b0"/>
+  <rect x="98" y="20" width="2" height="2" fill="#f0c040"/>
+  <rect x="96" y="18" width="6" height="2" fill="#f8e080"/>
+  <rect x="98" y="16" width="2" height="2" fill="#f8e080"/>
+  <rect x="98" y="22" width="2" height="2" fill="#f8e080"/>
+  <rect x="112" y="20" width="2" height="2" fill="#e85080"/>
+  <rect x="110" y="18" width="6" height="2" fill="#f0a0b0"/>
+  <rect x="112" y="16" width="2" height="2" fill="#f0a0b0"/>""")
 
 sym('hat:beret', """  <!-- Beret: tilted disc, artist style -->
   <rect x="72" y="18" width="48" height="4" fill="var(--secondary)"/>
