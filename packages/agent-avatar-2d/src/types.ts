@@ -93,6 +93,7 @@ export interface HeadFaceSpec {
   readonly eyeRightX: number;
   readonly noseY: number;
   readonly mouthY: number;
+  readonly beardDy: number;
 }
 
 export interface PartPositionDelta {

@@ -86,18 +86,18 @@ export const ARCHETYPE_CONFIGS: Record<string, PartAssignment> = {
 export const ARCHETYPE_INDEX: readonly string[] = Object.keys(ARCHETYPE_CONFIGS).sort();
 
 export const HEAD_FACE_SPECS: Record<string, HeadFaceSpec> = {
-  'oval':       { yOffset: 0,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 104, noseY: 80, mouthY: 96 },
-  'soft-oval':  { yOffset: 2,  eyeY: 66, eyeLeftX: 82,  eyeRightX: 106, noseY: 80, mouthY: 90 },
-  'weathered':  { yOffset: 4,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 82, mouthY: 92 },
-  'square-jaw': { yOffset: 6,  eyeY: 68, eyeLeftX: 78,  eyeRightX: 106, noseY: 80, mouthY: 94 },
-  'standard':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94 },
-  'strong-sym': { yOffset: 6,  eyeY: 66, eyeLeftX: 80,  eyeRightX: 106, noseY: 82, mouthY: 94 },
-  'diamond':    { yOffset: 6,  eyeY: 72, eyeLeftX: 80,  eyeRightX: 106, noseY: 86, mouthY: 98 },
-  'fallback':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94 },
-  'angular':    { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 80, mouthY: 96 },
-  'round':      { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 78, mouthY: 92 },
-  'heart':      { yOffset: 8,  eyeY: 70, eyeLeftX: 82,  eyeRightX: 106, noseY: 86, mouthY: 96 },
-  'round-wide': { yOffset: 12, eyeY: 68, eyeLeftX: 74,  eyeRightX: 110, noseY: 80, mouthY: 90 },
+  'oval':       { yOffset: 0,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 104, noseY: 80, mouthY: 96, beardDy: 0 },
+  'soft-oval':  { yOffset: 2,  eyeY: 66, eyeLeftX: 82,  eyeRightX: 106, noseY: 80, mouthY: 90, beardDy: 2 },
+  'weathered':  { yOffset: 4,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 82, mouthY: 92, beardDy: 4 },
+  'square-jaw': { yOffset: 6,  eyeY: 68, eyeLeftX: 78,  eyeRightX: 106, noseY: 80, mouthY: 94, beardDy: 4 },
+  'standard':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94, beardDy: 6 },
+  'strong-sym': { yOffset: 6,  eyeY: 66, eyeLeftX: 80,  eyeRightX: 106, noseY: 82, mouthY: 94, beardDy: 2 },
+  'diamond':    { yOffset: 6,  eyeY: 72, eyeLeftX: 80,  eyeRightX: 106, noseY: 86, mouthY: 98, beardDy: 0 },
+  'fallback':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94, beardDy: 6 },
+  'angular':    { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 80, mouthY: 96, beardDy: 8 },
+  'round':      { yOffset: 8,  eyeY: 68, eyeLeftX: 80,  eyeRightX: 106, noseY: 78, mouthY: 92, beardDy: -2 },
+  'heart':      { yOffset: 8,  eyeY: 70, eyeLeftX: 82,  eyeRightX: 106, noseY: 86, mouthY: 96, beardDy: 4 },
+  'round-wide': { yOffset: 12, eyeY: 68, eyeLeftX: 74,  eyeRightX: 110, noseY: 80, mouthY: 90, beardDy: 0 },
 };
 
 export const CANONICAL_FACE: HeadFaceSpec = HEAD_FACE_SPECS['oval']!;
