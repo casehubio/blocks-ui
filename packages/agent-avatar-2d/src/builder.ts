@@ -176,7 +176,7 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   return `  <g ${tag}>${scaled}</g>`;
 }
 
-const TARGET_PROP_AREA = 700;
+const TARGET_PROP_AREA = 1244;
 const MAX_UP_SCALE = 3;
 const MIN_DOWN_SCALE = 0.3;
 
