@@ -197,14 +197,30 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="80" y="64" width="4" height="2" fill="#3a2520" opacity="0.4"/>
   <rect x="106" y="66" width="12" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="116" y="68" width="4" height="2" fill="#3a2520" opacity="0.4"/>`],
-  ['brow:bushy-wild', `<rect x="78" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
+  ['brow:bushy-wild', `<!-- Left brow — thick, unruly -->
+  <rect x="78" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
   <rect x="76" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
   <rect x="92" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
   <rect x="80" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Left stray hairs -->
+  <rect x="74" y="58" width="2" height="4" fill="#3a2520" opacity="0.3"/>
+  <rect x="94" y="60" width="2" height="2" fill="#3a2520" opacity="0.25"/>
+  <rect x="78" y="58" width="4" height="2" fill="#3a2520" opacity="0.35"/>
+  <rect x="88" y="60" width="2" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Left brow volume highlight -->
+  <rect x="82" y="62" width="8" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Right brow — thick, unruly -->
   <rect x="104" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
   <rect x="120" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
   <rect x="104" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
-  <rect x="114" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>`],
+  <rect x="114" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Right stray hairs -->
+  <rect x="124" y="58" width="2" height="4" fill="#3a2520" opacity="0.3"/>
+  <rect x="102" y="60" width="2" height="2" fill="#3a2520" opacity="0.25"/>
+  <rect x="118" y="58" width="4" height="2" fill="#3a2520" opacity="0.35"/>
+  <rect x="108" y="60" width="2" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Right brow volume highlight -->
+  <rect x="110" y="62" width="8" height="2" fill="#fff" opacity="0.06"/>`],
   ['brow:concerned', `<rect x="80" y="68" width="6" height="2" fill="#3a2520" opacity="0.5"/>
   <rect x="86" y="66" width="4" height="2" fill="#3a2520" opacity="0.6"/>
   <rect x="90" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
@@ -1165,53 +1181,97 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="138" y="176" width="18" height="2" fill="#fff" opacity="0.1"/>
   <rect x="138" y="196" width="18" height="2" fill="#000" opacity="0.1"/>
   <rect x="150" y="180" width="4" height="8" fill="#fff" opacity="0.06"/>
-  <!-- Shirt collar V -->
+  <!-- Shirt collar — folded V with shadow -->
   <rect x="76" y="126" width="48" height="8" fill="#ddd"/>
   <rect x="80" y="134" width="40" height="6" fill="#ddd"/>
   <rect x="84" y="140" width="32" height="4" fill="#ddd"/>
-  <rect x="76" y="126" width="48" height="2" fill="#000" opacity="0.08"/>
+  <rect x="76" y="126" width="48" height="2" fill="#fff" opacity="0.12"/>
+  <rect x="78" y="128" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="118" y="128" width="4" height="4" fill="#000" opacity="0.04"/>
+  <!-- Collar fold crease -->
+  <rect x="80" y="132" width="8" height="2" fill="#000" opacity="0.08"/>
+  <rect x="112" y="132" width="8" height="2" fill="#000" opacity="0.06"/>
   <!-- Shirt fold shadow -->
   <rect x="88" y="136" width="2" height="8" fill="#000" opacity="0.06"/>
   <rect x="108" y="134" width="2" height="6" fill="#000" opacity="0.05"/>
-  <!-- DENSE tweed texture (herringbone-like dither pattern) -->
+  <!-- Lapel — left (shadow side) -->
+  <rect x="74" y="134" width="10" height="50" fill="#000" opacity="0.06"/>
+  <rect x="76" y="136" width="8" height="46" fill="#000" opacity="0.04"/>
+  <!-- Lapel — right (highlight side) -->
+  <rect x="116" y="134" width="10" height="46" fill="#fff" opacity="0.04"/>
+  <!-- Lapel edge lines -->
+  <rect x="84" y="134" width="2" height="60" fill="#000" opacity="0.08"/>
+  <rect x="114" y="134" width="2" height="56" fill="#000" opacity="0.06"/>
+  <!-- Breast pocket — left (shadow side) -->
+  <rect x="76" y="146" width="8" height="10" fill="#000" opacity="0.06"/>
+  <rect x="76" y="146" width="8" height="2" fill="#000" opacity="0.1"/>
+  <rect x="78" y="148" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <!-- Breast pocket — right -->
+  <rect x="116" y="148" width="8" height="10" fill="#000" opacity="0.04"/>
+  <rect x="116" y="148" width="8" height="2" fill="#000" opacity="0.08"/>
+  <rect x="118" y="150" width="4" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Tweed herringbone — left arm (dense diagonal dither) -->
   <rect x="52" y="138" width="2" height="2" fill="#000" opacity="0.07"/>
-  <rect x="56" y="142" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="50" y="148" width="2" height="2" fill="#000" opacity="0.06"/>
-  <rect x="58" y="152" width="2" height="2" fill="#fff" opacity="0.04"/>
-  <rect x="54" y="158" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="54" y="140" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="56" y="142" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="50" y="144" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="54" y="148" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="52" y="152" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="56" y="154" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="50" y="158" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="54" y="160" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="58" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
   <rect x="52" y="164" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="60" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
-  <rect x="56" y="206" width="2" height="2" fill="#000" opacity="0.07"/>
-  <rect x="50" y="212" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="58" y="218" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="56" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="50" y="172" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="54" y="206" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="58" y="210" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="52" y="214" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="56" y="218" width="2" height="2" fill="#fff" opacity="0.04"/>
   <rect x="64" y="144" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="68" y="156" width="2" height="2" fill="#fff" opacity="0.04"/>
-  <rect x="66" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="148" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="68" y="152" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="66" y="156" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="64" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="68" y="166" width="2" height="2" fill="#fff" opacity="0.03"/>
   <rect x="70" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
-  <!-- Right side texture -->
-  <rect x="120" y="140" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="126" y="148" width="2" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="122" y="156" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="130" y="152" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <!-- Tweed herringbone — right arm -->
+  <rect x="120" y="140" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="122" y="142" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="144" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="124" y="148" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="146" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="128" y="152" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="134" y="150" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="122" y="156" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="158" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="162" width="2" height="2" fill="#fff" opacity="0.06"/>
   <rect x="124" y="164" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="134" y="142" width="2" height="2" fill="#fff" opacity="0.07"/>
-  <rect x="128" y="170" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="132" y="162" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="132" y="166" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="170" width="2" height="2" fill="#000" opacity="0.04"/>
   <rect x="136" y="154" width="2" height="2" fill="#fff" opacity="0.05"/>
   <rect x="126" y="202" width="2" height="2" fill="#fff" opacity="0.06"/>
   <rect x="134" y="210" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <!-- Center texture -->
-  <rect x="82" y="150" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="94" y="156" width="2" height="2" fill="#fff" opacity="0.03"/>
-  <rect x="86" y="166" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="106" y="162" width="2" height="2" fill="#fff" opacity="0.03"/>
-  <rect x="98" y="178" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="88" y="192" width="2" height="2" fill="#fff" opacity="0.03"/>
-  <rect x="110" y="184" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="100" y="202" width="2" height="2" fill="#fff" opacity="0.03"/>
-  <rect x="92" y="216" width="2" height="2" fill="#000" opacity="0.04"/>
+  <!-- Tweed herringbone — center body -->
+  <rect x="86" y="150" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="88" y="154" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="90" y="158" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="86" y="162" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="92" y="166" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="88" y="172" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="94" y="178" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="106" y="152" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="108" y="158" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="110" y="162" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="106" y="168" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="112" y="174" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="108" y="180" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="92" y="192" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="98" y="198" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="106" y="204" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="100" y="212" width="2" height="2" fill="#000" opacity="0.03"/>
   <rect x="114" y="208" width="2" height="2" fill="#fff" opacity="0.03"/>
-  <!-- Fold lines -->
+  <!-- Vertical fold lines -->
   <rect x="56" y="150" width="2" height="40" fill="#000" opacity="0.07"/>
   <rect x="64" y="168" width="2" height="28" fill="#000" opacity="0.05"/>
   <rect x="136" y="156" width="2" height="30" fill="#000" opacity="0.04"/>
@@ -1219,16 +1279,35 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="52" y="166" width="18" height="2" fill="#000" opacity="0.05"/>
   <rect x="128" y="170" width="16" height="2" fill="#000" opacity="0.04"/>
   <rect x="56" y="200" width="14" height="2" fill="#000" opacity="0.04"/>
-  <!-- Buttons -->
-  <rect x="98" y="150" width="4" height="4" fill="#000" opacity="0.2"/>
-  <rect x="99" y="151" width="2" height="2" fill="#fff" opacity="0.08"/>
-  <rect x="98" y="166" width="4" height="4" fill="#000" opacity="0.2"/>
-  <rect x="99" y="167" width="2" height="2" fill="#fff" opacity="0.08"/>
-  <rect x="98" y="182" width="4" height="4" fill="#000" opacity="0.2"/>
+  <!-- Buttons — horn-style with thread cross -->
+  <rect x="98" y="150" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="99" y="151" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="100" y="150" width="1" height="4" fill="#fff" opacity="0.05"/>
+  <rect x="98" y="152" width="4" height="1" fill="#fff" opacity="0.05"/>
+  <rect x="98" y="166" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="99" y="167" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="100" y="166" width="1" height="4" fill="#fff" opacity="0.05"/>
+  <rect x="98" y="168" width="4" height="1" fill="#fff" opacity="0.05"/>
+  <rect x="98" y="182" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="99" y="183" width="2" height="2" fill="#fff" opacity="0.1"/>
   <!-- Center placket -->
-  <rect x="98" y="144" width="2" height="80" fill="#000" opacity="0.05"/>
+  <rect x="98" y="144" width="2" height="80" fill="#000" opacity="0.06"/>
+  <rect x="100" y="144" width="2" height="80" fill="#fff" opacity="0.02"/>
+  <!-- Side pockets -->
+  <rect x="76" y="192" width="12" height="2" fill="#000" opacity="0.08"/>
+  <rect x="76" y="194" width="12" height="12" fill="#000" opacity="0.04"/>
+  <rect x="78" y="196" width="4" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="112" y="192" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="112" y="194" width="12" height="12" fill="#000" opacity="0.03"/>
+  <rect x="118" y="196" width="4" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Cuff detail -->
+  <rect x="46" y="224" width="18" height="2" fill="#000" opacity="0.08"/>
+  <rect x="46" y="226" width="18" height="4" fill="#000" opacity="0.04"/>
+  <rect x="138" y="224" width="18" height="2" fill="#000" opacity="0.06"/>
+  <rect x="138" y="226" width="18" height="4" fill="#000" opacity="0.03"/>
   <!-- Hem -->
-  <rect x="56" y="230" width="88" height="2" fill="#000" opacity="0.1"/>
+  <rect x="56" y="230" width="88" height="2" fill="#000" opacity="0.12"/>
+  <rect x="56" y="228" width="88" height="2" fill="#000" opacity="0.04"/>
   </g>`],
   ['costume:utility-vest', `<clipPath id="vest-clip">
     <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v0 h-80 v-0 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
@@ -1420,26 +1499,44 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="110" y="72" width="4" height="4" fill="#111"/>
   <rect x="108" y="70" width="2" height="2" fill="#fff"/>`],
   ['eyes:deep-set', `<!-- Deep-set eyes: 14x8 sclera, heavy lid shadow — brooding, intense -->
-  <!-- Left eye shadow -->
+  <!-- Left orbital shadow — deeper socket -->
   <rect x="80" y="66" width="18" height="4" fill="#000" opacity="0.15"/>
+  <rect x="78" y="68" width="4" height="2" fill="#000" opacity="0.08"/>
+  <rect x="96" y="68" width="4" height="2" fill="#000" opacity="0.06"/>
   <!-- Left eye -->
   <rect x="82" y="70" width="14" height="8" fill="#dde4e8" opacity="0.9"/>
   <rect x="82" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
   <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Left iris — layered depth -->
   <rect x="88" y="72" width="6" height="6" fill="var(--iris)"/>
   <rect x="90" y="72" width="4" height="6" fill="var(--iris-dark)"/>
+  <rect x="89" y="73" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="90" y="74" width="4" height="4" fill="#111"/>
   <rect x="88" y="72" width="2" height="2" fill="#fff"/>
-  <!-- Right eye shadow -->
+  <rect x="90" y="72" width="2" height="2" fill="#fff" opacity="0.3"/>
+  <!-- Left lower lid shadow -->
+  <rect x="82" y="78" width="14" height="2" fill="#000" opacity="0.06"/>
+  <!-- Left outer corner crease -->
+  <rect x="96" y="72" width="2" height="4" fill="#000" opacity="0.06"/>
+  <!-- Right orbital shadow — deeper socket -->
   <rect x="102" y="66" width="18" height="4" fill="#000" opacity="0.15"/>
+  <rect x="100" y="68" width="4" height="2" fill="#000" opacity="0.06"/>
+  <rect x="118" y="68" width="4" height="2" fill="#000" opacity="0.08"/>
   <!-- Right eye -->
   <rect x="104" y="70" width="14" height="8" fill="#dde4e8" opacity="0.9"/>
   <rect x="104" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
   <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <!-- Right iris — layered depth -->
   <rect x="108" y="72" width="6" height="6" fill="var(--iris)"/>
   <rect x="110" y="72" width="4" height="6" fill="var(--iris-dark)"/>
+  <rect x="109" y="73" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="110" y="74" width="4" height="4" fill="#111"/>
-  <rect x="108" y="72" width="2" height="2" fill="#fff"/>`],
+  <rect x="108" y="72" width="2" height="2" fill="#fff"/>
+  <rect x="110" y="72" width="2" height="2" fill="#fff" opacity="0.3"/>
+  <!-- Right lower lid shadow -->
+  <rect x="104" y="78" width="14" height="2" fill="#000" opacity="0.06"/>
+  <!-- Right inner corner crease -->
+  <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.06"/>`],
   ['eyes:large', `<!-- Large eyes: 16x12 sclera, 8x8 iris — animated, expressive -->
   <!-- Left eye -->
   <rect x="80" y="66" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
@@ -1525,15 +1622,32 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="98" y="62" width="4" height="18" fill="#111" opacity="0.2"/>
   <rect x="52" y="66" width="10" height="6" fill="var(--primary)"/>
   <rect x="138" y="66" width="10" height="6" fill="var(--primary)"/>`],
-  ['glasses:half-rim', `<rect x="76" y="64" width="20" height="2" fill="#555"/>
+  ['glasses:half-rim', `<!-- Left frame — top rim only -->
+  <rect x="76" y="64" width="20" height="2" fill="#555"/>
   <rect x="74" y="66" width="2" height="2" fill="#555"/>
   <rect x="96" y="66" width="2" height="2" fill="#555"/>
+  <!-- Left lens tint -->
+  <rect x="76" y="66" width="20" height="10" fill="var(--accent)" opacity="0.03"/>
+  <!-- Left lens glint -->
+  <rect x="78" y="64" width="4" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="80" y="66" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Right frame — top rim only -->
   <rect x="104" y="64" width="20" height="2" fill="#555"/>
   <rect x="102" y="66" width="2" height="2" fill="#555"/>
   <rect x="124" y="66" width="2" height="2" fill="#555"/>
+  <!-- Right lens tint -->
+  <rect x="104" y="66" width="20" height="10" fill="var(--accent)" opacity="0.03"/>
+  <!-- Right lens glint -->
+  <rect x="106" y="64" width="4" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="108" y="66" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Bridge -->
   <rect x="96" y="66" width="6" height="2" fill="#555"/>
+  <!-- Temples -->
   <rect x="62" y="66" width="12" height="2" fill="#555" opacity="0.4"/>
-  <rect x="126" y="66" width="12" height="2" fill="#555" opacity="0.4"/>`],
+  <rect x="126" y="66" width="12" height="2" fill="#555" opacity="0.4"/>
+  <!-- Temple hinge detail -->
+  <rect x="72" y="66" width="2" height="2" fill="#777" opacity="0.3"/>
+  <rect x="126" y="66" width="2" height="2" fill="#777" opacity="0.3"/>`],
   ['glasses:monocle', `<rect x="104" y="62" width="22" height="2" fill="#777"/>
   <rect x="104" y="80" width="22" height="2" fill="#777"/>
   <rect x="102" y="64" width="2" height="16" fill="#777"/>
@@ -1777,29 +1891,56 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="124" y="24" width="8" height="6" fill="#fff" opacity="0.1"/>`],
   ['hair:wild-einstein', `<!-- Main mass -->
   <path d="M 48,22 h8 v-4 h10 v-2 h80 v2 h10 v4 h8 v6 h-4 v4 h4 v10 h-4 v8 h-4 v4 h-8 v4 h-100 v-4 h-8 v-4 h-4 v-8 h-4 v-10 h4 v-4 h-4 v-6 h8 z" fill="var(--hair-color)"/>
-  <!-- Frizz tufts left -->
+  <!-- Frizz tufts left — irregular spray -->
   <rect x="42" y="30" width="6" height="10" fill="var(--hair-color)"/>
   <rect x="40" y="26" width="4" height="8" fill="var(--hair-color)"/>
   <rect x="44" y="20" width="4" height="6" fill="var(--hair-color)"/>
-  <!-- Frizz tufts right -->
+  <rect x="38" y="34" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="46" y="16" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <!-- Frizz tufts right — wilder, catches light -->
   <rect x="152" y="28" width="6" height="12" fill="var(--hair-color)"/>
   <rect x="156" y="24" width="4" height="10" fill="var(--hair-color)"/>
   <rect x="150" y="18" width="4" height="8" fill="var(--hair-color)"/>
-  <!-- Shadow (left + bottom) -->
-  <rect x="48" y="36" width="10" height="18" fill="#000" opacity="0.15"/>
-  <rect x="58" y="42" width="6" height="12" fill="#000" opacity="0.1"/>
-  <rect x="40" y="32" width="8" height="8" fill="#000" opacity="0.12"/>
-  <rect x="64" y="48" width="72" height="6" fill="#000" opacity="0.08"/>
-  <!-- Highlight (top right) -->
-  <rect x="110" y="18" width="20" height="6" fill="#fff" opacity="0.12"/>
-  <rect x="130" y="20" width="14" height="8" fill="#fff" opacity="0.1"/>
-  <rect x="144" y="24" width="8" height="6" fill="#fff" opacity="0.08"/>
-  <!-- Strand texture -->
+  <rect x="158" y="20" width="4" height="6" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="154" y="14" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <!-- Top flyaway wisps -->
+  <rect x="70" y="12" width="4" height="4" fill="var(--hair-color)" opacity="0.4"/>
+  <rect x="90" y="10" width="4" height="4" fill="var(--hair-color)" opacity="0.35"/>
+  <rect x="112" y="12" width="4" height="4" fill="var(--hair-color)" opacity="0.45"/>
+  <rect x="130" y="14" width="4" height="4" fill="var(--hair-color)" opacity="0.4"/>
+  <!-- Deep shadow — left side + underside -->
+  <rect x="48" y="36" width="10" height="18" fill="#000" opacity="0.18"/>
+  <rect x="58" y="42" width="6" height="12" fill="#000" opacity="0.12"/>
+  <rect x="40" y="32" width="8" height="8" fill="#000" opacity="0.15"/>
+  <rect x="64" y="48" width="72" height="6" fill="#000" opacity="0.1"/>
+  <rect x="48" y="42" width="6" height="8" fill="#000" opacity="0.08"/>
+  <!-- Inner volume shadow — separates mass from scalp -->
+  <rect x="64" y="42" width="8" height="8" fill="#000" opacity="0.06"/>
+  <rect x="72" y="44" width="6" height="6" fill="#000" opacity="0.04"/>
+  <!-- Highlight — top right (strong directional light) -->
+  <rect x="110" y="18" width="20" height="6" fill="#fff" opacity="0.14"/>
+  <rect x="130" y="20" width="14" height="8" fill="#fff" opacity="0.12"/>
+  <rect x="144" y="24" width="8" height="6" fill="#fff" opacity="0.1"/>
+  <rect x="116" y="16" width="12" height="4" fill="#fff" opacity="0.08"/>
+  <!-- Secondary highlight — top center -->
+  <rect x="86" y="16" width="16" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Strand groups — vertical clump texture -->
+  <rect x="56" y="22" width="2" height="20" fill="#000" opacity="0.08"/>
   <rect x="60" y="24" width="2" height="16" fill="#000" opacity="0.06"/>
-  <rect x="80" y="20" width="2" height="18" fill="#000" opacity="0.05"/>
-  <rect x="100" y="18" width="2" height="20" fill="#000" opacity="0.04"/>
-  <rect x="120" y="20" width="2" height="16" fill="#000" opacity="0.05"/>
-  <rect x="140" y="22" width="2" height="14" fill="#000" opacity="0.06"/>`],
+  <rect x="68" y="20" width="2" height="22" fill="#000" opacity="0.05"/>
+  <rect x="76" y="18" width="2" height="20" fill="#000" opacity="0.04"/>
+  <rect x="84" y="16" width="2" height="22" fill="#000" opacity="0.04"/>
+  <rect x="94" y="18" width="2" height="20" fill="#000" opacity="0.03"/>
+  <rect x="104" y="16" width="2" height="22" fill="#000" opacity="0.03"/>
+  <rect x="116" y="18" width="2" height="18" fill="#000" opacity="0.04"/>
+  <rect x="126" y="20" width="2" height="16" fill="#000" opacity="0.05"/>
+  <rect x="138" y="22" width="2" height="14" fill="#000" opacity="0.06"/>
+  <rect x="148" y="24" width="2" height="12" fill="#000" opacity="0.05"/>
+  <!-- Highlight strand catches — individual bright wisps -->
+  <rect x="108" y="20" width="2" height="10" fill="#fff" opacity="0.08"/>
+  <rect x="122" y="18" width="2" height="12" fill="#fff" opacity="0.07"/>
+  <rect x="136" y="22" width="2" height="8" fill="#fff" opacity="0.06"/>
+  <rect x="146" y="26" width="2" height="8" fill="#fff" opacity="0.06"/>`],
   ['hair:windswept', `<path d="M 64,26 h72 v2 h8 v2 h6 v4 h-4 v4 h-92 v-6 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="146" y="26" width="10" height="4" fill="var(--hair-color)"/>
   <rect x="150" y="30" width="8" height="4" fill="var(--hair-color)"/>
@@ -1986,19 +2127,48 @@ export const MYTHIC_PARTS = new Map<string, string>([
   </g>`],
   ['head:oval', `<!-- Tinted outline -->
   <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
-  <!-- Anti-alias pixels at corners (mid-tone) -->
+  <!-- AA corners -->
   <rect x="80" y="26" width="2" height="2" fill="var(--skin)" opacity="0.5"/>
   <rect x="118" y="26" width="2" height="2" fill="var(--skin)" opacity="0.5"/>
   <rect x="130" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="68" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
-  <!-- Skin fill (inset 1px from outline) -->
-  <!-- Ears -->
+  <!-- Forehead highlight — right side catch -->
+  <rect x="108" y="30" width="14" height="6" fill="#fff" opacity="0.09"/>
+  <rect x="112" y="28" width="8" height="4" fill="#fff" opacity="0.07"/>
+  <rect x="104" y="36" width="18" height="4" fill="#fff" opacity="0.05"/>
+  <!-- Temple shadow — left side -->
+  <rect x="72" y="40" width="8" height="18" fill="#000" opacity="0.05"/>
+  <rect x="74" y="36" width="6" height="6" fill="#000" opacity="0.04"/>
+  <!-- Right cheekbone highlight -->
+  <rect x="120" y="72" width="6" height="10" fill="#fff" opacity="0.07"/>
+  <rect x="122" y="68" width="6" height="6" fill="#fff" opacity="0.05"/>
+  <!-- Left jaw shadow -->
+  <rect x="74" y="92" width="8" height="10" fill="#000" opacity="0.05"/>
+  <rect x="78" y="98" width="6" height="6" fill="#000" opacity="0.04"/>
+  <!-- Nose bridge highlight -->
+  <rect x="100" y="72" width="2" height="10" fill="#fff" opacity="0.06"/>
+  <!-- Under-eye orbital shadow -->
+  <rect x="80" y="78" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="104" y="78" width="16" height="2" fill="#000" opacity="0.03"/>
+  <!-- Nasolabial fold hint -->
+  <rect x="86" y="88" width="2" height="8" fill="#000" opacity="0.04"/>
+  <rect x="112" y="88" width="2" height="8" fill="#000" opacity="0.03"/>
+  <!-- Skin texture dither -->
+  <rect x="86" y="44" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="110" y="40" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="96" y="54" width="2" height="2" fill="#000" opacity="0.02"/>
+  <rect x="120" y="50" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Left ear -->
   <rect x="66" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="64" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="64" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="66" y="70" width="2" height="6" fill="#000" opacity="0.12"/>
+  <rect x="64" y="72" width="2" height="4" fill="#000" opacity="0.08"/>
+  <rect x="68" y="74" width="2" height="2" fill="#000" opacity="0.06"/>
+  <!-- Right ear -->
   <rect x="130" y="68" width="4" height="12" fill="var(--skin)"/>
   <rect x="134" y="70" width="2" height="8" fill="var(--skin)"/>
-  <rect x="132" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="132" y="70" width="2" height="4" fill="#fff" opacity="0.08"/>
+  <rect x="134" y="72" width="2" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
   <rect x="64" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="62" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
@@ -2006,19 +2176,28 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="134" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="136" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
   <rect x="134" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Shadow below mouth (chin crease) -->
+  <!-- Chin crease -->
   <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
-  <!-- Cheek blush (TWP-visible level) -->
+  <!-- Cheek blush -->
   <rect x="74" y="80" width="10" height="10" fill="#cc7766" opacity="0.2"/>
   <rect x="76" y="78" width="6" height="4" fill="#cc7766" opacity="0.12"/>
   <rect x="116" y="80" width="10" height="10" fill="#cc7766" opacity="0.16"/>
   <rect x="118" y="78" width="6" height="4" fill="#cc7766" opacity="0.1"/>
-  <!-- Chin shadow (contained to chin only) -->
+  <!-- Chin shadow -->
   <rect x="88" y="106" width="24" height="2" fill="#000" opacity="0.1"/>
-  <!-- Neck: plain skin, no shading -->
+  <rect x="82" y="104" width="6" height="4" fill="#000" opacity="0.05"/>
+  <!-- Neck -->
   <rect x="90" y="116" width="20" height="14" fill="var(--skin)"/>
   <rect x="88" y="118" width="4" height="10" fill="var(--skin)"/>
-  <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>`],
+  <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>
+  <!-- Neck shadow — left -->
+  <rect x="88" y="118" width="6" height="10" fill="#000" opacity="0.07"/>
+  <rect x="94" y="120" width="4" height="6" fill="#000" opacity="0.04"/>
+  <!-- Neck highlight — right -->
+  <rect x="106" y="118" width="4" height="6" fill="#fff" opacity="0.05"/>
+  <!-- Neck tendon hints -->
+  <rect x="96" y="120" width="2" height="6" fill="#000" opacity="0.03"/>
+  <rect x="104" y="120" width="2" height="6" fill="#000" opacity="0.03"/>`],
   ['head:round', `<g transform="translate(0,8)">
   <!-- Outline: circular, soft -->
   <path d="M 78,30 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
@@ -2271,11 +2450,21 @@ export const MYTHIC_PARTS = new Map<string, string>([
   ['mouth:small', `<!-- Small: 14px, quiet, reserved (gender-neutral) -->
   <rect x="93" y="96" width="14" height="2" fill="#000" opacity="0.25"/>
   <rect x="95" y="98" width="10" height="2" fill="#000" opacity="0.06"/>`],
-  ['mouth:smile', `<!-- Smile: 20px upturned, friendly (gender-neutral) -->
+  ['mouth:smile', `<!-- Smile: 20px upturned, friendly -->
+  <!-- Upper lip shadow -->
+  <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- Lip line -->
   <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
+  <!-- Upturn corners -->
   <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
   <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
-  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.06"/>`],
+  <!-- Lower lip fullness — subtle volume -->
+  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
+  <rect x="94" y="100" width="12" height="2" fill="#000" opacity="0.04"/>
+  <!-- Lower lip highlight — light catch -->
+  <rect x="96" y="98" width="8" height="2" fill="#fff" opacity="0.05"/>
+  <!-- Chin dimple hint -->
+  <rect x="98" y="102" width="4" height="2" fill="#000" opacity="0.04"/>`],
   ['mouth:smirk', `<!-- Smirk: 18px asymmetric, cocky -->
   <rect x="90" y="96" width="18" height="2" fill="#000" opacity="0.3"/>
   <rect x="106" y="94" width="4" height="2" fill="#000" opacity="0.2"/>
@@ -2309,13 +2498,26 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="100" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
   <rect x="100" y="82" width="2" height="4" fill="#fff" opacity="0.06"/>`],
   ['nose:prominent', `<!-- Prominent nose: 8px bridge, large nostrils -->
+  <!-- Bridge — shadow side left -->
+  <rect x="94" y="78" width="4" height="14" fill="#000" opacity="0.1"/>
+  <!-- Bridge — main mass -->
   <rect x="96" y="78" width="8" height="14" fill="#000" opacity="0.12"/>
-  <rect x="94" y="82" width="4" height="8" fill="#000" opacity="0.06"/>
-  <rect x="102" y="82" width="4" height="8" fill="#000" opacity="0.06"/>
-  <rect x="94" y="88" width="4" height="4" fill="#000" opacity="0.22"/>
-  <rect x="102" y="88" width="4" height="4" fill="#000" opacity="0.22"/>
-  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>
-  <rect x="102" y="80" width="2" height="6" fill="#fff" opacity="0.08"/>`],
+  <!-- Bridge — highlight right -->
+  <rect x="102" y="78" width="2" height="10" fill="#fff" opacity="0.08"/>
+  <rect x="104" y="80" width="2" height="6" fill="#fff" opacity="0.05"/>
+  <!-- Side shadow — left deeper -->
+  <rect x="92" y="82" width="4" height="8" fill="#000" opacity="0.07"/>
+  <!-- Side shadow — right lighter -->
+  <rect x="104" y="82" width="4" height="6" fill="#000" opacity="0.04"/>
+  <!-- Nostrils — shadow wells -->
+  <rect x="94" y="88" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="102" y="88" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="95" y="89" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="103" y="89" width="2" height="2" fill="#000" opacity="0.08"/>
+  <!-- Nose tip highlight -->
+  <rect x="98" y="88" width="4" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Nose base shadow -->
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>`],
   ['nose:subtle', `<!-- Subtle nose: 4px bridge, small nostrils -->
   <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.08"/>
   <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
