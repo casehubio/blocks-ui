@@ -923,15 +923,27 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="58" y="124" width="8" height="112" fill="#000" opacity="0.1"/>
   <rect x="66" y="128" width="8" height="104" fill="#000" opacity="0.04"/>
   <rect x="130" y="122" width="16" height="28" fill="#fff" opacity="0.09"/>
-  <!-- Collar -->
+  <!-- Collar — with fold and shadow -->
   <rect x="80" y="120" width="40" height="6" fill="var(--primary)"/>
-  <rect x="80" y="120" width="40" height="2" fill="#000" opacity="0.08"/>
-  <!-- Buttons -->
-  <rect x="98" y="140" width="4" height="4" fill="#000" opacity="0.15"/>
-  <rect x="98" y="156" width="4" height="4" fill="#000" opacity="0.15"/>
-  <rect x="98" y="172" width="4" height="4" fill="#000" opacity="0.15"/>
+  <rect x="80" y="120" width="40" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="80" y="124" width="40" height="2" fill="#000" opacity="0.08"/>
+  <!-- Collar points -->
+  <rect x="78" y="122" width="4" height="4" fill="var(--primary)"/>
+  <rect x="118" y="122" width="4" height="4" fill="var(--primary)"/>
+  <!-- Breast pocket -->
+  <rect x="76" y="138" width="8" height="8" fill="#000" opacity="0.05"/>
+  <rect x="76" y="138" width="8" height="2" fill="#000" opacity="0.08"/>
+  <rect x="78" y="140" width="4" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Buttons — with thread cross -->
+  <rect x="98" y="140" width="4" height="4" fill="#000" opacity="0.18"/>
+  <rect x="99" y="141" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="98" y="156" width="4" height="4" fill="#000" opacity="0.18"/>
+  <rect x="99" y="157" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="98" y="172" width="4" height="4" fill="#000" opacity="0.18"/>
+  <rect x="99" y="173" width="2" height="2" fill="#fff" opacity="0.08"/>
   <!-- Center placket -->
-  <rect x="98" y="126" width="2" height="80" fill="#000" opacity="0.04"/>
+  <rect x="97" y="126" width="2" height="80" fill="#000" opacity="0.05"/>
+  <rect x="101" y="126" width="2" height="80" fill="#000" opacity="0.03"/>
   <!-- Stipple -->
   <rect x="52" y="134" width="2" height="2" fill="#000" opacity="0.06"/>
   <rect x="60" y="148" width="2" height="2" fill="#000" opacity="0.05"/>
@@ -968,20 +980,40 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <g clip-path="url(#polo-clip)">
   <rect x="46" y="122" width="10" height="116" fill="#000" opacity="0.12"/>
   <rect x="136" y="122" width="12" height="28" fill="#fff" opacity="0.06"/>
-  <!-- Collar -->
+  <!-- Collar — folded with shadow -->
   <rect x="82" y="114" width="36" height="10" fill="var(--primary)"/>
   <rect x="80" y="116" width="4" height="6" fill="var(--primary)"/>
   <rect x="116" y="116" width="4" height="6" fill="var(--primary)"/>
-  <rect x="84" y="114" width="32" height="2" fill="#fff" opacity="0.1"/>
-  <!-- Placket -->
+  <rect x="84" y="114" width="32" height="2" fill="#fff" opacity="0.12"/>
+  <rect x="82" y="122" width="36" height="2" fill="#000" opacity="0.08"/>
+  <!-- Collar fold shadow -->
+  <rect x="82" y="118" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="114" y="118" width="4" height="4" fill="#000" opacity="0.04"/>
+  <!-- Placket — with stitch lines -->
   <rect x="96" y="122" width="8" height="24" fill="var(--primary)"/>
   <rect x="97" y="124" width="6" height="20" fill="#000" opacity="0.06"/>
-  <rect x="98" y="128" width="4" height="2" fill="var(--secondary)"/>
-  <rect x="98" y="134" width="4" height="2" fill="var(--secondary)"/>
+  <rect x="95" y="122" width="2" height="24" fill="#000" opacity="0.04"/>
+  <rect x="103" y="122" width="2" height="24" fill="#000" opacity="0.04"/>
+  <!-- Polo buttons -->
+  <rect x="98" y="128" width="4" height="3" fill="var(--secondary)"/>
+  <rect x="99" y="129" width="2" height="1" fill="#fff" opacity="0.15"/>
+  <rect x="98" y="135" width="4" height="3" fill="var(--secondary)"/>
+  <rect x="99" y="136" width="2" height="1" fill="#fff" opacity="0.15"/>
+  <!-- Chest seam lines -->
+  <rect x="56" y="140" width="2" height="36" fill="#000" opacity="0.05"/>
+  <rect x="140" y="140" width="2" height="28" fill="#000" opacity="0.04"/>
+  <!-- Fabric texture -->
+  <rect x="66" y="142" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="78" y="156" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="120" y="148" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="132" y="162" width="2" height="2" fill="#fff" opacity="0.03"/>
   </g>
   <!-- Arms (skin — short sleeves) -->
   <rect x="48" y="142" width="14" height="50" fill="var(--skin)"/>
-  <rect x="138" y="142" width="14" height="50" fill="var(--skin)"/>`],
+  <rect x="138" y="142" width="14" height="50" fill="var(--skin)"/>
+  <!-- Sleeve hem -->
+  <rect x="48" y="140" width="14" height="2" fill="#000" opacity="0.06"/>
+  <rect x="138" y="140" width="14" height="2" fill="#000" opacity="0.04"/>`],
   ['costume:robes', `<clipPath id="robes-clip">
     <path d="M 38,126 h124 v8 h-2 v32 h-4 v20 h-2 v16 h-2 v14 h-2 v14 h-2 v10 h-88 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-2 v-20 h-4 v-32 h-2 z"/>
   </clipPath>
@@ -1078,35 +1110,46 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Neckline edge trim -->
   <rect x="76" y="122" width="2" height="30" fill="#000" opacity="0.08"/>
   <rect x="122" y="122" width="2" height="26" fill="#000" opacity="0.06"/>
-  <!-- Rich fabric drape folds -->
-  <rect x="74" y="150" width="2" height="50" fill="#000" opacity="0.06"/>
-  <rect x="82" y="160" width="2" height="40" fill="#000" opacity="0.04"/>
-  <rect x="116" y="148" width="2" height="45" fill="#000" opacity="0.05"/>
-  <rect x="124" y="156" width="2" height="35" fill="#000" opacity="0.04"/>
-  <rect x="96" y="148" width="2" height="60" fill="#000" opacity="0.04"/>
-  <!-- Stipple -->
-  <rect x="52" y="136" width="2" height="2" fill="#000" opacity="0.06"/>
-  <rect x="60" y="150" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="54" y="164" width="2" height="2" fill="#000" opacity="0.06"/>
-  <rect x="66" y="178" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="50" y="192" width="2" height="2" fill="#000" opacity="0.06"/>
-  <rect x="62" y="206" width="2" height="2" fill="#000" opacity="0.05"/>
-  <rect x="84" y="172" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="108" y="180" width="2" height="2" fill="#000" opacity="0.04"/>
-  <rect x="94" y="198" width="2" height="2" fill="#000" opacity="0.04"/>
+  <!-- Waist sash -->
+  <rect x="58" y="162" width="84" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="58" y="162" width="84" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="58" y="166" width="84" height="2" fill="#000" opacity="0.06"/>
+  <!-- Sash knot -->
+  <rect x="104" y="160" width="8" height="10" fill="var(--accent)" opacity="0.8"/>
+  <rect x="106" y="162" width="4" height="6" fill="#fff" opacity="0.06"/>
+  <!-- Rich fabric drape — above waist (fitted) -->
+  <rect x="74" y="146" width="2" height="16" fill="#000" opacity="0.06"/>
+  <rect x="124" y="146" width="2" height="14" fill="#000" opacity="0.04"/>
+  <rect x="96" y="148" width="2" height="14" fill="#000" opacity="0.04"/>
+  <!-- Rich fabric drape — below waist (flowing) -->
+  <rect x="72" y="168" width="2" height="50" fill="#000" opacity="0.06"/>
+  <rect x="80" y="172" width="2" height="40" fill="#000" opacity="0.04"/>
+  <rect x="90" y="170" width="2" height="48" fill="#000" opacity="0.03"/>
+  <rect x="108" y="170" width="2" height="44" fill="#000" opacity="0.03"/>
+  <rect x="118" y="168" width="2" height="46" fill="#000" opacity="0.05"/>
+  <rect x="128" y="172" width="2" height="38" fill="#000" opacity="0.04"/>
+  <!-- Highlight folds — light side -->
+  <rect x="132" y="174" width="2" height="28" fill="#fff" opacity="0.04"/>
+  <rect x="122" y="178" width="2" height="20" fill="#fff" opacity="0.03"/>
+  <!-- Fabric texture — silk dither -->
+  <rect x="52" y="136" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="60" y="150" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="54" y="178" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="66" y="192" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="50" y="206" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="186" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="108" y="194" width="2" height="2" fill="#000" opacity="0.03"/>
   <rect x="126" y="138" width="2" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="134" y="152" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="128" y="168" width="2" height="2" fill="#fff" opacity="0.06"/>
-  <rect x="138" y="182" width="2" height="2" fill="#fff" opacity="0.05"/>
-  <rect x="130" y="198" width="2" height="2" fill="#fff" opacity="0.06"/>
-  <!-- Folds -->
-  <rect x="56" y="148" width="2" height="40" fill="#000" opacity="0.07"/>
-  <rect x="64" y="160" width="2" height="28" fill="#000" opacity="0.05"/>
-  <rect x="136" y="152" width="2" height="30" fill="#000" opacity="0.04"/>
-  <rect x="52" y="166" width="16" height="2" fill="#000" opacity="0.04"/>
-  <rect x="130" y="170" width="14" height="2" fill="#000" opacity="0.03"/>
-  <!-- Hem -->
-  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  <rect x="134" y="180" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="196" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="138" y="208" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <!-- Horizontal drape lines -->
+  <rect x="56" y="188" width="18" height="2" fill="#000" opacity="0.04"/>
+  <rect x="128" y="192" width="16" height="2" fill="#000" opacity="0.03"/>
+  <rect x="72" y="218" width="56" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem — double line -->
+  <rect x="56" y="232" width="88" height="2" fill="#000" opacity="0.08"/>
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.12"/>
   </g>`],
   ['costume:simple-dress', `<clipPath id="dress-clip">
     <path d="M 42,116 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v4 h-80 v-4 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
