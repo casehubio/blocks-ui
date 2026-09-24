@@ -1673,11 +1673,11 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Shaved sides hint -->
   <rect x="64" y="36" width="16" height="8" fill="var(--skin)" opacity="0.3"/>
   <rect x="120" y="36" width="16" height="8" fill="var(--skin)" opacity="0.3"/>`],
-  ['hair:pixie', `<path d="M 66,28 h68 v2 h6 v2 h4 v10 h-4 v4 h-82 v-4 h-4 v-10 h4 v-2 h6 v-2 h2 z" fill="var(--hair-color)"/>
+  ['hair:pixie', `<path d="M 66,28 h68 v2 h6 v2 h4 v18 h-4 v4 h-82 v-4 h-4 v-18 h4 v-2 h6 v-2 h2 z" fill="var(--hair-color)"/>
   <rect x="70" y="26" width="6" height="4" fill="var(--hair-color)"/>
   <rect x="106" y="24" width="6" height="4" fill="var(--hair-color)"/>
-  <rect x="66" y="34" width="6" height="8" fill="#000" opacity="0.12"/>
-  <rect x="130" y="30" width="6" height="8" fill="#fff" opacity="0.1"/>`],
+  <rect x="66" y="34" width="6" height="16" fill="#000" opacity="0.12"/>
+  <rect x="130" y="30" width="6" height="16" fill="#fff" opacity="0.1"/>`],
   ['hair:ponytail', `<path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
   <rect x="136" y="38" width="10" height="10" fill="var(--hair-color)"/>
   <rect x="140" y="48" width="10" height="16" fill="var(--hair-color)"/>

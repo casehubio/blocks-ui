@@ -103,7 +103,7 @@ export const HEAD_FACE_SPECS: Record<string, HeadFaceSpec> = {
 export const CANONICAL_FACE: HeadFaceSpec = HEAD_FACE_SPECS['oval']!;
 
 export const PART_DELTAS: Record<string, PartPositionDelta> = {
-  'hair:pixie':          { dy: 2 },
+  'hair:pixie':          { dy: -1 },
   'hair:cropped-fringe': { dy: 2 },
   'hat:beret':           { dy: 2 },
   'nose:button':         { dy: -2 },
