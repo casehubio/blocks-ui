@@ -181,7 +181,9 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   }
 
   if (group === 'beard') {
-    const inner = (pd.dx !== 0 || pd.dy !== 0) ? wrapTranslate(l.content, pd.dx, pd.dy) : l.content;
+    const dy = spec.yOffset + pd.dy;
+    const dx = pd.dx;
+    const inner = (dx !== 0 || dy !== 0) ? wrapTranslate(l.content, dx, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
