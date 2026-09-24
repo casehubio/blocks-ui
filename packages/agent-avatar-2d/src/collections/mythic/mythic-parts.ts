@@ -197,30 +197,30 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="80" y="64" width="4" height="2" fill="#3a2520" opacity="0.4"/>
   <rect x="106" y="66" width="12" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="116" y="68" width="4" height="2" fill="#3a2520" opacity="0.4"/>`],
-  ['brow:bushy-wild', `<!-- Left brow — thick, unruly -->
-  <rect x="78" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
-  <rect x="76" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
-  <rect x="92" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
-  <rect x="80" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
-  <!-- Left stray hairs -->
-  <rect x="74" y="58" width="2" height="4" fill="#3a2520" opacity="0.3"/>
-  <rect x="94" y="60" width="2" height="2" fill="#3a2520" opacity="0.25"/>
-  <rect x="78" y="58" width="4" height="2" fill="#3a2520" opacity="0.35"/>
-  <rect x="88" y="60" width="2" height="2" fill="#3a2520" opacity="0.2"/>
-  <!-- Left brow volume highlight -->
-  <rect x="82" y="62" width="8" height="2" fill="#fff" opacity="0.06"/>
-  <!-- Right brow — thick, unruly -->
-  <rect x="104" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
-  <rect x="120" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
-  <rect x="104" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
-  <rect x="114" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
-  <!-- Right stray hairs -->
-  <rect x="124" y="58" width="2" height="4" fill="#3a2520" opacity="0.3"/>
-  <rect x="102" y="60" width="2" height="2" fill="#3a2520" opacity="0.25"/>
-  <rect x="118" y="58" width="4" height="2" fill="#3a2520" opacity="0.35"/>
-  <rect x="108" y="60" width="2" height="2" fill="#3a2520" opacity="0.2"/>
-  <!-- Right brow volume highlight -->
-  <rect x="110" y="62" width="8" height="2" fill="#fff" opacity="0.06"/>`],
+  ['brow:bushy-wild', `<!-- Left brow — THICK, wild professor -->
+  <rect x="76" y="60" width="22" height="6" fill="var(--hair-color)" opacity="0.9"/>
+  <rect x="74" y="58" width="6" height="6" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="94" y="58" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="78" y="66" width="8" height="2" fill="var(--hair-color)" opacity="0.4"/>
+  <!-- Left stray wild hairs -->
+  <rect x="72" y="56" width="2" height="4" fill="var(--hair-color)" opacity="0.45"/>
+  <rect x="96" y="58" width="2" height="2" fill="var(--hair-color)" opacity="0.35"/>
+  <rect x="76" y="56" width="4" height="2" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="90" y="58" width="4" height="2" fill="var(--hair-color)" opacity="0.3"/>
+  <!-- Left brow highlight -->
+  <rect x="80" y="60" width="10" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Right brow — THICK, wild professor -->
+  <rect x="102" y="60" width="22" height="6" fill="var(--hair-color)" opacity="0.9"/>
+  <rect x="122" y="58" width="6" height="6" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="102" y="58" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="116" y="66" width="8" height="2" fill="var(--hair-color)" opacity="0.4"/>
+  <!-- Right stray wild hairs -->
+  <rect x="126" y="56" width="2" height="4" fill="var(--hair-color)" opacity="0.45"/>
+  <rect x="100" y="58" width="2" height="2" fill="var(--hair-color)" opacity="0.35"/>
+  <rect x="120" y="56" width="4" height="2" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="108" y="58" width="4" height="2" fill="var(--hair-color)" opacity="0.3"/>
+  <!-- Right brow highlight -->
+  <rect x="110" y="60" width="10" height="2" fill="#fff" opacity="0.1"/>`],
   ['brow:concerned', `<rect x="80" y="68" width="6" height="2" fill="#3a2520" opacity="0.5"/>
   <rect x="86" y="66" width="4" height="2" fill="#3a2520" opacity="0.6"/>
   <rect x="90" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
@@ -1772,45 +1772,48 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <!-- Right lower lid + inner corner -->
   <rect x="104" y="76" width="14" height="2" fill="#000" opacity="0.05"/>
   <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.05"/>`],
-  ['eyes:deep-set', `<!-- Deep-set eyes: 14x8 sclera, heavy lid shadow — brooding, intense -->
-  <!-- Left orbital shadow — deeper socket -->
-  <rect x="80" y="66" width="18" height="4" fill="#000" opacity="0.15"/>
-  <rect x="78" y="68" width="4" height="2" fill="#000" opacity="0.08"/>
-  <rect x="96" y="68" width="4" height="2" fill="#000" opacity="0.06"/>
-  <!-- Left eye -->
+  ['eyes:deep-set', `<!-- Deep-set eyes: heavy brow shadow, sunken sockets -->
+  <!-- Left brow ridge shadow — THICK, defines the deep-set look -->
+  <rect x="78" y="64" width="20" height="6" fill="#000" opacity="0.3"/>
+  <rect x="76" y="66" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="96" y="66" width="4" height="4" fill="#000" opacity="0.15"/>
+  <!-- Left eye sclera -->
   <rect x="82" y="70" width="14" height="8" fill="#dde4e8" opacity="0.9"/>
-  <rect x="82" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
-  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
-  <!-- Left iris — layered depth -->
+  <!-- Left upper lid — THICK dark line -->
+  <rect x="80" y="70" width="18" height="2" fill="#3a2520" opacity="0.8"/>
+  <!-- Left lower lid -->
+  <rect x="82" y="78" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Left iris -->
   <rect x="88" y="72" width="6" height="6" fill="var(--iris)"/>
   <rect x="90" y="72" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="89" y="73" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="90" y="74" width="4" height="4" fill="#111"/>
+  <!-- Left highlight -->
   <rect x="88" y="72" width="2" height="2" fill="#fff"/>
-  <rect x="90" y="72" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <!-- Left lower lid shadow -->
-  <rect x="82" y="78" width="14" height="2" fill="#000" opacity="0.06"/>
-  <!-- Left outer corner crease -->
-  <rect x="96" y="72" width="2" height="4" fill="#000" opacity="0.06"/>
-  <!-- Right orbital shadow — deeper socket -->
-  <rect x="102" y="66" width="18" height="4" fill="#000" opacity="0.15"/>
-  <rect x="100" y="68" width="4" height="2" fill="#000" opacity="0.06"/>
-  <rect x="118" y="68" width="4" height="2" fill="#000" opacity="0.08"/>
-  <!-- Right eye -->
+  <!-- Left crow's feet / outer corner -->
+  <rect x="96" y="72" width="2" height="6" fill="#000" opacity="0.12"/>
+  <rect x="98" y="74" width="2" height="2" fill="#000" opacity="0.08"/>
+  <!-- Left under-eye bag -->
+  <rect x="82" y="78" width="14" height="2" fill="#000" opacity="0.12"/>
+  <!-- Right brow ridge shadow — THICK -->
+  <rect x="102" y="64" width="20" height="6" fill="#000" opacity="0.25"/>
+  <rect x="100" y="66" width="4" height="4" fill="#000" opacity="0.15"/>
+  <rect x="120" y="66" width="4" height="4" fill="#000" opacity="0.2"/>
+  <!-- Right eye sclera -->
   <rect x="104" y="70" width="14" height="8" fill="#dde4e8" opacity="0.9"/>
-  <rect x="104" y="70" width="14" height="2" fill="#3a2520" opacity="0.6"/>
-  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
-  <!-- Right iris — layered depth -->
+  <!-- Right upper lid — THICK dark line -->
+  <rect x="102" y="70" width="18" height="2" fill="#3a2520" opacity="0.8"/>
+  <!-- Right lower lid -->
+  <rect x="104" y="78" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Right iris -->
   <rect x="108" y="72" width="6" height="6" fill="var(--iris)"/>
   <rect x="110" y="72" width="4" height="6" fill="var(--iris-dark)"/>
-  <rect x="109" y="73" width="2" height="2" fill="var(--iris)" opacity="0.5"/>
   <rect x="110" y="74" width="4" height="4" fill="#111"/>
+  <!-- Right highlight -->
   <rect x="108" y="72" width="2" height="2" fill="#fff"/>
-  <rect x="110" y="72" width="2" height="2" fill="#fff" opacity="0.3"/>
-  <!-- Right lower lid shadow -->
-  <rect x="104" y="78" width="14" height="2" fill="#000" opacity="0.06"/>
-  <!-- Right inner corner crease -->
-  <rect x="102" y="72" width="2" height="4" fill="#000" opacity="0.06"/>`],
+  <!-- Right crow's feet / inner corner -->
+  <rect x="102" y="72" width="2" height="6" fill="#000" opacity="0.12"/>
+  <!-- Right under-eye bag -->
+  <rect x="104" y="78" width="14" height="2" fill="#000" opacity="0.12"/>`],
   ['eyes:large', `<!-- Large eyes: 16x12 sclera, 8x8 iris — animated, expressive -->
   <!-- Left eye -->
   <rect x="80" y="66" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
@@ -3016,21 +3019,22 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="93" y="96" width="14" height="2" fill="#000" opacity="0.25"/>
   <rect x="95" y="98" width="10" height="2" fill="#000" opacity="0.06"/>
   <rect x="97" y="98" width="6" height="2" fill="#fff" opacity="0.03"/>`],
-  ['mouth:smile', `<!-- Smile: 20px upturned, friendly -->
-  <!-- Upper lip shadow -->
-  <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.06"/>
-  <!-- Lip line -->
-  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
+  ['mouth:smile', `<!-- Smile: warm, visible lip color -->
+  <!-- Upper lip — rose-tinted, visible -->
+  <rect x="90" y="94" width="20" height="2" fill="#8a5a4a" opacity="0.4"/>
   <!-- Upturn corners -->
-  <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
-  <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
-  <!-- Lower lip fullness — subtle volume -->
-  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
-  <rect x="94" y="100" width="12" height="2" fill="#000" opacity="0.04"/>
+  <rect x="88" y="92" width="2" height="2" fill="#8a5a4a" opacity="0.25"/>
+  <rect x="110" y="92" width="2" height="2" fill="#8a5a4a" opacity="0.25"/>
+  <!-- Lip crease — dark line -->
+  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.4"/>
+  <!-- Lower lip — fuller, lighter -->
+  <rect x="90" y="98" width="20" height="2" fill="#8a5a4a" opacity="0.3"/>
+  <rect x="92" y="100" width="16" height="2" fill="#8a5a4a" opacity="0.15"/>
   <!-- Lower lip highlight — light catch -->
-  <rect x="96" y="98" width="8" height="2" fill="#fff" opacity="0.05"/>
-  <!-- Chin dimple hint -->
-  <rect x="98" y="102" width="4" height="2" fill="#000" opacity="0.04"/>`],
+  <rect x="94" y="98" width="12" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Chin shadow -->
+  <rect x="94" y="102" width="12" height="2" fill="#000" opacity="0.08"/>
+  <rect x="96" y="104" width="8" height="2" fill="#000" opacity="0.05"/>`],
   ['mouth:smirk', `<!-- Smirk: 18px asymmetric, cocky -->
   <rect x="92" y="94" width="14" height="2" fill="#000" opacity="0.05"/>
   <rect x="90" y="96" width="18" height="2" fill="#000" opacity="0.3"/>
@@ -3076,27 +3080,26 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="98" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
   <rect x="100" y="88" width="2" height="2" fill="#000" opacity="0.08"/>
   <rect x="96" y="90" width="8" height="2" fill="#000" opacity="0.04"/>`],
-  ['nose:prominent', `<!-- Prominent nose: 8px bridge, large nostrils -->
-  <!-- Bridge — shadow side left -->
-  <rect x="94" y="78" width="4" height="14" fill="#000" opacity="0.1"/>
+  ['nose:prominent', `<!-- Prominent nose: BOLD visible shape -->
+  <!-- Bridge — left shadow (defines nose shape) -->
+  <rect x="94" y="76" width="4" height="16" fill="#000" opacity="0.25"/>
   <!-- Bridge — main mass -->
-  <rect x="96" y="78" width="8" height="14" fill="#000" opacity="0.12"/>
-  <!-- Bridge — highlight right -->
-  <rect x="102" y="78" width="2" height="10" fill="#fff" opacity="0.08"/>
-  <rect x="104" y="80" width="2" height="6" fill="#fff" opacity="0.05"/>
-  <!-- Side shadow — left deeper -->
-  <rect x="92" y="82" width="4" height="8" fill="#000" opacity="0.07"/>
-  <!-- Side shadow — right lighter -->
-  <rect x="104" y="82" width="4" height="6" fill="#000" opacity="0.04"/>
-  <!-- Nostrils — shadow wells -->
-  <rect x="94" y="88" width="4" height="4" fill="#000" opacity="0.25"/>
-  <rect x="102" y="88" width="4" height="4" fill="#000" opacity="0.2"/>
-  <rect x="95" y="89" width="2" height="2" fill="#000" opacity="0.1"/>
-  <rect x="103" y="89" width="2" height="2" fill="#000" opacity="0.08"/>
-  <!-- Nose tip highlight -->
-  <rect x="98" y="88" width="4" height="2" fill="#fff" opacity="0.06"/>
-  <!-- Nose base shadow -->
-  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>`],
+  <rect x="96" y="76" width="8" height="16" fill="#000" opacity="0.2"/>
+  <!-- Bridge — right highlight -->
+  <rect x="102" y="76" width="2" height="12" fill="#fff" opacity="0.15"/>
+  <rect x="104" y="78" width="2" height="8" fill="#fff" opacity="0.1"/>
+  <!-- Wing shadow — left (wider, defines nostril shape) -->
+  <rect x="90" y="82" width="6" height="10" fill="#000" opacity="0.15"/>
+  <!-- Wing shadow — right -->
+  <rect x="104" y="82" width="6" height="8" fill="#000" opacity="0.08"/>
+  <!-- Nostrils — dark holes -->
+  <rect x="92" y="88" width="4" height="4" fill="#000" opacity="0.45"/>
+  <rect x="104" y="88" width="4" height="4" fill="#000" opacity="0.35"/>
+  <!-- Nose tip — bulb highlight -->
+  <rect x="96" y="86" width="8" height="4" fill="#fff" opacity="0.1"/>
+  <rect x="98" y="88" width="4" height="2" fill="#fff" opacity="0.12"/>
+  <!-- Nose base shadow line -->
+  <rect x="90" y="92" width="20" height="2" fill="#000" opacity="0.15"/>`],
   ['nose:subtle', `<!-- Subtle nose: 4px bridge, small nostrils -->
   <rect x="96" y="82" width="4" height="8" fill="#000" opacity="0.06"/>
   <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.08"/>
