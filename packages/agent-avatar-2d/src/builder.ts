@@ -173,9 +173,7 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   }
 
   if (group === 'beard') {
-    const dy = Math.round((spec.mouthY - CANONICAL_FACE.mouthY) * 0.4);
-    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
-    return `  <g ${tag}>${inner}</g>`;
+    return `  <g ${tag}>${l.content}</g>`;
   }
 
   if (group === 'hair') {
