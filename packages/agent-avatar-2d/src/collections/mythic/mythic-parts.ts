@@ -59,21 +59,52 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="54" y="158" width="4" height="4" fill="#222" opacity="0.5"/>
   <rect x="58" y="160" width="4" height="6" fill="#222" opacity="0.4"/>
   <rect x="56" y="166" width="2" height="4" fill="#222" opacity="0.4"/>`],
-  ['beard:bushy-white', `<!-- Symmetric bushy beard centered at x=100 -->
-  <path d="M 68,88 h64 v2 h4 v4 h2 v12 h-2 v4 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 h-16 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 h-2 v-12 h2 v-4 h4 v-2 z" fill="#ccc"/>
-  <rect x="74" y="86" width="52" height="6" fill="#ddd"/>
-  <rect x="70" y="84" width="6" height="4" fill="#ddd"/>
-  <rect x="124" y="84" width="6" height="4" fill="#ddd"/>
-  <rect x="68" y="94" width="8" height="20" fill="#000" opacity="0.12"/>
-  <rect x="76" y="98" width="4" height="18" fill="#000" opacity="0.06"/>
-  <rect x="124" y="92" width="8" height="14" fill="#fff" opacity="0.1"/>
-  <rect x="118" y="90" width="6" height="6" fill="#fff" opacity="0.06"/>
-  <rect x="76" y="96" width="2" height="20" fill="#000" opacity="0.05"/>
-  <rect x="86" y="98" width="2" height="22" fill="#000" opacity="0.04"/>
-  <rect x="98" y="96" width="2" height="22" fill="#000" opacity="0.05"/>
-  <rect x="112" y="98" width="2" height="20" fill="#000" opacity="0.04"/>
-  <rect x="122" y="96" width="2" height="16" fill="#000" opacity="0.05"/>
-  <rect x="92" y="120" width="16" height="2" fill="#fff" opacity="0.08"/>`],
+  ['beard:bushy-white', `<!-- Gandalf beard: long, flowing, chest-length wizard beard -->
+  <!-- Thick mustache -->
+  <rect x="78" y="84" width="44" height="4" fill="#ddd"/>
+  <rect x="74" y="82" width="6" height="4" fill="#d8d8d0"/>
+  <rect x="120" y="82" width="6" height="4" fill="#e0e0d8"/>
+  <rect x="76" y="88" width="48" height="2" fill="#d0d0c8"/>
+  <!-- Upper beard — widest at jaw -->
+  <rect x="70" y="90" width="60" height="4" fill="#d8d8d0"/>
+  <rect x="72" y="94" width="56" height="6" fill="#d0d0c8"/>
+  <!-- Mid beard — concave taper, narrows quickly -->
+  <rect x="76" y="100" width="48" height="6" fill="#cccccc"/>
+  <rect x="80" y="106" width="40" height="6" fill="#c8c8c0"/>
+  <rect x="82" y="112" width="36" height="6" fill="#c4c4bc"/>
+  <rect x="84" y="118" width="32" height="6" fill="#c0c0b8"/>
+  <!-- Lower beard — gentle taper to point -->
+  <rect x="86" y="124" width="28" height="6" fill="#bcbcb4"/>
+  <rect x="88" y="130" width="24" height="6" fill="#b8b8b0"/>
+  <rect x="90" y="136" width="20" height="6" fill="#b4b4ac"/>
+  <rect x="92" y="142" width="16" height="4" fill="#b0b0a8"/>
+  <rect x="94" y="146" width="12" height="4" fill="#acaca4"/>
+  <rect x="96" y="150" width="8" height="4" fill="#a8a8a0"/>
+  <rect x="98" y="154" width="4" height="2" fill="#a4a49c"/>
+  <!-- Clump highlights — irregular white patches for volume -->
+  <rect x="80" y="92" width="8" height="4" fill="#eee" opacity="0.4"/>
+  <rect x="110" y="98" width="8" height="6" fill="#f0f0e8" opacity="0.35"/>
+  <rect x="76" y="108" width="6" height="4" fill="#e8e8e0" opacity="0.3"/>
+  <rect x="100" y="118" width="10" height="4" fill="#eaeae2" opacity="0.3"/>
+  <rect x="84" y="130" width="8" height="4" fill="#e4e4dc" opacity="0.25"/>
+  <!-- Shadow depth — left side, follows concave taper -->
+  <rect x="70" y="92" width="4" height="8" fill="#000" opacity="0.15"/>
+  <rect x="76" y="102" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="82" y="114" width="4" height="10" fill="#000" opacity="0.1"/>
+  <rect x="86" y="126" width="4" height="8" fill="#000" opacity="0.08"/>
+  <!-- Strand lines — flowing downward -->
+  <rect x="82" y="92" width="2" height="50" fill="#000" opacity="0.05"/>
+  <rect x="90" y="90" width="2" height="56" fill="#000" opacity="0.04"/>
+  <rect x="100" y="92" width="2" height="54" fill="#000" opacity="0.04"/>
+  <rect x="110" y="90" width="2" height="46" fill="#000" opacity="0.05"/>
+  <rect x="118" y="94" width="2" height="34" fill="#000" opacity="0.04"/>
+  <!-- Right highlight edge -->
+  <rect x="124" y="94" width="4" height="8" fill="#fff" opacity="0.08"/>
+  <rect x="116" y="106" width="4" height="10" fill="#fff" opacity="0.06"/>
+  <rect x="110" y="120" width="4" height="8" fill="#fff" opacity="0.05"/>
+  <!-- Bottom AA fringe -->
+  <rect x="92" y="152" width="16" height="2" fill="#a0a098" opacity="0.4"/>
+  <rect x="98" y="156" width="4" height="2" fill="#9c9c94" opacity="0.3"/>`],
   ['beard:full-round', `<!-- Full round beard: large rounded beard -->
   <rect x="80" y="96" width="40" height="4" fill="var(--hair-color)"/>
   <rect x="78" y="100" width="44" height="6" fill="var(--hair-color)"/>
@@ -101,14 +132,29 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="140" y="70" width="6" height="6" fill="var(--hair-color)"/>
   <rect x="60" y="78" width="4" height="4" fill="#000" opacity="0.1"/>
   <rect x="138" y="74" width="4" height="4" fill="#fff" opacity="0.08"/>`],
-  ['beard:heavy', `<!-- Symmetric heavy beard centered at x=100 -->
-  <path d="M 68,86 h64 v2 h4 v10 h-2 v4 h-4 v4 h-6 v4 h-8 v2 h-32 h-8 v-2 h-6 v-4 h-4 v-4 h-2 v-14 h4 v-2 z" fill="var(--hair-color)"/>
-  <rect x="82" y="84" width="36" height="6" fill="var(--hair-color)"/>
-  <rect x="78" y="82" width="6" height="4" fill="var(--hair-color)"/>
-  <rect x="116" y="82" width="6" height="4" fill="var(--hair-color)"/>
-  <rect x="68" y="88" width="8" height="14" fill="#000" opacity="0.1"/>
-  <rect x="76" y="90" width="4" height="10" fill="#000" opacity="0.06"/>
-  <rect x="124" y="88" width="8" height="8" fill="#fff" opacity="0.06"/>`],
+  ['beard:heavy', `<!-- Heavy beard: thick jaw-hugging, tapered chin -->
+  <!-- Mustache band -->
+  <rect x="82" y="86" width="36" height="4" fill="var(--hair-color)"/>
+  <rect x="78" y="84" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="116" y="84" width="6" height="4" fill="var(--hair-color)"/>
+  <!-- Jaw sides — follows face contour, not a ball -->
+  <rect x="72" y="90" width="8" height="14" fill="var(--hair-color)"/>
+  <rect x="120" y="90" width="8" height="14" fill="var(--hair-color)"/>
+  <!-- Chin mass — narrower than jaw -->
+  <rect x="80" y="90" width="40" height="4" fill="var(--hair-color)"/>
+  <rect x="78" y="94" width="44" height="4" fill="var(--hair-color)"/>
+  <rect x="80" y="98" width="40" height="4" fill="var(--hair-color)"/>
+  <rect x="82" y="102" width="36" height="4" fill="var(--hair-color)"/>
+  <rect x="86" y="106" width="28" height="4" fill="var(--hair-color)"/>
+  <rect x="90" y="110" width="20" height="2" fill="var(--hair-color)"/>
+  <!-- Texture: shadow left, highlight right -->
+  <rect x="72" y="92" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="80" y="96" width="2" height="8" fill="#000" opacity="0.06"/>
+  <rect x="124" y="92" width="4" height="6" fill="#fff" opacity="0.06"/>
+  <!-- Hair strand lines -->
+  <rect x="88" y="96" width="2" height="12" fill="#000" opacity="0.05"/>
+  <rect x="100" y="94" width="2" height="14" fill="#000" opacity="0.05"/>
+  <rect x="112" y="96" width="2" height="10" fill="#000" opacity="0.05"/>`],
   ['beard:rugged', `<!-- Symmetric rugged dots centered at x=100 -->
   <rect x="74" y="86" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
   <rect x="82" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
