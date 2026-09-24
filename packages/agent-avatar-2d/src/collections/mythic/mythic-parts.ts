@@ -2206,14 +2206,43 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="122" y="30" width="2" height="2" fill="var(--skin)" opacity="0.5"/>
   <rect x="76" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
   <rect x="122" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
-  <!-- Skin fill -->
-  <!-- Ears -->
+  <!-- Forehead highlight — right side catch -->
+  <rect x="108" y="34" width="14" height="6" fill="#fff" opacity="0.09"/>
+  <rect x="112" y="32" width="8" height="4" fill="#fff" opacity="0.07"/>
+  <rect x="104" y="40" width="18" height="4" fill="#fff" opacity="0.05"/>
+  <!-- Temple shadow — left side -->
+  <rect x="68" y="40" width="8" height="18" fill="#000" opacity="0.05"/>
+  <rect x="70" y="36" width="6" height="6" fill="#000" opacity="0.04"/>
+  <!-- Right cheekbone highlight -->
+  <rect x="122" y="68" width="6" height="10" fill="#fff" opacity="0.07"/>
+  <rect x="124" y="64" width="6" height="6" fill="#fff" opacity="0.05"/>
+  <!-- Left jaw shadow -->
+  <rect x="70" y="82" width="8" height="8" fill="#000" opacity="0.05"/>
+  <rect x="74" y="86" width="6" height="4" fill="#000" opacity="0.04"/>
+  <!-- Nose bridge highlight -->
+  <rect x="100" y="68" width="2" height="10" fill="#fff" opacity="0.06"/>
+  <!-- Under-eye orbital shadow -->
+  <rect x="80" y="74" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="104" y="74" width="16" height="2" fill="#000" opacity="0.03"/>
+  <!-- Nasolabial fold hint -->
+  <rect x="86" y="78" width="2" height="8" fill="#000" opacity="0.04"/>
+  <rect x="112" y="78" width="2" height="8" fill="#000" opacity="0.03"/>
+  <!-- Skin texture dither -->
+  <rect x="86" y="48" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="110" y="44" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="96" y="58" width="2" height="2" fill="#000" opacity="0.02"/>
+  <rect x="120" y="54" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Left ear -->
   <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
   <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
-  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="62" y="64" width="2" height="6" fill="#000" opacity="0.12"/>
+  <rect x="60" y="66" width="2" height="4" fill="#000" opacity="0.08"/>
+  <rect x="64" y="68" width="2" height="2" fill="#000" opacity="0.06"/>
+  <!-- Right ear -->
   <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
   <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
-  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="136" y="62" width="2" height="6" fill="#fff" opacity="0.08"/>
+  <rect x="138" y="64" width="2" height="4" fill="#fff" opacity="0.06"/>
   <!-- Ear outlines -->
   <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
@@ -2221,19 +2250,26 @@ export const MYTHIC_PARTS = new Map<string, string>([
   <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
   <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
   <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
-  <!-- Cheek blush (warmer, visible — Caregiver warmth) -->
+  <!-- Cheek blush -->
   <rect x="72" y="70" width="10" height="12" fill="#cc7766" opacity="0.2"/>
   <rect x="74" y="68" width="6" height="4" fill="#cc7766" opacity="0.12"/>
   <rect x="118" y="70" width="10" height="12" fill="#cc7766" opacity="0.16"/>
   <rect x="120" y="68" width="6" height="4" fill="#cc7766" opacity="0.1"/>
   <!-- Chin shadow -->
   <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
-    <rect x="90" y="92" width="20" height="4" fill="var(--skin)"/>
+  <rect x="90" y="92" width="20" height="4" fill="var(--skin)"/>
   <!-- Neck -->
   <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
   <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
   <rect x="108" y="100" width="4" height="24" fill="var(--skin)"/>
-  <!-- no neck shading -->
+  <!-- Neck shadow — left -->
+  <rect x="88" y="100" width="6" height="24" fill="#000" opacity="0.07"/>
+  <rect x="94" y="102" width="4" height="20" fill="#000" opacity="0.04"/>
+  <!-- Neck highlight — right -->
+  <rect x="108" y="100" width="4" height="6" fill="#fff" opacity="0.05"/>
+  <!-- Neck tendon hints -->
+  <rect x="96" y="102" width="2" height="6" fill="#000" opacity="0.03"/>
+  <rect x="104" y="102" width="2" height="6" fill="#000" opacity="0.03"/>
   </g>`],
   ['head:round-wide', `<g transform="translate(0,12)">
   <!-- Outline: widest, most animated -->
