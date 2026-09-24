@@ -172,14 +172,15 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
     return `  <g ${tag}>${inner}</g>`;
   }
 
-  const scaled = l.category === 'prop' ? scaleSmallProp(l.content) : l.content;
+  const scaled = l.category === 'prop' ? normalizeProp(l.content) : l.content;
   return `  <g ${tag}>${scaled}</g>`;
 }
 
-const TARGET_PROP_AREA = 600;
-const MAX_PROP_SCALE = 3;
+const TARGET_PROP_AREA = 700;
+const MAX_UP_SCALE = 3;
+const MIN_DOWN_SCALE = 0.3;
 
-function scaleSmallProp(content: string): string {
+function normalizeProp(content: string): string {
   const re = /\bx="(\d+)"\s+y="(\d+)"\s+width="(\d+)"\s+height="(\d+)"/g;
   let minX = Infinity, minY = Infinity, maxX = 0, maxY = 0;
   let m: RegExpExecArray | null;
@@ -192,11 +193,11 @@ function scaleSmallProp(content: string): string {
     maxY = Math.max(maxY, y + h);
   }
   if (minX === Infinity) return content;
-  const bw = maxX - minX;
-  const bh = maxY - minY;
-  const area = bw * bh;
-  if (area >= TARGET_PROP_AREA) return content;
-  const scale = Math.min(Math.sqrt(TARGET_PROP_AREA / area), MAX_PROP_SCALE);
+  const area = (maxX - minX) * (maxY - minY);
+  const ratio = TARGET_PROP_AREA / area;
+  if (ratio > 0.85 && ratio < 1.2) return content;
+  let scale = Math.sqrt(ratio);
+  scale = Math.max(MIN_DOWN_SCALE, Math.min(scale, MAX_UP_SCALE));
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
   return `<g transform="translate(${cx},${cy}) scale(${scale.toFixed(2)}) translate(${-cx},${-cy})">${content}</g>`;
