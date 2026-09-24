@@ -7,7 +7,7 @@ const LAYER_ORDER: readonly string[] = [
   'costume', 'head', 'eyes', 'nose', 'mouth', 'hair', 'hat', 'beard', 'expression', 'brow', 'glasses', 'prop', 'acc',
 ];
 
-type PosGroup = 'eye-split' | 'nose' | 'mouth' | 'hat' | 'hair' | 'none';
+type PosGroup = 'eye-split' | 'nose' | 'mouth' | 'beard' | 'hat' | 'hair' | 'none';
 
 function posGroup(category: string): PosGroup {
   switch (category) {
@@ -15,8 +15,10 @@ function posGroup(category: string): PosGroup {
       return 'eye-split';
     case 'nose':
       return 'nose';
-    case 'mouth': case 'beard':
+    case 'mouth':
       return 'mouth';
+    case 'beard':
+      return 'beard';
     case 'hat':
       return 'hat';
     case 'hair':
@@ -132,9 +134,10 @@ function sortByLayerOrder(layers: Layer[]): Layer[] {
 function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   const tag = `data-part="${l.category}:${l.partId}"`;
   const group = posGroup(l.category);
+  const faceLift = Math.round(spec.yOffset * -0.2);
 
   if (group === 'eye-split') {
-    const eyeYDelta = spec.eyeY - CANONICAL_FACE.eyeY;
+    const eyeYDelta = spec.eyeY - CANONICAL_FACE.eyeY + faceLift;
     const leftXDelta = spec.eyeLeftX - CANONICAL_FACE.eyeLeftX;
     const rightXDelta = spec.eyeRightX - CANONICAL_FACE.eyeRightX;
 
@@ -158,19 +161,25 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
   }
 
   if (group === 'nose') {
-    const dy = spec.noseY - CANONICAL_FACE.noseY;
+    const dy = spec.noseY - CANONICAL_FACE.noseY + faceLift;
     const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'mouth') {
-    const dy = spec.mouthY - CANONICAL_FACE.mouthY;
+    const dy = spec.mouthY - CANONICAL_FACE.mouthY + faceLift;
+    const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
+    return `  <g ${tag}>${inner}</g>`;
+  }
+
+  if (group === 'beard') {
+    const dy = Math.round((spec.mouthY - CANONICAL_FACE.mouthY) * 0.4);
     const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
 
   if (group === 'hair') {
-    const dy = Math.round(spec.yOffset * 0.6);
+    const dy = hairShift(l.content, spec.yOffset);
     const inner = dy !== 0 ? wrapTranslate(l.content, 0, dy) : l.content;
     return `  <g ${tag}>${inner}</g>`;
   }
@@ -182,6 +191,20 @@ function renderLayer(l: Layer, spec: HeadFaceSpec): string {
 
   const scaled = l.category === 'prop' ? normalizeProp(l.content) : l.content;
   return `  <g ${tag}>${scaled}</g>`;
+}
+
+function hairShift(content: string, yOffset: number): number {
+  if (yOffset === 0) return 0;
+  let minY = Infinity;
+  const pathM = content.match(/M\s*\d+,(\d+)/);
+  if (pathM) minY = parseInt(pathM[1]!, 10);
+  const re = /\by="(\d+)"/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content)) !== null) minY = Math.min(minY, parseInt(m[1]!, 10));
+  if (minY === Infinity) return Math.round(yOffset * 0.5);
+  const headroom = 30 - minY;
+  const factor = headroom >= 12 ? 0.6 : headroom >= 6 ? 0.4 : 0.2;
+  return Math.round(yOffset * factor);
 }
 
 const TARGET_PROP_AREA = 1244;
