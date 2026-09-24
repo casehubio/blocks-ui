@@ -203,7 +203,7 @@ function hairShift(content: string, yOffset: number): number {
   while ((m = re.exec(content)) !== null) minY = Math.min(minY, parseInt(m[1]!, 10));
   if (minY === Infinity) return Math.round(yOffset * 0.5);
   const headroom = 30 - minY;
-  const factor = headroom >= 12 ? 0.6 : headroom >= 6 ? 0.4 : 0.2;
+  const factor = headroom >= 8 ? 0.6 : headroom >= 4 ? 0.35 : 0.15;
   return Math.round(yOffset * factor);
 }
 
