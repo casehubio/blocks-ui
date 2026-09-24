@@ -196,7 +196,8 @@ function normalizeProp(content: string): string {
   const area = (maxX - minX) * (maxY - minY);
   const ratio = TARGET_PROP_AREA / area;
   if (ratio > 0.85 && ratio < 1.2) return content;
-  let scale = Math.sqrt(ratio);
+  const rawScale = Math.sqrt(ratio);
+  let scale = rawScale * 0.7 + 0.3;
   scale = Math.max(MIN_DOWN_SCALE, Math.min(scale, MAX_UP_SCALE));
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
