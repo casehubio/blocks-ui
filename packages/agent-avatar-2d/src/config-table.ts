@@ -87,7 +87,7 @@ export const ARCHETYPE_INDEX: readonly string[] = Object.keys(ARCHETYPE_CONFIGS)
 
 export const HEAD_FACE_SPECS: Record<string, HeadFaceSpec> = {
   'oval':       { yOffset: 0,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 104, noseY: 80, mouthY: 96, beardDy: 0 },
-  'soft-oval':  { yOffset: 2,  eyeY: 66, eyeLeftX: 82,  eyeRightX: 106, noseY: 80, mouthY: 90, beardDy: 3 },
+  'soft-oval':  { yOffset: 2,  eyeY: 66, eyeLeftX: 82,  eyeRightX: 106, noseY: 80, mouthY: 90, beardDy: 2 },
   'weathered':  { yOffset: 4,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 82, mouthY: 92, beardDy: 4 },
   'square-jaw': { yOffset: 6,  eyeY: 68, eyeLeftX: 78,  eyeRightX: 106, noseY: 80, mouthY: 94, beardDy: 4 },
   'standard':   { yOffset: 6,  eyeY: 68, eyeLeftX: 82,  eyeRightX: 106, noseY: 84, mouthY: 94, beardDy: 6 },
@@ -106,6 +106,7 @@ export const PART_DELTAS: Record<string, PartPositionDelta> = {
   'hair:pixie':          { dy: -1 },
   'hair:cropped-fringe': { dy: 2 },
   'hat:beret':           { dy: 2 },
+  'beard:goatee':        { dy: 4 },
   'nose:button':         { dy: -2 },
   'nose:aquiline':       { dy: 2 },
   'mouth:lips-full':     { dy: 2 },
