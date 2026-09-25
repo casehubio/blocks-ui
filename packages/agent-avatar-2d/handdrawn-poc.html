@@ -8,870 +8,407 @@
   body { font-family: -apple-system, sans-serif; background: #2a2a3e; color: #e0e0e0; padding: 32px; }
   h1 { text-align: center; color: #fff; margin-bottom: 4px; }
   .subtitle { text-align: center; color: #888; margin-bottom: 32px; font-size: 14px; }
-  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-  .card { background: #1a1a2e; border-radius: 10px; padding: 12px; text-align: center; }
+  .row { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .card { background: #1a1a2e; border-radius: 10px; padding: 16px; text-align: center; }
   .card h3 { margin-top: 8px; font-size: 14px; }
   .card .sub { font-size: 11px; color: #888; margin-top: 2px; }
   .card .ref { font-size: 10px; color: #666; margin-top: 2px; font-style: italic; }
   svg { display: block; image-rendering: pixelated; margin: 0 auto; }
-  .s4 svg { width: 200px; height: 240px; }
-  @media (max-width: 900px) { .row { grid-template-columns: repeat(2, 1fr); } }
+  .sizes { display: flex; gap: 16px; align-items: flex-end; justify-content: center; margin-top: 12px; }
+  .sz { text-align: center; }
+  .sz .lbl { font-size: 9px; color: #666; margin-top: 4px; }
 </style>
 </head>
 <body>
-<h1>Pixel Art Avatar POC</h1>
-<p class="subtitle">Hand-drawn per character — rects only, stair-stepped outlines, dithered shading, Thimbleweed Park style</p>
+<h1>Pixel Art Avatar POC — v3</h1>
+<p class="subtitle">Character-accurate pixel art — Max's head shape, proper proportions, detailed clothing</p>
 
 <div class="row">
 
 <!-- ============================================================ -->
-<!-- SAGE/MENTOR — The Pirate Leaders (MI) / QfG Mentors          -->
-<!-- Pixel art: stair-stepped oval head, rect eyes behind glasses -->
+<!-- JESTER/CLOWN — Max (Sam & Max) head shape + Kefka energy     -->
+<!-- Max: tiny cranium, eyes high, MASSIVE jaw/grin dominates     -->
+<!-- Reference quality: ~2px detail, striped stockings, patterns  -->
 <!-- ============================================================ -->
 <div class="card">
-  <div class="s4">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+  <div class="sizes">
+
+  <!-- Large (200×240) -->
+  <div class="sz">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+
       <!-- Ground shadow -->
-      <rect x="68" y="228" width="64" height="4" fill="#000" opacity="0.2"/>
-      <rect x="72" y="232" width="56" height="4" fill="#000" opacity="0.15"/>
+      <rect x="72" y="226" width="56" height="4" fill="#000" opacity="0.18"/>
+      <rect x="78" y="230" width="44" height="4" fill="#000" opacity="0.12"/>
 
-      <!-- === BODY — tweed jacket === -->
-      <rect x="64" y="130" width="72" height="78" fill="#6b5b4a"/>
-      <!-- Jacket outline -->
-      <rect x="62" y="130" width="2" height="78" fill="#3a2a1a" opacity="0.7"/>
-      <rect x="136" y="130" width="2" height="78" fill="#3a2a1a" opacity="0.7"/>
-      <rect x="64" y="206" width="72" height="2" fill="#3a2a1a" opacity="0.7"/>
-      <!-- Herringbone dither texture -->
-      <rect x="68" y="136" width="2" height="2" fill="#7a6a58" opacity="0.3"/>
-      <rect x="76" y="138" width="2" height="2" fill="#5c4c3a" opacity="0.25"/>
-      <rect x="84" y="136" width="2" height="2" fill="#7a6a58" opacity="0.3"/>
-      <rect x="72" y="144" width="2" height="2" fill="#5c4c3a" opacity="0.25"/>
-      <rect x="80" y="146" width="2" height="2" fill="#7a6a58" opacity="0.3"/>
-      <rect x="116" y="136" width="2" height="2" fill="#7a6a58" opacity="0.3"/>
-      <rect x="124" y="138" width="2" height="2" fill="#5c4c3a" opacity="0.25"/>
-      <rect x="120" y="144" width="2" height="2" fill="#7a6a58" opacity="0.3"/>
-      <rect x="128" y="146" width="2" height="2" fill="#5c4c3a" opacity="0.25"/>
-      <!-- Elbow patches -->
-      <rect x="62" y="158" width="6" height="16" fill="#8b7b5a"/>
-      <rect x="132" y="158" width="6" height="16" fill="#8b7b5a"/>
-      <!-- Shirt V-front -->
-      <rect x="92" y="130" width="16" height="30" fill="#e8e0d0"/>
-      <rect x="88" y="130" width="4" height="22" fill="#e8e0d0"/>
-      <rect x="108" y="130" width="4" height="22" fill="#e8e0d0"/>
-      <!-- Bow tie -->
-      <rect x="92" y="130" width="6" height="4" fill="#4a6fa5"/>
-      <rect x="102" y="130" width="6" height="4" fill="#4a6fa5"/>
-      <rect x="98" y="128" width="4" height="8" fill="#4a6fa5"/>
-      <rect x="98" y="130" width="4" height="4" fill="#6b8fb5"/>
-      <!-- Buttons -->
-      <rect x="98" y="164" width="4" height="4" fill="#5c4c3a"/>
-      <rect x="98" y="176" width="4" height="4" fill="#5c4c3a"/>
-
-      <!-- === LEFT ARM — open book === -->
-      <rect x="42" y="136" width="22" height="8" fill="#6b5b4a"/>
-      <rect x="34" y="132" width="12" height="8" fill="#6b5b4a"/>
-      <rect x="28" y="126" width="10" height="10" fill="#6b5b4a"/>
-      <rect x="24" y="120" width="10" height="10" fill="#c8a882"/>
-      <!-- Book -->
-      <rect x="8" y="86" width="34" height="38" fill="#6b3a1a"/>
-      <rect x="10" y="88" width="14" height="34" fill="#f5ead0"/>
-      <rect x="26" y="88" width="14" height="34" fill="#f0e0c0"/>
-      <rect x="24" y="86" width="2" height="38" fill="#4a2010"/>
-      <!-- Text lines -->
-      <rect x="12" y="92" width="10" height="2" fill="#aaa"/>
-      <rect x="12" y="98" width="8" height="2" fill="#aaa"/>
-      <rect x="12" y="104" width="10" height="2" fill="#aaa"/>
-      <rect x="12" y="110" width="6" height="2" fill="#aaa"/>
-      <rect x="28" y="92" width="10" height="2" fill="#aaa"/>
-      <rect x="28" y="98" width="8" height="2" fill="#aaa"/>
-      <rect x="28" y="104" width="10" height="2" fill="#aaa"/>
-
-      <!-- === RIGHT ARM — chalk raised === -->
-      <rect x="136" y="136" width="20" height="8" fill="#6b5b4a"/>
-      <rect x="152" y="130" width="10" height="10" fill="#6b5b4a"/>
-      <rect x="158" y="122" width="10" height="12" fill="#6b5b4a"/>
-      <rect x="164" y="114" width="8" height="10" fill="#c8a882"/>
-      <!-- Chalk -->
-      <rect x="168" y="98" width="4" height="18" fill="#eee"/>
-      <rect x="168" y="98" width="4" height="4" fill="#fff"/>
-      <!-- Chalk dust -->
-      <rect x="174" y="98" width="2" height="2" fill="#eee" opacity="0.4"/>
-      <rect x="172" y="94" width="2" height="2" fill="#eee" opacity="0.3"/>
-
-      <!-- === BUSHY WHITE BEARD === -->
-      <!-- Main beard shape — stair-stepped -->
-      <path d="M 72,94 h56 v4 h4 v4 h4 v8 h2 v10 h-2 v8 h-2 v6 h-4 v4 h-4 v4 h-6 v4 h-4 v4 h-4 v4 h-4 v2 h-8 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-6 v-4 h-4 v-4 h-4 v-6 h-2 v-8 h-2 v-10 h2 v-8 h4 v-4 z" fill="#e0e0e0"/>
-      <!-- Beard shadow (left side) -->
-      <rect x="72" y="102" width="6" height="20" fill="#c8c8c8" opacity="0.4"/>
-      <rect x="74" y="122" width="4" height="10" fill="#c8c8c8" opacity="0.3"/>
-      <!-- Strand dither texture -->
-      <rect x="84" y="108" width="2" height="2" fill="#ccc"/>
-      <rect x="92" y="112" width="2" height="2" fill="#ccc"/>
-      <rect x="100" y="106" width="2" height="2" fill="#ccc"/>
-      <rect x="108" y="110" width="2" height="2" fill="#ccc"/>
-      <rect x="88" y="118" width="2" height="2" fill="#ccc"/>
-      <rect x="96" y="122" width="2" height="2" fill="#ccc"/>
-      <rect x="104" y="120" width="2" height="2" fill="#ccc"/>
-      <rect x="112" y="116" width="2" height="2" fill="#ccc"/>
-      <!-- White highlight strands -->
-      <rect x="90" y="114" width="2" height="2" fill="#fff" opacity="0.5"/>
-      <rect x="98" y="118" width="2" height="2" fill="#fff" opacity="0.5"/>
-      <rect x="110" y="112" width="2" height="2" fill="#fff" opacity="0.45"/>
-      <!-- Mustache -->
-      <rect x="86" y="92" width="28" height="4" fill="#ddd"/>
-      <rect x="84" y="94" width="4" height="2" fill="#ddd"/>
-      <rect x="112" y="94" width="4" height="2" fill="#ddd"/>
-
-      <!-- === HEAD — oval, stair-stepped pixel outline === -->
-      <path d="M 84,28 h32 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v64 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-64 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#c8a882"/>
-      <!-- Tinted outline -->
-      <rect x="82" y="28" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="84" y="26" width="32" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="116" y="28" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <!-- Forehead wrinkle hints -->
-      <rect x="86" y="44" width="28" height="2" fill="#b89872" opacity="0.2"/>
-      <rect x="88" y="48" width="24" height="2" fill="#b89872" opacity="0.15"/>
-      <!-- Cheek hollow dither -->
-      <rect x="76" y="82" width="2" height="2" fill="#b89872" opacity="0.15"/>
-      <rect x="80" y="84" width="2" height="2" fill="#b89872" opacity="0.12"/>
-      <rect x="120" y="82" width="2" height="2" fill="#b89872" opacity="0.15"/>
-      <rect x="116" y="84" width="2" height="2" fill="#b89872" opacity="0.12"/>
-      <!-- Ears -->
-      <rect x="66" y="68" width="4" height="12" fill="#c8a882"/>
-      <rect x="64" y="70" width="2" height="8" fill="#c8a882"/>
-      <rect x="64" y="72" width="2" height="4" fill="#b89872" opacity="0.15"/>
-      <rect x="130" y="68" width="4" height="12" fill="#c8a882"/>
-      <rect x="134" y="70" width="2" height="8" fill="#c8a882"/>
-      <rect x="134" y="72" width="2" height="4" fill="#b89872" opacity="0.15"/>
-
-      <!-- === WILD EINSTEIN HAIR — grey pixel tufts === -->
-      <rect x="80" y="22" width="40" height="8" fill="#8a8a8a"/>
-      <rect x="76" y="26" width="48" height="6" fill="#8a8a8a"/>
-      <rect x="72" y="30" width="56" height="6" fill="#8a8a8a"/>
-      <rect x="70" y="34" width="60" height="6" fill="#8a8a8a"/>
-      <!-- Wild tufts sticking out left -->
-      <rect x="62" y="34" width="8" height="4" fill="#8a8a8a"/>
-      <rect x="56" y="30" width="8" height="4" fill="#8a8a8a"/>
-      <rect x="52" y="26" width="6" height="4" fill="#8a8a8a"/>
-      <rect x="48" y="22" width="6" height="4" fill="#8a8a8a"/>
-      <rect x="46" y="18" width="4" height="4" fill="#8a8a8a"/>
-      <!-- Wild tufts right -->
-      <rect x="130" y="34" width="8" height="4" fill="#8a8a8a"/>
-      <rect x="136" y="30" width="8" height="4" fill="#8a8a8a"/>
-      <rect x="142" y="26" width="6" height="4" fill="#8a8a8a"/>
-      <rect x="146" y="22" width="6" height="4" fill="#8a8a8a"/>
-      <rect x="150" y="18" width="4" height="4" fill="#8a8a8a"/>
-      <!-- Top tuft -->
-      <rect x="96" y="18" width="8" height="4" fill="#8a8a8a"/>
-      <rect x="98" y="14" width="4" height="4" fill="#8a8a8a"/>
-      <!-- Hair highlights -->
-      <rect x="84" y="24" width="4" height="2" fill="#aaa" opacity="0.4"/>
-      <rect x="108" y="24" width="4" height="2" fill="#aaa" opacity="0.4"/>
-      <rect x="92" y="22" width="4" height="2" fill="#aaa" opacity="0.3"/>
-      <!-- Hair outline pixels -->
-      <rect x="80" y="20" width="2" height="2" fill="#555" opacity="0.5"/>
-      <rect x="118" y="20" width="2" height="2" fill="#555" opacity="0.5"/>
-
-      <!-- === GLASSES — rect frames, half-rim === -->
-      <rect x="74" y="64" width="18" height="14" fill="none"/>
-      <!-- Left frame -->
-      <rect x="74" y="64" width="18" height="2" fill="#555"/>
-      <rect x="74" y="64" width="2" height="14" fill="#555"/>
-      <rect x="90" y="64" width="2" height="14" fill="#555"/>
-      <rect x="74" y="76" width="18" height="2" fill="#888"/>
-      <!-- Right frame -->
-      <rect x="108" y="64" width="18" height="2" fill="#555"/>
-      <rect x="108" y="64" width="2" height="14" fill="#555"/>
-      <rect x="124" y="64" width="2" height="14" fill="#555"/>
-      <rect x="108" y="76" width="18" height="2" fill="#888"/>
-      <!-- Bridge -->
-      <rect x="92" y="68" width="16" height="2" fill="#555"/>
-      <!-- Temples -->
-      <rect x="64" y="68" width="10" height="2" fill="#555"/>
-      <rect x="126" y="68" width="10" height="2" fill="#555"/>
-      <!-- Lens glint -->
-      <rect x="78" y="66" width="4" height="2" fill="#fff" opacity="0.25"/>
-      <rect x="112" y="66" width="4" height="2" fill="#fff" opacity="0.25"/>
-
-      <!-- === EYES — deep-set, wise, twinkling (UNIQUE to Mentor) === -->
-      <!-- Left eye: smaller sclera (aged), warm iris -->
-      <rect x="78" y="68" width="10" height="8" fill="#dde4e8" opacity="0.9"/>
-      <rect x="78" y="68" width="10" height="2" fill="#3a2520" opacity="0.4"/>
-      <rect x="78" y="74" width="10" height="2" fill="#3a2520" opacity="0.15"/>
-      <rect x="82" y="70" width="6" height="4" fill="#4a6fa5"/>
-      <rect x="84" y="70" width="4" height="4" fill="#2a4f85"/>
-      <rect x="84" y="70" width="2" height="2" fill="#111"/>
-      <rect x="82" y="68" width="2" height="2" fill="#fff"/>
-      <!-- Crow's foot (age detail) -->
-      <rect x="74" y="68" width="2" height="2" fill="#b89872" opacity="0.3"/>
-      <rect x="72" y="70" width="2" height="2" fill="#b89872" opacity="0.2"/>
-      <!-- Right eye -->
-      <rect x="112" y="68" width="10" height="8" fill="#dde4e8" opacity="0.9"/>
-      <rect x="112" y="68" width="10" height="2" fill="#3a2520" opacity="0.4"/>
-      <rect x="112" y="74" width="10" height="2" fill="#3a2520" opacity="0.15"/>
-      <rect x="114" y="70" width="6" height="4" fill="#4a6fa5"/>
-      <rect x="116" y="70" width="4" height="4" fill="#2a4f85"/>
-      <rect x="116" y="70" width="2" height="2" fill="#111"/>
-      <rect x="114" y="68" width="2" height="2" fill="#fff"/>
-      <rect x="124" y="68" width="2" height="2" fill="#b89872" opacity="0.3"/>
-      <rect x="126" y="70" width="2" height="2" fill="#b89872" opacity="0.2"/>
-
-      <!-- === BROWS — bushy wild, grey, tufted (UNIQUE) === -->
-      <rect x="74" y="60" width="18" height="4" fill="#777"/>
-      <rect x="72" y="58" width="4" height="2" fill="#777"/>
-      <rect x="78" y="58" width="4" height="2" fill="#777"/>
-      <rect x="76" y="56" width="2" height="2" fill="#777"/>
-      <rect x="108" y="60" width="18" height="4" fill="#777"/>
-      <rect x="122" y="58" width="4" height="2" fill="#777"/>
-      <rect x="116" y="58" width="4" height="2" fill="#777"/>
-      <rect x="122" y="56" width="2" height="2" fill="#777"/>
-
-      <!-- === NOSE — prominent, bulbous (UNIQUE) === -->
-      <rect x="96" y="80" width="8" height="8" fill="#b8956e"/>
-      <rect x="94" y="82" width="2" height="4" fill="#b8956e"/>
-      <rect x="104" y="82" width="2" height="4" fill="#b8956e"/>
-      <!-- Nostril shadow -->
-      <rect x="96" y="86" width="2" height="2" fill="#8a6a4a" opacity="0.35"/>
-      <rect x="102" y="86" width="2" height="2" fill="#8a6a4a" opacity="0.35"/>
-      <!-- Nose highlight -->
-      <rect x="98" y="80" width="4" height="2" fill="#d8b89e" opacity="0.35"/>
-
-      <!-- === MOUTH — warm smile (UNIQUE) === -->
-      <rect x="90" y="92" width="20" height="2" fill="#8a6a4a" opacity="0.6"/>
-      <!-- Upturned corners -->
-      <rect x="88" y="90" width="2" height="2" fill="#8a6a4a" opacity="0.4"/>
-      <rect x="110" y="90" width="2" height="2" fill="#8a6a4a" opacity="0.4"/>
-
-      <!-- Feet -->
-      <rect x="76" y="210" width="18" height="10" fill="#3a3020"/>
-      <rect x="106" y="210" width="18" height="10" fill="#3a3020"/>
-      <rect x="76" y="218" width="18" height="2" fill="#2a2010" opacity="0.5"/>
-      <rect x="106" y="218" width="18" height="2" fill="#2a2010" opacity="0.5"/>
-    </svg>
-  </div>
-  <h3>Mentor</h3>
-  <div class="sub">Sage · wise eyes · flowing beard · pixel art</div>
-  <div class="ref">Pirate Leaders (MI) · QfG Mentors</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- HERO/WARRIOR — Edgar (FFVI) / Prince of Persia               -->
-<!-- Pixel art: square jaw, hooded eyes, armour, battle-scarred   -->
-<!-- ============================================================ -->
-<div class="card">
-  <div class="s4">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-      <rect x="68" y="228" width="64" height="4" fill="#000" opacity="0.2"/>
-      <rect x="72" y="232" width="56" height="4" fill="#000" opacity="0.15"/>
-
-      <!-- === BODY — plate armour === -->
-      <rect x="58" y="128" width="84" height="80" fill="#8a8a8a"/>
-      <!-- Armour outline -->
-      <rect x="56" y="128" width="2" height="80" fill="#444"/>
-      <rect x="142" y="128" width="2" height="80" fill="#444"/>
-      <rect x="58" y="206" width="84" height="2" fill="#444"/>
-      <!-- Plate lines -->
-      <rect x="100" y="130" width="2" height="48" fill="#777"/>
-      <rect x="64" y="160" width="72" height="2" fill="#777"/>
-      <!-- Chest plate highlight -->
-      <rect x="72" y="132" width="56" height="36" fill="#999"/>
-      <rect x="74" y="134" width="10" height="2" fill="#bbb" opacity="0.3"/>
-      <rect x="116" y="134" width="10" height="2" fill="#bbb" opacity="0.3"/>
-      <!-- Chest emblem — crimson + gold -->
-      <rect x="88" y="140" width="24" height="20" fill="#8b1a1a"/>
-      <rect x="96" y="142" width="8" height="4" fill="#c9a227"/>
-      <rect x="94" y="146" width="12" height="4" fill="#c9a227"/>
-      <rect x="96" y="150" width="8" height="4" fill="#c9a227"/>
-      <rect x="98" y="154" width="4" height="4" fill="#c9a227"/>
-      <rect x="98" y="148" width="4" height="4" fill="#ffd700"/>
-      <!-- Belt -->
-      <rect x="58" y="180" width="84" height="8" fill="#5a4020"/>
-      <rect x="92" y="178" width="16" height="12" fill="#c9a227"/>
-      <rect x="96" y="182" width="8" height="4" fill="#ffd700"/>
-      <!-- Pauldrons -->
-      <rect x="46" y="124" width="14" height="8" fill="#888"/>
-      <rect x="44" y="126" width="14" height="10" fill="#888"/>
-      <rect x="44" y="128" width="2" height="6" fill="#aaa" opacity="0.3"/>
-      <rect x="140" y="124" width="14" height="8" fill="#888"/>
-      <rect x="142" y="126" width="14" height="10" fill="#888"/>
-      <rect x="154" y="128" width="2" height="6" fill="#aaa" opacity="0.3"/>
-
-      <!-- === LEFT ARM — shield === -->
-      <rect x="36" y="138" width="20" height="8" fill="#888"/>
-      <rect x="26" y="142" width="14" height="8" fill="#888"/>
-      <rect x="18" y="148" width="12" height="10" fill="#888"/>
-      <rect x="12" y="156" width="10" height="10" fill="#c8a882"/>
-      <!-- Shield -->
-      <rect x="4" y="124" width="32" height="44" fill="#8b1a1a"/>
-      <rect x="2" y="128" width="2" height="36" fill="#8b1a1a"/>
-      <rect x="4" y="168" width="8" height="4" fill="#8b1a1a"/>
-      <rect x="12" y="172" width="12" height="4" fill="#8b1a1a"/>
-      <rect x="24" y="168" width="8" height="4" fill="#8b1a1a"/>
-      <!-- Shield inner -->
-      <rect x="8" y="128" width="24" height="36" fill="#c9a227"/>
-      <rect x="12" y="164" width="12" height="4" fill="#c9a227"/>
-      <!-- Shield diamond -->
-      <rect x="18" y="138" width="4" height="4" fill="#8b1a1a"/>
-      <rect x="16" y="142" width="8" height="4" fill="#8b1a1a"/>
-      <rect x="14" y="146" width="12" height="4" fill="#8b1a1a"/>
-      <rect x="16" y="150" width="8" height="4" fill="#8b1a1a"/>
-      <rect x="18" y="154" width="4" height="4" fill="#8b1a1a"/>
-      <!-- Rivets -->
-      <rect x="10" y="130" width="2" height="2" fill="#888"/>
-      <rect x="28" y="130" width="2" height="2" fill="#888"/>
-      <rect x="10" y="160" width="2" height="2" fill="#888"/>
-      <rect x="28" y="160" width="2" height="2" fill="#888"/>
-
-      <!-- === RIGHT ARM — sword raised === -->
-      <rect x="144" y="134" width="18" height="8" fill="#888"/>
-      <rect x="158" y="128" width="10" height="10" fill="#888"/>
-      <rect x="164" y="118" width="10" height="14" fill="#888"/>
-      <rect x="168" y="108" width="8" height="12" fill="#c8a882"/>
-      <!-- Sword blade -->
-      <rect x="172" y="16" width="6" height="96" fill="#c0c0c0"/>
-      <rect x="174" y="18" width="2" height="92" fill="#e0e0e0" opacity="0.4"/>
-      <!-- Blade tip -->
-      <rect x="174" y="12" width="2" height="4" fill="#c0c0c0"/>
-      <rect x="174" y="8" width="2" height="4" fill="#d0d0d0"/>
-      <!-- Crossguard -->
-      <rect x="166" y="110" width="20" height="4" fill="#c9a227"/>
-      <!-- Grip -->
-      <rect x="172" y="114" width="6" height="12" fill="#5a2e10"/>
-      <rect x="172" y="118" width="6" height="2" fill="#4a2010"/>
-      <!-- Pommel -->
-      <rect x="174" y="126" width="4" height="4" fill="#c9a227"/>
-
-      <!-- === HEAD — square jaw, stair-stepped === -->
-      <path d="M 78,28 h44 v2 h4 v2 h2 v2 h2 v2 h2 v72 h-2 v4 h-2 v2 h-2 v2 h-4 v2 h-44 v-2 h-4 v-2 h-2 v-2 h-2 v-4 h-2 v-72 h2 v-2 h2 v-2 h4 z" fill="#c8a882"/>
-      <!-- Jaw shadow -->
-      <rect x="72" y="104" width="56" height="4" fill="#b89872" opacity="0.12"/>
-      <rect x="74" y="108" width="52" height="4" fill="#b89872" opacity="0.1"/>
-      <!-- Chin line -->
-      <rect x="90" y="110" width="20" height="2" fill="#b89872" opacity="0.15"/>
-      <!-- Ears -->
-      <rect x="66" y="66" width="4" height="14" fill="#c8a882"/>
-      <rect x="64" y="68" width="2" height="10" fill="#c8a882"/>
-      <rect x="64" y="70" width="2" height="6" fill="#b89872" opacity="0.15"/>
-      <rect x="130" y="66" width="4" height="14" fill="#c8a882"/>
-      <rect x="134" y="68" width="2" height="10" fill="#c8a882"/>
-
-      <!-- === HAIR — buzz cut, dark === -->
-      <rect x="78" y="24" width="44" height="10" fill="#2a1a0a"/>
-      <rect x="74" y="28" width="52" height="6" fill="#2a1a0a"/>
-      <!-- Buzz texture dither -->
-      <rect x="82" y="26" width="2" height="2" fill="#3a2a1a" opacity="0.3"/>
-      <rect x="90" y="28" width="2" height="2" fill="#3a2a1a" opacity="0.3"/>
-      <rect x="98" y="26" width="2" height="2" fill="#3a2a1a" opacity="0.3"/>
-      <rect x="106" y="28" width="2" height="2" fill="#3a2a1a" opacity="0.3"/>
-      <rect x="114" y="26" width="2" height="2" fill="#3a2a1a" opacity="0.3"/>
-
-      <!-- === EYES — narrow, fierce, hooded (UNIQUE to Warrior) === -->
-      <!-- Heavy brow shadow — the defining Warrior feature -->
-      <rect x="76" y="62" width="16" height="4" fill="#a07850" opacity="0.4"/>
-      <rect x="108" y="62" width="16" height="4" fill="#a07850" opacity="0.4"/>
-      <!-- Left eye: narrow 14×6, dark iris, intense -->
-      <rect x="78" y="66" width="14" height="6" fill="#dde4e8"/>
-      <rect x="78" y="66" width="14" height="2" fill="#3a2520" opacity="0.55"/>
-      <rect x="78" y="70" width="14" height="2" fill="#3a2520" opacity="0.2"/>
-      <rect x="84" y="66" width="6" height="4" fill="#5a2010"/>
-      <rect x="86" y="66" width="4" height="4" fill="#3a1000"/>
-      <rect x="86" y="68" width="2" height="2" fill="#111"/>
-      <rect x="84" y="66" width="2" height="2" fill="#fff" opacity="0.7"/>
-      <!-- Right eye -->
-      <rect x="108" y="66" width="14" height="6" fill="#dde4e8"/>
-      <rect x="108" y="66" width="14" height="2" fill="#3a2520" opacity="0.55"/>
-      <rect x="108" y="70" width="14" height="2" fill="#3a2520" opacity="0.2"/>
-      <rect x="114" y="66" width="6" height="4" fill="#5a2010"/>
-      <rect x="116" y="66" width="4" height="4" fill="#3a1000"/>
-      <rect x="116" y="68" width="2" height="2" fill="#111"/>
-      <rect x="114" y="66" width="2" height="2" fill="#fff" opacity="0.7"/>
-
-      <!-- === BROWS — thick, V-shaped, angry (UNIQUE) === -->
-      <rect x="74" y="58" width="4" height="4" fill="#2a1a0a"/>
-      <rect x="78" y="60" width="4" height="4" fill="#2a1a0a"/>
-      <rect x="82" y="62" width="4" height="4" fill="#2a1a0a"/>
-      <rect x="86" y="62" width="4" height="2" fill="#2a1a0a"/>
-      <rect x="110" y="62" width="4" height="2" fill="#2a1a0a"/>
-      <rect x="114" y="62" width="4" height="4" fill="#2a1a0a"/>
-      <rect x="118" y="60" width="4" height="4" fill="#2a1a0a"/>
-      <rect x="122" y="58" width="4" height="4" fill="#2a1a0a"/>
-
-      <!-- === NOSE — strong, angular bridge (UNIQUE) === -->
-      <rect x="96" y="74" width="8" height="4" fill="#b8956e"/>
-      <rect x="94" y="78" width="12" height="4" fill="#b8956e"/>
-      <rect x="96" y="82" width="8" height="4" fill="#b8956e"/>
-      <!-- Bridge highlight -->
-      <rect x="98" y="74" width="4" height="2" fill="#d8b89e" opacity="0.2"/>
-      <!-- Nostril shadow -->
-      <rect x="94" y="84" width="4" height="2" fill="#8a6a4a" opacity="0.35"/>
-      <rect x="102" y="84" width="4" height="2" fill="#8a6a4a" opacity="0.35"/>
-
-      <!-- === MOUTH — wide stern (UNIQUE) === -->
-      <rect x="86" y="94" width="28" height="2" fill="#6a4a3a" opacity="0.8"/>
-      <rect x="86" y="96" width="28" height="2" fill="#6a4a3a" opacity="0.4"/>
-      <!-- Downturned corners -->
-      <rect x="84" y="96" width="2" height="2" fill="#6a4a3a" opacity="0.5"/>
-      <rect x="114" y="96" width="2" height="2" fill="#6a4a3a" opacity="0.5"/>
-
-      <!-- === SCAR — diagonal pixel steps (UNIQUE) === -->
-      <rect x="118" y="74" width="2" height="4" fill="#bb7766"/>
-      <rect x="120" y="78" width="2" height="4" fill="#bb7766"/>
-      <rect x="122" y="82" width="2" height="4" fill="#bb7766"/>
-      <rect x="124" y="86" width="2" height="4" fill="#bb7766"/>
-      <rect x="126" y="90" width="2" height="4" fill="#bb7766"/>
-      <!-- Scar highlight -->
-      <rect x="120" y="76" width="2" height="2" fill="#cc9988" opacity="0.4"/>
-      <rect x="124" y="84" width="2" height="2" fill="#cc9988" opacity="0.4"/>
-
-      <!-- Feet — heavy boots -->
-      <rect x="66" y="208" width="24" height="12" fill="#555"/>
-      <rect x="110" y="208" width="24" height="12" fill="#555"/>
-      <rect x="66" y="208" width="24" height="2" fill="#666" opacity="0.3"/>
-      <rect x="110" y="208" width="24" height="2" fill="#666" opacity="0.3"/>
-    </svg>
-  </div>
-  <h3>Warrior</h3>
-  <div class="sub">Hero · hooded eyes · stern · battle-scarred</div>
-  <div class="ref">Edgar (FFVI) · Prince of Persia</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- JESTER/CLOWN — Max (Sam & Max) / Kefka (FFVI)                -->
-<!-- Pixel art: wide round head, HUGE rect eyes, grinning teeth   -->
-<!-- ============================================================ -->
-<div class="card">
-  <div class="s4">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-      <rect x="68" y="228" width="64" height="4" fill="#000" opacity="0.2"/>
-      <rect x="72" y="232" width="56" height="4" fill="#000" opacity="0.15"/>
-
-      <!-- === BODY — patchwork jester costume === -->
-      <rect x="62" y="132" width="38" height="76" fill="#e67e22"/>
-      <rect x="100" y="132" width="38" height="76" fill="#9b59b6"/>
-      <!-- Outline -->
-      <rect x="60" y="132" width="2" height="76" fill="#8a4a0a" opacity="0.6"/>
-      <rect x="138" y="132" width="2" height="76" fill="#5a2a6a" opacity="0.6"/>
-      <rect x="62" y="206" width="76" height="2" fill="#333"/>
-      <!-- Diamond patches -->
-      <rect x="76" y="158" width="8" height="8" fill="#2ecc71" transform="rotate(45 80 162)"/>
-      <rect x="116" y="158" width="8" height="8" fill="#f1c40f" transform="rotate(45 120 162)"/>
-      <!-- Ruffled collar (pixel rects) -->
-      <rect x="68" y="128" width="64" height="8" fill="#fff"/>
-      <rect x="72" y="126" width="8" height="4" fill="#fff"/>
-      <rect x="84" y="124" width="8" height="4" fill="#fff"/>
-      <rect x="96" y="122" width="8" height="4" fill="#fff"/>
-      <rect x="108" y="124" width="8" height="4" fill="#fff"/>
-      <rect x="120" y="126" width="8" height="4" fill="#fff"/>
-      <!-- Collar shadow dither -->
-      <rect x="74" y="134" width="2" height="2" fill="#ddd" opacity="0.5"/>
-      <rect x="82" y="132" width="2" height="2" fill="#ddd" opacity="0.5"/>
-      <rect x="118" y="134" width="2" height="2" fill="#ddd" opacity="0.5"/>
-
-      <!-- === LEFT ARM — juggling === -->
-      <rect x="40" y="136" width="22" height="8" fill="#9b59b6"/>
-      <rect x="30" y="130" width="14" height="8" fill="#9b59b6"/>
-      <rect x="22" y="122" width="12" height="10" fill="#9b59b6"/>
-      <rect x="18" y="114" width="10" height="10" fill="#e0c8b0"/>
-      <!-- Juggling balls — rect "circles" (stair-stepped) -->
-      <!-- Red ball -->
-      <rect x="14" y="60" width="14" height="4" fill="#e74c3c"/>
-      <rect x="12" y="64" width="18" height="8" fill="#e74c3c"/>
-      <rect x="14" y="72" width="14" height="4" fill="#e74c3c"/>
-      <rect x="16" y="64" width="4" height="2" fill="#ff6b6b" opacity="0.5"/>
-      <!-- Green ball -->
-      <rect x="40" y="40" width="14" height="4" fill="#2ecc71"/>
-      <rect x="38" y="44" width="18" height="8" fill="#2ecc71"/>
-      <rect x="40" y="52" width="14" height="4" fill="#2ecc71"/>
-      <rect x="42" y="44" width="4" height="2" fill="#5dde9e" opacity="0.5"/>
-      <!-- Blue ball -->
-      <rect x="62" y="50" width="14" height="4" fill="#3498db"/>
-      <rect x="60" y="54" width="18" height="8" fill="#3498db"/>
-      <rect x="62" y="62" width="14" height="4" fill="#3498db"/>
-      <rect x="64" y="54" width="4" height="2" fill="#6bb5e8" opacity="0.5"/>
-
-      <!-- === RIGHT ARM — pointing wildly === -->
-      <rect x="138" y="138" width="20" height="8" fill="#e67e22"/>
-      <rect x="154" y="142" width="14" height="8" fill="#e67e22"/>
-      <rect x="164" y="148" width="10" height="10" fill="#e67e22"/>
-      <rect x="172" y="152" width="8" height="8" fill="#e0c8b0"/>
-      <!-- Pointing finger -->
-      <rect x="180" y="154" width="10" height="4" fill="#e0c8b0"/>
-
-      <!-- === HEAD — round-wide, stair-stepped === -->
-      <path d="M 78,38 h44 v2 h6 v2 h4 v2 h2 v2 h2 v2 h2 v2 h2 v44 h-2 v2 h-2 v2 h-2 v2 h-2 v2 h-4 v2 h-6 v2 h-44 v-2 h-6 v-2 h-4 v-2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 v-44 h2 v-2 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h6 z" fill="#e0c8b0"/>
-      <!-- Ears -->
-      <rect x="58" y="72" width="4" height="14" fill="#e0c8b0"/>
-      <rect x="56" y="74" width="2" height="10" fill="#e0c8b0"/>
-      <rect x="138" y="72" width="4" height="14" fill="#e0c8b0"/>
-      <rect x="142" y="74" width="2" height="10" fill="#e0c8b0"/>
-
-      <!-- === JESTER HAT === -->
-      <!-- Left tip -->
-      <rect x="56" y="44" width="8" height="4" fill="#e67e22"/>
-      <rect x="50" y="40" width="8" height="4" fill="#e67e22"/>
-      <rect x="44" y="36" width="8" height="4" fill="#e67e22"/>
-      <rect x="38" y="32" width="8" height="4" fill="#e67e22"/>
-      <rect x="34" y="28" width="6" height="4" fill="#e67e22"/>
-      <rect x="30" y="24" width="6" height="4" fill="#e67e22"/>
+      <!-- === JESTER HAT — three tips with bells, like Max's rigid ears === -->
+      <!-- Left tip (orange) — curves outward like Max's left ear -->
+      <rect x="66" y="32" width="6" height="4" fill="#d96a1a"/>
+      <rect x="60" y="28" width="6" height="4" fill="#e67e22"/>
+      <rect x="54" y="24" width="6" height="4" fill="#e67e22"/>
+      <rect x="50" y="20" width="6" height="4" fill="#e67e22"/>
+      <rect x="46" y="16" width="6" height="4" fill="#e67e22"/>
+      <rect x="44" y="12" width="4" height="4" fill="#e67e22"/>
       <!-- Left bell -->
-      <rect x="28" y="18" width="8" height="6" fill="#ffd700"/>
-      <rect x="30" y="16" width="4" height="2" fill="#ffd700"/>
-      <rect x="30" y="18" width="4" height="2" fill="#fff" opacity="0.3"/>
-      <!-- Center tip -->
-      <rect x="96" y="32" width="8" height="4" fill="#9b59b6"/>
-      <rect x="96" y="26" width="8" height="6" fill="#9b59b6"/>
-      <rect x="96" y="20" width="8" height="6" fill="#9b59b6"/>
-      <rect x="98" y="14" width="4" height="6" fill="#9b59b6"/>
+      <rect x="40" y="6" width="8" height="6" fill="#ffd700"/>
+      <rect x="42" y="4" width="4" height="2" fill="#ffe44d"/>
+      <rect x="42" y="6" width="4" height="2" fill="#fff" opacity="0.3"/>
+      <rect x="42" y="10" width="4" height="2" fill="#cca300"/>
+
+      <!-- Center tip (purple) — tall, rigid like Max's upright posture -->
+      <rect x="96" y="22" width="8" height="4" fill="#9b59b6"/>
+      <rect x="96" y="16" width="8" height="6" fill="#8e44ad"/>
+      <rect x="96" y="10" width="8" height="6" fill="#9b59b6"/>
+      <rect x="98" y="4" width="4" height="6" fill="#9b59b6"/>
       <!-- Center bell -->
-      <rect x="96" y="8" width="8" height="6" fill="#ffd700"/>
-      <rect x="98" y="6" width="4" height="2" fill="#ffd700"/>
-      <rect x="98" y="8" width="4" height="2" fill="#fff" opacity="0.3"/>
-      <!-- Right tip -->
-      <rect x="136" y="44" width="8" height="4" fill="#2ecc71"/>
-      <rect x="142" y="40" width="8" height="4" fill="#2ecc71"/>
-      <rect x="148" y="36" width="8" height="4" fill="#2ecc71"/>
-      <rect x="154" y="32" width="8" height="4" fill="#2ecc71"/>
-      <rect x="160" y="28" width="6" height="4" fill="#2ecc71"/>
-      <rect x="164" y="24" width="6" height="4" fill="#2ecc71"/>
+      <rect x="94" y="-2" width="12" height="6" fill="#ffd700"/>
+      <rect x="96" y="-4" width="8" height="2" fill="#ffe44d"/>
+      <rect x="98" y="-2" width="4" height="2" fill="#fff" opacity="0.3"/>
+
+      <!-- Right tip (green) -->
+      <rect x="128" y="32" width="6" height="4" fill="#1fa84d"/>
+      <rect x="134" y="28" width="6" height="4" fill="#2ecc71"/>
+      <rect x="140" y="24" width="6" height="4" fill="#2ecc71"/>
+      <rect x="144" y="20" width="6" height="4" fill="#2ecc71"/>
+      <rect x="148" y="16" width="6" height="4" fill="#2ecc71"/>
+      <rect x="150" y="12" width="4" height="4" fill="#2ecc71"/>
       <!-- Right bell -->
-      <rect x="164" y="18" width="8" height="6" fill="#ffd700"/>
-      <rect x="166" y="16" width="4" height="2" fill="#ffd700"/>
-      <rect x="166" y="18" width="4" height="2" fill="#fff" opacity="0.3"/>
+      <rect x="150" y="6" width="8" height="6" fill="#ffd700"/>
+      <rect x="152" y="4" width="4" height="2" fill="#ffe44d"/>
+      <rect x="152" y="6" width="4" height="2" fill="#fff" opacity="0.3"/>
+
       <!-- Hat base band -->
-      <rect x="66" y="46" width="68" height="8" fill="#9b59b6"/>
-      <rect x="74" y="44" width="52" height="4" fill="#e67e22"/>
-      <!-- Pompoms on band -->
-      <rect x="80" y="48" width="4" height="4" fill="#fff"/>
-      <rect x="98" y="48" width="4" height="4" fill="#fff"/>
-      <rect x="116" y="48" width="4" height="4" fill="#fff"/>
+      <rect x="72" y="36" width="56" height="4" fill="#9b59b6"/>
+      <rect x="70" y="38" width="60" height="4" fill="#8e44ad"/>
+      <!-- Pompom on band -->
+      <rect x="86" y="36" width="4" height="4" fill="#fff"/>
+      <rect x="98" y="36" width="4" height="4" fill="#fff"/>
+      <rect x="110" y="36" width="4" height="4" fill="#fff"/>
 
-      <!-- === RED CLOWN NOSE (UNIQUE — BIG) === -->
-      <rect x="94" y="84" width="12" height="4" fill="#e74c3c"/>
-      <rect x="92" y="88" width="16" height="6" fill="#e74c3c"/>
-      <rect x="94" y="94" width="12" height="4" fill="#e74c3c"/>
+      <!-- === HEAD — MAX'S HEAD SHAPE: narrow cranium, FLARING jaw === -->
+      <!-- This is the KEY — cranium is small, face widens dramatically at jaw -->
+      <!-- Cranium (narrow top) -->
+      <rect x="84" y="42" width="32" height="4" fill="#e8d4b8"/>
+      <rect x="80" y="46" width="40" height="4" fill="#e8d4b8"/>
+      <rect x="78" y="50" width="44" height="4" fill="#e8d4b8"/>
+      <!-- Face widens at eye level -->
+      <rect x="74" y="54" width="52" height="4" fill="#e8d4b8"/>
+      <rect x="72" y="58" width="56" height="4" fill="#e8d4b8"/>
+      <!-- JAW FLARES OUT — Max's signature -->
+      <rect x="68" y="62" width="64" height="4" fill="#e8d4b8"/>
+      <rect x="66" y="66" width="68" height="4" fill="#e8d4b8"/>
+      <rect x="64" y="70" width="72" height="4" fill="#e8d4b8"/>
+      <rect x="64" y="74" width="72" height="4" fill="#e8d4b8"/>
+      <rect x="66" y="78" width="68" height="4" fill="#e8d4b8"/>
+      <!-- Chin narrows slightly -->
+      <rect x="70" y="82" width="60" height="4" fill="#e8d4b8"/>
+      <rect x="76" y="86" width="48" height="4" fill="#e8d4b8"/>
+      <rect x="82" y="90" width="36" height="2" fill="#e8d4b8"/>
+
+      <!-- Head outline — tinted dark, not pure black -->
+      <rect x="84" y="40" width="32" height="2" fill="#8a6a4a" opacity="0.6"/>
+      <rect x="82" y="42" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="116" y="42" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="78" y="46" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="120" y="46" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="76" y="50" width="2" height="4" fill="#8a6a4a" opacity="0.4"/>
+      <rect x="122" y="50" width="2" height="4" fill="#8a6a4a" opacity="0.4"/>
+      <!-- Jaw outline — wider -->
+      <rect x="62" y="66" width="2" height="12" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="136" y="66" width="2" height="12" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="64" y="78" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+      <rect x="134" y="78" width="2" height="4" fill="#8a6a4a" opacity="0.5"/>
+
+      <!-- Face shadow (left side) -->
+      <rect x="66" y="66" width="4" height="12" fill="#d4be9e" opacity="0.3"/>
+      <!-- Face highlight (right side) -->
+      <rect x="128" y="58" width="4" height="8" fill="#f0dcc6" opacity="0.25"/>
+      <!-- Cheek shadow under eyes -->
+      <rect x="74" y="62" width="4" height="2" fill="#d4be9e" opacity="0.2"/>
+      <rect x="122" y="62" width="4" height="2" fill="#d4be9e" opacity="0.2"/>
+
+      <!-- Ears (small — Max has small ears, his hat tips replace his tall ears) -->
+      <rect x="62" y="56" width="4" height="8" fill="#e8d4b8"/>
+      <rect x="60" y="58" width="2" height="4" fill="#e8d4b8"/>
+      <rect x="60" y="58" width="2" height="4" fill="#d4be9e" opacity="0.2"/>
+      <rect x="134" y="56" width="4" height="8" fill="#e8d4b8"/>
+      <rect x="138" y="58" width="2" height="4" fill="#e8d4b8"/>
+
+      <!-- === EYES — TINY, beady, high on face (MAX SIGNATURE) === -->
+      <!-- Max's eyes are SMALL dots high up — the face is mostly mouth -->
+      <!-- Left eye — just 6×4 sclera, tiny -->
+      <rect x="82" y="54" width="8" height="6" fill="#fff"/>
+      <rect x="82" y="54" width="8" height="2" fill="#ddd" opacity="0.4"/>
+      <!-- Iris — bright green, 4×4 -->
+      <rect x="86" y="54" width="4" height="4" fill="#2ecc71"/>
+      <rect x="86" y="56" width="4" height="2" fill="#1a9a4a"/>
+      <!-- Pupil — tiny 2×2 -->
+      <rect x="86" y="56" width="2" height="2" fill="#111"/>
+      <!-- Highlight -->
+      <rect x="84" y="54" width="2" height="2" fill="#fff"/>
+      <!-- Right eye -->
+      <rect x="110" y="54" width="8" height="6" fill="#fff"/>
+      <rect x="110" y="54" width="8" height="2" fill="#ddd" opacity="0.4"/>
+      <rect x="112" y="54" width="4" height="4" fill="#2ecc71"/>
+      <rect x="112" y="56" width="4" height="2" fill="#1a9a4a"/>
+      <rect x="114" y="56" width="2" height="2" fill="#111"/>
+      <rect x="110" y="54" width="2" height="2" fill="#fff"/>
+      <!-- Eye outlines -->
+      <rect x="80" y="54" width="2" height="6" fill="#4a3020" opacity="0.5"/>
+      <rect x="90" y="54" width="2" height="6" fill="#4a3020" opacity="0.5"/>
+      <rect x="82" y="52" width="8" height="2" fill="#4a3020" opacity="0.4"/>
+      <rect x="108" y="54" width="2" height="6" fill="#4a3020" opacity="0.5"/>
+      <rect x="118" y="54" width="2" height="6" fill="#4a3020" opacity="0.5"/>
+      <rect x="110" y="52" width="8" height="2" fill="#4a3020" opacity="0.4"/>
+
+      <!-- === BROWS — high, thin, manic surprised (Max always looks manic) === -->
+      <rect x="82" y="48" width="10" height="2" fill="#5a3020"/>
+      <rect x="80" y="50" width="2" height="2" fill="#5a3020" opacity="0.5"/>
+      <rect x="108" y="48" width="10" height="2" fill="#5a3020"/>
+      <rect x="118" y="50" width="2" height="2" fill="#5a3020" opacity="0.5"/>
+
+      <!-- === RED CLOWN NOSE — prominent but smaller than jaw === -->
+      <rect x="96" y="62" width="8" height="4" fill="#e74c3c"/>
+      <rect x="94" y="64" width="12" height="4" fill="#e74c3c"/>
+      <rect x="96" y="68" width="8" height="2" fill="#e74c3c"/>
       <!-- Nose highlight -->
-      <rect x="96" y="86" width="4" height="2" fill="#ff6b6b" opacity="0.5"/>
-      <!-- Nose outline -->
-      <rect x="92" y="86" width="2" height="8" fill="#a02020" opacity="0.4"/>
-      <rect x="106" y="86" width="2" height="8" fill="#a02020" opacity="0.4"/>
+      <rect x="98" y="62" width="4" height="2" fill="#ff6b6b" opacity="0.5"/>
+      <!-- Nose shadow -->
+      <rect x="94" y="66" width="2" height="2" fill="#a02020" opacity="0.3"/>
 
-      <!-- === EYES — HUGE, wide-open, manic (UNIQUE to Clown) === -->
-      <!-- Left eye: 18×14 sclera — ENORMOUS -->
-      <rect x="72" y="62" width="18" height="14" fill="#fff"/>
-      <rect x="70" y="64" width="2" height="10" fill="#fff"/>
-      <rect x="90" y="64" width="2" height="10" fill="#fff"/>
-      <!-- Eyelid top shadow -->
-      <rect x="72" y="62" width="18" height="2" fill="#3a2520" opacity="0.3"/>
-      <!-- Iris — bright green, slightly off-center right (manic) -->
-      <rect x="80" y="66" width="8" height="8" fill="#2ecc71"/>
-      <rect x="82" y="64" width="6" height="2" fill="#2ecc71"/>
-      <rect x="82" y="74" width="6" height="2" fill="#2ecc71"/>
-      <!-- Inner iris -->
-      <rect x="82" y="66" width="6" height="8" fill="#1a9a4a"/>
-      <!-- Pupil -->
-      <rect x="84" y="68" width="4" height="4" fill="#111"/>
-      <!-- BIG highlight -->
-      <rect x="80" y="64" width="4" height="4" fill="#fff"/>
-      <!-- Second highlight (sparkle) -->
-      <rect x="86" y="72" width="2" height="2" fill="#fff" opacity="0.5"/>
-      <!-- Right eye — matching huge -->
-      <rect x="110" y="62" width="18" height="14" fill="#fff"/>
-      <rect x="108" y="64" width="2" height="10" fill="#fff"/>
-      <rect x="128" y="64" width="2" height="10" fill="#fff"/>
-      <rect x="110" y="62" width="18" height="2" fill="#3a2520" opacity="0.3"/>
-      <rect x="118" y="66" width="8" height="8" fill="#2ecc71"/>
-      <rect x="120" y="64" width="6" height="2" fill="#2ecc71"/>
-      <rect x="120" y="74" width="6" height="2" fill="#2ecc71"/>
-      <rect x="120" y="66" width="6" height="8" fill="#1a9a4a"/>
-      <rect x="122" y="68" width="4" height="4" fill="#111"/>
-      <rect x="118" y="64" width="4" height="4" fill="#fff"/>
-      <rect x="124" y="72" width="2" height="2" fill="#fff" opacity="0.5"/>
-
-      <!-- === BROWS — high, arched, manic (UNIQUE) === -->
-      <rect x="74" y="54" width="4" height="2" fill="#5a3020"/>
-      <rect x="78" y="52" width="6" height="4" fill="#5a3020"/>
-      <rect x="84" y="54" width="4" height="2" fill="#5a3020"/>
-      <rect x="112" y="54" width="4" height="2" fill="#5a3020"/>
-      <rect x="116" y="52" width="6" height="4" fill="#5a3020"/>
-      <rect x="122" y="54" width="4" height="2" fill="#5a3020"/>
-
-      <!-- === GRIN — wide, showing teeth (UNIQUE) === -->
-      <rect x="80" y="100" width="40" height="2" fill="#6a4a3a"/>
-      <rect x="78" y="102" width="44" height="8" fill="#fff"/>
-      <rect x="76" y="104" width="2" height="4" fill="#fff"/>
-      <rect x="122" y="104" width="2" height="4" fill="#fff"/>
-      <rect x="80" y="110" width="40" height="2" fill="#6a4a3a"/>
-      <!-- Tooth dividers -->
-      <rect x="86" y="102" width="2" height="8" fill="#ddd"/>
-      <rect x="94" y="102" width="2" height="8" fill="#ddd"/>
-      <rect x="104" y="102" width="2" height="8" fill="#ddd"/>
-      <rect x="112" y="102" width="2" height="8" fill="#ddd"/>
-      <!-- Grin outline -->
-      <rect x="78" y="100" width="44" height="2" fill="#4a2a1a" opacity="0.6"/>
-      <rect x="78" y="110" width="44" height="2" fill="#4a2a1a" opacity="0.4"/>
+      <!-- === GRIN — MASSIVE, Max's signature, dominates lower face === -->
+      <!-- The grin extends nearly the full width of the jaw -->
       <!-- Upper lip line -->
-      <rect x="76" y="100" width="4" height="2" fill="#4a2a1a" opacity="0.5"/>
-      <rect x="120" y="100" width="4" height="2" fill="#4a2a1a" opacity="0.5"/>
+      <rect x="72" y="72" width="56" height="2" fill="#6a3a2a"/>
+      <!-- Teeth area — BIG, takes up most of jaw height -->
+      <rect x="72" y="74" width="56" height="10" fill="#fff"/>
+      <rect x="70" y="76" width="2" height="6" fill="#fff"/>
+      <rect x="128" y="76" width="2" height="6" fill="#fff"/>
+      <!-- Tooth dividers — individual teeth visible -->
+      <rect x="78" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="84" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="90" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="96" y="74" width="2" height="10" fill="#ddd"/>
+      <rect x="104" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="110" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="116" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <rect x="122" y="74" width="1" height="10" fill="#e0e0e0"/>
+      <!-- Lower lip/grin line -->
+      <rect x="72" y="84" width="56" height="2" fill="#6a3a2a"/>
+      <rect x="70" y="82" width="2" height="2" fill="#6a3a2a" opacity="0.6"/>
+      <rect x="128" y="82" width="2" height="2" fill="#6a3a2a" opacity="0.6"/>
+      <!-- Grin extends up at corners (Max's crazed upturned grin) -->
+      <rect x="68" y="70" width="4" height="4" fill="#6a3a2a" opacity="0.5"/>
+      <rect x="128" y="70" width="4" height="4" fill="#6a3a2a" opacity="0.5"/>
+      <!-- Tooth shadow at top -->
+      <rect x="72" y="74" width="56" height="2" fill="#ccc" opacity="0.3"/>
 
-      <!-- === ROSY CHEEKS (dithered) === -->
-      <rect x="66" y="86" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
-      <rect x="70" y="88" width="2" height="2" fill="#e74c3c" opacity="0.2"/>
-      <rect x="68" y="90" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
-      <rect x="66" y="92" width="2" height="2" fill="#e74c3c" opacity="0.1"/>
-      <rect x="130" y="86" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
-      <rect x="128" y="88" width="2" height="2" fill="#e74c3c" opacity="0.2"/>
-      <rect x="130" y="90" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
-      <rect x="132" y="92" width="2" height="2" fill="#e74c3c" opacity="0.1"/>
+      <!-- Rosy cheeks — dithered pink -->
+      <rect x="68" y="64" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
+      <rect x="72" y="66" width="2" height="2" fill="#e74c3c" opacity="0.2"/>
+      <rect x="70" y="68" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
+      <rect x="128" y="64" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
+      <rect x="126" y="66" width="2" height="2" fill="#e74c3c" opacity="0.2"/>
+      <rect x="128" y="68" width="2" height="2" fill="#e74c3c" opacity="0.15"/>
 
-      <!-- Face paint marks (Kefka-style, dithered) -->
-      <rect x="68" y="72" width="2" height="2" fill="#9b59b6" opacity="0.2"/>
-      <rect x="66" y="76" width="2" height="2" fill="#9b59b6" opacity="0.15"/>
-      <rect x="132" y="72" width="2" height="2" fill="#9b59b6" opacity="0.2"/>
-      <rect x="134" y="76" width="2" height="2" fill="#9b59b6" opacity="0.15"/>
+      <!-- Face paint — Kefka marks under eyes -->
+      <rect x="76" y="60" width="2" height="4" fill="#9b59b6" opacity="0.2"/>
+      <rect x="74" y="62" width="2" height="2" fill="#9b59b6" opacity="0.15"/>
+      <rect x="122" y="60" width="2" height="4" fill="#9b59b6" opacity="0.2"/>
+      <rect x="124" y="62" width="2" height="2" fill="#9b59b6" opacity="0.15"/>
 
-      <!-- Feet — pointy jester shoes (pixel steps) -->
-      <rect x="68" y="208" width="22" height="8" fill="#e67e22"/>
-      <rect x="60" y="210" width="8" height="4" fill="#e67e22"/>
-      <rect x="54" y="212" width="6" height="2" fill="#e67e22"/>
-      <rect x="52" y="210" width="4" height="4" fill="#ffd700"/>
-      <rect x="110" y="208" width="22" height="8" fill="#9b59b6"/>
-      <rect x="132" y="210" width="8" height="4" fill="#9b59b6"/>
-      <rect x="140" y="212" width="6" height="2" fill="#9b59b6"/>
-      <rect x="144" y="210" width="4" height="4" fill="#ffd700"/>
+      <!-- === RUFFLED COLLAR === -->
+      <rect x="72" y="90" width="56" height="6" fill="#fff"/>
+      <rect x="68" y="92" width="4" height="4" fill="#fff"/>
+      <rect x="128" y="92" width="4" height="4" fill="#fff"/>
+      <!-- Ruffle scallops -->
+      <rect x="76" y="88" width="6" height="4" fill="#fff"/>
+      <rect x="86" y="86" width="6" height="4" fill="#fff"/>
+      <rect x="96" y="88" width="8" height="4" fill="#fff"/>
+      <rect x="108" y="86" width="6" height="4" fill="#fff"/>
+      <rect x="118" y="88" width="6" height="4" fill="#fff"/>
+      <!-- Ruffle shadow -->
+      <rect x="72" y="94" width="56" height="2" fill="#ddd" opacity="0.4"/>
+      <rect x="78" y="90" width="2" height="2" fill="#ddd" opacity="0.3"/>
+      <rect x="92" y="90" width="2" height="2" fill="#ddd" opacity="0.3"/>
+      <rect x="106" y="90" width="2" height="2" fill="#ddd" opacity="0.3"/>
+      <rect x="120" y="90" width="2" height="2" fill="#ddd" opacity="0.3"/>
+
+      <!-- === BODY — patchwork costume, split orange/purple === -->
+      <!-- Left half — orange -->
+      <rect x="68" y="96" width="32" height="64" fill="#e67e22"/>
+      <!-- Right half — purple -->
+      <rect x="100" y="96" width="32" height="64" fill="#9b59b6"/>
+      <!-- Body outline -->
+      <rect x="66" y="96" width="2" height="64" fill="#b85a10" opacity="0.5"/>
+      <rect x="132" y="96" width="2" height="64" fill="#6a2d8a" opacity="0.5"/>
+      <!-- Seam down center -->
+      <rect x="99" y="96" width="2" height="64" fill="#333" opacity="0.3"/>
+      <!-- Diamond patch (orange side) — green -->
+      <rect x="80" y="120" width="6" height="6" fill="#2ecc71" transform="rotate(45 83 123)"/>
+      <rect x="80" y="120" width="6" height="6" fill="none" stroke="#1a8a4a" stroke-width="1" transform="rotate(45 83 123)"/>
+      <!-- Diamond patch (purple side) — yellow -->
+      <rect x="114" y="120" width="6" height="6" fill="#f1c40f" transform="rotate(45 117 123)"/>
+      <!-- Buttons down center -->
+      <rect x="98" y="104" width="4" height="4" fill="#ffd700"/>
+      <rect x="98" y="114" width="4" height="4" fill="#ffd700"/>
+      <rect x="98" y="124" width="4" height="4" fill="#ffd700"/>
+      <!-- Stripe on orange side -->
+      <rect x="74" y="100" width="2" height="56" fill="#d96a1a" opacity="0.4"/>
+      <rect x="82" y="100" width="2" height="56" fill="#d96a1a" opacity="0.3"/>
+      <!-- Stripe on purple side -->
+      <rect x="116" y="100" width="2" height="56" fill="#8e44ad" opacity="0.4"/>
+      <rect x="124" y="100" width="2" height="56" fill="#8e44ad" opacity="0.3"/>
+      <!-- Belt -->
+      <rect x="66" y="150" width="68" height="6" fill="#ffd700"/>
+      <rect x="66" y="150" width="68" height="2" fill="#ffe44d" opacity="0.3"/>
+      <rect x="92" y="148" width="16" height="10" fill="#c9a227"/>
+      <rect x="96" y="150" width="8" height="6" fill="#ffd700"/>
+      <rect x="98" y="152" width="4" height="2" fill="#fff" opacity="0.2"/>
+      <!-- Body shading — left shadow -->
+      <rect x="68" y="98" width="4" height="52" fill="#c86a10" opacity="0.15"/>
+      <!-- Body highlight — right -->
+      <rect x="126" y="98" width="4" height="52" fill="#b06acd" opacity="0.15"/>
+
+      <!-- === LEFT ARM — raised high, juggling === -->
+      <rect x="52" y="100" width="16" height="8" fill="#9b59b6"/>
+      <rect x="44" y="96" width="10" height="8" fill="#9b59b6"/>
+      <rect x="38" y="90" width="8" height="8" fill="#9b59b6"/>
+      <rect x="32" y="84" width="8" height="8" fill="#9b59b6"/>
+      <!-- Hand -->
+      <rect x="28" y="78" width="8" height="8" fill="#e8d4b8"/>
+      <rect x="26" y="80" width="2" height="4" fill="#e8d4b8"/>
+      <!-- Arm outline -->
+      <rect x="52" y="98" width="2" height="2" fill="#6a2d8a" opacity="0.4"/>
+      <rect x="44" y="94" width="2" height="2" fill="#6a2d8a" opacity="0.4"/>
+
+      <!-- Juggling balls — properly round pixel art -->
+      <!-- Red ball (highest) -->
+      <rect x="18" y="42" width="12" height="4" fill="#e74c3c"/>
+      <rect x="16" y="46" width="16" height="8" fill="#e74c3c"/>
+      <rect x="18" y="54" width="12" height="4" fill="#e74c3c"/>
+      <rect x="20" y="46" width="4" height="2" fill="#ff7b7b" opacity="0.5"/>
+      <rect x="28" y="52" width="2" height="2" fill="#a02020" opacity="0.3"/>
+      <!-- Green ball (mid) -->
+      <rect x="44" y="30" width="12" height="4" fill="#2ecc71"/>
+      <rect x="42" y="34" width="16" height="8" fill="#2ecc71"/>
+      <rect x="44" y="42" width="12" height="4" fill="#2ecc71"/>
+      <rect x="46" y="34" width="4" height="2" fill="#5dde9e" opacity="0.5"/>
+      <rect x="54" y="40" width="2" height="2" fill="#1a8a4a" opacity="0.3"/>
+      <!-- Blue ball (right) -->
+      <rect x="64" y="18" width="12" height="4" fill="#3498db"/>
+      <rect x="62" y="22" width="16" height="8" fill="#3498db"/>
+      <rect x="64" y="30" width="12" height="4" fill="#3498db"/>
+      <rect x="66" y="22" width="4" height="2" fill="#6bb5e8" opacity="0.5"/>
+      <rect x="74" y="28" width="2" height="2" fill="#2070a0" opacity="0.3"/>
+      <!-- Motion arc hints -->
+      <rect x="30" y="40" width="2" height="2" fill="#fff" opacity="0.12"/>
+      <rect x="36" y="36" width="2" height="2" fill="#fff" opacity="0.1"/>
+      <rect x="56" y="26" width="2" height="2" fill="#fff" opacity="0.1"/>
+
+      <!-- === RIGHT ARM — pointing, gesturing wildly === -->
+      <rect x="132" y="100" width="14" height="8" fill="#e67e22"/>
+      <rect x="144" y="104" width="10" height="8" fill="#e67e22"/>
+      <rect x="152" y="108" width="8" height="8" fill="#e67e22"/>
+      <rect x="158" y="112" width="8" height="6" fill="#e67e22"/>
+      <!-- Hand + pointing finger -->
+      <rect x="164" y="110" width="8" height="8" fill="#e8d4b8"/>
+      <rect x="172" y="112" width="10" height="4" fill="#e8d4b8"/>
+      <rect x="182" y="112" width="4" height="4" fill="#e8d4b8"/>
+      <!-- Fingertip -->
+      <rect x="186" y="114" width="2" height="2" fill="#d4be9e"/>
+
+      <!-- === LEGS — STRIPED STOCKINGS (like reference clown!) === -->
+      <!-- Left leg -->
+      <rect x="72" y="160" width="20" height="4" fill="#e67e22"/>
+      <!-- Striped stocking — orange/white alternating -->
+      <rect x="74" y="164" width="16" height="4" fill="#fff"/>
+      <rect x="74" y="168" width="16" height="4" fill="#e67e22"/>
+      <rect x="74" y="172" width="16" height="4" fill="#fff"/>
+      <rect x="74" y="176" width="16" height="4" fill="#e67e22"/>
+      <rect x="74" y="180" width="16" height="4" fill="#fff"/>
+      <rect x="74" y="184" width="16" height="4" fill="#e67e22"/>
+      <rect x="74" y="188" width="16" height="4" fill="#fff"/>
+      <rect x="74" y="192" width="16" height="4" fill="#e67e22"/>
+      <!-- Stocking outline -->
+      <rect x="72" y="164" width="2" height="32" fill="#b85a10" opacity="0.3"/>
+      <rect x="90" y="164" width="2" height="32" fill="#b85a10" opacity="0.3"/>
+      <!-- Right leg -->
+      <rect x="108" y="160" width="20" height="4" fill="#9b59b6"/>
+      <!-- Striped stocking — purple/white alternating -->
+      <rect x="110" y="164" width="16" height="4" fill="#fff"/>
+      <rect x="110" y="168" width="16" height="4" fill="#9b59b6"/>
+      <rect x="110" y="172" width="16" height="4" fill="#fff"/>
+      <rect x="110" y="176" width="16" height="4" fill="#9b59b6"/>
+      <rect x="110" y="180" width="16" height="4" fill="#fff"/>
+      <rect x="110" y="184" width="16" height="4" fill="#9b59b6"/>
+      <rect x="110" y="188" width="16" height="4" fill="#fff"/>
+      <rect x="110" y="192" width="16" height="4" fill="#9b59b6"/>
+      <!-- Stocking outline -->
+      <rect x="108" y="164" width="2" height="32" fill="#6a2d8a" opacity="0.3"/>
+      <rect x="126" y="164" width="2" height="32" fill="#6a2d8a" opacity="0.3"/>
+
+      <!-- === SHOES — pointy jester shoes with curled toes === -->
+      <!-- Left shoe (orange) -->
+      <rect x="70" y="196" width="22" height="8" fill="#e67e22"/>
+      <rect x="62" y="198" width="8" height="6" fill="#e67e22"/>
+      <rect x="56" y="200" width="6" height="4" fill="#e67e22"/>
+      <rect x="52" y="198" width="6" height="4" fill="#e67e22"/>
+      <rect x="50" y="196" width="4" height="4" fill="#e67e22"/>
+      <!-- Left shoe bell -->
+      <rect x="46" y="192" width="6" height="6" fill="#ffd700"/>
+      <rect x="48" y="194" width="2" height="2" fill="#fff" opacity="0.3"/>
+      <!-- Left shoe outline -->
+      <rect x="70" y="204" width="22" height="2" fill="#b85a10" opacity="0.5"/>
+      <rect x="62" y="204" width="8" height="2" fill="#b85a10" opacity="0.4"/>
+      <!-- Left shoe highlight -->
+      <rect x="74" y="196" width="6" height="2" fill="#f0a050" opacity="0.3"/>
+      <!-- Right shoe (purple) -->
+      <rect x="108" y="196" width="22" height="8" fill="#9b59b6"/>
+      <rect x="130" y="198" width="8" height="6" fill="#9b59b6"/>
+      <rect x="138" y="200" width="6" height="4" fill="#9b59b6"/>
+      <rect x="142" y="198" width="6" height="4" fill="#9b59b6"/>
+      <rect x="146" y="196" width="4" height="4" fill="#9b59b6"/>
+      <!-- Right shoe bell -->
+      <rect x="148" y="192" width="6" height="6" fill="#ffd700"/>
+      <rect x="150" y="194" width="2" height="2" fill="#fff" opacity="0.3"/>
+      <!-- Right shoe outline -->
+      <rect x="108" y="204" width="22" height="2" fill="#6a2d8a" opacity="0.5"/>
+      <rect x="130" y="204" width="8" height="2" fill="#6a2d8a" opacity="0.4"/>
+      <rect x="112" y="196" width="6" height="2" fill="#b06acd" opacity="0.3"/>
+
     </svg>
+    <div class="lbl">200×240</div>
+  </div>
+
+  <!-- Medium (128×154) -->
+  <div class="sz">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="128" height="154">
+      <use href="#clown-full"/>
+    </svg>
+    <div class="lbl">128px</div>
+  </div>
+
+  <!-- Small (64×77) -->
+  <div class="sz">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="64" height="77">
+      <use href="#clown-full"/>
+    </svg>
+    <div class="lbl">64px</div>
+  </div>
+
+  <!-- XS (40×48) -->
+  <div class="sz">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="40" height="48">
+      <use href="#clown-full"/>
+    </svg>
+    <div class="lbl">40px</div>
+  </div>
+
   </div>
   <h3>Clown</h3>
-  <div class="sub">Jester · HUGE manic eyes · teeth grin · chaos</div>
+  <div class="sub">Jester · Max's head shape · massive grin · striped stockings</div>
   <div class="ref">Max (Sam &amp; Max) · Kefka (FFVI)</div>
-</div>
-
-<!-- ============================================================ -->
-<!-- LOVER/ROMANTIC — Sophia Hapgood (Indy FoA) / Rosella (KQ IV) -->
-<!-- Pixel art: heart-shaped head, almond eyes, full lips         -->
-<!-- ============================================================ -->
-<div class="card">
-  <div class="s4">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-      <rect x="68" y="228" width="64" height="4" fill="#000" opacity="0.2"/>
-      <rect x="72" y="232" width="56" height="4" fill="#000" opacity="0.15"/>
-
-      <!-- === BODY — flowing romantic dress === -->
-      <rect x="66" y="128" width="68" height="80" fill="#8b2252"/>
-      <rect x="62" y="140" width="4" height="64" fill="#8b2252"/>
-      <rect x="134" y="140" width="4" height="64" fill="#8b2252"/>
-      <rect x="58" y="160" width="4" height="44" fill="#8b2252"/>
-      <rect x="138" y="160" width="4" height="44" fill="#8b2252"/>
-      <rect x="56" y="180" width="2" height="24" fill="#8b2252"/>
-      <rect x="142" y="180" width="2" height="24" fill="#8b2252"/>
-      <!-- Dress outline -->
-      <rect x="56" y="178" width="2" height="26" fill="#5a1238" opacity="0.5"/>
-      <rect x="142" y="178" width="2" height="26" fill="#5a1238" opacity="0.5"/>
-      <rect x="56" y="204" width="88" height="2" fill="#5a1238" opacity="0.4"/>
-      <!-- Dress fold lines (pixel art) -->
-      <rect x="78" y="144" width="2" height="56" fill="#7a1a44" opacity="0.25"/>
-      <rect x="100" y="136" width="2" height="64" fill="#7a1a44" opacity="0.2"/>
-      <rect x="122" y="144" width="2" height="56" fill="#7a1a44" opacity="0.25"/>
-      <!-- Lighter panel -->
-      <rect x="88" y="130" width="24" height="10" fill="#a03060" opacity="0.25"/>
-      <!-- Lace collar (pixel rects) -->
-      <rect x="78" y="126" width="44" height="6" fill="#f0e0e0"/>
-      <rect x="82" y="124" width="8" height="4" fill="#f0e0e0"/>
-      <rect x="96" y="122" width="8" height="4" fill="#f0e0e0"/>
-      <rect x="110" y="124" width="8" height="4" fill="#f0e0e0"/>
-      <!-- Lace pattern dither -->
-      <rect x="84" y="126" width="2" height="2" fill="#ddd" opacity="0.4"/>
-      <rect x="92" y="128" width="2" height="2" fill="#ddd" opacity="0.4"/>
-      <rect x="106" y="128" width="2" height="2" fill="#ddd" opacity="0.4"/>
-      <rect x="114" y="126" width="2" height="2" fill="#ddd" opacity="0.4"/>
-      <!-- Pendant -->
-      <rect x="98" y="132" width="4" height="14" fill="#c9a227"/>
-      <rect x="96" y="146" width="8" height="4" fill="#c9a227"/>
-      <rect x="98" y="148" width="4" height="4" fill="#e74c3c"/>
-
-      <!-- === LEFT ARM — rose === -->
-      <rect x="46" y="134" width="20" height="8" fill="#8b2252"/>
-      <rect x="36" y="128" width="14" height="8" fill="#8b2252"/>
-      <rect x="28" y="120" width="12" height="10" fill="#8b2252"/>
-      <rect x="24" y="112" width="10" height="10" fill="#e0c8b0"/>
-      <!-- Rose stem -->
-      <rect x="28" y="68" width="4" height="46" fill="#2a6a2a"/>
-      <rect x="26" y="84" width="2" height="4" fill="#2a6a2a"/>
-      <rect x="34" y="94" width="2" height="4" fill="#2a6a2a"/>
-      <!-- Rose bloom (pixel rects) -->
-      <rect x="24" y="58" width="12" height="4" fill="#c0392b"/>
-      <rect x="22" y="62" width="16" height="8" fill="#c0392b"/>
-      <rect x="24" y="70" width="12" height="4" fill="#c0392b"/>
-      <!-- Rose center -->
-      <rect x="28" y="64" width="4" height="4" fill="#a02020"/>
-      <!-- Rose highlight -->
-      <rect x="26" y="62" width="4" height="2" fill="#e85050" opacity="0.4"/>
-      <!-- Leaf -->
-      <rect x="32" y="82" width="6" height="4" fill="#2a6a2a"/>
-      <rect x="36" y="80" width="4" height="2" fill="#2a6a2a"/>
-
-      <!-- === RIGHT ARM — poetry book === -->
-      <rect x="134" y="136" width="18" height="8" fill="#8b2252"/>
-      <rect x="148" y="142" width="12" height="8" fill="#8b2252"/>
-      <rect x="156" y="148" width="10" height="10" fill="#8b2252"/>
-      <rect x="162" y="156" width="8" height="10" fill="#e0c8b0"/>
-      <!-- Book -->
-      <rect x="158" y="166" width="18" height="26" fill="#5a2040"/>
-      <rect x="160" y="168" width="14" height="22" fill="#f0e0d0"/>
-      <rect x="162" y="172" width="10" height="2" fill="#aaa"/>
-      <rect x="162" y="178" width="8" height="2" fill="#aaa"/>
-      <rect x="162" y="184" width="10" height="2" fill="#aaa"/>
-
-      <!-- === HEAD — heart-shaped, stair-stepped === -->
-      <path d="M 72,40 h8 v-2 h4 v-2 h6 v-2 h4 v2 h4 v-2 h4 v2 h6 v2 h4 v2 h8 v4 h2 v4 h2 v4 h2 v20 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-6 v4 h-4 v4 h-4 v2 h-8 v-2 h-4 v-4 h-4 v-4 h-6 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-20 h2 v-4 h2 v-4 z" fill="#e0c8b0"/>
-      <!-- Cheek blush dither -->
-      <rect x="76" y="82" width="2" height="2" fill="#e8a0a0" opacity="0.15"/>
-      <rect x="80" y="84" width="2" height="2" fill="#e8a0a0" opacity="0.2"/>
-      <rect x="78" y="86" width="2" height="2" fill="#e8a0a0" opacity="0.15"/>
-      <rect x="120" y="82" width="2" height="2" fill="#e8a0a0" opacity="0.15"/>
-      <rect x="118" y="84" width="2" height="2" fill="#e8a0a0" opacity="0.2"/>
-      <rect x="120" y="86" width="2" height="2" fill="#e8a0a0" opacity="0.15"/>
-      <!-- Ears (mostly behind hair) -->
-      <rect x="66" y="64" width="4" height="10" fill="#e0c8b0"/>
-      <rect x="130" y="64" width="4" height="10" fill="#e0c8b0"/>
-
-      <!-- === HAIR — long flowing, dark brown, pixel cascades === -->
-      <!-- Hair top -->
-      <rect x="74" y="28" width="52" height="10" fill="#5a3020"/>
-      <rect x="72" y="32" width="56" height="8" fill="#5a3020"/>
-      <rect x="70" y="36" width="60" height="8" fill="#5a3020"/>
-      <!-- Hair flowing left -->
-      <rect x="58" y="44" width="10" height="4" fill="#5a3020"/>
-      <rect x="54" y="48" width="10" height="8" fill="#5a3020"/>
-      <rect x="52" y="56" width="8" height="12" fill="#5a3020"/>
-      <rect x="50" y="68" width="8" height="16" fill="#5a3020"/>
-      <rect x="48" y="84" width="8" height="20" fill="#5a3020"/>
-      <rect x="46" y="104" width="8" height="20" fill="#5a3020"/>
-      <rect x="48" y="124" width="6" height="16" fill="#5a3020"/>
-      <!-- Hair flowing right -->
-      <rect x="132" y="44" width="10" height="4" fill="#5a3020"/>
-      <rect x="136" y="48" width="10" height="8" fill="#5a3020"/>
-      <rect x="140" y="56" width="8" height="12" fill="#5a3020"/>
-      <rect x="142" y="68" width="8" height="16" fill="#5a3020"/>
-      <rect x="144" y="84" width="8" height="20" fill="#5a3020"/>
-      <rect x="146" y="104" width="8" height="20" fill="#5a3020"/>
-      <rect x="146" y="124" width="6" height="16" fill="#5a3020"/>
-      <!-- Hair highlight strands -->
-      <rect x="52" y="62" width="2" height="8" fill="#7a5040" opacity="0.4"/>
-      <rect x="54" y="80" width="2" height="6" fill="#7a5040" opacity="0.3"/>
-      <rect x="144" y="62" width="2" height="8" fill="#7a5040" opacity="0.4"/>
-      <rect x="146" y="80" width="2" height="6" fill="#7a5040" opacity="0.3"/>
-      <!-- Hair top highlights -->
-      <rect x="84" y="30" width="4" height="2" fill="#7a5040" opacity="0.35"/>
-      <rect x="108" y="30" width="4" height="2" fill="#7a5040" opacity="0.35"/>
-
-      <!-- === FLOWER CROWN (pixel rects) === -->
-      <rect x="76" y="30" width="48" height="4" fill="#2a8a2a"/>
-      <!-- Pink flower -->
-      <rect x="78" y="26" width="8" height="8" fill="#ff69b4"/>
-      <rect x="80" y="28" width="4" height="4" fill="#ff99cc"/>
-      <!-- White flower -->
-      <rect x="92" y="24" width="6" height="6" fill="#fff0f0"/>
-      <rect x="94" y="26" width="2" height="2" fill="#ffccdd"/>
-      <!-- Red flower -->
-      <rect x="102" y="22" width="8" height="8" fill="#e74c3c"/>
-      <rect x="104" y="24" width="4" height="4" fill="#ff6b6b"/>
-      <!-- White flower -->
-      <rect x="114" y="24" width="6" height="6" fill="#fff0f0"/>
-      <rect x="116" y="26" width="2" height="2" fill="#ffccdd"/>
-      <!-- Pink flower -->
-      <rect x="122" y="26" width="8" height="8" fill="#ff69b4"/>
-      <rect x="124" y="28" width="4" height="4" fill="#ff99cc"/>
-      <!-- Leaf rects -->
-      <rect x="88" y="30" width="4" height="2" fill="#3a9a3a"/>
-      <rect x="110" y="30" width="4" height="2" fill="#3a9a3a"/>
-
-      <!-- === EYES — almond-shaped via stair-step, warm (UNIQUE to Romantic) === -->
-      <!-- Left eye: tapered sclera (wider in center) -->
-      <rect x="80" y="66" width="2" height="4" fill="#f0e8e0"/>
-      <rect x="82" y="64" width="2" height="8" fill="#f0e8e0"/>
-      <rect x="84" y="62" width="8" height="12" fill="#f0e8e0"/>
-      <rect x="92" y="64" width="2" height="8" fill="#f0e8e0"/>
-      <rect x="94" y="66" width="2" height="4" fill="#f0e8e0"/>
-      <!-- Eyelid emphasis (lash line — heavier, UNIQUE) -->
-      <rect x="82" y="62" width="12" height="2" fill="#3a2520" opacity="0.7"/>
-      <rect x="80" y="64" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="94" y="64" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <!-- Pixel "lashes" — extra dark rects above eye -->
-      <rect x="82" y="60" width="2" height="2" fill="#3a2520" opacity="0.6"/>
-      <rect x="86" y="60" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="92" y="60" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <!-- Lower lid subtle -->
-      <rect x="84" y="72" width="8" height="2" fill="#3a2520" opacity="0.12"/>
-      <!-- Iris — warm amber -->
-      <rect x="86" y="64" width="6" height="8" fill="#c88040"/>
-      <rect x="88" y="64" width="4" height="8" fill="#a06030"/>
-      <!-- Pupil -->
-      <rect x="88" y="66" width="4" height="4" fill="#222"/>
-      <!-- Highlight -->
-      <rect x="86" y="64" width="2" height="2" fill="#fff"/>
-      <rect x="90" y="70" width="2" height="2" fill="#fff" opacity="0.35"/>
-      <!-- Right eye -->
-      <rect x="104" y="66" width="2" height="4" fill="#f0e8e0"/>
-      <rect x="106" y="64" width="2" height="8" fill="#f0e8e0"/>
-      <rect x="108" y="62" width="8" height="12" fill="#f0e8e0"/>
-      <rect x="116" y="64" width="2" height="8" fill="#f0e8e0"/>
-      <rect x="118" y="66" width="2" height="4" fill="#f0e8e0"/>
-      <rect x="106" y="62" width="12" height="2" fill="#3a2520" opacity="0.7"/>
-      <rect x="104" y="64" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="118" y="64" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="106" y="60" width="2" height="2" fill="#3a2520" opacity="0.6"/>
-      <rect x="112" y="60" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="116" y="60" width="2" height="2" fill="#3a2520" opacity="0.5"/>
-      <rect x="108" y="72" width="8" height="2" fill="#3a2520" opacity="0.12"/>
-      <rect x="110" y="64" width="6" height="8" fill="#c88040"/>
-      <rect x="112" y="64" width="4" height="8" fill="#a06030"/>
-      <rect x="112" y="66" width="4" height="4" fill="#222"/>
-      <rect x="110" y="64" width="2" height="2" fill="#fff"/>
-      <rect x="114" y="70" width="2" height="2" fill="#fff" opacity="0.35"/>
-
-      <!-- === BROWS — thin, delicate arch (UNIQUE) === -->
-      <rect x="82" y="56" width="4" height="2" fill="#5a3020"/>
-      <rect x="86" y="54" width="6" height="2" fill="#5a3020"/>
-      <rect x="92" y="56" width="4" height="2" fill="#5a3020"/>
-      <rect x="104" y="56" width="4" height="2" fill="#5a3020"/>
-      <rect x="108" y="54" width="6" height="2" fill="#5a3020"/>
-      <rect x="114" y="56" width="4" height="2" fill="#5a3020"/>
-
-      <!-- === NOSE — small, delicate (UNIQUE) === -->
-      <rect x="96" y="78" width="8" height="4" fill="#d8b8a0"/>
-      <rect x="98" y="82" width="4" height="2" fill="#d8b8a0"/>
-      <!-- Tiny nostril hints -->
-      <rect x="96" y="82" width="2" height="2" fill="#b89880" opacity="0.25"/>
-      <rect x="102" y="82" width="2" height="2" fill="#b89880" opacity="0.25"/>
-
-      <!-- === MOUTH — full lips, cupid's bow (UNIQUE) === -->
-      <!-- Upper lip — cupid's bow pixel shape -->
-      <rect x="90" y="90" width="4" height="4" fill="#cc8888"/>
-      <rect x="94" y="88" width="4" height="2" fill="#cc8888"/>
-      <rect x="98" y="86" width="4" height="2" fill="#cc8888"/>
-      <rect x="102" y="88" width="4" height="2" fill="#cc8888"/>
-      <rect x="106" y="90" width="4" height="4" fill="#cc8888"/>
-      <rect x="94" y="90" width="12" height="4" fill="#cc8888"/>
-      <!-- Lower lip — fuller -->
-      <rect x="90" y="94" width="20" height="4" fill="#cc7777"/>
-      <rect x="92" y="98" width="16" height="2" fill="#cc7777"/>
-      <!-- Lip highlight -->
-      <rect x="96" y="88" width="4" height="2" fill="#dd9999" opacity="0.4"/>
-      <!-- Lip outline -->
-      <rect x="88" y="90" width="2" height="4" fill="#9a5555" opacity="0.4"/>
-      <rect x="110" y="90" width="2" height="4" fill="#9a5555" opacity="0.4"/>
-
-      <!-- === BEAUTY MARK (UNIQUE) === -->
-      <rect x="116" y="84" width="2" height="2" fill="#5a3020"/>
-
-      <!-- Feet — delicate -->
-      <rect x="78" y="210" width="14" height="8" fill="#8b2252"/>
-      <rect x="108" y="210" width="14" height="8" fill="#8b2252"/>
-    </svg>
-  </div>
-  <h3>Romantic</h3>
-  <div class="sub">Lover · almond pixel eyes · cupid's bow · lashes</div>
-  <div class="ref">Sophia Hapgood (Indy FoA) · Rosella (KQ IV)</div>
 </div>
 
 </div><!-- /row -->
