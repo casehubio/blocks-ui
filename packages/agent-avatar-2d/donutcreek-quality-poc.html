@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Donut Creek Quality POC — Before/After</title>
+<title>Donut Creek Quality POC — Before/After/Combined</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, sans-serif; background: #2a2a3e; color: #e0e0e0; padding: 32px; }
   h1 { text-align: center; color: #fff; margin-bottom: 4px; }
   .subtitle { text-align: center; color: #888; margin-bottom: 32px; font-size: 14px; }
-  .row { display: flex; gap: 32px; justify-content: center; margin-bottom: 32px; }
+  .row { display: flex; gap: 24px; justify-content: center; margin-bottom: 32px; }
   .card { background: #1a1a2e; border-radius: 10px; padding: 16px; text-align: center; }
   .card h3 { margin-top: 8px; font-size: 14px; }
   .card .sub { font-size: 11px; color: #888; margin-top: 2px; }
@@ -17,7 +17,7 @@
 </head>
 <body>
 <h1>Donut Creek — Quality Comparison</h1>
-<p class="subtitle">Same character: current preview (left) vs hand-drawn high quality (right)</p>
+<p class="subtitle">Original head (clean) + improved body (hands, collar, shoes) = best of both</p>
 
 <div class="row">
 
@@ -27,215 +27,108 @@
     <defs>
       <style>
         .sk { fill: #FCD34D; stroke: #111; stroke-width: 3; }
-        .skd { fill: #B8860B; stroke: #111; stroke-width: 3; }
         .eye { fill: #FFF; stroke: #111; stroke-width: 3; }
         .pup { fill: #111; }
         .ln { fill: none; stroke: #111; stroke-width: 3; stroke-linecap: round; }
-        .lnt { fill: none; stroke: #111; stroke-width: 2.5; stroke-linecap: round; }
-        .lnf { fill: none; stroke: #111; stroke-width: 2; stroke-linecap: round; }
       </style>
     </defs>
-    <!-- Performer Outfit (Purple/Teal) -->
     <path d="M 45,182 L 155,182 L 165,220 L 35,220 Z" fill="#805AD5" stroke="#111" stroke-width="3.5" stroke-linejoin="round" />
     <path d="M 70,182 L 100,210 L 130,182" fill="#319795" stroke="#111" stroke-width="3" />
     <circle cx="100" cy="200" r="6" fill="#E53E3E" stroke="#111" stroke-width="2" />
-    <!-- Round-Wide Head & White Face Paint -->
     <path d="M 64,160 L 64,185 L 136,185 L 136,160 C 155,140 152,95 140,70 C 128,40 115,35 100,35 C 85,35 72,40 60,70 C 48,95 45,140 64,160 Z" class="sk" />
     <path d="M 60,90 C 56,125 60,158 78,166 C 92,172 108,172 122,166 C 140,158 144,125 140,90 C 132,74 122,70 100,70 C 78,70 68,74 60,90 Z" fill="#FFF" stroke="#111" stroke-width="3.5" />
-    <!-- Cyan Side Hair Tufts -->
     <path d="M 58,75 C 45,70 30,78 22,62 C 15,48 28,42 20,28 C 32,25 40,38 48,30 C 52,22 60,32 64,48 Z" fill="#319795" stroke="#111" stroke-width="3.5" />
     <path d="M 142,75 C 155,70 170,78 178,62 C 185,48 172,42 180,28 C 168,25 160,38 152,30 C 148,22 140,32 136,48 Z" fill="#319795" stroke="#111" stroke-width="3.5" />
-    <!-- Eyes & Heavy Lids -->
     <circle cx="83" cy="92" r="18" class="eye" /><circle cx="85" cy="92" r="3.5" class="pup" />
     <circle cx="117" cy="92" r="18" class="eye" /><circle cx="115" cy="92" r="3.5" class="pup" />
     <path d="M 65,92 C 65,82 83,74 101,84 L 65,84 Z" class="sk" />
     <path d="M 99,84 C 117,74 135,82 135,92 L 99,84 Z" class="sk" />
-    <!-- Red Nose & Wide Laugh -->
     <circle cx="100" cy="102" r="10" fill="#E53E3E" stroke="#111" stroke-width="3" />
     <path d="M 76,125 C 76,150 124,150 124,125 Z" fill="#718096" stroke="#111" stroke-width="3" />
     <path d="M 82,125 Q 100,135 118,125" class="ln" />
   </svg>
-  <h3>Current Preview</h3>
-  <div class="sub">~20 elements, basic shapes</div>
+  <h3>Original</h3>
+  <div class="sub">Clean Springfield head, no body</div>
 </div>
 
-<!-- AFTER — hand-drawn high quality -->
+<!-- COMBINED — original head + new body -->
 <div class="card">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
 
-    <!-- === BODY — Purple/teal performer outfit with detail === -->
+    <!-- === BODY — improved with arms, hands, detail === -->
     <!-- Main body -->
     <path d="M 42,184 Q 44,200 48,220 L 152,220 Q 156,200 158,184 Z" fill="#805AD5" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
-    <!-- Body shadow (left) -->
-    <path d="M 42,184 Q 44,200 48,220 L 70,220 Q 66,200 64,184 Z" fill="#6B46C1" opacity="0.3"/>
     <!-- Teal V-front -->
     <path d="M 72,184 L 100,212 L 128,184" fill="#319795" stroke="#111" stroke-width="2.5"/>
-    <!-- V-front highlight -->
-    <path d="M 104,190 L 120,184" fill="none" stroke="#3DAF9F" stroke-width="1.5" opacity="0.3"/>
     <!-- Big red button -->
     <circle cx="100" cy="202" r="6" fill="#E53E3E" stroke="#111" stroke-width="2"/>
-    <circle cx="99" cy="200" r="2" fill="#FF6B6B" opacity="0.4"/>
-    <!-- Seam lines -->
-    <path d="M 62,188 L 60,218" fill="none" stroke="#6B46C1" stroke-width="1" opacity="0.3"/>
-    <path d="M 140,188 L 142,218" fill="none" stroke="#6B46C1" stroke-width="1" opacity="0.3"/>
-    <!-- Wrinkle under armpit -->
-    <path d="M 52,190 Q 56,194 54,198" fill="none" stroke="#6B46C1" stroke-width="1.5" opacity="0.25"/>
-    <path d="M 148,190 Q 144,194 146,198" fill="none" stroke="#6B46C1" stroke-width="1.5" opacity="0.25"/>
+    <circle cx="99" cy="200" r="2" fill="#FF6B6B" opacity="0.35"/>
 
-    <!-- === LEFT ARM with hand === -->
+    <!-- LEFT ARM with hand -->
     <path d="M 42,184 Q 28,188 18,198 Q 10,210 16,218" fill="#805AD5" stroke="#111" stroke-width="3"/>
-    <!-- Hand (Springfield yellow) -->
     <path d="M 14,216 Q 8,212 6,218 Q 4,224 10,224 L 18,222 Q 22,220 18,216 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <!-- Fingers -->
     <path d="M 6,218 Q 2,216 4,212" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
     <path d="M 8,216 Q 6,210 8,208" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
 
-    <!-- === RIGHT ARM with hand and prop === -->
+    <!-- RIGHT ARM with hand and horn -->
     <path d="M 158,184 Q 170,186 178,194 Q 184,204 180,214" fill="#805AD5" stroke="#111" stroke-width="3"/>
-    <!-- Hand -->
     <path d="M 178,212 Q 184,210 188,216 Q 190,222 184,224 L 176,222 Q 172,220 176,214 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <!-- Horn/squeezy prop -->
+    <!-- Squeezy horn -->
     <path d="M 186,206 Q 192,196 190,188 Q 188,182 192,178" fill="none" stroke="#111" stroke-width="3"/>
     <circle cx="192" cy="176" r="5" fill="#E53E3E" stroke="#111" stroke-width="2"/>
     <path d="M 186,206 Q 184,202 186,198" fill="#C9A227" stroke="#111" stroke-width="2"/>
 
-    <!-- === HEAD — Springfield round-wide with face paint zone === -->
-    <!-- Main head shape (yellow skin) -->
-    <path d="M 64,162 L 64,186 Q 64,192 100,192 Q 136,192 136,186 L 136,162 C 156,140 154,96 142,68 C 130,38 116,32 100,32 C 84,32 70,38 58,68 C 46,96 44,140 64,162 Z" fill="#FCD34D" stroke="#111" stroke-width="3"/>
-    <!-- Head shadow (left side) -->
-    <path d="M 64,162 L 64,186 Q 64,192 80,192 L 80,162 C 58,140 56,100 64,72 C 60,96 52,140 64,162 Z" fill="#E8B820" opacity="0.2"/>
-    <!-- Forehead highlight -->
-    <path d="M 90,40 Q 110,36 130,42" fill="none" stroke="#FDE68A" stroke-width="2" opacity="0.3"/>
+    <!-- === HEAD — ORIGINAL clean Springfield style, elliptical base === -->
+    <path d="M 64,160 Q 64,186 100,186 Q 136,186 136,160 C 155,140 152,95 140,70 C 128,40 115,35 100,35 C 85,35 72,40 60,70 C 48,95 45,140 64,160 Z" fill="#FCD34D" stroke="#111" stroke-width="3"/>
 
-    <!-- Ears -->
+    <!-- Ears (new — from the improved version) -->
     <ellipse cx="54" cy="112" rx="10" ry="12" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
     <ellipse cx="54" cy="112" rx="5" ry="7" fill="#E8B820" opacity="0.2"/>
     <ellipse cx="146" cy="112" rx="10" ry="12" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
     <path d="M 142,108 Q 146,112 142,116" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.3"/>
 
-    <!-- === WHITE FACE PAINT ZONE — Krusty's signature === -->
-    <path d="M 62,92 C 58,126 60,160 78,168 Q 90,174 100,174 Q 110,174 122,168 C 140,160 142,126 138,92 C 132,76 122,72 100,72 C 78,72 68,76 62,92 Z" fill="#FFF" stroke="#111" stroke-width="3"/>
-    <!-- Face paint edge shadow (transition zone) -->
-    <path d="M 64,94 C 60,122 62,152 76,164" fill="none" stroke="#E8E8E8" stroke-width="3" opacity="0.4"/>
-    <path d="M 136,94 C 140,122 138,152 124,164" fill="none" stroke="#E8E8E8" stroke-width="2" opacity="0.3"/>
-    <!-- Subtle craquelure / paint texture -->
-    <path d="M 80,100 Q 82,104 80,108" fill="none" stroke="#ddd" stroke-width="0.8" opacity="0.3"/>
-    <path d="M 120,102 Q 118,106 120,110" fill="none" stroke="#ddd" stroke-width="0.8" opacity="0.25"/>
+    <!-- White face paint zone — ORIGINAL clean version -->
+    <path d="M 60,90 C 56,125 60,158 78,166 C 92,172 108,172 122,166 C 140,158 144,125 140,90 C 132,74 122,70 100,70 C 78,70 68,74 60,90 Z" fill="#FFF" stroke="#111" stroke-width="3.5"/>
 
-    <!-- === CYAN SIDE HAIR TUFTS — messy, Krusty-style === -->
-    <!-- Left tuft (multiple flowing points) -->
-    <path d="M 58,78 C 46,72 32,80 24,64 C 18,50 28,44 22,30 C 34,26 42,40 48,32 C 54,24 60,34 62,50 Z" fill="#319795" stroke="#111" stroke-width="3"/>
-    <!-- Left hair highlight -->
-    <path d="M 40,42 Q 44,48 42,56" fill="none" stroke="#4AC0B0" stroke-width="2" opacity="0.35"/>
-    <path d="M 30,50 Q 34,44 32,38" fill="none" stroke="#4AC0B0" stroke-width="1.5" opacity="0.25"/>
-    <!-- Left hair shadow -->
-    <path d="M 56,72 Q 48,68 44,74" fill="none" stroke="#267D72" stroke-width="2" opacity="0.3"/>
-    <!-- Right tuft -->
-    <path d="M 142,78 C 154,72 168,80 176,64 C 182,50 172,44 178,30 C 166,26 158,40 152,32 C 146,24 140,34 138,50 Z" fill="#319795" stroke="#111" stroke-width="3"/>
-    <!-- Right hair highlight -->
-    <path d="M 164,40 Q 162,48 164,56" fill="none" stroke="#4AC0B0" stroke-width="2" opacity="0.35"/>
-    <path d="M 172,48 Q 168,42 170,36" fill="none" stroke="#4AC0B0" stroke-width="1.5" opacity="0.25"/>
+    <!-- Cyan side hair tufts — ORIGINAL -->
+    <path d="M 58,75 C 45,70 30,78 22,62 C 15,48 28,42 20,28 C 32,25 40,38 48,30 C 52,22 60,32 64,48 Z" fill="#319795" stroke="#111" stroke-width="3.5"/>
+    <path d="M 142,75 C 155,70 170,78 178,62 C 185,48 172,42 180,28 C 168,25 160,38 152,30 C 148,22 140,32 136,48 Z" fill="#319795" stroke="#111" stroke-width="3.5"/>
 
-    <!-- === EYES — large Springfield eyes with BAGS and LIDS (Krusty is weary) === -->
-    <!-- Left eye white -->
-    <ellipse cx="83" cy="94" rx="18" ry="17" fill="#FFF" stroke="#111" stroke-width="3"/>
-    <!-- Left iris (Krusty has visible blue-grey irises) -->
-    <circle cx="86" cy="95" r="6" fill="#8BA8C8"/>
-    <circle cx="86" cy="95" r="3.5" fill="#111"/>
-    <!-- Left eye highlight -->
-    <circle cx="82" cy="90" r="2.5" fill="#FFF"/>
-    <circle cx="88" cy="98" r="1" fill="#FFF" opacity="0.4"/>
-    <!-- Left heavy drooping lid (exhaustion) -->
-    <path d="M 65,94 C 65,82 78,74 100,84" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <!-- Left under-eye bag -->
-    <path d="M 68,104 Q 78,112 94,106" fill="none" stroke="#E8B820" stroke-width="2" opacity="0.35"/>
-    <path d="M 70,108 Q 80,114 92,110" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.2"/>
-    <!-- Left crow's feet -->
-    <path d="M 66,98 Q 62,96 60,92" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.25"/>
-    <path d="M 66,102 Q 60,102 58,100" fill="none" stroke="#E8B820" stroke-width="1" opacity="0.2"/>
+    <!-- Eyes — ORIGINAL clean Springfield -->
+    <circle cx="83" cy="92" r="18" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="85" cy="92" r="3.5" fill="#111"/>
+    <circle cx="117" cy="92" r="18" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="115" cy="92" r="3.5" fill="#111"/>
 
-    <!-- Right eye white -->
-    <ellipse cx="117" cy="94" rx="18" ry="17" fill="#FFF" stroke="#111" stroke-width="3"/>
-    <!-- Right iris -->
-    <circle cx="114" cy="95" r="6" fill="#8BA8C8"/>
-    <circle cx="114" cy="95" r="3.5" fill="#111"/>
-    <!-- Right eye highlight -->
-    <circle cx="112" cy="90" r="2.5" fill="#FFF"/>
-    <circle cx="118" cy="98" r="1" fill="#FFF" opacity="0.4"/>
-    <!-- Right heavy lid -->
-    <path d="M 100,84 C 122,74 135,82 135,94" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <!-- Right under-eye bag -->
-    <path d="M 106,106 Q 118,112 132,104" fill="none" stroke="#E8B820" stroke-width="2" opacity="0.35"/>
-    <path d="M 108,110 Q 118,114 130,108" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.2"/>
-    <!-- Right crow's feet -->
-    <path d="M 134,98 Q 138,96 140,92" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.25"/>
+    <!-- Heavy lids — ORIGINAL -->
+    <path d="M 65,92 C 65,82 83,74 101,84 L 65,84 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <path d="M 99,84 C 117,74 135,82 135,92 L 99,84 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
-    <!-- === BROWS — raised, tired (one slightly higher for asymmetry) === -->
+    <!-- Brows — ORIGINAL clean -->
     <path d="M 68,72 Q 82,64 98,72" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
     <path d="M 102,70 Q 118,62 134,72" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
-    <!-- Brow worry wrinkle -->
-    <path d="M 96,68 Q 100,72 104,68" fill="none" stroke="#E8B820" stroke-width="1.5" opacity="0.3"/>
 
-    <!-- === RED NOSE — slightly lumpy, not a perfect circle (worn, character) === -->
-    <path d="M 90,104 Q 88,96 94,92 Q 100,88 106,92 Q 112,96 110,104 Q 108,112 100,114 Q 92,112 90,104 Z" fill="#E53E3E" stroke="#111" stroke-width="3"/>
-    <!-- Nose highlight -->
-    <path d="M 96,94 Q 100,90 104,94" fill="#FF7B7B" opacity="0.4" stroke="none"/>
-    <!-- Nose shadow -->
-    <path d="M 92,108 Q 96,112 100,112" fill="none" stroke="#B91C1C" stroke-width="1.5" opacity="0.3"/>
-    <!-- Nose pores (Krusty's nose is weathered) -->
-    <circle cx="96" cy="102" r="1" fill="#C53030" opacity="0.2"/>
-    <circle cx="104" cy="100" r="1" fill="#C53030" opacity="0.15"/>
-    <circle cx="100" cy="106" r="1" fill="#C53030" opacity="0.2"/>
+    <!-- Red nose — ORIGINAL clean circle -->
+    <circle cx="100" cy="102" r="10" fill="#E53E3E" stroke="#111" stroke-width="3"/>
 
-    <!-- === MOUTH — wide painted grin, but with Krusty's weary undertone === -->
-    <!-- Mouth cavity -->
-    <path d="M 76,128 C 76,152 124,152 124,128 Z" fill="#4A3030" stroke="#111" stroke-width="3"/>
-    <!-- Tongue -->
-    <path d="M 88,140 Q 100,150 112,140" fill="#E87070" stroke="#111" stroke-width="1.5"/>
-    <!-- Tongue highlight -->
-    <path d="M 96,142 Q 100,146 104,142" fill="#F0A0A0" opacity="0.4" stroke="none"/>
-    <!-- Teeth (top row) -->
-    <path d="M 78,128 Q 100,136 122,128 L 122,132 Q 100,138 78,132 Z" fill="#F0F0E8" stroke="#111" stroke-width="1.5"/>
-    <!-- Tooth dividers -->
-    <line x1="88" y1="128" x2="88" y2="134" stroke="#DDD" stroke-width="1"/>
-    <line x1="96" y1="129" x2="96" y2="136" stroke="#DDD" stroke-width="1"/>
-    <line x1="104" y1="129" x2="104" y2="136" stroke="#DDD" stroke-width="1"/>
-    <line x1="112" y1="128" x2="112" y2="134" stroke="#DDD" stroke-width="1"/>
-    <!-- Painted smile line extending beyond mouth (Krusty's makeup) -->
-    <path d="M 72,126 Q 68,122 64,120" fill="none" stroke="#E53E3E" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M 128,126 Q 132,122 136,120" fill="none" stroke="#E53E3E" stroke-width="2.5" stroke-linecap="round"/>
-    <!-- Laugh/smile lines on face paint -->
-    <path d="M 74,118 Q 70,124 72,130" fill="none" stroke="#DDD" stroke-width="1.5" opacity="0.3"/>
-    <path d="M 126,118 Q 130,124 128,130" fill="none" stroke="#DDD" stroke-width="1.5" opacity="0.3"/>
+    <!-- Wide laugh — ORIGINAL -->
+    <path d="M 76,125 C 76,150 124,150 124,125 Z" fill="#718096" stroke="#111" stroke-width="3"/>
+    <path d="M 82,125 Q 100,135 118,125" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
 
-    <!-- === CHIN DETAIL === -->
-    <!-- Chin shadow under mouth -->
-    <path d="M 82,156 Q 100,162 118,156" fill="none" stroke="#E8B820" stroke-width="2" opacity="0.2"/>
-    <!-- Stubble shadow (Krusty has 5 o'clock shadow under paint) -->
-    <circle cx="86" cy="160" r="1" fill="#888" opacity="0.12"/>
-    <circle cx="94" cy="162" r="1" fill="#888" opacity="0.1"/>
-    <circle cx="106" cy="162" r="1" fill="#888" opacity="0.1"/>
-    <circle cx="114" cy="160" r="1" fill="#888" opacity="0.12"/>
-    <circle cx="100" cy="164" r="1" fill="#888" opacity="0.08"/>
+    <!-- Painted smile lines (subtle — just the extensions) -->
+    <path d="M 74,124 Q 70,120 66,118" fill="none" stroke="#E53E3E" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 126,124 Q 130,120 134,118" fill="none" stroke="#E53E3E" stroke-width="2.5" stroke-linecap="round"/>
 
-    <!-- === NECK / COLLAR AREA === -->
-    <!-- Big ruffled collar -->
+    <!-- === COLLAR — ruffled teal (new) === -->
     <path d="M 56,176 Q 66,168 78,172 Q 88,176 100,170 Q 112,176 122,172 Q 134,168 144,176 Q 138,186 100,186 Q 62,186 56,176 Z" fill="#319795" stroke="#111" stroke-width="2.5"/>
-    <!-- Collar shadow -->
-    <path d="M 62,180 Q 80,184 100,182 Q 120,184 138,180" fill="none" stroke="#267D72" stroke-width="1.5" opacity="0.3"/>
-    <!-- Collar highlight -->
-    <path d="M 78,172 Q 88,170 100,170" fill="none" stroke="#4AC0B0" stroke-width="1.5" opacity="0.3"/>
 
-    <!-- === FEET (simple) === -->
+    <!-- === FEET (new) === -->
     <path d="M 60,220 Q 58,228 64,230 L 88,230 Q 92,228 90,220" fill="#805AD5" stroke="#111" stroke-width="2.5"/>
     <path d="M 110,220 Q 108,228 114,230 L 138,230 Q 142,228 140,220" fill="#805AD5" stroke="#111" stroke-width="2.5"/>
-    <!-- Shoe highlight -->
-    <path d="M 66,222 Q 76,220 84,222" fill="none" stroke="#9B6DD5" stroke-width="1.5" opacity="0.3"/>
-    <path d="M 116,222 Q 126,220 134,222" fill="none" stroke="#9B6DD5" stroke-width="1.5" opacity="0.3"/>
 
   </svg>
-  <h3>Hand-Drawn Quality</h3>
-  <div class="sub">~100 elements, shading, texture, character detail</div>
+  <h3>Combined</h3>
+  <div class="sub">Original clean head + improved body + ears</div>
 </div>
 
 </div>
