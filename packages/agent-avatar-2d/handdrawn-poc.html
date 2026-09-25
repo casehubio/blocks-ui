@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hand-Drawn Avatar POC — Game Character References</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, sans-serif; background: #2a2a3e; color: #e0e0e0; padding: 32px; }
+  h1 { text-align: center; color: #fff; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 32px; font-size: 14px; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .card { background: #1a1a2e; border-radius: 10px; padding: 12px; text-align: center; }
+  .card h3 { margin-top: 8px; font-size: 14px; }
+  .card .sub { font-size: 11px; color: #888; margin-top: 2px; }
+  .card .ref { font-size: 10px; color: #666; margin-top: 2px; font-style: italic; }
+  svg { display: block; image-rendering: auto; margin: 0 auto; }
+  .s4 svg { width: 200px; height: 240px; }
+  .sizes { display: flex; gap: 16px; align-items: flex-end; justify-content: center; margin-top: 10px; }
+  .sizes .sz { text-align: center; }
+  .sizes .sz svg { margin: 0 auto; }
+  .sizes .lbl { font-size: 9px; color: #666; margin-top: 2px; }
+  @media (max-width: 900px) { .row { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<h1>Hand-Drawn Avatar POC</h1>
+<p class="subtitle">Unique per-character faces — drawing on adventure game references for vivid, distinct characters</p>
+
+<div class="row">
+
+<!-- ============================================================ -->
+<!-- SAGE/MENTOR — The Pirate Leaders (MI) / QfG Mentors          -->
+<!-- Old wise sage: Einstein hair, flowing beard, half-rim glasses -->
+<!-- ============================================================ -->
+<div class="card">
+  <div class="s4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+      <ellipse cx="100" cy="232" rx="38" ry="6" fill="#000" opacity="0.25"/>
+      <!-- BODY — tweed jacket with elbow patches -->
+      <rect x="62" y="130" width="76" height="78" rx="6" fill="#6b5b4a" stroke="#222" stroke-width="3"/>
+      <!-- Tweed texture hints -->
+      <line x1="70" y1="136" x2="74" y2="142" stroke="#7a6a58" stroke-width="1" opacity="0.25"/>
+      <line x1="82" y1="136" x2="78" y2="142" stroke="#5c4c3a" stroke-width="1" opacity="0.2"/>
+      <line x1="118" y1="136" x2="122" y2="142" stroke="#7a6a58" stroke-width="1" opacity="0.25"/>
+      <line x1="128" y1="136" x2="124" y2="142" stroke="#5c4c3a" stroke-width="1" opacity="0.2"/>
+      <!-- Elbow patches -->
+      <ellipse cx="66" cy="166" rx="6" ry="10" fill="#8b7b5a" stroke="#222" stroke-width="1.5"/>
+      <ellipse cx="134" cy="166" rx="6" ry="10" fill="#8b7b5a" stroke="#222" stroke-width="1.5"/>
+      <!-- Shirt V -->
+      <path d="M 84,130 L 100,158 L 116,130" fill="#e8e0d0" stroke="#222" stroke-width="1.5"/>
+      <!-- Bow tie -->
+      <path d="M 92,132 L 100,138 L 108,132 L 100,128 Z" fill="#4a6fa5" stroke="#222" stroke-width="1.5"/>
+      <circle cx="100" cy="133" r="2.5" fill="#6b8fb5" stroke="#222" stroke-width="1"/>
+      <!-- Buttons -->
+      <circle cx="100" cy="164" r="2.5" fill="#5c4c3a" stroke="#222" stroke-width="1"/>
+      <circle cx="100" cy="178" r="2.5" fill="#5c4c3a" stroke="#222" stroke-width="1"/>
+      <!-- LEFT ARM — open book held up -->
+      <path d="M 62,140 Q 46,132 36,116 Q 28,100 30,86" fill="#6b5b4a" stroke="#222" stroke-width="3"/>
+      <rect x="24" y="78" width="14" height="10" rx="4" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <!-- Open book -->
+      <rect x="6" y="44" width="40" height="38" rx="2" fill="#6b3a1a" stroke="#222" stroke-width="2.5"/>
+      <rect x="8" y="46" width="16" height="34" rx="1" fill="#f5ead0"/>
+      <rect x="28" y="46" width="16" height="34" rx="1" fill="#f0e0c0"/>
+      <rect x="24" y="44" width="4" height="38" fill="#5a2e10" stroke="#222" stroke-width="1"/>
+      <rect x="10" y="50" width="12" height="1.5" fill="#aaa"/>
+      <rect x="10" y="55" width="10" height="1.5" fill="#aaa"/>
+      <rect x="10" y="60" width="12" height="1.5" fill="#aaa"/>
+      <rect x="10" y="65" width="8" height="1.5" fill="#aaa"/>
+      <rect x="30" y="50" width="12" height="1.5" fill="#aaa"/>
+      <rect x="30" y="55" width="10" height="1.5" fill="#aaa"/>
+      <rect x="30" y="60" width="11" height="1.5" fill="#aaa"/>
+      <!-- RIGHT ARM — chalk raised -->
+      <path d="M 138,140 Q 154,132 164,118 Q 170,106 172,96" fill="#6b5b4a" stroke="#222" stroke-width="3"/>
+      <rect x="166" y="88" width="14" height="10" rx="4" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <rect x="174" y="76" width="3" height="18" rx="1" fill="#eee" stroke="#ccc" stroke-width="0.5"/>
+      <circle cx="180" cy="76" r="1.5" fill="#eee" opacity="0.4"/>
+      <circle cx="178" cy="72" r="1" fill="#eee" opacity="0.3"/>
+      <!-- BUSHY WHITE BEARD — Gandalf-scale, defining feature -->
+      <path d="M 66,96 Q 58,110 56,120 L 60,136 Q 70,156 88,166 Q 94,170 100,178 Q 106,170 112,166 Q 130,156 140,136 L 144,120 Q 142,110 134,96" fill="#e8e8e8" stroke="#222" stroke-width="2.5"/>
+      <!-- Beard shadow -->
+      <path d="M 70,102 Q 64,118 62,130 L 66,144 Q 74,158 90,166" fill="#d0d0d0" opacity="0.35"/>
+      <path d="M 130,102 Q 136,118 138,130 L 134,144 Q 126,158 110,166" fill="#d0d0d0" opacity="0.35"/>
+      <!-- Strand texture -->
+      <path d="M 78,110 Q 84,138 92,162" fill="none" stroke="#c8c8c8" stroke-width="1.5"/>
+      <path d="M 100,106 L 100,174" fill="none" stroke="#c8c8c8" stroke-width="1.5"/>
+      <path d="M 122,110 Q 116,138 108,162" fill="none" stroke="#c8c8c8" stroke-width="1.5"/>
+      <!-- White highlights -->
+      <path d="M 86,112 Q 90,134 94,156" fill="none" stroke="#fff" stroke-width="1" opacity="0.45"/>
+      <path d="M 114,112 Q 110,134 106,156" fill="none" stroke="#fff" stroke-width="1" opacity="0.45"/>
+      <!-- Mustache -->
+      <path d="M 84,94 Q 92,98 100,96 Q 108,98 116,94" fill="#e0e0e0" stroke="#222" stroke-width="1.5"/>
+      <!-- HEAD — oval, aged -->
+      <ellipse cx="100" cy="70" rx="40" ry="42" fill="#c8a882" stroke="#222" stroke-width="3"/>
+      <!-- Forehead lines -->
+      <path d="M 80,44 Q 100,42 120,44" fill="none" stroke="#b89872" stroke-width="1" opacity="0.3"/>
+      <path d="M 82,48 Q 100,46 118,48" fill="none" stroke="#b89872" stroke-width="1" opacity="0.25"/>
+      <!-- Cheek hollows -->
+      <ellipse cx="72" cy="84" rx="5" ry="3" fill="#b89872" opacity="0.12"/>
+      <ellipse cx="128" cy="84" rx="5" ry="3" fill="#b89872" opacity="0.12"/>
+      <!-- Ears -->
+      <ellipse cx="58" cy="74" rx="6" ry="9" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <ellipse cx="58" cy="74" rx="3" ry="5" fill="#b89872" opacity="0.2"/>
+      <ellipse cx="142" cy="74" rx="6" ry="9" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <ellipse cx="142" cy="74" rx="3" ry="5" fill="#b89872" opacity="0.2"/>
+      <!-- WILD EINSTEIN HAIR -->
+      <path d="M 48,48 Q 40,16 62,8 Q 82,0 100,4 Q 118,0 138,8 Q 160,16 152,48 Q 158,34 164,50 Q 160,56 152,52 Q 146,28 100,24 Q 54,28 48,52 Q 40,56 36,50 Q 42,34 48,48 Z" fill="#8a8a8a" stroke="#222" stroke-width="2.5"/>
+      <path d="M 62,14 Q 80,8 100,10" fill="none" stroke="#aaa" stroke-width="2" opacity="0.35"/>
+      <path d="M 100,10 Q 120,8 138,14" fill="none" stroke="#aaa" stroke-width="2" opacity="0.35"/>
+      <!-- Wild tufts -->
+      <path d="M 38,42 Q 28,22 38,12" fill="none" stroke="#8a8a8a" stroke-width="5"/>
+      <path d="M 38,42 Q 28,22 38,12" fill="none" stroke="#222" stroke-width="2"/>
+      <path d="M 162,42 Q 172,22 162,12" fill="none" stroke="#8a8a8a" stroke-width="5"/>
+      <path d="M 162,42 Q 172,22 162,12" fill="none" stroke="#222" stroke-width="2"/>
+      <path d="M 96,6 Q 100,-4 104,6" fill="none" stroke="#8a8a8a" stroke-width="4"/>
+      <path d="M 96,6 Q 100,-4 104,6" fill="none" stroke="#222" stroke-width="1.5"/>
+      <!-- HALF-RIM GLASSES -->
+      <rect x="70" y="64" width="22" height="16" rx="3" fill="none" stroke="#555" stroke-width="2.5"/>
+      <rect x="108" y="64" width="22" height="16" rx="3" fill="none" stroke="#555" stroke-width="2.5"/>
+      <line x1="92" y1="70" x2="108" y2="70" stroke="#555" stroke-width="2"/>
+      <line x1="60" y1="70" x2="70" y2="70" stroke="#555" stroke-width="1.5"/>
+      <line x1="130" y1="70" x2="140" y2="70" stroke="#555" stroke-width="1.5"/>
+      <rect x="74" y="66" width="6" height="3" rx="1" fill="#fff" opacity="0.3"/>
+      <rect x="112" y="66" width="6" height="3" rx="1" fill="#fff" opacity="0.3"/>
+      <!-- EYES — wise, deep-set, twinkling behind lenses -->
+      <!-- Left eye -->
+      <rect x="76" y="68" width="10" height="8" rx="2" fill="#dde4e8"/>
+      <rect x="76" y="68" width="10" height="2" fill="#3a2520" opacity="0.35"/>
+      <circle cx="82" cy="73" r="3.5" fill="#4a6fa5"/>
+      <circle cx="82" cy="74" r="2" fill="#1a3060"/>
+      <circle cx="82" cy="74" r="1" fill="#111"/>
+      <circle cx="83" cy="72" r="1.2" fill="#fff"/>
+      <circle cx="80" cy="73" r="0.6" fill="#fff" opacity="0.4"/>
+      <!-- Right eye -->
+      <rect x="114" y="68" width="10" height="8" rx="2" fill="#dde4e8"/>
+      <rect x="114" y="68" width="10" height="2" fill="#3a2520" opacity="0.35"/>
+      <circle cx="118" cy="73" r="3.5" fill="#4a6fa5"/>
+      <circle cx="118" cy="74" r="2" fill="#1a3060"/>
+      <circle cx="118" cy="74" r="1" fill="#111"/>
+      <circle cx="119" cy="72" r="1.2" fill="#fff"/>
+      <circle cx="116" cy="73" r="0.6" fill="#fff" opacity="0.4"/>
+      <!-- Crow's feet -->
+      <line x1="68" y1="70" x2="64" y2="67" stroke="#b89872" stroke-width="1" opacity="0.35"/>
+      <line x1="68" y1="72" x2="63" y2="72" stroke="#b89872" stroke-width="1" opacity="0.3"/>
+      <line x1="68" y1="74" x2="64" y2="77" stroke="#b89872" stroke-width="1" opacity="0.25"/>
+      <line x1="132" y1="70" x2="136" y2="67" stroke="#b89872" stroke-width="1" opacity="0.35"/>
+      <line x1="132" y1="72" x2="137" y2="72" stroke="#b89872" stroke-width="1" opacity="0.3"/>
+      <line x1="132" y1="74" x2="136" y2="77" stroke="#b89872" stroke-width="1" opacity="0.25"/>
+      <!-- BUSHY WILD BROWS -->
+      <path d="M 66,60 Q 74,54 84,58 Q 88,60 92,62" fill="none" stroke="#777" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 72,56 Q 70,52 72,49" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 106,62 Q 110,60 118,58 Q 126,54 134,60" fill="none" stroke="#777" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 128,56 Q 130,52 128,49" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round"/>
+      <!-- NOSE — prominent, bulbous -->
+      <ellipse cx="100" cy="84" rx="5" ry="4" fill="#b8956e" stroke="#222" stroke-width="1.5"/>
+      <circle cx="96" cy="86" r="1.5" fill="#222" opacity="0.2"/>
+      <circle cx="104" cy="86" r="1.5" fill="#222" opacity="0.2"/>
+      <circle cx="100" cy="82" r="1.5" fill="#d8b89e" opacity="0.35"/>
+      <!-- MOUTH — warm smile, half-hidden by beard -->
+      <path d="M 92,94 Q 100,100 108,94" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+      <!-- Smile crinkles -->
+      <path d="M 88,92 Q 86,96 88,100" fill="none" stroke="#b89872" stroke-width="1" opacity="0.25"/>
+      <path d="M 112,92 Q 114,96 112,100" fill="none" stroke="#b89872" stroke-width="1" opacity="0.25"/>
+      <!-- Feet -->
+      <rect x="72" y="210" width="20" height="10" rx="5" fill="#3a3020" stroke="#222" stroke-width="2"/>
+      <rect x="108" y="210" width="20" height="10" rx="5" fill="#3a3020" stroke="#222" stroke-width="2"/>
+    </svg>
+  </div>
+  <h3>Mentor</h3>
+  <div class="sub">Sage · wise · bushy beard · half-rim glasses</div>
+  <div class="ref">Pirate Leaders (MI) · QfG Mentors</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- HERO/WARRIOR — Edgar (FFVI) / Prince of Persia               -->
+<!-- Imposing warrior-king: armour, shield, sword, battle-scarred -->
+<!-- ============================================================ -->
+<div class="card">
+  <div class="s4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+      <ellipse cx="100" cy="232" rx="38" ry="6" fill="#000" opacity="0.25"/>
+      <!-- BODY — plate armour -->
+      <rect x="56" y="128" width="88" height="82" rx="4" fill="#8a8a8a" stroke="#222" stroke-width="3"/>
+      <!-- Armour plate lines -->
+      <line x1="100" y1="130" x2="100" y2="180" stroke="#777" stroke-width="1.5"/>
+      <line x1="64" y1="160" x2="136" y2="160" stroke="#777" stroke-width="1"/>
+      <!-- Chest plate -->
+      <rect x="72" y="132" width="56" height="40" rx="2" fill="#999" stroke="#222" stroke-width="1.5"/>
+      <!-- Chest emblem -->
+      <rect x="86" y="140" width="28" height="24" rx="2" fill="#8b1a1a" stroke="#222" stroke-width="1.5"/>
+      <path d="M 100,142 L 108,152 L 100,162 L 92,152 Z" fill="#c9a227" stroke="#222" stroke-width="1"/>
+      <circle cx="100" cy="152" r="3" fill="#ffd700" stroke="#222" stroke-width="1"/>
+      <!-- Armour highlights -->
+      <rect x="74" y="134" width="10" height="2" fill="#bbb" opacity="0.35"/>
+      <rect x="116" y="134" width="10" height="2" fill="#bbb" opacity="0.35"/>
+      <!-- Belt -->
+      <rect x="56" y="180" width="88" height="8" rx="2" fill="#5a4020" stroke="#222" stroke-width="1.5"/>
+      <rect x="92" y="178" width="16" height="12" rx="2" fill="#c9a227" stroke="#222" stroke-width="1.5"/>
+      <circle cx="100" cy="184" r="2" fill="#ffd700" stroke="#222" stroke-width="1"/>
+      <!-- Shoulder pauldrons -->
+      <rect x="44" y="122" width="24" height="18" rx="5" fill="#888" stroke="#222" stroke-width="2.5"/>
+      <rect x="44" y="124" width="24" height="4" fill="#aaa" opacity="0.3"/>
+      <line x1="50" y1="128" x2="50" y2="136" stroke="#777" stroke-width="1"/>
+      <line x1="56" y1="128" x2="56" y2="138" stroke="#777" stroke-width="1"/>
+      <rect x="132" y="122" width="24" height="18" rx="5" fill="#888" stroke="#222" stroke-width="2.5"/>
+      <rect x="132" y="124" width="24" height="4" fill="#aaa" opacity="0.3"/>
+      <line x1="144" y1="128" x2="144" y2="138" stroke="#777" stroke-width="1"/>
+      <line x1="150" y1="128" x2="150" y2="136" stroke="#777" stroke-width="1"/>
+      <!-- LEFT ARM — shield -->
+      <path d="M 56,136 Q 36,142 24,152 Q 16,160 14,170" fill="#888" stroke="#222" stroke-width="3"/>
+      <rect x="8" y="164" width="14" height="10" rx="4" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <!-- Shield -->
+      <path d="M 2,126 L 36,126 L 36,168 L 19,184 L 2,168 Z" fill="#8b1a1a" stroke="#222" stroke-width="2.5"/>
+      <path d="M 8,132 L 30,132 L 30,162 L 19,174 L 8,162 Z" fill="#c9a227" stroke="#222" stroke-width="1.5"/>
+      <path d="M 19,140 L 25,150 L 19,160 L 13,150 Z" fill="#8b1a1a" stroke="#222" stroke-width="1"/>
+      <circle cx="10" cy="134" r="1.5" fill="#888" stroke="#222" stroke-width="0.5"/>
+      <circle cx="28" cy="134" r="1.5" fill="#888" stroke="#222" stroke-width="0.5"/>
+      <circle cx="10" cy="160" r="1.5" fill="#888" stroke="#222" stroke-width="0.5"/>
+      <circle cx="28" cy="160" r="1.5" fill="#888" stroke="#222" stroke-width="0.5"/>
+      <!-- RIGHT ARM — sword raised -->
+      <path d="M 144,134 Q 160,126 168,110 Q 174,98 174,86" fill="#888" stroke="#222" stroke-width="3"/>
+      <rect x="168" y="78" width="14" height="10" rx="4" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <!-- Sword -->
+      <rect x="172" y="14" width="6" height="68" rx="1" fill="#c0c0c0" stroke="#222" stroke-width="1.5"/>
+      <rect x="174" y="16" width="2" height="64" fill="#e0e0e0" opacity="0.45"/>
+      <path d="M 172,14 L 175,4 L 178,14" fill="#c0c0c0" stroke="#222" stroke-width="1.5"/>
+      <rect x="164" y="80" width="22" height="6" rx="2" fill="#c9a227" stroke="#222" stroke-width="1.5"/>
+      <rect x="172" y="86" width="6" height="12" rx="1" fill="#5a2e10" stroke="#222" stroke-width="1"/>
+      <line x1="172" y1="89" x2="178" y2="91" stroke="#4a2010" stroke-width="1"/>
+      <line x1="172" y1="93" x2="178" y2="95" stroke="#4a2010" stroke-width="1"/>
+      <circle cx="175" cy="100" r="3" fill="#c9a227" stroke="#222" stroke-width="1"/>
+      <!-- HEAD — square jaw -->
+      <path d="M 64,36 Q 64,24 100,22 Q 136,24 136,36 L 138,108 Q 138,118 100,120 Q 62,118 62,108 Z" fill="#c8a882" stroke="#222" stroke-width="3"/>
+      <!-- Jaw shadow -->
+      <path d="M 66,100 Q 66,114 100,118 Q 134,114 134,100" fill="#b89872" opacity="0.15"/>
+      <!-- Chin line -->
+      <line x1="90" y1="114" x2="110" y2="114" stroke="#b89872" stroke-width="1.5" opacity="0.2"/>
+      <!-- Ears -->
+      <ellipse cx="60" cy="74" rx="6" ry="9" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <ellipse cx="140" cy="74" rx="6" ry="9" fill="#c8a882" stroke="#222" stroke-width="2"/>
+      <!-- HAIR — buzz cut -->
+      <rect x="66" y="22" width="68" height="18" rx="6" fill="#2a1a0a" stroke="#222" stroke-width="2"/>
+      <rect x="72" y="24" width="4" height="2" fill="#3a2a1a" opacity="0.3"/>
+      <rect x="84" y="26" width="4" height="2" fill="#3a2a1a" opacity="0.3"/>
+      <rect x="96" y="24" width="4" height="2" fill="#3a2a1a" opacity="0.3"/>
+      <rect x="108" y="26" width="4" height="2" fill="#3a2a1a" opacity="0.3"/>
+      <rect x="120" y="24" width="4" height="2" fill="#3a2a1a" opacity="0.3"/>
+      <!-- EYES — deep-set, intense, hooded -->
+      <!-- Brow shadow -->
+      <rect x="74" y="64" width="16" height="3" fill="#a07850" opacity="0.35"/>
+      <rect x="110" y="64" width="16" height="3" fill="#a07850" opacity="0.35"/>
+      <!-- Left eye — narrow, fierce -->
+      <rect x="76" y="67" width="14" height="7" rx="1" fill="#dde4e8" stroke="#222" stroke-width="1.5"/>
+      <rect x="76" y="67" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+      <circle cx="84" cy="71" r="3" fill="#5a2010"/>
+      <circle cx="84" cy="71" r="2" fill="#3a1a0a"/>
+      <circle cx="84" cy="71" r="1" fill="#111"/>
+      <circle cx="85" cy="70" r="0.8" fill="#fff"/>
+      <!-- Right eye -->
+      <rect x="110" y="67" width="14" height="7" rx="1" fill="#dde4e8" stroke="#222" stroke-width="1.5"/>
+      <rect x="110" y="67" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+      <circle cx="116" cy="71" r="3" fill="#5a2010"/>
+      <circle cx="116" cy="71" r="2" fill="#3a1a0a"/>
+      <circle cx="116" cy="71" r="1" fill="#111"/>
+      <circle cx="117" cy="70" r="0.8" fill="#fff"/>
+      <!-- BROWS — thick, angular, furrowed V -->
+      <line x1="70" y1="60" x2="92" y2="64" stroke="#2a1a0a" stroke-width="4" stroke-linecap="round"/>
+      <line x1="130" y1="60" x2="108" y2="64" stroke="#2a1a0a" stroke-width="4" stroke-linecap="round"/>
+      <!-- NOSE — strong, straight bridge -->
+      <path d="M 97,76 L 94,88 Q 98,90 102,90 Q 106,88 103,76" fill="#b8956e" stroke="#222" stroke-width="1.5"/>
+      <line x1="99" y1="78" x2="99" y2="86" stroke="#d8b89e" stroke-width="1" opacity="0.25"/>
+      <circle cx="96" cy="88" r="1.5" fill="#222" opacity="0.25"/>
+      <circle cx="104" cy="88" r="1.5" fill="#222" opacity="0.25"/>
+      <!-- MOUTH — wide stern line -->
+      <line x1="86" y1="100" x2="114" y2="100" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="84" y1="102" x2="86" y2="100" stroke="#222" stroke-width="2"/>
+      <line x1="116" y1="102" x2="114" y2="100" stroke="#222" stroke-width="2"/>
+      <!-- SCAR — diagonal across right cheek -->
+      <line x1="120" y1="78" x2="130" y2="94" stroke="#cc8877" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="120" y1="78" x2="130" y2="94" stroke="#aa6655" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Feet — heavy boots -->
+      <rect x="64" y="208" width="26" height="14" rx="5" fill="#555" stroke="#222" stroke-width="2"/>
+      <rect x="110" y="208" width="26" height="14" rx="5" fill="#555" stroke="#222" stroke-width="2"/>
+    </svg>
+  </div>
+  <h3>Warrior</h3>
+  <div class="sub">Hero · deep-set · stern · battle-scarred</div>
+  <div class="ref">Edgar (FFVI) · Prince of Persia</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- JESTER/CLOWN — Max (Sam & Max) / Kefka (FFVI)                -->
+<!-- Hyperkinetic chaos: huge eyes, unhinged grin, juggling       -->
+<!-- ============================================================ -->
+<div class="card">
+  <div class="s4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+      <ellipse cx="100" cy="232" rx="38" ry="6" fill="#000" opacity="0.25"/>
+      <!-- BODY — patchwork jester costume -->
+      <rect x="60" y="132" width="80" height="78" rx="6" fill="#e67e22" stroke="#222" stroke-width="3"/>
+      <rect x="100" y="132" width="40" height="78" rx="0" fill="#9b59b6"/>
+      <rect x="134" y="132" width="6" height="78" rx="6" fill="#9b59b6"/>
+      <rect x="60" y="132" width="80" height="78" rx="6" fill="none" stroke="#222" stroke-width="3"/>
+      <!-- Diamond pattern -->
+      <rect x="76" y="156" width="12" height="12" rx="1" fill="#2ecc71" stroke="#222" stroke-width="1.5" transform="rotate(45 82 162)"/>
+      <rect x="112" y="156" width="12" height="12" rx="1" fill="#f1c40f" stroke="#222" stroke-width="1.5" transform="rotate(45 118 162)"/>
+      <!-- Ruffled collar -->
+      <ellipse cx="100" cy="134" rx="36" ry="10" fill="#fff" stroke="#222" stroke-width="2"/>
+      <ellipse cx="80" cy="134" rx="8" ry="6" fill="#fff" stroke="#222" stroke-width="1.5"/>
+      <ellipse cx="100" cy="132" rx="8" ry="6" fill="#fff" stroke="#222" stroke-width="1.5"/>
+      <ellipse cx="120" cy="134" rx="8" ry="6" fill="#fff" stroke="#222" stroke-width="1.5"/>
+      <!-- LEFT ARM — raised, juggling -->
+      <path d="M 60,140 Q 42,132 30,116 Q 24,104 24,92" fill="#9b59b6" stroke="#222" stroke-width="3"/>
+      <rect x="18" y="84" width="14" height="10" rx="4" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <!-- Juggling balls — high arc -->
+      <circle cx="16" cy="54" r="10" fill="#e74c3c" stroke="#222" stroke-width="2"/>
+      <circle cx="16" cy="54" r="4" fill="#ff6b6b" opacity="0.4"/>
+      <circle cx="42" cy="36" r="10" fill="#2ecc71" stroke="#222" stroke-width="2"/>
+      <circle cx="42" cy="36" r="4" fill="#5dde9e" opacity="0.4"/>
+      <circle cx="68" cy="46" r="10" fill="#3498db" stroke="#222" stroke-width="2"/>
+      <circle cx="68" cy="46" r="4" fill="#6bb5e8" opacity="0.4"/>
+      <!-- Motion arcs -->
+      <path d="M 18,56 Q 30,38 42,38" fill="none" stroke="#fff" stroke-width="1" opacity="0.2"/>
+      <path d="M 44,38 Q 56,36 66,48" fill="none" stroke="#fff" stroke-width="1" opacity="0.2"/>
+      <!-- RIGHT ARM — out, gesturing wildly -->
+      <path d="M 140,140 Q 158,136 170,146 Q 180,156 182,166" fill="#e67e22" stroke="#222" stroke-width="3"/>
+      <rect x="176" y="160" width="14" height="10" rx="4" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <!-- Finger pointing — chaotic energy -->
+      <rect x="190" y="162" width="8" height="3" rx="1" fill="#e0c8b0" stroke="#222" stroke-width="1"/>
+      <!-- HEAD — round-wide, big -->
+      <ellipse cx="100" cy="76" rx="44" ry="40" fill="#e0c8b0" stroke="#222" stroke-width="3"/>
+      <!-- Ears -->
+      <ellipse cx="54" cy="80" rx="6" ry="9" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <ellipse cx="146" cy="80" rx="6" ry="9" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <!-- JESTER HAT — three pointed tips with bells -->
+      <path d="M 56,56 Q 30,20 24,10" fill="none" stroke="#e67e22" stroke-width="7"/>
+      <path d="M 56,56 Q 30,20 24,10" fill="none" stroke="#222" stroke-width="2"/>
+      <circle cx="22" cy="8" r="5" fill="#ffd700" stroke="#222" stroke-width="1.5"/>
+      <circle cx="22" cy="6" r="1.5" fill="#fff" opacity="0.3"/>
+      <path d="M 100,40 Q 100,4 100,-2" fill="none" stroke="#9b59b6" stroke-width="7"/>
+      <path d="M 100,40 Q 100,4 100,-2" fill="none" stroke="#222" stroke-width="2"/>
+      <circle cx="100" cy="-4" r="5" fill="#ffd700" stroke="#222" stroke-width="1.5"/>
+      <circle cx="100" cy="-6" r="1.5" fill="#fff" opacity="0.3"/>
+      <path d="M 144,56 Q 170,20 176,10" fill="none" stroke="#2ecc71" stroke-width="7"/>
+      <path d="M 144,56 Q 170,20 176,10" fill="none" stroke="#222" stroke-width="2"/>
+      <circle cx="178" cy="8" r="5" fill="#ffd700" stroke="#222" stroke-width="1.5"/>
+      <circle cx="178" cy="6" r="1.5" fill="#fff" opacity="0.3"/>
+      <!-- Hat base -->
+      <path d="M 56,58 Q 56,36 100,34 Q 144,36 144,58" fill="#e67e22" stroke="#222" stroke-width="2.5"/>
+      <rect x="56" y="54" width="88" height="8" rx="4" fill="#9b59b6" stroke="#222" stroke-width="2"/>
+      <!-- Pompom detail on band -->
+      <circle cx="72" cy="58" r="3" fill="#fff" stroke="#222" stroke-width="1"/>
+      <circle cx="100" cy="56" r="3" fill="#fff" stroke="#222" stroke-width="1"/>
+      <circle cx="128" cy="58" r="3" fill="#fff" stroke="#222" stroke-width="1"/>
+      <!-- RED NOSE — big, clown -->
+      <circle cx="100" cy="88" r="7" fill="#e74c3c" stroke="#222" stroke-width="2"/>
+      <circle cx="98" cy="86" r="2.5" fill="#ff6b6b" opacity="0.4"/>
+      <circle cx="102" cy="90" r="1" fill="#c0392b" opacity="0.3"/>
+      <!-- EYES — HUGE, round, manic — the defining feature -->
+      <!-- Left eye — enormous, whites showing all around -->
+      <circle cx="78" cy="74" r="10" fill="#fff" stroke="#222" stroke-width="2.5"/>
+      <!-- Eyelid shadow -->
+      <path d="M 68,68 Q 78,64 88,68" fill="none" stroke="#222" stroke-width="1.5"/>
+      <!-- Iris — bright green, slightly off-center (unhinged) -->
+      <circle cx="80" cy="76" r="5" fill="#2ecc71"/>
+      <circle cx="80" cy="76" r="3.5" fill="#1a8a4a"/>
+      <circle cx="80" cy="76" r="2" fill="#111"/>
+      <!-- Multiple highlights — sparkly, alive -->
+      <circle cx="82" cy="72" r="2" fill="#fff"/>
+      <circle cx="77" cy="74" r="1" fill="#fff" opacity="0.5"/>
+      <!-- Right eye — matching huge -->
+      <circle cx="122" cy="74" r="10" fill="#fff" stroke="#222" stroke-width="2.5"/>
+      <path d="M 112,68 Q 122,64 132,68" fill="none" stroke="#222" stroke-width="1.5"/>
+      <circle cx="124" cy="76" r="5" fill="#2ecc71"/>
+      <circle cx="124" cy="76" r="3.5" fill="#1a8a4a"/>
+      <circle cx="124" cy="76" r="2" fill="#111"/>
+      <circle cx="126" cy="72" r="2" fill="#fff"/>
+      <circle cx="121" cy="74" r="1" fill="#fff" opacity="0.5"/>
+      <!-- BROWS — high arched, manic excitement -->
+      <path d="M 66,60 Q 78,52 90,60" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 110,60 Q 122,52 134,60" fill="none" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+      <!-- BIG GRIN — ear to ear, showing teeth -->
+      <path d="M 76,98 Q 100,118 124,98" fill="#fff" stroke="#222" stroke-width="2.5"/>
+      <!-- Teeth line -->
+      <path d="M 76,98 Q 100,108 124,98" fill="none" stroke="#222" stroke-width="1.5"/>
+      <!-- Individual tooth hints -->
+      <line x1="88" y1="98" x2="88" y2="106" stroke="#ddd" stroke-width="0.5"/>
+      <line x1="96" y1="98" x2="96" y2="108" stroke="#ddd" stroke-width="0.5"/>
+      <line x1="104" y1="98" x2="104" y2="108" stroke="#ddd" stroke-width="0.5"/>
+      <line x1="112" y1="98" x2="112" y2="106" stroke="#ddd" stroke-width="0.5"/>
+      <!-- Rosy cheeks -->
+      <circle cx="66" cy="90" r="7" fill="#e74c3c" opacity="0.2"/>
+      <circle cx="134" cy="90" r="7" fill="#e74c3c" opacity="0.2"/>
+      <!-- Face paint — Kefka-inspired subtle marks -->
+      <path d="M 64,74 Q 60,78 62,82" fill="none" stroke="#9b59b6" stroke-width="1.5" opacity="0.35"/>
+      <path d="M 136,74 Q 140,78 138,82" fill="none" stroke="#9b59b6" stroke-width="1.5" opacity="0.35"/>
+      <!-- Feet — pointy jester shoes -->
+      <path d="M 66,208 Q 56,216 48,212 Q 52,220 70,220 L 88,220 Z" fill="#e67e22" stroke="#222" stroke-width="2"/>
+      <circle cx="50" cy="212" r="3" fill="#ffd700" stroke="#222" stroke-width="1"/>
+      <path d="M 134,208 Q 144,216 152,212 Q 148,220 130,220 L 112,220 Z" fill="#9b59b6" stroke="#222" stroke-width="2"/>
+      <circle cx="150" cy="212" r="3" fill="#ffd700" stroke="#222" stroke-width="1"/>
+    </svg>
+  </div>
+  <h3>Clown</h3>
+  <div class="sub">Jester · manic eyes · unhinged grin · chaos</div>
+  <div class="ref">Max (Sam &amp; Max) · Kefka (FFVI)</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- LOVER/ROMANTIC — Sophia Hapgood (Indy FoA) / Rosella (KQ IV) -->
+<!-- Elegant romantic: flowing hair, dreamy eyes, rose, poetry    -->
+<!-- ============================================================ -->
+<div class="card">
+  <div class="s4">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+      <ellipse cx="100" cy="232" rx="38" ry="6" fill="#000" opacity="0.25"/>
+      <!-- BODY — flowing romantic dress -->
+      <path d="M 66,128 L 56,208 L 144,208 L 134,128 Z" fill="#8b2252" stroke="#222" stroke-width="3"/>
+      <!-- Dress fabric folds -->
+      <path d="M 76,140 Q 80,170 78,200" fill="none" stroke="#7a1a44" stroke-width="1.5" opacity="0.35"/>
+      <path d="M 100,132 L 100,204" fill="none" stroke="#7a1a44" stroke-width="1" opacity="0.25"/>
+      <path d="M 124,140 Q 120,170 122,200" fill="none" stroke="#7a1a44" stroke-width="1.5" opacity="0.35"/>
+      <!-- Lighter panel -->
+      <path d="M 84,128 L 78,200 L 122,200 L 116,128 Z" fill="#a03060" opacity="0.3"/>
+      <!-- Lace collar -->
+      <path d="M 76,128 Q 88,140 100,136 Q 112,140 124,128" fill="#f0e0e0" stroke="#222" stroke-width="1.5"/>
+      <path d="M 80,130 Q 84,134 88,132" fill="none" stroke="#ddd" stroke-width="1" opacity="0.5"/>
+      <path d="M 92,134 Q 96,138 100,136" fill="none" stroke="#ddd" stroke-width="1" opacity="0.5"/>
+      <path d="M 100,136 Q 104,138 108,134" fill="none" stroke="#ddd" stroke-width="1" opacity="0.5"/>
+      <path d="M 112,132 Q 116,134 120,130" fill="none" stroke="#ddd" stroke-width="1" opacity="0.5"/>
+      <!-- Pendant on chain -->
+      <line x1="100" y1="136" x2="100" y2="150" stroke="#c9a227" stroke-width="1"/>
+      <path d="M 96,150 L 100,158 L 104,150 Z" fill="#c9a227" stroke="#222" stroke-width="1"/>
+      <circle cx="100" cy="152" r="1.5" fill="#e74c3c"/>
+      <!-- LEFT ARM — rose held up -->
+      <path d="M 66,136 Q 48,128 38,112 Q 32,98 34,84" fill="#8b2252" stroke="#222" stroke-width="3"/>
+      <rect x="28" y="76" width="14" height="10" rx="4" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <!-- Rose -->
+      <rect x="32" y="40" width="4" height="40" rx="1" fill="#2a6a2a" stroke="#222" stroke-width="1.5"/>
+      <circle cx="34" cy="36" r="10" fill="#c0392b" stroke="#222" stroke-width="2"/>
+      <path d="M 28,36 Q 34,28 40,36" fill="#e74c3c" stroke="none"/>
+      <circle cx="34" cy="34" r="4" fill="#a02020"/>
+      <circle cx="32" cy="32" r="1.5" fill="#e85050" opacity="0.4"/>
+      <!-- Thorns -->
+      <path d="M 34,52 L 30,48" stroke="#2a6a2a" stroke-width="1.5"/>
+      <path d="M 34,62 L 38,58" stroke="#2a6a2a" stroke-width="1.5"/>
+      <!-- Leaf -->
+      <ellipse cx="40" cy="54" rx="5" ry="3" fill="#2a6a2a" stroke="#222" stroke-width="1" transform="rotate(30 40 54)"/>
+      <!-- RIGHT ARM — holding poetry book to chest -->
+      <path d="M 134,136 Q 150,140 158,150 Q 162,158 162,166" fill="#8b2252" stroke="#222" stroke-width="3"/>
+      <rect x="156" y="160" width="14" height="10" rx="4" fill="#e0c8b0" stroke="#222" stroke-width="2"/>
+      <!-- Poetry book -->
+      <rect x="150" y="168" width="20" height="28" rx="2" fill="#5a2040" stroke="#222" stroke-width="2"/>
+      <rect x="152" y="170" width="16" height="24" rx="1" fill="#f0e0d0"/>
+      <rect x="154" y="174" width="12" height="1.5" fill="#aaa"/>
+      <rect x="154" y="178" width="10" height="1.5" fill="#aaa"/>
+      <rect x="154" y="182" width="12" height="1.5" fill="#aaa"/>
+      <rect x="154" y="186" width="8" height="1.5" fill="#aaa"/>
+      <!-- HEAD — heart-shaped -->
+      <path d="M 62,70 Q 58,44 76,34 Q 88,28 100,38 Q 112,28 124,34 Q 142,44 138,70 Q 136,94 100,112 Q 64,94 62,70 Z" fill="#e0c8b0" stroke="#222" stroke-width="3"/>
+      <!-- Cheek blush — soft, warm -->
+      <ellipse cx="74" cy="86" rx="8" ry="5" fill="#e8a0a0" opacity="0.2"/>
+      <ellipse cx="126" cy="86" rx="8" ry="5" fill="#e8a0a0" opacity="0.2"/>
+      <!-- Chin highlight -->
+      <ellipse cx="100" cy="106" rx="4" ry="2" fill="#f0d8c8" opacity="0.25"/>
+      <!-- Ears (behind hair) -->
+      <ellipse cx="60" cy="72" rx="5" ry="8" fill="#e0c8b0" stroke="#222" stroke-width="1.5"/>
+      <ellipse cx="140" cy="72" rx="5" ry="8" fill="#e0c8b0" stroke="#222" stroke-width="1.5"/>
+      <!-- HAIR — long, flowing, cascading -->
+      <path d="M 56,48 Q 44,68 40,100 Q 38,130 42,150" fill="#5a3020" stroke="#222" stroke-width="2.5"/>
+      <path d="M 144,48 Q 156,68 160,100 Q 162,130 158,150" fill="#5a3020" stroke="#222" stroke-width="2.5"/>
+      <!-- Hair top -->
+      <path d="M 60,42 Q 58,24 80,18 Q 100,14 120,18 Q 142,24 140,42 Q 138,28 100,24 Q 62,28 60,42 Z" fill="#5a3020" stroke="#222" stroke-width="2"/>
+      <!-- Hair highlights (flowing strands) -->
+      <path d="M 48,60 Q 44,80 42,110" fill="none" stroke="#7a5040" stroke-width="1.5" opacity="0.4"/>
+      <path d="M 52,54 Q 48,74 46,104" fill="none" stroke="#8a6050" stroke-width="1" opacity="0.3"/>
+      <path d="M 148,54 Q 152,74 154,104" fill="none" stroke="#8a6050" stroke-width="1" opacity="0.3"/>
+      <path d="M 152,60 Q 156,80 158,110" fill="none" stroke="#7a5040" stroke-width="1.5" opacity="0.4"/>
+      <!-- FLOWER CROWN -->
+      <path d="M 64,38 Q 82,28 100,30 Q 118,28 136,38" fill="none" stroke="#2a8a2a" stroke-width="3"/>
+      <circle cx="72" cy="34" r="5" fill="#ff69b4" stroke="#222" stroke-width="1.5"/>
+      <circle cx="72" cy="33" r="2" fill="#ff99cc"/>
+      <circle cx="88" cy="28" r="4" fill="#fff0f0" stroke="#222" stroke-width="1.5"/>
+      <circle cx="88" cy="27" r="1.5" fill="#ffccdd"/>
+      <circle cx="100" cy="26" r="5" fill="#e74c3c" stroke="#222" stroke-width="1.5"/>
+      <circle cx="100" cy="25" r="2" fill="#ff6b6b"/>
+      <circle cx="112" cy="28" r="4" fill="#fff0f0" stroke="#222" stroke-width="1.5"/>
+      <circle cx="112" cy="27" r="1.5" fill="#ffccdd"/>
+      <circle cx="128" cy="34" r="5" fill="#ff69b4" stroke="#222" stroke-width="1.5"/>
+      <circle cx="128" cy="33" r="2" fill="#ff99cc"/>
+      <!-- Leaves between flowers -->
+      <ellipse cx="80" cy="32" rx="4" ry="2" fill="#2a8a2a" stroke="#222" stroke-width="0.5" transform="rotate(-20 80 32)"/>
+      <ellipse cx="120" cy="32" rx="4" ry="2" fill="#2a8a2a" stroke="#222" stroke-width="0.5" transform="rotate(20 120 32)"/>
+      <!-- EYES — large, almond-shaped, dreamy with lashes -->
+      <!-- Left eye — almond shape via path -->
+      <path d="M 72,68 Q 82,62 92,68 Q 82,76 72,68 Z" fill="#f0e8e0" stroke="#222" stroke-width="2"/>
+      <!-- Upper lid emphasis (lash line) -->
+      <path d="M 72,68 Q 82,62 92,68" fill="none" stroke="#222" stroke-width="2.5"/>
+      <!-- Lash suggestions -->
+      <line x1="74" y1="66" x2="72" y2="62" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="78" y1="64" x2="77" y2="60" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="86" y1="64" x2="87" y2="60" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="90" y1="66" x2="92" y2="62" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Iris — warm amber -->
+      <circle cx="82" cy="69" r="4" fill="#c88040"/>
+      <circle cx="82" cy="69" r="2.5" fill="#a06030"/>
+      <circle cx="82" cy="70" r="1.5" fill="#111"/>
+      <circle cx="83" cy="68" r="1.2" fill="#fff"/>
+      <circle cx="80" cy="69" r="0.6" fill="#fff" opacity="0.4"/>
+      <!-- Right eye -->
+      <path d="M 108,68 Q 118,62 128,68 Q 118,76 108,68 Z" fill="#f0e8e0" stroke="#222" stroke-width="2"/>
+      <path d="M 108,68 Q 118,62 128,68" fill="none" stroke="#222" stroke-width="2.5"/>
+      <line x1="110" y1="66" x2="108" y2="62" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="114" y1="64" x2="113" y2="60" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="122" y1="64" x2="123" y2="60" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="126" y1="66" x2="128" y2="62" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="118" cy="69" r="4" fill="#c88040"/>
+      <circle cx="118" cy="69" r="2.5" fill="#a06030"/>
+      <circle cx="118" cy="70" r="1.5" fill="#111"/>
+      <circle cx="119" cy="68" r="1.2" fill="#fff"/>
+      <circle cx="116" cy="69" r="0.6" fill="#fff" opacity="0.4"/>
+      <!-- BROWS — thin, delicately arched -->
+      <path d="M 72,58 Q 82,54 92,58" fill="none" stroke="#5a3020" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 108,58 Q 118,54 128,58" fill="none" stroke="#5a3020" stroke-width="2" stroke-linecap="round"/>
+      <!-- NOSE — small, delicate, slightly upturned -->
+      <path d="M 98,78 L 96,86 Q 100,88 104,86 L 102,78" fill="#d8b8a0" stroke="#222" stroke-width="1"/>
+      <circle cx="100" cy="84" r="1" fill="#e0c8b8" opacity="0.4"/>
+      <!-- MOUTH — full lips, cupid's bow, rose tint -->
+      <!-- Upper lip — cupid's bow shape -->
+      <path d="M 90,94 Q 94,90 100,92 Q 106,90 110,94" fill="#cc8888" stroke="#222" stroke-width="1.5"/>
+      <!-- Lower lip — fuller -->
+      <path d="M 90,94 Q 100,102 110,94" fill="#cc7777" stroke="#222" stroke-width="1.5"/>
+      <!-- Lip highlight -->
+      <path d="M 96,92 Q 100,90 104,92" fill="#dd9999" opacity="0.4" stroke="none"/>
+      <!-- Beauty mark -->
+      <circle cx="118" cy="88" r="1.5" fill="#5a3020"/>
+      <!-- Feet — delicate -->
+      <rect x="76" y="210" width="16" height="8" rx="4" fill="#8b2252" stroke="#222" stroke-width="2"/>
+      <rect x="108" y="210" width="16" height="8" rx="4" fill="#8b2252" stroke="#222" stroke-width="2"/>
+    </svg>
+  </div>
+  <h3>Romantic</h3>
+  <div class="sub">Lover · almond eyes · full lips · dreamy</div>
+  <div class="ref">Sophia Hapgood (Indy FoA) · Rosella (KQ IV)</div>
+</div>
+
+</div><!-- /row -->
+
+</body>
+</html>
