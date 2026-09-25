@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Donut Creek — Barney vs Homer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, sans-serif; background: #2a2a3e; color: #e0e0e0; padding: 32px; }
+  h1 { text-align: center; color: #fff; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 32px; font-size: 14px; }
+  .row { display: flex; gap: 32px; justify-content: center; margin-bottom: 32px; }
+  .card { background: #1a1a2e; border-radius: 10px; padding: 16px; text-align: center; }
+  .card h3 { margin-top: 8px; font-size: 14px; }
+  .card .sub { font-size: 11px; color: #888; margin-top: 2px; }
+  svg { display: block; margin: 0 auto; width: 200px; height: 240px; }
+</style>
+</head>
+<body>
+<h1>Barney vs Homer — Can You Tell Them Apart?</h1>
+<p class="subtitle">Same body type, same yellow skin — only character-specific details differentiate</p>
+
+<div class="row">
+
+<!-- HOMER (reference) -->
+<div class="card">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+    <!-- Body — white shirt, blue pants -->
+    <path d="M 48,168 L 152,168 L 158,220 L 42,220 Z" fill="#FFF" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Collar -->
+    <path d="M 76,168 L 100,182 L 124,168" fill="#FFF" stroke="#111" stroke-width="2"/>
+    <!-- Blue pants hint -->
+    <path d="M 44,210 L 156,210 L 158,220 L 42,220 Z" fill="#4299E1" stroke="#111" stroke-width="2"/>
+
+    <!-- Arms -->
+    <path d="M 48,172 Q 30,176 20,188 Q 14,200 18,212" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <path d="M 16,210 Q 10,206 12,200 Q 16,198 18,202 L 18,212 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <path d="M 152,172 Q 170,176 180,188 Q 186,200 182,212" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <path d="M 180,210 Q 186,206 188,200 Q 184,198 182,202 L 182,212 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+
+    <!-- HEAD — Homer's classic oval -->
+    <path d="M 68,148 Q 68,168 100,174 Q 132,168 132,148 C 142,132 144,100 138,72 C 132,42 118,32 100,32 C 82,32 68,42 62,72 C 56,100 58,132 68,148 Z" fill="#FCD34D" stroke="#111" stroke-width="3"/>
+    <!-- Ears -->
+    <ellipse cx="56" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <ellipse cx="144" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+
+    <!-- BALD HEAD — Homer's signature: just 2 hairs + side M fringe -->
+    <!-- M-shaped fringe at sides -->
+    <path d="M 56,96 C 52,86 54,78 62,76" fill="none" stroke="#111" stroke-width="2.5"/>
+    <path d="M 144,96 C 148,86 146,78 138,76" fill="none" stroke="#111" stroke-width="2.5"/>
+    <!-- The famous 2 hairs on top -->
+    <path d="M 86,36 Q 84,26 88,22" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 94,34 Q 92,24 96,20" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Zigzag back of head -->
+    <path d="M 56,90 L 48,92 L 54,96 L 48,100" fill="none" stroke="#111" stroke-width="2"/>
+
+    <!-- Eyes — standard Springfield -->
+    <circle cx="84" cy="92" r="16" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="86" cy="94" r="3" fill="#111"/>
+    <circle cx="116" cy="92" r="16" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="114" cy="94" r="3" fill="#111"/>
+    <!-- Simple brows -->
+    <path d="M 70,76 Q 84,70 98,76" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 102,76 Q 116,70 130,76" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Nose — Springfield overbite muzzle -->
+    <path d="M 96,92 C 92,102 92,108 102,108 C 108,108 108,102 102,100" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+
+    <!-- Overbite/muzzle — Homer's big mouth area -->
+    <path d="M 76,118 C 76,110 88,108 100,108 C 112,108 124,110 124,118 C 124,136 112,142 100,142 C 88,142 76,136 76,118 Z" fill="#D2B48C" stroke="#111" stroke-width="3"/>
+    <!-- Mouth line -->
+    <path d="M 80,124 Q 100,134 120,124" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="86" y="156" width="28" height="14" fill="#FCD34D" stroke="#111" stroke-width="2"/>
+
+    <!-- Feet -->
+    <path d="M 54,220 Q 52,228 58,230 L 82,230 Q 86,228 84,220" fill="#718096" stroke="#111" stroke-width="2"/>
+    <path d="M 116,220 Q 114,228 120,230 L 144,230 Q 148,228 146,220" fill="#718096" stroke="#111" stroke-width="2"/>
+  </svg>
+  <h3>Homer (Everyman)</h3>
+  <div class="sub">Bald · 2 hairs · white shirt · overbite</div>
+</div>
+
+<!-- BARNEY GUMBLE -->
+<div class="card">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+    <!-- Body — RATTY white t-shirt, stained, stretched -->
+    <!-- Barney is WIDER/rounder than Homer — barrel-shaped -->
+    <path d="M 40,166 L 160,166 L 164,220 L 36,220 Z" fill="#E8E0D0" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+    <!-- T-shirt is dingy, not clean white like Homer's -->
+    <!-- Stain marks -->
+    <circle cx="82" cy="190" r="4" fill="#C9A060" opacity="0.2"/>
+    <circle cx="120" cy="184" r="3" fill="#C9A060" opacity="0.15"/>
+    <!-- Stretched neckline (sloppy, gaping) -->
+    <path d="M 76,166 Q 100,180 124,166" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <!-- Visible gut — shirt rides up -->
+    <path d="M 80,210 Q 100,216 120,210" fill="#FCD34D" stroke="none"/>
+    <path d="M 80,210 Q 100,216 120,210" fill="none" stroke="#111" stroke-width="1.5" opacity="0.4"/>
+
+    <!-- Arms — chubby, holding beer -->
+    <!-- Left arm — hanging loose (drunk slouch) -->
+    <path d="M 40,170 Q 22,178 16,192 Q 10,206 16,216" fill="#E8E0D0" stroke="#111" stroke-width="3"/>
+    <path d="M 14,214 Q 8,210 10,204 Q 14,202 16,206 L 16,216 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <!-- Right arm — HOLDING BEER (Barney's constant companion) -->
+    <path d="M 160,170 Q 176,174 184,184 Q 188,194 186,202" fill="#E8E0D0" stroke="#111" stroke-width="3"/>
+    <path d="M 184,200 Q 190,196 192,202 Q 194,208 188,210 L 184,208 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <!-- BEER MUG — oversized, foamy -->
+    <rect x="180" y="172" width="16" height="24" rx="3" fill="#C9A227" stroke="#111" stroke-width="2.5"/>
+    <!-- Beer liquid -->
+    <rect x="182" y="178" width="12" height="16" rx="2" fill="#E8A020"/>
+    <!-- Foam head -->
+    <path d="M 180,176 Q 184,170 188,174 Q 192,168 196,174 L 196,178 L 180,178 Z" fill="#FFF" stroke="#111" stroke-width="2"/>
+    <!-- Mug handle -->
+    <path d="M 196,180 Q 204,182 204,190 Q 204,198 196,200" fill="none" stroke="#111" stroke-width="2.5"/>
+
+    <!-- HEAD — similar oval to Homer BUT puffier/bloated -->
+    <!-- Barney's head is slightly WIDER and ROUNDER than Homer's -->
+    <path d="M 64,146 Q 64,168 100,174 Q 136,168 136,146 C 148,128 150,96 144,68 C 138,40 122,30 100,30 C 78,30 62,40 56,68 C 50,96 52,128 64,146 Z" fill="#FCD34D" stroke="#111" stroke-width="3"/>
+
+    <!-- Ears -->
+    <ellipse cx="50" cy="104" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <ellipse cx="150" cy="104" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+
+    <!-- MESSY BROWN HAIR — Barney has a full head (not bald like Homer!) -->
+    <!-- This is the #1 differentiator -->
+    <path d="M 54,66 C 48,30 78,18 100,18 C 122,18 152,30 146,66 C 138,36 62,36 54,66 Z" fill="#8B6914" stroke="#111" stroke-width="3"/>
+    <!-- Messy tufts sticking up (disheveled, unkempt) -->
+    <path d="M 82,22 Q 78,10 82,4" fill="none" stroke="#8B6914" stroke-width="4"/>
+    <path d="M 82,22 Q 78,10 82,4" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 96,20 Q 100,8 96,2" fill="none" stroke="#8B6914" stroke-width="4"/>
+    <path d="M 96,20 Q 100,8 96,2" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 112,20 Q 116,10 112,4" fill="none" stroke="#8B6914" stroke-width="4"/>
+    <path d="M 112,20 Q 116,10 112,4" fill="none" stroke="#111" stroke-width="1.5"/>
+    <!-- Side hair messed up -->
+    <path d="M 52,60 Q 42,52 38,58" fill="none" stroke="#8B6914" stroke-width="4"/>
+    <path d="M 52,60 Q 42,52 38,58" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 148,60 Q 158,52 162,58" fill="none" stroke="#8B6914" stroke-width="4"/>
+    <path d="M 148,60 Q 158,52 162,58" fill="none" stroke="#111" stroke-width="1.5"/>
+
+    <!-- 5 O'CLOCK SHADOW — stubble on jaw/chin area -->
+    <circle cx="76" cy="130" r="1" fill="#888" opacity="0.2"/>
+    <circle cx="84" cy="134" r="1" fill="#888" opacity="0.15"/>
+    <circle cx="92" cy="136" r="1" fill="#888" opacity="0.2"/>
+    <circle cx="100" cy="138" r="1" fill="#888" opacity="0.15"/>
+    <circle cx="108" cy="136" r="1" fill="#888" opacity="0.2"/>
+    <circle cx="116" cy="134" r="1" fill="#888" opacity="0.15"/>
+    <circle cx="124" cy="130" r="1" fill="#888" opacity="0.2"/>
+    <circle cx="80" cy="140" r="1" fill="#888" opacity="0.12"/>
+    <circle cx="96" cy="142" r="1" fill="#888" opacity="0.12"/>
+    <circle cx="104" cy="142" r="1" fill="#888" opacity="0.12"/>
+    <circle cx="120" cy="140" r="1" fill="#888" opacity="0.12"/>
+
+    <!-- EYES — HALF-CLOSED, dazed/drunk (not alert like Homer) -->
+    <circle cx="84" cy="88" r="16" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="86" cy="90" r="3" fill="#111"/>
+    <circle cx="116" cy="88" r="16" fill="#FFF" stroke="#111" stroke-width="3"/>
+    <circle cx="114" cy="90" r="3" fill="#111"/>
+    <!-- HEAVY drooping lids — drunk/sleepy (Barney is always wasted) -->
+    <path d="M 68,88 C 68,76 84,66 100,78 L 68,78 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <path d="M 100,78 C 116,66 132,76 132,88 L 100,78 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <!-- Bloodshot lines in whites (tiny red veins) -->
+    <line x1="74" y1="86" x2="78" y2="88" stroke="#E53E3E" stroke-width="0.8" opacity="0.3"/>
+    <line x1="76" y1="92" x2="80" y2="90" stroke="#E53E3E" stroke-width="0.8" opacity="0.25"/>
+    <line x1="124" y1="86" x2="120" y2="88" stroke="#E53E3E" stroke-width="0.8" opacity="0.3"/>
+
+    <!-- Brows — droopy, not quite in control -->
+    <path d="M 68,68 Q 84,64 100,72" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 100,72 Q 116,64 132,68" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- NOSE — BIG, BULBOUS, RUDDY/RED (Barney's alcoholic nose) -->
+    <!-- Much bigger and redder than Homer's nose -->
+    <path d="M 92,88 C 88,100 86,108 94,114 Q 100,118 106,114 C 114,108 112,100 108,88" fill="#E8A060" stroke="#111" stroke-width="2.5"/>
+    <!-- Ruddy/red tinge on nose -->
+    <circle cx="100" cy="108" r="6" fill="#E53E3E" opacity="0.15"/>
+    <circle cx="96" cy="106" r="3" fill="#E53E3E" opacity="0.1"/>
+
+    <!-- Overbite/muzzle — similar to Homer but slightly puffier -->
+    <path d="M 74,118 C 74,110 88,108 100,108 C 112,108 126,110 126,118 C 126,138 112,144 100,144 C 88,144 74,138 74,118 Z" fill="#D2B48C" stroke="#111" stroke-width="3"/>
+    <!-- Mouth — slack, dopey grin (not Homer's tight smile) -->
+    <path d="M 80,126 Q 100,138 120,126" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Slightly open mouth — slackjawed -->
+    <path d="M 88,128 Q 100,134 112,128" fill="#8B4020" stroke="none" opacity="0.3"/>
+
+    <!-- BURP CLOUD (small, above head — optional Barney signature) -->
+    <circle cx="150" cy="40" r="6" fill="#8B8" opacity="0.15" stroke="#8B8" stroke-width="1" opacity="0.2"/>
+    <circle cx="158" cy="30" r="4" fill="#8B8" opacity="0.1" stroke="#8B8" stroke-width="1" opacity="0.15"/>
+    <circle cx="162" cy="22" r="3" fill="#8B8" opacity="0.08"/>
+
+    <!-- Neck — thicker than Homer's -->
+    <rect x="82" y="156" width="36" height="12" fill="#FCD34D" stroke="#111" stroke-width="2"/>
+
+    <!-- Feet — scuffed shoes -->
+    <path d="M 48,220 Q 46,228 52,230 L 80,230 Q 84,228 82,220" fill="#5A3A1A" stroke="#111" stroke-width="2"/>
+    <path d="M 118,220 Q 116,228 122,230 L 150,230 Q 154,228 152,220" fill="#5A3A1A" stroke="#111" stroke-width="2"/>
+  </svg>
+  <h3>Barney Gumble</h3>
+  <div class="sub">Messy hair · ruddy nose · half-closed eyes · beer · stubble</div>
+</div>
+
+</div>
+</body>
+</html>
