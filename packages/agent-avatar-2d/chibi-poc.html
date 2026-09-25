@@ -8,16 +8,19 @@
   body { font-family: -apple-system, sans-serif; background: #2a2a3e; color: #e0e0e0; padding: 32px; }
   h1 { text-align: center; color: #fff; margin-bottom: 4px; }
   .subtitle { text-align: center; color: #888; margin-bottom: 32px; font-size: 14px; }
-  .row { display: flex; gap: 24px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
-  .card { background: #1a1a2e; border-radius: 12px; padding: 16px; text-align: center; }
-  .card h3 { margin-top: 8px; font-size: 15px; }
-  .card .sub { font-size: 11px; color: #888; }
+  .family-row { margin-bottom: 24px; }
+  .family-row h2 { font-size: 18px; padding-bottom: 6px; margin-bottom: 12px; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
+  .card { background: #1a1a2e; border-radius: 10px; padding: 10px; text-align: center; }
+  .card h3 { margin-top: 6px; font-size: 13px; }
+  .card .sub { font-size: 10px; color: #888; }
   .sizes { display: flex; gap: 12px; align-items: flex-end; justify-content: center; margin-top: 12px; }
-  svg { display: block; image-rendering: auto; }
-  .s4 svg { width: 300px; height: 360px; }
+  svg { display: block; image-rendering: auto; margin: 0 auto; }
+  .s4 svg { width: 180px; height: 216px; }
   .s2 svg { width: 150px; height: 180px; }
   .s1 svg { width: 100px; height: 120px; }
   .sxs svg { width: 64px; height: 77px; }
+  @media (max-width: 900px) { .row { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -193,9 +196,8 @@
   <h3>Warrior</h3>
   <div class="sub">Hero · deep-set · prominent · line-wide</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- REBEL/MAVERICK -->
 <div class="card">
   <div class="s4">
@@ -355,7 +357,6 @@
 </div>
 </div>
 
-<!-- JESTER FAMILY -->
 <h2 style="text-align:center;color:#e67e22;margin:16px 0 8px">Jester</h2>
 <div class="row">
 
@@ -514,9 +515,8 @@
   <h3>Entertainer</h3>
   <div class="sub">Jester · large · subtle · lips-full</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- JESTER/PROVOCATEUR — imp/trickster with small horns, mask, hood -->
 <div class="card">
   <div class="s4">
@@ -814,9 +814,8 @@
   <h3>Guardian</h3>
   <div class="sub">Caregiver · standard · prominent · line-neutral</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- CAREGIVER/HEALER — elf druid, pointed ears, herbs, nature staff -->
 <div class="card">
   <div class="s4">
@@ -1118,9 +1117,8 @@
   <h3>Liberator</h3>
   <div class="sub">Hero · deep-set · aquiline · line-stern</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- HERO/RESCUER — human knight, shield with cross, first-aid -->
 <div class="card">
   <div class="s4">
@@ -1348,9 +1346,8 @@
   <h3>Gambler</h3>
   <div class="sub">Rebel · narrow · subtle · smirk</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- REBEL/REFORMER — scarred blacksmith, heavy hammer, torn blueprint -->
 <div class="card">
   <div class="s4">
@@ -1601,9 +1598,8 @@
   <h3>Shaman</h3>
   <div class="sub">Sage · TROLL · ancient · crystal ball</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- SAGE/TRANSLATOR — human scholar, scroll + rosetta stone -->
 <div class="card">
   <div class="s4">
@@ -1851,9 +1847,8 @@
   <h3>Scientist</h3>
   <div class="sub">Magician · SKELETON lich scholar</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- MAGICIAN/INNOVATOR — human enchanter, lightbulb, circuit traces -->
 <div class="card">
   <div class="s4">
@@ -2066,9 +2061,8 @@
   <h3>Judge</h3>
   <div class="sub">Sovereign · deep-set · prominent · stern</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- SOVEREIGN/PATRIARCH — DRAGON-BORN, scaled, scepter, family crest -->
 <div class="card">
   <div class="s4">
@@ -2360,9 +2354,8 @@
   <h3>Storyteller</h3>
   <div class="sub">Creator · quill · open book · goatee</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- CREATOR/ENTREPRENEUR — GNOME merchant, coin pouch, ledger -->
 <div class="card">
   <div class="s4">
@@ -2622,9 +2615,8 @@
   <h3>Citizen</h3>
   <div class="sub">Everyman · HALFLING farmer</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- EVERYMAN/NETWORKER — innkeeper, tankard, warm -->
 <div class="card">
   <div class="s4">
@@ -2855,9 +2847,8 @@
   <h3>Generalist</h3>
   <div class="sub">Explorer · HALF-ORC scout</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- EXPLORER/PIONEER — cartographer, braids, flag, machete -->
 <div class="card">
   <div class="s4">
@@ -3105,9 +3096,8 @@
   <h3>Dreamer</h3>
   <div class="sub">Innocent · stargazer · starry eyes</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- INNOCENT/IDEALIST — young acolyte, candle, banner -->
 <div class="card">
   <div class="s4">
@@ -3351,9 +3341,8 @@
   <h3>Hedonist</h3>
   <div class="sub">Lover · SATYR · wine · grapes</div>
 </div>
-</div>
 
-<div class="row">
+
 <!-- LOVER/MATCHMAKER — bow with heart arrow, address book -->
 <div class="card">
   <div class="s4">
