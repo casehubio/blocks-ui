@@ -338,4 +338,29 @@ describe('blocks-detail-pane', () => {
       expect(el.shadowRoot!.querySelector('[role="tab"]')).toBeNull();
     });
   });
+
+  describe('standalone mode', () => {
+    it('renders tabs without selection when standalone is true', async () => {
+      el = document.createElement('blocks-detail-pane') as DetailPaneEl;
+      (el as any).standalone = true;
+      el.tabs = testTabs;
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]');
+      expect(tabs.length).toBe(2);
+      const empty = el.shadowRoot!.querySelector('.empty');
+      expect(empty).toBeNull();
+    });
+
+    it('activates first tab in standalone mode', async () => {
+      el = document.createElement('blocks-detail-pane') as DetailPaneEl;
+      (el as any).standalone = true;
+      el.tabs = testTabs;
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const activeTab = el.shadowRoot!.querySelector('[role="tab"][aria-selected="true"]');
+      expect(activeTab).not.toBeNull();
+      expect(activeTab!.textContent).toContain('Overview');
+    });
+  });
 });
