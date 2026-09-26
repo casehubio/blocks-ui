@@ -15,6 +15,7 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
   @property({ type: Array }) tabs: TabDefinition[] = [];
   @property({ type: String, attribute: 'selection-topic' }) selectionTopic = '';
   @property({ type: String, attribute: 'empty-message' }) emptyMessage = 'Select an item to view details';
+  @property({ type: Boolean }) standalone = false;
 
   @state() private _item: unknown = null;
   @state() private _activeTabId = '';
@@ -100,6 +101,13 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('tabindex', '-1');
+    if (this.standalone) {
+      this._item = {};
+      const sorted = this._sortedTabs;
+      if (!this._activeTabId && sorted.length > 0) {
+        this._activeTabId = sorted[0]!.id;
+      }
+    }
     if (this.selectionTopic) {
       this._unsubs.push(
         onPagesEvent(document, `${this.selectionTopic}:selected`, (payload: unknown) => {
@@ -174,7 +182,7 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
   }
 
   override render() {
-    if (!this._item) {
+    if (!this._item && !this.standalone) {
       return html`<div class="empty" role="status">${this.emptyMessage}</div>`;
     }
 
