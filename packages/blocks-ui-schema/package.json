@@ -43,6 +43,8 @@
     "@casehubio/blocks-ui-detail-pane": "workspace:*",
     "@casehubio/blocks-ui-diagram-workbench": "workspace:*",
     "@casehubio/blocks-ui-dimension-dashboard": "workspace:*",
+    "@casehubio/blocks-ui-evolution-config": "workspace:*",
+    "@casehubio/blocks-ui-evolution-workbench": "workspace:*",
     "@casehubio/blocks-ui-execution-monitor": "workspace:*",
     "@casehubio/blocks-ui-gdpr-erasure-action": "workspace:*",
     "@casehubio/blocks-ui-grouped-data-view": "workspace:*",
