@@ -43,6 +43,8 @@ import type { TrustWorkbenchProps } from '@casehubio/blocks-ui-trust-workbench';
 import type { ContributorWorkbenchProps } from '@casehubio/blocks-ui-contributor-workbench';
 import type { CommitmentRangeBarProps, CommitmentTransitionBadgeProps } from '@casehubio/blocks-ui-commitment-viz';
 import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
+import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps } from '@casehubio/blocks-ui-evolution-config';
+import type { EvolutionWorkbenchProps } from '@casehubio/blocks-ui-evolution-workbench';
 
 export interface BlocksComponentRegistry {
   'blocks-sla-indicator': SlaIndicatorProps;
@@ -101,4 +103,8 @@ export interface BlocksComponentRegistry {
   'commitment-range-bar': CommitmentRangeBarProps;
   'commitment-transition-badge': CommitmentTransitionBadgeProps;
   'blocks-org-diagram': OrgDiagramProps;
+  'blocks-deny-pattern-editor': DenyPatternEditorProps;
+  'blocks-watch-pattern-editor': WatchPatternEditorProps;
+  'blocks-gate-policy-editor': GatePolicyEditorProps;
+  'blocks-evolution-workbench': EvolutionWorkbenchProps;
 }

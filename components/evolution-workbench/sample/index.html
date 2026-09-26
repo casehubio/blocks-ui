@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evolution Workbench — Sample Page</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #f8f8f8; }
+    .container { max-width: 1200px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; }
+    h1 { padding: 16px 24px; margin: 0; font-size: 18px; border-bottom: 1px solid #e0e0e0; background: white; }
+    blocks-evolution-workbench { flex: 1; background: white; }
+  </style>
+  <script type="module">
+    import {
+      sampleState, sampleStreams, sampleInbox, sampleDenyPatterns,
+      sampleWatchPatterns, sampleStages, sampleCategories, sampleGatePolicy,
+    } from '../src/sample-data.js';
+    import '../src/evolution-workbench.js';
+    import { LitElement, html } from 'lit';
+
+    // Domain extension demo — mock trading risk panel
+    class SampleTradingRiskPanel extends LitElement {
+      render() {
+        return html`
+          <div style="padding: 24px; font-family: system-ui;">
+            <h3 style="margin: 0 0 16px; font-size: 14px; color: #666;">Trading Risk Panel (Domain Extension Demo)</h3>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <div style="padding: 16px; background: #f0f9ff; border-radius: 8px; min-width: 120px; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700;">1.42</div>
+                <div style="font-size: 11px; color: #666; text-transform: uppercase;">Sharpe Ratio</div>
+              </div>
+              <div style="padding: 16px; background: #fef3c7; border-radius: 8px; min-width: 120px; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700;">2.1%</div>
+                <div style="font-size: 11px; color: #666; text-transform: uppercase;">VaR (95%)</div>
+              </div>
+              <div style="padding: 16px; background: #dcfce7; border-radius: 8px; min-width: 120px; text-align: center;">
+                <div style="font-size: 24px; font-weight: 700;">OK</div>
+                <div style="font-size: 11px; color: #666; text-transform: uppercase;">Reg Check</div>
+              </div>
+            </div>
+            <p style="margin-top: 16px; font-size: 12px; color: #999;">
+              This panel demonstrates how domain apps (trading, AML, clinical) extend the
+              evolution workbench with domain-specific tabs via the <code>tabs</code> property.
+            </p>
+          </div>
+        `;
+      }
+    }
+    customElements.define('sample-trading-risk-panel', SampleTradingRiskPanel);
+
+    // Configure workbench with inline data + domain extension tab
+    const workbench = document.querySelector('blocks-evolution-workbench');
+    workbench.configure({
+      state: sampleState,
+      streams: sampleStreams,
+      inbox: sampleInbox,
+      denyPatterns: sampleDenyPatterns,
+      watchPatterns: sampleWatchPatterns,
+      stages: sampleStages,
+      categories: sampleCategories,
+      gatePolicy: sampleGatePolicy,
+      tabs: [
+        { id: 'trading-risk', label: 'Trading Risk', tagName: 'sample-trading-risk-panel', order: 35 },
+      ],
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Evolution Workbench — Sample Page</h1>
+    <blocks-evolution-workbench></blocks-evolution-workbench>
+  </div>
+</body>
+</html>
