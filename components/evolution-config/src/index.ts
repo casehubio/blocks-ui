@@ -5,3 +5,5 @@ export { DenyPatternEditor } from './deny-pattern-editor.js';
 export type { DenyPatternEditorProps } from './deny-pattern-editor.js';
 export { WatchPatternEditor } from './watch-pattern-editor.js';
 export type { WatchPatternEditorProps } from './watch-pattern-editor.js';
+export { GatePolicyEditor } from './gate-policy-editor.js';
+export type { GatePolicyEditorProps } from './gate-policy-editor.js';
