@@ -802,6 +802,15 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     });
   }
 
+  protected override _handleCanvasEvent = (e: CustomEvent): void => {
+    const topic = e.detail?.topic;
+    if (topic === 'graph:node:click') this._handleNodeClick(e);
+    else if (topic === 'graph:selection:change') this._handleSelectionChange(e);
+    else if (topic === 'graph:pane:click') this._showPickerAtPaneClick();
+    else if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(e.detail?.payload);
+    else if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
+  };
+
   private _renderDockHeader(title: string, side: 'left' | 'right') {
     const close = () => {
       if (side === 'left') this._paletteOpen = !this._paletteOpen;
@@ -889,14 +898,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
             role="img"
             aria-label="Case definition diagram"
             style="flex: 1; height: 100%; min-width: 0;"
-            @pages-event=${(e: CustomEvent) => {
-              const topic = e.detail?.topic as string | undefined;
-              if (topic === 'graph:node:click') this._handleNodeClick(e);
-              if (topic === 'graph:selection:change') this._handleSelectionChange(e);
-              if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
-              if (topic === 'graph:pane:click') this._showPickerAtPaneClick?.(e.detail?.payload);
-              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd?.(e.detail?.payload);
-            }}
+            @pages-event=${this._handleCanvasEvent}
           ></pages-graph-canvas>
           ${this._propertiesOpen ? html`
             <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
@@ -915,9 +917,8 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
             </div>
           ` : this._renderCollapsedDock('Properties', '☰', 'right')}
         </div>
-        ${this._showConflict ? this._renderConflictDialog() : nothing}
-        ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}
-        ${typeof this._renderNodePicker === 'function' ? this._renderNodePicker() : nothing}
+        ${this._renderDialogs()}
+        ${this._renderNodePicker()}
       </div>
     `;
   }

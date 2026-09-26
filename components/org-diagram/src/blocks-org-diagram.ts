@@ -32,11 +32,11 @@ import type {
   DerivedOrgData,
   FactBase,
 } from '@casehubio/graph-stencil-org';
-import { toReactFlowGraph, computeElkLayout } from '@casehubio/graph-renderer';
-import type { ElkLayoutOptions, ElkLayoutResult, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
+import { computeElkLayout } from '@casehubio/graph-renderer';
+import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
-import type { AdapterResult } from '@casehubio/pages-diagram-core';
+import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
 import '@casehubio/graph-renderer';
 import '@casehubio/pages-diagram-palette';
 import './blocks-org-diagram-toolbar.js';
@@ -220,20 +220,6 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     this._lastPointerY = e.clientY - rect.top;
   };
 
-  private _onPaneClick = (): void => {
-    if (this.readonly) return;
-    this._chooserState = { x: this._lastPointerX, y: this._lastPointerY };
-  };
-
-  private _onConnectEndOnEmpty = (payload: { sourceNodeId?: string }): void => {
-    if (this.readonly) return;
-    this._chooserState = {
-      x: this._lastPointerX,
-      y: this._lastPointerY,
-      sourceNodeId: payload?.sourceNodeId,
-    };
-  };
-
   private _chooserItems() {
     const policy = this._editPolicy();
     if (!policy || !this._adapterResult) return [];
@@ -276,7 +262,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     this._chooserState = null;
   };
 
-  private _onChooserDismiss = (): void => {
+  override _onChooserDismiss = (): void => {
     this._chooserState = null;
   };
 
@@ -303,71 +289,57 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     return opts;
   }
 
-  override async _fullRender(yamlStr: string): Promise<void> {
-    if ((this as any)._renderInProgress) {
-      (this as any)._pendingRenderYaml = yamlStr;
-      return;
-    }
-    (this as any)._renderInProgress = true;
-    try {
-      (this as any)._error = '';
-      const result = this._adaptYaml(yamlStr);
-      (this as any)._adapterResult = result;
+  protected override async _computeLayout(
+    model: import('@casehubio/graph-core').GraphModel,
+    _options: ElkLayoutOptions,
+  ): Promise<LayoutResult> {
+    if (this.layoutStrategy === 'auto') {
+      const primary = this._archetypeHint?.layout ?? 'force';
 
-      let layout: ElkLayoutResult | undefined;
-      let layoutOpts!: ElkLayoutOptions;
-
-      if (this.layoutStrategy === 'auto') {
-        const primary = this._archetypeHint?.layout ?? 'force';
-
-        if (primary === 'hub-spoke' || primary === 'circular') {
-          try {
-            layout = computeRadialLayout(result.model);
-            layoutOpts = { spacing: 120 };
-          } catch { /* fall through to ELK */ }
-        }
-
-        if (!layout) {
-          layoutOpts = this._buildElkOpts(primary);
-          try {
-            layout = await computeElkLayout(result.model, layoutOpts);
-          } catch {
-            layoutOpts = this._buildElkOpts('force');
-            layout = await computeElkLayout(result.model, layoutOpts);
-          }
-        }
-      } else {
-        layoutOpts = this._layoutOptions();
-        layout = await computeElkLayout(result.model, layoutOpts);
+      if (primary === 'hub-spoke' || primary === 'circular') {
+        try {
+          return { layout: computeRadialLayout(model), direction: undefined };
+        } catch { /* fall through to ELK */ }
       }
 
-      if ((this as any)._adapterResult !== result) {
-        (this as any)._renderInProgress = false;
-        await this._fullRender((this as any)._currentYaml);
-        return;
-      }
-      (this as any)._lastLayout = layout;
-      const dir = layoutOpts.direction ?? (['layered', 'mrtree'].includes(layoutOpts.algorithm ?? '') ? 'DOWN' : undefined);
-      const { nodes, edges } = toReactFlowGraph(result.model, layout!, this._decorations(), dir);
-      if (this._lastFacts) {
-        this._engine.postLayout(nodes as any, edges as any, this._lastFacts);
-      }
-      (this as any)._nodes = nodes;
-      this._baseEdges = edges;
-      this._updateEdgeStyles();
-    } catch (e) {
-      (this as any)._error = String(e);
-    } finally {
-      (this as any)._renderInProgress = false;
-      if ((this as any)._pendingRenderYaml && (this as any)._pendingRenderYaml !== yamlStr) {
-        const pending = (this as any)._pendingRenderYaml;
-        (this as any)._pendingRenderYaml = '';
-        await this._fullRender(pending);
-      } else {
-        (this as any)._pendingRenderYaml = '';
+      const opts = this._buildElkOpts(primary);
+      try {
+        return { layout: await computeElkLayout(model, opts), direction: opts.direction };
+      } catch {
+        const fallback = this._buildElkOpts('force');
+        return { layout: await computeElkLayout(model, fallback), direction: fallback.direction };
       }
     }
+
+    const opts = this._layoutOptions();
+    return { layout: await computeElkLayout(model, opts), direction: opts.direction };
   }
+
+  protected override _postLayout(
+    nodes: import('@xyflow/react').Node[],
+    edges: import('@xyflow/react').Edge[],
+  ): { nodes: import('@xyflow/react').Node[]; edges: import('@xyflow/react').Edge[] } {
+    if (this._lastFacts) {
+      this._engine.postLayout(nodes as any, edges as any, this._lastFacts);
+    }
+    this._baseEdges = [...edges];
+    const styled = applyOrgEdgeLabels(edges);
+    const highlighted = applySelectionHighlight(styled, this._selectedNodeId || undefined);
+    return { nodes, edges: highlighted };
+  }
+
+  protected override _handleCanvasEvent = (e: CustomEvent): void => {
+    const topic = e.detail?.topic;
+    const payload = e.detail?.payload ?? e.detail;
+    if (topic === 'graph:node:click') this._handleNodeClick(e);
+    else if (topic === 'graph:selection:change') { const prev = this._selectedNodeId; this._handleSelectionChange(e); if (this._selectedNodeId !== prev) this._updateEdgeStyles(); }
+    else if (topic === 'graph:pane:click') { this._showPickerAtPaneClick(); this._onNodeHoverEnd(); }
+    else if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(payload);
+    else if (topic === 'graph:node:mouseenter') { const nodeId = payload?.nodeId as string | undefined; if (nodeId) this._onNodeHover(nodeId, e as unknown as MouseEvent); }
+    else if (topic === 'graph:node:mouseleave') this._onNodeHoverEnd();
+    else if (topic === 'graph:edge:mouseenter') { this._onEdgeHover(payload?.edgeId as string, payload?.edgeType as string, payload?.label as string, payload?.clientX as number, payload?.clientY as number); }
+    else if (topic === 'graph:edge:mouseleave') this._onEdgeHoverEnd();
+  };
 
   protected override _applyGraphEdit(yaml: string, edit: GraphEdit): string {
     switch (edit.type) {
@@ -580,18 +552,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
               role="img"
               aria-label=${`Organization diagram: ${stats.units} units, ${stats.agents} agents, ${stats.rels} relationships`}
               style="width:100%;height:100%;"
-              @pages-event=${(e: CustomEvent) => {
-                const topic = e.detail?.topic as string | undefined;
-                const payload = e.detail?.payload ?? e.detail;
-                if (topic === 'graph:node:click') this._handleNodeClick(e);
-                if (topic === 'graph:selection:change') { const prev = this._selectedNodeId; this._handleSelectionChange(e); if (this._selectedNodeId !== prev) this._updateEdgeStyles(); }
-                if (topic === 'graph:pane:click') { this._onPaneClick(); this._onNodeHoverEnd(); }
-                if (topic === 'graph:connect:end-on-empty') this._onConnectEndOnEmpty(payload);
-                if (topic === 'graph:node:mouseenter') { const nodeId = payload?.nodeId as string | undefined; if (nodeId) this._onNodeHover(nodeId, e as unknown as MouseEvent); }
-                if (topic === 'graph:node:mouseleave') this._onNodeHoverEnd();
-                if (topic === 'graph:edge:mouseenter') { this._onEdgeHover(payload?.edgeId as string, payload?.edgeType as string, payload?.label as string, payload?.clientX as number, payload?.clientY as number); }
-                if (topic === 'graph:edge:mouseleave') this._onEdgeHoverEnd();
-              }}
+              @pages-event=${this._handleCanvasEvent}
             ></graph-canvas-core>
             ${this._chooserState ? html`
               <div style="position:absolute;left:${this._chooserState.x}px;top:${this._chooserState.y}px;z-index:10;">
@@ -678,8 +639,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
         </div>
         <org-tooltip></org-tooltip>
         <org-edge-tooltip></org-edge-tooltip>
-        ${this._showConflict ? this._renderConflictDialog() : nothing}
-        ${this._confirmMessage ? this._renderDeleteConfirm() : nothing}
+        ${this._renderDialogs()}
       </div>
     `;
   }

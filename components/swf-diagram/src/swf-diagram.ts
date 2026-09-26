@@ -169,6 +169,15 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     this._handleDrillDown(payload);
   }
 
+  protected override _handleCanvasEvent = (e: CustomEvent): void => {
+    const topic = e.detail?.topic;
+    if (topic === 'graph:node:click') this._handleNodeClick(e);
+    else if (topic === 'graph:selection:change') this._handleSelectionChange(e);
+    else if (topic === 'graph:pane:click') this._showPickerAtPaneClick();
+    else if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd(e.detail?.payload);
+    else if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
+  };
+
   private _computeFilteredEdges() {
     const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
     return this._edges.filter(e => {
@@ -233,14 +242,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
             role="img"
             aria-label="Workflow diagram"
             style="flex: 1; height: 100%; min-width: 0;"
-            @pages-event=${(e: CustomEvent) => {
-              const topic = e.detail?.topic as string | undefined;
-              if (topic === 'graph:node:click') this._handleNodeClick(e);
-              if (topic === 'graph:selection:change') this._handleSelectionChange(e);
-              if (topic === 'diagram:drill-down') this._handleDrillDown(e.detail?.payload);
-              if (topic === 'graph:pane:click') this._showPickerAtPaneClick?.(e.detail?.payload);
-              if (topic === 'graph:connect:end-on-empty') this._showPickerAtConnectEnd?.(e.detail?.payload);
-            }}
+            @pages-event=${this._handleCanvasEvent}
           ></pages-graph-canvas>
           ${hasSelection ? html`
             <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
@@ -264,8 +266,8 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
             </div>
           ` : nothing}
         </div>
-        ${this._showConflict ? this._renderConflictDialog() : nothing}
-        ${typeof this._renderNodePicker === 'function' ? this._renderNodePicker() : nothing}
+        ${this._renderDialogs()}
+        ${this._renderNodePicker()}
       </div>
     `;
   }
