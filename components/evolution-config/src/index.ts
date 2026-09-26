@@ -3,3 +3,5 @@ export { EvolutionApi } from './api.js';
 export { EvolutionEventTopics, emitEvolutionEvent } from './events.js';
 export { DenyPatternEditor } from './deny-pattern-editor.js';
 export type { DenyPatternEditorProps } from './deny-pattern-editor.js';
+export { WatchPatternEditor } from './watch-pattern-editor.js';
+export type { WatchPatternEditorProps } from './watch-pattern-editor.js';
