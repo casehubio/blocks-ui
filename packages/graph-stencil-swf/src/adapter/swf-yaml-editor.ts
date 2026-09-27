@@ -31,7 +31,7 @@ const TYPE_TO_NAME_PREFIX: Record<string, string> = {
   'swf-wait': 'newWait',
 };
 
-export function addSwfTask(yaml: string, taskType: string): string {
+function prepareSwfTaskInsert(yaml: string, taskType: string) {
   const doc = parseDocument(yaml);
   const doSeq = doc.get('do') as YAMLSeq;
   if (!doSeq) throw new Error('No do: block found in workflow YAML');
@@ -51,33 +51,19 @@ export function addSwfTask(yaml: string, taskType: string): string {
   while (existing.has(`${prefix}${counter}`)) counter++;
   const stepName = `${prefix}${counter}`;
 
+  return { doc, doSeq, stepName };
+}
+
+export function addSwfTask(yaml: string, taskType: string): string {
+  const { doc, doSeq, stepName } = prepareSwfTaskInsert(yaml, taskType);
   const defaults = SWF_TASK_DEFAULTS[taskType] ?? {};
   const entry = doc.createNode({ [stepName]: defaults });
   doSeq.add(entry);
-
   return doc.toString();
 }
 
 export function insertSwfTask(yaml: string, taskType: string, beforeTaskName: string | null): string {
-  const doc = parseDocument(yaml);
-  const doSeq = doc.get('do') as YAMLSeq;
-  if (!doSeq) throw new Error('No do: block found in workflow YAML');
-
-  const existing = new Set<string>();
-  for (const item of doSeq.items) {
-    const map = (item as { items?: { key?: { value?: string } }[] }).items;
-    if (map) {
-      for (const pair of map) {
-        if (pair.key?.value) existing.add(pair.key.value);
-      }
-    }
-  }
-
-  const prefix = TYPE_TO_NAME_PREFIX[taskType] ?? 'newStep';
-  let counter = 1;
-  while (existing.has(`${prefix}${counter}`)) counter++;
-  const stepName = `${prefix}${counter}`;
-
+  const { doc, doSeq, stepName } = prepareSwfTaskInsert(yaml, taskType);
   const defaults = SWF_TASK_DEFAULTS[taskType] ?? {};
   const entry = doc.createNode({ [stepName]: defaults });
 
@@ -99,25 +85,7 @@ export function insertSwfTask(yaml: string, taskType: string, beforeTaskName: st
 }
 
 export function spliceSwfTask(yaml: string, taskType: string, sourceTaskName: string, targetTaskName: string): string {
-  const doc = parseDocument(yaml);
-  const doSeq = doc.get('do') as YAMLSeq;
-  if (!doSeq) throw new Error('No do: block found in workflow YAML');
-
-  const existing = new Set<string>();
-  for (const item of doSeq.items) {
-    const map = (item as { items?: { key?: { value?: string } }[] }).items;
-    if (map) {
-      for (const pair of map) {
-        if (pair.key?.value) existing.add(pair.key.value);
-      }
-    }
-  }
-
-  const prefix = TYPE_TO_NAME_PREFIX[taskType] ?? 'newStep';
-  let counter = 1;
-  while (existing.has(`${prefix}${counter}`)) counter++;
-  const stepName = `${prefix}${counter}`;
-
+  const { doc, doSeq, stepName } = prepareSwfTaskInsert(yaml, taskType);
   const defaults = SWF_TASK_DEFAULTS[taskType] ?? {};
   const newTaskData: Record<string, unknown> = { ...defaults, then: targetTaskName };
 
