@@ -58,45 +58,59 @@
     <ellipse cx="64" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
     <ellipse cx="136" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
-    <!-- HAIR — big curly auburn bouffant, cloud-scalloped edges, flush on head -->
-    <!-- Outer edge: organic cloud/scallop arcs. Inner edge: follows head contour -->
-    <path d="M 56,108
-             C 48,100 44,90 42,82
-             C 38,72 40,62 44,54
-             C 46,46 50,38 56,30
-             C 58,26 62,20 68,16
-             C 72,12 78,8 84,6
-             C 88,2 94,0 100,0
-             C 106,0 112,2 116,6
-             C 122,8 128,12 132,16
-             C 138,20 142,26 144,30
-             C 150,38 154,46 156,54
-             C 160,62 162,72 158,82
-             C 156,90 152,100 144,108
-             C 148,116 150,124 148,130
-             C 146,134 142,132 140,128
-             C 142,120 140,110 136,98
-             C 130,76 118,60 100,52
-             C 82,60 70,76 64,98
-             C 60,110 58,120 60,128
-             C 58,132 54,134 52,130
-             C 50,124 52,116 56,108 Z" fill="#A0522D" stroke="#111" stroke-width="3"/>
-    <!-- Fringe curl licks across forehead — small curly wisps drooping down -->
-    <path d="M 74,70 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
-    <path d="M 74,70 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
-    <path d="M 86,66 C 84,56 88,48 94,46" fill="none" stroke="#A0522D" stroke-width="5"/>
-    <path d="M 86,66 C 84,56 88,48 94,46" fill="none" stroke="#111" stroke-width="1.5"/>
-    <path d="M 100,64 C 100,54 104,46 108,44" fill="none" stroke="#A0522D" stroke-width="5"/>
-    <path d="M 100,64 C 100,54 104,46 108,44" fill="none" stroke="#111" stroke-width="1.5"/>
-    <path d="M 114,66 C 116,56 120,50 124,50" fill="none" stroke="#A0522D" stroke-width="5"/>
-    <path d="M 114,66 C 116,56 120,50 124,50" fill="none" stroke="#111" stroke-width="1.5"/>
-    <path d="M 126,70 C 128,62 132,56 136,56" fill="none" stroke="#A0522D" stroke-width="5"/>
-    <path d="M 126,70 C 128,62 132,56 136,56" fill="none" stroke="#111" stroke-width="1.5"/>
-    <!-- Interior curl texture (subtle wave pattern) -->
-    <path d="M 56,40 C 64,34 72,32 80,36" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
-    <path d="M 120,36 C 128,32 136,34 144,40" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
-    <path d="M 48,70 C 54,64 60,62 66,66" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
-    <path d="M 134,66 C 140,62 146,64 152,70" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
+    <!-- HAIR — big curly auburn bouffant -->
+    <!-- Layer 1: fill shape that extends BEHIND the head (no stroke on inner edge) -->
+    <path d="M 54,118
+             C 44,100 34,80 34,60
+             C 34,36 48,16 68,4
+             C 80,-4 92,-8 100,-8
+             C 108,-8 120,-4 132,4
+             C 152,16 166,36 166,60
+             C 166,80 156,100 146,118
+             C 152,128 152,136 150,140
+             C 146,138 144,128 140,116
+             C 134,92 120,72 100,62
+             C 80,72 66,92 60,116
+             C 56,128 54,138 50,140
+             C 48,136 48,128 54,118 Z" fill="#A0522D" stroke="none"/>
+    <!-- Layer 2: outer cloud-scallop edge — pronounced bumps ALL around -->
+    <path d="M 54,118
+             C 48,112 42,104 38,94
+             C 34,86 32,78 34,70
+             C 32,62 34,52 38,44
+             C 40,38 44,30 50,24
+             C 54,18 60,12 68,8
+             C 74,4 80,0 88,-2
+             C 94,-6 98,-6 100,-6
+             C 102,-6 106,-6 112,-2
+             C 120,0 126,4 132,8
+             C 140,12 146,18 150,24
+             C 156,30 160,38 162,44
+             C 166,52 168,62 166,70
+             C 168,78 166,86 162,94
+             C 158,104 152,112 146,118
+             C 150,124 152,132 150,138
+             C 148,142 144,140 142,136
+             C 144,130 146,124 146,118" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Left side cloud edge down to tip -->
+    <path d="M 54,118
+             C 50,124 48,132 50,138
+             C 52,142 56,140 58,136
+             C 56,130 54,124 54,118" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Fringe curl licks across forehead — drooping curly wisps -->
+    <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
+    <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 86,68 C 84,56 88,48 94,46" fill="none" stroke="#A0522D" stroke-width="5"/>
+    <path d="M 86,68 C 84,56 88,48 94,46" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 100,66 C 100,54 104,46 108,44" fill="none" stroke="#A0522D" stroke-width="5"/>
+    <path d="M 100,66 C 100,54 104,46 108,44" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 114,68 C 116,56 120,50 124,50" fill="none" stroke="#A0522D" stroke-width="5"/>
+    <path d="M 114,68 C 116,56 120,50 124,50" fill="none" stroke="#111" stroke-width="1.5"/>
+    <path d="M 126,72 C 128,62 132,56 136,56" fill="none" stroke="#A0522D" stroke-width="5"/>
+    <path d="M 126,72 C 128,62 132,56 136,56" fill="none" stroke="#111" stroke-width="1.5"/>
+    <!-- Interior curl texture -->
+    <path d="M 56,36 C 64,28 74,26 84,32" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
+    <path d="M 116,32 C 126,26 136,28 144,36" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
 
     <!-- Earrings — small pearl drops (partially behind hair) -->
     <circle cx="62" cy="120" r="3" fill="#FFF" stroke="#111" stroke-width="1.5"/>
