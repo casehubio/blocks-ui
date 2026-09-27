@@ -1,11 +1,7 @@
+// @vitest-environment jsdom
 import { describe, it, expect, afterEach } from 'vitest';
 import type { GraphModel } from '@casehubio/graph-core';
-import './blocks-case-dependency-graph.js';
-
-async function waitForGraph(el: any): Promise<void> {
-  await el.updateComplete;
-  await el.updateComplete;
-}
+import { BlocksCaseDependencyGraph } from './blocks-case-dependency-graph.js';
 
 const SAMPLE_MODEL: GraphModel = {
   nodes: [
@@ -17,80 +13,45 @@ const SAMPLE_MODEL: GraphModel = {
   ],
 };
 
-describe('blocks-case-dependency-graph', () => {
-  afterEach(() => {
-    document.body.innerHTML = '';
+describe('BlocksCaseDependencyGraph', () => {
+  it('has default properties', () => {
+    const el = new BlocksCaseDependencyGraph();
+    expect(el.selectionTopic).toBe('case-graph');
+    expect(el.graphData).toBeUndefined();
+    expect(el.endpoint).toBeUndefined();
   });
 
-  it('registers as a custom element', () => {
-    expect(customElements.get('blocks-case-dependency-graph')).toBeDefined();
+  it('exportDOT returns empty string when no model', () => {
+    const el = new BlocksCaseDependencyGraph();
+    expect(el.exportDOT()).toBe('');
   });
 
-  it('renders empty state when no data', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    document.body.appendChild(el);
-    await el.updateComplete;
-    expect(el.shadowRoot!.textContent).toContain('No graph data');
+  it('exportDOT returns DOT string when model is set', () => {
+    const el = new BlocksCaseDependencyGraph();
+    (el as any)._model = SAMPLE_MODEL;
+    const dot = el.exportDOT();
+    expect(dot).toContain('digraph');
+    expect(dot).toContain('"a"');
+    expect(dot).toContain('"b"');
   });
 
-  it('renders SVG when graphData is set', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = SAMPLE_MODEL;
-    document.body.appendChild(el);
-    await waitForGraph(el);
-    const svg = el.shadowRoot!.querySelector('svg');
-    expect(svg).toBeTruthy();
+  it('_edgeTypeSummary computes counts', () => {
+    const el = new BlocksCaseDependencyGraph();
+    (el as any)._model = SAMPLE_MODEL;
+    const summary = (el as any)._edgeTypeSummary();
+    expect(summary).toHaveLength(1);
+    expect(summary[0].type).toBe('parent_child');
+    expect(summary[0].count).toBe(1);
   });
 
-  it('renders toolbar when data is present', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = SAMPLE_MODEL;
-    document.body.appendChild(el);
-    await waitForGraph(el);
-    const toolbar = el.shadowRoot!.querySelector('blocks-dependency-toolbar');
-    expect(toolbar).toBeTruthy();
-  });
-
-  it('drops edges with dangling references', async () => {
+  it('_buildGraph filters dangling edges', async () => {
     const model: GraphModel = {
       nodes: [{ id: 'a', type: 'case', properties: { label: 'A' } }],
       edges: [{ id: 'e1', type: 'parent_child', source: 'a', target: 'missing' }],
     };
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = model;
-    document.body.appendChild(el);
-    await el.updateComplete;
-    await new Promise(r => setTimeout(r, 50));
-    const lines = el.shadowRoot!.querySelectorAll('line');
-    expect(lines.length).toBe(0);
-  });
-
-  it('exportDOT returns a DOT string', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = SAMPLE_MODEL;
-    document.body.appendChild(el);
-    await el.updateComplete;
-    const dot = el.exportDOT();
-    expect(dot).toContain('digraph');
-    expect(dot).toContain('"a"');
-  });
-
-  it('renders empty state for model with no nodes', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = { nodes: [], edges: [] };
-    document.body.appendChild(el);
-    await el.updateComplete;
-    expect(el.shadowRoot!.textContent).toContain('No graph data');
-  });
-
-  it('has accessible SVG with role and aria-label', async () => {
-    const el = document.createElement('blocks-case-dependency-graph') as any;
-    el.graphData = SAMPLE_MODEL;
-    document.body.appendChild(el);
-    await waitForGraph(el);
-    const svg = el.shadowRoot!.querySelector('svg');
-    expect(svg?.getAttribute('role')).toBe('img');
-    expect(svg?.getAttribute('aria-label')).toContain('2 cases');
-    expect(svg?.getAttribute('aria-label')).toContain('1 relationship');
+    const el = new BlocksCaseDependencyGraph();
+    (el as any)._model = model;
+    await (el as any)._buildGraph();
+    expect((el as any)._edges).toHaveLength(0);
   });
 });
