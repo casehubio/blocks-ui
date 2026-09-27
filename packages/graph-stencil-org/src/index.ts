@@ -34,5 +34,5 @@ export type {
   CompositionReport, LayoutExplanation, RuleSelection,
   LayoutNode, LayoutEdge, LayoutViolation,
   ArchetypeHint, ArchetypeName, OrgLayoutStrategy,
-  OrgElkLayoutOptions, ElkAlgorithm,
+  OrgElkLayoutOptions,
 } from './layout/types.js';
