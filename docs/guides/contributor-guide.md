@@ -294,7 +294,7 @@ Render guard: async `_fullRender` tracks `_renderInProgress` and `_pendingRender
 
 ### case-dependency-graph (`components/case-dependency-graph`)
 
-D3 force-directed graph of case relationships. Consumes `GraphModel` from graph-core. Three built-in relationship types (parent_child, supersedes, coordination) via the relationship type registry in blocks-ui-core — apps register additional types with `registerRelationshipType()`. Dual data mode (endpoint fetch or `graphData` property). Edge type filter toolbar with DOT export. Node click emits selection topic events. Render callbacks (`renderNode`, `renderTooltip`) for domain customisation. D3 modules: d3-force (simulation), d3-selection (SVG), d3-zoom (pan/zoom), d3-drag (node drag with force rebalance).
+Force-directed graph of case relationships using pages graph infrastructure (`computeElkLayout` with `algorithm: 'force'` + `pages-graph-canvas`). Consumes `GraphModel` from graph-core. Three built-in relationship types (parent_child, supersedes, coordination) via the relationship type registry in blocks-ui-core — apps register additional types with `registerRelationshipType()`. Dual data mode (endpoint fetch or `graphData` property). Edge type filter toolbar with DOT export. Node click emits selection topic events.
 
 ### document-workbench (`components/document-workbench`)
 
