@@ -39,7 +39,8 @@ import { emitPagesEvent } from '@casehubio/pages-data';
 import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import { stringify } from 'yaml';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
-import type { AdapterResult } from '@casehubio/pages-diagram-core';
+import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
+import { computeStackColumnLayout } from '@casehubio/graph-renderer';
 import type { PropertyPaletteSource, EditorResolver, FieldRenderContext } from '@casehubio/pages-property-palette';
 import '@casehubio/graph-renderer';
 import './casehub-diagram-toolbar.js';
@@ -215,6 +216,38 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
       return toDecorations(this.runtimeState);
     }
     return undefined;
+  }
+
+  private _isSequentialTopology(): boolean {
+    if (!this._adapterResult) return false;
+    const model = this._adapterResult.model;
+    const inDegree = new Map<string, number>();
+    const outDegree = new Map<string, number>();
+    for (const e of model.edges) {
+      outDegree.set(e.source, (outDegree.get(e.source) ?? 0) + 1);
+      inDegree.set(e.target, (inDegree.get(e.target) ?? 0) + 1);
+    }
+    const maxIn = Math.max(0, ...inDegree.values());
+    const maxOut = Math.max(0, ...outDegree.values());
+    return maxIn <= 2 && maxOut <= 3 && model.nodes.length <= 20;
+  }
+
+  protected override async _computeLayout(
+    model: import('@casehubio/graph-core').GraphModel,
+    options: ElkLayoutOptions,
+  ): Promise<LayoutResult> {
+    if (this._isSequentialTopology()) {
+      const layout = computeStackColumnLayout(model, {
+        verticalGap: 50,
+        horizontalGap: 40,
+        containerPaddingTop: 40,
+        skipTypes: new Set(['external']),
+        nodeWidth: 280,
+      });
+      return { layout, direction: options.direction };
+    }
+    const { computeElkLayout } = await import('@casehubio/graph-renderer');
+    return { layout: await computeElkLayout(model, options), direction: options.direction };
   }
 
   protected override _layoutOptions(): ElkLayoutOptions {
