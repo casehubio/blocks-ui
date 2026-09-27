@@ -1,3 +1,3 @@
-export { CaseFlowViewer } from './blocks-case-flow-viewer.js';
-export { CaseFlowToolbar } from './blocks-case-flow-toolbar.js';
+export { BlocksCaseFlowViewer } from './blocks-case-flow-viewer.js';
+export { BlocksCaseFlowToolbar } from './blocks-case-flow-toolbar.js';
 export type { CaseFlowViewerProps } from './blocks-case-flow-viewer.js';
