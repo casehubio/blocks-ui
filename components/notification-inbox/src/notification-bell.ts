@@ -101,7 +101,6 @@ export class NotificationBell extends PushMixin(KeyboardShortcutMixin(FocusTrapM
     if (this.endpoint != null) {
       this.api = new NotificationApi(this.endpoint, this.fetchFn);
       this.loadUnreadCount();
-      this._setupPush();
     }
   }
 

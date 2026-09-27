@@ -155,7 +155,6 @@ export class KpiMetricRow extends PushMixin(LiveRegionMixin(LitElement)) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this._setupPush();
     this._startRefreshTimer();
   }
 
