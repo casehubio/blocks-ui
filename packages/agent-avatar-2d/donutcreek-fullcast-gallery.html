@@ -51,28 +51,8 @@
     <path d="M 168,210 Q 172,206 174,200 Q 170,198 168,202 L 168,212 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
     <!-- Clip the head fill to the wavy hairline so yellow ends at the waves, not smooth arcs -->
-    <defs>
-      <clipPath id="maude-hairline-clip">
-        <!-- Wavy boundary follows ACTUAL head contour points:
-             (65,105)→(67,93)→(70,80)→(74,67)→(81,59)→(89,54)→(100,52) and mirror -->
-        <path d="M 0,240 L 0,106
-                 Q 68,100 66,96
-                 Q 70,90 68,86
-                 Q 72,80 72,74
-                 Q 76,66 80,62
-                 Q 86,56 92,54
-                 Q 98,48 100,50
-                 Q 102,48 108,54
-                 Q 114,56 120,62
-                 Q 124,66 128,74
-                 Q 130,80 132,86
-                 Q 130,90 134,96
-                 Q 132,100 200,106
-                 L 200,240 Z"/>
-      </clipPath>
-    </defs>
-    <!-- HEAD — clipped by wavy hairline that follows the actual head contour -->
-    <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z" fill="#FCD34D" stroke="none" clip-path="url(#maude-hairline-clip)"/>
+    <!-- HEAD — full fill, no stroke -->
+    <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z" fill="#FCD34D" stroke="none"/>
     <!-- Lower face outline — jaw and chin -->
     <path d="M 64,106 Q 64,124 72,140 Q 72,162 100,168 Q 128,162 128,140 Q 136,124 136,106" fill="none" stroke="#111" stroke-width="3"/>
     <!-- Neck -->
@@ -114,20 +94,43 @@
     <circle cx="148" cy="138" r="12" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <!-- Interior fill to cover gaps between circles -->
     <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,130 142,120 140,110 C 134,88 120,68 100,58 C 80,68 66,88 60,110 C 58,120 56,130 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
-    <!-- Inner hairline — wavy stroke matching the clipPath, on the actual head contour -->
-    <path d="M 64,106
-             Q 68,100 66,96
-             Q 70,90 68,86
-             Q 72,80 72,74
-             Q 76,66 80,62
-             Q 86,56 92,54
-             Q 98,48 100,50
-             Q 102,48 108,54
-             Q 114,56 120,62
-             Q 124,66 128,74
-             Q 130,80 132,86
-             Q 130,90 134,96
-             Q 132,100 136,106" fill="none" stroke="#111" stroke-width="2.5"/>
+    <!-- Hair overlay: filled brown shape covering the smooth head boundary -->
+    <!-- Bottom edge: wavy line ~4px BELOW the actual head boundary at every point -->
+    <!-- Head boundary: (65,105)→(67,99)→(68,93)→(70,80)→(74,67)→(81,59)→(89,54)→(100,52) -->
+    <!-- Wavy bottom edge: ~4px lower (higher y), so it always covers the smooth arc -->
+    <path d="M 64,110
+             Q 70,106 67,102
+             Q 72,98 68,94
+             Q 72,88 72,84
+             Q 78,74 78,70
+             Q 84,64 86,62
+             Q 92,58 96,58
+             Q 100,54 104,58
+             Q 108,58 114,62
+             Q 122,64 122,70
+             Q 128,74 128,84
+             Q 132,88 132,94
+             Q 130,98 134,102
+             Q 130,106 136,110
+             C 136,90 132,68 124,54
+             C 116,38 110,28 100,26
+             C 90,28 84,38 76,54
+             C 68,68 64,90 64,110 Z" fill="#A0522D" stroke="none"/>
+    <!-- Wavy hairline stroke on top of the fill -->
+    <path d="M 64,110
+             Q 70,106 67,102
+             Q 72,98 68,94
+             Q 72,88 72,84
+             Q 78,74 78,70
+             Q 84,64 86,62
+             Q 92,58 96,58
+             Q 100,54 104,58
+             Q 108,58 114,62
+             Q 122,64 122,70
+             Q 128,74 128,84
+             Q 132,88 132,94
+             Q 130,98 134,102
+             Q 130,106 136,110" fill="none" stroke="#111" stroke-width="2.5"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
