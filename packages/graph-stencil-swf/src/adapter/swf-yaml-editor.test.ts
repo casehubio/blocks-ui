@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { applySwfPropertyEdit, addSwfTask, removeSwfTask, insertSwfTask, spliceSwfTask } from './swf-yaml-editor.js';
+import { applySwfPropertyEdit, addSwfTask, removeSwfTask, insertSwfTask, spliceSwfTask, moveSwfTask } from './swf-yaml-editor.js';
 
 const SAMPLE_YAML = `document:
   dsl: "1.0.0"
@@ -323,5 +323,74 @@ describe('spliceSwfTask', () => {
     const step2Idx = names.indexOf('step2');
     expect(newIdx).toBeLessThan(step2Idx);
     expect(newIdx).toBe(1);
+  });
+});
+
+const CHAIN_YAML = `document:
+  dsl: "1.0.0"
+  namespace: test
+  name: chain-flow
+  version: "1.0.0"
+do:
+  - routeByRisk:
+      switch:
+        - lowRisk:
+            when: '.risk < 5'
+            then: autoApprove
+        - highRisk:
+            when: '.risk >= 5'
+            then: newCall1
+  - newCall1:
+      call: http:get
+      then: newCall2
+  - newCall2:
+      call: http:post
+      then: humanReview
+  - humanReview:
+      call: http:get
+  - autoApprove:
+      set:
+        approved: true
+`;
+
+describe('moveSwfTask', () => {
+  it('rewires all then: references when moving a task (not just edge source)', () => {
+    const result = moveSwfTask(CHAIN_YAML, 'newCall1', 'humanReview', 'newCall2');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    expect(names.indexOf('newCall2')).toBeLessThan(names.indexOf('newCall1'));
+    expect(names.indexOf('newCall1')).toBeLessThan(names.indexOf('humanReview'));
+
+    const route = parsed.do.find(e => Object.keys(e)[0] === 'routeByRisk')!;
+    const switchCases = (Object.values(route)[0] as any).switch as any[];
+    const highCase = switchCases.find((c: any) => Object.keys(c)[0] === 'highRisk');
+    expect((Object.values(highCase!)[0] as any).then).toBe('newCall2');
+
+    const call2 = parsed.do.find(e => Object.keys(e)[0] === 'newCall2')!;
+    expect((Object.values(call2)[0] as any).then).toBe('newCall1');
+
+    const call1 = parsed.do.find(e => Object.keys(e)[0] === 'newCall1')!;
+    expect((Object.values(call1)[0] as any).then).toBe('humanReview');
+  });
+
+  it('rewires direct then: references at removal site', () => {
+    const result = moveSwfTask(SWITCH_YAML, 'handleLow', 'finish', 'handleHigh');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+
+    const check = parsed.do.find(e => Object.keys(e)[0] === 'check')!;
+    const switchCases = (Object.values(check)[0] as any).switch as any[];
+    const lowCase = switchCases.find((c: any) => Object.keys(c)[0] === 'low');
+    expect((Object.values(lowCase!)[0] as any).then).toBe('finish');
+  });
+
+  it('moves a task to the end when beforeTaskName is null', () => {
+    const result = moveSwfTask(MULTI_STEP_YAML, 'step1', null);
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    expect(names[names.length - 1]).toBe('step1');
+  });
+
+  it('throws when task not found', () => {
+    expect(() => moveSwfTask(MULTI_STEP_YAML, 'missing', null)).toThrow(/not found/i);
   });
 });
