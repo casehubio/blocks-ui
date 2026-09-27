@@ -1,11 +1,12 @@
 import { html } from 'lit-html';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
+import { FLOW_SOURCES } from './grammars.js';
 
 export const raiseGrammar: StencilGrammar = {
   type: 'swf-raise',
   connections: {
-    inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-set', 'swf-switch', 'swf-entry', 'swf-start'] },
+    inbound: { min: 0, max: Infinity, allowedFrom: [...FLOW_SOURCES] },
     outbound: { min: 0, max: 0, allowedTo: [] },
   },
 };

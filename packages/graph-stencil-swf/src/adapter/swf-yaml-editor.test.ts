@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { applySwfPropertyEdit, addSwfTask, removeSwfTask } from './swf-yaml-editor.js';
+import { applySwfPropertyEdit, addSwfTask, removeSwfTask, insertSwfTask, spliceSwfTask } from './swf-yaml-editor.js';
 
 const SAMPLE_YAML = `document:
   dsl: "1.0.0"
@@ -70,6 +70,77 @@ describe('addSwfTask', () => {
     const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
     expect(taskDef['try']).toBeDefined();
     expect(taskDef['catch']).toBeDefined();
+  });
+
+  it('appends an emit task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-emit');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newEmit/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['emit']).toBeDefined();
+  });
+
+  it('appends a listen task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-listen');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newListen/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['listen']).toBeDefined();
+  });
+
+  it('appends a run task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-run');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newRun/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['run']).toBeDefined();
+  });
+
+  it('appends a wait task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-wait');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newWait/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['wait']).toBeDefined();
+  });
+
+  it('appends a for task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-for');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newFor/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['for']).toBeDefined();
+    expect(taskDef['do']).toBeDefined();
+  });
+
+  it('appends a do task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-do');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newDo/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['do']).toBeDefined();
+  });
+
+  it('appends a fork task', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-fork');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const newStep = parsed.do[1]!;
+    const stepName = Object.keys(newStep)[0]!;
+    expect(stepName).toMatch(/^newFork/);
+    const taskDef = (newStep as Record<string, Record<string, unknown>>)[stepName]!;
+    expect(taskDef['fork']).toBeDefined();
   });
 
   it('generates unique step names when name already exists', () => {
@@ -145,5 +216,112 @@ describe('removeSwfTask', () => {
     expect(parsed.do).toHaveLength(2);
     expect(result).toContain('step1');
     expect(result).toContain('step2');
+  });
+});
+
+describe('insertSwfTask', () => {
+  it('inserts a task before the named task', () => {
+    const result = insertSwfTask(MULTI_STEP_YAML, 'swf-set', 'step2');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(4);
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    const newIdx = names.findIndex(n => n!.startsWith('newSet'));
+    const step2Idx = names.indexOf('step2');
+    expect(newIdx).toBeLessThan(step2Idx);
+    expect(newIdx).toBe(1);
+  });
+
+  it('inserts before the first task', () => {
+    const result = insertSwfTask(MULTI_STEP_YAML, 'swf-call', 'step1');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(4);
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    expect(names[0]).toMatch(/^newCall/);
+    expect(names[1]).toBe('step1');
+  });
+
+  it('appends when beforeTaskName is null', () => {
+    const result = insertSwfTask(MULTI_STEP_YAML, 'swf-call', null);
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    expect(parsed.do).toHaveLength(4);
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    expect(names[3]).toMatch(/^newCall/);
+  });
+
+  it('preserves existing YAML content', () => {
+    const result = insertSwfTask(MULTI_STEP_YAML, 'swf-emit', 'step3');
+    expect(result).toContain('step1');
+    expect(result).toContain('step2');
+    expect(result).toContain('step3');
+    expect(result).toContain('newEmit');
+  });
+});
+
+const SWITCH_YAML = `document:
+  dsl: "1.0.0"
+  namespace: test
+  name: switch-flow
+  version: "1.0.0"
+do:
+  - check:
+      switch:
+        - low:
+            when: '.x < 10'
+            then: handleLow
+        - high:
+            when: '.x >= 10'
+            then: handleHigh
+  - handleLow:
+      set:
+        result: low
+      then: finish
+  - handleHigh:
+      call: http:get
+      with:
+        method: get
+        endpoint:
+          uri: https://example.com/high
+      then: finish
+  - finish:
+      set:
+        done: true
+`;
+
+describe('spliceSwfTask', () => {
+  it('rewires switch-case then reference when splicing onto that edge', () => {
+    const result = spliceSwfTask(SWITCH_YAML, 'swf-call', 'check', 'handleHigh');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    expect(names).toContain('newCall1');
+
+    const checkTask = parsed.do.find(e => Object.keys(e)[0] === 'check')!;
+    const switchCases = (Object.values(checkTask)[0] as any).switch as any[];
+    const highCase = switchCases.find((c: any) => Object.keys(c)[0] === 'high');
+    expect((Object.values(highCase!)[0] as any).then).toBe('newCall1');
+
+    const newTask = parsed.do.find(e => Object.keys(e)[0] === 'newCall1')!;
+    const newTaskDef = Object.values(newTask)[0] as any;
+    expect(newTaskDef.then).toBe('handleHigh');
+  });
+
+  it('rewires direct then reference when splicing onto that edge', () => {
+    const result = spliceSwfTask(SWITCH_YAML, 'swf-set', 'handleLow', 'finish');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+
+    const handleLow = parsed.do.find(e => Object.keys(e)[0] === 'handleLow')!;
+    expect((Object.values(handleLow)[0] as any).then).toBe('newSet1');
+
+    const newTask = parsed.do.find(e => Object.keys(e)[0] === 'newSet1')!;
+    expect((Object.values(newTask)[0] as any).then).toBe('finish');
+  });
+
+  it('falls back to positional insert when no then reference exists', () => {
+    const result = spliceSwfTask(MULTI_STEP_YAML, 'swf-call', 'step1', 'step2');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const names = parsed.do.map(entry => Object.keys(entry)[0]);
+    const newIdx = names.findIndex(n => n!.startsWith('newCall'));
+    const step2Idx = names.indexOf('step2');
+    expect(newIdx).toBeLessThan(step2Idx);
+    expect(newIdx).toBe(1);
   });
 });

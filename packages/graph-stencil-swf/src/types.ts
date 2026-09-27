@@ -8,6 +8,7 @@ export interface AdapterResult {
 
 export const SWF_KNOWN_TYPES: ReadonlySet<string> = new Set([
   'call', 'set', 'switch', 'raise', 'try', 'try-catch', 'catch',
+  'for', 'do', 'emit', 'fork', 'listen', 'run', 'wait',
   'start', 'end', 'entry', 'exit',
 ]);
 

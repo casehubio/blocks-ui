@@ -1,25 +1,26 @@
 import { html } from 'lit-html';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
+import { FLOW_SOURCES, FLOW_TARGETS } from './grammars.js';
 
 export const startGrammar: StencilGrammar = {
   type: 'swf-start',
-  connections: { inbound: { min: 0, max: 0, allowedFrom: [] }, outbound: { min: 0, max: 1, allowedTo: ['swf-call', 'swf-set', 'swf-switch', 'swf-try', 'swf-try-catch', 'swf-entry'] } },
+  connections: { inbound: { min: 0, max: 0, allowedFrom: [] }, outbound: { min: 0, max: 1, allowedTo: [...FLOW_TARGETS] } },
 };
 
 export const endGrammar: StencilGrammar = {
   type: 'swf-end',
-  connections: { inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-set', 'swf-switch', 'swf-raise', 'swf-exit'] }, outbound: { min: 0, max: 0, allowedTo: [] } },
+  connections: { inbound: { min: 0, max: Infinity, allowedFrom: [...FLOW_SOURCES] }, outbound: { min: 0, max: 0, allowedTo: [] } },
 };
 
 export const entryGrammar: StencilGrammar = {
   type: 'swf-entry',
-  connections: { inbound: { min: 0, max: 0, allowedFrom: [] }, outbound: { min: 0, max: 1, allowedTo: ['swf-call', 'swf-set', 'swf-switch', 'swf-try', 'swf-try-catch'] } },
+  connections: { inbound: { min: 0, max: 0, allowedFrom: [] }, outbound: { min: 0, max: 1, allowedTo: [...FLOW_TARGETS] } },
 };
 
 export const exitGrammar: StencilGrammar = {
   type: 'swf-exit',
-  connections: { inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-set', 'swf-switch', 'swf-raise'] }, outbound: { min: 0, max: 0, allowedTo: [] } },
+  connections: { inbound: { min: 0, max: Infinity, allowedFrom: [...FLOW_SOURCES] }, outbound: { min: 0, max: 0, allowedTo: [] } },
 };
 
 function renderBoundaryNode(label: string, color: string): StencilTemplate {

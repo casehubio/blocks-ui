@@ -1099,7 +1099,7 @@ __metadata:
     "@casehubio/pages-diagram-core": "npm:*"
     "@casehubio/pages-lsp": "workspace:*"
     "@open-wc/testing": "npm:^4.0.0"
-    "@openworkflowspec/sdk": "npm:*"
+    "@openworkflowspec/sdk": "npm:1.0.3-alpha8"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
@@ -1123,6 +1123,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/lsp-schemas@workspace:packages/lsp-schemas"
   dependencies:
+    "@casehubio/blocks-ui-casehub-diagram": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/pages-lsp": "workspace:*"
     "@casehubio/pages-schema": "workspace:*"
     esbuild: "npm:^0.28.1"
@@ -1150,7 +1152,7 @@ __metadata:
   resolution: "@casehubio/pages-data@portal:./.casehub-packages/packages/pages-data::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
     jsonata: "npm:^2.2.1"
-    zod: "npm:^3.23.0"
+    zod: "npm:^4.0.0"
   languageName: node
   linkType: soft
 
@@ -1195,7 +1197,7 @@ __metadata:
     vscode-languageserver: "npm:^10.0.0"
     vscode-languageserver-textdocument: "npm:^1.0.12"
     yaml: "npm:^2.7.1"
-    zod: "npm:^3.24.4"
+    zod: "npm:^4.0.0"
   bin:
     casehub-lsp: ./dist/server-node.bundle.cjs
   languageName: node
@@ -1225,7 +1227,7 @@ __metadata:
   dependencies:
     "@casehubio/pages-data": "npm:0.2.3"
     "@casehubio/yaml-core": "npm:0.2.0"
-    zod: "npm:^3.23.0"
+    zod: "npm:^4.0.0"
   languageName: node
   linkType: soft
 
@@ -1281,7 +1283,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/yaml-core@portal:./.casehub-packages/packages/yaml-core::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    zod: "npm:^3.23.0"
+    zod: "npm:^4.0.0"
   languageName: node
   linkType: soft
 
@@ -2402,15 +2404,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openworkflowspec/sdk@npm:*":
-  version: 0.0.1
-  resolution: "@openworkflowspec/sdk@npm:0.0.1"
+"@openworkflowspec/sdk@npm:1.0.3-alpha8":
+  version: 1.0.3-alpha8
+  resolution: "@openworkflowspec/sdk@npm:1.0.3-alpha8"
   dependencies:
     ajv: "npm:^8.20.0"
     ajv-formats: "npm:^3.0.1"
     js-yaml: "npm:^5.2.1"
     semver: "npm:^7.8.5"
-  checksum: 10c0/6a85a50064c8568d8eceb7259f182831fa3f8f6998cf23d27822172dd9ba4b9e4e6a95fd61eaaeab767bb44ae428657989fec18602a6335585eeea9b6c18b44b
+  checksum: 10c0/ad3e496e768b954f60caaca565439f0f8679dd94f948cb8f2914cb63791642499d287f2b12cbf388c5c8f3e4db4b567bb8ddb220210bf525a800a834ec4f4510
   languageName: node
   linkType: hard
 
@@ -8329,6 +8331,13 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.0.0":
+  version: 4.6.5
+  resolution: "zod@npm:4.6.5"
+  checksum: 10c0/32eb6c5e98becbe045675b2141c3611451c16ba567f9779231d79af41c4d651ca1c22f154aef7e6c6e77b929f23e43f1154ca05b82e119e922353725d6776af5
   languageName: node
   linkType: hard
 

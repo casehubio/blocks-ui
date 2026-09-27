@@ -25,7 +25,7 @@ function walkTaskList(
     if (!isPair(firstPair) || !isScalar(firstPair.key)) continue;
 
     const taskName = String(firstPair.key.value);
-    const nodeId = `${idPrefix}/${i}/${taskName}`;
+    const nodeId = `${idPrefix}/${taskName}`;
     const nodePath = [...basePath, i, taskName];
     paths.set(nodeId, nodePath);
 

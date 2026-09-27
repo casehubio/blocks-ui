@@ -109,7 +109,7 @@ function clampEdgeToContainerBoundary(edge: GraphEdge, parentMap: Map<string, st
 
 export function wrapDoBlock(doBlock: unknown): string {
   return stringify({
-    document: { dsl: '1.0.0', namespace: 'embedded', name: 'worker-do', version: '1.0.0' },
+    document: { dsl: '1.0.3', namespace: 'embedded', name: 'worker-do', version: '1.0.0' },
     do: doBlock,
   });
 }

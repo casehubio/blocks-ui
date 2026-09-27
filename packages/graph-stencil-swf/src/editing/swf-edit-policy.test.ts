@@ -8,6 +8,13 @@ import { switchGrammar } from '../stencils/switch.js';
 import { raiseGrammar } from '../stencils/raise.js';
 import { tryGrammar } from '../stencils/try.js';
 import { startGrammar, endGrammar, entryGrammar, exitGrammar } from '../stencils/boundary.js';
+import { doGrammar } from '../stencils/do.js';
+import { forkGrammar } from '../stencils/fork.js';
+import { emitGrammar } from '../stencils/emit.js';
+import { listenGrammar } from '../stencils/listen.js';
+import { runGrammar } from '../stencils/run.js';
+import { waitGrammar } from '../stencils/wait.js';
+import { forGrammar } from '../stencils/for.js';
 
 function node(id: string, type: string, props: Record<string, unknown> = {}): GraphNode {
   return { id, type, properties: props };
@@ -33,6 +40,13 @@ describe('SwfEditPolicy', () => {
     registerGrammar(endGrammar);
     registerGrammar(entryGrammar);
     registerGrammar(exitGrammar);
+    registerGrammar(doGrammar);
+    registerGrammar(forkGrammar);
+    registerGrammar(emitGrammar);
+    registerGrammar(listenGrammar);
+    registerGrammar(runGrammar);
+    registerGrammar(waitGrammar);
+    registerGrammar(forGrammar);
   });
 
   afterAll(() => {
@@ -40,10 +54,13 @@ describe('SwfEditPolicy', () => {
   });
 
   describe('getCreatableTypes', () => {
-    it('returns call, set, switch, raise, try', () => {
+    it('returns all 12 creatable task types', () => {
       const types = policy.getCreatableTypes(null, model([]));
       const typeNames = types.map(t => t.type);
-      expect(typeNames).toEqual(['swf-call', 'swf-set', 'swf-switch', 'swf-raise', 'swf-try']);
+      expect(typeNames).toEqual([
+        'swf-call', 'swf-set', 'swf-switch', 'swf-for', 'swf-do', 'swf-fork',
+        'swf-emit', 'swf-listen', 'swf-run', 'swf-wait', 'swf-raise', 'swf-try',
+      ]);
     });
 
     it('does not include boundary or synthetic types', () => {
@@ -87,10 +104,10 @@ describe('SwfEditPolicy', () => {
       expect(policy.canConnect(s, sw, model([s, sw]))).toBe(true);
     });
 
-    it('rejects start → end directly', () => {
+    it('allows start → end (empty workflow)', () => {
       const s = node('s1', 'swf-start');
       const e = node('e1', 'swf-end');
-      expect(policy.canConnect(s, e, model([s, e]))).toBe(false);
+      expect(policy.canConnect(s, e, model([s, e]))).toBe(true);
     });
 
     it('rejects end → call (end has no outbound)', () => {
@@ -109,9 +126,50 @@ describe('SwfEditPolicy', () => {
   });
 
   describe('getInsertableTypes', () => {
-    it('returns empty array', () => {
-      const edge = { id: 'e1', type: 'flow', source: 'c1', target: 'c2' };
-      expect(policy.getInsertableTypes(edge, model([]))).toEqual([]);
+    it('returns creatable types for a normal flow edge', () => {
+      const s = node('s1', 'swf-start');
+      const c = node('c1', 'swf-call');
+      const e = node('e1', 'swf-end');
+      const m = model([s, c, e], [
+        { id: 'e1', source: 's1', target: 'c1' },
+        { id: 'e2', source: 'c1', target: 'e1' },
+      ]);
+      const edge = m.edges.find(ed => ed.id === 'e2')!;
+      const types = policy.getInsertableTypes(edge, m);
+      const typeNames = types.map(t => t.type);
+      expect(typeNames.length).toBeGreaterThan(0);
+      expect(typeNames).toContain('swf-call');
+      expect(typeNames).toContain('swf-set');
+      expect(typeNames).toContain('swf-emit');
+    });
+
+    it('excludes non-deletable types from insertable list', () => {
+      const s = node('s1', 'swf-start');
+      const e = node('e1', 'swf-end');
+      const m = model([s, e], [
+        { id: 'e1', source: 's1', target: 'e1' },
+      ]);
+      const edge = m.edges[0]!;
+      const types = policy.getInsertableTypes(edge, m);
+      const typeNames = new Set(types.map(t => t.type));
+      expect(typeNames.has('swf-start')).toBe(false);
+      expect(typeNames.has('swf-end')).toBe(false);
+      expect(typeNames.has('swf-entry')).toBe(false);
+      expect(typeNames.has('swf-exit')).toBe(false);
+      expect(typeNames.has('swf-root')).toBe(false);
+    });
+
+    it('returns all 12 creatable types for a standard edge', () => {
+      const s = node('s1', 'swf-start');
+      const c = node('c1', 'swf-call');
+      const e = node('e1', 'swf-end');
+      const m = model([s, c, e], [
+        { id: 'e1', source: 's1', target: 'c1' },
+        { id: 'e2', source: 'c1', target: 'e1' },
+      ]);
+      const edge = m.edges.find(ed => ed.id === 'e2')!;
+      const types = policy.getInsertableTypes(edge, m);
+      expect(types.length).toBe(12);
     });
   });
 

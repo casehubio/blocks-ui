@@ -37,7 +37,7 @@ import type { NodeDecoration } from '@casehubio/graph-core';
 import { edgesOf } from '@casehubio/graph-core';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { detectDiagramType } from '@casehubio/blocks-ui-core';
-import { stringify } from 'yaml';
+import { stringify, parseDocument } from 'yaml';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
 import { computeStackColumnLayout } from '@casehubio/graph-renderer';
@@ -46,7 +46,6 @@ import '@casehubio/graph-renderer';
 import './casehub-diagram-toolbar.js';
 
 const caseEditPolicy = createCaseEditPolicy();
-
 function caseMiniMapNodeColor(node: { type?: string }): string {
   switch (node.type) {
     case 'binding': return '#3b82f6';
@@ -105,11 +104,9 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
   @state() private _paletteOpen = true;
   @state() private _paletteCompact = false;
   @state() private _propertiesOpen = true;
-
   private _expandedWorkers = new Set<string>();
   private _expandDebounce: ReturnType<typeof setTimeout> | null = null;
   private _cachedLayoutOpts: ElkLayoutOptions | null = null;
-
   protected _adaptYaml(yaml: string): AdapterResult {
     this._cachedLayoutOpts = null;
     return toGraph(yaml);
@@ -303,6 +300,89 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
       this._fullRender(this._currentYaml);
     }, 150);
   };
+
+  override _onChooserSelect = (e: Event): void => {
+    const detail = (e as CustomEvent).detail;
+    const nodeType = detail?.item?.type;
+    if (!nodeType || !this._adapterResult || !this._chooserState) return;
+    const { sourceNodeId } = this._chooserState;
+    if (sourceNodeId) {
+      const source = this._adapterResult.model.nodes.find(n => n.id === sourceNodeId);
+      if (source) {
+        const defaults = this._connectEndDefaults(source, nodeType);
+        if (defaults) {
+          this._pushUndo();
+          try {
+            const yaml = addElement(this._currentYaml, nodeType as any, defaults);
+            this._currentYaml = yaml;
+            void this._fullRender(yaml);
+          } catch (err) {
+            this._currentYaml = this._undoStack.pop() ?? this._currentYaml;
+            this._error = `Edit failed: ${err}`;
+          }
+          this._chooserState = null;
+          return;
+        }
+      }
+    }
+    this._handleMutation({ type: 'addNode', nodeType });
+    this._chooserState = null;
+  };
+
+  private _connectEndDefaults(source: { type: string; id: string; properties: Record<string, unknown> }, targetType: string): Record<string, unknown> | null {
+    const sourceName = source.properties['name'] as string | undefined;
+    if (source.type === 'binding' && targetType === 'worker') {
+      const cap = source.properties['capability'] as { name?: string } | string | undefined;
+      const capName = typeof cap === 'object' ? cap?.name : (cap || undefined);
+      if (capName) return { capabilities: [capName] };
+      if (sourceName) {
+        this._setBindingCapability(source.id, sourceName);
+        return { capabilities: [sourceName] };
+      }
+    }
+    if (source.type === 'worker' && targetType === 'binding') {
+      const caps = source.properties['capabilities'] as string[] | undefined;
+      let capName = caps?.[0];
+      if (!capName && sourceName) {
+        capName = sourceName;
+        this._addWorkerCapability(source.id, capName);
+      }
+      if (capName) {
+        return { capability: { name: capName } };
+      }
+    }
+    if (source.type === 'binding' && targetType === 'milestone' && sourceName) {
+      return { condition: `${sourceName}.complete` };
+    }
+    if (source.type === 'binding' && targetType === 'goal' && sourceName) {
+      return { expression: { all: [sourceName] } };
+    }
+    if (source.type === 'milestone' && targetType === 'goal' && sourceName) {
+      return { expression: { all: [sourceName] } };
+    }
+    return null;
+  }
+
+  private _addWorkerCapability(workerId: string, capabilityName: string): void {
+    const path = this._adapterResult?.yamlPaths.get(workerId);
+    if (!path) return;
+    const doc = parseDocument(this._currentYaml);
+    const existing = doc.getIn([...path, 'capabilities']);
+    if (Array.isArray(existing)) {
+      doc.addIn([...path, 'capabilities'], capabilityName);
+    } else {
+      doc.setIn([...path, 'capabilities'], [capabilityName]);
+    }
+    this._currentYaml = doc.toString();
+  }
+
+  private _setBindingCapability(bindingId: string, capabilityName: string): void {
+    const path = this._adapterResult?.yamlPaths.get(bindingId);
+    if (!path) return;
+    const doc = parseDocument(this._currentYaml);
+    doc.setIn([...path, 'capability'], { name: capabilityName });
+    this._currentYaml = doc.toString();
+  }
 
   override async updated(changed: Map<string, unknown>): Promise<void> {
     await super.updated(changed);
@@ -921,18 +1001,22 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
               </div>
             </div>
           ` : this._renderCollapsedDock('Stencils', '⊞', 'left')}
-          <pages-graph-canvas
-            .nodes=${this._nodes}
-            .edges=${this._edges}
-            .model=${this._adapterResult?.model}
-            .editPolicy=${this._editPolicy()}
-            .onMutation=${this._handleMutation}
-            .miniMapNodeColor=${caseMiniMapNodeColor}
-            role="img"
-            aria-label="Case definition diagram"
-            style="flex: 1; height: 100%; min-width: 0;"
-            @pages-event=${this._handleCanvasEvent}
-          ></pages-graph-canvas>
+          <div style="flex:1;height:100%;min-width:0;position:relative;" @pointerdown=${this._onCanvasPointerDown}>
+            <pages-graph-canvas
+              .nodes=${this._nodes}
+              .edges=${this._edges}
+              .model=${this._adapterResult?.model}
+              .editPolicy=${this._editPolicy()}
+              .onMutation=${this._handleMutation}
+              .miniMapNodeColor=${caseMiniMapNodeColor}
+  
+              role="img"
+              aria-label="Case definition diagram"
+              style="width:100%;height:100%;"
+              @pages-event=${this._handleCanvasEvent}
+            ></pages-graph-canvas>
+            ${this._renderNodePicker()}
+          </div>
           ${this._propertiesOpen ? html`
             <div style="width:300px; border-left:1px solid var(--pages-neutral-4,#e5e7eb); display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;">
               ${this._renderDockHeader('Properties', 'right')}
@@ -951,7 +1035,6 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           ` : this._renderCollapsedDock('Properties', '☰', 'right')}
         </div>
         ${this._renderDialogs()}
-        ${this._renderNodePicker()}
       </div>
     `;
   }

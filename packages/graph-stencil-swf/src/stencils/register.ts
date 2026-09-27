@@ -8,8 +8,15 @@ import { switchGrammar, renderSwitch } from './switch.js';
 import { raiseGrammar, renderRaise } from './raise.js';
 import { tryGrammar, renderTry } from './try.js';
 import { tryCatchGrammar, renderTryCatch, renderCatch } from './try-catch.js';
+import { forGrammar, renderFor } from './for.js';
 import { startGrammar, endGrammar, entryGrammar, exitGrammar, renderStart, renderEnd, renderEntry, renderExit } from './boundary.js';
 import { genericGrammar, renderGeneric } from './generic.js';
+import { doGrammar, renderDo } from './do.js';
+import { forkGrammar, renderFork } from './fork.js';
+import { emitGrammar, renderEmit } from './emit.js';
+import { listenGrammar, renderListen } from './listen.js';
+import { runGrammar, renderRun } from './run.js';
+import { waitGrammar, renderWait } from './wait.js';
 
 const CURSOR_OVERRIDES = `
 .react-flow__pane { cursor: default !important; }
@@ -28,6 +35,7 @@ export function registerSwfStencils(): void {
   registerStencil({ type: 'swf-set', label: 'Set', icon: 'edit', grammar: setGrammar, render: renderSet });
   registerStencil({ type: 'swf-switch', label: 'Switch', icon: 'git-branch', grammar: switchGrammar, render: renderSwitch });
   registerStencil({ type: 'swf-raise', label: 'Raise', icon: 'alert-triangle', grammar: raiseGrammar, render: renderRaise });
+  registerStencil({ type: 'swf-for', label: 'For', icon: 'repeat', grammar: forGrammar, render: renderFor });
   registerStencil({ type: 'swf-try', label: 'Try', icon: 'shield', grammar: tryGrammar, render: renderTry });
   registerStencil({ type: 'swf-try-catch', label: 'Try/Catch', icon: 'shield', grammar: tryCatchGrammar, render: renderTryCatch });
   registerStencil({ type: 'swf-catch', label: 'Catch', icon: 'shield-off', grammar: tryCatchGrammar, render: renderCatch });
@@ -35,6 +43,12 @@ export function registerSwfStencils(): void {
   registerStencil({ type: 'swf-end', label: 'End', icon: 'square', grammar: endGrammar, render: renderEnd });
   registerStencil({ type: 'swf-entry', label: 'Entry', icon: 'log-in', grammar: entryGrammar, render: renderEntry });
   registerStencil({ type: 'swf-exit', label: 'Exit', icon: 'log-out', grammar: exitGrammar, render: renderExit });
+  registerStencil({ type: 'swf-do', label: 'Do', icon: 'list', grammar: doGrammar, render: renderDo });
+  registerStencil({ type: 'swf-fork', label: 'Fork', icon: 'git-merge', grammar: forkGrammar, render: renderFork });
+  registerStencil({ type: 'swf-emit', label: 'Emit', icon: 'send', grammar: emitGrammar, render: renderEmit });
+  registerStencil({ type: 'swf-listen', label: 'Listen', icon: 'radio', grammar: listenGrammar, render: renderListen });
+  registerStencil({ type: 'swf-run', label: 'Run', icon: 'terminal', grammar: runGrammar, render: renderRun });
+  registerStencil({ type: 'swf-wait', label: 'Wait', icon: 'clock', grammar: waitGrammar, render: renderWait });
   registerStencil({ type: 'swf-generic', label: 'Step', icon: 'box', grammar: genericGrammar, render: renderGeneric });
   registerStencil({ type: 'swf-root', label: 'Workflow', icon: 'box', grammar: genericGrammar, render: () => html`` });
 
@@ -46,6 +60,9 @@ export function registerSwfStencils(): void {
     const typeMap: Record<string, string> = {
       CallTask: 'swf-call', SetTask: 'swf-set', SwitchTask: 'swf-switch',
       RaiseTask: 'swf-raise', TryTask: 'swf-try', TryCatchTask: 'swf-try-catch',
+      DoTask: 'swf-do', ForkTask: 'swf-fork',
+      EmitTask: 'swf-emit', ListenTask: 'swf-listen', RunTask: 'swf-run',
+      WaitTask: 'swf-wait',
     };
     for (const [defName, nodeType] of Object.entries(typeMap)) {
       if (defs[defName]) registerPropertySchema(nodeType, defs[defName]);

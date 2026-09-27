@@ -5,6 +5,7 @@ import { parse as parseYaml } from 'yaml';
 import { buildFlatGraph } from '@openworkflowspec/sdk';
 import type { Specification } from '@openworkflowspec/sdk';
 import { toSwfGraph, wrapDoBlock } from './swf-adapter.js';
+import { insertSwfTask, spliceSwfTask } from './swf-yaml-editor.js';
 
 const FIXTURES_DIR = resolve(__dirname, '../test-fixtures');
 
@@ -19,10 +20,10 @@ describe('SDK buildFlatGraph ID contract', () => {
     const graph = buildFlatGraph(workflow, true);
 
     const nodeIds = graph.nodes.map(n => n.id);
-    expect(nodeIds).toContain('/do/0/fetchData');
-    expect(nodeIds).toContain('/do/1/transformResult');
-    expect(nodeIds).toContain('/do/2/checkCondition');
-    expect(nodeIds).toContain('/do/3/raiseError');
+    expect(nodeIds).toContain('/do/fetchData');
+    expect(nodeIds).toContain('/do/transformResult');
+    expect(nodeIds).toContain('/do/checkCondition');
+    expect(nodeIds).toContain('/do/raiseError');
     expect(nodeIds).toContain('root-entry-node');
     expect(nodeIds).toContain('root-exit-node');
   });
@@ -41,9 +42,9 @@ describe('SDK buildFlatGraph ID contract', () => {
     const graph = buildFlatGraph(workflow, true);
 
     const nodeIds = graph.nodes.map(n => n.id);
-    expect(nodeIds).toContain('/do/0/tryBlock');
-    expect(nodeIds).toContain('/do/0/tryBlock/try/0/innerStep');
-    expect(nodeIds).toContain('/do/0/tryBlock/catch/do/0/handleError');
+    expect(nodeIds).toContain('/do/tryBlock');
+    expect(nodeIds).toContain('/do/tryBlock/try/innerStep');
+    expect(nodeIds).toContain('/do/tryBlock/catch/do/handleError');
   });
 });
 
@@ -91,10 +92,10 @@ describe('toSwfGraph', () => {
 
     expect(result.degraded).toBeUndefined();
     expect(result.yamlPaths.size).toBeGreaterThan(0);
-    expect(result.yamlPaths.has('/do/0/fetchData')).toBe(true);
-    expect(result.yamlPaths.has('/do/1/transformResult')).toBe(true);
-    expect(result.yamlPaths.has('/do/2/checkCondition')).toBe(true);
-    expect(result.yamlPaths.has('/do/3/raiseError')).toBe(true);
+    expect(result.yamlPaths.has('/do/fetchData')).toBe(true);
+    expect(result.yamlPaths.has('/do/transformResult')).toBe(true);
+    expect(result.yamlPaths.has('/do/checkCondition')).toBe(true);
+    expect(result.yamlPaths.has('/do/raiseError')).toBe(true);
   });
 
   it('handles nested try/catch structures', () => {
@@ -115,7 +116,7 @@ describe('toSwfGraph', () => {
 
     const callNode = result.model.nodes.find(n => n.type === 'swf-call');
     expect(callNode).toBeDefined();
-    expect(callNode!.id).toBe('/do/0/tryBlock/try/0/innerStep');
+    expect(callNode!.id).toBe('/do/tryBlock/try/innerStep');
   });
 
   it('derives switch-case edge type for switch node outbound edges', () => {
@@ -129,6 +130,100 @@ describe('toSwfGraph', () => {
     for (const edge of switchEdges) {
       expect(edge.type).toBe('switch-case');
     }
+  });
+});
+
+describe('OWS 1.0 type coverage', () => {
+  it('maps all leaf task types to named stencils (not swf-generic)', () => {
+    const yaml = `
+document:
+  dsl: '1.0.3'
+  namespace: test
+  name: all-types
+  version: '1.0.0'
+do:
+  - callStep:
+      call: http
+      with:
+        method: get
+        endpoint:
+          uri: https://example.com
+  - setStep:
+      set:
+        key: value
+  - emitStep:
+      emit:
+        event:
+          with:
+            type: test.event
+  - waitStep:
+      wait:
+        seconds: 5
+  - listenStep:
+      listen:
+        to:
+          one:
+            with:
+              type: test.response
+  - runStep:
+      run:
+        shell:
+          command: echo done
+`;
+    const result = toSwfGraph(yaml);
+    const types = result.model.nodes.map(n => n.type);
+    expect(types).not.toContain('swf-generic');
+    expect(types).toContain('swf-call');
+    expect(types).toContain('swf-set');
+    expect(types).toContain('swf-emit');
+    expect(types).toContain('swf-wait');
+    expect(types).toContain('swf-listen');
+    expect(types).toContain('swf-run');
+  });
+});
+
+describe('spliceSwfTask roundtrip', () => {
+  it('splice onto switch-case edge produces new node in graph', () => {
+    const SWITCH_YAML = `document:
+  dsl: '1.0.3'
+  namespace: test
+  name: switch-roundtrip
+  version: '1.0.0'
+do:
+  - check:
+      switch:
+        - low:
+            when: '.x < 10'
+            then: handleLow
+        - high:
+            when: '.x >= 10'
+            then: handleHigh
+  - handleLow:
+      set:
+        result: low
+      then: finish
+  - handleHigh:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://example.com/high
+      then: finish
+  - finish:
+      set:
+        done: true
+`;
+    const before = toSwfGraph(SWITCH_YAML);
+    const beforeCount = before.model.nodes.length;
+    const beforeLabels = before.model.nodes.map(n => n.properties['label']).filter(Boolean);
+
+    const updated = spliceSwfTask(SWITCH_YAML, 'swf-call', 'check', 'handleHigh');
+    expect(updated).toContain('newCall');
+
+    const after = toSwfGraph(updated);
+    const afterLabels = after.model.nodes.map(n => n.properties['label']).filter(Boolean);
+    expect(afterLabels).toContain('newCall1');
+    expect(after.model.nodes.length).toBeGreaterThan(beforeCount);
   });
 });
 

@@ -15,13 +15,7 @@ export interface FormatConfig {
   discriminatorManifest?: string;
 }
 
-interface DiscriminatorRule {
-  strategy: 'key-presence';
-  discriminatorKeys: string[];
-  sharedKeys: string[];
-}
-
-type DiscriminatorManifest = Record<string, DiscriminatorRule>;
+import type { DiscriminatorRule } from './discriminators/case-definition.js';
 
 const FUNCTION_PROPS = new Set<string>();
 
@@ -42,7 +36,49 @@ function getSchemaVarName(symbolName: string): string {
   return `${base}Schema`;
 }
 
-export function typeToZod(type: Type, depth: number, visited: Set<string>): string {
+function tryBuildDiscriminatedUnion(
+  type: Type,
+  nonIndexProps: MorphSymbol[],
+  depth: number,
+  visited: Set<string>,
+  discriminatorConfig?: Record<string, DiscriminatorRule>,
+): string | null {
+  if (!discriminatorConfig) return null;
+
+  const aliasSymbol = type.getAliasSymbol();
+  const symbol = aliasSymbol || type.getSymbol();
+  const symbolName = symbol?.getName() ?? '';
+  if (!symbolName || symbolName.startsWith('__')) return null;
+
+  const rule = discriminatorConfig[symbolName];
+  if (!rule) return null;
+
+  const discKeys = new Set(rule.discriminatorKeys);
+  const commonProps = nonIndexProps.filter(p => !discKeys.has(p.getName()));
+  const variantProps = nonIndexProps.filter(p => discKeys.has(p.getName()));
+
+  if (variantProps.length === 0) return null;
+
+  const indent = '  '.repeat(depth + 2);
+  const closingIndent = '  '.repeat(depth + 1);
+
+  const commonFields = commonProps
+    .map(p => propToZodField(p, depth + 1, visited, discriminatorConfig))
+    .filter(Boolean);
+
+  const commonSchema = commonFields.length > 0
+    ? `z.object({\n${indent}${commonFields.join(`,\n${indent}`)},\n${closingIndent}})`
+    : 'z.object({})';
+
+  const branches = variantProps.map(p => {
+    const field = propToZodField(p, depth + 1, visited, discriminatorConfig);
+    return `${commonSchema}.extend({ ${field} })`;
+  });
+
+  return `z.union([\n${indent}${branches.join(`,\n${indent}`)},\n${closingIndent}])`;
+}
+
+export function typeToZod(type: Type, depth: number, visited: Set<string>, discriminatorConfig?: Record<string, DiscriminatorRule>): string {
   if (depth > 15) return 'z.unknown()';
 
   const text = type.getText();
@@ -63,20 +99,20 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
       return `z.enum([${values.join(', ')}])`;
     }
     if (members.every(m => m.isBooleanLiteral())) return 'z.boolean()';
-    if (members.length === 1) return typeToZod(members[0], depth + 1, visited);
-    const zodMembers = members.map(m => typeToZod(m, depth + 1, visited));
+    if (members.length === 1) return typeToZod(members[0], depth + 1, visited, discriminatorConfig);
+    const zodMembers = members.map(m => typeToZod(m, depth + 1, visited, discriminatorConfig));
     return `z.union([${zodMembers.join(', ')}])`;
   }
 
   if (type.isArray()) {
     const elem = type.getArrayElementType();
     if (!elem) return 'z.array(z.unknown())';
-    return `z.array(${typeToZod(elem, depth + 1, visited)})`;
+    return `z.array(${typeToZod(elem, depth + 1, visited, discriminatorConfig)})`;
   }
 
   if (text.startsWith('readonly ') && text.endsWith('[]')) {
     const inner = type.getTypeArguments()[0];
-    if (inner) return `z.array(${typeToZod(inner, depth + 1, visited)})`;
+    if (inner) return `z.array(${typeToZod(inner, depth + 1, visited, discriminatorConfig)})`;
     return 'z.array(z.unknown())';
   }
 
@@ -85,13 +121,13 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
     if (elements.length >= 2) {
       const allSame = elements.every(e => e.getText() === elements[0].getText());
       if (allSame) {
-        return `z.array(${typeToZod(elements[0], depth + 1, visited)})`;
+        return `z.array(${typeToZod(elements[0], depth + 1, visited, discriminatorConfig)})`;
       }
     }
     if (elements.length === 1) {
-      return `z.array(${typeToZod(elements[0], depth + 1, visited)})`;
+      return `z.array(${typeToZod(elements[0], depth + 1, visited, discriminatorConfig)})`;
     }
-    const zodElements = elements.map(e => typeToZod(e, depth + 1, visited));
+    const zodElements = elements.map(e => typeToZod(e, depth + 1, visited, discriminatorConfig));
     return `z.tuple([${zodElements.join(', ')}])`;
   }
 
@@ -99,10 +135,10 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
       || text.includes('Record<string,')) {
     const typeArgs = type.getAliasTypeArguments();
     if (typeArgs.length === 2) {
-      return `z.record(${typeToZod(typeArgs[1], depth + 1, visited)})`;
+      return `z.record(${typeToZod(typeArgs[1], depth + 1, visited, discriminatorConfig)})`;
     }
     const indexType = type.getStringIndexType();
-    if (indexType) return `z.record(${typeToZod(indexType, depth + 1, visited)})`;
+    if (indexType) return `z.record(${typeToZod(indexType, depth + 1, visited, discriminatorConfig)})`;
     return 'z.record(z.unknown())';
   }
 
@@ -118,8 +154,10 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
         p => !isIndexSignature(p) && !p.getName().startsWith('__@'),
       );
       if (nonIndexProps.length === 0) return 'z.object({})';
+      const unionResult = tryBuildDiscriminatedUnion(type, nonIndexProps, depth, visited, discriminatorConfig);
+      if (unionResult) return unionResult;
       const fields = nonIndexProps
-        .map(p => propToZodField(p, depth + 1, visited))
+        .map(p => propToZodField(p, depth + 1, visited, discriminatorConfig))
         .filter(Boolean);
       if (fields.length === 0) return 'z.object({})';
       const indent = '  '.repeat(depth + 2);
@@ -133,7 +171,7 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
     const props = type.getProperties();
     const nonIndexProps = props.filter(p => !isIndexSignature(p) && !p.getName().startsWith('__@'));
     if (stringIndexType && nonIndexProps.length === 0) {
-      return `z.record(${typeToZod(stringIndexType, depth + 1, visited)})`;
+      return `z.record(${typeToZod(stringIndexType, depth + 1, visited, discriminatorConfig)})`;
     }
 
     const symbol = type.getSymbol() || type.getAliasSymbol();
@@ -153,8 +191,14 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>): stri
       return 'z.object({})';
     }
 
+    const unionResult = tryBuildDiscriminatedUnion(type, nonIndexProps, depth, visited, discriminatorConfig);
+    if (unionResult) {
+      if (symbolId) visited.delete(symbolId);
+      return unionResult;
+    }
+
     const fields = props
-      .map(p => propToZodField(p, depth + 1, visited))
+      .map(p => propToZodField(p, depth + 1, visited, discriminatorConfig))
       .filter(Boolean);
 
     if (symbolId) visited.delete(symbolId);
@@ -172,6 +216,7 @@ export function propToZodField(
   prop: MorphSymbol,
   depth: number,
   visited: Set<string>,
+  discriminatorConfig?: Record<string, DiscriminatorRule>,
 ): string {
   const name = prop.getName();
   if (isIndexSignature(prop)) return '';
@@ -192,7 +237,7 @@ export function propToZodField(
 
   const isOptional = prop.isOptional();
   const baseType = isOptional ? type.getNonNullableType() : type;
-  let zodType = typeToZod(baseType, depth, visited);
+  let zodType = typeToZod(baseType, depth, visited, discriminatorConfig);
   if (!zodType) return '';
   if (isOptional) zodType += '.optional()';
 
@@ -211,6 +256,7 @@ import { z } from "zod";
 export function generateFormatSchema(
   project: Project,
   config: FormatConfig,
+  discriminatorConfig?: Record<string, DiscriminatorRule>,
 ): string {
   const sourceFile = project.getSourceFileOrThrow(
     resolve(__dirname, config.sourceFile),
@@ -227,12 +273,12 @@ export function generateFormatSchema(
 
   lazyRefs.clear();
   const visited = new Set<string>();
-  const zodCode = typeToZod(rootType, 0, visited);
+  const zodCode = typeToZod(rootType, 0, visited, discriminatorConfig);
 
   let prelude = '';
   for (const [name, lazyType] of lazyRefs) {
     const lazyVisited = new Set<string>();
-    const innerZod = typeToZod(lazyType, 0, lazyVisited);
+    const innerZod = typeToZod(lazyType, 0, lazyVisited, discriminatorConfig);
     prelude += `const ${getSchemaVarName(name)}: z.ZodType<unknown> = z.lazy(() => ${innerZod});\n\n`;
   }
 
@@ -246,6 +292,7 @@ export const FORMATS: FormatConfig[] = [
     sourceFile: '../../graph-stencil-case/src/types/generated/case-definition.ts',
     outputFile: '../src/schemas/case-definition.generated.ts',
     exportName: 'caseDefinitionDocumentSchema',
+    discriminatorManifest: './discriminators/case-definition.js',
   },
   {
     formatId: 'org',
@@ -277,7 +324,12 @@ if (typeof process !== 'undefined' && process.argv[1] &&
   });
 
   for (const config of FORMATS) {
-    const output = generateFormatSchema(project, config);
+    let discriminatorConfig: Record<string, DiscriminatorRule> | undefined;
+    if (config.discriminatorManifest) {
+      const manifest = await import(resolve(__dirname, config.discriminatorManifest));
+      discriminatorConfig = manifest.discriminators;
+    }
+    const output = generateFormatSchema(project, config, discriminatorConfig);
     const outPath = resolve(__dirname, config.outputFile);
     writeFileSync(outPath, output, 'utf-8');
     console.log(`Generated ${config.formatId} schema to ${outPath}`);

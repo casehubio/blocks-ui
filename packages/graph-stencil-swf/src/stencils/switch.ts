@@ -1,12 +1,13 @@
 import { html } from 'lit-html';
 import type { StencilGrammar, GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { StencilTemplate } from '@casehubio/graph-renderer';
+import { FLOW_SOURCES, FLOW_TARGETS } from './grammars.js';
 
 export const switchGrammar: StencilGrammar = {
   type: 'swf-switch',
   connections: {
-    inbound: { min: 0, max: Infinity, allowedFrom: ['swf-call', 'swf-set', 'swf-switch', 'swf-entry', 'swf-start'] },
-    outbound: { min: 1, max: Infinity, allowedTo: ['swf-call', 'swf-set', 'swf-switch', 'swf-raise', 'swf-exit', 'swf-end'] },
+    inbound: { min: 0, max: Infinity, allowedFrom: [...FLOW_SOURCES] },
+    outbound: { min: 1, max: Infinity, allowedTo: [...FLOW_TARGETS] },
   },
 };
 

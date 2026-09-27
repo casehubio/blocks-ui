@@ -3,7 +3,7 @@ import { customElement, state } from 'lit/decorators.js';
 import '@casehubio/blocks-ui-swf-diagram';
 
 const PIPELINE_YAML = `document:
-  dsl: 1.0.0-alpha1
+  dsl: '1.0.3'
   namespace: pipeline
   name: document-processing
   version: "1.0.0"
@@ -98,8 +98,124 @@ do:
           uri: https://api.internal/audit/record
 `;
 
+const NESTED_FOR_YAML = `document:
+  dsl: '1.0.3'
+  namespace: etl
+  name: multi-region-sync
+  version: "1.0.0"
+do:
+  - loadManifest:
+      call: http
+      with:
+        method: get
+        endpoint:
+          uri: https://api.internal/manifests/latest
+  - validateSchema:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/schema/validate
+  - routeByMode:
+      switch:
+        - fullSync:
+            when: '.mode == "full"'
+            then: processRegions
+        - deltaSync:
+            when: '.mode == "delta"'
+            then: fetchChangeset
+        - dryRun:
+            when: '.mode == "dry-run"'
+            then: simulateSync
+  - processRegions:
+      for:
+        each: region
+        in: \${ .manifest.regions }
+      do:
+        - acquireLock:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/locks/acquire
+        - fetchRegionData:
+            call: http
+            with:
+              method: get
+              endpoint:
+                uri: https://api.internal/regions/data
+        - transformRecords:
+            for:
+              each: record
+              in: \${ .region.records }
+            do:
+              - normalise:
+                  call: http
+                  with:
+                    method: post
+                    endpoint:
+                      uri: https://api.internal/normalise
+              - enrich:
+                  call: http
+                  with:
+                    method: post
+                    endpoint:
+                      uri: https://api.internal/enrich
+              - deduplicate:
+                  call: http
+                  with:
+                    method: post
+                    endpoint:
+                      uri: https://api.internal/dedup
+        - bulkInsert:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/bulk/insert
+        - releaseLock:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/locks/release
+      then: reconcile
+  - fetchChangeset:
+      call: http
+      with:
+        method: get
+        endpoint:
+          uri: https://api.internal/changesets/latest
+  - applyDelta:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/delta/apply
+      then: reconcile
+  - simulateSync:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/simulate
+      then: reconcile
+  - reconcile:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/reconcile
+  - publishReport:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/reports/publish
+`;
+
 const YAML = `document:
-  dsl: 1.0.0-alpha1
+  dsl: '1.0.3'
   namespace: claims
   name: claim-review
   version: "2.0.0"
@@ -131,6 +247,23 @@ do:
       set:
         decision: approved
         reason: 'Auto-approved: low risk score'
+  - notifyBeneficiaries:
+      for:
+        each: beneficiary
+        in: \${ .claim.beneficiaries }
+      do:
+        - sendLetter:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/letters/send
+        - recordDispatch:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/dispatch/record
       then: tryNotify
   - humanReview:
       call: http
@@ -170,17 +303,213 @@ do:
           uri: https://api.internal/audit/record
 `;
 
+const NESTED_YAML = `document:
+  dsl: '1.0.3'
+  namespace: underwriting
+  name: nested-risk-assessment
+  version: "1.0.0"
+do:
+  - ingestApplication:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/applications/ingest
+  - classifyRisk:
+      switch:
+        - standardRisk:
+            when: '.riskTier == "standard"'
+            then: assessStandard
+        - elevatedRisk:
+            when: '.riskTier == "elevated"'
+            then: triageElevated
+        - declineRisk:
+            when: '.riskTier == "decline"'
+            then: autoDecline
+  - assessStandard:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/underwriting/standard
+      then: mergeDecision
+  - triageElevated:
+      switch:
+        - medicalReview:
+            when: '.elevatedReason == "medical"'
+            then: orderMedicalRecords
+        - financialReview:
+            when: '.elevatedReason == "financial"'
+            then: runCreditCheck
+  - orderMedicalRecords:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/medical/request-records
+      then: reviewElevated
+  - runCreditCheck:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/financial/credit-check
+      then: reviewElevated
+  - reviewElevated:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/underwriting/elevated-review
+      then: mergeDecision
+  - autoDecline:
+      set:
+        decision: declined
+        reason: 'Auto-declined: risk tier exceeds threshold'
+      then: mergeDecision
+  - mergeDecision:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/decisions/record
+`;
+
+const FOR_LOOP_YAML = `document:
+  dsl: '1.0.3'
+  namespace: batch
+  name: batch-processing
+  version: "1.0.0"
+do:
+  - fetchManifest:
+      call: http
+      with:
+        method: get
+        endpoint:
+          uri: https://api.internal/manifests/latest
+  - processItems:
+      for:
+        each: item
+        in: .manifest.items
+      do:
+        - validateItem:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/items/validate
+        - transformItem:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/items/transform
+        - storeItem:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.internal/items/store
+  - generateReport:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/reports/generate
+  - notifyComplete:
+      call: http
+      with:
+        method: post
+        endpoint:
+          uri: https://api.internal/notifications/send
+`;
+
+const EVENT_DRIVEN_YAML = `document:
+  dsl: '1.0.3'
+  namespace: examples
+  name: event-driven-order
+  version: '1.0.0'
+do:
+  - emitOrder:
+      emit:
+        event:
+          with:
+            source: https://shop.example.com
+            type: com.shop.order.placed
+            data:
+              orderId: order-123
+  - awaitConfirmation:
+      listen:
+        to:
+          one:
+            with:
+              type: com.warehouse.order.confirmed
+  - processInParallel:
+      fork:
+        compete: false
+        branches:
+          - checkInventory:
+              call: http
+              with:
+                method: get
+                endpoint:
+                  uri: https://api.example.com/inventory
+          - notifyCustomer:
+              emit:
+                event:
+                  with:
+                    type: com.shop.order.notification
+  - runFulfillment:
+      run:
+        container:
+          image: fulfillment-service:latest
+  - cooldown:
+      wait:
+        seconds: 30
+  - cleanup:
+      do:
+        - archiveOrder:
+            call: http
+            with:
+              method: post
+              endpoint:
+                uri: https://api.example.com/archive
+        - updateMetrics:
+            set:
+              ordersProcessed: "\${ .ordersProcessed + 1 }"
+`;
+
 const EXAMPLES: Record<string, { label: string; description: string; yaml: string; direction?: 'DOWN' | 'RIGHT' }> = {
   'claim-review': {
     label: 'Claim Review (branching)',
     description: 'Three-way branching from risk assessment switch, try/catch error handling, 8 task types.',
     yaml: YAML,
   },
+  'nested-for': {
+    label: 'Nested For Loops (ETL)',
+    description: 'Outer for-loop over regions, inner for-loop over records with 3 steps. Tests nested container sizing, column spacing, and connector routing.',
+    yaml: NESTED_FOR_YAML,
+  },
+  'nested-risk': {
+    label: 'Nested Risk Assessment',
+    description: 'Nested switches — elevated risk branch splits again into medical vs financial review. Tests recursive column layout with variable-width branches.',
+    yaml: NESTED_YAML,
+  },
+  'for-loop': {
+    label: 'Batch Processing (for loop)',
+    description: 'For-loop iterating over items — loop body rendered as a container block within the column.',
+    yaml: FOR_LOOP_YAML,
+  },
   'doc-pipeline': {
     label: 'Document Pipeline (sequential)',
     description: '15-step sequential pipeline — horizontal snake layout with ELK wrapping.',
     yaml: PIPELINE_YAML,
     direction: 'RIGHT',
+  },
+  'event-driven': {
+    label: 'Event-Driven Order (all OWS 1.0 types)',
+    description: 'Emit, Listen, Fork, Run, Wait, Do — all 6 new task types in an order processing workflow.',
+    yaml: EVENT_DRIVEN_YAML,
   },
 };
 
