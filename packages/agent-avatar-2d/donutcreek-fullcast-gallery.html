@@ -203,12 +203,12 @@
     <ellipse cx="64" cy="96" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
     <ellipse cx="136" cy="96" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
-    <!-- HAIR — sausage/tube shape wrapping over head and clinging down sides -->
-    <!-- Outer boundary: tube wraps from left ear up over crown down to right ear -->
-    <!-- Inner boundary: hairline across forehead -->
-    <path d="M 56,96 Q 50,78 52,56 Q 56,34 68,20 Q 82,8 100,6 Q 118,8 132,20 Q 144,34 148,56 Q 150,78 144,96 L 140,92 Q 142,76 140,62 Q 136,48 128,40 Q 120,34 110,34 Q 100,34 90,34 Q 80,34 72,40 Q 64,48 60,62 Q 58,76 60,92 Z" fill="#654321" stroke="#111" stroke-width="2.5"/>
-    <!-- Highlight ridge along the top to show tube form -->
-    <path d="M 64,50 Q 72,28 88,16 Q 96,12 100,12 Q 104,12 112,16 Q 128,28 136,50" fill="none" stroke="#8B6B3D" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+    <!-- HAIR — 10px sausage. Inner = exact head C curves. Outer = 10px perpendicular offset. -->
+    <!-- Right inner (up) → crown → left inner (down) → left end → left outer (up) → crown outer → right outer (down) → right end -->
+    <path d="M 130,86 Q 131,74 128,62 C 124,46 116,36 100,34 C 84,36 76,46 72,62 Q 69,74 70,86
+             Q 65,93 60,86
+             Q 60,74 62,62 C 66,36 84,24 100,22 C 116,24 134,36 138,62 Q 140,74 140,86
+             Q 135,93 130,86 Z" fill="#654321" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
 
     <!-- EYES — round, similar to Skinner's size -->
     <circle cx="86" cy="92" r="12" fill="#FFF" stroke="#111" stroke-width="3"/>
