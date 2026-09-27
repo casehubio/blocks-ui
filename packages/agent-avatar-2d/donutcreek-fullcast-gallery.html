@@ -33,11 +33,6 @@
 <!-- MAUDE FLANDERS (Angel) — based on Marge, shorter brown hair, cross necklace, pink jacket -->
 <div class="card">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-    <defs>
-      <clipPath id="maude-face">
-        <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z"/>
-      </clipPath>
-    </defs>
     <!-- Body — pink jacket over white blouse -->
     <path d="M 56,164 L 52,220 L 148,220 L 144,164 Z" fill="#D4748A" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
     <!-- White blouse V-neck -->
@@ -111,15 +106,15 @@
     <path d="M 56,36 C 64,28 74,26 84,32" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
     <path d="M 116,32 C 126,26 136,28 144,36" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
 
-    <!-- Face repaint — yellow fill below scalloped hairline, clipped to head shape -->
-    <g clip-path="url(#maude-face)">
-      <path d="M 60,102 Q 66,98 64,88 Q 71,84 70,74 Q 79,72 80,63 Q 92,63 100,55 Q 108,63 120,63 Q 121,72 130,74 Q 129,84 136,88 Q 134,98 140,102 L 140,200 L 60,200 Z" fill="#FCD34D" stroke="none"/>
-    </g>
-    <!-- Ears redraw (covered by face repaint) -->
-    <ellipse cx="64" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <ellipse cx="136" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
-    <!-- Black edge along scalloped hairline -->
-    <path d="M 140,102 Q 134,98 136,88 Q 129,84 130,74 Q 121,72 120,63 Q 108,63 100,55 Q 92,63 80,63 Q 79,72 70,74 Q 71,84 64,88 Q 66,98 60,102" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Face below scalloped hairline: scalloped top + head boundary bottom, one path -->
+    <path d="M 65,100
+             Q 66,97 64,88 Q 71,84 70,74 Q 79,72 80,63 Q 92,63 100,55
+             Q 108,63 120,63 Q 121,72 130,74 Q 129,84 136,88 Q 134,97 135,100
+             C 136,115 132,130 128,140
+             Q 128,162 100,168
+             Q 72,162 72,140
+             C 68,130 64,115 65,100 Z"
+          fill="#FCD34D" stroke="#111" stroke-width="3"/>
 
     <!-- Earrings — small pearl drops (partially behind hair) -->
     <circle cx="62" cy="120" r="3" fill="#FFF" stroke="#111" stroke-width="1.5"/>
