@@ -15,6 +15,7 @@
   .card h3 { margin-top: 6px; font-size: 13px; }
   .card .sub { font-size: 10px; color: #888; }
   svg { display: block; margin: 0 auto; width: 180px; height: 216px; }
+  .ref-img { width: 80px; height: 80px; object-fit: contain; background: #111; border-radius: 4px; margin: 0 auto 4px; display: block; }
   .placeholder { width: 180px; height: 216px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 12px; border: 1px dashed #333; border-radius: 6px; margin: 0 auto; }
   @media (max-width: 900px) { .row { grid-template-columns: repeat(2, 1fr); } }
 </style>
@@ -2098,5 +2099,69 @@
 </div>
 </div></div>
 
+<script>
+const refs = {
+  "Maude Flanders": "https://static.simpsonswiki.com/images/thumb/6/6a/Maude_Every_Simpsons_Ever.png/250px-Maude_Every_Simpsons_Ever.png",
+  "Ned Flanders": "https://static.simpsonswiki.com/images/thumb/4/49/Ned_Flanders_Every_Simpsons_Ever.png/250px-Ned_Flanders_Every_Simpsons_Ever.png",
+  "Dr. Hibbert": "https://static.simpsonswiki.com/images/9/9c/Julius_Hibbert.png",
+  "Lunchlady Doris": "https://static.simpsonswiki.com/images/thumb/7/74/LunchladyDoris.png/200px-LunchladyDoris.png",
+  "Otto Mann": "https://static.simpsonswiki.com/images/thumb/8/8f/Otto_Every_Simpsons_Ever.png/250px-Otto_Every_Simpsons_Ever.png",
+  "Lindsey Naegle": "https://static.simpsonswiki.com/images/thumb/f/f5/Lindsey_Naegle_Red.png/200px-Lindsey_Naegle_Red.png",
+  "Troy McClure": "https://static.simpsonswiki.com/images/thumb/b/b7/Every_Simpsons_Ever_Troy_McClure.jpg/250px-Every_Simpsons_Ever_Troy_McClure.jpg",
+  "Prof. Frink": "https://static.simpsonswiki.com/images/thumb/b/be/Professor_Frink_Every_Simpsons_Ever.png/250px-Professor_Frink_Every_Simpsons_Ever.png",
+  "Lenny Leonard": "https://static.simpsonswiki.com/images/thumb/c/ce/Lennyfolder.PNG/200px-Lennyfolder.PNG",
+  "Homer Simpson": "https://static.simpsonswiki.com/images/b/bd/Homer_Simpson.png",
+  "Carl Carlson": "https://static.simpsonswiki.com/images/thumb/1/14/Carl_Every_Simpsons_Ever.png/250px-Carl_Every_Simpsons_Ever.png",
+  "Barney Gumble": "https://static.simpsonswiki.com/images/thumb/b/b8/Barney_Eveey_Simpsons_Ever.png/250px-Barney_Eveey_Simpsons_Ever.png",
+  "Groundskeeper Willie": "https://static.simpsonswiki.com/images/thumb/6/67/Willie_Every_Simpsons_Ever.png/250px-Willie_Every_Simpsons_Ever.png",
+  "Apu": "https://static.simpsonswiki.com/images/thumb/3/32/Apu_Every_Simpsons_Ever.png/250px-Apu_Every_Simpsons_Ever.png",
+  "Sea Captain": "https://static.simpsonswiki.com/images/thumb/5/5e/Horatio_McCallister.png/230px-Horatio_McCallister.png",
+  "Milhouse": "https://static.simpsonswiki.com/images/thumb/c/c4/Milhouse_Every_Simpsons_Ever.png/250px-Milhouse_Every_Simpsons_Ever.png",
+  "Drederick Tatum": "https://static.simpsonswiki.com/images/thumb/9/99/Tatum_punch.png/200px-Tatum_punch.png",
+  "Nelson Muntz": "https://static.simpsonswiki.com/images/thumb/9/99/Nelson_Every_Simpsons_Ever.png/250px-Nelson_Every_Simpsons_Ever.png",
+  "Chief Wiggum": "https://static.simpsonswiki.com/images/thumb/1/1c/Chief_Wiggum_Every_Simpsons_Ever.png/250px-Chief_Wiggum_Every_Simpsons_Ever.png",
+  "McBain": "https://static.simpsonswiki.com/images/3/35/Rainier_Wolfcastle.png",
+  "Ralph Wiggum": "https://static.simpsonswiki.com/images/thumb/7/76/Ralph_Every_Simpsons_Ever.png/250px-Ralph_Every_Simpsons_Ever.png",
+  "Todd Flanders": "https://static.simpsonswiki.com/images/thumb/f/f8/Rod_and_Todd_Every_Simpsons_Ever.png/250px-Rod_and_Todd_Every_Simpsons_Ever.png",
+  "Martin Prince": "https://static.simpsonswiki.com/images/thumb/5/55/Martin_Every_Simpsons_Ever.png/250px-Martin_Every_Simpsons_Ever.png",
+  "Maggie Simpson": "https://static.simpsonswiki.com/images/thumb/1/1b/Maggie_Every_Simpsons_Ever.png/250px-Maggie_Every_Simpsons_Ever.png",
+  "Krusty": "https://static.simpsonswiki.com/images/thumb/e/ee/Krusty_Every_Simpsons_Ever.png/250px-Krusty_Every_Simpsons_Ever.png",
+  "Duffman": "https://static.simpsonswiki.com/images/e/ed/Duffman.png",
+  "Bart Simpson": "https://static.simpsonswiki.com/images/thumb/d/de/Bart_Every_Simpsons_Ever.png/250px-Bart_Every_Simpsons_Ever.png",
+  "Sideshow Bob": "https://static.simpsonswiki.com/images/thumb/9/97/Cape_Feare_promo.png/200px-Cape_Feare_promo.png",
+  "Smithers": "https://static.simpsonswiki.com/images/thumb/3/32/Smithers_Every_Simpsons_Ever.jpg/250px-Smithers_Every_Simpsons_Ever.jpg",
+  "Disco Stu": "https://static.simpsonswiki.com/images/thumb/f/f7/Disco_Stu.png/200px-Disco_Stu.png",
+  "Selma Bouvier": "https://static.simpsonswiki.com/images/thumb/6/6d/Patty_and_Selma_Every_Simpsons_Ever.jpg/250px-Patty_and_Selma_Every_Simpsons_Ever.jpg",
+  "Marge Simpson": "https://static.simpsonswiki.com/images/thumb/d/d4/Marge_Every_Simpsons_Ever.png/250px-Marge_Every_Simpsons_Ever.png",
+  "Mr. Burns": "https://static.simpsonswiki.com/images/thumb/c/cd/Mr._Burns_Every_Simpsons_Ever.png/250px-Mr._Burns_Every_Simpsons_Ever.png",
+  "Artie Ziff": "https://static.simpsonswiki.com/images/0/0c/Artie_Ziff.png",
+  "Hank Scorpio": "https://static.simpsonswiki.com/images/thumb/4/40/Hank_Scorpio_World.jpg/174px-Hank_Scorpio_World.jpg",
+  "Comic Book Guy": "https://static.simpsonswiki.com/images/thumb/d/dd/Comic_Book_Guy_Every_Simpsons_Ever.jpg/250px-Comic_Book_Guy_Every_Simpsons_Ever.jpg",
+  "Jimbo Jones": "https://static.simpsonswiki.com/images/thumb/c/c1/Jimbo_Every_Simpsons_Ever.png/250px-Jimbo_Every_Simpsons_Ever.png",
+  "Moe Szyslak": "https://static.simpsonswiki.com/images/thumb/8/80/Moe_Szyslak.png/230px-Moe_Szyslak.png",
+  "Snake Jailbird": "https://static.simpsonswiki.com/images/b/be/Snake_Jailbird.png",
+  "Hans Moleman": "https://static.simpsonswiki.com/images/thumb/2/26/Hans_Moleman_Every_Simpsons_Ever.jpg/250px-Hans_Moleman_Every_Simpsons_Ever.jpg",
+  "Lisa Simpson": "https://static.simpsonswiki.com/images/thumb/8/8a/Lisa_Every_Simpsons_Ever.png/250px-Lisa_Every_Simpsons_Ever.png",
+  "Principal Skinner": "https://static.simpsonswiki.com/images/3/3a/Seymour_Skinner.png",
+  "Grandpa Simpson": "https://static.simpsonswiki.com/images/thumb/6/67/Grampa_Every_Simpsons_Ever.png/250px-Grampa_Every_Simpsons_Ever.png",
+  "Kent Brockman": "https://static.simpsonswiki.com/images/thumb/6/67/Brockman-DoFeel.png/220px-Brockman-DoFeel.png",
+  "Rev. Lovejoy": "https://static.simpsonswiki.com/images/thumb/c/c1/Timothy_Lovejoy%2C_Jr..png/250px-Timothy_Lovejoy%2C_Jr..png",
+  "Blue-Haired Lawyer": "https://static.simpsonswiki.com/images/b/b4/Blue-haired_lawyer.png",
+  "Fat Tony": "https://static.simpsonswiki.com/images/thumb/e/ec/Fat_Tony.png/200px-Fat_Tony.png",
+  "Mayor Quimby": "https://static.simpsonswiki.com/images/5/53/Joe_Quimby.png"
+};
+document.querySelectorAll('.card h3').forEach(h3 => {
+  const name = h3.textContent.split(' (')[0];
+  const url = refs[name];
+  if (!url) return;
+  const card = h3.closest('.card');
+  const img = document.createElement('img');
+  img.className = 'ref-img';
+  img.src = url;
+  img.alt = name + ' reference';
+  img.onerror = function() { this.style.display = 'none'; };
+  card.insertBefore(img, card.firstChild);
+});
+</script>
 </body>
 </html>
