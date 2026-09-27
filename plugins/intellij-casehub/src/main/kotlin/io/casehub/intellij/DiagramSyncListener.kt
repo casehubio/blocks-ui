@@ -1,20 +1,25 @@
 package io.casehub.intellij
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import java.util.Timer
-import java.util.TimerTask
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
 class DiagramSyncListener(
     private val panel: CaseHubDiagramPanel,
     private val format: String,
-) : DocumentListener {
+) : DocumentListener, Disposable {
 
     @Volatile
     var suppressEcho = false
 
-    private var debounceTimer: Timer? = null
+    private val executor = Executors.newSingleThreadScheduledExecutor { r ->
+        Thread(r, "diagram-sync").apply { isDaemon = true }
+    }
+    private var pendingTask: ScheduledFuture<*>? = null
     private val debounceMs = 150L
     var paused = false
 
@@ -24,19 +29,15 @@ class DiagramSyncListener(
     }
 
     private fun scheduleYamlPush(document: Document) {
-        debounceTimer?.cancel()
-        debounceTimer = Timer("diagram-sync", true).also { timer ->
-            timer.schedule(object : TimerTask() {
-                override fun run() {
-                    val yaml = document.text
-                    panel.pushYaml(yaml, format)
-                }
-            }, debounceMs)
-        }
+        pendingTask?.cancel(false)
+        pendingTask = executor.schedule({
+            val yaml = document.text
+            panel.pushYaml(yaml, format)
+        }, debounceMs, TimeUnit.MILLISECONDS)
     }
 
-    fun dispose() {
-        debounceTimer?.cancel()
-        debounceTimer = null
+    override fun dispose() {
+        pendingTask?.cancel(false)
+        executor.shutdownNow()
     }
 }

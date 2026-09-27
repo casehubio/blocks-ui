@@ -9,6 +9,7 @@ import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JBCefApp
@@ -56,6 +57,8 @@ class CaseHubFileEditorProvider : FileEditorProvider, DumbAware {
             "CaseHub YAML",
             TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW,
         )
+
+        Disposer.register(splitEditor, syncListener)
 
         diagramPanel.pushYaml(editor.document.text, format)
         diagramPanel.pushTheme()
