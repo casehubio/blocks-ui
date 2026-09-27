@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { toSwfGraph, applySwfPropertyEdit, addSwfTask, insertSwfTask, spliceSwfTask, removeSwfTask, moveSwfTask, registerSwfStencils, createSwfEditPolicy, computeSwfStackLayout } from '@casehubio/graph-stencil-swf';
+import { toSwfGraph, applySwfPropertyEdit, addSwfTask, insertSwfTask, spliceSwfTask, removeSwfTask, moveSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
