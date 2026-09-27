@@ -91,23 +91,23 @@
     <circle cx="148" cy="138" r="12" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <!-- Interior fill to cover gaps between circles -->
     <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,130 142,120 140,110 C 134,88 120,68 100,58 C 80,68 66,88 60,110 C 58,120 56,130 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
-    <!-- Inner hairline curls — small close arcs along the Reuleaux triangle edge -->
-    <!-- Left arc: from ear up to forehead center -->
-    <circle cx="64" cy="98" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="62" cy="86" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="64" cy="76" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="70" cy="68" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="78" cy="62" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="88" cy="58" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="98" cy="56" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <!-- Right arc: from forehead center down to ear -->
-    <circle cx="102" cy="56" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="112" cy="58" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="122" cy="62" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="130" cy="68" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="136" cy="76" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="138" cy="86" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="136" cy="98" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <!-- Inner hairline — scalloped path from left ear across forehead to right ear -->
+    <!-- Small close wavy undulations along the hairline edge -->
+    <path d="M 62,104
+             Q 58,98 60,92
+             Q 56,86 60,80
+             Q 58,74 62,70
+             Q 64,64 70,62
+             Q 74,56 80,56
+             Q 86,52 92,54
+             Q 96,50 100,52
+             Q 104,50 108,54
+             Q 114,52 120,56
+             Q 126,56 130,62
+             Q 136,64 138,70
+             Q 142,74 140,80
+             Q 144,86 140,92
+             Q 142,98 138,104" fill="none" stroke="#111" stroke-width="2.5"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
