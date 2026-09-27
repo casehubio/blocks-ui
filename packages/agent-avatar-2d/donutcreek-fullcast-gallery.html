@@ -50,8 +50,10 @@
     <path d="M 144,168 Q 162,174 170,188 Q 176,200 170,212" fill="#D4748A" stroke="#111" stroke-width="3"/>
     <path d="M 168,210 Q 172,206 174,200 Q 170,198 168,202 L 168,212 Z" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
-    <!-- HEAD — similar to Marge but slightly rounder -->
-    <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z" fill="#FCD34D" stroke="#111" stroke-width="3"/>
+    <!-- HEAD — fill only (no stroke on upper part, hair covers it) -->
+    <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z" fill="#FCD34D" stroke="none"/>
+    <!-- Lower face outline only — jaw and chin (not covered by hair) -->
+    <path d="M 66,108 Q 66,130 72,140 Q 72,162 100,168 Q 128,162 128,140 Q 134,130 134,108" fill="none" stroke="#111" stroke-width="3"/>
     <!-- Neck -->
     <rect x="88" y="156" width="24" height="10" fill="#FCD34D" stroke="none"/>
     <!-- Ears -->
