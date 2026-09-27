@@ -94,43 +94,40 @@
     <circle cx="148" cy="138" r="12" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <!-- Interior fill to cover gaps between circles -->
     <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,130 142,120 140,110 C 134,88 120,68 100,58 C 80,68 66,88 60,110 C 58,120 56,130 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
-    <!-- Hair overlay: filled brown shape covering the smooth head boundary -->
-    <!-- Bottom edge: wavy line ~4px BELOW the actual head boundary at every point -->
-    <!-- Head boundary: (65,105)→(67,99)→(68,93)→(70,80)→(74,67)→(81,59)→(89,54)→(100,52) -->
-    <!-- Wavy bottom edge: ~4px lower (higher y), so it always covers the smooth arc -->
-    <path d="M 64,110
-             Q 70,106 67,102
-             Q 72,98 68,94
-             Q 72,88 72,84
-             Q 78,74 78,70
-             Q 84,64 86,62
-             Q 92,58 96,58
-             Q 100,54 104,58
-             Q 108,58 114,62
-             Q 122,64 122,70
-             Q 128,74 128,84
-             Q 132,88 132,94
-             Q 130,98 134,102
-             Q 130,106 136,110
-             C 136,90 132,68 124,54
-             C 116,38 110,28 100,26
-             C 90,28 84,38 76,54
-             C 68,68 64,90 64,110 Z" fill="#A0522D" stroke="none"/>
-    <!-- Wavy hairline stroke on top of the fill -->
-    <path d="M 64,110
-             Q 70,106 67,102
-             Q 72,98 68,94
-             Q 72,88 72,84
-             Q 78,74 78,70
-             Q 84,64 86,62
-             Q 92,58 96,58
-             Q 100,54 104,58
-             Q 108,58 114,62
-             Q 122,64 122,70
-             Q 128,74 128,84
-             Q 132,88 132,94
-             Q 130,98 134,102
-             Q 130,106 136,110" fill="none" stroke="#111" stroke-width="2.5"/>
+    <!-- Hair overlay covering smooth head boundary -->
+    <!-- VERIFIED head boundary: 66,103|70,80|74,68|78,62|82,58|86,55|90,54|94,53|98,53|...mirror -->
+    <!-- Wavy line sits 6-8px BELOW boundary at all points -->
+    <path d="M 64,112
+             Q 70,108 68,104
+             Q 74,98 70,90
+             Q 74,82 74,76
+             Q 80,72 82,68
+             Q 88,64 92,62
+             Q 96,60 100,62
+             Q 104,60 108,62
+             Q 112,64 118,68
+             Q 120,72 126,76
+             Q 126,82 130,90
+             Q 126,98 132,104
+             Q 130,108 136,112
+             C 136,92 134,72 126,58
+             C 118,42 112,30 100,28
+             C 88,30 82,42 74,58
+             C 66,72 64,92 64,112 Z" fill="#A0522D" stroke="none"/>
+    <!-- Wavy hairline stroke -->
+    <path d="M 64,112
+             Q 70,108 68,104
+             Q 74,98 70,90
+             Q 74,82 74,76
+             Q 80,72 82,68
+             Q 88,64 92,62
+             Q 96,60 100,62
+             Q 104,60 108,62
+             Q 112,64 118,68
+             Q 120,72 126,76
+             Q 126,82 130,90
+             Q 126,98 132,104
+             Q 130,108 136,112" fill="none" stroke="#111" stroke-width="2.5"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
