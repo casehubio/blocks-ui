@@ -73,39 +73,44 @@
              C 80,72 66,92 60,116
              C 56,128 54,138 50,140
              C 48,136 48,128 54,118 Z" fill="#A0522D" stroke="none"/>
-    <!-- Layer 2: outer cloud edge — fewer, bigger scallops on top; full scallops on sides -->
-    <!-- Top: ~7 large bumps with wide visible arcs -->
+    <!-- Layer 2: outer cloud edge — bumps poke OUT, valleys go IN -->
+    <!-- Using A (arc) commands for consistent outward bumps -->
+    <!-- Left side up: bumps go LEFT (outward from center) -->
     <path d="M 54,116
-             Q 44,104 40,90
-             Q 34,82 38,72
-             Q 32,60 38,48
-             Q 36,36 46,26
-             Q 48,16 60,10
-             Q 64,0 78,-4
-             Q 86,-10 100,-8
-             Q 114,-10 122,-4
-             Q 136,0 140,10
-             Q 152,16 154,26
-             Q 164,36 162,48
-             Q 168,60 162,72
-             Q 166,82 160,90
-             Q 156,104 146,116" fill="none" stroke="#111" stroke-width="3"/>
-    <!-- Right side: scalloped edge down with same out-in-out-in bumps -->
+             A 12,12 0 0 1 42,100
+             A 14,14 0 0 0 36,82
+             A 12,12 0 0 1 34,64
+             A 14,14 0 0 0 38,46
+             A 12,12 0 0 1 48,30
+             A 14,14 0 0 0 62,14
+             A 12,12 0 0 1 80,-2
+             A 14,14 0 0 0 100,-8" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Top right: bumps go RIGHT (outward from center) -->
+    <path d="M 100,-8
+             A 14,14 0 0 0 120,-2
+             A 12,12 0 0 1 138,14
+             A 14,14 0 0 0 152,30
+             A 12,12 0 0 1 162,46
+             A 14,14 0 0 0 166,64
+             A 12,12 0 0 1 164,82
+             A 14,14 0 0 0 158,100
+             A 12,12 0 0 1 146,116" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Right side down: many small fluffy outward bumps -->
     <path d="M 146,116
-             Q 152,120 150,126
-             Q 154,130 150,134
-             Q 152,138 148,140
-             Q 146,138 144,134
-             Q 142,130 144,126
-             Q 142,122 142,118" fill="none" stroke="#111" stroke-width="3"/>
-    <!-- Left side: scalloped edge down with same out-in-out-in bumps -->
+             A 6,6 0 0 0 150,122
+             A 5,5 0 0 1 148,128
+             A 6,6 0 0 0 152,132
+             A 5,5 0 0 1 148,136
+             A 6,6 0 0 0 150,140
+             A 5,5 0 0 1 146,142" fill="none" stroke="#111" stroke-width="3"/>
+    <!-- Left side down: many small fluffy outward bumps -->
     <path d="M 54,116
-             Q 48,120 50,126
-             Q 46,130 50,134
-             Q 48,138 52,140
-             Q 54,138 56,134
-             Q 58,130 56,126
-             Q 58,122 58,118" fill="none" stroke="#111" stroke-width="3"/>
+             A 6,6 0 0 1 50,122
+             A 5,5 0 0 0 52,128
+             A 6,6 0 0 1 48,132
+             A 5,5 0 0 0 52,136
+             A 6,6 0 0 1 50,140
+             A 5,5 0 0 0 54,142" fill="none" stroke="#111" stroke-width="3"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
