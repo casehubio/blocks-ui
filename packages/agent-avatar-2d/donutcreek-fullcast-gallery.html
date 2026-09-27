@@ -93,42 +93,40 @@
     <circle cx="148" cy="138" r="12" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <!-- Interior fill to cover gaps between circles -->
     <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,130 142,120 140,110 C 134,88 120,68 100,58 C 80,68 66,88 60,110 C 58,120 56,130 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
-    <!-- Hair fill covering the smooth head boundary above the wavy hairline -->
-    <!-- This fills the area between the wavy hairline and the top of the head with hair color -->
-    <!-- so the wavy line becomes the ONLY visible boundary between hair and face -->
-    <path d="M 66,108
-             Q 64,102 66,96
-             Q 64,90 68,84
-             Q 66,78 70,74
-             Q 72,68 78,64
-             Q 82,58 88,56
-             Q 92,52 98,54
-             Q 100,50 102,54
-             Q 108,52 112,56
-             Q 118,58 122,64
-             Q 128,68 130,74
-             Q 134,78 132,84
-             Q 136,90 132,96
-             Q 136,102 134,108
-             C 136,100 136,80 130,60
-             C 124,42 114,34 100,34
-             C 86,34 76,42 70,60
-             C 64,80 64,100 66,108 Z" fill="#A0522D" stroke="none"/>
-    <!-- Inner hairline — the wavy scalloped boundary (now the only visible edge) -->
-    <path d="M 66,108
-             Q 64,102 66,96
-             Q 64,90 68,84
-             Q 66,78 70,74
-             Q 72,68 78,64
-             Q 82,58 88,56
-             Q 92,52 98,54
-             Q 100,50 102,54
-             Q 108,52 112,56
-             Q 118,58 122,64
-             Q 128,68 130,74
-             Q 134,78 132,84
-             Q 136,90 132,96
-             Q 136,102 134,108" fill="none" stroke="#111" stroke-width="2.5"/>
+    <!-- Hair fill covering everything above the wavy hairline -->
+    <!-- Wavy bottom edge follows the HEAD CONTOUR: (64,100)→(70,80)→(100,52)→(130,80)→(136,100) -->
+    <!-- Top edge goes up into hair. Fills brown over the smooth yellow boundary. -->
+    <path d="M 62,104
+             Q 58,98 62,92
+             Q 58,86 64,80
+             Q 62,74 68,68
+             Q 70,62 78,58
+             Q 84,54 92,52
+             Q 96,48 100,50
+             Q 104,48 108,52
+             Q 116,54 122,58
+             Q 130,62 132,68
+             Q 138,74 136,80
+             Q 142,86 138,92
+             Q 142,98 138,104
+             C 138,90 136,70 128,56
+             C 120,40 112,30 100,28
+             C 88,30 80,40 72,56
+             C 64,70 62,90 62,104 Z" fill="#A0522D" stroke="none"/>
+    <!-- Inner hairline — wavy scalloped line ON the head contour -->
+    <path d="M 62,104
+             Q 58,98 62,92
+             Q 58,86 64,80
+             Q 62,74 68,68
+             Q 70,62 78,58
+             Q 84,54 92,52
+             Q 96,48 100,50
+             Q 104,48 108,52
+             Q 116,54 122,58
+             Q 130,62 132,68
+             Q 138,74 136,80
+             Q 142,86 138,92
+             Q 142,98 138,104" fill="none" stroke="#111" stroke-width="2.5"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
