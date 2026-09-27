@@ -33,6 +33,11 @@
 <!-- MAUDE FLANDERS (Angel) — based on Marge, shorter brown hair, cross necklace, pink jacket -->
 <div class="card">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+    <defs>
+      <clipPath id="maude-face">
+        <path d="M 72,140 Q 72,162 100,168 Q 128,162 128,140 C 136,125 136,100 130,80 C 126,60 116,52 100,52 C 84,52 74,60 70,80 C 64,100 64,125 72,140 Z"/>
+      </clipPath>
+    </defs>
     <!-- Body — pink jacket over white blouse -->
     <path d="M 56,164 L 52,220 L 148,220 L 144,164 Z" fill="#D4748A" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
     <!-- White blouse V-neck -->
@@ -68,10 +73,10 @@
              C 152,16 166,36 166,60
              C 166,80 156,100 146,118
              C 152,128 152,136 150,140
-             C 146,138 144,128 140,116
-             C 134,92 120,72 100,62
-             C 80,72 66,92 60,116
-             C 56,128 54,138 50,140
+             C 146,138 144,118 140,102
+             Q 134,98 136,88 Q 129,84 130,74 Q 121,72 120,63 Q 108,63 100,55
+             Q 92,63 80,63 Q 79,72 70,74 Q 71,84 64,88 Q 66,98 60,102
+             C 56,118 54,138 50,140
              C 48,136 48,128 54,118 Z" fill="#A0522D" stroke="none"/>
     <!-- Layer 2: large overlapping arcs — ends touching, randomly pushed together -->
     <!-- Each circle is a visible large arc puff. Bigger radius = bigger visible arch -->
@@ -90,7 +95,7 @@
     <circle cx="150" cy="118" r="16" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <circle cx="148" cy="138" r="12" fill="#A0522D" stroke="#111" stroke-width="3"/>
     <!-- Interior fill to cover gaps between circles -->
-    <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,130 142,120 140,110 C 134,88 120,68 100,58 C 80,68 66,88 60,110 C 58,120 56,130 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
+    <path d="M 54,118 C 44,100 34,80 34,60 C 34,36 48,16 68,4 C 80,-4 92,-8 100,-8 C 108,-8 120,-4 132,4 C 152,16 166,36 166,60 C 166,80 156,100 146,118 C 150,128 150,136 148,138 C 144,122 142,112 140,102 Q 134,98 136,88 Q 129,84 130,74 Q 121,72 120,63 Q 108,63 100,55 Q 92,63 80,63 Q 79,72 70,74 Q 71,84 64,88 Q 66,98 60,102 C 58,112 56,128 52,138 C 50,136 50,128 54,118 Z" fill="#A0522D" stroke="none"/>
     <!-- Fringe curl licks across forehead — drooping curly wisps -->
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#A0522D" stroke-width="5"/>
     <path d="M 74,72 C 72,62 76,54 82,52" fill="none" stroke="#111" stroke-width="1.5"/>
@@ -105,6 +110,16 @@
     <!-- Interior curl texture -->
     <path d="M 56,36 C 64,28 74,26 84,32" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
     <path d="M 116,32 C 126,26 136,28 144,36" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
+
+    <!-- Face repaint — yellow fill below scalloped hairline, clipped to head shape -->
+    <g clip-path="url(#maude-face)">
+      <path d="M 60,102 Q 66,98 64,88 Q 71,84 70,74 Q 79,72 80,63 Q 92,63 100,55 Q 108,63 120,63 Q 121,72 130,74 Q 129,84 136,88 Q 134,98 140,102 L 140,200 L 60,200 Z" fill="#FCD34D" stroke="none"/>
+    </g>
+    <!-- Ears redraw (covered by face repaint) -->
+    <ellipse cx="64" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <ellipse cx="136" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
+    <!-- Black edge along scalloped hairline -->
+    <path d="M 140,102 Q 134,98 136,88 Q 129,84 130,74 Q 121,72 120,63 Q 108,63 100,55 Q 92,63 80,63 Q 79,72 70,74 Q 71,84 64,88 Q 66,98 60,102" fill="none" stroke="#111" stroke-width="3"/>
 
     <!-- Earrings — small pearl drops (partially behind hair) -->
     <circle cx="62" cy="120" r="3" fill="#FFF" stroke="#111" stroke-width="1.5"/>
