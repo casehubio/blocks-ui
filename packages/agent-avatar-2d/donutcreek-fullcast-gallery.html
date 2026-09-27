@@ -58,65 +58,65 @@
     <ellipse cx="64" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
     <ellipse cx="136" cy="108" rx="8" ry="10" fill="#FCD34D" stroke="#111" stroke-width="2.5"/>
 
-    <!-- HAIR — big curly auburn bouffant, one solid mass with bumpy curly outline -->
-    <!-- Single large shape: bumpy/curly outline on outside, smooth on inside where it meets head -->
-    <path d="M 56,90
-             Q 50,82 46,72 Q 42,58 48,44 Q 52,32 60,24
-             Q 66,18 72,14 Q 80,10 88,8
-             Q 94,6 100,6 Q 106,6 112,8
-             Q 120,10 128,14 Q 134,18 140,24
-             Q 148,32 152,44 Q 158,58 154,72 Q 150,82 144,90
-             Q 150,100 152,112 Q 152,122 148,130 Q 144,134 140,132
-             Q 144,120 142,108 Q 140,96 136,86
-             C 132,66 120,52 100,50 C 80,52 68,66 64,86
-             Q 60,96 58,108 Q 56,120 60,132 Q 56,134 52,130
-             Q 48,122 48,112 Q 50,100 56,90 Z" fill="#A0522D" stroke="#111" stroke-width="3"/>
-    <!-- Curl bumps on the outline — small arcs along the top edge for curly texture -->
-    <circle cx="62" cy="22" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="78" cy="12" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="94" cy="8" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="108" cy="8" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="122" cy="12" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="138" cy="22" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <!-- Side curl bumps -->
-    <circle cx="48" cy="56" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="152" cy="56" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="46" cy="80" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
-    <circle cx="154" cy="80" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <!-- HAIR — big curly auburn bouffant, sits FLUSH on the head, no gap -->
+    <!-- Inner edge follows head contour exactly; outer edge is bumpy/curly -->
+    <path d="M 56,108
+             Q 50,96 46,80 Q 42,60 48,44 Q 54,28 66,18
+             Q 78,10 90,8 Q 100,6 110,8 Q 122,10 134,18
+             Q 146,28 152,44 Q 158,60 154,80 Q 150,96 144,108
+             Q 148,116 148,126 Q 146,132 140,130
+             Q 142,120 140,110 Q 136,100 130,80
+             C 126,60 116,52 100,52
+             C 84,52 74,60 70,80
+             Q 64,100 60,110 Q 58,120 60,130 Q 54,132 52,126
+             Q 52,116 56,108 Z" fill="#A0522D" stroke="#111" stroke-width="3"/>
+    <!-- Curl bumps along the outer edge — circles that overlap the main path -->
+    <circle cx="58" cy="22" r="9" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="74" cy="12" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="90" cy="6" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="110" cy="6" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="126" cy="12" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="142" cy="22" r="9" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="48" cy="48" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="152" cy="48" r="8" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="44" cy="72" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="156" cy="72" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="44" cy="96" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
+    <circle cx="156" cy="96" r="7" fill="#A0522D" stroke="#111" stroke-width="2"/>
     <!-- Interior curl texture (subtle) -->
-    <path d="M 70,30 Q 80,26 90,30" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.25"/>
-    <path d="M 110,30 Q 120,26 130,30" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.25"/>
-    <path d="M 60,60 Q 70,56 80,60" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
-    <path d="M 120,60 Q 130,56 140,60" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
+    <path d="M 68,30 Q 80,24 92,28" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
+    <path d="M 108,28 Q 120,24 132,30" fill="none" stroke="#8B4513" stroke-width="1.5" opacity="0.2"/>
 
-    <!-- Earrings — small pearl drops -->
+    <!-- Earrings — small pearl drops (partially behind hair) -->
     <circle cx="62" cy="120" r="3" fill="#FFF" stroke="#111" stroke-width="1.5"/>
     <circle cx="138" cy="120" r="3" fill="#FFF" stroke="#111" stroke-width="1.5"/>
 
-    <!-- EYES — round with BLUE EYESHADOW lids + eyelashes -->
-    <circle cx="86" cy="98" r="12" fill="#FFF" stroke="#111" stroke-width="3"/>
-    <circle cx="88" cy="100" r="2.5" fill="#111"/>
-    <circle cx="114" cy="98" r="12" fill="#FFF" stroke="#111" stroke-width="3"/>
-    <circle cx="112" cy="100" r="2.5" fill="#111"/>
-    <!-- Blue eyeshadow — half-moon lids covering top of eye -->
-    <path d="M 74,96 Q 80,88 94,92 L 74,92 Z" fill="#7BA7C9" stroke="#111" stroke-width="2" opacity="0.7"/>
-    <path d="M 102,92 Q 120,88 126,96 L 126,92 Z" fill="#7BA7C9" stroke="#111" stroke-width="2" opacity="0.7"/>
-    <!-- Eyelashes — Marge-family feature -->
-    <path d="M 74,92 L 70,86" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M 78,88 L 76,82" stroke="#111" stroke-width="2" stroke-linecap="round"/>
-    <path d="M 126,92 L 130,86" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M 122,88 L 124,82" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+    <!-- EYES — teardrop/D-shape: flat/straight top, curved bottom, tapered outer corner -->
+    <!-- Left eye -->
+    <path d="M 74,94 L 98,94 Q 100,104 86,106 Q 72,104 74,94 Z" fill="#FFF" stroke="#111" stroke-width="2.5"/>
+    <circle cx="87" cy="99" r="2.5" fill="#111"/>
+    <!-- Right eye -->
+    <path d="M 102,94 L 126,94 Q 128,104 114,106 Q 100,104 102,94 Z" fill="#FFF" stroke="#111" stroke-width="2.5"/>
+    <circle cx="113" cy="99" r="2.5" fill="#111"/>
+    <!-- Blue eyeshadow — ABOVE the eyes, on the upper lid between brow and eye -->
+    <path d="M 74,88 Q 86,84 98,88 L 98,94 L 74,94 Z" fill="#7BA7C9" opacity="0.5"/>
+    <path d="M 102,88 Q 114,84 126,88 L 126,94 L 102,94 Z" fill="#7BA7C9" opacity="0.5"/>
+    <!-- Eyelashes — extending UP and OUT from the top outer corners of each eye -->
+    <path d="M 74,94 L 70,86" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 77,93 L 74,86" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M 126,94 L 130,86" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 123,93 L 126,86" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
     <!-- Gentle brows -->
-    <path d="M 74,80 Q 86,74 98,80" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M 102,80 Q 114,74 126,80" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 74,80 Q 86,76 98,80" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 102,80 Q 114,76 126,80" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
 
     <!-- Nose — small, feminine -->
     <path d="M 98,98 C 96,106 96,110 102,110 C 106,110 106,104 102,102" fill="#FCD34D" stroke="#111" stroke-width="2"/>
 
-    <!-- Mouth — red lips, gentle smile -->
-    <path d="M 86,122 Q 100,130 114,122" fill="none" stroke="#CC4444" stroke-width="3" stroke-linecap="round"/>
-    <!-- Upper lip color fill -->
-    <path d="M 88,122 Q 100,118 112,122" fill="#CC6666" stroke="none" opacity="0.5"/>
+    <!-- Mouth — gentle smile with natural mauve/red lip color -->
+    <path d="M 86,122 Q 100,130 114,122" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Lower lip — mauve color below the smile line -->
+    <path d="M 88,124 Q 100,132 112,124 Q 100,128 88,124 Z" fill="#CC7777" stroke="none" opacity="0.6"/>
 
     <!-- CROSS NECKLACE — Maude's signature -->
     <line x1="100" y1="152" x2="100" y2="164" stroke="#C9A227" stroke-width="2.5" stroke-linecap="round"/>
