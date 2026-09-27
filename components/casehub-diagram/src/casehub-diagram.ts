@@ -915,7 +915,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     });
   }
 
-  protected override _handleCanvasEvent = (e: CustomEvent): void => {
+  override _handleCanvasEvent = (e: CustomEvent): void => {
     const topic = e.detail?.topic;
     if (topic === 'graph:node:click') this._handleNodeClick(e);
     else if (topic === 'graph:selection:change') this._handleSelectionChange(e);

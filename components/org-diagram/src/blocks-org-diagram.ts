@@ -302,7 +302,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     return { nodes, edges: highlighted };
   }
 
-  protected override _handleCanvasEvent = (e: CustomEvent): void => {
+  override _handleCanvasEvent = (e: CustomEvent): void => {
     const topic = e.detail?.topic;
     const payload = e.detail?.payload ?? e.detail;
     if (topic === 'graph:node:click') this._handleNodeClick(e);
