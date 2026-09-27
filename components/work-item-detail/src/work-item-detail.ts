@@ -52,6 +52,7 @@ export interface WorkItemDetailProps {
   endpoint: string | null;
   workItemId: string | null;
   identity: WorkIdentity | null;
+  userSearchProvider: UserSearchProvider | null;
   data: WorkItemResponse | null;
 }
 

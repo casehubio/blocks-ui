@@ -23,6 +23,12 @@ export interface GroupedDataViewProps {
   ariaLabel: string | null;
   groupBy: string;
   groupOrder?: string[];
+  groupConfig?: Map<string, GroupStyleConfig>;
+  groupStyle?: (groupName: string) => GroupStyleConfig | undefined;
+  columnConfig?: readonly TableColumnConfig[];
+  columnRenderers?: ReadonlyMap<ColumnId, ColumnRenderer>;
+  rowStyle?: readonly RowStyleRule[];
+  selection?: SelectionMode;
   preset: 'sectioned' | 'spreadsheet' | 'list';
   defaultExpanded: boolean;
   sortable: boolean;
