@@ -167,6 +167,34 @@ do:
     expect(result).toContain('fetchData:');
     expect(result).toContain('method: GET');
   });
+
+  it('adds then: exit to the previous last task so new task is disconnected', () => {
+    const result = addSwfTask(SAMPLE_YAML, 'swf-call');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const fetchData = parsed.do[0]!;
+    const fetchDef = Object.values(fetchData)[0] as Record<string, unknown>;
+    expect(fetchDef['then']).toBe('exit');
+  });
+
+  it('does not add then: exit if the last task already has an explicit then', () => {
+    const yamlWithThen = `document:
+  dsl: "1.0.0"
+  namespace: test
+  name: sample
+  version: "1.0.0"
+do:
+  - fetchData:
+      call: http
+      with:
+        method: GET
+      then: someTarget
+`;
+    const result = addSwfTask(yamlWithThen, 'swf-set');
+    const parsed = parseYaml(result) as { do: Record<string, unknown>[] };
+    const fetchData = parsed.do[0]!;
+    const fetchDef = Object.values(fetchData)[0] as Record<string, unknown>;
+    expect(fetchDef['then']).toBe('someTarget');
+  });
 });
 
 const MULTI_STEP_YAML = `document:

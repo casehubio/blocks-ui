@@ -56,10 +56,24 @@ function prepareSwfTaskInsert(yaml: string, taskType: string) {
 
 export function addSwfTask(yaml: string, taskType: string): string {
   const { doc, doSeq, stepName } = prepareSwfTaskInsert(yaml, taskType);
+
+  const lastTaskName = getLastTaskName(doSeq);
+  if (lastTaskName && !findTaskThen(doSeq, lastTaskName)) {
+    setTaskThen(doSeq, lastTaskName, 'exit');
+  }
+
   const defaults = SWF_TASK_DEFAULTS[taskType] ?? {};
   const entry = doc.createNode({ [stepName]: defaults });
   doSeq.add(entry);
   return doc.toString();
+}
+
+function getLastTaskName(doSeq: YAMLSeq): string | undefined {
+  if (doSeq.items.length === 0) return undefined;
+  const last = doSeq.items[doSeq.items.length - 1];
+  if (!isMap(last)) return undefined;
+  const firstKey = last.items[0]?.key;
+  return firstKey ? String(firstKey) : undefined;
 }
 
 export function insertSwfTask(yaml: string, taskType: string, beforeTaskName: string | null): string {
