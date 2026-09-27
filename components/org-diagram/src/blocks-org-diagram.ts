@@ -18,7 +18,6 @@ import {
   applyCollapsedUnits,
   applyOrgEdgeLabels,
   applySelectionHighlight,
-  computeRadialLayout,
   OrgLayoutEngine,
   orgClassificationRules,
   sizingClassifier,
@@ -32,7 +31,7 @@ import type {
   DerivedOrgData,
   FactBase,
 } from '@casehubio/graph-stencil-org';
-import { computeElkLayout } from '@casehubio/graph-renderer';
+import { computeElkLayout, computeRadialLayout } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
