@@ -33,3 +33,4 @@ export type { ModifierInput } from './modifiers.js';
 export { AgentAvatar } from './agent-avatar.js';
 export type { AgentAvatarProps } from './agent-avatar.js';
 export { mythicCollection } from './collections/mythic/index.js';
+export { chibiCollection } from './collections/chibi/index.js';
