@@ -190,6 +190,16 @@ export class AvatarStep extends LitElement {
   private _selectArchetype(key: string) {
     this._selectedArchetype = key;
     const [family, sub] = key.split('/');
+    if (this._tab === 'profession') {
+      const matched = getRolesForArchetype(key);
+      const currentMatch = matched.find(m => m.profession === this._profession);
+      if (currentMatch) {
+        this._selectedRole = currentMatch.role;
+      } else if (matched.length > 0) {
+        this._profession = matched[0]!.profession;
+        this._selectedRole = matched[0]!.role;
+      }
+    }
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
       detail: { archetype: { family, subArchetype: sub }, collection: this._collection },
       bubbles: true, composed: true,
@@ -284,6 +294,7 @@ export class AvatarStep extends LitElement {
                     <div>
                       <div class="variant-label">${v.label}</div>
                       <div class="variant-desc">${v.description}</div>
+                      <div style="font-size:10px;color:var(--pages-accent-11,#93c5fd);margin-top:2px">${v.archetype.split('/')[0]} / ${v.archetype.split('/')[1]}</div>
                     </div>
                     <dl class="variant-profile">
                       ${Object.entries(profile).map(([fw, vals]) => html`
