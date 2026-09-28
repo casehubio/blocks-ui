@@ -78,7 +78,7 @@ describe('avatar-step integration', () => {
     await el.updateComplete;
 
     // Should show variant buttons
-    const variantBtns = el.shadowRoot!.querySelectorAll('.variant-btn');
+    const variantBtns = el.shadowRoot!.querySelectorAll('.variant-card');
     expect(variantBtns.length).toBeGreaterThanOrEqual(2);
 
     // Click first variant
