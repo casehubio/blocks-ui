@@ -55,6 +55,20 @@ function getRolesForArchetype(archetypeKey: string): Array<{ profession: string;
   return matches;
 }
 
+function getRoleFrameworkValues(profession: string, role: string): Set<string> {
+  const roles = PROFESSION_PRESETS[profession];
+  const r = roles?.find(x => x.role === role);
+  if (!r) return new Set();
+  const vals = new Set<string>();
+  for (const v of r.variants) {
+    const profile = getFrameworkProfile(v.archetype);
+    for (const [fw, fvs] of Object.entries(profile)) {
+      for (const fv of fvs) vals.add(`${fw}:${fv}`);
+    }
+  }
+  return vals;
+}
+
 @customElement('avatar-step')
 export class AvatarStep extends LitElement {
   static override styles = css`
@@ -82,6 +96,12 @@ export class AvatarStep extends LitElement {
     .personality-side .big5-toggle { padding: 2px 6px; font-size: 10px; }
     .personality-side .big5-label { font-size: 10px; min-width: 16px; }
     .personality-side .reset-btn { font-size: 11px; padding: 3px 10px; }
+    .personality-side .pill.avatar-match { background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb); }
+    .personality-side .pill.role-scope { border-color: var(--pages-accent-7, #3b82f6); background: var(--pages-accent-2, #1a2744); }
+    .grid-toggle { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+    .grid-toggle label { font-size: 11px; color: var(--pages-neutral-10, #aaa); }
+    .grid-toggle button { padding: 2px 8px; font-size: 10px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #4a4a62); background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc); cursor: pointer; }
+    .grid-toggle button.active { background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb); }
 
     .framework-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #666); }
@@ -158,6 +178,7 @@ export class AvatarStep extends LitElement {
   @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
+  @state() private _compactGrid = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -340,24 +361,39 @@ export class AvatarStep extends LitElement {
   }
 
   private _renderPersonalityPanel() {
-    const tiers = this._tiers();
+    const avatarProfile = this._selectedArchetype ? getFrameworkProfile(this._selectedArchetype) : {};
+    const avatarVals = new Set<string>();
+    for (const [fw, fvs] of Object.entries(avatarProfile)) {
+      for (const fv of fvs) avatarVals.add(`${fw}:${fv}`);
+    }
+    const roleVals = (this._profession && this._selectedRole)
+      ? getRoleFrameworkValues(this._profession, this._selectedRole) : new Set<string>();
+    const fwKeyMap: Record<string, string> = { mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI' };
     return html`
       <div class="panel" role="tabpanel">
         ${SINGLE_FRAMEWORKS.map(fw => {
           const valid = new Set(getValidFrameworkValues(fw, this._frameworks, this._bigFive));
+          const fwLabel = fwKeyMap[fw] ?? fw;
           return html`
             <div class="framework-row">
               <span class="framework-label">${FRAMEWORK_LABELS[fw]}</span>
               <div role="listbox" aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
-                ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => html`
-                  <button class="pill" role="option"
-                    data-framework=${fw} data-value=${v}
-                    aria-selected=${String(this._frameworks[fw] === v)}
-                    aria-disabled=${String(!valid.has(v) && this._frameworks[fw] !== v)}
-                    @click=${() => this._selectFramework(fw, v)}>
-                    ${v}
-                  </button>
-                `)}
+                ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
+                  const isAvatarMatch = avatarVals.has(`${fwLabel}:${v}`);
+                  const isRoleScope = roleVals.has(`${fwLabel}:${v}`);
+                  const isSelected = this._frameworks[fw] === v;
+                  const isDisabled = !valid.has(v) && !isSelected;
+                  return html`
+                    <button class=${classMap({ pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
+                      role="option"
+                      data-framework=${fw} data-value=${v}
+                      aria-selected=${String(isSelected)}
+                      aria-disabled=${String(isDisabled)}
+                      @click=${() => this._selectFramework(fw, v)}>
+                      ${v}
+                    </button>
+                  `;
+                })}
               </div>
             </div>
           `;
@@ -390,31 +426,46 @@ export class AvatarStep extends LitElement {
 
   private _renderGrid() {
     const tiers = this._tiers();
+    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
     return html`
+      ${hasFilters ? html`
+        <div class="grid-toggle">
+          <label>View:</label>
+          <button class=${this._compactGrid ? '' : 'active'} @click=${() => { this._compactGrid = false; }}>Full</button>
+          <button class=${this._compactGrid ? 'active' : ''} @click=${() => { this._compactGrid = true; }}>Compact</button>
+        </div>
+      ` : nothing}
       <div class="grid" role="radiogroup" aria-label="Select archetype avatar">
-        ${FAMILIES.map(family => html`
-          <div class="family-label" role="group" aria-label="${family} family">${family}</div>
-          ${familySubs(family).map(sub => {
-            const key = `${family}/${sub}`;
-            const tier = tiers.get(key) ?? 'strong';
-            const selected = this._selectedArchetype === key;
-            const disabled = tier === 'incompatible';
-            return html`
-              <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected })}
-                role="radio" aria-checked=${String(selected)}
-                aria-label="${family} ${sub} avatar"
-                aria-disabled=${String(disabled)}
-                @click=${disabled ? nothing : () => this._selectArchetype(key)}>
-                <agent-avatar
-                  .archetype=${{ family, subArchetype: sub }}
-                  collection=${this._collection}
-                  size="sm">
-                </agent-avatar>
-                <span class="sub-label">${sub}</span>
-              </div>
-            `;
-          })}
-        `)}
+        ${FAMILIES.map(family => {
+          const subs = familySubs(family);
+          const familyTiers = subs.map(s => tiers.get(`${family}/${s}`) ?? 'strong');
+          const allIncompat = this._compactGrid && familyTiers.every(t => t === 'incompatible');
+          if (allIncompat) return nothing;
+          return html`
+            <div class="family-label" role="group" aria-label="${family} family">${family}</div>
+            ${subs.map(sub => {
+              const key = `${family}/${sub}`;
+              const tier = tiers.get(key) ?? 'strong';
+              const selected = this._selectedArchetype === key;
+              const disabled = tier === 'incompatible';
+              if (this._compactGrid && disabled) return html`<div></div>`;
+              return html`
+                <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected })}
+                  role="radio" aria-checked=${String(selected)}
+                  aria-label="${family} ${sub} avatar"
+                  aria-disabled=${String(disabled)}
+                  @click=${disabled ? nothing : () => this._selectArchetype(key)}>
+                  <agent-avatar
+                    .archetype=${{ family, subArchetype: sub }}
+                    collection=${this._collection}
+                    size="sm">
+                  </agent-avatar>
+                  <span class="sub-label">${sub}</span>
+                </div>
+              `;
+            })}
+          `;
+        })}
       </div>
     `;
   }
