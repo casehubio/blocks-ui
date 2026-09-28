@@ -97,10 +97,6 @@ describe('avatar-step integration', () => {
     cell.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
     await el.updateComplete;
 
-    // Verify preview appears
-    const preview = el.shadowRoot!.querySelector('.preview');
-    expect(preview).toBeTruthy();
-
     // Switch to chibi
     const chibiBtn = [...el.shadowRoot!.querySelectorAll('.collection-btn')]
       .find(b => b.textContent?.trim() === 'Chibi') as HTMLElement;

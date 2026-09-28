@@ -120,6 +120,9 @@ export class AvatarStep extends LitElement {
     .variant-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .variant-label { font-weight: 600; margin-bottom: 2px; }
     .variant-desc { font-size: 11px; color: var(--pages-neutral-9, #999); }
+    .variant-roles { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+    .role-badge { font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--pages-accent-2, #1a2744); color: var(--pages-accent-11, #93c5fd); border: 1px solid var(--pages-accent-7, #3b82f6); cursor: pointer; }
+    .role-badge:hover { background: var(--pages-accent-3, #1e3a5f); }
     .variant-profile { font-size: 10px; color: var(--pages-neutral-9, #999); margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 4px; }
     .variant-profile dt { font-weight: 600; color: var(--pages-neutral-10, #aaa); margin-top: 3px; }
     .variant-profile dd { margin: 0; margin-bottom: 2px; }
@@ -213,13 +216,18 @@ export class AvatarStep extends LitElement {
     this._bigFive = {};
   }
 
+  private _navigateToRole(profession: string, role: string, e: Event) {
+    e.stopPropagation();
+    this._profession = profession;
+    this._selectedRole = role;
+  }
+
   protected override render() {
     return html`
       ${this._renderCollectionBar()}
       ${this._renderTabs()}
       ${this._tab === 'profession' ? this._renderProfessionPanel() : this._renderPersonalityPanel()}
       ${this._renderGrid()}
-      ${this._selectedArchetype ? this._renderPreview() : nothing}
     `;
   }
 
@@ -311,6 +319,7 @@ export class AvatarStep extends LitElement {
               <div style="font-size:12px;color:var(--pages-neutral-10,#aaa);margin-bottom:6px">What type of ${activeRole.role}?</div>
               ${activeRole.variants.map(v => {
                 const profile = getFrameworkProfile(v.archetype);
+                const variantRoles = getRolesForArchetype(v.archetype);
                 return html`
                   <button class=${classMap({ 'variant-card': true, selected: this._selectedArchetype === v.archetype })}
                     @click=${() => this._selectArchetype(v.archetype)}>
@@ -320,6 +329,16 @@ export class AvatarStep extends LitElement {
                       <div class="variant-label">${v.label}</div>
                       <div class="variant-desc">${v.description}</div>
                       <div style="font-size:10px;color:var(--pages-accent-11,#93c5fd);margin-top:2px">${v.archetype.split('/')[0]} / ${v.archetype.split('/')[1]}</div>
+                      ${variantRoles.length > 0 ? html`
+                        <div class="variant-roles">
+                          ${variantRoles.map(m => html`
+                            <span class="role-badge"
+                              @click=${(e: Event) => this._navigateToRole(m.profession, m.role, e)}>
+                              ${m.profession} &rsaquo; ${m.role}
+                            </span>
+                          `)}
+                        </div>
+                      ` : nothing}
                     </div>
                     <dl class="variant-profile">
                       ${Object.entries(profile).map(([fw, vals]) => html`
