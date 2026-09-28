@@ -154,14 +154,18 @@ export class AvatarStep extends LitElement {
     .profile-picker { display: none; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
     .profile-group:hover:not(.locked) .profile-picker { display: flex; }
     .profile-default { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-11, #93c5fd); }
-    .pill.sdi-blue { border-color: #3b82f6; color: #93c5fd; }
-    .pill.sdi-blue[aria-selected="true"] { background: #2563eb; border-color: #2563eb; color: #fff; }
-    .pill.sdi-red { border-color: #ef4444; color: #fca5a5; }
-    .pill.sdi-red[aria-selected="true"] { background: #dc2626; border-color: #dc2626; color: #fff; }
-    .pill.sdi-green { border-color: #22c55e; color: #86efac; }
-    .pill.sdi-green[aria-selected="true"] { background: #16a34a; border-color: #16a34a; color: #fff; }
-    .pill.sdi-hub { border-color: #a78bfa; color: #c4b5fd; }
-    .pill.sdi-hub[aria-selected="true"] { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .pill.sdi-blue, .pill.avatar-match.sdi-blue, .pill.role-scope.sdi-blue { border-color: #3b82f6; color: #93c5fd; background: transparent; }
+    .pill.sdi-blue[aria-selected="true"], .pill.sdi-blue[aria-pressed="true"] { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .pill.sdi-red, .pill.avatar-match.sdi-red, .pill.role-scope.sdi-red { border-color: #ef4444; color: #fca5a5; background: transparent; }
+    .pill.sdi-red[aria-selected="true"], .pill.sdi-red[aria-pressed="true"] { background: #dc2626; border-color: #dc2626; color: #fff; }
+    .pill.sdi-green, .pill.avatar-match.sdi-green, .pill.role-scope.sdi-green { border-color: #22c55e; color: #86efac; background: transparent; }
+    .pill.sdi-green[aria-selected="true"], .pill.sdi-green[aria-pressed="true"] { background: #16a34a; border-color: #16a34a; color: #fff; }
+    .pill.sdi-hub, .pill.avatar-match.sdi-hub, .pill.role-scope.sdi-hub { border-color: #a78bfa; color: #c4b5fd; background: transparent; }
+    .pill.sdi-hub[aria-selected="true"], .pill.sdi-hub[aria-pressed="true"] { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+    .sdi-text-blue { color: #93c5fd; }
+    .sdi-text-red { color: #fca5a5; }
+    .sdi-text-green { color: #86efac; }
+    .sdi-text-hub { color: #c4b5fd; }
     .profile-belbin-sec { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .dynamic-summary {
       font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
@@ -203,18 +207,21 @@ export class AvatarStep extends LitElement {
     .preview-family { font-weight: 600; color: var(--pages-accent-11, #1e3a5f); }
     .preview-sub { color: var(--pages-neutral-10, #666); }
 
-    .has-tip { position: relative; cursor: help; }
+    .has-tip { position: relative; }
     .pill { overflow: visible; }
     .framework-row { overflow: visible; }
     .profile-row { overflow: visible; }
     .panel { overflow: visible; }
     .has-tip .tip-content {
       display: none; position: absolute; z-index: 10;
-      bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+      bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
       background: var(--pages-neutral-3, #2d2d44); border: 1px solid var(--pages-neutral-5, #4a4a62);
       border-radius: 6px; padding: 6px 10px; font-size: 11px; color: var(--pages-neutral-12, #eee);
       white-space: normal; width: max-content; max-width: 280px; line-height: 1.4;
       pointer-events: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .has-tip .tip-content::after {
+      content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 8px;
     }
     .has-tip:hover .tip-content { display: block; }
     .tip-more {
@@ -332,6 +339,11 @@ export class AvatarStep extends LitElement {
     if (Object.keys(bigFive).length > 0) profile.bigFive = bigFive;
 
     return profile;
+  }
+
+  private _sdiColor(value: string) {
+    const cls = `sdi-text-${value.toLowerCase()}`;
+    return html`<span class=${cls}>${value}</span>`;
   }
 
   private _toggleLock(fw: string) {
@@ -538,7 +550,7 @@ export class AvatarStep extends LitElement {
                     </div>
                     <dl class="variant-profile">
                       ${Object.entries(profile).map(([fw, vals]) => html`
-                        <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
+                        <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, fw === 'SDI' ? this._sdiColor(val) : val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
                       `)}
                     </dl>
                   </button>
@@ -573,7 +585,7 @@ export class AvatarStep extends LitElement {
             <div class=${classMap({ 'profile-group': true, locked: isLocked })}>
               <div class="profile-row">
                 <span class="profile-label">${this._tip(label, label)}</span>
-                <span class="profile-value">${val ? this._tip(`${label}:${val}`, val) : '—'}</span>
+                <span class="profile-value">${val ? this._tip(`${label}:${val}`, fw === 'sdi' ? this._sdiColor(val) : val) : '—'}</span>
                 <button class=${classMap({ 'profile-lock': true, locked: isLocked })}
                   @click=${() => this._toggleLock(fw)}>
                   ${isLocked ? 'unlock' : 'lock'}
