@@ -71,17 +71,17 @@ export class AvatarStep extends LitElement {
       color: var(--pages-accent-11, #1e3a5f);
     }
 
-    .main-panel { display: grid; grid-template-columns: 1fr 240px; gap: 12px; margin-bottom: 12px; }
+    .main-panel { display: grid; grid-template-columns: 1fr 280px; gap: 12px; margin-bottom: 12px; }
     @media (max-width: 767px) { .main-panel { grid-template-columns: 1fr; } }
 
     .panel { border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: 8px; padding: 12px; background: var(--pages-neutral-1, #fff); }
-    .personality-side .panel { font-size: 11px; padding: 8px; }
+    .personality-side .panel { font-size: 11px; padding: 10px; }
     .personality-side .framework-row { margin-bottom: 5px; }
-    .personality-side .framework-label { min-width: 60px; font-size: 10px; }
-    .personality-side .pill { padding: 2px 6px; font-size: 9px; }
-    .personality-side .big5-toggle { padding: 2px 5px; font-size: 9px; }
-    .personality-side .big5-label { font-size: 9px; min-width: 14px; }
-    .personality-side .reset-btn { font-size: 10px; padding: 3px 8px; }
+    .personality-side .framework-label { min-width: 70px; font-size: 11px; }
+    .personality-side .pill { padding: 3px 7px; font-size: 10px; }
+    .personality-side .big5-toggle { padding: 2px 6px; font-size: 10px; }
+    .personality-side .big5-label { font-size: 10px; min-width: 16px; }
+    .personality-side .reset-btn { font-size: 11px; padding: 3px 10px; }
 
     .framework-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #666); }
