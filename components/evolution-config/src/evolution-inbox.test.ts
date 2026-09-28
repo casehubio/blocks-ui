@@ -92,4 +92,88 @@ describe('blocks-evolution-inbox', () => {
     expect(error).not.toBeNull();
     expect(error!.textContent).toContain('Network error');
   });
+
+  describe('approve/reject actions', () => {
+    it('_handleApprove calls API with APPROVED and emits event', async () => {
+      const el = createElement(SAMPLE_INBOX);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        resolveGate: vi.fn().mockResolvedValue(undefined),
+        getInbox: vi.fn().mockResolvedValue([]),
+      };
+      (el as any)._api = mockApi;
+      const handler = vi.fn();
+      el.addEventListener('pages-event', handler);
+      await (el as any)._handleApprove('inbox-001');
+      expect(mockApi.resolveGate).toHaveBeenCalledWith('case-1', 'tenant-1', 'inbox-001', 'APPROVED');
+      expect(handler).toHaveBeenCalled();
+      expect(handler.mock.calls[0]![0].detail.topic).toBe('evolution:gate-resolved');
+      expect(handler.mock.calls[0]![0].detail.payload.outcome).toBe('APPROVED');
+    });
+
+    it('_openRejectDialog sets dialog state', async () => {
+      const el = createElement(SAMPLE_INBOX);
+      await el.updateComplete;
+      (el as any)._openRejectDialog('inbox-001');
+      expect((el as any)._showRejectDialog).toBe(true);
+      expect((el as any)._pendingRejectId).toBe('inbox-001');
+      expect((el as any)._rejectReason).toBe('');
+      expect((el as any)._rejectFeedback).toBe('');
+    });
+
+    it('_confirmReject does nothing when reason is empty', async () => {
+      const el = createElement(SAMPLE_INBOX);
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      (el as any)._pendingRejectId = 'inbox-001';
+      (el as any)._rejectReason = '  ';
+      const mockApi = { resolveGate: vi.fn() };
+      (el as any)._api = mockApi;
+      await (el as any)._confirmReject();
+      expect(mockApi.resolveGate).not.toHaveBeenCalled();
+    });
+
+    it('_confirmReject calls API with REJECTED, reason, and feedback', async () => {
+      const el = createElement(SAMPLE_INBOX);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        resolveGate: vi.fn().mockResolvedValue(undefined),
+        getInbox: vi.fn().mockResolvedValue([]),
+      };
+      (el as any)._api = mockApi;
+      (el as any)._pendingRejectId = 'inbox-001';
+      (el as any)._rejectReason = 'Not safe';
+      (el as any)._rejectFeedback = 'Needs more tests';
+      const handler = vi.fn();
+      el.addEventListener('pages-event', handler);
+      await (el as any)._confirmReject();
+      expect(mockApi.resolveGate).toHaveBeenCalledWith(
+        'case-1', 'tenant-1', 'inbox-001', 'REJECTED', 'Not safe', 'Needs more tests'
+      );
+      expect(handler).toHaveBeenCalled();
+      expect(handler.mock.calls[0]![0].detail.payload.outcome).toBe('REJECTED');
+      expect((el as any)._pendingRejectId).toBeNull();
+    });
+
+    it('_handleApprove sets error on API failure', async () => {
+      const el = createElement(SAMPLE_INBOX);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        resolveGate: vi.fn().mockRejectedValue(new Error('Timeout')),
+      };
+      (el as any)._api = mockApi;
+      await (el as any)._handleApprove('inbox-001');
+      expect((el as any)._error).toBe('Timeout');
+    });
+  });
 });

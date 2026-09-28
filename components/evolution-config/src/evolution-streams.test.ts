@@ -79,4 +79,80 @@ describe('blocks-evolution-streams', () => {
     expect(error).not.toBeNull();
     expect(error!.textContent).toContain('Network error');
   });
+
+  describe('block/unblock actions', () => {
+    it('_handleBlock opens block dialog with improvement ID', async () => {
+      const el = createElement(SAMPLE_STREAMS);
+      await el.updateComplete;
+      (el as any)._handleBlock('660e8400-0001-0000-0000-000000000001');
+      expect((el as any)._showBlockDialog).toBe(true);
+      expect((el as any)._pendingBlockId).toBe('660e8400-0001-0000-0000-000000000001');
+      expect((el as any)._blockByValue).toBe('');
+    });
+
+    it('_confirmBlock does nothing when blockedBy is empty', async () => {
+      const el = createElement(SAMPLE_STREAMS);
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      (el as any)._pendingBlockId = '001';
+      (el as any)._blockByValue = '';
+      await (el as any)._confirmBlock();
+      expect((el as any)._showBlockDialog).toBeFalsy();
+    });
+
+    it('_confirmBlock calls API and emits event', async () => {
+      const el = createElement(SAMPLE_STREAMS);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        blockImprovement: vi.fn().mockResolvedValue(undefined),
+        getStreamProgress: vi.fn().mockResolvedValue([]),
+      };
+      (el as any)._api = mockApi;
+      (el as any)._pendingBlockId = '001';
+      (el as any)._blockByValue = 'blocker-002';
+      const handler = vi.fn();
+      el.addEventListener('pages-event', handler);
+      await (el as any)._confirmBlock();
+      expect(mockApi.blockImprovement).toHaveBeenCalledWith('case-1', 'tenant-1', '001', 'blocker-002');
+      expect(handler).toHaveBeenCalled();
+      expect(handler.mock.calls[0]![0].detail.topic).toBe('evolution:stream-changed');
+    });
+
+    it('_handleUnblock calls API and emits event', async () => {
+      const el = createElement(SAMPLE_STREAMS);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        unblockImprovement: vi.fn().mockResolvedValue(undefined),
+        getStreamProgress: vi.fn().mockResolvedValue([]),
+      };
+      (el as any)._api = mockApi;
+      const handler = vi.fn();
+      el.addEventListener('pages-event', handler);
+      await (el as any)._handleUnblock('001');
+      expect(mockApi.unblockImprovement).toHaveBeenCalledWith('case-1', 'tenant-1', '001');
+      expect(handler).toHaveBeenCalled();
+      expect(handler.mock.calls[0]![0].detail.topic).toBe('evolution:stream-changed');
+    });
+
+    it('_handleUnblock sets error on API failure', async () => {
+      const el = createElement(SAMPLE_STREAMS);
+      el.endpoint = 'http://test';
+      el.caseId = 'case-1';
+      el.tenancyId = 'tenant-1';
+      await el.updateComplete;
+      const mockApi = {
+        unblockImprovement: vi.fn().mockRejectedValue(new Error('Network error')),
+      };
+      (el as any)._api = mockApi;
+      await (el as any)._handleUnblock('001');
+      expect((el as any)._error).toBe('Network error');
+    });
+  });
 });
