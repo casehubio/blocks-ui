@@ -50,10 +50,16 @@
     import './src/avatar-step.ts';
 
     // Log events
-    document.querySelector('avatar-step').addEventListener('avatar:archetype:selected', (e) => {
+    const log = document.getElementById('event-log');
+    const el = document.querySelector('avatar-step');
+    el.addEventListener('avatar:archetype:selected', (e) => {
       const d = e.detail;
-      document.getElementById('event-log').textContent =
-        `Selected: ${d.archetype.family}/${d.archetype.subArchetype} (collection: ${d.collection})`;
+      const p = d.personality || {};
+      log.textContent = `Selected: ${d.archetype.family}/${d.archetype.subArchetype} | MBTI: ${p.mbti || '—'} Enn: ${p.enneagram || '—'} DISC: ${p.disc || '—'} Belbin: ${p.belbin?.primary || '—'}${p.belbin?.secondaries?.length ? ' +' + p.belbin.secondaries.join(',') : ''} SDI: ${p.sdi || '—'}`;
+    });
+    el.addEventListener('avatar:personality:changed', (e) => {
+      const p = e.detail.personality;
+      log.textContent = `Profile: MBTI: ${p.mbti || '—'} Enn: ${p.enneagram || '—'} DISC: ${p.disc || '—'} Belbin: ${p.belbin?.primary || '—'}${p.belbin?.secondaries?.length ? ' +' + p.belbin.secondaries.join(',') : ''} SDI: ${p.sdi || '—'}`;
     });
   </script>
 </body>
