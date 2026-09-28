@@ -123,7 +123,7 @@ interface TendencyRule {
 }
 
 const TENDENCY_RULES: TendencyRule[] = [
-  { name: 'Skeptical', description: 'Questions assumptions and requests evidence before accepting claims', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.2 }, { axis: 'autonomy', direction: 'high', threshold: 0.2 }] },
+  { name: 'Skeptical', description: 'Questions assumptions and requests evidence before accepting claims', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.15 }, { axis: 'autonomy', direction: 'high', threshold: 0.05 }] },
   { name: 'Methodical', description: 'Follows systematic processes and prefers structured approaches', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.3 }, { axis: 'riskAppetite', direction: 'low', threshold: 0.1 }] },
   { name: 'Empathetic', description: 'Considers emotional impact and prioritises interpersonal harmony', conditions: [{ axis: 'conflictMode', direction: 'low', threshold: 0.3 }, { axis: 'socialOrientation', direction: 'high', threshold: 0.2 }] },
   { name: 'Decisive', description: 'Commits to clear recommendations and avoids hedging', conditions: [{ axis: 'riskAppetite', direction: 'high', threshold: 0.3 }, { axis: 'conflictMode', direction: 'high', threshold: 0.1 }] },
