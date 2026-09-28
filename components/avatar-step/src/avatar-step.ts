@@ -152,7 +152,7 @@ export class AvatarStep extends LitElement {
     .profile-lock.locked { opacity: 1; color: var(--pages-accent-11, #93c5fd); border-color: var(--pages-accent-7, #3b82f6); }
     .profile-picker { display: none; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
     .profile-group:hover:not(.locked) .profile-picker { display: flex; }
-    .profile-default { border-style: dashed; }
+    .profile-default { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-11, #93c5fd); }
     .profile-belbin-sec { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .dynamic-summary {
       font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
