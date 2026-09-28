@@ -143,12 +143,15 @@ export class AvatarStep extends LitElement {
     }
     .profile-section { margin-top: 12px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px; padding: 10px; background: var(--pages-neutral-2, #252538); }
     .profile-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 8px; }
+    .profile-group { position: relative; }
     .profile-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; }
     .profile-label { min-width: 70px; font-weight: 600; color: var(--pages-neutral-10, #aaa); font-size: 11px; }
-    .profile-value { color: var(--pages-neutral-11, #ccc); font-size: 12px; }
-    .profile-edit { font-size: 10px; color: var(--pages-accent-11, #93c5fd); cursor: pointer; margin-left: auto; padding: 2px 6px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 4px; background: transparent; }
-    .profile-edit:hover { background: var(--pages-accent-2, #1a2744); }
-    .profile-picker { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
+    .profile-value { color: var(--pages-neutral-11, #ccc); font-size: 12px; flex: 1; }
+    .profile-lock { font-size: 10px; color: var(--pages-neutral-9, #999); cursor: pointer; padding: 2px 6px; border: 1px solid var(--pages-neutral-5, #4a4a62); border-radius: 4px; background: transparent; opacity: 0; transition: opacity 0.15s; }
+    .profile-group:hover .profile-lock { opacity: 1; }
+    .profile-lock.locked { opacity: 1; color: var(--pages-accent-11, #93c5fd); border-color: var(--pages-accent-7, #3b82f6); }
+    .profile-picker { display: none; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
+    .profile-group:hover:not(.locked) .profile-picker { display: flex; }
     .profile-default { border-style: dashed; }
     .profile-belbin-sec { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .dynamic-summary {
@@ -204,7 +207,7 @@ export class AvatarStep extends LitElement {
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
   @state() private _compactGrid = false;
   @state() private _profile: PersonalityProfile = {};
-  @state() private _profileExpanded: string | null = null;
+  @state() private _profileLocked = new Set<string>();
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -262,6 +265,12 @@ export class AvatarStep extends LitElement {
     if (Object.keys(bigFive).length > 0) profile.bigFive = bigFive;
 
     return profile;
+  }
+
+  private _toggleLock(fw: string) {
+    const next = new Set(this._profileLocked);
+    if (next.has(fw)) next.delete(fw); else next.add(fw);
+    this._profileLocked = next;
   }
 
   private _updateProfileValue(fw: string, value: string) {
@@ -489,16 +498,17 @@ export class AvatarStep extends LitElement {
         ${(['mbti', 'enneagram', 'disc', 'sdi'] as const).map(fw => {
           const label = fwKeyMap[fw]!;
           const val = p[fw];
-          const expanded = this._profileExpanded === fw;
+          const isLocked = this._profileLocked.has(fw);
           return html`
-            <div class="profile-row">
-              <span class="profile-label">${label}</span>
-              <span class="profile-value">${val || '—'}</span>
-              <button class="profile-edit" @click=${() => { this._profileExpanded = expanded ? null : fw; }}>
-                ${expanded ? 'done' : 'edit'}
-              </button>
-            </div>
-            ${expanded ? html`
+            <div class=${classMap({ 'profile-group': true, locked: isLocked })}>
+              <div class="profile-row">
+                <span class="profile-label">${label}</span>
+                <span class="profile-value">${val || '—'}</span>
+                <button class=${classMap({ 'profile-lock': true, locked: isLocked })}
+                  @click=${() => this._toggleLock(fw)}>
+                  ${isLocked ? 'unlock' : 'lock'}
+                </button>
+              </div>
               <div class="profile-picker" role="listbox" aria-label="${label} selection">
                 ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
                   const isDefault = affinityVals.has(`${label}:${v}`);
@@ -511,17 +521,18 @@ export class AvatarStep extends LitElement {
                   `;
                 })}
               </div>
-            ` : nothing}
+            </div>
           `;
         })}
-        <div class="profile-row">
-          <span class="profile-label">Belbin</span>
-          <span class="profile-value">${p.belbin ? `${p.belbin.primary}${p.belbin.secondaries.length ? ` + ${p.belbin.secondaries.join(', ')}` : ''}` : '—'}</span>
-          <button class="profile-edit" @click=${() => { this._profileExpanded = this._profileExpanded === 'belbin' ? null : 'belbin'; }}>
-            ${this._profileExpanded === 'belbin' ? 'done' : 'edit'}
-          </button>
-        </div>
-        ${this._profileExpanded === 'belbin' ? html`
+        <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('belbin') })}>
+          <div class="profile-row">
+            <span class="profile-label">Belbin</span>
+            <span class="profile-value">${p.belbin ? `${p.belbin.primary}${p.belbin.secondaries.length ? ` + ${p.belbin.secondaries.join(', ')}` : ''}` : '—'}</span>
+            <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('belbin') })}
+              @click=${() => this._toggleLock('belbin')}>
+              ${this._profileLocked.has('belbin') ? 'unlock' : 'lock'}
+            </button>
+          </div>
           <div class="profile-picker" role="group" aria-label="Belbin team roles">
             ${(ALL_FRAMEWORK_VALUES.belbin as readonly string[]).map(v => {
               const isPrimary = p.belbin?.primary === v;
@@ -538,15 +549,16 @@ export class AvatarStep extends LitElement {
               `;
             })}
           </div>
-        ` : nothing}
-        <div class="profile-row">
-          <span class="profile-label">Big Five</span>
-          <span class="profile-value">${BIG_FIVE_DIMS.map(d => p.bigFive?.[d] ? `${d}${p.bigFive[d] === 'high' ? '↑' : '↓'}` : '').filter(Boolean).join(' ') || '—'}</span>
-          <button class="profile-edit" @click=${() => { this._profileExpanded = this._profileExpanded === 'bigFive' ? null : 'bigFive'; }}>
-            ${this._profileExpanded === 'bigFive' ? 'done' : 'edit'}
-          </button>
         </div>
-        ${this._profileExpanded === 'bigFive' ? html`
+        <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('bigFive') })}>
+          <div class="profile-row">
+            <span class="profile-label">Big Five</span>
+            <span class="profile-value">${BIG_FIVE_DIMS.map(d => p.bigFive?.[d] ? `${d}${p.bigFive[d] === 'high' ? '↑' : '↓'}` : '').filter(Boolean).join(' ') || '—'}</span>
+            <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('bigFive') })}
+              @click=${() => this._toggleLock('bigFive')}>
+              ${this._profileLocked.has('bigFive') ? 'unlock' : 'lock'}
+            </button>
+          </div>
           <div class="profile-picker" style="flex-direction:column;margin-left:78px">
             ${BIG_FIVE_DIMS.map(dim => html`
               <div class="big5-row" role="radiogroup" aria-label=${BIG_FIVE_LABELS[dim]}>
@@ -561,7 +573,7 @@ export class AvatarStep extends LitElement {
               </div>
             `)}
           </div>
-        ` : nothing}
+        </div>
         ${summaryText ? html`<div class="dynamic-summary">${summaryText}</div>` : nothing}
       </div>
     `;
