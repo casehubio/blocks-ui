@@ -34,6 +34,13 @@ const FRAMEWORK_LABELS: Record<PersonalityFramework, string> = {
 };
 const SINGLE_FRAMEWORKS: PersonalityFramework[] = ['mbti', 'enneagram', 'disc', 'belbin', 'sdi'];
 const MAPPED_ARCHETYPES = new Set(Object.values(PROFESSION_PRESETS).flatMap(roles => roles.flatMap(r => r.variants.map(v => v.archetype))));
+const DISPOSITION_TIPS: Record<string, { low: string; high: string }> = {
+  socialOrientation: { low: 'Prefers working independently, forms own assessments before consulting others', high: 'Seeks consensus, builds on others\' ideas, energised by teamwork' },
+  ruleFollowing: { low: 'Adapts approach based on circumstances, questions established rules when they don\'t fit', high: 'Follows established procedures, enforces standards consistently, values predictability' },
+  riskAppetite: { low: 'Flags risks proactively, errs on the side of safety, prefers proven approaches', high: 'Explores novel approaches, embraces calculated risk, comfortable with uncertainty' },
+  autonomy: { low: 'Seeks guidance and validation, works within established hierarchies, defers to authority', high: 'Self-directed, forms independent judgments, resists external pressure on conclusions' },
+  conflictMode: { low: 'Prioritises harmony, seeks compromise, avoids direct confrontation (Thomas-Kilmann accommodating)', high: 'Challenges directly, pushes back on weak arguments, stands ground under pressure (Thomas-Kilmann competing)' },
+};
 
 function familySubs(family: string): string[] {
   return Object.keys(ARCHETYPE_CONFIGS)
@@ -772,17 +779,20 @@ export class AvatarStep extends LitElement {
     const scores = deriveDispositions(this._profile);
     return html`
       <div class="disposition-section">
-        <div class="disposition-header">Canonical Dispositions</div>
+        <div class="disposition-header" title="Five behavioral axes derived from the personality profile — these inform how the agent's system prompt is generated">Canonical Dispositions</div>
         ${scores.map(s => {
           const pct = ((s.score + 1) / 2) * 100;
           const isNeutral = Math.abs(s.score) < 0.1;
+          const strength = Math.abs(s.score) > 0.5 ? 'Strongly' : Math.abs(s.score) > 0.2 ? 'Moderately' : 'Slightly';
+          const direction = isNeutral ? 'Balanced' : s.score > 0 ? `${strength} ${s.lowLabel} → ${s.highLabel}` : `${strength} ${s.highLabel} → ${s.lowLabel}`;
+          const markerTip = `${direction} (${(s.score * 100).toFixed(0)}%) — from: ${s.contributors.join(', ')}`;
           return html`
-            <div class="disposition-row" title="${s.contributors.join(', ')}">
-              <span class="disposition-label-low">${s.lowLabel}</span>
-              <div class="disposition-bar">
+            <div class="disposition-row">
+              <span class="disposition-label-low" title="${DISPOSITION_TIPS[s.axis]?.low ?? ''}">${s.lowLabel}</span>
+              <div class="disposition-bar" title="${markerTip}">
                 <div class=${classMap({ 'disposition-marker': true, 'disposition-neutral': isNeutral })} style="left: ${pct}%"></div>
               </div>
-              <span class="disposition-label-high">${s.highLabel}</span>
+              <span class="disposition-label-high" title="${DISPOSITION_TIPS[s.axis]?.high ?? ''}">${s.highLabel}</span>
             </div>
           `;
         })}
