@@ -256,17 +256,27 @@ export class AvatarStep extends LitElement {
     const roles = this._profession ? PROFESSION_PRESETS[this._profession] : undefined;
     const activeRole = roles?.find(r => r.role === this._selectedRole);
     const matchedRoles = this._selectedArchetype ? getRolesForArchetype(this._selectedArchetype) : [];
+    const matchedProfessions = new Set(matchedRoles.map(m => m.profession));
     return html`
       <div class="panel" role="tabpanel">
         <div class="profession-pills" role="listbox" aria-label="Professions">
-          ${PROFESSION_LIST.map(p => html`
-            <button class="pill" role="option"
-              aria-selected=${String(this._profession === p)}
-              @click=${() => { this._profession = this._profession === p ? null : p; this._selectedRole = null; }}>
-              ${p}
-            </button>
-          `)}
+          ${PROFESSION_LIST.map(p => {
+            const isProfMatch = matchedProfessions.has(p) && this._profession !== p;
+            return html`
+              <button class=${classMap({ pill: true, 'role-match': isProfMatch })}
+                role="option"
+                aria-selected=${String(this._profession === p)}
+                @click=${() => { this._profession = this._profession === p ? null : p; this._selectedRole = null; }}>
+                ${p}
+              </button>
+            `;
+          })}
         </div>
+        ${this._selectedArchetype && matchedRoles.length === 0 ? html`
+          <div style="font-size:12px;color:var(--pages-neutral-9,#999);margin-top:8px;padding:6px 10px;border:1px dashed var(--pages-neutral-5,#4a4a62);border-radius:6px">
+            ${this._selectedArchetype.split('/')[0]} / ${this._selectedArchetype.split('/')[1]} — not mapped to any profession role. Use "By Personality" to explore this archetype.
+          </div>
+        ` : nothing}
         ${roles ? html`
           <div class="role-pills" role="listbox" aria-label="Roles">
             ${roles.map(({ role }) => {
