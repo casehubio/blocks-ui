@@ -7,10 +7,15 @@ describe('PROFESSION_PRESETS', () => {
     expect(Object.keys(PROFESSION_PRESETS).length).toBeGreaterThanOrEqual(5);
   });
 
-  it('every role maps to a valid archetype key', () => {
+  it('every variant maps to a valid archetype key', () => {
     for (const [profession, roles] of Object.entries(PROFESSION_PRESETS)) {
-      for (const { role, archetype } of roles) {
-        expect(ARCHETYPE_CONFIGS, `${profession}/${role} → ${archetype} not found`).toHaveProperty(archetype);
+      for (const { role, variants } of roles) {
+        expect(variants.length, `${profession}/${role} has no variants`).toBeGreaterThanOrEqual(1);
+        for (const v of variants) {
+          expect(ARCHETYPE_CONFIGS, `${profession}/${role} → ${v.archetype} not found`).toHaveProperty(v.archetype);
+          expect(v.label, `${profession}/${role} variant missing label`).toBeTruthy();
+          expect(v.description, `${profession}/${role} variant missing description`).toBeTruthy();
+        }
       }
     }
   });

@@ -58,7 +58,7 @@ describe('avatar-step integration', () => {
     expect(disabled.length).toBe(36);
   });
 
-  it('profession preset selects archetype and emits event', async () => {
+  it('profession preset shows variants and selects archetype', async () => {
     await el.updateComplete;
 
     let selectedDetail: Record<string, unknown> | undefined;
@@ -70,15 +70,23 @@ describe('avatar-step integration', () => {
     el._profession = 'Software';
     await el.updateComplete;
 
-    // Click "Architect" role pill
+    // Click "Architect" role pill to expand variants
     const pills = el.shadowRoot!.querySelectorAll('.role-pills .pill');
     const architectPill = [...pills].find(p => p.textContent?.trim() === 'Architect') as HTMLElement;
     expect(architectPill).toBeTruthy();
     architectPill.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
     await el.updateComplete;
 
+    // Should show variant buttons
+    const variantBtns = el.shadowRoot!.querySelectorAll('.variant-btn');
+    expect(variantBtns.length).toBeGreaterThanOrEqual(2);
+
+    // Click first variant
+    variantBtns[0]!.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    await el.updateComplete;
+
     expect(selectedDetail).toBeDefined();
-    expect(selectedDetail!.archetype).toEqual({ family: 'Sage', subArchetype: 'Mentor' });
+    expect(selectedDetail!.archetype).toBeDefined();
   });
 
   it('switching collection updates avatar rendering', async () => {

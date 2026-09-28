@@ -3,3 +3,4 @@ export { getCompatibleArchetypes, getValidFrameworkValues, getValidBigFivePoles 
 export type { MatchTier } from './filter.js';
 export type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data/compatibility-matrix.js';
 export { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
+export type { ProfessionRole, RoleVariant } from './data/profession-presets.js';

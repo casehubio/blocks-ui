@@ -8,6 +8,7 @@ import type { MatchTier } from './filter.js';
 import { FRAMEWORK_FAMILY_MAP, ALL_FRAMEWORK_VALUES } from './data/compatibility-matrix.js';
 import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data/compatibility-matrix.js';
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
+import type { RoleVariant } from './data/profession-presets.js';
 
 const FAMILIES = ARCHETYPE_FAMILIES as readonly string[];
 const BIG_FIVE_DIMS: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
@@ -114,6 +115,7 @@ export class AvatarStep extends LitElement {
   @state() private _selectedArchetype: string | null = null;
   @state() private _tab: 'profession' | 'personality' = 'profession';
   @state() private _profession: string | null = null;
+  @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
 
@@ -203,24 +205,43 @@ export class AvatarStep extends LitElement {
   }
 
   private _renderProfessionPanel() {
+    const roles = this._profession ? PROFESSION_PRESETS[this._profession] : undefined;
+    const activeRole = roles?.find(r => r.role === this._selectedRole);
     return html`
       <div class="panel" role="tabpanel">
         <select class="profession-select" @change=${(e: Event) => {
           this._profession = (e.target as HTMLSelectElement).value || null;
+          this._selectedRole = null;
         }}>
           <option value="">Select profession...</option>
           ${PROFESSION_LIST.map(p => html`<option value=${p}>${p}</option>`)}
         </select>
-        ${this._profession ? html`
+        ${roles ? html`
           <div class="role-pills" role="listbox" aria-label="Roles">
-            ${PROFESSION_PRESETS[this._profession]!.map(({ role, archetype }) => html`
+            ${roles.map(({ role, variants }) => html`
               <button class="pill" role="option"
-                aria-selected=${String(this._selectedArchetype === archetype)}
-                @click=${() => this._selectArchetype(archetype)}>
+                aria-selected=${String(this._selectedRole === role)}
+                @click=${() => { this._selectedRole = this._selectedRole === role ? null : role; }}>
                 ${role}
               </button>
             `)}
           </div>
+          ${activeRole ? html`
+            <div class="variant-list" style="margin-top:10px">
+              <div style="font-size:12px;color:var(--pages-neutral-10,#aaa);margin-bottom:6px">What type of ${activeRole.role}?</div>
+              ${activeRole.variants.map(v => html`
+                <button class="variant-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;margin-bottom:4px;border:2px solid ${this._selectedArchetype === v.archetype ? 'var(--pages-accent-9,#2563eb)' : 'var(--pages-neutral-4,#3a3a52)'};border-radius:8px;background:var(--pages-neutral-2,#252538);cursor:pointer;text-align:left;color:var(--pages-neutral-11,#ccc);font-size:13px"
+                  @click=${() => this._selectArchetype(v.archetype)}>
+                  <agent-avatar .archetype=${{ family: v.archetype.split('/')[0], subArchetype: v.archetype.split('/')[1] }}
+                    collection=${this._collection} size="sm"></agent-avatar>
+                  <div>
+                    <div style="font-weight:600">${v.label}</div>
+                    <div style="font-size:11px;color:var(--pages-neutral-9,#999)">${v.description}</div>
+                  </div>
+                </button>
+              `)}
+            </div>
+          ` : nothing}
         ` : nothing}
       </div>
     `;
