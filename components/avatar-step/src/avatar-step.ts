@@ -128,8 +128,9 @@ export class AvatarStep extends LitElement {
     .pill[aria-selected="true"], .pill[aria-pressed="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
     }
-    .pill[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
-    .pill:hover:not([aria-selected="true"]):not([aria-disabled="true"]) { background: var(--pages-neutral-3, #2d2d44); }
+    .pill[data-dimmed] { opacity: 0.3; }
+    .pill[data-dimmed]:hover { opacity: 0.6; }
+    .pill:hover:not([aria-selected="true"]) { background: var(--pages-neutral-3, #2d2d44); }
 
     .big5-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
     .big5-label { font-size: 11px; min-width: 30px; text-align: center; color: var(--pages-neutral-10, #aaa); }
@@ -140,7 +141,8 @@ export class AvatarStep extends LitElement {
     .big5-toggle[aria-checked="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
     }
-    .big5-toggle[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
+    .big5-toggle[data-dimmed] { opacity: 0.3; }
+    .big5-toggle[data-dimmed]:hover { opacity: 0.6; }
 
     .reset-btn {
       padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #4a4a62);
@@ -217,9 +219,9 @@ export class AvatarStep extends LitElement {
     .avatar-cell.strong:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .avatar-cell.weak { opacity: 0.6; }
     .avatar-cell.weak:hover { border-color: var(--pages-accent-7, #93c5fd); }
-    .avatar-cell.incompatible { opacity: 0.25; transform: scale(0.9); pointer-events: none; }
+    .avatar-cell.incompatible { opacity: 0.25; transform: scale(0.9); cursor: pointer; }
+    .avatar-cell.incompatible:hover { opacity: 0.5; border-color: var(--pages-neutral-5, #4a4a62); }
     .avatar-cell.unmapped .sub-label::after { content: ' *'; color: var(--pages-neutral-9, #999); font-size: 8px; }
-    .avatar-cell[aria-disabled="true"] { cursor: default; }
     .avatar-cell.selected { border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-2, #eff6ff); }
     .avatar-cell .sub-label { font-size: 10px; color: var(--pages-neutral-9, #737373); text-align: center; margin-top: 2px; }
 
@@ -419,7 +421,14 @@ export class AvatarStep extends LitElement {
       delete next[fw];
       this._frameworks = next;
     } else {
-      this._frameworks = { ...this._frameworks, [fw]: value };
+      const candidate = { ...this._frameworks, [fw]: value };
+      const matches = getCompatibleArchetypes(candidate, this._bigFive);
+      if ([...matches.values()].every(t => t === 'incompatible')) {
+        this._frameworks = { [fw]: value };
+        this._bigFive = {};
+      } else {
+        this._frameworks = candidate;
+      }
     }
     this._syncSelectionWithFilters();
   }
@@ -430,7 +439,14 @@ export class AvatarStep extends LitElement {
       delete next[dim];
       this._bigFive = next;
     } else {
-      this._bigFive = { ...this._bigFive, [dim]: pole };
+      const candidate = { ...this._bigFive, [dim]: pole };
+      const matches = getCompatibleArchetypes(this._frameworks, candidate);
+      if ([...matches.values()].every(t => t === 'incompatible')) {
+        this._bigFive = { [dim]: pole };
+        this._frameworks = {};
+      } else {
+        this._bigFive = candidate;
+      }
     }
     this._syncSelectionWithFilters();
   }
@@ -833,7 +849,7 @@ export class AvatarStep extends LitElement {
                       role="option"
                       data-framework=${fw} data-value=${v}
                       aria-selected=${String(isSelected)}
-                      aria-disabled=${String(isDisabled)}
+                      ?data-dimmed=${isDisabled}
                       @click=${() => this._selectFramework(fw, v)}>
                       ${this._tip(`${fwLabel}:${v}`, v)}
                     </button>
@@ -854,7 +870,7 @@ export class AvatarStep extends LitElement {
                   ${(['high', 'low'] as const).map(pole => html`
                     <button class="big5-toggle" role="radio"
                       aria-checked=${String(this._bigFive[dim] === pole)}
-                      aria-disabled=${String(!validPoles.has(pole) && this._bigFive[dim] !== pole)}
+                      ?data-dimmed=${!validPoles.has(pole) && this._bigFive[dim] !== pole}
                       @click=${() => this._toggleBigFive(dim, pole)}>
                       ${this._tip(`Big Five:${pole === 'high' ? 'High' : 'Low'} ${dim}`, pole === 'high' ? 'High' : 'Low')}
                     </button>
@@ -892,14 +908,13 @@ export class AvatarStep extends LitElement {
               const key = `${family}/${sub}`;
               const tier = tiers.get(key) ?? 'strong';
               const selected = this._selectedArchetype === key;
-              const disabled = tier === 'incompatible';
-              if (this._compactGrid && disabled) return html`<div></div>`;
+              const incompatible = tier === 'incompatible';
+              if (this._compactGrid && incompatible) return html`<div></div>`;
               return html`
                 <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key) })}
                   role="radio" aria-checked=${String(selected)}
                   aria-label="${family} ${sub} avatar"
-                  aria-disabled=${String(disabled)}
-                  @click=${disabled ? nothing : () => this._selectArchetype(key)}>
+                  @click=${() => { if (incompatible) { this._frameworks = {}; this._bigFive = {}; } this._selectArchetype(key); }}>
                   <agent-avatar
                     .archetype=${{ family, subArchetype: sub }}
                     collection=${this._collection}
