@@ -114,6 +114,7 @@ export interface BehavioralTendency {
   name: string;
   description: string;
   strength: 'strong' | 'moderate' | 'mild';
+  inferredFrom: string[];
 }
 
 interface TendencyRule {
@@ -154,16 +155,20 @@ export function deriveTendencies(scores: AxisScore[]): BehavioralTendency[] {
   for (const rule of TENDENCY_RULES) {
     let totalExcess = 0;
     let allMet = true;
+    const sources: string[] = [];
     for (const cond of rule.conditions) {
       const val = scoreMap[cond.axis] ?? 0;
       const effective = cond.direction === 'high' ? val : -val;
       if (effective < cond.threshold) { allMet = false; break; }
       totalExcess += effective - cond.threshold;
+      const axisScore = scores.find(s => s.axis === cond.axis);
+      const label = cond.direction === 'high' ? axisScore?.highLabel : axisScore?.lowLabel;
+      sources.push(`${label ?? cond.axis} (${(val * 100).toFixed(0)}%)`);
     }
     if (!allMet) continue;
     const avgExcess = totalExcess / rule.conditions.length;
     const strength: 'strong' | 'moderate' | 'mild' = avgExcess > 0.3 ? 'strong' : avgExcess > 0.15 ? 'moderate' : 'mild';
-    result.push({ name: rule.name, description: rule.description, strength });
+    result.push({ name: rule.name, description: rule.description, strength, inferredFrom: sources });
   }
 
   result.sort((a, b) => {

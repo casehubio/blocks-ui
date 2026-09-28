@@ -809,7 +809,7 @@ export class AvatarStep extends LitElement {
         <div class="tendencies-header">Behavioral Tendencies</div>
         <div class="tendency-list">
           ${tendencies.map(t => html`
-            <span class=${classMap({ 'tendency-chip': true, [t.strength]: true })} title="${t.description}">
+            <span class=${classMap({ 'tendency-chip': true, [t.strength]: true })} title="${t.description} — inferred from: ${t.inferredFrom.join(', ')}">
               ${t.name}<span class="tendency-strength">${t.strength === 'strong' ? '+++' : t.strength === 'moderate' ? '++' : '+'}</span>
             </span>
           `)}
