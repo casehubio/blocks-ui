@@ -233,16 +233,6 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
     model: import('@casehubio/graph-core').GraphModel,
     options: ElkLayoutOptions,
   ): Promise<LayoutResult> {
-    if (this._isSequentialTopology()) {
-      const layout = computeStackColumnLayout(model, {
-        verticalGap: 50,
-        horizontalGap: 40,
-        containerPaddingTop: 40,
-        skipTypes: new Set(['external']),
-        nodeWidth: 280,
-      });
-      return { layout, direction: options.direction };
-    }
     const { computeElkLayout } = await import('@casehubio/graph-renderer');
     return { layout: await computeElkLayout(model, options), direction: options.direction };
   }
