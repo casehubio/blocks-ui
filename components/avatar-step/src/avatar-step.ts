@@ -120,7 +120,7 @@ export class AvatarStep extends LitElement {
     .variant-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .variant-label { font-weight: 600; margin-bottom: 2px; }
     .variant-desc { font-size: 11px; color: var(--pages-neutral-9, #999); }
-    .variant-profile { font-size: 10px; color: var(--pages-neutral-9, #999); margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .variant-profile { font-size: 10px; color: var(--pages-neutral-9, #999); margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 4px; }
     .variant-profile dt { font-weight: 600; color: var(--pages-neutral-10, #aaa); margin-top: 3px; }
     .variant-profile dd { margin: 0; margin-bottom: 2px; }
 
