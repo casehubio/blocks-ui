@@ -395,7 +395,6 @@ export class AvatarStep extends LitElement {
     } else {
       this._profile = { ...this._profile, [fw]: value };
     }
-    this._profileExpanded = null;
     this._emitPersonalityChanged();
   }
 
@@ -619,7 +618,7 @@ export class AvatarStep extends LitElement {
                     </div>
                     <dl class="variant-profile">
                       ${Object.entries(profile).map(([fw, vals]) => html`
-                        <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, fw === 'SDI' ? this._sdiColor(val) : val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
+                        <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, fw === 'SDI' ? this._sdiColor(val) : val)).reduce((a: unknown, b: unknown) => html`${a}, ${b}`)}</dd>
                       `)}
                     </dl>
                   </button>
@@ -720,7 +719,7 @@ export class AvatarStep extends LitElement {
         <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('belbin') })}>
           <div class="profile-row">
             <span class="profile-label">${this._tip('Belbin', 'Belbin')}</span>
-            <span class="profile-value">${p.belbin ? html`${this._tip('Belbin:' + p.belbin.primary, p.belbin.primary)}${p.belbin.secondaries.length ? html` + ${p.belbin.secondaries.map(s => this._tip('Belbin:' + s, s)).reduce((a: any, b: any) => html`${a}, ${b}`)}` : nothing}` : '—'}</span>
+            <span class="profile-value">${p.belbin ? html`${this._tip('Belbin:' + p.belbin.primary, p.belbin.primary)}${p.belbin.secondaries.length ? html` + ${p.belbin.secondaries.map(s => this._tip('Belbin:' + s, s)).reduce((a: unknown, b: unknown) => html`${a}, ${b}`)}` : nothing}` : '—'}</span>
             <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('belbin') })}
               @click=${() => this._toggleLock('belbin')}>
               ${this._profileLocked.has('belbin') ? 'unlock' : 'lock'}
@@ -929,32 +928,4 @@ export class AvatarStep extends LitElement {
     `;
   }
 
-  private _renderPreview() {
-    const [family, sub] = this._selectedArchetype!.split('/');
-    const matchedRoles = getRolesForArchetype(this._selectedArchetype!);
-    const profile = getFrameworkProfile(this._selectedArchetype!);
-    return html`
-      <div class="preview" role="status" aria-live="polite">
-        <agent-avatar
-          .archetype=${{ family, subArchetype: sub }}
-          collection=${this._collection}
-          size="lg">
-        </agent-avatar>
-        <div class="preview-info">
-          <div class="preview-family">${family}</div>
-          <div class="preview-sub">${sub}</div>
-          ${matchedRoles.length > 0 ? html`
-            <div style="font-size:11px;color:var(--pages-neutral-9,#999);margin-top:4px">
-              ${matchedRoles.map(m => html`<span style="background:var(--pages-accent-2,#eff6ff);padding:2px 6px;border-radius:4px;margin-right:4px;display:inline-block;margin-bottom:2px">${m.profession} &rsaquo; ${m.role}</span>`)}
-            </div>
-          ` : nothing}
-          <dl class="variant-profile" style="margin-top:8px">
-            ${Object.entries(profile).map(([fw, vals]) => html`
-              <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
-            `)}
-          </dl>
-        </div>
-      </div>
-    `;
-  }
 }
