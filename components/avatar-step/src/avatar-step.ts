@@ -50,8 +50,8 @@ function getFrameworkProfile(archetypeKey: string): Record<string, string[]> {
     profile['Enneagram'] = rules.enneagramAffinity.map(n => `Type ${n}`);
   }
   for (const [fw, map] of Object.entries(FRAMEWORK_FAMILY_MAP)) {
-    if (fw === 'bigFive' || fw === 'mbti' || fw === 'enneagram') continue;
-    const label = fw === 'disc' ? 'DISC' : fw === 'belbin' ? 'Belbin' : 'SDI';
+    if (fw === 'mbti' || fw === 'enneagram') continue;
+    const label = fw === 'disc' ? 'DISC' : fw === 'belbin' ? 'Belbin' : fw === 'sdi' ? 'SDI' : 'Big Five';
     const matches = Object.entries(map).filter(([, families]) => (families as string[]).includes(family!)).map(([val]) => val);
     if (matches.length > 0) profile[label] = matches;
   }
@@ -739,7 +739,7 @@ export class AvatarStep extends LitElement {
         <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('bigFive') })}>
           <div class="profile-row">
             <span class="profile-label">${this._tip('Big Five', 'Big Five')}</span>
-            <span class="profile-value">${BIG_FIVE_DIMS.map(d => p.bigFive?.[d] ? `${d}${p.bigFive[d] === 'high' ? '↑' : '↓'}` : '').filter(Boolean).join(' ') || '—'}</span>
+            <span class="profile-value">${(() => { const dims = BIG_FIVE_DIMS.filter(d => p.bigFive?.[d]); return dims.length > 0 ? dims.map(d => this._tip(`Big Five:${p.bigFive![d] === 'high' ? 'High' : 'Low'} ${d}`, html`${d}${p.bigFive![d] === 'high' ? '↑' : '↓'}`)) : '—'; })()}</span>
             <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('bigFive') })}
               @click=${() => this._toggleLock('bigFive')}>
               ${this._profileLocked.has('bigFive') ? 'unlock' : 'lock'}
@@ -748,7 +748,7 @@ export class AvatarStep extends LitElement {
           <div class="profile-picker" style="flex-direction:column;margin-left:78px">
             ${BIG_FIVE_DIMS.map(dim => html`
               <div class="big5-row" role="radiogroup" aria-label=${BIG_FIVE_LABELS[dim]}>
-                <span class="big5-label">${dim}</span>
+                <span class="big5-label">${this._tip('Big Five', `${dim} — ${BIG_FIVE_LABELS[dim]}`)}</span>
                 ${(['high', 'low'] as const).map(pole => html`
                   <button class="big5-toggle" role="radio"
                     aria-checked=${String(p.bigFive?.[dim] === pole)}
@@ -855,7 +855,7 @@ export class AvatarStep extends LitElement {
               const validPoles = getValidBigFivePoles(dim, this._bigFive, this._frameworks);
               return html`
                 <div class="big5-row" role="radiogroup" aria-label=${BIG_FIVE_LABELS[dim]}>
-                  <span class="big5-label">${dim}</span>
+                  <span class="big5-label">${this._tip('Big Five', `${dim} — ${BIG_FIVE_LABELS[dim]}`)}</span>
                   ${(['high', 'low'] as const).map(pole => html`
                     <button class="big5-toggle" role="radio"
                       aria-checked=${String(this._bigFive[dim] === pole)}
