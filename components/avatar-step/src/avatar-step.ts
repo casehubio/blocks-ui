@@ -141,7 +141,7 @@ export class AvatarStep extends LitElement {
       padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
       background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px; margin-top: 4px;
     }
-    .profile-section { margin-top: 12px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px; padding: 10px; background: var(--pages-neutral-2, #252538); }
+    .profile-section { margin-bottom: 12px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px; padding: 10px; background: var(--pages-neutral-2, #252538); }
     .profile-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 8px; }
     .profile-group { position: relative; }
     .profile-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; }
@@ -153,6 +153,14 @@ export class AvatarStep extends LitElement {
     .profile-picker { display: none; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
     .profile-group:hover:not(.locked) .profile-picker { display: flex; }
     .profile-default { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-11, #93c5fd); }
+    .pill.sdi-blue { border-color: #3b82f6; color: #93c5fd; }
+    .pill.sdi-blue[aria-selected="true"] { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .pill.sdi-red { border-color: #ef4444; color: #fca5a5; }
+    .pill.sdi-red[aria-selected="true"] { background: #dc2626; border-color: #dc2626; color: #fff; }
+    .pill.sdi-green { border-color: #22c55e; color: #86efac; }
+    .pill.sdi-green[aria-selected="true"] { background: #16a34a; border-color: #16a34a; color: #fff; }
+    .pill.sdi-hub { border-color: #a78bfa; color: #c4b5fd; }
+    .pill.sdi-hub[aria-selected="true"] { background: #7c3aed; border-color: #7c3aed; color: #fff; }
     .profile-belbin-sec { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .dynamic-summary {
       font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
@@ -364,7 +372,10 @@ export class AvatarStep extends LitElement {
     return html`
       ${this._renderCollectionBar()}
       <div class="main-panel">
-        <div class="profession-side">${this._renderProfessionPanel()}</div>
+        <div class="profession-side">
+          ${this._renderProfileSection()}
+          ${this._renderProfessionPanel()}
+        </div>
         <div class="personality-side">${this._renderPersonalityPanel()}</div>
       </div>
       ${this._renderGrid()}
@@ -476,7 +487,6 @@ export class AvatarStep extends LitElement {
             </div>
           ` : nothing}
         ` : nothing}
-        ${this._renderProfileSection()}
       </div>
     `;
   }
@@ -512,8 +522,10 @@ export class AvatarStep extends LitElement {
               <div class="profile-picker" role="listbox" aria-label="${label} selection">
                 ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
                   const isDefault = affinityVals.has(`${label}:${v}`);
+                  const classes: Record<string, boolean> = { pill: true, 'profile-default': isDefault && p[fw] !== v };
+                  if (fw === 'sdi') classes[`sdi-${v.toLowerCase()}`] = true;
                   return html`
-                    <button class=${classMap({ pill: true, 'profile-default': isDefault && p[fw] !== v })}
+                    <button class=${classMap(classes)}
                       role="option" aria-selected=${String(p[fw] === v)}
                       @click=${() => this._updateProfileValue(fw, v)}>
                       ${v}
