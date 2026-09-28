@@ -10,6 +10,7 @@ import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 import type { RoleVariant } from './data/profession-presets.js';
 import { buildSummaryText } from './data/framework-descriptors.js';
+import { FRAMEWORK_TOOLTIPS } from './data/framework-tooltips.js';
 
 export interface PersonalityProfile {
   mbti?: string;
@@ -202,6 +203,37 @@ export class AvatarStep extends LitElement {
     .preview-family { font-weight: 600; color: var(--pages-accent-11, #1e3a5f); }
     .preview-sub { color: var(--pages-neutral-10, #666); }
 
+    .has-tip { position: relative; cursor: help; }
+    .has-tip .tip-content {
+      display: none; position: absolute; z-index: 10;
+      bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+      background: var(--pages-neutral-3, #2d2d44); border: 1px solid var(--pages-neutral-5, #4a4a62);
+      border-radius: 6px; padding: 6px 10px; font-size: 11px; color: var(--pages-neutral-12, #eee);
+      white-space: normal; width: max-content; max-width: 280px; line-height: 1.4;
+      pointer-events: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .has-tip:hover .tip-content { display: block; }
+    .tip-more {
+      display: inline-block; margin-top: 4px; font-size: 10px;
+      color: var(--pages-accent-11, #93c5fd); cursor: pointer;
+      background: none; border: none; padding: 0; text-decoration: underline;
+    }
+    .tip-dialog-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6); z-index: 100; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .tip-dialog {
+      background: var(--pages-neutral-2, #252538); border: 1px solid var(--pages-neutral-5, #4a4a62);
+      border-radius: 10px; padding: 20px; max-width: 480px; width: 90%;
+      color: var(--pages-neutral-12, #eee); font-size: 13px; line-height: 1.5;
+    }
+    .tip-dialog h3 { margin: 0 0 8px; color: var(--pages-accent-11, #93c5fd); font-size: 15px; }
+    .tip-dialog-close {
+      float: right; background: none; border: none; color: var(--pages-neutral-10, #aaa);
+      cursor: pointer; font-size: 16px; padding: 0;
+    }
+
     @media (max-width: 767px) {
       .grid { grid-template-columns: auto repeat(2, 1fr); }
     }
@@ -216,6 +248,7 @@ export class AvatarStep extends LitElement {
   @state() private _compactGrid = false;
   @state() private _profile: PersonalityProfile = {};
   @state() private _profileLocked = new Set<string>();
+  @state() private _tipDialog: string | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -225,6 +258,28 @@ export class AvatarStep extends LitElement {
 
   private _tiers(): Map<string, MatchTier> {
     return getCompatibleArchetypes(this._frameworks, this._bigFive);
+  }
+
+  private _tip(key: string, content: unknown) {
+    const entry = FRAMEWORK_TOOLTIPS[key];
+    if (!entry) return content;
+    return html`<span class="has-tip">${content}<span class="tip-content">${entry.tip} <button class="tip-more" @click=${(e: Event) => { e.stopPropagation(); this._tipDialog = key; }}>more</button></span></span>`;
+  }
+
+  private _renderTipDialog() {
+    if (!this._tipDialog) return nothing;
+    const entry = FRAMEWORK_TOOLTIPS[this._tipDialog];
+    if (!entry) return nothing;
+    const title = this._tipDialog.includes(':') ? this._tipDialog.split(':')[1] : this._tipDialog;
+    return html`
+      <div class="tip-dialog-overlay" @click=${() => { this._tipDialog = null; }}>
+        <div class="tip-dialog" @click=${(e: Event) => e.stopPropagation()}>
+          <button class="tip-dialog-close" @click=${() => { this._tipDialog = null; }}>X</button>
+          <h3>${title}</h3>
+          <p>${entry.detail}</p>
+        </div>
+      </div>
+    `;
   }
 
   private _buildPersonalityProfile(): PersonalityProfile {
@@ -379,6 +434,7 @@ export class AvatarStep extends LitElement {
         <div class="personality-side">${this._renderPersonalityPanel()}</div>
       </div>
       ${this._renderGrid()}
+      ${this._renderTipDialog()}
     `;
   }
 
@@ -478,7 +534,7 @@ export class AvatarStep extends LitElement {
                     </div>
                     <dl class="variant-profile">
                       ${Object.entries(profile).map(([fw, vals]) => html`
-                        <dt>${fw}</dt><dd>${vals.join(', ')}</dd>
+                        <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
                       `)}
                     </dl>
                   </button>
@@ -512,8 +568,8 @@ export class AvatarStep extends LitElement {
           return html`
             <div class=${classMap({ 'profile-group': true, locked: isLocked })}>
               <div class="profile-row">
-                <span class="profile-label">${label}</span>
-                <span class="profile-value">${val || '—'}</span>
+                <span class="profile-label">${this._tip(label, label)}</span>
+                <span class="profile-value">${val ? this._tip(`${label}:${val}`, val) : '—'}</span>
                 <button class=${classMap({ 'profile-lock': true, locked: isLocked })}
                   @click=${() => this._toggleLock(fw)}>
                   ${isLocked ? 'unlock' : 'lock'}
@@ -528,7 +584,7 @@ export class AvatarStep extends LitElement {
                     <button class=${classMap(classes)}
                       role="option" aria-selected=${String(p[fw] === v)}
                       @click=${() => this._updateProfileValue(fw, v)}>
-                      ${v}
+                      ${this._tip(`${label}:${v}`, v)}
                     </button>
                   `;
                 })}
@@ -538,8 +594,8 @@ export class AvatarStep extends LitElement {
         })}
         <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('belbin') })}>
           <div class="profile-row">
-            <span class="profile-label">Belbin</span>
-            <span class="profile-value">${p.belbin ? `${p.belbin.primary}${p.belbin.secondaries.length ? ` + ${p.belbin.secondaries.join(', ')}` : ''}` : '—'}</span>
+            <span class="profile-label">${this._tip('Belbin', 'Belbin')}</span>
+            <span class="profile-value">${p.belbin ? html`${this._tip('Belbin:' + p.belbin.primary, p.belbin.primary)}${p.belbin.secondaries.length ? html` + ${p.belbin.secondaries.map(s => this._tip('Belbin:' + s, s)).reduce((a: any, b: any) => html`${a}, ${b}`)}` : nothing}` : '—'}</span>
             <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('belbin') })}
               @click=${() => this._toggleLock('belbin')}>
               ${this._profileLocked.has('belbin') ? 'unlock' : 'lock'}
@@ -556,7 +612,7 @@ export class AvatarStep extends LitElement {
                   aria-pressed=${String(isPrimary || isSecondary)}
                   aria-description=${isPrimary ? 'primary' : isSecondary ? 'secondary' : nothing}
                   @click=${() => this._updateProfileBelbin(v)}>
-                  ${v}
+                  ${this._tip('Belbin:' + v, v)}
                 </button>
               `;
             })}
@@ -564,7 +620,7 @@ export class AvatarStep extends LitElement {
         </div>
         <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('bigFive') })}>
           <div class="profile-row">
-            <span class="profile-label">Big Five</span>
+            <span class="profile-label">${this._tip('Big Five', 'Big Five')}</span>
             <span class="profile-value">${BIG_FIVE_DIMS.map(d => p.bigFive?.[d] ? `${d}${p.bigFive[d] === 'high' ? '↑' : '↓'}` : '').filter(Boolean).join(' ') || '—'}</span>
             <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('bigFive') })}
               @click=${() => this._toggleLock('bigFive')}>
@@ -579,7 +635,7 @@ export class AvatarStep extends LitElement {
                   <button class="big5-toggle" role="radio"
                     aria-checked=${String(p.bigFive?.[dim] === pole)}
                     @click=${() => this._updateProfileBigFive(dim, pole)}>
-                    ${pole === 'high' ? 'High' : 'Low'}
+                    ${this._tip(`Big Five:${pole === 'high' ? 'High' : 'Low'} ${dim}`, pole === 'high' ? 'High' : 'Low')}
                   </button>
                 `)}
               </div>
@@ -607,7 +663,7 @@ export class AvatarStep extends LitElement {
           const fwLabel = fwKeyMap[fw] ?? fw;
           return html`
             <div class="framework-row">
-              <span class="framework-label">${FRAMEWORK_LABELS[fw]}</span>
+              <span class="framework-label">${this._tip(FRAMEWORK_LABELS[fw], FRAMEWORK_LABELS[fw])}</span>
               <div role="listbox" aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
                 ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
                   const isAvatarMatch = avatarVals.has(`${fwLabel}:${v}`);
@@ -621,7 +677,7 @@ export class AvatarStep extends LitElement {
                       aria-selected=${String(isSelected)}
                       aria-disabled=${String(isDisabled)}
                       @click=${() => this._selectFramework(fw, v)}>
-                      ${v}
+                      ${this._tip(`${fwLabel}:${v}`, v)}
                     </button>
                   `;
                 })}
@@ -630,7 +686,7 @@ export class AvatarStep extends LitElement {
           `;
         })}
         <div class="framework-row">
-          <span class="framework-label">Big Five</span>
+          <span class="framework-label">${this._tip('Big Five', 'Big Five')}</span>
           <div style="display:flex;flex-direction:column;gap:2px">
             ${BIG_FIVE_DIMS.map(dim => {
               const validPoles = getValidBigFivePoles(dim, this._bigFive, this._frameworks);
@@ -642,7 +698,7 @@ export class AvatarStep extends LitElement {
                       aria-checked=${String(this._bigFive[dim] === pole)}
                       aria-disabled=${String(!validPoles.has(pole) && this._bigFive[dim] !== pole)}
                       @click=${() => this._toggleBigFive(dim, pole)}>
-                      ${pole === 'high' ? 'High' : 'Low'}
+                      ${this._tip(`Big Five:${pole === 'high' ? 'High' : 'Low'} ${dim}`, pole === 'high' ? 'High' : 'Low')}
                     </button>
                   `)}
                 </div>
@@ -722,7 +778,7 @@ export class AvatarStep extends LitElement {
           ` : nothing}
           <dl class="variant-profile" style="margin-top:8px">
             ${Object.entries(profile).map(([fw, vals]) => html`
-              <dt>${fw}</dt><dd>${vals.join(', ')}</dd>
+              <dt>${this._tip(fw, fw)}</dt><dd>${vals.map((val: string) => this._tip(`${fw}:${val}`, val)).reduce((a: any, b: any) => html`${a}, ${b}`)}</dd>
             `)}
           </dl>
         </div>
