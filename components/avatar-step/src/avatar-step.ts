@@ -10,6 +10,8 @@ import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 import type { RoleVariant } from './data/profession-presets.js';
 import { buildSummaryText } from './data/framework-descriptors.js';
+import { deriveDispositions } from './data/disposition-mapping.js';
+import type { AxisScore } from './data/disposition-mapping.js';
 import { FRAMEWORK_TOOLTIPS } from './data/framework-tooltips.js';
 
 export interface PersonalityProfile {
@@ -171,6 +173,14 @@ export class AvatarStep extends LitElement {
       font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
       margin-top: 8px; line-height: 1.3; padding-top: 6px; border-top: 1px solid var(--pages-neutral-4, #3a3a52);
     }
+    .disposition-section { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--pages-neutral-4, #3a3a52); }
+    .disposition-header { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-neutral-10, #aaa); margin-bottom: 6px; }
+    .disposition-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 10px; }
+    .disposition-label-low { min-width: 80px; text-align: right; color: var(--pages-neutral-9, #999); }
+    .disposition-label-high { min-width: 80px; color: var(--pages-neutral-9, #999); }
+    .disposition-bar { flex: 1; height: 6px; background: var(--pages-neutral-4, #3a3a52); border-radius: 3px; position: relative; min-width: 80px; }
+    .disposition-marker { position: absolute; top: -3px; width: 12px; height: 12px; border-radius: 50%; background: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-11, #93c5fd); transform: translateX(-50%); transition: left 0.3s ease; }
+    .disposition-neutral { background: var(--pages-neutral-5, #4a4a62); }
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -659,6 +669,31 @@ export class AvatarStep extends LitElement {
           </div>
         </div>
         ${summaryText ? html`<div class="dynamic-summary">${summaryText}</div>` : nothing}
+        ${this._renderDispositions()}
+      </div>
+    `;
+  }
+
+  private _renderDispositions() {
+    const hasAnyProfile = this._profile.mbti || this._profile.enneagram || this._profile.disc || this._profile.sdi || this._profile.belbin || (this._profile.bigFive && Object.keys(this._profile.bigFive).length > 0);
+    if (!hasAnyProfile) return nothing;
+    const scores = deriveDispositions(this._profile);
+    return html`
+      <div class="disposition-section">
+        <div class="disposition-header">Canonical Dispositions</div>
+        ${scores.map(s => {
+          const pct = ((s.score + 1) / 2) * 100;
+          const isNeutral = Math.abs(s.score) < 0.1;
+          return html`
+            <div class="disposition-row" title="${s.contributors.join(', ')}">
+              <span class="disposition-label-low">${s.lowLabel}</span>
+              <div class="disposition-bar">
+                <div class=${classMap({ 'disposition-marker': true, 'disposition-neutral': isNeutral })} style="left: ${pct}%"></div>
+              </div>
+              <span class="disposition-label-high">${s.highLabel}</span>
+            </div>
+          `;
+        })}
       </div>
     `;
   }
