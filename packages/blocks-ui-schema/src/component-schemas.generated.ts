@@ -800,177 +800,27 @@ export const orchestrationWorkbenchPropsSchema = z.object({
 });
 
 export const dagViewerPropsSchema = z.object({
-  dagPlan: z.union([z.null(), z.object({
-      nodes: z.record(z.object({
-          id: z.string(),
-          taskId: z.string(),
-          taskDescription: z.string().optional(),
-          executorName: z.string().optional(),
-          dependsOn: z.array(z.string()),
-          joinType: z.enum(["ALL_OF", "ANY_OF"]),
-        })),
-      timestamp: z.string(),
-    })]),
-  dagResult: z.union([z.null(), z.object({
-      nodeStates: z.record(z.object({
-          kind: z.enum(["Pending", "Dispatched", "Completed", "Failed", "Skipped", "Cancelled"]),
-          reason: z.string().optional(),
-        })),
-      completedResults: z.record(z.unknown()).optional(),
-      allSucceeded: z.boolean(),
-      elapsed: z.string(),
-      timestamp: z.string(),
-    })]),
-  dispatchMode: z.union([z.null(), z.string(), z.string()]),
+  dagPlan: z.unknown(),
+  dagResult: z.unknown(),
+  dispatchMode: z.unknown(),
   selectionTopic: z.string(),
 });
 
 export const decompositionTreePropsSchema = z.object({
-  decomposition: z.union([z.null(), z.object({
-      root: z.union([z.object({
-          kind: z.string(),
-          id: z.string(),
-          description: z.string().optional(),
-          executorName: z.string().optional(),
-        }), z.object({
-          kind: z.string(),
-          id: z.string(),
-          name: z.string(),
-          methods: z.array(z.object({
-              guardLabel: z.string().optional(),
-              strategyId: z.string(),
-              children: z.array(z.unknown()),
-            })),
-        })]),
-      timestamp: z.string(),
-    })]),
+  decomposition: z.unknown(),
   selectionTopic: z.string(),
 });
 
 export const planItemTreePropsSchema = z.object({
-  definition: z.union([z.null(), z.object({
-      kind: z.string(),
-      id: z.string(),
-      name: z.string(),
-      executor: z.object({
-        name: z.string(),
-        description: z.string().optional(),
-      }),
-      entryCondition: z.string().optional(),
-    }), z.object({
-      kind: z.string(),
-      id: z.string(),
-      name: z.string(),
-      children: z.array(z.union([z.object({
-            kind: z.string(),
-            id: z.string(),
-            name: z.string(),
-            executor: z.object({
-              name: z.string(),
-              description: z.string().optional(),
-            }),
-            entryCondition: z.string().optional(),
-          }), z.object({
-            kind: z.string(),
-            id: z.string(),
-            name: z.string(),
-            children: z.array(z.union([z.unknown(), z.unknown()])),
-            planningStrategy: z.string().optional(),
-            completion: z.union([z.object({
-                kind: z.unknown(),
-              }), z.object({
-                kind: z.unknown(),
-                m: z.unknown(),
-              }), z.object({
-                kind: z.unknown(),
-              })]),
-            dispatchMode: z.enum(["ORCHESTRATED", "CHOREOGRAPHED"]),
-            entryCondition: z.string().optional(),
-            exitCondition: z.string().optional(),
-            repeatable: z.boolean(),
-            scopedBindings: z.record(z.enum(["PARTICIPANT", "COMPANION"])).optional(),
-          })])),
-      planningStrategy: z.string().optional(),
-      completion: z.union([z.object({
-          kind: z.string(),
-        }), z.object({
-          kind: z.string(),
-          m: z.number(),
-        }), z.object({
-          kind: z.string(),
-        })]),
-      dispatchMode: z.enum(["ORCHESTRATED", "CHOREOGRAPHED"]),
-      entryCondition: z.string().optional(),
-      exitCondition: z.string().optional(),
-      repeatable: z.boolean(),
-      scopedBindings: z.record(z.enum(["PARTICIPANT", "COMPANION"])).optional(),
-    })]),
+  definition: z.unknown(),
 });
 
 export const planModelDashboardPropsSchema = z.object({
-  planModel: z.union([z.null(), z.object({
-      caseId: z.string(),
-      agenda: z.array(z.object({
-          planItemId: z.string(),
-          bindingName: z.string(),
-          status: z.string(),
-          description: z.string().optional(),
-        })),
-      focus: z.string().optional(),
-      focusRationale: z.string().optional(),
-      resourceBudget: z.record(z.unknown()),
-      subCases: z.array(z.object({
-          caseDefinition: z.string(),
-          namespace: z.string(),
-          status: z.string().optional(),
-        })),
-      compounds: z.array(z.object({
-          id: z.string(),
-          name: z.string(),
-          status: z.string(),
-          childCount: z.number(),
-          completedCount: z.number(),
-          completion: z.union([z.object({
-              kind: z.string(),
-            }), z.object({
-              kind: z.string(),
-              m: z.number(),
-            }), z.object({
-              kind: z.string(),
-            })]),
-        })),
-      timestamp: z.string(),
-    })]),
+  planModel: z.unknown(),
 });
 
 export const caseFlowViewerPropsSchema = z.object({
-  runtimeState: z.union([z.null(), z.object({
-      planItems: z.array(z.object({
-          id: z.string(),
-          bindingName: z.string(),
-          status: z.enum(["RUNNING", "FAULTED", "CANCELLED", "COMPLETED", "PENDING", "REJECTED", "DELEGATED", "SUSPENDED", "OBSOLETE"]),
-          createdAt: z.string(),
-        })),
-      milestones: z.array(z.object({
-          name: z.string(),
-          status: z.enum(["COMPLETED", "PENDING", "ACTIVE"]),
-        })),
-      timestamp: z.string(),
-      caseStatus: z.string().optional(),
-      trustScores: z.array(z.object({
-          bindingName: z.string(),
-          workerId: z.string(),
-          score: z.number(),
-        })).optional(),
-      adaptiveDecisions: z.array(z.object({
-          trigger: z.string(),
-          condition: z.string(),
-          fired: z.boolean(),
-          timestamp: z.string(),
-          affectedBindings: z.array(z.string()).optional(),
-        })).optional(),
-      parallelGroups: z.array(z.array(z.string())).optional(),
-    })]),
+  runtimeState: z.unknown(),
   selectionTopic: z.string(),
 });
 
@@ -982,33 +832,7 @@ export const caseDependencyGraphPropsSchema = z.object({
 export const diagramWorkbenchPropsSchema = z.object({
   yaml: z.string(),
   src: z.string(),
-  runtimeState: z.union([z.null(), z.object({
-      planItems: z.array(z.object({
-          id: z.string(),
-          bindingName: z.string(),
-          status: z.enum(["RUNNING", "FAULTED", "CANCELLED", "COMPLETED", "PENDING", "REJECTED", "DELEGATED", "SUSPENDED", "OBSOLETE"]),
-          createdAt: z.string(),
-        })),
-      milestones: z.array(z.object({
-          name: z.string(),
-          status: z.enum(["COMPLETED", "PENDING", "ACTIVE"]),
-        })),
-      timestamp: z.string(),
-      caseStatus: z.string().optional(),
-      trustScores: z.array(z.object({
-          bindingName: z.string(),
-          workerId: z.string(),
-          score: z.number(),
-        })).optional(),
-      adaptiveDecisions: z.array(z.object({
-          trigger: z.string(),
-          condition: z.string(),
-          fired: z.boolean(),
-          timestamp: z.string(),
-          affectedBindings: z.array(z.string()).optional(),
-        })).optional(),
-      parallelGroups: z.array(z.array(z.string())).optional(),
-    })]),
+  runtimeState: z.unknown(),
 });
 
 export const clusterPanelPropsSchema = z.object({
@@ -1147,6 +971,16 @@ export const orgDiagramPropsSchema = z.object({
   readonly: z.boolean().optional(),
 });
 
+export const agentAvatarPropsSchema = z.object({
+  archetype: z.object({
+    family: z.string(),
+    subArchetype: z.string(),
+  }).optional(),
+  code: z.string().optional(),
+  size: z.enum(["sm", "md", "xs", "lg"]).optional(),
+  collection: z.string().optional(),
+});
+
 export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map([
   ["blocks-sla-indicator", slaIndicatorPropsSchema] as [string, z.ZodType],
   ["blocks-execution-monitor", executionMonitorPropsSchema] as [string, z.ZodType],
@@ -1204,4 +1038,5 @@ export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map(
   ["commitment-range-bar", commitmentRangeBarPropsSchema] as [string, z.ZodType],
   ["commitment-transition-badge", commitmentTransitionBadgePropsSchema] as [string, z.ZodType],
   ["blocks-org-diagram", orgDiagramPropsSchema] as [string, z.ZodType],
+  ["agent-avatar", agentAvatarPropsSchema] as [string, z.ZodType],
 ]);

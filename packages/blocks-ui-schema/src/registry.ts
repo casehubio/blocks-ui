@@ -43,6 +43,7 @@ import type { TrustWorkbenchProps } from '@casehubio/blocks-ui-trust-workbench';
 import type { ContributorWorkbenchProps } from '@casehubio/blocks-ui-contributor-workbench';
 import type { CommitmentRangeBarProps, CommitmentTransitionBadgeProps } from '@casehubio/blocks-ui-commitment-viz';
 import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
+import type { AgentAvatarProps } from '@casehubio/agent-avatar-2d';
 
 export interface BlocksComponentRegistry {
   'blocks-sla-indicator': SlaIndicatorProps;
@@ -101,4 +102,5 @@ export interface BlocksComponentRegistry {
   'commitment-range-bar': CommitmentRangeBarProps;
   'commitment-transition-badge': CommitmentTransitionBadgeProps;
   'blocks-org-diagram': OrgDiagramProps;
+  'agent-avatar': AgentAvatarProps;
 }
