@@ -247,7 +247,7 @@ export class CasehubDiagram extends DiagramBaseMixin(LitElement) {
           if (this._expandedWorkers.has(id.replace('worker:', ''))) {
             nodeSizes.set(id, { width: 320, height: 240 });
           } else {
-            nodeSizes.set(id, { width: 280, height: 130 });
+            nodeSizes.set(id, { width: 280, height: 165 });
           }
         }
       }
