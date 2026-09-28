@@ -187,6 +187,7 @@ export class AvatarStep extends LitElement {
     .tendency-chip.strong { background: var(--pages-accent-3, #1e3a5f); border-color: var(--pages-accent-9, #2563eb); color: var(--pages-accent-11, #93c5fd); }
     .tendency-chip.moderate { background: var(--pages-neutral-3, #2d2d44); border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-neutral-11, #ccc); }
     .tendency-chip.mild { background: transparent; border-color: var(--pages-neutral-5, #4a4a62); color: var(--pages-neutral-10, #aaa); }
+    .tendency-strength { font-size: 8px; opacity: 0.7; margin-left: 2px; }
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -714,7 +715,7 @@ export class AvatarStep extends LitElement {
         <div class="tendency-list">
           ${tendencies.map(t => html`
             <span class=${classMap({ 'tendency-chip': true, [t.strength]: true })} title="${t.description}">
-              ${t.name}
+              ${t.name}<span class="tendency-strength">${t.strength === 'strong' ? '+++' : t.strength === 'moderate' ? '++' : '+'}</span>
             </span>
           `)}
         </div>

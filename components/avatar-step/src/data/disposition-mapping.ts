@@ -139,6 +139,12 @@ const TENDENCY_RULES: TendencyRule[] = [
   { name: 'Analytical', description: 'Breaks problems into components and evaluates evidence systematically', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.2 }, { axis: 'autonomy', direction: 'high', threshold: 0.2 }] },
   { name: 'Persuasive', description: 'Influences through conviction and compelling reasoning', conditions: [{ axis: 'socialOrientation', direction: 'high', threshold: 0.3 }, { axis: 'conflictMode', direction: 'high', threshold: 0.2 }] },
   { name: 'Protective', description: 'Guards against threats and prioritises safety over speed', conditions: [{ axis: 'riskAppetite', direction: 'low', threshold: 0.4 }, { axis: 'ruleFollowing', direction: 'high', threshold: 0.2 }] },
+  { name: 'Thorough', description: 'Does not skip steps or cut corners — checks everything before concluding', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.25 }, { axis: 'riskAppetite', direction: 'low', threshold: 0.2 }] },
+  { name: 'Creative', description: 'Thinks laterally, generates novel ideas, and makes unexpected connections', conditions: [{ axis: 'riskAppetite', direction: 'high', threshold: 0.3 }, { axis: 'ruleFollowing', direction: 'low', threshold: 0.15 }, { axis: 'autonomy', direction: 'high', threshold: 0.1 }] },
+  { name: 'Curious', description: 'Asks probing questions, explores deeply, and does not accept surface answers', conditions: [{ axis: 'riskAppetite', direction: 'high', threshold: 0.2 }, { axis: 'autonomy', direction: 'high', threshold: 0.2 }] },
+  { name: 'Patient', description: 'Takes time with problems, avoids premature conclusions, and sits with ambiguity', conditions: [{ axis: 'riskAppetite', direction: 'low', threshold: 0.2 }, { axis: 'conflictMode', direction: 'low', threshold: 0.2 }] },
+  { name: 'Direct', description: 'Says what needs saying without hedging, padding, or softening', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.25 }, { axis: 'ruleFollowing', direction: 'low', threshold: 0.1 }] },
+  { name: 'Pragmatic', description: 'Focuses on practical outcomes and what works over theoretical elegance', conditions: [{ axis: 'ruleFollowing', direction: 'low', threshold: 0.05 }, { axis: 'riskAppetite', direction: 'low', threshold: 0.05 }] },
 ];
 
 export function deriveTendencies(scores: AxisScore[]): BehavioralTendency[] {
