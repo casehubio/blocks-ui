@@ -40,10 +40,10 @@ describe('avatar-step', () => {
     expect(bar).toBeTruthy();
   });
 
-  it('renders tab switcher', async () => {
+  it('renders personality panel', async () => {
     await el.updateComplete;
-    const tabs = el.shadowRoot!.querySelector('[role="tablist"]');
-    expect(tabs).toBeTruthy();
+    const panel = el.shadowRoot!.querySelector('.personality-side');
+    expect(panel).toBeTruthy();
   });
 
   it('emits avatar:archetype:selected on avatar click', async () => {

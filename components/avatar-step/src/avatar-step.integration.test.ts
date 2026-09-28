@@ -4,7 +4,6 @@ import './avatar-step.js';
 
 type AvatarStepEl = HTMLElement & {
   updateComplete: Promise<boolean>;
-  _tab: 'profession' | 'personality';
   _frameworks: Record<string, string>;
   _bigFive: Record<string, string>;
   _collection: string;
@@ -41,12 +40,7 @@ describe('avatar-step integration', () => {
   it('filters grid when personality framework selected', async () => {
     await el.updateComplete;
 
-    // Switch to personality tab
-    const personalityTab = el.shadowRoot!.querySelector('[data-tab="personality"]') as HTMLElement;
-    personalityTab.click();
-    await el.updateComplete;
-
-    // Click MBTI INTJ pill
+    // Click MBTI INTJ pill in personality sidebar
     const intjPill = el.shadowRoot!.querySelector('[data-framework="mbti"][data-value="INTJ"]') as HTMLElement;
     intjPill.click();
     await el.updateComplete;
@@ -109,12 +103,7 @@ describe('avatar-step integration', () => {
   it('reset clears all personality filters', async () => {
     await el.updateComplete;
 
-    // Switch to personality tab
-    const personalityTab = el.shadowRoot!.querySelector('[data-tab="personality"]') as HTMLElement;
-    personalityTab.click();
-    await el.updateComplete;
-
-    // Select MBTI
+    // Select MBTI in personality sidebar
     const intjPill = el.shadowRoot!.querySelector('[data-framework="mbti"][data-value="INTJ"]') as HTMLElement;
     intjPill.click();
     await el.updateComplete;

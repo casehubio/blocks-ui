@@ -71,17 +71,17 @@ export class AvatarStep extends LitElement {
       color: var(--pages-accent-11, #1e3a5f);
     }
 
-    .tabs { display: flex; gap: 2px; margin-bottom: 12px; }
-    .tab {
-      padding: 6px 14px; border-radius: 6px 6px 0 0; border: 1px solid var(--pages-neutral-4, #e5e5e5);
-      border-bottom: none; background: var(--pages-neutral-2, #fafafa); cursor: pointer;
-      font-size: 13px; color: var(--pages-neutral-9, #737373);
-    }
-    .tab[aria-selected="true"] {
-      background: var(--pages-neutral-1, #fff); color: var(--pages-neutral-12, #111); font-weight: 600;
-    }
+    .main-panel { display: grid; grid-template-columns: 1fr 240px; gap: 12px; margin-bottom: 12px; }
+    @media (max-width: 767px) { .main-panel { grid-template-columns: 1fr; } }
 
-    .panel { border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: 0 8px 8px 8px; padding: 12px; margin-bottom: 12px; background: var(--pages-neutral-1, #fff); }
+    .panel { border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: 8px; padding: 12px; background: var(--pages-neutral-1, #fff); }
+    .personality-side .panel { font-size: 11px; padding: 8px; }
+    .personality-side .framework-row { margin-bottom: 5px; }
+    .personality-side .framework-label { min-width: 60px; font-size: 10px; }
+    .personality-side .pill { padding: 2px 6px; font-size: 9px; }
+    .personality-side .big5-toggle { padding: 2px 5px; font-size: 9px; }
+    .personality-side .big5-label { font-size: 9px; min-width: 14px; }
+    .personality-side .reset-btn { font-size: 10px; padding: 3px 8px; }
 
     .framework-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #666); }
@@ -154,7 +154,6 @@ export class AvatarStep extends LitElement {
 
   @state() private _collection = 'mythic';
   @state() private _selectedArchetype: string | null = null;
-  @state() private _tab: 'profession' | 'personality' = 'profession';
   @state() private _profession: string | null = null;
   @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
@@ -193,17 +192,15 @@ export class AvatarStep extends LitElement {
   private _selectArchetype(key: string) {
     this._selectedArchetype = key;
     const [family, sub] = key.split('/');
-    if (this._tab === 'profession') {
-      const matched = getRolesForArchetype(key);
-      const currentMatch = matched.find(m => m.profession === this._profession);
-      if (currentMatch) {
-        this._selectedRole = currentMatch.role;
-      } else if (matched.length > 0) {
-        this._profession = matched[0]!.profession;
-        this._selectedRole = matched[0]!.role;
-      } else {
-        this._selectedRole = null;
-      }
+    const matched = getRolesForArchetype(key);
+    const currentMatch = matched.find(m => m.profession === this._profession);
+    if (currentMatch) {
+      this._selectedRole = currentMatch.role;
+    } else if (matched.length > 0) {
+      this._profession = matched[0]!.profession;
+      this._selectedRole = matched[0]!.role;
+    } else {
+      this._selectedRole = null;
     }
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
       detail: { archetype: { family, subArchetype: sub }, collection: this._collection },
@@ -225,8 +222,10 @@ export class AvatarStep extends LitElement {
   protected override render() {
     return html`
       ${this._renderCollectionBar()}
-      ${this._renderTabs()}
-      ${this._tab === 'profession' ? this._renderProfessionPanel() : this._renderPersonalityPanel()}
+      <div class="main-panel">
+        <div class="profession-side">${this._renderProfessionPanel()}</div>
+        <div class="personality-side">${this._renderPersonalityPanel()}</div>
+      </div>
       ${this._renderGrid()}
     `;
   }
@@ -243,21 +242,6 @@ export class AvatarStep extends LitElement {
             ${c.label}
           </button>
         `)}
-      </div>
-    `;
-  }
-
-  private _renderTabs() {
-    return html`
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected=${String(this._tab === 'profession')}
-          data-tab="profession" @click=${() => { this._tab = 'profession'; }}>
-          By Profession
-        </button>
-        <button class="tab" role="tab" aria-selected=${String(this._tab === 'personality')}
-          data-tab="personality" @click=${() => { this._tab = 'personality'; }}>
-          By Personality
-        </button>
       </div>
     `;
   }
