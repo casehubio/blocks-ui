@@ -6,8 +6,8 @@ import { decodeCode } from './code.js';
 import { getCollection } from './collections/registry.js';
 import { ARCHETYPE_CONFIGS } from './config-table.js';
 import { FAMILY_PALETTES } from './palettes.js';
-import type { AvatarSize } from './types.js';
-import { AVATAR_SIZES } from './types.js';
+import type { AvatarSize, FixedCollection } from './types.js';
+import { AVATAR_SIZES, isFixedCollection } from './types.js';
 
 export interface AgentAvatarProps {
   archetype?: { family: string; subArchetype: string };
@@ -70,6 +70,10 @@ export class AgentAvatar extends LitElement {
     const coll = getCollection(this.collection);
     if (!coll) return this._fallbackSvg();
 
+    if (isFixedCollection(coll)) {
+      return this._renderFixed(coll);
+    }
+
     if (this.archetype) {
       const key = `${this.archetype.family}/${this.archetype.subArchetype}`;
       const config = ARCHETYPE_CONFIGS[key];
@@ -90,6 +94,14 @@ export class AgentAvatar extends LitElement {
     }
 
     return this._fallbackSvg();
+  }
+
+  private _renderFixed(coll: FixedCollection): string {
+    const key = this.archetype
+      ? `${this.archetype.family}/${this.archetype.subArchetype}`
+      : null;
+    if (!key) return this._fallbackSvg();
+    return coll.fixedSvgs.get(key) ?? this._fallbackSvg();
   }
 
   private _fallbackSvg(): string {

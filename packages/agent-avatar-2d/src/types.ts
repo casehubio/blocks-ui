@@ -101,9 +101,25 @@ export interface PartPositionDelta {
   readonly dy?: number;
 }
 
-export interface AvatarCollection {
+interface AvatarCollectionBase {
   readonly id: string;
+  readonly label: string;
+}
+
+export interface PartsCollection extends AvatarCollectionBase {
+  readonly type: 'parts';
   readonly partsUrl: string;
   readonly previewUrl: string;
   readonly parts: Map<string, string>;
+}
+
+export interface FixedCollection extends AvatarCollectionBase {
+  readonly type: 'fixed';
+  readonly fixedSvgs: Map<string, string>;
+}
+
+export type AvatarCollection = PartsCollection | FixedCollection;
+
+export function isFixedCollection(c: AvatarCollection): c is FixedCollection {
+  return c.type === 'fixed';
 }

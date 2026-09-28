@@ -8,6 +8,8 @@ export {
 export type {
   ArchetypeFamily,
   AvatarCollection,
+  PartsCollection,
+  FixedCollection,
   AvatarModifiers,
   AvatarPayload,
   AvatarSize,
@@ -18,12 +20,14 @@ export type {
   PartModifiers,
 } from './types.js';
 
+export { isFixedCollection } from './types.js';
+
 export { FAMILY_PALETTES } from './palettes.js';
 export { ARCHETYPE_CONFIGS, ARCHETYPE_INDEX, HEAD_FACE_SPECS, CANONICAL_FACE } from './config-table.js';
 export { encodePreset, encodeCustom, decodeCode } from './code.js';
 export type { DecodedAvatar } from './code.js';
 export { buildAvatar } from './builder.js';
-export { registerCollection, getCollection } from './collections/registry.js';
+export { registerCollection, getCollection, listCollections } from './collections/registry.js';
 export { resolveModifiers } from './modifiers.js';
 export type { ModifierInput } from './modifiers.js';
 export { AgentAvatar } from './agent-avatar.js';

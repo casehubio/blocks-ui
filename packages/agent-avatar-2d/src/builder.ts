@@ -1,4 +1,4 @@
-import type { AvatarCollection, AvatarSize, FamilyPalette, HeadFaceSpec, PartAssignment } from './types.js';
+import type { PartsCollection, AvatarSize, FamilyPalette, HeadFaceSpec, PartAssignment } from './types.js';
 import { DetailLevel, DETAIL_TIERS } from './types.js';
 import { HEAD_FACE_SPECS, CANONICAL_FACE, PART_DELTAS } from './config-table.js';
 
@@ -64,7 +64,7 @@ interface Layer {
   readonly content: string;
 }
 
-function collectLayers(config: PartAssignment, detail: DetailLevel, collection: AvatarCollection): Layer[] {
+function collectLayers(config: PartAssignment, detail: DetailLevel, collection: PartsCollection): Layer[] {
   const layers: Layer[] = [];
 
   function add(category: string, partId: string | null): void {
@@ -252,7 +252,7 @@ export function buildAvatar(
   config: PartAssignment,
   palette: FamilyPalette,
   size: AvatarSize,
-  collection: AvatarCollection,
+  collection: PartsCollection,
 ): string {
   const detail = DETAIL_TIERS[size];
   const layers = collectLayers(config, detail, collection);

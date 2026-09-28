@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import type {
   AvatarPayload, PartAssignment, FamilyPalette, AvatarModifiers,
-  PartModifiers, AxisExpression, AvatarCollection,
+  PartModifiers, AxisExpression, PartsCollection, FixedCollection,
 } from '../types.js';
-import { ARCHETYPE_FAMILIES, AVATAR_SIZES, DetailLevel } from '../types.js';
+import { ARCHETYPE_FAMILIES, AVATAR_SIZES, DetailLevel, isFixedCollection } from '../types.js';
 
 describe('types', () => {
   it('ARCHETYPE_FAMILIES contains all 12 families', () => {
@@ -73,5 +73,22 @@ describe('types', () => {
     };
     expect(palette.primary).toMatch(/^#[0-9a-f]{6}$/i);
     expect(palette.skin).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
+  it('isFixedCollection returns true for fixed collections', () => {
+    const coll: FixedCollection = {
+      id: 'test', label: 'Test', type: 'fixed',
+      fixedSvgs: new Map([['Sage/Detective', '<svg></svg>']]),
+    };
+    expect(isFixedCollection(coll)).toBe(true);
+  });
+
+  it('isFixedCollection returns false for parts collections', () => {
+    const coll: PartsCollection = {
+      id: 'test', label: 'Test', type: 'parts',
+      partsUrl: '', previewUrl: '',
+      parts: new Map([['head:oval', '<ellipse/>']]),
+    };
+    expect(isFixedCollection(coll)).toBe(false);
   });
 });

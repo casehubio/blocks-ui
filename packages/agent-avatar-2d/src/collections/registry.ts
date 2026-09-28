@@ -9,3 +9,7 @@ export function registerCollection(collection: AvatarCollection): void {
 export function getCollection(id: string): AvatarCollection | undefined {
   return collections.get(id);
 }
+
+export function listCollections(): ReadonlyArray<{ id: string; label: string }> {
+  return [...collections.values()].map(c => ({ id: c.id, label: c.label }));
+}
