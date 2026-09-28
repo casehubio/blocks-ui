@@ -204,6 +204,10 @@ export class AvatarStep extends LitElement {
     .preview-sub { color: var(--pages-neutral-10, #666); }
 
     .has-tip { position: relative; cursor: help; }
+    .pill { overflow: visible; }
+    .framework-row { overflow: visible; }
+    .profile-row { overflow: visible; }
+    .panel { overflow: visible; }
     .has-tip .tip-content {
       display: none; position: absolute; z-index: 10;
       bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
