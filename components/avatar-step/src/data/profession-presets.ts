@@ -12,37 +12,44 @@ export interface ProfessionRole {
 export const PROFESSION_PRESETS: Record<string, readonly ProfessionRole[]> = {
   Software: [
     { role: 'Architect', variants: [
-      { archetype: 'Sage/Mentor', label: 'The knowledge sharer', description: 'Guides team through expertise and experience' },
-      { archetype: 'Magician/Engineer', label: 'The systems thinker', description: 'Designs elegant solutions to complex problems' },
+      { archetype: 'Sage/Mentor', label: 'The guiding architect', description: 'Shares deep knowledge, mentors through expertise' },
+      { archetype: 'Magician/Engineer', label: 'The systems architect', description: 'Designs elegant transformative solutions' },
+      { archetype: 'Sage/Detective', label: 'The analytical architect', description: 'Investigates and solves structural problems' },
     ]},
     { role: 'QA Lead', variants: [
-      { archetype: 'Sage/Detective', label: 'The investigator', description: 'Uncovers bugs through systematic analysis' },
-      { archetype: 'Sovereign/Judge', label: 'The quality gatekeeper', description: 'Enforces standards and renders pass/fail verdicts' },
+      { archetype: 'Sage/Detective', label: 'The investigator', description: 'Uncovers defects through systematic analysis' },
+      { archetype: 'Sovereign/Judge', label: 'The standards enforcer', description: 'Upholds quality gates, renders pass/fail verdicts' },
+      { archetype: 'Magician/Scientist', label: 'The test automator', description: 'Builds rigorous testing systems and frameworks' },
     ]},
     { role: 'DevOps Engineer', variants: [
-      { archetype: 'Magician/Engineer', label: 'The automation builder', description: 'Builds systems that make deployment seamless' },
-      { archetype: 'Explorer/Pioneer', label: 'The trailblazer', description: 'Pushes into new infrastructure territory' },
+      { archetype: 'Explorer/Pioneer', label: 'The infrastructure trailblazer', description: 'Pushes into new tooling and platforms' },
+      { archetype: 'Magician/Engineer', label: 'The automation builder', description: 'Designs CI/CD pipelines and self-healing systems' },
+      { archetype: 'Hero/Rescuer', label: 'The incident responder', description: 'Runs toward production fires, keeps systems alive' },
     ]},
     { role: 'Product Manager', variants: [
-      { archetype: 'Sovereign/Ambassador', label: 'The bridge builder', description: 'Represents users to engineering and vice versa' },
-      { archetype: 'Creator/Visionary', label: 'The product visionary', description: 'Imagines what the product should become' },
+      { archetype: 'Sovereign/Ambassador', label: 'The stakeholder navigator', description: 'Represents users, builds consensus across teams' },
+      { archetype: 'Magician/Innovator', label: 'The visionary PM', description: 'Sees market gaps, creates new product categories' },
+      { archetype: 'Explorer/Generalist', label: 'The discovery PM', description: 'Bridges disciplines, explores possibilities broadly' },
     ]},
     { role: 'Tech Lead', variants: [
-      { archetype: 'Sage/Mentor', label: 'The team grower', description: 'Develops engineers through guidance and code review' },
-      { archetype: 'Hero/Warrior', label: 'The execution driver', description: 'Removes blockers and drives delivery' },
-      { archetype: 'Sovereign/Ruler', label: 'The standards enforcer', description: 'Sets architecture standards and holds the line' },
+      { archetype: 'Sage/Mentor', label: 'The teaching lead', description: 'Guides team through deep technical expertise' },
+      { archetype: 'Sovereign/Ruler', label: 'The directing lead', description: 'Creates order, drives execution, manages delivery' },
+      { archetype: 'Magician/Engineer', label: 'The systems lead', description: 'Designs architecture, solves the hardest problems' },
     ]},
     { role: 'UX Designer', variants: [
-      { archetype: 'Creator/Artist', label: 'The visual craftsperson', description: 'Creates beautiful, emotionally resonant interfaces' },
-      { archetype: 'Caregiver/Healer', label: 'The user advocate', description: 'Removes friction and pain from user experiences' },
+      { archetype: 'Creator/Artist', label: 'The aesthetic designer', description: 'Creates from emotional truth, form matters' },
+      { archetype: 'Sage/Detective', label: 'The UX researcher', description: 'Investigates user behaviour through systematic study' },
+      { archetype: 'Caregiver/Healer', label: 'The empathic designer', description: 'Designs to reduce user pain and friction' },
     ]},
     { role: 'Security Engineer', variants: [
-      { archetype: 'Hero/Rescuer', label: 'The incident responder', description: 'Acts decisively when breaches occur' },
-      { archetype: 'Caregiver/Guardian', label: 'The protector', description: 'Shields systems through vigilant prevention' },
+      { archetype: 'Sage/Detective', label: 'The threat hunter', description: 'Investigates vulnerabilities through systematic analysis' },
+      { archetype: 'Hero/Rescuer', label: 'The incident responder', description: 'Acts decisively when systems are under attack' },
+      { archetype: 'Sovereign/Judge', label: 'The compliance guardian', description: 'Enforces security standards and audit gates' },
     ]},
     { role: 'Data Scientist', variants: [
-      { archetype: 'Sage/Detective', label: 'The pattern finder', description: 'Uncovers truth through systematic data investigation' },
-      { archetype: 'Magician/Scientist', label: 'The hypothesis tester', description: 'Discovers insights through rigorous experimentation' },
+      { archetype: 'Sage/Detective', label: 'The analytical scientist', description: 'Uncovers truth through data investigation' },
+      { archetype: 'Magician/Scientist', label: 'The model builder', description: 'Discovers patterns through rigorous experimentation' },
+      { archetype: 'Explorer/Seeker', label: 'The research scientist', description: 'Explores meaning in data, questions assumptions' },
     ]},
   ],
   Education: [
