@@ -105,6 +105,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@casehubio/agent-avatar-2d@workspace:packages/agent-avatar-2d":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/agent-avatar-2d@workspace:packages/agent-avatar-2d"
+  dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.2.1"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.6.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/blocks-ui-approval-gate@workspace:*, @casehubio/blocks-ui-approval-gate@workspace:components/approval-gate":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-approval-gate@workspace:components/approval-gate"
@@ -234,8 +246,14 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/graph-core": "npm:*"
-    "@casehubio/graph-renderer": "npm:*"
-    "@casehubio/pages-data": "npm:*"
+    "@types/d3-drag": "npm:^3.0.0"
+    "@types/d3-force": "npm:^3.0.0"
+    "@types/d3-selection": "npm:^3.0.0"
+    "@types/d3-zoom": "npm:^3.0.0"
+    d3-drag: "npm:^3.0.0"
+    d3-force: "npm:^3.0.0"
+    d3-selection: "npm:^3.0.0"
+    d3-zoom: "npm:^3.0.0"
     jsdom: "npm:^25.0.0"
     lit: "npm:^3.1.0"
     typescript: "npm:^5.6.0"
@@ -473,49 +491,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/blocks-ui-evolution-config@workspace:*, @casehubio/blocks-ui-evolution-config@workspace:components/evolution-config":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/blocks-ui-evolution-config@workspace:components/evolution-config"
-  dependencies:
-    "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/pages-component": "npm:*"
-    "@casehubio/pages-data": "npm:*"
-    "@casehubio/pages-primitives": "npm:*"
-    "@casehubio/pages-table": "npm:*"
-    "@casehubio/pages-ui-components": "npm:*"
-    "@casehubio/pages-viz": "npm:*"
-    "@vitest/browser": "npm:^2.1.8"
-    jsdom: "npm:^26.0.0"
-    lit: "npm:^3.2.1"
-    typescript: "npm:~5.7.2"
-    vite: "npm:^6.0.3"
-    vitest: "npm:^2.1.8"
-  languageName: unknown
-  linkType: soft
-
-"@casehubio/blocks-ui-evolution-workbench@workspace:*, @casehubio/blocks-ui-evolution-workbench@workspace:components/evolution-workbench":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/blocks-ui-evolution-workbench@workspace:components/evolution-workbench"
-  dependencies:
-    "@casehubio/blocks-ui-compliance-summary": "workspace:*"
-    "@casehubio/blocks-ui-core": "workspace:*"
-    "@casehubio/blocks-ui-detail-pane": "workspace:*"
-    "@casehubio/blocks-ui-evolution-config": "workspace:*"
-    "@casehubio/blocks-ui-kpi-metric-row": "workspace:*"
-    "@casehubio/pages-component": "npm:*"
-    "@casehubio/pages-data": "npm:*"
-    "@casehubio/pages-primitives": "npm:*"
-    "@casehubio/pages-table": "npm:*"
-    "@casehubio/pages-ui-components": "npm:*"
-    "@vitest/browser": "npm:^2.1.8"
-    jsdom: "npm:^26.0.0"
-    lit: "npm:^3.2.1"
-    typescript: "npm:~5.7.2"
-    vite: "npm:^6.0.3"
-    vitest: "npm:^2.1.8"
-  languageName: unknown
-  linkType: soft
-
 "@casehubio/blocks-ui-execution-monitor@workspace:*, @casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor":
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-execution-monitor@workspace:components/execution-monitor"
@@ -567,11 +542,9 @@ __metadata:
     "@casehubio/graph-renderer": "npm:*"
     "@casehubio/graph-stencil-htn": "workspace:*"
     "@casehubio/pages-diagram-core": "npm:*"
-    jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
     typescript: "npm:^5.6.0"
-    vitest: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -739,8 +712,6 @@ __metadata:
     "@casehubio/blocks-ui-detail-pane": "workspace:*"
     "@casehubio/blocks-ui-diagram-workbench": "workspace:*"
     "@casehubio/blocks-ui-dimension-dashboard": "workspace:*"
-    "@casehubio/blocks-ui-evolution-config": "workspace:*"
-    "@casehubio/blocks-ui-evolution-workbench": "workspace:*"
     "@casehubio/blocks-ui-execution-monitor": "workspace:*"
     "@casehubio/blocks-ui-gdpr-erasure-action": "workspace:*"
     "@casehubio/blocks-ui-grouped-data-view": "workspace:*"
@@ -1055,11 +1026,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-renderer@portal:./.casehub-packages/packages/graph-renderer::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
-    "@casehubio/graph-work-registry": "workspace:*"
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-work-registry": "npm:0.1.0"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     "@tisoap/react-flow-smart-edge": "npm:^5.0.0"
     "@xyflow/react": "npm:^12.4.0"
     elkjs: "npm:^0.9.3"
@@ -1140,7 +1111,7 @@ __metadata:
     "@casehubio/pages-diagram-core": "npm:*"
     "@casehubio/pages-lsp": "workspace:*"
     "@open-wc/testing": "npm:^4.0.0"
-    "@openworkflowspec/sdk": "npm:1.0.3-alpha8"
+    "@openworkflowspec/sdk": "npm:*"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
     rimraf: "npm:^6.1.0"
@@ -1154,7 +1125,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/graph-work-registry@portal:./.casehub-packages/packages/graph-work-registry::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
     "@types/json-schema": "npm:^7.0.15"
     yaml: "npm:^2.7.0"
   languageName: node
@@ -1164,8 +1135,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/lsp-schemas@workspace:packages/lsp-schemas"
   dependencies:
-    "@casehubio/blocks-ui-casehub-diagram": "workspace:*"
-    "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/pages-lsp": "workspace:*"
     "@casehubio/pages-schema": "workspace:*"
     esbuild: "npm:^0.28.1"
@@ -1184,7 +1153,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-component@portal:./.casehub-packages/packages/pages-component::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
   languageName: node
   linkType: soft
 
@@ -1201,10 +1170,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-core@portal:./.casehub-packages/packages/pages-diagram-core::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/graph-core": "workspace:*"
-    "@casehubio/graph-renderer": "workspace:*"
-    "@casehubio/pages-diagram-palette": "workspace:*"
-    "@casehubio/pages-property-palette": "workspace:*"
+    "@casehubio/graph-core": "npm:0.1.0"
+    "@casehubio/graph-renderer": "npm:0.1.0"
+    "@casehubio/pages-diagram-palette": "npm:0.1.0"
+    "@casehubio/pages-property-palette": "npm:0.1.0"
     lit: "npm:^3.3.3"
     yaml: "npm:^2.7.0"
   languageName: node
@@ -1214,7 +1183,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-diagram-palette@portal:./.casehub-packages/packages/pages-diagram-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1223,8 +1192,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-filter-bar@portal:./.casehub-packages/packages/pages-filter-bar::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-ui-tokens": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-ui-tokens": "npm:0.3.0"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1233,8 +1202,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-lsp@portal:./.casehub-packages/packages/pages-lsp::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-schema": "workspace:*"
-    "@casehubio/yaml-core": "workspace:*"
+    "@casehubio/pages-schema": "npm:0.1.0"
+    "@casehubio/yaml-core": "npm:0.2.0"
     vscode-languageserver: "npm:^10.0.0"
     vscode-languageserver-textdocument: "npm:^1.0.12"
     yaml: "npm:^2.7.1"
@@ -1248,7 +1217,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-primitives@portal:./.casehub-packages/packages/pages-primitives::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1257,7 +1226,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-property-palette@portal:./.casehub-packages/packages/pages-property-palette::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-ui-components": "workspace:*"
+    "@casehubio/pages-ui-components": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1266,8 +1235,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-schema@portal:./.casehub-packages/packages/pages-schema::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/yaml-core": "workspace:*"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/yaml-core": "npm:0.2.0"
     zod: "npm:^4.0.0"
   languageName: node
   linkType: soft
@@ -1276,9 +1245,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-table@portal:./.casehub-packages/packages/pages-table::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-primitives": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.0.0"
   languageName: node
   linkType: soft
@@ -1287,11 +1256,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-ui-components@portal:./.casehub-packages/packages/pages-ui-components::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-filter-bar": "workspace:*"
-    "@casehubio/pages-primitives": "workspace:*"
-    "@casehubio/pages-table": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-filter-bar": "npm:0.1.0"
+    "@casehubio/pages-primitives": "npm:0.2.3"
+    "@casehubio/pages-table": "npm:0.2.3"
     lit: "npm:^3.3.3"
   languageName: node
   linkType: soft
@@ -1310,10 +1279,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/pages-viz@portal:./.casehub-packages/packages/pages-viz::locator=casehub-blocks-ui%40workspace%3A."
   dependencies:
-    "@casehubio/pages-component": "workspace:*"
-    "@casehubio/pages-data": "workspace:*"
-    "@casehubio/pages-property-palette": "workspace:*"
-    "@casehubio/pages-ui-components": "workspace:*"
+    "@casehubio/pages-component": "npm:0.2.3"
+    "@casehubio/pages-data": "npm:0.2.3"
+    "@casehubio/pages-property-palette": "npm:0.1.0"
+    "@casehubio/pages-ui-components": "npm:0.2.3"
     "@drdreo/heatmap": "npm:^1.4.1"
     echarts: "npm:^5.6.0"
     lit: "npm:^3.3.3"
@@ -2445,15 +2414,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openworkflowspec/sdk@npm:1.0.3-alpha8":
-  version: 1.0.3-alpha8
-  resolution: "@openworkflowspec/sdk@npm:1.0.3-alpha8"
+"@openworkflowspec/sdk@npm:*":
+  version: 0.0.1
+  resolution: "@openworkflowspec/sdk@npm:0.0.1"
   dependencies:
     ajv: "npm:^8.20.0"
     ajv-formats: "npm:^3.0.1"
     js-yaml: "npm:^5.2.1"
     semver: "npm:^7.8.5"
-  checksum: 10c0/ad3e496e768b954f60caaca565439f0f8679dd94f948cb8f2914cb63791642499d287f2b12cbf388c5c8f3e4db4b567bb8ddb220210bf525a800a834ec4f4510
+  checksum: 10c0/6a85a50064c8568d8eceb7259f182831fa3f8f6998cf23d27822172dd9ba4b9e4e6a95fd61eaaeab767bb44ae428657989fec18602a6335585eeea9b6c18b44b
   languageName: node
   linkType: hard
 
@@ -2954,12 +2923,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/d3-drag@npm:^3.0.7":
+"@types/d3-drag@npm:^3.0.0, @types/d3-drag@npm:^3.0.7":
   version: 3.0.7
   resolution: "@types/d3-drag@npm:3.0.7"
   dependencies:
     "@types/d3-selection": "npm:*"
   checksum: 10c0/65e29fa32a87c72d26c44b5e2df3bf15af21cd128386bcc05bcacca255927c0397d0cd7e6062aed5f0abd623490544a9d061c195f5ed9f018fe0b698d99c079d
+  languageName: node
+  linkType: hard
+
+"@types/d3-force@npm:^3.0.0":
+  version: 3.0.10
+  resolution: "@types/d3-force@npm:3.0.10"
+  checksum: 10c0/c82b459079a106b50e346c9b79b141f599f2fc4f598985a5211e72c7a2e20d35bd5dc6e91f306b323c8bfa325c02c629b1645f5243f1c6a55bd51bc85cccfa92
   languageName: node
   linkType: hard
 
@@ -2972,7 +2948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/d3-selection@npm:*, @types/d3-selection@npm:^3.0.10":
+"@types/d3-selection@npm:*, @types/d3-selection@npm:^3.0.0, @types/d3-selection@npm:^3.0.10":
   version: 3.0.11
   resolution: "@types/d3-selection@npm:3.0.11"
   checksum: 10c0/0c512956c7503ff5def4bb32e0c568cc757b9a2cc400a104fc0f4cfe5e56d83ebde2a97821b6f2cb26a7148079d3b86a2f28e11d68324ed311cf35c2ed980d1d
@@ -2988,7 +2964,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/d3-zoom@npm:^3.0.8":
+"@types/d3-zoom@npm:^3.0.0, @types/d3-zoom@npm:^3.0.8":
   version: 3.0.8
   resolution: "@types/d3-zoom@npm:3.0.8"
   dependencies:
@@ -4253,12 +4229,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"d3-force@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "d3-force@npm:3.0.0"
+  dependencies:
+    d3-dispatch: "npm:1 - 3"
+    d3-quadtree: "npm:1 - 3"
+    d3-timer: "npm:1 - 3"
+  checksum: 10c0/220a16a1a1ac62ba56df61028896e4b52be89c81040d20229c876efc8852191482c233f8a52bb5a4e0875c321b8e5cb6413ef3dfa4d8fe79eeb7d52c587f52cf
+  languageName: node
+  linkType: hard
+
 "d3-interpolate@npm:1 - 3, d3-interpolate@npm:^3.0.1":
   version: 3.0.1
   resolution: "d3-interpolate@npm:3.0.1"
   dependencies:
     d3-color: "npm:1 - 3"
   checksum: 10c0/19f4b4daa8d733906671afff7767c19488f51a43d251f8b7f484d5d3cfc36c663f0a66c38fe91eee30f40327443d799be17169f55a293a3ba949e84e57a33e6a
+  languageName: node
+  linkType: hard
+
+"d3-quadtree@npm:1 - 3":
+  version: 3.0.1
+  resolution: "d3-quadtree@npm:3.0.1"
+  checksum: 10c0/18302d2548bfecaef788152397edec95a76400fd97d9d7f42a089ceb68d910f685c96579d74e3712d57477ed042b056881b47cd836a521de683c66f47ce89090
   languageName: node
   linkType: hard
 

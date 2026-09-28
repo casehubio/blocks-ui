@@ -45,6 +45,7 @@ import type { CommitmentRangeBarProps, CommitmentTransitionBadgeProps } from '@c
 import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
 import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps } from '@casehubio/blocks-ui-evolution-config';
 import type { EvolutionWorkbenchProps } from '@casehubio/blocks-ui-evolution-workbench';
+import type { AgentAvatarProps } from '@casehubio/agent-avatar-2d';
 
 export interface BlocksComponentRegistry {
   'blocks-sla-indicator': SlaIndicatorProps;
@@ -107,4 +108,5 @@ export interface BlocksComponentRegistry {
   'blocks-watch-pattern-editor': WatchPatternEditorProps;
   'blocks-gate-policy-editor': GatePolicyEditorProps;
   'blocks-evolution-workbench': EvolutionWorkbenchProps;
+  'agent-avatar': AgentAvatarProps;
 }
