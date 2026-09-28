@@ -1,6 +1,6 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import type { StageDescriptor, GatePolicy, GateMode } from './types.js';
+import type { StageDescriptor, GatePolicy, GateMode, ImprovementStreamView } from './types.js';
 import { EvolutionApi } from './api.js';
 import { emitEvolutionEvent, EvolutionEventTopics } from './events.js';
 
@@ -10,6 +10,7 @@ export interface GatePolicyEditorProps {
   tenancyId?: string;
   stages?: readonly StageDescriptor[];
   policy?: GatePolicy;
+  streams?: readonly ImprovementStreamView[];
   readonly?: boolean;
 }
 
@@ -25,6 +26,7 @@ export class GatePolicyEditor extends LitElement {
   @property({ type: String }) tenancyId?: string;
   @property({ type: Array }) stages?: readonly StageDescriptor[];
   @property({ type: Object }) policy?: GatePolicy;
+  @property({ type: Array, attribute: false }) streams?: readonly ImprovementStreamView[];
   @property({ type: Boolean }) readonly = false;
 
   @state() private _loading = false;
@@ -114,6 +116,7 @@ export class GatePolicyEditor extends LitElement {
     if (props.tenancyId !== undefined) this.tenancyId = props.tenancyId;
     if (props.stages !== undefined) this.stages = props.stages;
     if (props.policy !== undefined) this.policy = props.policy;
+    if (props.streams !== undefined) this.streams = props.streams;
     if (props.readonly !== undefined) this.readonly = props.readonly;
   }
 
@@ -231,6 +234,29 @@ export class GatePolicyEditor extends LitElement {
     }
   }
 
+  private _renderImpactPreview() {
+    if (!this.streams || this.streams.length === 0) return nothing;
+    const policy = this._currentPolicy;
+    if (!policy.modes) return nothing;
+    const gatedStages = Object.entries(policy.modes)
+      .filter(([, mode]) => mode === 'GATED')
+      .map(([stageId]) => stageId);
+    if (gatedStages.length === 0) return nothing;
+    const impacts = gatedStages.map(stageId => {
+      const count = this.streams!.filter(s => s.currentStage === stageId).length;
+      return { stageId, count };
+    }).filter(i => i.count > 0);
+    if (impacts.length === 0) return nothing;
+    return html`
+      <div class="impact-preview" style="margin-top:12px;padding:8px;background:var(--pages-accent-3,#dbeafe);border-radius:4px;font-size:13px">
+        <strong>Gate impact on active streams:</strong>
+        <ul style="margin:4px 0 0;padding-left:20px">
+          ${impacts.map(i => html`<li style="margin:2px 0"><strong>${i.stageId}</strong>: ${i.count} improvement${i.count > 1 ? 's' : ''} gated</li>`)}
+        </ul>
+      </div>
+    `;
+  }
+
   override render() {
     this.setAttribute('aria-busy', String(this._loading));
     if (this._loading) return html`<div class="loading">Loading gate policy...</div>`;
@@ -290,6 +316,8 @@ export class GatePolicyEditor extends LitElement {
           `
         }
       </div>
+
+      ${this._renderImpactPreview()}
 
       ${!this.readonly ? html`
         <div class="actions">

@@ -188,7 +188,9 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
 
     const sorted = this._sortedTabs;
     const activeTab = this._activeTab;
-    const activeElement = activeTab ? this._getOrCreateTabElement(activeTab) : null;
+    const activeContent = activeTab?.renderContent
+      ? activeTab.renderContent(this._item)
+      : (activeTab ? this._getOrCreateTabElement(activeTab) : null);
 
     return html`
       <div class="tab-bar" role="tablist" @keydown=${this._handleTabKeyDown}>
@@ -213,7 +215,7 @@ export class DetailPane extends LiveRegionMixin(LitElement) {
            id="panel-${this._activeTabId}"
            aria-labelledby="tab-${this._activeTabId}"
            tabindex="0">
-        ${activeElement}
+        ${activeContent}
       </div>
     `;
   }

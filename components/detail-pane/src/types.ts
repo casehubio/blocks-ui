@@ -5,4 +5,5 @@ export interface TabDefinition {
   icon?: string;
   order?: number;
   badge?: (item: unknown) => string | null;
+  renderContent?: (item: unknown) => unknown;
 }

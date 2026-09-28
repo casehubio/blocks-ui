@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import type { StageDescriptor, GatePolicy } from './types.js';
+import type { StageDescriptor, GatePolicy, ImprovementStreamView } from './types.js';
 import './gate-policy-editor.js';
 import type { GatePolicyEditor } from './gate-policy-editor.js';
 
@@ -149,5 +149,32 @@ describe('blocks-gate-policy-editor', () => {
     el.configure({ caseId: 'case-1', readonly: true });
     expect(el.caseId).toBe('case-1');
     expect(el.readonly).toBe(true);
+  });
+
+  describe('impact preview', () => {
+    const SAMPLE_STREAMS: ImprovementStreamView[] = [
+      { improvementCaseId: '001', category: 'lint-fix', target: 'auth-module', currentStage: 'pr-review', blockedBy: null, conflictBlocked: false, startedAt: '2026-09-26T06:00:00Z' },
+      { improvementCaseId: '002', category: 'dep-update', target: 'quarkus', currentStage: 'pr-review', blockedBy: null, conflictBlocked: false, startedAt: '2026-09-26T07:00:00Z' },
+      { improvementCaseId: '003', category: 'coverage', target: 'payment', currentStage: 'implement', blockedBy: null, conflictBlocked: false, startedAt: '2026-09-26T08:00:00Z' },
+    ];
+
+    it('shows impact preview when streams provided', async () => {
+      const el = createElement(CODE_STAGES, SAMPLE_POLICY);
+      el.streams = SAMPLE_STREAMS;
+      await el.updateComplete;
+
+      const preview = el.shadowRoot!.querySelector('.impact-preview');
+      expect(preview).not.toBeNull();
+      expect(preview!.textContent).toContain('pr-review');
+      expect(preview!.textContent).toContain('2');
+    });
+
+    it('hides impact preview when no streams', async () => {
+      const el = createElement(CODE_STAGES, SAMPLE_POLICY);
+      await el.updateComplete;
+
+      const preview = el.shadowRoot!.querySelector('.impact-preview');
+      expect(preview).toBeNull();
+    });
   });
 });

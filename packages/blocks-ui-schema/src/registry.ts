@@ -43,7 +43,7 @@ import type { TrustWorkbenchProps } from '@casehubio/blocks-ui-trust-workbench';
 import type { ContributorWorkbenchProps } from '@casehubio/blocks-ui-contributor-workbench';
 import type { CommitmentRangeBarProps, CommitmentTransitionBadgeProps } from '@casehubio/blocks-ui-commitment-viz';
 import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
-import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps } from '@casehubio/blocks-ui-evolution-config';
+import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps, EvolutionStreamsProps, EvolutionInboxProps } from '@casehubio/blocks-ui-evolution-config';
 import type { EvolutionWorkbenchProps } from '@casehubio/blocks-ui-evolution-workbench';
 
 export interface BlocksComponentRegistry {
@@ -107,4 +107,6 @@ export interface BlocksComponentRegistry {
   'blocks-watch-pattern-editor': WatchPatternEditorProps;
   'blocks-gate-policy-editor': GatePolicyEditorProps;
   'blocks-evolution-workbench': EvolutionWorkbenchProps;
+  'blocks-evolution-streams': EvolutionStreamsProps;
+  'blocks-evolution-inbox': EvolutionInboxProps;
 }

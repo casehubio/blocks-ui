@@ -339,6 +339,62 @@ describe('blocks-detail-pane', () => {
     });
   });
 
+  describe('renderContent callback', () => {
+    it('renders content from renderContent callback when present', async () => {
+      el = document.createElement('blocks-detail-pane') as DetailPaneEl;
+      el.tabs = [
+        {
+          id: 'custom', label: 'Custom', tagName: 'div', order: 0,
+          renderContent: () => html`<div class="callback-content">Rendered via callback</div>`,
+        },
+      ];
+      (el as any).standalone = true;
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      const panel = el.shadowRoot!.querySelector('[role="tabpanel"]');
+      expect(panel!.innerHTML).toContain('callback-content');
+      expect(panel!.textContent).toContain('Rendered via callback');
+    });
+
+    it('falls back to tagName when renderContent is absent', async () => {
+      el = document.createElement('blocks-detail-pane') as DetailPaneEl;
+      el.tabs = [
+        { id: 'fallback', label: 'Fallback', tagName: 'test-tab-panel', order: 0 },
+      ];
+      (el as any).standalone = true;
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      const panel = el.shadowRoot!.querySelector('[role="tabpanel"]');
+      const child = panel!.querySelector('test-tab-panel');
+      expect(child).not.toBeNull();
+    });
+
+    it('passes item to renderContent callback', async () => {
+      let receivedItem: unknown = null;
+      el = document.createElement('blocks-detail-pane') as DetailPaneEl;
+      el.tabs = [
+        {
+          id: 'custom', label: 'Custom', tagName: 'div', order: 0,
+          renderContent: (item: unknown) => {
+            receivedItem = item;
+            return html`<div>Content</div>`;
+          },
+        },
+      ];
+      el.selectionTopic = 'test-rc';
+      document.body.appendChild(el);
+      await el.updateComplete;
+
+      const payload = { id: '1', name: 'Test' };
+      emitPagesEvent(document, 'test-rc:selected', payload);
+      await el.updateComplete;
+
+      expect(receivedItem).toEqual(payload);
+    });
+  });
+
   describe('standalone mode', () => {
     it('renders tabs without selection when standalone is true', async () => {
       el = document.createElement('blocks-detail-pane') as DetailPaneEl;

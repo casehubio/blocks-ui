@@ -12,11 +12,13 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@casehubio/blocks-ui-audit-trail-viewer": "workspace:*",
     "@casehubio/blocks-ui-compliance-summary": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/blocks-ui-detail-pane": "workspace:*",
     "@casehubio/blocks-ui-evolution-config": "workspace:*",
     "@casehubio/blocks-ui-kpi-metric-row": "workspace:*",
+    "@casehubio/blocks-ui-trust-score-panel": "workspace:*",
     "@casehubio/pages-component": "*",
     "@casehubio/pages-data": "*",
     "@casehubio/pages-primitives": "*",

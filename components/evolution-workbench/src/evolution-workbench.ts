@@ -5,6 +5,8 @@ import type { TabDefinition } from '@casehubio/blocks-ui-detail-pane';
 import '@casehubio/blocks-ui-detail-pane';
 import '@casehubio/blocks-ui-kpi-metric-row';
 import '@casehubio/blocks-ui-evolution-config';
+import '@casehubio/blocks-ui-audit-trail-viewer';
+import '@casehubio/blocks-ui-trust-score-panel';
 import type {
   EvolutionStateSnapshot, ImprovementStreamView, ConductorInboxEntry,
   DenyPatternView, WatchPattern, StageDescriptor, CategoryDescriptor,
@@ -64,13 +66,20 @@ export class EvolutionWorkbench extends LitElement {
         badge: () => {
           const s = this._snapshot;
           return s && s.activeImprovementCount > 0 ? String(s.activeImprovementCount) : null;
-        } },
+        },
+        renderContent: () => this._renderStreams() },
       { id: 'inbox', label: 'Inbox', tagName: 'div', order: 20,
         badge: () => {
           const s = this._snapshot;
           return s && s.pendingInboxCount > 0 ? String(s.pendingInboxCount) : null;
-        } },
-      { id: 'config', label: 'Configuration', tagName: 'div', order: 40 },
+        },
+        renderContent: () => this._renderInbox() },
+      { id: 'audit', label: 'Audit', tagName: 'div', order: 30,
+        renderContent: () => this._renderAudit() },
+      { id: 'config', label: 'Configuration', tagName: 'div', order: 40,
+        renderContent: () => this._renderConfig() },
+      { id: 'health', label: 'Health', tagName: 'div', order: 50,
+        renderContent: () => this._renderHealth() },
     ];
   }
 
@@ -81,7 +90,7 @@ export class EvolutionWorkbench extends LitElement {
   }
 
   static override styles = css`
-    :host { display: flex; flex-direction: column; height: 100%; font-family: var(--pages-font-family, system-ui); }
+    :host { display: flex; flex-direction: column; height: 100%; font-family: var(--pages-font-family, system-ui); container-type: inline-size; container-name: evolution-workbench; }
     .summary { flex-shrink: 0; border-bottom: 1px solid var(--pages-neutral-4, #e0e0e0); }
     .tabs { flex: 1; overflow: hidden; }
     .tab-content { padding: 16px; overflow: auto; height: 100%; box-sizing: border-box; }
@@ -107,6 +116,18 @@ export class EvolutionWorkbench extends LitElement {
     .status-badge--warn { background: var(--pages-warning-3, #fef3c7); color: var(--pages-warning-11, #92400e); }
     .status-badge--danger { background: var(--pages-danger-3, #fee); color: var(--pages-danger-11, #c00); }
     .empty-tab { padding: 24px; text-align: center; color: var(--pages-neutral-9, #737373); }
+
+    @container evolution-workbench (max-width: 600px) {
+      .metric-grid { gap: 8px; padding: 8px; }
+      .metric-card { min-width: 60px; }
+      .metric-value { font-size: 18px; }
+      .metric-label { font-size: 10px; }
+    }
+
+    @container evolution-workbench (max-width: 400px) {
+      .metric-grid { flex-direction: column; align-items: stretch; }
+      .metric-card { flex-direction: row; justify-content: space-between; min-width: unset; }
+    }
   `;
 
   override connectedCallback(): void {
@@ -124,6 +145,7 @@ export class EvolutionWorkbench extends LitElement {
       onPagesEvent(this, EvolutionEventTopics.WATCH_PATTERN_CHANGED, () => this._refreshState()),
       onPagesEvent(this, EvolutionEventTopics.GATE_POLICY_CHANGED, () => this._refreshState()),
       onPagesEvent(this, EvolutionEventTopics.GATE_RESOLVED, () => this._refreshState()),
+      onPagesEvent(this, EvolutionEventTopics.STREAM_CHANGED, () => this._refreshState()),
     );
   }
 
@@ -205,45 +227,88 @@ export class EvolutionWorkbench extends LitElement {
     `;
   }
 
-  private _renderTabContent(tabId: string) {
-    switch (tabId) {
-      case 'streams':
-        return html`<div class="tab-content"><div class="empty-tab">Improvement streams view — requires pages-table integration</div></div>`;
-      case 'inbox':
-        return html`<div class="tab-content"><div class="empty-tab">Conductor inbox view — requires pages-table integration</div></div>`;
-      case 'config':
-        return html`
-          <div class="tab-content">
-            <div class="section-header">Deny Patterns</div>
-            <blocks-deny-pattern-editor
-              .endpoint=${this.endpoint}
-              .caseId=${this.caseId}
-              .tenancyId=${this.tenancyId}
-              .patterns=${this.denyPatterns}
-            ></blocks-deny-pattern-editor>
+  private _renderStreams() {
+    return html`
+      <div class="tab-content">
+        <blocks-evolution-streams
+          .endpoint=${this.endpoint}
+          .caseId=${this.caseId}
+          .tenancyId=${this.tenancyId}
+          .streams=${this.streams}
+        ></blocks-evolution-streams>
+      </div>
+    `;
+  }
 
-            <div class="section-header">Watch Patterns</div>
-            <blocks-watch-pattern-editor
-              .endpoint=${this.endpoint}
-              .caseId=${this.caseId}
-              .tenancyId=${this.tenancyId}
-              .patterns=${this.watchPatterns}
-              .categories=${this.categories}
-            ></blocks-watch-pattern-editor>
+  private _renderInbox() {
+    return html`
+      <div class="tab-content">
+        <blocks-evolution-inbox
+          .endpoint=${this.endpoint}
+          .caseId=${this.caseId}
+          .tenancyId=${this.tenancyId}
+          .inbox=${this.inbox}
+        ></blocks-evolution-inbox>
+      </div>
+    `;
+  }
 
-            <div class="section-header">Gate Policy</div>
-            <blocks-gate-policy-editor
-              .endpoint=${this.endpoint}
-              .caseId=${this.caseId}
-              .tenancyId=${this.tenancyId}
-              .stages=${this.stages}
-              .policy=${this.gatePolicy}
-            ></blocks-gate-policy-editor>
-          </div>
-        `;
-      default:
-        return html`<div class="tab-content"></div>`;
-    }
+  private _renderAudit() {
+    const auditEndpoint = this.endpoint ? `${this.endpoint}/audit` : undefined;
+    return html`
+      <div class="tab-content">
+        <blocks-audit-trail-viewer
+          .endpoint=${auditEndpoint}
+        ></blocks-audit-trail-viewer>
+      </div>
+    `;
+  }
+
+  private _renderConfig() {
+    return html`
+      <div class="tab-content">
+        <div class="section-header">Deny Patterns</div>
+        <blocks-deny-pattern-editor
+          .endpoint=${this.endpoint}
+          .caseId=${this.caseId}
+          .tenancyId=${this.tenancyId}
+          .patterns=${this.denyPatterns}
+          .streams=${this.streams}
+        ></blocks-deny-pattern-editor>
+
+        <div class="section-header">Watch Patterns</div>
+        <blocks-watch-pattern-editor
+          .endpoint=${this.endpoint}
+          .caseId=${this.caseId}
+          .tenancyId=${this.tenancyId}
+          .patterns=${this.watchPatterns}
+          .categories=${this.categories}
+        ></blocks-watch-pattern-editor>
+
+        <div class="section-header">Gate Policy</div>
+        <blocks-gate-policy-editor
+          .endpoint=${this.endpoint}
+          .caseId=${this.caseId}
+          .tenancyId=${this.tenancyId}
+          .stages=${this.stages}
+          .policy=${this.gatePolicy}
+          .streams=${this.streams}
+        ></blocks-gate-policy-editor>
+      </div>
+    `;
+  }
+
+  private _renderHealth() {
+    const s = this._snapshot;
+    if (!s) return html`<div class="tab-content"><div class="empty-tab">No health data available.</div></div>`;
+    return html`
+      <div class="tab-content">
+        <blocks-trust-score-panel
+          .score=${s.healthScore}
+          mode="full"
+        ></blocks-trust-score-panel>
+      </div>
+    `;
   }
 
   override render() {

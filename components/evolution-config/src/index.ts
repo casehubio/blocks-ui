@@ -7,3 +7,7 @@ export { WatchPatternEditor } from './watch-pattern-editor.js';
 export type { WatchPatternEditorProps } from './watch-pattern-editor.js';
 export { GatePolicyEditor } from './gate-policy-editor.js';
 export type { GatePolicyEditorProps } from './gate-policy-editor.js';
+export { EvolutionStreams } from './evolution-streams.js';
+export type { EvolutionStreamsProps } from './evolution-streams.js';
+export { EvolutionInbox } from './evolution-inbox.js';
+export type { EvolutionInboxProps } from './evolution-inbox.js';

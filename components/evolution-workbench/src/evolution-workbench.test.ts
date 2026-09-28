@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import type { EvolutionStateSnapshot, DenyPatternView, StageDescriptor, GatePolicy } from '@casehubio/blocks-ui-evolution-config';
 import type { TabDefinition } from '@casehubio/blocks-ui-detail-pane';
 import './evolution-workbench.js';
-import type { EvolutionWorkbench } from './evolution-workbench.js';
+import { EvolutionWorkbench } from './evolution-workbench.js';
 
 function createElement(): EvolutionWorkbench {
   const el = document.createElement('blocks-evolution-workbench') as EvolutionWorkbench;
@@ -81,7 +81,7 @@ describe('blocks-evolution-workbench', () => {
     expect((detailPane as any).standalone).toBe(true);
   });
 
-  it('includes built-in tabs', async () => {
+  it('includes all five built-in tabs', async () => {
     const el = createElement();
     el.state = SAMPLE_STATE;
     await el.updateComplete;
@@ -89,7 +89,33 @@ describe('blocks-evolution-workbench', () => {
     const tabIds = detailPane.tabs.map((t: TabDefinition) => t.id);
     expect(tabIds).toContain('streams');
     expect(tabIds).toContain('inbox');
+    expect(tabIds).toContain('audit');
     expect(tabIds).toContain('config');
+    expect(tabIds).toContain('health');
+  });
+
+  it('built-in tabs have renderContent callbacks', async () => {
+    const el = createElement();
+    el.state = SAMPLE_STATE;
+    await el.updateComplete;
+    const detailPane = el.shadowRoot!.querySelector('blocks-detail-pane') as any;
+    const builtInTabs = detailPane.tabs.filter(
+      (t: TabDefinition) => ['streams', 'inbox', 'audit', 'config', 'health'].includes(t.id)
+    );
+    for (const tab of builtInTabs) {
+      expect(tab.renderContent).toBeDefined();
+      expect(typeof tab.renderContent).toBe('function');
+    }
+  });
+
+  it('custom tabs do not have renderContent', async () => {
+    const el = createElement();
+    el.state = SAMPLE_STATE;
+    el.tabs = [{ id: 'trading-risk', label: 'Trading Risk', tagName: 'div', order: 30 }];
+    await el.updateComplete;
+    const detailPane = el.shadowRoot!.querySelector('blocks-detail-pane') as any;
+    const customTab = detailPane.tabs.find((t: TabDefinition) => t.id === 'trading-risk');
+    expect(customTab.renderContent).toBeUndefined();
   });
 
   it('merges domain-extensible tabs', async () => {
@@ -100,7 +126,7 @@ describe('blocks-evolution-workbench', () => {
     const detailPane = el.shadowRoot!.querySelector('blocks-detail-pane') as any;
     const tabIds = detailPane.tabs.map((t: TabDefinition) => t.id);
     expect(tabIds).toContain('trading-risk');
-    expect(tabIds.length).toBe(4); // 3 built-in + 1 custom
+    expect(tabIds.length).toBe(6); // 5 built-in + 1 custom
   });
 
   it('configure() updates properties', async () => {
@@ -115,6 +141,13 @@ describe('blocks-evolution-workbench', () => {
     expect(el.tenancyId).toBe('tenant-1');
     expect(el.state).toEqual(SAMPLE_STATE);
     expect(el.denyPatterns).toEqual(SAMPLE_DENY);
+  });
+
+  it('has container queries in static styles', () => {
+    const cssText = (EvolutionWorkbench as any).styles.cssText ?? String((EvolutionWorkbench as any).styles);
+    expect(cssText).toContain('container-type');
+    expect(cssText).toContain('container-name');
+    expect(cssText).toContain('@container');
   });
 
   it('shows loading state when no data', async () => {

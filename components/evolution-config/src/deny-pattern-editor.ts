@@ -6,7 +6,7 @@ import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
 import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
 import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { DenyPatternView, DynamicDenyEntry } from './types.js';
+import type { DenyPatternView, DynamicDenyEntry, ImprovementStreamView } from './types.js';
 import { EvolutionApi } from './api.js';
 import { emitEvolutionEvent, EvolutionEventTopics } from './events.js';
 
@@ -34,6 +34,7 @@ export interface DenyPatternEditorProps {
   caseId?: string;
   tenancyId?: string;
   patterns?: DenyPatternView;
+  streams?: readonly ImprovementStreamView[];
   readonly?: boolean;
 }
 
@@ -43,6 +44,7 @@ export class DenyPatternEditor extends LitElement {
   @property({ type: String }) caseId?: string;
   @property({ type: String }) tenancyId?: string;
   @property({ type: Object }) patterns?: DenyPatternView;
+  @property({ type: Array, attribute: false }) streams?: readonly ImprovementStreamView[];
   @property({ type: Boolean }) readonly = false;
 
   @state() private _loading = false;
@@ -134,6 +136,7 @@ export class DenyPatternEditor extends LitElement {
     if (props.caseId !== undefined) this.caseId = props.caseId;
     if (props.tenancyId !== undefined) this.tenancyId = props.tenancyId;
     if (props.patterns !== undefined) this.patterns = props.patterns;
+    if (props.streams !== undefined) this.streams = props.streams;
     if (props.readonly !== undefined) this.readonly = props.readonly;
   }
 
@@ -192,6 +195,23 @@ export class DenyPatternEditor extends LitElement {
     });
   }
 
+  private _renderStreamPreview() {
+    if (!this.streams || !this._addValue.trim()) return nothing;
+    const pattern = this._addValue.trim().toLowerCase();
+    const matches = this.streams.filter(s =>
+      s.target && s.target.toLowerCase().includes(pattern)
+    );
+    if (matches.length === 0) return nothing;
+    return html`
+      <div class="preview-section" style="margin-top:12px;padding:8px;background:var(--pages-warning-3,#fef3c7);border-radius:4px;font-size:13px">
+        <strong>${matches.length} active stream${matches.length > 1 ? 's' : ''} would be denied:</strong>
+        <ul style="margin:4px 0 0;padding-left:20px">
+          ${matches.map(s => html`<li style="margin:2px 0"><code style="font-family:var(--pages-font-mono,monospace)">${s.target}</code> (${s.category}, ${s.currentStage})</li>`)}
+        </ul>
+      </div>
+    `;
+  }
+
   override render() {
     this.setAttribute('aria-busy', String(this._loading));
     if (this._loading) return html`<div class="loading">Loading deny patterns...</div>`;
@@ -233,6 +253,7 @@ export class DenyPatternEditor extends LitElement {
             <button class="btn-submit" @click=${() => this._handleAdd(this._addValue)}>Add</button>
             <button class="btn-cancel" @click=${() => { this._showAddForm = false; this._addValue = ''; }}>Cancel</button>
           </div>
+          ${this._renderStreamPreview()}
         </div>
       ` : nothing}
 

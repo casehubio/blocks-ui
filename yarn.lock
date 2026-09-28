@@ -497,11 +497,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-evolution-workbench@workspace:components/evolution-workbench"
   dependencies:
+    "@casehubio/blocks-ui-audit-trail-viewer": "workspace:*"
     "@casehubio/blocks-ui-compliance-summary": "workspace:*"
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/blocks-ui-detail-pane": "workspace:*"
     "@casehubio/blocks-ui-evolution-config": "workspace:*"
     "@casehubio/blocks-ui-kpi-metric-row": "workspace:*"
+    "@casehubio/blocks-ui-trust-score-panel": "workspace:*"
     "@casehubio/pages-component": "npm:*"
     "@casehubio/pages-data": "npm:*"
     "@casehubio/pages-primitives": "npm:*"

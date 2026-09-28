@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import type { DenyPatternView } from './types.js';
+import type { DenyPatternView, ImprovementStreamView } from './types.js';
 import './deny-pattern-editor.js';
 import type { DenyPatternEditor } from './deny-pattern-editor.js';
 
@@ -129,5 +129,67 @@ describe('blocks-deny-pattern-editor', () => {
     const error = el.shadowRoot!.querySelector('.error');
     expect(error).not.toBeNull();
     expect(error!.textContent).toContain('Network error');
+  });
+
+  describe('stream preview', () => {
+    const SAMPLE_STREAMS: ImprovementStreamView[] = [
+      { improvementCaseId: '001', category: 'lint-fix', target: 'AuthController', currentStage: 'implement', blockedBy: null, conflictBlocked: false, startedAt: '2026-09-26T06:00:00Z' },
+      { improvementCaseId: '002', category: 'coverage-gap', target: 'PaymentService', currentStage: 'pr-review', blockedBy: null, conflictBlocked: false, startedAt: '2026-09-26T07:00:00Z' },
+    ];
+
+    it('shows preview of matching streams when typing a deny pattern', async () => {
+      const el = createElement(SAMPLE_VIEW);
+      el.streams = SAMPLE_STREAMS;
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.btn-add') as HTMLButtonElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const input = el.shadowRoot!.querySelector('.add-form input') as HTMLInputElement;
+      input.value = 'Auth';
+      input.dispatchEvent(new Event('input'));
+      await el.updateComplete;
+
+      const preview = el.shadowRoot!.querySelector('.preview-section');
+      expect(preview).not.toBeNull();
+      expect(preview!.textContent).toContain('1 active stream');
+      expect(preview!.textContent).toContain('AuthController');
+    });
+
+    it('hides preview when no streams prop provided', async () => {
+      const el = createElement(SAMPLE_VIEW);
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.btn-add') as HTMLButtonElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const input = el.shadowRoot!.querySelector('.add-form input') as HTMLInputElement;
+      input.value = 'Auth';
+      input.dispatchEvent(new Event('input'));
+      await el.updateComplete;
+
+      const preview = el.shadowRoot!.querySelector('.preview-section');
+      expect(preview).toBeNull();
+    });
+
+    it('shows no preview when pattern has no matches', async () => {
+      const el = createElement(SAMPLE_VIEW);
+      el.streams = SAMPLE_STREAMS;
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.btn-add') as HTMLButtonElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const input = el.shadowRoot!.querySelector('.add-form input') as HTMLInputElement;
+      input.value = 'Nonexistent';
+      input.dispatchEvent(new Event('input'));
+      await el.updateComplete;
+
+      const preview = el.shadowRoot!.querySelector('.preview-section');
+      expect(preview).toBeNull();
+    });
   });
 });
