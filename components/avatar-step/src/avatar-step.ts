@@ -415,47 +415,20 @@ export class AvatarStep extends LitElement {
     this._emitPersonalityChanged();
   }
 
-  private _selectFramework(fw: PersonalityFramework, value: string) {
-    if (this._frameworks[fw] === value) {
-      const next = { ...this._frameworks };
-      delete next[fw];
-      this._frameworks = next;
-    } else {
-      const candidate = { ...this._frameworks, [fw]: value };
-      const matches = getCompatibleArchetypes(candidate, this._bigFive);
-      if ([...matches.values()].every(t => t === 'incompatible')) {
-        this._frameworks = { [fw]: value };
-        this._bigFive = {};
-      } else {
-        this._frameworks = candidate;
-      }
-    }
-    this._syncSelectionWithFilters();
-  }
+  // ── Centralised filter pipeline ──
+  // ALL state mutations flow through these methods. No inline state changes.
 
-  private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
-    if (this._bigFive[dim] === pole) {
-      const next = { ...this._bigFive };
-      delete next[dim];
-      this._bigFive = next;
-    } else {
-      const candidate = { ...this._bigFive, [dim]: pole };
-      const matches = getCompatibleArchetypes(this._frameworks, candidate);
-      if ([...matches.values()].every(t => t === 'incompatible')) {
-        this._bigFive = { [dim]: pole };
-        this._frameworks = {};
-      } else {
-        this._bigFive = candidate;
-      }
-    }
-    this._syncSelectionWithFilters();
-  }
-
-  private _syncSelectionWithFilters() {
+  private _applyFilters(frameworks: Partial<Record<PersonalityFramework, string>>, bigFive: Partial<Record<BigFiveDimension, BigFivePole>>) {
+    this._frameworks = frameworks;
+    this._bigFive = bigFive;
     const tiers = this._tiers();
     if (this._selectedArchetype && tiers.get(this._selectedArchetype) === 'incompatible') {
       this._selectedArchetype = null;
     }
+    this._syncProfessionToFilters(tiers);
+  }
+
+  private _syncProfessionToFilters(tiers: Map<string, MatchTier>) {
     const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
     if (!hasFilters) { this._profession = null; this._selectedRole = null; return; }
     let bestProf: string | null = null;
@@ -474,6 +447,54 @@ export class AvatarStep extends LitElement {
     }
     if (bestScore > 0) { this._profession = bestProf; this._selectedRole = bestRole; }
     else { this._profession = null; this._selectedRole = null; }
+  }
+
+  private _resolveConflict(newFrameworks: Partial<Record<PersonalityFramework, string>>, newBigFive: Partial<Record<BigFiveDimension, BigFivePole>>): [Partial<Record<PersonalityFramework, string>>, Partial<Record<BigFiveDimension, BigFivePole>>] {
+    const matches = getCompatibleArchetypes(newFrameworks, newBigFive);
+    if ([...matches.values()].some(t => t !== 'incompatible')) return [newFrameworks, newBigFive];
+    const fwKeys = Object.keys(newFrameworks) as PersonalityFramework[];
+    for (let i = fwKeys.length - 1; i >= 0; i--) {
+      const reduced = { ...newFrameworks };
+      delete reduced[fwKeys[i]!];
+      const test = getCompatibleArchetypes(reduced, newBigFive);
+      if ([...test.values()].some(t => t !== 'incompatible')) return [reduced, newBigFive];
+    }
+    const bfKeys = Object.keys(newBigFive) as BigFiveDimension[];
+    for (let i = bfKeys.length - 1; i >= 0; i--) {
+      const reduced = { ...newBigFive };
+      delete reduced[bfKeys[i]!];
+      const test = getCompatibleArchetypes(newFrameworks, reduced);
+      if ([...test.values()].some(t => t !== 'incompatible')) return [newFrameworks, reduced];
+    }
+    const lastFw = fwKeys[fwKeys.length - 1];
+    return [lastFw ? { [lastFw]: newFrameworks[lastFw] } : {}, {}];
+  }
+
+  // ── Entry points (all delegate to pipeline) ──
+
+  private _selectFramework(fw: PersonalityFramework, value: string) {
+    let newFw: Partial<Record<PersonalityFramework, string>>;
+    if (this._frameworks[fw] === value) {
+      newFw = { ...this._frameworks };
+      delete newFw[fw];
+      this._applyFilters(newFw, this._bigFive);
+    } else {
+      const candidate = { ...this._frameworks, [fw]: value };
+      const [resolved, resolvedBf] = this._resolveConflict(candidate, this._bigFive);
+      this._applyFilters(resolved, resolvedBf);
+    }
+  }
+
+  private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
+    if (this._bigFive[dim] === pole) {
+      const next = { ...this._bigFive };
+      delete next[dim];
+      this._applyFilters(this._frameworks, next);
+    } else {
+      const candidate = { ...this._bigFive, [dim]: pole };
+      const [resolvedFw, resolved] = this._resolveConflict(this._frameworks, candidate);
+      this._applyFilters(resolvedFw, resolved);
+    }
   }
 
   private _selectArchetype(key: string) {
@@ -498,12 +519,14 @@ export class AvatarStep extends LitElement {
     }));
   }
 
+  private _selectIncompatibleArchetype(key: string) {
+    this._applyFilters({}, {});
+    this._selectArchetype(key);
+  }
+
   private _reset() {
-    this._frameworks = {};
-    this._bigFive = {};
+    this._applyFilters({}, {});
     this._selectedArchetype = null;
-    this._profession = null;
-    this._selectedRole = null;
   }
 
   private _navigateToRole(profession: string, role: string, e: Event) {
@@ -914,7 +937,7 @@ export class AvatarStep extends LitElement {
                 <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key) })}
                   role="radio" aria-checked=${String(selected)}
                   aria-label="${family} ${sub} avatar"
-                  @click=${() => { if (incompatible) { this._frameworks = {}; this._bigFive = {}; } this._selectArchetype(key); }}>
+                  @click=${() => incompatible ? this._selectIncompatibleArchetype(key) : this._selectArchetype(key)}>
                   <agent-avatar
                     .archetype=${{ family, subArchetype: sub }}
                     collection=${this._collection}
