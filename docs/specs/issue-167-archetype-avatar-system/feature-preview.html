@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Feature Variations — Archetype Avatar System</title>
+<style>
+  body { background: #2a2a2a; color: #ddd; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px 40px; }
+  h1 { color: #fff; font-size: 1.6em; margin-bottom: 4px; }
+  .subtitle { color: #999; margin-bottom: 30px; font-size: 0.95em; }
+  h2 { color: #ccc; font-size: 1.2em; border-bottom: 1px solid #444; padding-bottom: 6px; margin-top: 40px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .card { text-align: center; }
+  .card svg { display: block; image-rendering: pixelated; }
+  .card .label { font-size: 0.78em; color: #aaa; margin-top: 4px; max-width: 120px; }
+  .card .label b { color: #ddd; }
+  .note { background: #333; border-left: 3px solid #7a7; padding: 12px 16px; margin-top: 30px; font-size: 0.88em; line-height: 1.55; max-width: 720px; }
+  .note h3 { margin: 0 0 8px; color: #9d9; font-size: 1em; }
+</style>
+</head>
+<body>
+
+<h1>Composable Facial Feature Variations</h1>
+<p class="subtitle">Pixel art avatar system — extracted features at canonical positions on head-standard (translate 0,6). Review for variety and male/female lip strategies.</p>
+
+<!-- ======================================== -->
+<h2>Mouths (8 variations)</h2>
+<div class="grid">
+
+<!-- line-neutral -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- eyes: standard -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- nose: subtle -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: line-neutral -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- cheek/chin/neck -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>line-neutral</b><br>20px dark crease, no lip color</div>
+</div>
+
+<!-- line-wide -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: line-wide (Jester grin) -->
+  <rect x="84" y="88" width="32" height="2" fill="#000" opacity="0.3"/>
+  <rect x="82" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="116" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.07"/>
+  <!-- upturned corners -->
+  <rect x="82" y="86" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="116" y="86" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>line-wide</b><br>32px wide, upturned corners (grin)</div>
+</div>
+
+<!-- line-stern -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: line-stern -->
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.3"/>
+  <rect x="90" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="108" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- downturned corners -->
+  <rect x="90" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="108" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="94" y="90" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>line-stern</b><br>16px, downturned corners</div>
+</div>
+
+<!-- smile -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: smile -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- upturned corners -->
+  <rect x="88" y="86" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="110" y="86" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>smile</b><br>20px with upturned corners</div>
+</div>
+
+<!-- lips-natural -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: lips-natural — KEY female signal -->
+  <!-- upper lip line -->
+  <rect x="90" y="86" width="20" height="2" fill="#000" opacity="0.2"/>
+  <!-- lip color fill -->
+  <rect x="90" y="88" width="20" height="2" fill="#cc8888" opacity="0.4"/>
+  <!-- lower lip highlight -->
+  <rect x="92" y="90" width="16" height="2" fill="#cc8888" opacity="0.25"/>
+  <!-- corners -->
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>lips-natural</b><br>Subtle lip color — key female signal</div>
+</div>
+
+<!-- lips-full -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: lips-full — cupid's bow, prominent color -->
+  <!-- cupid's bow bumps -->
+  <rect x="96" y="84" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+  <rect x="102" y="84" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+  <!-- upper lip -->
+  <rect x="88" y="86" width="24" height="2" fill="#cc7777" opacity="0.45"/>
+  <!-- dividing crease -->
+  <rect x="88" y="88" width="24" height="2" fill="#000" opacity="0.2"/>
+  <!-- lower lip — fuller -->
+  <rect x="90" y="90" width="20" height="2" fill="#cc7777" opacity="0.5"/>
+  <rect x="92" y="92" width="16" height="2" fill="#cc7777" opacity="0.3"/>
+  <!-- corners -->
+  <rect x="86" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="112" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <!-- lip highlight -->
+  <rect x="96" y="90" width="8" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>lips-full</b><br>Cupid's bow, prominent lip color</div>
+</div>
+
+<!-- smirk -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: smirk — asymmetric -->
+  <rect x="92" y="88" width="18" height="2" fill="#000" opacity="0.3"/>
+  <rect x="90" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- right corner up -->
+  <rect x="110" y="86" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- left corner down -->
+  <rect x="90" y="90" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="94" y="90" width="14" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>smirk</b><br>Asymmetric, one corner up</div>
+</div>
+
+<!-- small -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- MOUTH: small -->
+  <rect x="94" y="88" width="12" height="2" fill="#000" opacity="0.25"/>
+  <rect x="92" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="106" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="96" y="90" width="8" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>small</b><br>14px, understated/quiet</div>
+</div>
+
+</div><!-- end mouths grid -->
+
+<!-- ======================================== -->
+<h2>Noses (6 variations)</h2>
+<div class="grid">
+
+<!-- subtle -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: subtle (current default) -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>subtle</b><br>Minimal bridge shadow, small nostrils</div>
+</div>
+
+<!-- prominent -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: prominent — wider bridge, larger nostrils, stronger -->
+  <rect x="96" y="76" width="8" height="10" fill="#000" opacity="0.14"/>
+  <rect x="94" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="104" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="94" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="102" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.08"/>
+  <rect x="104" y="78" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>prominent</b><br>Wide bridge, large nostrils, strong opacity</div>
+</div>
+
+<!-- button -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: button — shorter, wider, round tip -->
+  <rect x="98" y="80" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="96" y="82" width="8" height="4" fill="#000" opacity="0.1"/>
+  <rect x="94" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="104" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="96" y="82" width="8" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>button</b><br>Shorter, wider, round tip</div>
+</div>
+
+<!-- narrow -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: narrow — thin bridge, minimal nostrils -->
+  <rect x="99" y="78" width="2" height="8" fill="#000" opacity="0.12"/>
+  <rect x="97" y="84" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="101" y="84" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="101" y="80" width="2" height="4" fill="#fff" opacity="0.05"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>narrow</b><br>Thin 2px bridge, minimal nostrils</div>
+</div>
+
+<!-- aquiline -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: aquiline — longer, pronounced -->
+  <rect x="98" y="76" width="4" height="12" fill="#000" opacity="0.14"/>
+  <rect x="96" y="78" width="2" height="8" fill="#000" opacity="0.07"/>
+  <rect x="102" y="78" width="2" height="8" fill="#000" opacity="0.07"/>
+  <!-- hook bump on left -->
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="94" y="86" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="104" y="86" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.06"/>
+  <rect x="102" y="78" width="2" height="4" fill="#fff" opacity="0.07"/>
+  <rect x="90" y="90" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>aquiline</b><br>Longer bridge, pronounced tip</div>
+</div>
+
+<!-- broad -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- NOSE: broad — wide base, flat bridge -->
+  <rect x="96" y="78" width="8" height="6" fill="#000" opacity="0.08"/>
+  <rect x="94" y="80" width="2" height="4" fill="#000" opacity="0.06"/>
+  <rect x="104" y="80" width="2" height="4" fill="#000" opacity="0.06"/>
+  <rect x="92" y="84" width="4" height="2" fill="#000" opacity="0.2"/>
+  <rect x="104" y="84" width="4" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="86" width="20" height="2" fill="#000" opacity="0.06"/>
+  <rect x="100" y="78" width="4" height="4" fill="#fff" opacity="0.05"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>broad</b><br>Wide base, flatter bridge</div>
+</div>
+
+</div><!-- end noses grid -->
+
+<!-- ======================================== -->
+<h2>Eyes (6 variations)</h2>
+<div class="grid">
+
+<!-- standard -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: standard 14×10 -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>standard</b><br>14×10 sclera, 6×6 iris</div>
+</div>
+
+<!-- large -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: large 16×12 -->
+  <rect x="80" y="60" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="8" height="8" fill="#4a6fa5"/>
+  <rect x="90" y="62" width="4" height="8" fill="#3a5a85"/>
+  <rect x="90" y="64" width="4" height="6" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="104" y="60" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="60" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="108" y="62" width="8" height="8" fill="#4a6fa5"/>
+  <rect x="112" y="62" width="4" height="8" fill="#3a5a85"/>
+  <rect x="112" y="64" width="4" height="6" fill="#111"/>
+  <rect x="108" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>large</b><br>16×12 sclera, 8×8 iris (Jester)</div>
+</div>
+
+<!-- narrow -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: narrow 14×6, hooded -->
+  <rect x="82" y="64" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="88" y="64" width="6" height="4" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="4" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="2" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="64" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="110" y="64" width="6" height="4" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="4" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="2" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>narrow</b><br>14×6 sclera, hooded look</div>
+</div>
+
+<!-- round -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: round 10×10 -->
+  <rect x="84" y="62" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="84" y="62" width="10" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="88" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="88" y="66" width="4" height="4" fill="#111"/>
+  <rect x="86" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="10" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="108" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="110" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="110" y="66" width="4" height="4" fill="#111"/>
+  <rect x="108" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>round</b><br>10×10 sclera, rounder shape</div>
+</div>
+
+<!-- almond -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: almond 16×8, tapered -->
+  <rect x="82" y="64" width="16" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <!-- tapered inner/outer corners -->
+  <rect x="80" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="98" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="66" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <rect x="104" y="64" width="16" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="64" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="102" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="120" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="66" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>almond</b><br>16×8 sclera, tapered at corners</div>
+</div>
+
+<!-- deep-set -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- EYES: deep-set 14×8, heavy upper shadow -->
+  <!-- shadow above eyes -->
+  <rect x="80" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="104" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="82" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="80" y="62" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="96" y="62" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="104" y="62" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="120" y="62" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>deep-set</b><br>Heavier upper shadow, 14×8</div>
+</div>
+
+</div><!-- end eyes grid -->
+
+<!-- ======================================== -->
+<h2>Combination Examples</h2>
+<div class="grid">
+
+<!-- Sage Detective: standard eyes, subtle nose, line-neutral mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- standard eyes -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- subtle nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- line-neutral mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Sage Detective</b><br>standard + subtle + line-neutral</div>
+</div>
+
+<!-- Lover Romantic: almond eyes, narrow nose, lips-full mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- almond eyes -->
+  <rect x="82" y="64" width="16" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="80" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="98" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="66" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <rect x="104" y="64" width="16" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="64" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="102" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="120" y="66" width="2" height="4" fill="#dde4e8" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="66" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <!-- narrow nose -->
+  <rect x="99" y="78" width="2" height="8" fill="#000" opacity="0.12"/>
+  <rect x="97" y="84" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="101" y="84" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- lips-full mouth -->
+  <rect x="96" y="84" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+  <rect x="102" y="84" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+  <rect x="88" y="86" width="24" height="2" fill="#cc7777" opacity="0.45"/>
+  <rect x="88" y="88" width="24" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="90" width="20" height="2" fill="#cc7777" opacity="0.5"/>
+  <rect x="92" y="92" width="16" height="2" fill="#cc7777" opacity="0.3"/>
+  <rect x="86" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="112" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="96" y="90" width="8" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Lover Romantic</b><br>almond + narrow + lips-full</div>
+</div>
+
+<!-- Hero Warrior: deep-set eyes, prominent nose, line-stern mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- deep-set eyes -->
+  <rect x="80" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="104" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="82" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- prominent nose -->
+  <rect x="96" y="76" width="8" height="10" fill="#000" opacity="0.14"/>
+  <rect x="94" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="104" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="94" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="102" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- line-stern mouth -->
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.3"/>
+  <rect x="90" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="108" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="90" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="108" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Hero Warrior</b><br>deep-set + prominent + line-stern</div>
+</div>
+
+<!-- Jester Clown: large eyes, button nose, line-wide mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- large eyes -->
+  <rect x="80" y="60" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="8" height="8" fill="#4a6fa5"/>
+  <rect x="90" y="62" width="4" height="8" fill="#3a5a85"/>
+  <rect x="90" y="64" width="4" height="6" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="104" y="60" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="60" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="108" y="62" width="8" height="8" fill="#4a6fa5"/>
+  <rect x="112" y="62" width="4" height="8" fill="#3a5a85"/>
+  <rect x="112" y="64" width="4" height="6" fill="#111"/>
+  <rect x="108" y="62" width="2" height="2" fill="#fff"/>
+  <!-- button nose -->
+  <rect x="98" y="80" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="96" y="82" width="8" height="4" fill="#000" opacity="0.1"/>
+  <rect x="94" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="104" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- line-wide mouth -->
+  <rect x="84" y="88" width="32" height="2" fill="#000" opacity="0.3"/>
+  <rect x="82" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="116" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.07"/>
+  <rect x="82" y="86" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="116" y="86" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Jester Clown</b><br>large + button + line-wide</div>
+</div>
+
+<!-- Innocent Child: round eyes, button nose, lips-natural mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- round eyes -->
+  <rect x="84" y="62" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="84" y="62" width="10" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="88" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="88" y="66" width="4" height="4" fill="#111"/>
+  <rect x="86" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="10" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="10" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="108" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="110" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="110" y="66" width="4" height="4" fill="#111"/>
+  <rect x="108" y="64" width="2" height="2" fill="#fff"/>
+  <!-- button nose -->
+  <rect x="98" y="80" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="96" y="82" width="8" height="4" fill="#000" opacity="0.1"/>
+  <rect x="94" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="104" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- lips-natural mouth -->
+  <rect x="90" y="86" width="20" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="88" width="20" height="2" fill="#cc8888" opacity="0.4"/>
+  <rect x="92" y="90" width="16" height="2" fill="#cc8888" opacity="0.25"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Innocent Child</b><br>round + button + lips-natural</div>
+</div>
+
+<!-- Rebel Maverick: narrow eyes, aquiline nose, smirk mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- narrow eyes -->
+  <rect x="82" y="64" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="88" y="64" width="6" height="4" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="4" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="2" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="64" width="14" height="6" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="110" y="64" width="6" height="4" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="4" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="2" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- aquiline nose -->
+  <rect x="98" y="76" width="4" height="12" fill="#000" opacity="0.14"/>
+  <rect x="96" y="78" width="2" height="8" fill="#000" opacity="0.07"/>
+  <rect x="102" y="78" width="2" height="8" fill="#000" opacity="0.07"/>
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="94" y="86" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="104" y="86" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- smirk mouth -->
+  <rect x="92" y="90" width="18" height="2" fill="#000" opacity="0.3"/>
+  <rect x="90" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="90" y="92" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="94" y="92" width="14" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Rebel Maverick</b><br>narrow + aquiline + smirk</div>
+</div>
+
+<!-- Caregiver Angel: standard eyes, subtle nose, lips-natural mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- standard eyes -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- subtle nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- lips-natural mouth -->
+  <rect x="90" y="86" width="20" height="2" fill="#000" opacity="0.2"/>
+  <rect x="90" y="88" width="20" height="2" fill="#cc8888" opacity="0.4"/>
+  <rect x="92" y="90" width="16" height="2" fill="#cc8888" opacity="0.25"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.1"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Caregiver Angel</b><br>standard + subtle + lips-natural</div>
+</div>
+
+<!-- Sovereign Ruler: deep-set eyes, prominent nose, line-stern mouth -->
+<div class="card">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="120" height="144">
+<g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="#e8b88a"/>
+  <rect x="64" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="#e8b88a"/>
+  <rect x="136" y="64" width="2" height="8" fill="#e8b88a"/>
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- deep-set eyes -->
+  <rect x="80" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="104" y="60" width="16" height="2" fill="#000" opacity="0.15"/>
+  <rect x="82" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="88" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="14" height="8" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="110" y="64" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a5a85"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- prominent nose -->
+  <rect x="96" y="76" width="8" height="10" fill="#000" opacity="0.14"/>
+  <rect x="94" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="104" y="78" width="2" height="6" fill="#000" opacity="0.08"/>
+  <rect x="94" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="102" y="84" width="4" height="2" fill="#000" opacity="0.22"/>
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- line-stern mouth -->
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.3"/>
+  <rect x="90" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="108" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="90" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="108" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <rect x="90" y="108" width="20" height="18" fill="#e8b88a"/>
+  <rect x="88" y="112" width="4" height="12" fill="#e8b88a"/>
+  <rect x="108" y="112" width="4" height="12" fill="#e8b88a"/>
+</g>
+</svg>
+<div class="label"><b>Sovereign Ruler</b><br>deep-set + prominent + line-stern</div>
+</div>
+
+</div><!-- end combinations grid -->
+
+<!-- ======================================== -->
+<div class="note">
+<h3>Male / Female Lip Strategy</h3>
+<p>The LucasArts pixel art tradition: <b>lip color is the primary gender signal at low resolution.</b></p>
+<ul>
+  <li><b>No lip color</b> (line-neutral, line-stern, line-wide, smile, smirk, small) — reads masculine. The mouth is a dark crease with no fill, varying in width and shape.</li>
+  <li><b>Lip color</b> (lips-natural, lips-full) — reads feminine. A muted rose/pink (#cc8888 at 35-55% opacity) applied as a fill row at the mouth line. <code>lips-natural</code> is subtle (one row of color), <code>lips-full</code> adds a cupid's bow and fuller lower lip.</li>
+</ul>
+<p><b>Key design choice:</b> lip color is a <em>mouth variant</em>, not a gender toggle. Any archetype can use any mouth. The config table assigns mouths by character personality — Lover/Romantic gets <code>lips-full</code> because they're expressive, not because they're female. This avoids hard-coding gender into the system while still providing the visual vocabulary LucasArts-era games used.</p>
+<p><b>Combination space:</b> 8 mouths × 6 noses × 6 eyes = 288 unique face configurations, plus 11 head shapes × 12 palettes = 132 body configurations. Total: ~38,000 distinct avatars before hair, costume, props, or expressions.</p>
+</div>
+
+</body>
+</html>

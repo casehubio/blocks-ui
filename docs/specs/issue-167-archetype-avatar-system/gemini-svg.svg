@@ -1,0 +1,200 @@
+<svg style="display: none;">
+  <!-- PROMPT 1: HEADS (12 symbols) -->
+  <symbol id="head:round" viewBox="0 0 200 240"><rect x="70" y="50" width="60" height="80" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="85" y="70" width="12" height="12" fill="#000" /><rect x="103" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:standard" viewBox="0 0 200 240"><rect x="65" y="45" width="70" height="90" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:soft-oval" viewBox="0 0 200 240"><rect x="60" y="50" width="80" height="80" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:oval" viewBox="0 0 200 240"><rect x="75" y="40" width="50" height="100" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="85" y="70" width="12" height="12" fill="#000" /><rect x="103" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:square-jaw" viewBox="0 0 200 240"><rect x="65" y="45" width="70" height="90" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="60" y="90" width="80" height="45" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:diamond" viewBox="0 0 200 240"><rect x="80" y="40" width="40" height="100" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="65" y="65" width="70" height="50" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:heart" viewBox="0 0 200 240"><rect x="60" y="45" width="80" height="60" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="75" y="95" width="50" height="40" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:angular" viewBox="0 0 200 240"><rect x="68" y="45" width="64" height="90" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="60" y="60" width="80" height="60" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:strong-sym" viewBox="0 0 200 240"><rect x="65" y="45" width="70" height="90" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="70" y="40" width="60" height="20" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:weathered" viewBox="0 0 200 240"><rect x="64" y="44" width="72" height="92" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="60" y="55" width="80" height="70" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:round-wide" viewBox="0 0 200 240"><rect x="55" y="50" width="90" height="80" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+  <symbol id="head:fallback" viewBox="0 0 200 240"><rect x="65" y="45" width="70" height="90" fill="var(--skin)" stroke="#000" stroke-width="2" /><rect x="82" y="70" width="12" height="12" fill="#000" /><rect x="106" y="70" width="12" height="12" fill="#000" /><rect x="94" y="90" width="12" height="6" fill="#000" /><rect x="85" y="105" width="30" height="6" fill="#000" /></symbol>
+
+  <!-- PROMPT 2: HAIR (15 symbols) -->
+  <symbol id="hair:bald-sides" viewBox="0 0 200 240"><rect x="65" y="60" width="8" height="15" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="127" y="60" width="8" height="15" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:buzz" viewBox="0 0 200 240"><rect x="68" y="42" width="64" height="15" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:afro-short" viewBox="0 0 200 240"><rect x="60" y="30" width="80" height="40" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:long-flowing" viewBox="0 0 200 240"><rect x="60" y="40" width="80" height="100" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:messy-bun" viewBox="0 0 200 240"><rect x="68" y="40" width="64" height="20" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="85" y="20" width="30" height="25" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:mohawk" viewBox="0 0 200 240"><rect x="92" y="20" width="16" height="40" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:wild-einstein" viewBox="0 0 200 240"><rect x="50" y="35" width="100" height="30" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:slicked" viewBox="0 0 200 240"><rect x="66" y="40" width="68" height="20" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:shoulder-wavy" viewBox="0 0 200 240"><rect x="60" y="40" width="80" height="60" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="50" y="80" width="100" height="30" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:cropped-fringe" viewBox="0 0 200 240"><rect x="66" y="40" width="68" height="25" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="66" y="60" width="68" height="10" fill="var(--hair-color)" /></symbol>
+  <symbol id="hair:pixie" viewBox="0 0 200 240"><rect x="68" y="42" width="50" height="22" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:windswept" viewBox="0 0 200 240"><rect x="66" y="40" width="85" height="25" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:braids" viewBox="0 0 200 240"><rect x="65" y="45" width="12" height="60" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="123" y="45" width="12" height="60" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:ponytail" viewBox="0 0 200 240"><rect x="68" y="42" width="64" height="20" fill="var(--hair-color)" stroke="#000" stroke-width="2" /><rect x="125" y="55" width="20" height="45" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="hair:undercut" viewBox="0 0 200 240"><rect x="85" y="30" width="30" height="35" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 3: BEARDS & EYEBROWS (15 symbols) -->
+  <symbol id="beard:stubble" viewBox="0 0 200 240"><rect x="75" y="110" width="50" height="20" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:goatee" viewBox="0 0 200 240"><rect x="90" y="115" width="20" height="20" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:full-round" viewBox="0 0 200 240"><rect x="68" y="95" width="64" height="40" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:bushy-white" viewBox="0 0 200 240"><rect x="60" y="90" width="80" height="50" fill="#ccc" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:handlebar" viewBox="0 0 200 240"><rect x="75" y="98" width="50" height="12" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:rugged" viewBox="0 0 200 240"><rect x="70" y="100" width="60" height="35" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="beard:heavy" viewBox="0 0 200 240"><rect x="65" y="90" width="70" height="45" fill="var(--hair-color)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="brow:thin-arched" viewBox="0 0 200 240"><rect x="80" y="74" width="16" height="4" fill="#000" /><rect x="104" y="74" width="16" height="4" fill="#000" /></symbol>
+  <symbol id="brow:thick-straight" viewBox="0 0 200 240"><rect x="80" y="74" width="16" height="8" fill="#000" /><rect x="104" y="74" width="16" height="8" fill="#000" /></symbol>
+  <symbol id="brow:angular" viewBox="0 0 200 240"><rect x="80" y="70" width="16" height="8" fill="#000" /><rect x="104" y="70" width="16" height="8" fill="#000" /></symbol>
+  <symbol id="brow:soft-rounded" viewBox="0 0 200 240"><rect x="80" y="72" width="16" height="6" fill="#000" /><rect x="104" y="72" width="16" height="6" fill="#000" /></symbol>
+  <symbol id="brow:bushy-wild" viewBox="0 0 200 240"><rect x="78" y="70" width="20" height="10" fill="#000" /><rect x="102" y="70" width="20" height="10" fill="#000" /></symbol>
+  <symbol id="brow:raised" viewBox="0 0 200 240"><rect x="80" y="65" width="16" height="6" fill="#000" /><rect x="104" y="65" width="16" height="6" fill="#000" /></symbol>
+  <symbol id="brow:asymmetric" viewBox="0 0 200 240"><rect x="80" y="70" width="16" height="6" fill="#000" /><rect x="104" y="76" width="16" height="6" fill="#000" /></symbol>
+  <symbol id="brow:concerned" viewBox="0 0 200 240"><rect x="80" y="76" width="16" height="6" fill="#000" /><rect x="104" y="76" width="16" height="6" fill="#000" /></symbol>
+
+  <!-- PROMPT 4: GLASSES & ACCESSORIES (20 symbols) -->
+  <symbol id="glasses:round-wire" viewBox="0 0 200 240"><rect x="75" y="70" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="4" /><rect x="105" y="70" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="4" /><rect x="95" y="76" width="10" height="4" fill="var(--accent)" /></symbol>
+  <symbol id="glasses:thick-rect" viewBox="0 0 200 240"><rect x="74" y="68" width="22" height="22" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="104" y="68" width="22" height="22" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="glasses:aviator" viewBox="0 0 200 240"><rect x="72" y="68" width="25" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="103" y="68" width="25" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="glasses:cat-eye" viewBox="0 0 200 240"><rect x="72" y="66" width="25" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="103" y="66" width="25" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="glasses:half-rim" viewBox="0 0 200 240"><rect x="75" y="68" width="20" height="8" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="105" y="68" width="20" height="8" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="glasses:monocle" viewBox="0 0 200 240"><rect x="103" y="68" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="4" /><rect x="113" y="90" width="2" height="30" fill="var(--accent)" /></symbol>
+  <symbol id="glasses:pince-nez" viewBox="0 0 200 240"><rect x="80" y="72" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="3" /><rect x="106" y="72" width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="3" /></symbol>
+  <symbol id="glasses:goggles" viewBox="0 0 200 240"><rect x="70" y="68" width="60" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:ear-piercings" viewBox="0 0 200 240"><rect x="62" y="85" width="4" height="4" fill="var(--accent)" /><rect x="134" y="85" width="4" height="4" fill="var(--accent)" /></symbol>
+  <symbol id="acc:pendant-amulet" viewBox="0 0 200 240"><rect x="96" y="130" width="8" height="12" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:headband" viewBox="0 0 200 240"><rect x="65" y="55" width="70" height="8" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:scarf-bandana" viewBox="0 0 200 240"><rect x="70" y="125" width="60" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:hat-explorer" viewBox="0 0 200 240"><rect x="50" y="35" width="100" height="15" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="70" y="20" width="60" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:beret" viewBox="0 0 200 240"><rect x="70" y="35" width="70" height="15" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:flower-crown" viewBox="0 0 200 240"><rect x="75" y="45" width="10" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="95" y="42" width="10" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="115" y="45" width="10" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:epaulettes" viewBox="0 0 200 240"><rect x="55" y="130" width="15" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="130" y="130" width="15" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:scar" viewBox="0 0 200 240"><rect x="110" y="90" width="15" height="4" fill="#000" /></symbol>
+  <symbol id="acc:freckles" viewBox="0 0 200 240"><rect x="85" y="95" width="4" height="4" fill="#000" /><rect x="111" y="95" width="4" height="4" fill="#000" /></symbol>
+  <symbol id="acc:tattoo" viewBox="0 0 200 240"><rect x="95" y="150" width="10" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="acc:nose-ring" viewBox="0 0 200 240"><rect x="98" y="95" width="4" height="6" fill="var(--accent)" stroke="#000" stroke-width="1" /></symbol>
+
+  <!-- PROMPT 5: COSTUMES BATCH 1 (10 symbols) -->
+  <symbol id="costume:blazer-tie" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /><rect x="95" y="130" width="10" height="50" fill="var(--secondary)" /></symbol>
+  <symbol id="costume:tweed-patches" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /><rect x="55" y="160" width="12" height="12" fill="var(--secondary)" stroke="#000" /></symbol>
+  <symbol id="costume:robes" viewBox="0 0 200 240"><rect x="50" y="130" width="100" height="100" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:lab-coat" viewBox="0 0 200 240"><rect x="58" y="130" width="84" height="95" fill="#fff" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:armour" viewBox="0 0 200 240"><rect x="65" y="130" width="70" height="70" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:utility-vest" viewBox="0 0 200 240"><rect x="62" y="130" width="76" height="85" fill="var(--primary)" stroke="#000" stroke-width="2" /><rect x="75" y="150" width="15" height="15" fill="var(--secondary)" stroke="#000" /></symbol>
+  <symbol id="costume:leather-jacket" viewBox="0 0 200 240"><rect x="58" y="130" width="84" height="90" fill="#333" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:smock" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="85" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:formal-sash" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /><rect x="70" y="130" width="10" height="80" fill="var(--secondary)" /></symbol>
+  <symbol id="costume:diplomatic" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="100" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 6: COSTUMES BATCH 2 (10 symbols) -->
+  <symbol id="costume:vest-cross" viewBox="0 0 200 240"><rect x="65" y="130" width="70" height="85" fill="var(--primary)" stroke="#000" stroke-width="2" /><rect x="95" y="150" width="10" height="15" fill="var(--secondary)" /></symbol>
+  <symbol id="costume:soft-wrap" viewBox="0 0 200 240"><rect x="58" y="130" width="84" height="85" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:plain-shirt" viewBox="0 0 200 240"><rect x="65" y="130" width="70" height="80" fill="#fff" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:polo" viewBox="0 0 200 240"><rect x="65" y="130" width="70" height="80" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:simple-dress" viewBox="0 0 200 240"><rect x="65" y="130" width="70" height="95" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:performer" viewBox="0 0 200 240"><rect x="62" y="130" width="76" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:hoodie" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:romantic" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="85" fill="#fff" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:business" viewBox="0 0 200 240"><rect x="60" y="130" width="80" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="costume:explorer-jacket" viewBox="0 0 200 240"><rect x="58" y="130" width="84" height="90" fill="var(--primary)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 7: PROPS BATCH 1 (19 symbols) -->
+  <symbol id="prop:magnifying-glass" viewBox="0 0 200 240"><rect x="140" y="130" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="4" /><rect x="155" y="145" width="15" height="6" fill="var(--accent)" stroke="#000" /></symbol>
+  <symbol id="prop:notebook" viewBox="0 0 200 240"><rect x="140" y="130" width="25" height="35" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:book-open" viewBox="0 0 200 240"><rect x="130" y="130" width="40" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:chalk" viewBox="0 0 200 240"><rect x="145" y="140" width="15" height="5" fill="var(--accent)" stroke="#000" /></symbol>
+  <symbol id="prop:crystal-ball" viewBox="0 0 200 240"><rect x="142" y="125" width="20" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="140" y="145" width="24" height="8" fill="var(--accent)" stroke="#000" /></symbol>
+  <symbol id="prop:feathers" viewBox="0 0 200 240"><rect x="140" y="130" width="10" height="30" fill="var(--accent)" stroke="#000" /></symbol>
+  <symbol id="prop:scroll" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:rosetta-stone" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="40" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:shield" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:sword-hilt" viewBox="0 0 200 240"><rect x="140" y="135" width="20" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:medal" viewBox="0 0 200 240"><rect x="144" y="130" width="12" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:wristbands" viewBox="0 0 200 240"><rect x="138" y="140" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:torch" viewBox="0 0 200 240"><rect x="144" y="140" width="12" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /><rect x="142" y="125" width="16" height="15" fill="orange" stroke="#000" /></symbol>
+  <symbol id="prop:broken-chain" viewBox="0 0 200 240"><rect x="135" y="140" width="30" height="10" fill="none" stroke="var(--accent)" stroke-width="4" /></symbol>
+  <symbol id="prop:first-aid" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:rope" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="20" fill="none" stroke="var(--accent)" stroke-width="4" /></symbol>
+  <symbol id="prop:glowing-orb" viewBox="0 0 200 240"><rect x="140" y="130" width="20" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:smoke-wisps" viewBox="0 0 200 240"><rect x="142" y="125" width="16" height="30" fill="var(--accent)" stroke="#000" /></symbol>
+  <symbol id="prop:wrench-gear" viewBox="0 0 200 240"><rect x="138" y="135" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 8: PROPS BATCH 2 (19 symbols) -->
+  <symbol id="prop:schematic" viewBox="0 0 200 240"><rect x="135" y="130" width="35" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:lightbulb" viewBox="0 0 200 240"><rect x="143" y="130" width="14" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:circuit-traces" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:flask" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:periodic-table" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:megaphone" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:raised-fist" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:dice" viewBox="0 0 200 240"><rect x="140" y="135" width="20" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:poker-chip" viewBox="0 0 200 240"><rect x="138" y="133" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:wrench" viewBox="0 0 200 240"><rect x="138" y="138" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:motorcycle-key" viewBox="0 0 200 240"><rect x="140" y="135" width="20" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:hammer" viewBox="0 0 200 240"><rect x="140" y="130" width="20" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:blueprint-torn" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:compass" viewBox="0 0 200 240"><rect x="138" y="133" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:backpack" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="35" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:swiss-army" viewBox="0 0 200 240"><rect x="138" y="136" width="24" height="15" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:flag" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:machete" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:lantern" viewBox="0 0 200 240"><rect x="140" y="130" width="20" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 9: PROPS BATCH 3 (19 symbols) -->
+  <symbol id="prop:journal" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="32" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:paintbrush" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:palette" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:blueprint" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="22" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:laptop" viewBox="0 0 200 240"><rect x="134" y="132" width="32" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:quill" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:open-book" viewBox="0 0 200 240"><rect x="132" y="132" width="36" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:telescope" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="12" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:star-chart" viewBox="0 0 200 240"><rect x="135" y="130" width="30" height="22" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:butterfly" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:dandelion" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:cloud" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="16" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:stars" viewBox="0 0 200 240"><rect x="138" y="133" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:candle" viewBox="0 0 200 240"><rect x="142" y="132" width="16" height="26" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:banner" viewBox="0 0 200 240"><rect x="135" y="132" width="30" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:spark" viewBox="0 0 200 240"><rect x="140" y="132" width="20" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:music-notes" viewBox="0 0 200 240"><rect x="138" y="132" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:juggling-balls" viewBox="0 0 200 240"><rect x="138" y="132" width="24" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:red-nose" viewBox="0 0 200 240"><rect x="140" y="134" width="20" height="20" fill="red" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 10: PROPS BATCH 4 (19 symbols) -->
+  <symbol id="prop:microphone" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="28" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:spotlight" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="25" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:mirror-mask" viewBox="0 0 200 240"><rect x="135" y="135" width="30" height="15" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:speech-bubble" viewBox="0 0 200 240"><rect x="135" y="132" width="30" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:playing-cards" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:shadow-self" viewBox="0 0 200 240"><rect x="140" y="125" width="20" height="35" fill="#000" /></symbol>
+  <symbol id="prop:gift-box" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:scarf-shared" viewBox="0 0 200 240"><rect x="134" y="136" width="32" height="16" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:wine-glass" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="28" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:grapes" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="28" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:ribbon" viewBox="0 0 200 240"><rect x="135" y="136" width="30" height="12" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:address-book" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:rose" viewBox="0 0 200 240"><rect x="141" y="130" width="18" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:poetry-book" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:halo" viewBox="0 0 200 240"><rect x="136" y="135" width="28" height="10" fill="none" stroke="var(--accent)" stroke-width="3" /></symbol>
+  <symbol id="prop:dove" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:umbrella" viewBox="0 0 200 240"><rect x="136" y="130" width="28" height="26" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:shield-small" viewBox="0 0 200 240"><rect x="140" y="132" width="20" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:stethoscope" viewBox="0 0 200 240"><rect x="138" y="132" width="24" height="26" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+
+  <!-- PROMPT 11: PROPS BATCH 5 - FINAL (19 symbols) -->
+  <symbol id="prop:herb-bundle" viewBox="0 0 200 240"><rect x="136" y="130" width="28" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:bandage" viewBox="0 0 200 240"><rect x="136" y="135" width="28" height="16" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:toolkit" viewBox="0 0 200 240"><rect x="135" y="133" width="30" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:clipboard" viewBox="0 0 200 240"><rect x="136" y="130" width="28" height="32" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:pen" viewBox="0 0 200 240"><rect x="138" y="132" width="24" height="10" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:phone" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:business-cards" viewBox="0 0 200 240"><rect x="136" y="135" width="28" height="18" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:broom" viewBox="0 0 200 240"><rect x="142" y="130" width="16" height="32" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:cloth" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:megaphone-small" viewBox="0 0 200 240"><rect x="138" y="134" width="24" height="16" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:leaflet" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="28" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:olive-branch" viewBox="0 0 200 240"><rect x="136" y="132" width="28" height="24" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:treaty" viewBox="0 0 200 240"><rect x="136" y="130" width="28" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:gavel" viewBox="0 0 200 240"><rect x="136" y="134" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:scales" viewBox="0 0 200 240"><rect x="136" y="130" width="28" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:scepter" viewBox="0 0 200 240"><rect x="142" y="130" width="16" height="32" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:family-crest" viewBox="0 0 200 240"><rect x="138" y="130" width="24" height="30" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:crown" viewBox="0 0 200 240"><rect x="136" y="134" width="28" height="20" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+  <symbol id="prop:orb-of-state" viewBox="0 0 200 240"><rect x="138" y="132" width="24" height="28" fill="var(--accent)" stroke="#000" stroke-width="2" /></symbol>
+</svg>

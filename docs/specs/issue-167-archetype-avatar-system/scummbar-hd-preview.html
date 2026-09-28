@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Scummbar HD — All 48 Archetypes</title>
+<style>
+  body { font-family: monospace; background: #1a1a2e; color: #ddd; padding: 20px; text-align: center; }
+  h1 { color: #ffcc44; margin-bottom: 4px; }
+  h2 { color: #88aacc; margin: 24px 0 8px; border-bottom: 1px solid #333; padding-bottom: 4px; }
+  .family-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
+  .card { background: #2a2a3e; border: 1px solid #555; border-radius: 6px; padding: 6px; width: 130px; }
+  .card h4 { color: #88aacc; margin: 0 0 2px; font-size: 9px; }
+  .card .char-name { font-size: 8px; color: #ffcc44; margin: 2px 0 0; }
+  .card svg { display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<h1>Scummbar HD — All 48 Archetypes</h1>
+<p style="color:#888;font-size:11px;margin-bottom:20px;">12 families x 4 sub-archetypes. Game character reference in gold.</p>
+
+<script>
+const PALETTES = {
+  Sage:      { skin:'#d4a574', primary:'#2c3e6b', secondary:'#4a6fa5', accent:'#e8e4dc', hair:'#555' },
+  Hero:      { skin:'#c68642', primary:'#8b1a1a', secondary:'#c0c0c0', accent:'#ffd700', hair:'#222' },
+  Magician:  { skin:'#a67c52', primary:'#2d1b4e', secondary:'#5b3a8c', accent:'#d4a0ff', hair:'#333' },
+  Rebel:     { skin:'#d4a574', primary:'#1a1a1a', secondary:'#333',    accent:'#cc0000', hair:'#111' },
+  Explorer:  { skin:'#c68642', primary:'#5a4a35', secondary:'#6a5a45', accent:'#c0392b', hair:'#663300' },
+  Creator:   { skin:'#e8c4a0', primary:'#c0392b', secondary:'#e67e22', accent:'#f1c40f', hair:'#884422' },
+  Jester:    { skin:'#e8c4a0', primary:'#e67e22', secondary:'#9b59b6', accent:'#2ecc71', hair:'#cc3300' },
+  Lover:     { skin:'#e8c4a0', primary:'#8b2252', secondary:'#c0546a', accent:'#ffd700', hair:'#222' },
+  Caregiver: { skin:'#d4a574', primary:'#2e5940', secondary:'#3d7a55', accent:'#e8e4dc', hair:'#553322' },
+  Innocent:  { skin:'#f5d5b8', primary:'#f0e6d8', secondary:'#ddd4c4', accent:'#f4d03f', hair:'#cc9944' },
+  Everyman:  { skin:'#c68642', primary:'#5a5a5a', secondary:'#7a7a7a', accent:'#d4c4a8', hair:'#222' },
+  Sovereign: { skin:'#d4a574', primary:'#1a2744', secondary:'#c9a227', accent:'#8b0000', hair:'#333' },
+};
+
+const HEAD_OFFSETS = {
+  'hd:head-oval': 0, 'hd:head-square-jaw': 6, 'hd:head-angular': 8,
+  'hd:head-round': 8, 'hd:head-round-wide': 12, 'hd:head-diamond': 6,
+  'hd:head-heart': 8, 'hd:head-soft-oval': 2, 'hd:head-strong-sym': 6,
+  'hd:head-weathered': 4, 'hd:head-standard': 6, 'hd:head-fallback': 6,
+};
+const OVERLAY_PREFIXES = ['hd:hair-','hd:brow-','hd:glasses-','hd:beard-','hd:prop-red-nose','hd:prop-halo'];
+
+const ALL_FAMILIES = [
+  { name: 'Sage', head: 'hd:head-oval', chars: [
+    { sub: 'Detective', ref: 'Sam (Sam & Max)', parts: ['hd:costume-blazer-tie','hd:head-oval','hd:hair-bald-sides','hd:brow-thin-arched','hd:glasses-round-wire','hd:prop-magnifying-glass'] },
+    { sub: 'Mentor', ref: 'Salvador (Grim Fandango)', parts: ['hd:costume-tweed-patches','hd:head-oval','hd:hair-wild-einstein','hd:beard-bushy-white','hd:brow-bushy-wild','hd:glasses-half-rim','hd:prop-book-open'] },
+    { sub: 'Shaman', ref: 'Voodoo Lady (Monkey Island)', parts: ['hd:costume-robes','hd:head-oval','hd:hair-long-flowing','hd:brow-thin-arched','hd:glasses-pince-nez','hd:prop-crystal-ball'] },
+    { sub: 'Translator', ref: 'Bobbin (Loom)', parts: ['hd:costume-blazer-tie','hd:head-oval','hd:hair-cropped-fringe','hd:brow-soft-rounded','hd:glasses-round-wire','hd:prop-scroll'] },
+  ]},
+  { name: 'Hero', head: 'hd:head-square-jaw', chars: [
+    { sub: 'Warrior', ref: 'Indiana Jones (FoA)', parts: ['hd:costume-armour','hd:head-square-jaw','hd:hair-buzz','hd:brow-angular','hd:prop-shield'] },
+    { sub: 'Athlete', ref: 'QfG Hero', parts: ['hd:costume-armour','hd:head-square-jaw','hd:hair-buzz','hd:brow-thick-straight','hd:prop-torch'] },
+    { sub: 'Liberator', ref: 'Robert Foster (BASS)', parts: ['hd:costume-blazer-tie','hd:head-square-jaw','hd:hair-ponytail','hd:beard-heavy','hd:brow-angular','hd:glasses-aviator','hd:prop-torch'] },
+    { sub: 'Rescuer', ref: 'Frog (Chrono Trigger)', parts: ['hd:costume-armour','hd:head-square-jaw','hd:hair-buzz','hd:beard-rugged','hd:brow-angular','hd:prop-shield'] },
+  ]},
+  { name: 'Magician', head: 'hd:head-diamond', chars: [
+    { sub: 'Alchemist', ref: 'Simon (Simon the Sorcerer)', parts: ['hd:costume-robes','hd:head-diamond','hd:hair-long-flowing','hd:beard-goatee','hd:brow-thin-arched','hd:prop-crystal-ball'] },
+    { sub: 'Engineer', ref: 'Dr. Fred (DOTT)', parts: ['hd:costume-lab-coat','hd:head-diamond','hd:hair-buzz','hd:beard-stubble','hd:brow-thick-straight','hd:glasses-goggles','hd:prop-wrench'] },
+    { sub: 'Innovator', ref: 'Bernard (DOTT)', parts: ['hd:costume-blazer-tie','hd:head-diamond','hd:hair-pixie','hd:brow-raised','hd:prop-lightbulb'] },
+    { sub: 'Scientist', ref: 'Lucca (Chrono Trigger)', parts: ['hd:costume-lab-coat','hd:head-diamond','hd:hair-bald-sides','hd:beard-goatee','hd:brow-thick-straight','hd:glasses-pince-nez','hd:prop-flask'] },
+  ]},
+  { name: 'Rebel', head: 'hd:head-angular', chars: [
+    { sub: 'Activist', ref: 'Razor (Maniac Mansion)', parts: ['hd:costume-leather-jacket','hd:head-angular','hd:hair-braids','hd:brow-angular','hd:prop-torch'] },
+    { sub: 'Gambler', ref: 'Setzer (FFVI)', parts: ['hd:costume-leather-jacket','hd:head-angular','hd:hair-slicked','hd:beard-stubble','hd:brow-asymmetric','hd:prop-dice'] },
+    { sub: 'Maverick', ref: 'Ben (Full Throttle)', parts: ['hd:costume-leather-jacket','hd:head-angular','hd:hair-mohawk','hd:beard-heavy','hd:brow-asymmetric','hd:prop-wrench'] },
+    { sub: 'Reformer', ref: 'Manny (Grim Fandango)', parts: ['hd:costume-leather-jacket','hd:head-angular','hd:hair-undercut','hd:beard-heavy','hd:brow-angular','hd:prop-torch'] },
+  ]},
+  { name: 'Explorer', head: 'hd:head-weathered', chars: [
+    { sub: 'Adventurer', ref: 'Guybrush (Monkey Island)', parts: ['hd:costume-utility-vest','hd:head-weathered','hd:hair-windswept','hd:beard-rugged','hd:brow-thick-straight','hd:glasses-goggles','hd:prop-compass'] },
+    { sub: 'Generalist', ref: 'Zak McKracken', parts: ['hd:costume-utility-vest','hd:head-weathered','hd:hair-shoulder-wavy','hd:beard-stubble','hd:brow-soft-rounded','hd:prop-compass'] },
+    { sub: 'Pioneer', ref: 'Boston Low (The Dig)', parts: ['hd:costume-utility-vest','hd:head-weathered','hd:hair-braids','hd:beard-rugged','hd:brow-thick-straight','hd:glasses-aviator','hd:prop-torch'] },
+    { sub: 'Seeker', ref: 'George Stobbart (Broken Sword)', parts: ['hd:costume-utility-vest','hd:head-weathered','hd:hair-ponytail','hd:brow-concerned','hd:prop-scroll'] },
+  ]},
+  { name: 'Creator', head: 'hd:head-soft-oval', chars: [
+    { sub: 'Artist', ref: 'Green Tentacle (MM)', parts: ['hd:costume-smock','hd:head-soft-oval','hd:hair-messy-bun','hd:brow-raised','hd:glasses-cat-eye','hd:prop-paintbrush'] },
+    { sub: 'Entrepreneur', ref: 'Stan (Monkey Island)', parts: ['hd:costume-blazer-tie','hd:head-soft-oval','hd:hair-pixie','hd:brow-thick-straight','hd:glasses-thick-rect','hd:prop-clipboard'] },
+    { sub: 'Storyteller', ref: 'Bobbin (Loom)', parts: ['hd:costume-smock','hd:head-soft-oval','hd:hair-shoulder-wavy','hd:beard-goatee','hd:brow-raised','hd:prop-scroll'] },
+    { sub: 'Visionary', ref: 'Lucca (Chrono Trigger)', parts: ['hd:costume-blazer-tie','hd:head-soft-oval','hd:hair-wild-einstein','hd:brow-raised','hd:glasses-thick-rect','hd:prop-lightbulb'] },
+  ]},
+  { name: 'Jester', head: 'hd:head-round-wide', chars: [
+    { sub: 'Clown', ref: 'Max (Sam & Max)', parts: ['hd:costume-performer','hd:head-round-wide','hd:hair-wild-einstein','hd:brow-raised','hd:prop-juggling-balls','hd:prop-red-nose'] },
+    { sub: 'Entertainer', ref: 'Larry Laffer (LSL)', parts: ['hd:costume-performer','hd:head-round-wide','hd:hair-cropped-fringe','hd:brow-raised','hd:prop-microphone'] },
+    { sub: 'Provocateur', ref: 'LeChuck (Monkey Island)', parts: ['hd:costume-leather-jacket','hd:head-round-wide','hd:hair-mohawk','hd:beard-stubble','hd:brow-asymmetric','hd:prop-playing-cards'] },
+    { sub: 'Shapeshifter', ref: 'Purple Tentacle (DOTT)', parts: ['hd:costume-performer','hd:head-round-wide','hd:hair-long-flowing','hd:brow-thin-arched','hd:glasses-cat-eye','hd:prop-playing-cards'] },
+  ]},
+  { name: 'Lover', head: 'hd:head-heart', chars: [
+    { sub: 'Romantic', ref: 'Elaine Marley (MI)', parts: ['hd:costume-romantic','hd:head-heart','hd:hair-long-flowing','hd:brow-soft-rounded','hd:prop-flower'] },
+    { sub: 'Companion', ref: 'Sophia Hapgood (Indy FoA)', parts: ['hd:costume-romantic','hd:head-heart','hd:hair-shoulder-wavy','hd:brow-soft-rounded','hd:prop-ribbon'] },
+    { sub: 'Hedonist', ref: 'Larry Laffer (LSL)', parts: ['hd:costume-romantic','hd:head-heart','hd:hair-slicked','hd:beard-stubble','hd:brow-thin-arched','hd:prop-wine-glass'] },
+    { sub: 'Matchmaker', ref: 'Grace Nakimura (GK)', parts: ['hd:costume-romantic','hd:head-heart','hd:hair-messy-bun','hd:brow-raised','hd:prop-ribbon'] },
+  ]},
+  { name: 'Caregiver', head: 'hd:head-round', chars: [
+    { sub: 'Angel', ref: 'Rosella (King\'s Quest IV)', parts: ['hd:costume-soft-wrap','hd:head-round','hd:hair-shoulder-wavy','hd:brow-soft-rounded','hd:prop-halo','hd:prop-dove'] },
+    { sub: 'Guardian', ref: 'Glottis (Grim Fandango)', parts: ['hd:costume-soft-wrap','hd:head-round','hd:hair-afro-short','hd:beard-rugged','hd:brow-thick-straight','hd:prop-shield'] },
+    { sub: 'Healer', ref: 'Voodoo Lady (MI)', parts: ['hd:costume-soft-wrap','hd:head-round','hd:hair-long-flowing','hd:brow-concerned','hd:prop-flask'] },
+    { sub: 'Samaritan', ref: 'Sybil (Sam & Max)', parts: ['hd:costume-soft-wrap','hd:head-round','hd:hair-cropped-fringe','hd:beard-stubble','hd:brow-soft-rounded','hd:prop-clipboard'] },
+  ]},
+  { name: 'Innocent', head: 'hd:head-round', chars: [
+    { sub: 'Child', ref: 'Willy Beamish', parts: ['hd:costume-simple-dress','hd:head-round','hd:hair-cropped-fringe','hd:brow-raised','hd:prop-dove'] },
+    { sub: 'Dreamer', ref: 'Shay (Broken Age)', parts: ['hd:costume-simple-dress','hd:head-round','hd:hair-long-flowing','hd:brow-soft-rounded','hd:prop-lightbulb'] },
+    { sub: 'Idealist', ref: 'Alexander (KQ VI)', parts: ['hd:costume-simple-dress','hd:head-round','hd:hair-shoulder-wavy','hd:brow-raised','hd:prop-torch'] },
+    { sub: 'Muse', ref: 'Laverne (DOTT)', parts: ['hd:costume-simple-dress','hd:head-round','hd:hair-messy-bun','hd:brow-thin-arched','hd:prop-lightbulb'] },
+  ]},
+  { name: 'Everyman', head: 'hd:head-standard', chars: [
+    { sub: 'Advocate', ref: 'Joey (BASS)', parts: ['hd:costume-plain-shirt','hd:head-standard','hd:hair-cropped-fringe','hd:brow-raised','hd:glasses-half-rim','hd:prop-clipboard'] },
+    { sub: 'Networker', ref: 'Wally (MI2)', parts: ['hd:costume-plain-shirt','hd:head-standard','hd:hair-slicked','hd:brow-soft-rounded','hd:prop-clipboard'] },
+    { sub: 'Servant', ref: 'Roger Wilco (Space Quest)', parts: ['hd:costume-plain-shirt','hd:head-standard','hd:hair-buzz','hd:brow-concerned','hd:prop-broom'] },
+    { sub: 'Citizen', ref: 'Zak McKracken', parts: ['hd:costume-plain-shirt','hd:head-standard','hd:hair-afro-short','hd:beard-stubble','hd:brow-soft-rounded','hd:prop-clipboard'] },
+  ]},
+  { name: 'Sovereign', head: 'hd:head-strong-sym', chars: [
+    { sub: 'Ruler', ref: 'King Graham (King\'s Quest)', parts: ['hd:costume-formal-sash','hd:head-strong-sym','hd:hair-slicked','hd:beard-handlebar','hd:brow-angular','hd:glasses-monocle','hd:prop-crown'] },
+    { sub: 'Judge', ref: 'Don Copal (Grim Fandango)', parts: ['hd:costume-formal-sash','hd:head-strong-sym','hd:hair-slicked','hd:brow-thick-straight','hd:glasses-thick-rect','hd:prop-gavel'] },
+    { sub: 'Patriarch', ref: 'LeChuck (MI)', parts: ['hd:costume-formal-sash','hd:head-strong-sym','hd:hair-slicked','hd:beard-handlebar','hd:brow-thick-straight','hd:prop-scepter'] },
+    { sub: 'Ambassador', ref: 'Alexander (KQ VI)', parts: ['hd:costume-formal-sash','hd:head-strong-sym','hd:hair-slicked','hd:brow-soft-rounded','hd:prop-scroll'] },
+  ]},
+];
+
+function applyPalette(svg, pal) {
+  return svg.replace(/var\(--skin\)/g, pal.skin).replace(/var\(--primary\)/g, pal.primary)
+    .replace(/var\(--secondary\)/g, pal.secondary).replace(/var\(--accent\)/g, pal.accent)
+    .replace(/var\(--hair-color\)/g, pal.hair);
+}
+function getSymbol(doc, id) {
+  const all = [...doc.querySelectorAll('*')];
+  const sym = all.find(el => el.localName === 'symbol' && el.getAttribute('id') === id);
+  return sym ? sym.innerHTML : '';
+}
+function composeParts(doc, partIds, palette, headId) {
+  const offset = HEAD_OFFSETS[headId] || 0;
+  let svg = '';
+  for (const id of partIds) {
+    const content = getSymbol(doc, id);
+    if (!content) continue;
+    const isOverlay = OVERLAY_PREFIXES.some(p => id.startsWith(p));
+    if (isOverlay && offset > 0) {
+      svg += '<g transform="translate(0,' + offset + ')">' + content + '</g>\n';
+    } else { svg += content + '\n'; }
+  }
+  return applyPalette(svg, palette);
+}
+
+async function init() {
+  const hdSvg = await fetch('scummbar-hd-test.svg').then(r => r.text());
+  const hdDoc = new DOMParser().parseFromString(hdSvg, 'image/svg+xml');
+
+  for (const family of ALL_FAMILIES) {
+    const h2 = document.createElement('h2');
+    h2.textContent = family.name + ' (' + family.head.replace('hd:head-','') + ')';
+    document.body.appendChild(h2);
+    const row = document.createElement('div');
+    row.className = 'family-row';
+    for (const char of family.chars) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const content = composeParts(hdDoc, char.parts, PALETTES[family.name], family.head);
+      card.innerHTML = '<h4>' + family.name + '/' + char.sub + '</h4>' +
+        '<svg width="120" height="144" viewBox="0 0 200 240">' + content + '</svg>' +
+        '<div class="char-name">' + char.ref + '</div>';
+      row.appendChild(card);
+    }
+    document.body.appendChild(row);
+  }
+}
+init();
+</script>
+</body>
+</html>

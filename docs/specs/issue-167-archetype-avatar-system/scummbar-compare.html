@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Scummbar Collection — Side by Side</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: monospace; background: #1a1a2e; color: #ddd; padding: 20px; }
+  h1 { text-align: center; margin-bottom: 10px; color: #ffcc44; }
+  h2 { color: #88aacc; margin: 20px 0 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+  h3 { color: #aaa; margin: 15px 0 8px; font-size: 14px; }
+
+  .compare-row { display: flex; gap: 40px; margin-bottom: 30px; }
+  .column { flex: 1; }
+  .column h3 { text-align: center; }
+
+  .grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .part-card {
+    background: #2a2a3e;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+    width: 110px;
+  }
+  .part-card svg { display: block; margin: 0 auto; }
+  .part-card .label { font-size: 9px; color: #888; margin-top: 2px; word-break: break-all; }
+
+  .avatar-card {
+    background: #2a2a3e;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    width: 140px;
+    display: inline-block;
+    margin: 4px;
+  }
+  .avatar-card svg { display: block; margin: 0 auto; background: #333; }
+  .avatar-card .label { font-size: 10px; color: #aaa; margin-top: 4px; }
+
+  .section { margin-bottom: 30px; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tab {
+    padding: 4px 10px; background: #333; border: 1px solid #555; border-radius: 3px;
+    cursor: pointer; font-size: 11px; color: #aaa;
+  }
+  .tab.active { background: #4a4a6e; color: #fff; border-color: #88aacc; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .composed-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+</style>
+</head>
+<body>
+<h1>Scummbar Pixel Art — Claude vs Gemini</h1>
+<p style="text-align:center;color:#888;margin-bottom:20px;">Side-by-side comparison of individual parts and composed avatars</p>
+
+<div class="tabs" id="main-tabs">
+  <div class="tab active" onclick="showTab('parts')">Individual Parts</div>
+  <div class="tab" onclick="showTab('composed')">Composed Avatars</div>
+</div>
+
+<div class="tab-content active" id="tab-parts">
+  <!-- Categories rendered below by JS -->
+</div>
+
+<div class="tab-content" id="tab-composed">
+  <h2>12 Family Roots — Composed</h2>
+  <p style="color:#888;font-size:12px;margin-bottom:15px;text-align:center;">
+    Each avatar layers: costume → head → hair → beard → brow → glasses → props
+  </p>
+  <div class="compare-row">
+    <div class="column">
+      <h3>Claude</h3>
+      <div class="composed-row" id="composed-claude"></div>
+    </div>
+    <div class="column">
+      <h3>Gemini</h3>
+      <div class="composed-row" id="composed-gemini"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Load both SVG sprite sheets -->
+<div style="display:none" id="claude-sprites"></div>
+<div style="display:none" id="gemini-sprites"></div>
+
+<script>
+const CATEGORIES = [
+  { key: 'head', label: 'Heads', ids: ['head:round','head:standard','head:soft-oval','head:oval','head:square-jaw','head:diamond','head:heart','head:angular','head:strong-sym','head:weathered','head:round-wide','head:fallback'] },
+  { key: 'hair', label: 'Hair', ids: ['hair:bald-sides','hair:buzz','hair:afro-short','hair:long-flowing','hair:messy-bun','hair:mohawk','hair:wild-einstein','hair:slicked','hair:braids','hair:shoulder-wavy','hair:cropped-fringe','hair:undercut','hair:windswept','hair:pixie','hair:ponytail'] },
+  { key: 'beard', label: 'Beards', ids: ['beard:stubble','beard:goatee','beard:full-round','beard:bushy-white','beard:handlebar','beard:rugged','beard:heavy'] },
+  { key: 'brow', label: 'Eyebrows', ids: ['brow:thin-arched','brow:thick-straight','brow:angular','brow:soft-rounded','brow:bushy-wild','brow:raised','brow:asymmetric','brow:concerned'] },
+  { key: 'glasses', label: 'Glasses', ids: ['glasses:round-wire','glasses:thick-rect','glasses:aviator','glasses:cat-eye','glasses:half-rim','glasses:monocle','glasses:pince-nez','glasses:goggles'] },
+  { key: 'costume', label: 'Costumes', ids: ['costume:blazer-tie','costume:tweed-patches','costume:robes','costume:lab-coat','costume:armour','costume:utility-vest','costume:leather-jacket','costume:smock','costume:formal-sash','costume:diplomatic','costume:vest-cross','costume:soft-wrap','costume:plain-shirt','costume:polo','costume:simple-dress','costume:performer','costume:hoodie','costume:romantic','costume:business','costume:explorer-jacket'] },
+  { key: 'prop', label: 'Props (sample)', ids: ['prop:magnifying-glass','prop:shield','prop:torch','prop:compass','prop:dice','prop:microphone','prop:crown','prop:flask','prop:lightbulb','prop:gavel','prop:umbrella','prop:juggling-balls','prop:dove','prop:flower','prop:scroll','prop:telescope'] },
+  { key: 'acc', label: 'Accessories', ids: ['acc:ear-piercings','acc:pendant-amulet','acc:headband','acc:scarf-bandana','acc:flower-crown','acc:epaulettes','acc:scar','acc:freckles','acc:tattoo','acc:nose-ring','acc:hat-explorer','acc:beret'] },
+];
+
+// 12 family root compositions
+const FAMILY_ROOTS = [
+  { label: 'Sage/Detective', palette: { skin:'#d4a574', primary:'#2c3e6b', secondary:'#4a6fa5', accent:'#e8e4dc', hair:'#555' },
+    parts: { costume:'costume:blazer-tie', head:'head:oval', hair:'hair:bald-sides', brow:'brow:thin-arched', glasses:'glasses:round-wire', props:['prop:magnifying-glass'] }},
+  { label: 'Hero/Warrior', palette: { skin:'#c68642', primary:'#8b1a1a', secondary:'#c0c0c0', accent:'#ffd700', hair:'#222' },
+    parts: { costume:'costume:armour', head:'head:square-jaw', hair:'hair:buzz', brow:'brow:angular', props:['prop:shield'] }},
+  { label: 'Magician/Alchemist', palette: { skin:'#a67c52', primary:'#2d1b4e', secondary:'#5b3a8c', accent:'#d4a0ff', hair:'#333' },
+    parts: { costume:'costume:robes', head:'head:diamond', hair:'hair:long-flowing', beard:'beard:goatee', brow:'brow:thin-arched', props:['prop:glowing-orb'] }},
+  { label: 'Rebel/Maverick', palette: { skin:'#d4a574', primary:'#1a1a1a', secondary:'#333', accent:'#cc0000', hair:'#111' },
+    parts: { costume:'costume:leather-jacket', head:'head:angular', hair:'hair:mohawk', beard:'beard:heavy', brow:'brow:asymmetric', props:['prop:wrench'] }},
+  { label: 'Explorer/Adventurer', palette: { skin:'#c68642', primary:'#5a4a35', secondary:'#6a5a45', accent:'#c0392b', hair:'#663300' },
+    parts: { costume:'costume:utility-vest', head:'head:weathered', hair:'hair:windswept', beard:'beard:rugged', brow:'brow:thick-straight', glasses:'glasses:goggles', props:['prop:compass'] }},
+  { label: 'Creator/Artist', palette: { skin:'#e8c4a0', primary:'#c0392b', secondary:'#e67e22', accent:'#f1c40f', hair:'#884422' },
+    parts: { costume:'costume:smock', head:'head:soft-oval', hair:'hair:messy-bun', brow:'brow:raised', glasses:'glasses:cat-eye', props:['prop:paintbrush'] }},
+  { label: 'Jester/Clown', palette: { skin:'#e8c4a0', primary:'#e67e22', secondary:'#9b59b6', accent:'#2ecc71', hair:'#cc3300' },
+    parts: { costume:'costume:performer', head:'head:round-wide', hair:'hair:wild-einstein', brow:'brow:raised', props:['prop:juggling-balls','prop:red-nose'] }},
+  { label: 'Lover/Romantic', palette: { skin:'#e8c4a0', primary:'#8b2252', secondary:'#c0546a', accent:'#ffd700', hair:'#222' },
+    parts: { costume:'costume:romantic', head:'head:heart', hair:'hair:long-flowing', brow:'brow:soft-rounded', props:['prop:flower'] }},
+  { label: 'Caregiver/Angel', palette: { skin:'#d4a574', primary:'#2e5940', secondary:'#3d7a55', accent:'#e8e4dc', hair:'#553322' },
+    parts: { costume:'costume:soft-wrap', head:'head:round', hair:'hair:shoulder-wavy', brow:'brow:soft-rounded', props:['prop:halo','prop:dove'] }},
+  { label: 'Innocent/Child', palette: { skin:'#f5d5b8', primary:'#f0e6d8', secondary:'#ddd4c4', accent:'#f4d03f', hair:'#cc9944' },
+    parts: { costume:'costume:simple-dress', head:'head:round', hair:'hair:cropped-fringe', brow:'brow:raised', props:['prop:butterfly'] }},
+  { label: 'Everyman/Citizen', palette: { skin:'#c68642', primary:'#5a5a5a', secondary:'#7a7a7a', accent:'#d4c4a8', hair:'#222' },
+    parts: { costume:'costume:plain-shirt', head:'head:standard', hair:'hair:afro-short', beard:'beard:stubble', brow:'brow:soft-rounded', props:['prop:clipboard'] }},
+  { label: 'Sovereign/Ruler', palette: { skin:'#d4a574', primary:'#1a2744', secondary:'#c9a227', accent:'#8b0000', hair:'#333' },
+    parts: { costume:'costume:formal-sash', head:'head:strong-sym', hair:'hair:slicked', beard:'beard:handlebar', brow:'brow:angular', glasses:'glasses:monocle', props:['prop:crown'] }},
+];
+
+let claudeDoc, geminiDoc;
+
+async function loadSVGs() {
+  const [claudeResp, geminiText] = await Promise.all([
+    fetch('scummbar.parts.svg').then(r => r.text()),
+    fetch('gemini-svg.svg').then(r => r.text()).catch(() => null)
+  ]);
+
+  const parser = new DOMParser();
+  claudeDoc = parser.parseFromString(claudeResp, 'image/svg+xml');
+
+  if (geminiText) {
+    geminiDoc = parser.parseFromString(geminiText, 'image/svg+xml');
+  }
+
+  renderParts();
+  renderComposed();
+}
+
+function getSymbolContent(doc, id) {
+  if (!doc) return null;
+  const sym = [...doc.querySelectorAll('*')].find(el => el.localName === 'symbol' && el.getAttribute('id') === id);
+  if (!sym) return null;
+  return sym.innerHTML;
+}
+
+function renderPartSVG(doc, id, width = 80, height = 96, palette = null) {
+  const content = getSymbolContent(doc, id);
+  if (!content) return '<svg width="'+width+'" height="'+height+'" viewBox="0 0 200 240"><text x="100" y="120" text-anchor="middle" fill="#666" font-size="14">—</text></svg>';
+
+  const pal = palette || { skin:'#d4a574', primary:'#4466aa', secondary:'#6688cc', accent:'#ffcc44', hair:'#553322' };
+  let svg = `<svg width="${width}" height="${height}" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
+  svg = svg.replace(/var\(--skin\)/g, pal.skin)
+           .replace(/var\(--primary\)/g, pal.primary)
+           .replace(/var\(--secondary\)/g, pal.secondary)
+           .replace(/var\(--accent\)/g, pal.accent)
+           .replace(/var\(--hair-color\)/g, pal.hair);
+  return svg;
+}
+
+function renderParts() {
+  const container = document.getElementById('tab-parts');
+  container.innerHTML = '';
+
+  for (const cat of CATEGORIES) {
+    const section = document.createElement('div');
+    section.className = 'section';
+    section.innerHTML = `<h2>${cat.label}</h2>`;
+
+    const row = document.createElement('div');
+    row.className = 'compare-row';
+
+    for (const [label, doc] of [['Claude', claudeDoc], ['Gemini', geminiDoc]]) {
+      const col = document.createElement('div');
+      col.className = 'column';
+      col.innerHTML = `<h3>${label}</h3>`;
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+
+      for (const id of cat.ids) {
+        const card = document.createElement('div');
+        card.className = 'part-card';
+        const shortId = id.split(':')[1];
+        card.innerHTML = renderPartSVG(doc, id) + `<div class="label">${shortId}</div>`;
+        grid.appendChild(card);
+      }
+      col.appendChild(grid);
+      row.appendChild(col);
+    }
+
+    section.appendChild(row);
+    container.appendChild(section);
+  }
+}
+
+function composeAvatar(doc, family, width = 120, height = 144) {
+  const p = family.parts;
+  const pal = family.palette;
+  const layers = [];
+
+  // z-order: costume → head → hair → beard → brow → glasses → props
+  if (p.costume) layers.push(getSymbolContent(doc, p.costume));
+  if (p.head) layers.push(getSymbolContent(doc, p.head));
+  if (p.hair) layers.push(getSymbolContent(doc, p.hair));
+  if (p.beard) layers.push(getSymbolContent(doc, p.beard));
+  if (p.brow) layers.push(getSymbolContent(doc, p.brow));
+  if (p.glasses) layers.push(getSymbolContent(doc, p.glasses));
+  if (p.props) for (const prop of p.props) layers.push(getSymbolContent(doc, prop));
+
+  const content = layers.filter(Boolean).join('\n');
+  let svg = `<svg width="${width}" height="${height}" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
+  svg = svg.replace(/var\(--skin\)/g, pal.skin)
+           .replace(/var\(--primary\)/g, pal.primary)
+           .replace(/var\(--secondary\)/g, pal.secondary)
+           .replace(/var\(--accent\)/g, pal.accent)
+           .replace(/var\(--hair-color\)/g, pal.hair);
+  return svg;
+}
+
+function renderComposed() {
+  for (const [containerId, doc] of [['composed-claude', claudeDoc], ['composed-gemini', geminiDoc]]) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    for (const family of FAMILY_ROOTS) {
+      const card = document.createElement('div');
+      card.className = 'avatar-card';
+      card.innerHTML = composeAvatar(doc, family) + `<div class="label">${family.label}</div>`;
+      container.appendChild(card);
+    }
+  }
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+}
+
+loadSVGs();
+</script>
+</body>
+</html>
