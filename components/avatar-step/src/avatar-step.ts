@@ -9,6 +9,16 @@ import { FRAMEWORK_FAMILY_MAP, ALL_FRAMEWORK_VALUES, SUB_ARCHETYPE_RULES } from 
 import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data/compatibility-matrix.js';
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 import type { RoleVariant } from './data/profession-presets.js';
+import { buildSummaryText } from './data/framework-descriptors.js';
+
+export interface PersonalityProfile {
+  mbti?: string;
+  enneagram?: string;
+  disc?: string;
+  belbin?: { primary: string; secondaries: string[] };
+  sdi?: string;
+  bigFive?: Partial<Record<BigFiveDimension, BigFivePole>>;
+}
 
 const FAMILIES = ARCHETYPE_FAMILIES as readonly string[];
 const BIG_FIVE_DIMS: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
@@ -110,9 +120,10 @@ export class AvatarStep extends LitElement {
       background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px;
       color: var(--pages-neutral-11, #555); transition: all 0.15s;
     }
-    .pill[aria-selected="true"] {
+    .pill[aria-selected="true"], .pill[aria-pressed="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
     }
+    .pill.belbin-secondary { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .pill[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
     .pill:hover:not([aria-selected="true"]):not([aria-disabled="true"]) { background: var(--pages-neutral-3, #f0f0f0); }
 
@@ -130,6 +141,14 @@ export class AvatarStep extends LitElement {
     .reset-btn {
       padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
       background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px; margin-top: 4px;
+    }
+    .sidebar-header {
+      font-size: 11px; font-weight: 600; color: var(--pages-neutral-10, #aaa);
+      margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .dynamic-summary {
+      font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
+      margin-top: 4px; line-height: 1.3;
     }
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -177,6 +196,7 @@ export class AvatarStep extends LitElement {
   @state() private _profession: string | null = null;
   @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
+  @state() private _belbinSecondaries: string[] = [];
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
   @state() private _compactGrid = false;
 
@@ -190,7 +210,72 @@ export class AvatarStep extends LitElement {
     return getCompatibleArchetypes(this._frameworks, this._bigFive);
   }
 
+  private _buildPersonalityProfile(): PersonalityProfile {
+    const profile: PersonalityProfile = {};
+    if (this._frameworks.mbti) profile.mbti = this._frameworks.mbti;
+    if (this._frameworks.enneagram) profile.enneagram = this._frameworks.enneagram;
+    if (this._frameworks.disc) profile.disc = this._frameworks.disc;
+    if (this._frameworks.belbin) profile.belbin = { primary: this._frameworks.belbin, secondaries: [...this._belbinSecondaries] };
+    if (this._frameworks.sdi) profile.sdi = this._frameworks.sdi;
+    if (Object.keys(this._bigFive).length > 0) profile.bigFive = { ...this._bigFive };
+    return profile;
+  }
+
+  private _emitPersonalityChanged() {
+    if (!this._selectedArchetype) return;
+    this.dispatchEvent(new CustomEvent('avatar:personality:changed', {
+      detail: { personality: this._buildPersonalityProfile() },
+      bubbles: true, composed: true,
+    }));
+  }
+
+  private _autoFillFromArchetype(archetypeKey: string) {
+    const [family, sub] = archetypeKey.split('/');
+    const newFrameworks: Partial<Record<PersonalityFramework, string>> = {};
+    let newBelbinSecondaries: string[] = [];
+
+    const rules = SUB_ARCHETYPE_RULES[family as ArchetypeFamily]?.find(r => r.subArchetype === sub);
+    if (rules?.mbtiAffinity.length) newFrameworks.mbti = rules.mbtiAffinity[0];
+    if (rules?.enneagramAffinity.length) newFrameworks.enneagram = `Type ${rules.enneagramAffinity[0]}`;
+
+    for (const fw of ['disc', 'sdi'] as const) {
+      const map = FRAMEWORK_FAMILY_MAP[fw];
+      for (const [val, families] of Object.entries(map)) {
+        if ((families as string[]).includes(family!)) { newFrameworks[fw] = val; break; }
+      }
+    }
+
+    const belbinMap = FRAMEWORK_FAMILY_MAP.belbin;
+    const belbinMatches: string[] = [];
+    for (const [val, families] of Object.entries(belbinMap)) {
+      if ((families as string[]).includes(family!)) belbinMatches.push(val);
+    }
+    if (belbinMatches.length > 0) {
+      newFrameworks.belbin = belbinMatches[0];
+      newBelbinSecondaries = belbinMatches.slice(1, 3);
+    }
+
+    const newBigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
+    const BIG_FIVE_DIMS_LOCAL: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
+    for (const dim of BIG_FIVE_DIMS_LOCAL) {
+      const highFamilies = FRAMEWORK_FAMILY_MAP.bigFive[`High ${dim}`] as string[] | undefined;
+      const lowFamilies = FRAMEWORK_FAMILY_MAP.bigFive[`Low ${dim}`] as string[] | undefined;
+      const inHigh = highFamilies?.includes(family!) ?? false;
+      const inLow = lowFamilies?.includes(family!) ?? false;
+      if (inHigh && !inLow) newBigFive[dim] = 'high';
+      else if (inLow && !inHigh) newBigFive[dim] = 'low';
+    }
+
+    this._frameworks = newFrameworks;
+    this._belbinSecondaries = newBelbinSecondaries;
+    this._bigFive = newBigFive;
+  }
+
   private _selectFramework(fw: PersonalityFramework, value: string) {
+    if (fw === 'belbin') {
+      this._selectBelbin(value);
+      return;
+    }
     if (this._frameworks[fw] === value) {
       const next = { ...this._frameworks };
       delete next[fw];
@@ -198,6 +283,25 @@ export class AvatarStep extends LitElement {
     } else {
       this._frameworks = { ...this._frameworks, [fw]: value };
     }
+    this._emitPersonalityChanged();
+  }
+
+  private _selectBelbin(value: string) {
+    if (this._frameworks.belbin === value) {
+      const next = { ...this._frameworks };
+      delete next.belbin;
+      this._frameworks = next;
+      this._belbinSecondaries = [];
+    } else if (!this._frameworks.belbin) {
+      this._frameworks = { ...this._frameworks, belbin: value };
+    } else if (this._belbinSecondaries.includes(value)) {
+      this._belbinSecondaries = this._belbinSecondaries.filter(s => s !== value);
+    } else if (this._belbinSecondaries.length < 2) {
+      this._belbinSecondaries = [...this._belbinSecondaries, value];
+    } else {
+      this._belbinSecondaries = [this._belbinSecondaries[1]!, value];
+    }
+    this._emitPersonalityChanged();
   }
 
   private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
@@ -208,6 +312,7 @@ export class AvatarStep extends LitElement {
     } else {
       this._bigFive = { ...this._bigFive, [dim]: pole };
     }
+    this._emitPersonalityChanged();
   }
 
   private _selectArchetype(key: string) {
@@ -223,15 +328,18 @@ export class AvatarStep extends LitElement {
     } else {
       this._selectedRole = null;
     }
+    this._autoFillFromArchetype(key);
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
-      detail: { archetype: { family, subArchetype: sub }, collection: this._collection },
+      detail: { archetype: { family, subArchetype: sub }, collection: this._collection, personality: this._buildPersonalityProfile() },
       bubbles: true, composed: true,
     }));
   }
 
   private _reset() {
     this._frameworks = {};
+    this._belbinSecondaries = [];
     this._bigFive = {};
+    this._emitPersonalityChanged();
   }
 
   private _navigateToRole(profession: string, role: string, e: Event) {
@@ -333,6 +441,7 @@ export class AvatarStep extends LitElement {
                     <div>
                       <div class="variant-label">${v.label}</div>
                       <div class="variant-desc">${v.description}</div>
+                      ${this._renderDynamicSummary(v.label)}
                       <div style="font-size:10px;color:var(--pages-accent-11,#93c5fd);margin-top:2px">${v.archetype.split('/')[0]} / ${v.archetype.split('/')[1]}</div>
                       ${variantRoles.length > 0 ? html`
                         <div class="variant-roles">
@@ -371,23 +480,31 @@ export class AvatarStep extends LitElement {
     const fwKeyMap: Record<string, string> = { mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI' };
     return html`
       <div class="panel" role="tabpanel">
+        <div class="sidebar-header" role="heading" aria-level="3">
+          ${this._selectedArchetype ? 'Personality profile' : 'Filter by personality'}
+        </div>
         ${SINGLE_FRAMEWORKS.map(fw => {
           const valid = new Set(getValidFrameworkValues(fw, this._frameworks, this._bigFive));
           const fwLabel = fwKeyMap[fw] ?? fw;
+          const isBelbin = fw === 'belbin';
           return html`
             <div class="framework-row">
               <span class="framework-label">${FRAMEWORK_LABELS[fw]}</span>
-              <div role="listbox" aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
+              <div role=${isBelbin ? 'group' : 'listbox'} aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
                 ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
                   const isAvatarMatch = avatarVals.has(`${fwLabel}:${v}`);
                   const isRoleScope = roleVals.has(`${fwLabel}:${v}`);
-                  const isSelected = this._frameworks[fw] === v;
-                  const isDisabled = !valid.has(v) && !isSelected;
+                  const isPrimary = this._frameworks[fw] === v;
+                  const isSecondary = isBelbin && this._belbinSecondaries.includes(v);
+                  const isSelected = isPrimary || isSecondary;
+                  const isDisabled = !this._selectedArchetype && !valid.has(v) && !isSelected;
                   return html`
-                    <button class=${classMap({ pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
-                      role="option"
+                    <button class=${classMap({ pill: true, 'belbin-secondary': isSecondary && !isPrimary, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
+                      role=${isBelbin ? 'button' : 'option'}
                       data-framework=${fw} data-value=${v}
-                      aria-selected=${String(isSelected)}
+                      aria-selected=${isBelbin ? nothing : String(isPrimary)}
+                      aria-pressed=${isBelbin ? String(isSelected) : nothing}
+                      aria-description=${isSecondary ? 'secondary' : isPrimary && isBelbin ? 'primary' : nothing}
                       aria-disabled=${String(isDisabled)}
                       @click=${() => this._selectFramework(fw, v)}>
                       ${v}
@@ -409,7 +526,7 @@ export class AvatarStep extends LitElement {
                   ${(['high', 'low'] as const).map(pole => html`
                     <button class="big5-toggle" role="radio"
                       aria-checked=${String(this._bigFive[dim] === pole)}
-                      aria-disabled=${String(!validPoles.has(pole) && this._bigFive[dim] !== pole)}
+                      aria-disabled=${String(!this._selectedArchetype && !validPoles.has(pole) && this._bigFive[dim] !== pole)}
                       @click=${() => this._toggleBigFive(dim, pole)}>
                       ${pole === 'high' ? 'High' : 'Low'}
                     </button>
@@ -468,6 +585,12 @@ export class AvatarStep extends LitElement {
         })}
       </div>
     `;
+  }
+
+  private _renderDynamicSummary(roleLabel: string) {
+    const text = buildSummaryText(this._frameworks.mbti, this._frameworks.enneagram, this._frameworks.disc, roleLabel);
+    if (!text) return nothing;
+    return html`<div class="dynamic-summary">${text}</div>`;
   }
 
   private _renderPreview() {
