@@ -109,3 +109,60 @@ export function deriveDispositions(profile: PersonalityProfile): AxisScore[] {
     return { axis, label: meta.label, lowLabel: meta.low, highLabel: meta.high, score, contributors: t.contributors };
   });
 }
+
+export interface BehavioralTendency {
+  name: string;
+  description: string;
+  strength: 'strong' | 'moderate' | 'mild';
+}
+
+interface TendencyRule {
+  name: string;
+  description: string;
+  conditions: Array<{ axis: CanonicalAxis; direction: 'high' | 'low'; threshold: number }>;
+}
+
+const TENDENCY_RULES: TendencyRule[] = [
+  { name: 'Skeptical', description: 'Questions assumptions and requests evidence before accepting claims', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.2 }, { axis: 'autonomy', direction: 'high', threshold: 0.2 }] },
+  { name: 'Methodical', description: 'Follows systematic processes and prefers structured approaches', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.3 }, { axis: 'riskAppetite', direction: 'low', threshold: 0.1 }] },
+  { name: 'Empathetic', description: 'Considers emotional impact and prioritises interpersonal harmony', conditions: [{ axis: 'conflictMode', direction: 'low', threshold: 0.3 }, { axis: 'socialOrientation', direction: 'high', threshold: 0.2 }] },
+  { name: 'Decisive', description: 'Commits to clear recommendations and avoids hedging', conditions: [{ axis: 'riskAppetite', direction: 'high', threshold: 0.3 }, { axis: 'conflictMode', direction: 'high', threshold: 0.1 }] },
+  { name: 'Collaborative', description: 'Seeks consensus and builds on others\' contributions', conditions: [{ axis: 'socialOrientation', direction: 'high', threshold: 0.4 }] },
+  { name: 'Independent', description: 'Forms own assessments before consulting others', conditions: [{ axis: 'autonomy', direction: 'high', threshold: 0.4 }] },
+  { name: 'Cautious', description: 'Flags risks and errs on the side of safety', conditions: [{ axis: 'riskAppetite', direction: 'low', threshold: 0.3 }] },
+  { name: 'Bold', description: 'Explores novel approaches and embraces calculated risk', conditions: [{ axis: 'riskAppetite', direction: 'high', threshold: 0.4 }] },
+  { name: 'Diplomatic', description: 'Navigates disagreement through compromise and tact', conditions: [{ axis: 'conflictMode', direction: 'low', threshold: 0.3 }, { axis: 'socialOrientation', direction: 'high', threshold: 0.1 }] },
+  { name: 'Challenging', description: 'Pushes back on weak arguments and tests ideas rigorously', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.4 }] },
+  { name: 'Structured', description: 'Creates order, enforces standards, and follows procedure', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.4 }] },
+  { name: 'Adaptive', description: 'Adjusts approach based on circumstances rather than fixed rules', conditions: [{ axis: 'ruleFollowing', direction: 'low', threshold: 0.3 }] },
+  { name: 'Nurturing', description: 'Develops others\' potential through patience and encouragement', conditions: [{ axis: 'conflictMode', direction: 'low', threshold: 0.4 }, { axis: 'socialOrientation', direction: 'high', threshold: 0.3 }] },
+  { name: 'Analytical', description: 'Breaks problems into components and evaluates evidence systematically', conditions: [{ axis: 'ruleFollowing', direction: 'high', threshold: 0.2 }, { axis: 'autonomy', direction: 'high', threshold: 0.2 }] },
+  { name: 'Persuasive', description: 'Influences through conviction and compelling reasoning', conditions: [{ axis: 'socialOrientation', direction: 'high', threshold: 0.3 }, { axis: 'conflictMode', direction: 'high', threshold: 0.2 }] },
+  { name: 'Protective', description: 'Guards against threats and prioritises safety over speed', conditions: [{ axis: 'riskAppetite', direction: 'low', threshold: 0.4 }, { axis: 'ruleFollowing', direction: 'high', threshold: 0.2 }] },
+];
+
+export function deriveTendencies(scores: AxisScore[]): BehavioralTendency[] {
+  const scoreMap = Object.fromEntries(scores.map(s => [s.axis, s.score])) as Record<CanonicalAxis, number>;
+  const result: BehavioralTendency[] = [];
+
+  for (const rule of TENDENCY_RULES) {
+    let totalExcess = 0;
+    let allMet = true;
+    for (const cond of rule.conditions) {
+      const val = scoreMap[cond.axis] ?? 0;
+      const effective = cond.direction === 'high' ? val : -val;
+      if (effective < cond.threshold) { allMet = false; break; }
+      totalExcess += effective - cond.threshold;
+    }
+    if (!allMet) continue;
+    const avgExcess = totalExcess / rule.conditions.length;
+    const strength: 'strong' | 'moderate' | 'mild' = avgExcess > 0.3 ? 'strong' : avgExcess > 0.15 ? 'moderate' : 'mild';
+    result.push({ name: rule.name, description: rule.description, strength });
+  }
+
+  result.sort((a, b) => {
+    const order = { strong: 0, moderate: 1, mild: 2 };
+    return order[a.strength] - order[b.strength];
+  });
+  return result;
+}

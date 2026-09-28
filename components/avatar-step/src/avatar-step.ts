@@ -10,8 +10,7 @@ import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 import type { RoleVariant } from './data/profession-presets.js';
 import { buildSummaryText } from './data/framework-descriptors.js';
-import { deriveDispositions } from './data/disposition-mapping.js';
-import type { AxisScore } from './data/disposition-mapping.js';
+import { deriveDispositions, deriveTendencies } from './data/disposition-mapping.js';
 import { FRAMEWORK_TOOLTIPS } from './data/framework-tooltips.js';
 
 export interface PersonalityProfile {
@@ -181,6 +180,13 @@ export class AvatarStep extends LitElement {
     .disposition-bar { flex: 1; height: 6px; background: var(--pages-neutral-4, #3a3a52); border-radius: 3px; position: relative; min-width: 80px; }
     .disposition-marker { position: absolute; top: -3px; width: 12px; height: 12px; border-radius: 50%; background: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-11, #93c5fd); transform: translateX(-50%); transition: left 0.3s ease; }
     .disposition-neutral { background: var(--pages-neutral-5, #4a4a62); }
+    .tendencies-section { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--pages-neutral-4, #3a3a52); }
+    .tendencies-header { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-neutral-10, #aaa); margin-bottom: 6px; }
+    .tendency-list { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tendency-chip { padding: 3px 8px; border-radius: 10px; font-size: 10px; border: 1px solid; cursor: default; }
+    .tendency-chip.strong { background: var(--pages-accent-3, #1e3a5f); border-color: var(--pages-accent-9, #2563eb); color: var(--pages-accent-11, #93c5fd); }
+    .tendency-chip.moderate { background: var(--pages-neutral-3, #2d2d44); border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-neutral-11, #ccc); }
+    .tendency-chip.mild { background: transparent; border-color: var(--pages-neutral-5, #4a4a62); color: var(--pages-neutral-10, #aaa); }
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -694,6 +700,24 @@ export class AvatarStep extends LitElement {
             </div>
           `;
         })}
+      </div>
+      ${this._renderTendencies(scores)}
+    `;
+  }
+
+  private _renderTendencies(scores: ReturnType<typeof deriveDispositions>) {
+    const tendencies = deriveTendencies(scores);
+    if (tendencies.length === 0) return nothing;
+    return html`
+      <div class="tendencies-section">
+        <div class="tendencies-header">Behavioral Tendencies</div>
+        <div class="tendency-list">
+          ${tendencies.map(t => html`
+            <span class=${classMap({ 'tendency-chip': true, [t.strength]: true })} title="${t.description}">
+              ${t.name}
+            </span>
+          `)}
+        </div>
       </div>
     `;
   }
