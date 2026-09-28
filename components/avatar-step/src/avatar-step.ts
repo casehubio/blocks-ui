@@ -198,6 +198,8 @@ export class AvatarStep extends LitElement {
       } else if (matched.length > 0) {
         this._profession = matched[0]!.profession;
         this._selectedRole = matched[0]!.role;
+      } else {
+        this._selectedRole = null;
       }
     }
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
