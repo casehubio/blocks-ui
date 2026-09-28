@@ -412,6 +412,7 @@ export class AvatarStep extends LitElement {
     } else {
       this._frameworks = { ...this._frameworks, [fw]: value };
     }
+    this._syncSelectionWithFilters();
   }
 
   private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
@@ -421,6 +422,36 @@ export class AvatarStep extends LitElement {
       this._bigFive = next;
     } else {
       this._bigFive = { ...this._bigFive, [dim]: pole };
+    }
+    this._syncSelectionWithFilters();
+  }
+
+  private _syncSelectionWithFilters() {
+    const tiers = this._tiers();
+    if (this._selectedArchetype && tiers.get(this._selectedArchetype) === 'incompatible') {
+      this._selectedArchetype = null;
+    }
+    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
+    if (!hasFilters) return;
+    if (this._profession && this._selectedRole) {
+      const roles = PROFESSION_PRESETS[this._profession];
+      const role = roles?.find(r => r.role === this._selectedRole);
+      const hasCompatible = role?.variants.some(v => tiers.get(v.archetype) !== 'incompatible') ?? false;
+      if (!hasCompatible) {
+        this._profession = null;
+        this._selectedRole = null;
+      }
+    }
+    if (!this._profession) {
+      for (const [prof, roles] of Object.entries(PROFESSION_PRESETS)) {
+        for (const { role, variants } of roles) {
+          if (variants.some(v => tiers.get(v.archetype) !== 'incompatible')) {
+            this._profession = prof;
+            this._selectedRole = role;
+            return;
+          }
+        }
+      }
     }
   }
 
@@ -448,6 +479,9 @@ export class AvatarStep extends LitElement {
   private _reset() {
     this._frameworks = {};
     this._bigFive = {};
+    this._selectedArchetype = null;
+    this._profession = null;
+    this._selectedRole = null;
   }
 
   private _navigateToRole(profession: string, role: string, e: Event) {
