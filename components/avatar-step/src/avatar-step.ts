@@ -268,7 +268,20 @@ export class AvatarStep extends LitElement {
               <button class=${classMap({ pill: true, 'role-match': isProfMatch })}
                 role="option"
                 aria-selected=${String(this._profession === p)}
-                @click=${() => { this._profession = this._profession === p ? null : p; this._selectedRole = null; }}>
+                @click=${() => {
+                if (this._profession === p) {
+                  this._profession = null;
+                  this._selectedRole = null;
+                } else {
+                  this._profession = p;
+                  if (this._selectedArchetype) {
+                    const match = matchedRoles.find(m => m.profession === p);
+                    this._selectedRole = match ? match.role : null;
+                  } else {
+                    this._selectedRole = null;
+                  }
+                }
+              }}>
                 ${p}
               </button>
             `;
