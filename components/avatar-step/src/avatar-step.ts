@@ -87,19 +87,19 @@ export class AvatarStep extends LitElement {
 
     .collection-bar { display: flex; gap: 6px; margin-bottom: 12px; }
     .collection-btn {
-      padding: 6px 14px; border-radius: 6px; border: 2px solid var(--pages-neutral-4, #e5e5e5);
-      background: var(--pages-neutral-2, #fafafa); cursor: pointer; font-size: 13px; font-weight: 500;
-      color: var(--pages-neutral-11, #555); transition: all 0.15s;
+      padding: 6px 14px; border-radius: 6px; border: 2px solid var(--pages-neutral-4, #3a3a52);
+      background: var(--pages-neutral-2, #252538); cursor: pointer; font-size: 13px; font-weight: 500;
+      color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
     }
     .collection-btn[aria-checked="true"] {
-      border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-3, #dbeafe);
-      color: var(--pages-accent-11, #1e3a5f);
+      border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-3, #1e3a5f);
+      color: var(--pages-accent-11, #93c5fd);
     }
 
     .main-panel { display: grid; grid-template-columns: 1fr 280px; gap: 12px; margin-bottom: 12px; }
     @media (max-width: 767px) { .main-panel { grid-template-columns: 1fr; } }
 
-    .panel { border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: 8px; padding: 12px; background: var(--pages-neutral-1, #fff); }
+    .panel { border: 1px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px; padding: 12px; background: var(--pages-neutral-1, #1e1e2e); }
     .personality-side .panel { font-size: 11px; padding: 10px; }
     .personality-side .framework-row { margin-bottom: 5px; }
     .personality-side .framework-label { min-width: 70px; font-size: 11px; }
@@ -115,23 +115,23 @@ export class AvatarStep extends LitElement {
     .grid-toggle button.active { background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb); }
 
     .framework-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #666); }
+    .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #aaa); }
     .pill {
-      padding: 4px 10px; border-radius: 12px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
-      background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px;
-      color: var(--pages-neutral-11, #555); transition: all 0.15s;
+      padding: 4px 10px; border-radius: 12px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      background: var(--pages-neutral-2, #252538); cursor: pointer; font-size: 12px;
+      color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
     }
     .pill[aria-selected="true"], .pill[aria-pressed="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
     }
     .pill[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
-    .pill:hover:not([aria-selected="true"]):not([aria-disabled="true"]) { background: var(--pages-neutral-3, #f0f0f0); }
+    .pill:hover:not([aria-selected="true"]):not([aria-disabled="true"]) { background: var(--pages-neutral-3, #2d2d44); }
 
     .big5-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-    .big5-label { font-size: 11px; min-width: 30px; text-align: center; color: var(--pages-neutral-10, #666); }
+    .big5-label { font-size: 11px; min-width: 30px; text-align: center; color: var(--pages-neutral-10, #aaa); }
     .big5-toggle {
-      padding: 3px 8px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
-      background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 11px;
+      padding: 3px 8px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc); cursor: pointer; font-size: 11px;
     }
     .big5-toggle[aria-checked="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
@@ -139,8 +139,8 @@ export class AvatarStep extends LitElement {
     .big5-toggle[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
 
     .reset-btn {
-      padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
-      background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px; margin-top: 4px;
+      padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc); cursor: pointer; font-size: 12px; margin-top: 4px;
     }
     .profile-section { margin-bottom: 12px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px; padding: 10px; background: var(--pages-neutral-2, #252538); }
     .profile-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 8px; }
@@ -674,8 +674,10 @@ export class AvatarStep extends LitElement {
                   const isRoleScope = roleVals.has(`${fwLabel}:${v}`);
                   const isSelected = this._frameworks[fw] === v;
                   const isDisabled = !valid.has(v) && !isSelected;
+                  const classes: Record<string, boolean> = { pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected };
+                  if (fw === 'sdi') classes[`sdi-${v.toLowerCase()}`] = true;
                   return html`
-                    <button class=${classMap({ pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
+                    <button class=${classMap(classes)}
                       role="option"
                       data-framework=${fw} data-value=${v}
                       aria-selected=${String(isSelected)}
