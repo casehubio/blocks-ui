@@ -123,7 +123,6 @@ export class AvatarStep extends LitElement {
     .pill[aria-selected="true"], .pill[aria-pressed="true"] {
       background: var(--pages-accent-9, #0066cc); color: #fff; border-color: var(--pages-accent-9, #0066cc);
     }
-    .pill.belbin-secondary { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .pill[aria-disabled="true"] { opacity: 0.3; pointer-events: none; }
     .pill:hover:not([aria-selected="true"]):not([aria-disabled="true"]) { background: var(--pages-neutral-3, #f0f0f0); }
 
@@ -142,13 +141,19 @@ export class AvatarStep extends LitElement {
       padding: 4px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #d4d4d4);
       background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 12px; margin-top: 4px;
     }
-    .sidebar-header {
-      font-size: 11px; font-weight: 600; color: var(--pages-neutral-10, #aaa);
-      margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
-    }
+    .profile-section { margin-top: 12px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px; padding: 10px; background: var(--pages-neutral-2, #252538); }
+    .profile-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 8px; }
+    .profile-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; }
+    .profile-label { min-width: 70px; font-weight: 600; color: var(--pages-neutral-10, #aaa); font-size: 11px; }
+    .profile-value { color: var(--pages-neutral-11, #ccc); font-size: 12px; }
+    .profile-edit { font-size: 10px; color: var(--pages-accent-11, #93c5fd); cursor: pointer; margin-left: auto; padding: 2px 6px; border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 4px; background: transparent; }
+    .profile-edit:hover { background: var(--pages-accent-2, #1a2744); }
+    .profile-picker { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 4px 78px; }
+    .profile-default { border-style: dashed; }
+    .profile-belbin-sec { background: transparent; color: var(--pages-accent-9, #2563eb); border: 2px solid var(--pages-accent-9, #2563eb); }
     .dynamic-summary {
       font-size: 10px; color: var(--pages-accent-11, #93c5fd); font-style: italic;
-      margin-top: 4px; line-height: 1.3;
+      margin-top: 8px; line-height: 1.3; padding-top: 6px; border-top: 1px solid var(--pages-neutral-4, #3a3a52);
     }
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -196,9 +201,10 @@ export class AvatarStep extends LitElement {
   @state() private _profession: string | null = null;
   @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
-  @state() private _belbinSecondaries: string[] = [];
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
   @state() private _compactGrid = false;
+  @state() private _profile: PersonalityProfile = {};
+  @state() private _profileExpanded: string | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -211,71 +217,89 @@ export class AvatarStep extends LitElement {
   }
 
   private _buildPersonalityProfile(): PersonalityProfile {
-    const profile: PersonalityProfile = {};
-    if (this._frameworks.mbti) profile.mbti = this._frameworks.mbti;
-    if (this._frameworks.enneagram) profile.enneagram = this._frameworks.enneagram;
-    if (this._frameworks.disc) profile.disc = this._frameworks.disc;
-    if (this._frameworks.belbin) profile.belbin = { primary: this._frameworks.belbin, secondaries: [...this._belbinSecondaries] };
-    if (this._frameworks.sdi) profile.sdi = this._frameworks.sdi;
-    if (Object.keys(this._bigFive).length > 0) profile.bigFive = { ...this._bigFive };
-    return profile;
+    return { ...this._profile };
   }
 
   private _emitPersonalityChanged() {
-    if (!this._selectedArchetype) return;
     this.dispatchEvent(new CustomEvent('avatar:personality:changed', {
       detail: { personality: this._buildPersonalityProfile() },
       bubbles: true, composed: true,
     }));
   }
 
-  private _autoFillFromArchetype(archetypeKey: string) {
+  private _initProfile(archetypeKey: string): PersonalityProfile {
     const [family, sub] = archetypeKey.split('/');
-    const newFrameworks: Partial<Record<PersonalityFramework, string>> = {};
-    let newBelbinSecondaries: string[] = [];
+    const profile: PersonalityProfile = {};
 
     const rules = SUB_ARCHETYPE_RULES[family as ArchetypeFamily]?.find(r => r.subArchetype === sub);
-    if (rules?.mbtiAffinity.length) newFrameworks.mbti = rules.mbtiAffinity[0];
-    if (rules?.enneagramAffinity.length) newFrameworks.enneagram = `Type ${rules.enneagramAffinity[0]}`;
+    if (rules?.mbtiAffinity.length) profile.mbti = rules.mbtiAffinity[0];
+    if (rules?.enneagramAffinity.length) profile.enneagram = `Type ${rules.enneagramAffinity[0]}`;
 
     for (const fw of ['disc', 'sdi'] as const) {
       const map = FRAMEWORK_FAMILY_MAP[fw];
       for (const [val, families] of Object.entries(map)) {
-        if ((families as string[]).includes(family!)) { newFrameworks[fw] = val; break; }
+        if ((families as string[]).includes(family!)) { profile[fw] = val; break; }
       }
     }
 
-    const belbinMap = FRAMEWORK_FAMILY_MAP.belbin;
     const belbinMatches: string[] = [];
-    for (const [val, families] of Object.entries(belbinMap)) {
+    for (const [val, families] of Object.entries(FRAMEWORK_FAMILY_MAP.belbin)) {
       if ((families as string[]).includes(family!)) belbinMatches.push(val);
     }
     if (belbinMatches.length > 0) {
-      newFrameworks.belbin = belbinMatches[0];
-      newBelbinSecondaries = belbinMatches.slice(1, 3);
+      profile.belbin = { primary: belbinMatches[0]!, secondaries: belbinMatches.slice(1, 3) };
     }
 
-    const newBigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
-    const BIG_FIVE_DIMS_LOCAL: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
-    for (const dim of BIG_FIVE_DIMS_LOCAL) {
+    const bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
+    for (const dim of BIG_FIVE_DIMS) {
       const highFamilies = FRAMEWORK_FAMILY_MAP.bigFive[`High ${dim}`] as string[] | undefined;
       const lowFamilies = FRAMEWORK_FAMILY_MAP.bigFive[`Low ${dim}`] as string[] | undefined;
       const inHigh = highFamilies?.includes(family!) ?? false;
       const inLow = lowFamilies?.includes(family!) ?? false;
-      if (inHigh && !inLow) newBigFive[dim] = 'high';
-      else if (inLow && !inHigh) newBigFive[dim] = 'low';
+      if (inHigh && !inLow) bigFive[dim] = 'high';
+      else if (inLow && !inHigh) bigFive[dim] = 'low';
     }
+    if (Object.keys(bigFive).length > 0) profile.bigFive = bigFive;
 
-    this._frameworks = newFrameworks;
-    this._belbinSecondaries = newBelbinSecondaries;
-    this._bigFive = newBigFive;
+    return profile;
+  }
+
+  private _updateProfileValue(fw: string, value: string) {
+    if (fw === 'belbin') { this._updateProfileBelbin(value); return; }
+    const current = (this._profile as Record<string, unknown>)[fw];
+    if (current === value) {
+      this._profile = { ...this._profile, [fw]: undefined };
+    } else {
+      this._profile = { ...this._profile, [fw]: value };
+    }
+    this._profileExpanded = null;
+    this._emitPersonalityChanged();
+  }
+
+  private _updateProfileBelbin(value: string) {
+    const belbin = this._profile.belbin;
+    if (!belbin) {
+      this._profile = { ...this._profile, belbin: { primary: value, secondaries: [] } };
+    } else if (belbin.primary === value) {
+      this._profile = { ...this._profile, belbin: undefined };
+    } else if (belbin.secondaries.includes(value)) {
+      this._profile = { ...this._profile, belbin: { ...belbin, secondaries: belbin.secondaries.filter(s => s !== value) } };
+    } else if (belbin.secondaries.length < 2) {
+      this._profile = { ...this._profile, belbin: { ...belbin, secondaries: [...belbin.secondaries, value] } };
+    } else {
+      this._profile = { ...this._profile, belbin: { ...belbin, secondaries: [belbin.secondaries[1]!, value] } };
+    }
+    this._emitPersonalityChanged();
+  }
+
+  private _updateProfileBigFive(dim: BigFiveDimension, pole: BigFivePole) {
+    const bf = { ...(this._profile.bigFive || {}) };
+    if (bf[dim] === pole) { delete bf[dim]; } else { bf[dim] = pole; }
+    this._profile = { ...this._profile, bigFive: bf };
+    this._emitPersonalityChanged();
   }
 
   private _selectFramework(fw: PersonalityFramework, value: string) {
-    if (fw === 'belbin') {
-      this._selectBelbin(value);
-      return;
-    }
     if (this._frameworks[fw] === value) {
       const next = { ...this._frameworks };
       delete next[fw];
@@ -283,25 +307,6 @@ export class AvatarStep extends LitElement {
     } else {
       this._frameworks = { ...this._frameworks, [fw]: value };
     }
-    this._emitPersonalityChanged();
-  }
-
-  private _selectBelbin(value: string) {
-    if (this._frameworks.belbin === value) {
-      const next = { ...this._frameworks };
-      delete next.belbin;
-      this._frameworks = next;
-      this._belbinSecondaries = [];
-    } else if (!this._frameworks.belbin) {
-      this._frameworks = { ...this._frameworks, belbin: value };
-    } else if (this._belbinSecondaries.includes(value)) {
-      this._belbinSecondaries = this._belbinSecondaries.filter(s => s !== value);
-    } else if (this._belbinSecondaries.length < 2) {
-      this._belbinSecondaries = [...this._belbinSecondaries, value];
-    } else {
-      this._belbinSecondaries = [this._belbinSecondaries[1]!, value];
-    }
-    this._emitPersonalityChanged();
   }
 
   private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
@@ -312,7 +317,6 @@ export class AvatarStep extends LitElement {
     } else {
       this._bigFive = { ...this._bigFive, [dim]: pole };
     }
-    this._emitPersonalityChanged();
   }
 
   private _selectArchetype(key: string) {
@@ -328,7 +332,8 @@ export class AvatarStep extends LitElement {
     } else {
       this._selectedRole = null;
     }
-    this._autoFillFromArchetype(key);
+    this._profile = this._initProfile(key);
+    this._profileExpanded = null;
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
       detail: { archetype: { family, subArchetype: sub }, collection: this._collection, personality: this._buildPersonalityProfile() },
       bubbles: true, composed: true,
@@ -337,9 +342,7 @@ export class AvatarStep extends LitElement {
 
   private _reset() {
     this._frameworks = {};
-    this._belbinSecondaries = [];
     this._bigFive = {};
-    this._emitPersonalityChanged();
   }
 
   private _navigateToRole(profession: string, role: string, e: Event) {
@@ -441,7 +444,6 @@ export class AvatarStep extends LitElement {
                     <div>
                       <div class="variant-label">${v.label}</div>
                       <div class="variant-desc">${v.description}</div>
-                      ${this._renderDynamicSummary(v.label)}
                       <div style="font-size:10px;color:var(--pages-accent-11,#93c5fd);margin-top:2px">${v.archetype.split('/')[0]} / ${v.archetype.split('/')[1]}</div>
                       ${variantRoles.length > 0 ? html`
                         <div class="variant-roles">
@@ -465,6 +467,102 @@ export class AvatarStep extends LitElement {
             </div>
           ` : nothing}
         ` : nothing}
+        ${this._renderProfileSection()}
+      </div>
+    `;
+  }
+
+  private _renderProfileSection() {
+    const p = this._profile;
+    const affinityProfile = this._selectedArchetype ? getFrameworkProfile(this._selectedArchetype) : {};
+    const affinityVals = new Set<string>();
+    for (const [fw, fvs] of Object.entries(affinityProfile)) {
+      for (const fv of fvs) affinityVals.add(`${fw}:${fv}`);
+    }
+    const fwKeyMap: Record<string, string> = { mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', sdi: 'SDI' };
+
+    const summaryText = buildSummaryText(p.mbti, p.enneagram, p.disc, this._selectedArchetype?.split('/')[1] ?? 'agent');
+
+    return html`
+      <div class="profile-section" role="region" aria-label="Personality profile">
+        <div class="profile-header">Personality Profile</div>
+        ${(['mbti', 'enneagram', 'disc', 'sdi'] as const).map(fw => {
+          const label = fwKeyMap[fw]!;
+          const val = p[fw];
+          const expanded = this._profileExpanded === fw;
+          return html`
+            <div class="profile-row">
+              <span class="profile-label">${label}</span>
+              <span class="profile-value">${val || '—'}</span>
+              <button class="profile-edit" @click=${() => { this._profileExpanded = expanded ? null : fw; }}>
+                ${expanded ? 'done' : 'edit'}
+              </button>
+            </div>
+            ${expanded ? html`
+              <div class="profile-picker" role="listbox" aria-label="${label} selection">
+                ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
+                  const isDefault = affinityVals.has(`${label}:${v}`);
+                  return html`
+                    <button class=${classMap({ pill: true, 'profile-default': isDefault && p[fw] !== v })}
+                      role="option" aria-selected=${String(p[fw] === v)}
+                      @click=${() => this._updateProfileValue(fw, v)}>
+                      ${v}
+                    </button>
+                  `;
+                })}
+              </div>
+            ` : nothing}
+          `;
+        })}
+        <div class="profile-row">
+          <span class="profile-label">Belbin</span>
+          <span class="profile-value">${p.belbin ? `${p.belbin.primary}${p.belbin.secondaries.length ? ` + ${p.belbin.secondaries.join(', ')}` : ''}` : '—'}</span>
+          <button class="profile-edit" @click=${() => { this._profileExpanded = this._profileExpanded === 'belbin' ? null : 'belbin'; }}>
+            ${this._profileExpanded === 'belbin' ? 'done' : 'edit'}
+          </button>
+        </div>
+        ${this._profileExpanded === 'belbin' ? html`
+          <div class="profile-picker" role="group" aria-label="Belbin team roles">
+            ${(ALL_FRAMEWORK_VALUES.belbin as readonly string[]).map(v => {
+              const isPrimary = p.belbin?.primary === v;
+              const isSecondary = p.belbin?.secondaries.includes(v) ?? false;
+              const isDefault = affinityVals.has(`Belbin:${v}`);
+              return html`
+                <button class=${classMap({ pill: true, 'profile-belbin-sec': isSecondary && !isPrimary, 'profile-default': isDefault && !isPrimary && !isSecondary })}
+                  role="button"
+                  aria-pressed=${String(isPrimary || isSecondary)}
+                  aria-description=${isPrimary ? 'primary' : isSecondary ? 'secondary' : nothing}
+                  @click=${() => this._updateProfileBelbin(v)}>
+                  ${v}
+                </button>
+              `;
+            })}
+          </div>
+        ` : nothing}
+        <div class="profile-row">
+          <span class="profile-label">Big Five</span>
+          <span class="profile-value">${BIG_FIVE_DIMS.map(d => p.bigFive?.[d] ? `${d}${p.bigFive[d] === 'high' ? '↑' : '↓'}` : '').filter(Boolean).join(' ') || '—'}</span>
+          <button class="profile-edit" @click=${() => { this._profileExpanded = this._profileExpanded === 'bigFive' ? null : 'bigFive'; }}>
+            ${this._profileExpanded === 'bigFive' ? 'done' : 'edit'}
+          </button>
+        </div>
+        ${this._profileExpanded === 'bigFive' ? html`
+          <div class="profile-picker" style="flex-direction:column;margin-left:78px">
+            ${BIG_FIVE_DIMS.map(dim => html`
+              <div class="big5-row" role="radiogroup" aria-label=${BIG_FIVE_LABELS[dim]}>
+                <span class="big5-label">${dim}</span>
+                ${(['high', 'low'] as const).map(pole => html`
+                  <button class="big5-toggle" role="radio"
+                    aria-checked=${String(p.bigFive?.[dim] === pole)}
+                    @click=${() => this._updateProfileBigFive(dim, pole)}>
+                    ${pole === 'high' ? 'High' : 'Low'}
+                  </button>
+                `)}
+              </div>
+            `)}
+          </div>
+        ` : nothing}
+        ${summaryText ? html`<div class="dynamic-summary">${summaryText}</div>` : nothing}
       </div>
     `;
   }
@@ -480,31 +578,23 @@ export class AvatarStep extends LitElement {
     const fwKeyMap: Record<string, string> = { mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI' };
     return html`
       <div class="panel" role="tabpanel">
-        <div class="sidebar-header" role="heading" aria-level="3">
-          ${this._selectedArchetype ? 'Personality profile' : 'Filter by personality'}
-        </div>
         ${SINGLE_FRAMEWORKS.map(fw => {
           const valid = new Set(getValidFrameworkValues(fw, this._frameworks, this._bigFive));
           const fwLabel = fwKeyMap[fw] ?? fw;
-          const isBelbin = fw === 'belbin';
           return html`
             <div class="framework-row">
               <span class="framework-label">${FRAMEWORK_LABELS[fw]}</span>
-              <div role=${isBelbin ? 'group' : 'listbox'} aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
+              <div role="listbox" aria-label=${FRAMEWORK_LABELS[fw]} style="display:flex;gap:4px;flex-wrap:wrap">
                 ${(ALL_FRAMEWORK_VALUES[fw] as readonly string[]).map(v => {
                   const isAvatarMatch = avatarVals.has(`${fwLabel}:${v}`);
                   const isRoleScope = roleVals.has(`${fwLabel}:${v}`);
-                  const isPrimary = this._frameworks[fw] === v;
-                  const isSecondary = isBelbin && this._belbinSecondaries.includes(v);
-                  const isSelected = isPrimary || isSecondary;
-                  const isDisabled = !this._selectedArchetype && !valid.has(v) && !isSelected;
+                  const isSelected = this._frameworks[fw] === v;
+                  const isDisabled = !valid.has(v) && !isSelected;
                   return html`
-                    <button class=${classMap({ pill: true, 'belbin-secondary': isSecondary && !isPrimary, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
-                      role=${isBelbin ? 'button' : 'option'}
+                    <button class=${classMap({ pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected })}
+                      role="option"
                       data-framework=${fw} data-value=${v}
-                      aria-selected=${isBelbin ? nothing : String(isPrimary)}
-                      aria-pressed=${isBelbin ? String(isSelected) : nothing}
-                      aria-description=${isSecondary ? 'secondary' : isPrimary && isBelbin ? 'primary' : nothing}
+                      aria-selected=${String(isSelected)}
                       aria-disabled=${String(isDisabled)}
                       @click=${() => this._selectFramework(fw, v)}>
                       ${v}
@@ -526,7 +616,7 @@ export class AvatarStep extends LitElement {
                   ${(['high', 'low'] as const).map(pole => html`
                     <button class="big5-toggle" role="radio"
                       aria-checked=${String(this._bigFive[dim] === pole)}
-                      aria-disabled=${String(!this._selectedArchetype && !validPoles.has(pole) && this._bigFive[dim] !== pole)}
+                      aria-disabled=${String(!validPoles.has(pole) && this._bigFive[dim] !== pole)}
                       @click=${() => this._toggleBigFive(dim, pole)}>
                       ${pole === 'high' ? 'High' : 'Low'}
                     </button>
@@ -585,12 +675,6 @@ export class AvatarStep extends LitElement {
         })}
       </div>
     `;
-  }
-
-  private _renderDynamicSummary(roleLabel: string) {
-    const text = buildSummaryText(this._frameworks.mbti, this._frameworks.enneagram, this._frameworks.disc, roleLabel);
-    if (!text) return nothing;
-    return html`<div class="dynamic-summary">${text}</div>`;
   }
 
   private _renderPreview() {
