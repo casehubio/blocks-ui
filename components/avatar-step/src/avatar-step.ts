@@ -432,27 +432,23 @@ export class AvatarStep extends LitElement {
       this._selectedArchetype = null;
     }
     const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
-    if (!hasFilters) return;
-    if (this._profession && this._selectedRole) {
-      const roles = PROFESSION_PRESETS[this._profession];
-      const role = roles?.find(r => r.role === this._selectedRole);
-      const hasCompatible = role?.variants.some(v => tiers.get(v.archetype) !== 'incompatible') ?? false;
-      if (!hasCompatible) {
-        this._profession = null;
-        this._selectedRole = null;
-      }
-    }
-    if (!this._profession) {
-      for (const [prof, roles] of Object.entries(PROFESSION_PRESETS)) {
-        for (const { role, variants } of roles) {
-          if (variants.some(v => tiers.get(v.archetype) !== 'incompatible')) {
-            this._profession = prof;
-            this._selectedRole = role;
-            return;
-          }
+    if (!hasFilters) { this._profession = null; this._selectedRole = null; return; }
+    let bestProf: string | null = null;
+    let bestRole: string | null = null;
+    let bestScore = -1;
+    for (const [prof, roles] of Object.entries(PROFESSION_PRESETS)) {
+      for (const { role, variants } of roles) {
+        let score = 0;
+        for (const v of variants) {
+          const t = tiers.get(v.archetype);
+          if (t === 'strong') score += 2;
+          else if (t === 'weak') score += 1;
         }
+        if (score > bestScore) { bestScore = score; bestProf = prof; bestRole = role; }
       }
     }
+    if (bestScore > 0) { this._profession = bestProf; this._selectedRole = bestRole; }
+    else { this._profession = null; this._selectedRole = null; }
   }
 
   private _selectArchetype(key: string) {
