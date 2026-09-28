@@ -159,6 +159,82 @@ export const PROFESSION_PRESETS: Record<string, readonly ProfessionRole[]> = {
       { archetype: 'Magician/Engineer', label: 'The systems designer', description: 'Builds the quantitative infrastructure' },
     ]},
   ],
+  Sales: [
+    { role: 'Account Executive', variants: [
+      { archetype: 'Hero/Warrior', label: 'The competitive closer', description: 'Disciplined pursuit of targets, mission-focused deal execution' },
+      { archetype: 'Magician/Innovator', label: 'The consultative seller', description: 'Transforms client problems into tailored solutions' },
+      { archetype: 'Explorer/Adventurer', label: 'The hunter', description: 'Thrives in new territory, energised by the pursuit' },
+    ]},
+    { role: 'Sales Development', variants: [
+      { archetype: 'Explorer/Pioneer', label: 'The territory builder', description: 'Opens new markets and builds pipeline from scratch' },
+      { archetype: 'Everyman/Networker', label: 'The relationship builder', description: 'Connects naturally, builds rapport at scale' },
+      { archetype: 'Hero/Athlete', label: 'The metrics-driven prospector', description: 'Relentless activity, pushes personal performance limits' },
+    ]},
+    { role: 'Sales Engineer', variants: [
+      { archetype: 'Sage/Translator', label: 'The technical storyteller', description: 'Makes complex solutions accessible to any audience' },
+      { archetype: 'Magician/Engineer', label: 'The demo architect', description: 'Builds compelling technical demonstrations and proofs of concept' },
+      { archetype: 'Explorer/Generalist', label: 'The solutions consultant', description: 'Bridges technical depth with business understanding' },
+    ]},
+    { role: 'Customer Success', variants: [
+      { archetype: 'Caregiver/Guardian', label: 'The account protector', description: 'Shields the relationship, prevents churn through vigilance' },
+      { archetype: 'Sovereign/Ambassador', label: 'The strategic partner', description: 'Represents the client internally, builds executive alignment' },
+      { archetype: 'Everyman/Advocate', label: 'The customer champion', description: 'Speaks for the customer, bridges power gaps with the vendor' },
+    ]},
+    { role: 'Business Development', variants: [
+      { archetype: 'Creator/Entrepreneur', label: 'The deal architect', description: 'Creates new business models and partnership structures' },
+      { archetype: 'Explorer/Pioneer', label: 'The market opener', description: 'Pushes into uncharted territory, finds untapped opportunities' },
+      { archetype: 'Sovereign/Ambassador', label: 'The partnership builder', description: 'Navigates complex stakeholder landscapes diplomatically' },
+    ]},
+  ],
+  Coaching: [
+    { role: 'Life Coach', variants: [
+      { archetype: 'Sage/Mentor', label: 'The wisdom guide', description: 'Develops potential through deep accumulated life experience' },
+      { archetype: 'Caregiver/Healer', label: 'The transformative supporter', description: 'Helps clients heal patterns and build new foundations' },
+      { archetype: 'Innocent/Idealist', label: 'The possibility coach', description: 'Believes in untapped potential, inspires through optimism' },
+    ]},
+    { role: 'Therapist', variants: [
+      { archetype: 'Sage/Shaman', label: 'The depth practitioner', description: 'Accesses deep patterns beneath the surface, intuitive insight' },
+      { archetype: 'Caregiver/Angel', label: 'The unconditional space-holder', description: 'Creates safety without judgment, holds space for healing' },
+      { archetype: 'Magician/Alchemist', label: 'The pattern transformer', description: 'Transmutes destructive patterns into growth through subtle intervention' },
+    ]},
+    { role: 'Career Coach', variants: [
+      { archetype: 'Sage/Mentor', label: 'The career navigator', description: 'Guides professional development through accumulated wisdom' },
+      { archetype: 'Explorer/Generalist', label: 'The possibilities explorer', description: 'Helps clients discover paths they had not considered' },
+      { archetype: 'Rebel/Reformer', label: 'The convention challenger', description: 'Questions career assumptions, helps clients break free of scripts' },
+    ]},
+    { role: 'Wellness Coach', variants: [
+      { archetype: 'Caregiver/Healer', label: 'The holistic guide', description: 'Addresses mind, body, and spirit as an integrated system' },
+      { archetype: 'Innocent/Dreamer', label: 'The mindful companion', description: 'Gentle presence, helps clients reconnect with inner calm' },
+      { archetype: 'Explorer/Seeker', label: 'The mindful explorer', description: 'Questions assumptions about health, seeks deeper understanding' },
+    ]},
+    { role: 'Relationship Coach', variants: [
+      { archetype: 'Lover/Matchmaker', label: 'The connection architect', description: 'Builds bridges between people, understands relational dynamics' },
+      { archetype: 'Sage/Shaman', label: 'The pattern reader', description: 'Sees relational dynamics beneath the surface' },
+      { archetype: 'Lover/Companion', label: 'The steady presence', description: 'Models healthy attachment through consistent, warm engagement' },
+    ]},
+  ],
+  Marketing: [
+    { role: 'Content Strategist', variants: [
+      { archetype: 'Creator/Storyteller', label: 'The narrative architect', description: 'Crafts compelling stories that connect brand to audience' },
+      { archetype: 'Sage/Translator', label: 'The clarity maker', description: 'Distils complex ideas into accessible, resonant messaging' },
+      { archetype: 'Creator/Visionary', label: 'The thought leader', description: 'Shapes category narratives and future-facing content' },
+    ]},
+    { role: 'Brand Strategist', variants: [
+      { archetype: 'Magician/Alchemist', label: 'The brand alchemist', description: 'Transforms raw brand elements into coherent identity' },
+      { archetype: 'Creator/Visionary', label: 'The brand visionary', description: 'Sees the future shape of the brand before others' },
+      { archetype: 'Rebel/Activist', label: 'The challenger brand builder', description: 'Positions against convention, builds brands that provoke' },
+    ]},
+    { role: 'Community Manager', variants: [
+      { archetype: 'Everyman/Networker', label: 'The community weaver', description: 'Connects people naturally, builds belonging at scale' },
+      { archetype: 'Lover/Companion', label: 'The community anchor', description: 'Steady warmth that makes people feel at home' },
+      { archetype: 'Jester/Entertainer', label: 'The community energiser', description: 'Keeps the community alive with humour, events, and energy' },
+    ]},
+    { role: 'Growth Marketer', variants: [
+      { archetype: 'Rebel/Gambler', label: 'The growth hacker', description: 'High-stakes experimentation, embraces unconventional channels' },
+      { archetype: 'Magician/Scientist', label: 'The experiment runner', description: 'Systematic A/B testing and data-driven optimisation' },
+      { archetype: 'Explorer/Adventurer', label: 'The channel explorer', description: 'Discovers untapped channels and first-mover advantages' },
+    ]},
+  ],
 };
 
 export const PROFESSION_LIST = Object.keys(PROFESSION_PRESETS).sort();
