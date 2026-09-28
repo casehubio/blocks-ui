@@ -14,6 +14,8 @@ import { deriveDispositions, deriveTendencies } from './data/disposition-mapping
 import { FRAMEWORK_TOOLTIPS } from './data/framework-tooltips.js';
 
 export interface PersonalityProfile {
+  profession?: string;
+  role?: string;
   mbti?: string;
   enneagram?: string;
   disc?: string;
@@ -31,6 +33,7 @@ const FRAMEWORK_LABELS: Record<PersonalityFramework, string> = {
   mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI',
 };
 const SINGLE_FRAMEWORKS: PersonalityFramework[] = ['mbti', 'enneagram', 'disc', 'belbin', 'sdi'];
+const MAPPED_ARCHETYPES = new Set(Object.values(PROFESSION_PRESETS).flatMap(roles => roles.flatMap(r => r.variants.map(v => v.archetype))));
 
 function familySubs(family: string): string[] {
   return Object.keys(ARCHETYPE_CONFIGS)
@@ -215,6 +218,7 @@ export class AvatarStep extends LitElement {
     .avatar-cell.weak { opacity: 0.6; }
     .avatar-cell.weak:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .avatar-cell.incompatible { opacity: 0.25; transform: scale(0.9); pointer-events: none; }
+    .avatar-cell.unmapped .sub-label::after { content: ' *'; color: var(--pages-neutral-9, #999); font-size: 8px; }
     .avatar-cell[aria-disabled="true"] { cursor: default; }
     .avatar-cell.selected { border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-2, #eff6ff); }
     .avatar-cell .sub-label { font-size: 10px; color: var(--pages-neutral-9, #737373); text-align: center; margin-top: 2px; }
@@ -275,6 +279,8 @@ export class AvatarStep extends LitElement {
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
   @state() private _compactGrid = false;
   @state() private _profile: PersonalityProfile = {};
+  @state() private _profileProfession: string | null = null;
+  @state() private _profileRole: string | null = null;
   @state() private _profileLocked = new Set<string>();
   @state() private _tipDialog: string | null = null;
 
@@ -311,7 +317,10 @@ export class AvatarStep extends LitElement {
   }
 
   private _buildPersonalityProfile(): PersonalityProfile {
-    return { ...this._profile };
+    const profile = { ...this._profile };
+    if (this._profileProfession) profile.profession = this._profileProfession;
+    if (this._profileRole) profile.role = this._profileRole;
+    return profile;
   }
 
   private _emitPersonalityChanged() {
@@ -465,7 +474,8 @@ export class AvatarStep extends LitElement {
       this._selectedRole = null;
     }
     this._profile = this._initProfile(key);
-    this._profileExpanded = null;
+    this._profileProfession = this._profession;
+    this._profileRole = this._selectedRole;
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
       detail: { archetype: { family, subArchetype: sub }, collection: this._collection, personality: this._buildPersonalityProfile() },
       bubbles: true, composed: true,
@@ -624,6 +634,46 @@ export class AvatarStep extends LitElement {
     return html`
       <div class="profile-section" role="region" aria-label="Personality profile">
         <div class="profile-header">Personality Profile</div>
+        <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('profession') })}>
+          <div class="profile-row">
+            <span class="profile-label">Profession</span>
+            <span class="profile-value">${this._profileProfession || '—'}</span>
+            <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('profession') })}
+              @click=${() => this._toggleLock('profession')}>
+              ${this._profileLocked.has('profession') ? 'unlock' : 'lock'}
+            </button>
+          </div>
+          <div class="profile-picker" role="listbox" aria-label="Profession selection">
+            ${PROFESSION_LIST.map(prof => html`
+              <button class=${classMap({ pill: true })}
+                role="option" aria-selected=${String(this._profileProfession === prof)}
+                @click=${() => { this._profileProfession = this._profileProfession === prof ? null : prof; this._profileRole = null; this._emitPersonalityChanged(); }}>
+                ${prof}
+              </button>
+            `)}
+          </div>
+        </div>
+        ${this._profileProfession ? html`
+          <div class=${classMap({ 'profile-group': true, locked: this._profileLocked.has('role') })}>
+            <div class="profile-row">
+              <span class="profile-label">Role</span>
+              <span class="profile-value">${this._profileRole || '—'}</span>
+              <button class=${classMap({ 'profile-lock': true, locked: this._profileLocked.has('role') })}
+                @click=${() => this._toggleLock('role')}>
+                ${this._profileLocked.has('role') ? 'unlock' : 'lock'}
+              </button>
+            </div>
+            <div class="profile-picker" role="listbox" aria-label="Role selection">
+              ${(PROFESSION_PRESETS[this._profileProfession] ?? []).map(({ role }) => html`
+                <button class=${classMap({ pill: true })}
+                  role="option" aria-selected=${String(this._profileRole === role)}
+                  @click=${() => { this._profileRole = this._profileRole === role ? null : role; this._emitPersonalityChanged(); }}>
+                  ${role}
+                </button>
+              `)}
+            </div>
+          </div>
+        ` : nothing}
         ${(['mbti', 'enneagram', 'disc', 'sdi'] as const).map(fw => {
           const label = fwKeyMap[fw]!;
           const val = p[fw];
@@ -845,7 +895,7 @@ export class AvatarStep extends LitElement {
               const disabled = tier === 'incompatible';
               if (this._compactGrid && disabled) return html`<div></div>`;
               return html`
-                <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected })}
+                <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key) })}
                   role="radio" aria-checked=${String(selected)}
                   aria-label="${family} ${sub} avatar"
                   aria-disabled=${String(disabled)}
