@@ -115,14 +115,14 @@ export class AvatarStep extends LitElement {
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
     .pill.role-match { border-color: var(--pages-accent-7, #93c5fd); background: var(--pages-accent-2, #eff6ff); }
-    .variant-card { display: grid; grid-template-columns: auto 1fr 1fr; gap: 12px; align-items: start; width: 100%; padding: 10px 14px; margin-bottom: 6px; border: 2px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px; background: var(--pages-neutral-2, #252538); cursor: pointer; text-align: left; color: var(--pages-neutral-11, #ccc); font-size: 13px; }
+    .variant-card { display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px; align-items: center; width: 100%; padding: 8px 12px; margin-bottom: 4px; border: 2px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px; background: var(--pages-neutral-2, #252538); cursor: pointer; text-align: left; color: var(--pages-neutral-11, #ccc); font-size: 13px; }
     .variant-card.selected { border-color: var(--pages-accent-9, #2563eb); }
     .variant-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .variant-label { font-weight: 600; margin-bottom: 2px; }
     .variant-desc { font-size: 11px; color: var(--pages-neutral-9, #999); }
-    .variant-profile { font-size: 10px; color: var(--pages-neutral-9, #999); margin: 0; }
+    .variant-profile { font-size: 10px; color: var(--pages-neutral-9, #999); margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
     .variant-profile dt { font-weight: 600; color: var(--pages-neutral-10, #aaa); margin-top: 3px; }
-    .variant-profile dd { margin: 0; }
+    .variant-profile dd { margin: 0; margin-bottom: 2px; }
 
     .grid { display: grid; grid-template-columns: auto repeat(4, 1fr); gap: 4px; margin-bottom: 12px; }
     .family-label { font-size: 11px; font-weight: 600; color: var(--pages-neutral-10, #666); padding: 4px 8px 4px 0; display: flex; align-items: center; }
