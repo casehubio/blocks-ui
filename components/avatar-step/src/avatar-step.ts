@@ -449,52 +449,18 @@ export class AvatarStep extends LitElement {
     else { this._profession = null; this._selectedRole = null; }
   }
 
-  private _resolveConflict(newFrameworks: Partial<Record<PersonalityFramework, string>>, newBigFive: Partial<Record<BigFiveDimension, BigFivePole>>): [Partial<Record<PersonalityFramework, string>>, Partial<Record<BigFiveDimension, BigFivePole>>] {
-    const matches = getCompatibleArchetypes(newFrameworks, newBigFive);
-    if ([...matches.values()].some(t => t !== 'incompatible')) return [newFrameworks, newBigFive];
-    const fwKeys = Object.keys(newFrameworks) as PersonalityFramework[];
-    for (let i = fwKeys.length - 1; i >= 0; i--) {
-      const reduced = { ...newFrameworks };
-      delete reduced[fwKeys[i]!];
-      const test = getCompatibleArchetypes(reduced, newBigFive);
-      if ([...test.values()].some(t => t !== 'incompatible')) return [reduced, newBigFive];
-    }
-    const bfKeys = Object.keys(newBigFive) as BigFiveDimension[];
-    for (let i = bfKeys.length - 1; i >= 0; i--) {
-      const reduced = { ...newBigFive };
-      delete reduced[bfKeys[i]!];
-      const test = getCompatibleArchetypes(newFrameworks, reduced);
-      if ([...test.values()].some(t => t !== 'incompatible')) return [newFrameworks, reduced];
-    }
-    const lastFw = fwKeys[fwKeys.length - 1];
-    return [lastFw ? { [lastFw]: newFrameworks[lastFw] } : {}, {}];
-  }
-
   // ── Entry points (all delegate to pipeline) ──
 
   private _selectFramework(fw: PersonalityFramework, value: string) {
-    let newFw: Partial<Record<PersonalityFramework, string>>;
-    if (this._frameworks[fw] === value) {
-      newFw = { ...this._frameworks };
-      delete newFw[fw];
-      this._applyFilters(newFw, this._bigFive);
-    } else {
-      const candidate = { ...this._frameworks, [fw]: value };
-      const [resolved, resolvedBf] = this._resolveConflict(candidate, this._bigFive);
-      this._applyFilters(resolved, resolvedBf);
-    }
+    const next = { ...this._frameworks };
+    if (next[fw] === value) { delete next[fw]; } else { next[fw] = value; }
+    this._applyFilters(next, this._bigFive);
   }
 
   private _toggleBigFive(dim: BigFiveDimension, pole: BigFivePole) {
-    if (this._bigFive[dim] === pole) {
-      const next = { ...this._bigFive };
-      delete next[dim];
-      this._applyFilters(this._frameworks, next);
-    } else {
-      const candidate = { ...this._bigFive, [dim]: pole };
-      const [resolvedFw, resolved] = this._resolveConflict(this._frameworks, candidate);
-      this._applyFilters(resolvedFw, resolved);
-    }
+    const next = { ...this._bigFive };
+    if (next[dim] === pole) { delete next[dim]; } else { next[dim] = pole; }
+    this._applyFilters(this._frameworks, next);
   }
 
   private _selectArchetype(key: string) {
