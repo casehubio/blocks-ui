@@ -165,10 +165,14 @@ export class AgentManifestEditor extends LitElement {
       localModels: this._dataSnapshot.localModels,
       defaults: this._dataSnapshot.defaults,
     };
-    if (preset.authPatternId && preset.manifest.providers?.length) {
+    if (preset.manifest.providers?.length) {
       const newPatterns = new Map(this._providerAuthPatterns);
       for (const p of preset.manifest.providers) {
-        newPatterns.set(p.vendor, preset.authPatternId);
+        if (preset.authPatternId) {
+          newPatterns.set(p.vendor, preset.authPatternId);
+        } else {
+          newPatterns.delete(p.vendor);
+        }
       }
       this._providerAuthPatterns = newPatterns;
     }

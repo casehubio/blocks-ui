@@ -61,8 +61,8 @@ export class ManifestProviderCard extends LitElement {
     if (changed.has('vendor') && !this._authPatternId) {
       this._authPatternId = getDefaultAuthPattern(this.vendor).id;
     }
-    if (changed.has('authPatternOverride') && this.authPatternOverride) {
-      this._authPatternId = this.authPatternOverride;
+    if (changed.has('authPatternOverride')) {
+      this._authPatternId = this.authPatternOverride || getDefaultAuthPattern(this.vendor).id;
     }
     if (changed.has('provider')) {
       this._initFromProvider();
