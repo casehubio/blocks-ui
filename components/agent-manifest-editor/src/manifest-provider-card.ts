@@ -30,6 +30,7 @@ export class ManifestProviderCard extends LitElement {
   @property({ type: Boolean }) devMode = false;
   @property({ type: String }) testEndpoint = '';
   @property({ type: Boolean }) isOther = false;
+  @property({ type: String, attribute: 'auth-pattern' }) authPatternOverride = '';
 
   @state() private _expanded = false;
   @state() private _authPatternId = '';
@@ -60,6 +61,9 @@ export class ManifestProviderCard extends LitElement {
     if (changed.has('vendor') && !this._authPatternId) {
       this._authPatternId = getDefaultAuthPattern(this.vendor).id;
     }
+    if (changed.has('authPatternOverride') && this.authPatternOverride) {
+      this._authPatternId = this.authPatternOverride;
+    }
     if (changed.has('provider')) {
       this._initFromProvider();
     }
@@ -79,7 +83,9 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _initFromProvider(): void {
-    if (!this._authPatternId) {
+    if (this.authPatternOverride) {
+      this._authPatternId = this.authPatternOverride;
+    } else if (!this._authPatternId) {
       this._authPatternId = getDefaultAuthPattern(this.vendor).id;
     }
     const cred = this.provider?.credential;

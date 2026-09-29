@@ -42,6 +42,7 @@ export class AgentManifestEditor extends LitElement {
   @state() private _aliases: AliasRow[] = [];
   @state() private _dataSnapshot: Manifest = {};
   @state() private _dynamicProviders: LlmProviderInfo[] = [];
+  @state() private _providerAuthPatterns = new Map<string, string>();
   @state() private _providerDetection = new Map<string, 'detected' | 'partial' | 'none'>();
   @state() private _providerModels = new Map<string, ModelDescriptor[]>();
   @state() private _loading = false;
@@ -164,6 +165,13 @@ export class AgentManifestEditor extends LitElement {
       localModels: this._dataSnapshot.localModels,
       defaults: this._dataSnapshot.defaults,
     };
+    if (preset.authPatternId && preset.manifest.providers?.length) {
+      const newPatterns = new Map(this._providerAuthPatterns);
+      for (const p of preset.manifest.providers) {
+        newPatterns.set(p.vendor, preset.authPatternId);
+      }
+      this._providerAuthPatterns = newPatterns;
+    }
     this._initFromData(preset.manifest);
     this._dataSnapshot = { ...this._dataSnapshot, ...preserved };
     this._emitManifest();
@@ -349,6 +357,7 @@ export class AgentManifestEditor extends LitElement {
             .devMode=${this.devMode}
             .testEndpoint=${''}
             .isOther=${false}
+            .authPatternOverride=${this._providerAuthPatterns.get(bp.vendor) ?? ''}
             @provider-changed=${this._onProviderChanged}
           ></manifest-provider-card>
         `)}

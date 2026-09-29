@@ -4,6 +4,7 @@ export interface PresetTemplate {
   id: string;
   label: string;
   manifest: Manifest;
+  authPatternId?: string;
 }
 
 const ANTHROPIC_MODELS: ModelDescriptor[] = [
@@ -41,6 +42,7 @@ export const PRESETS: PresetTemplate[] = [
   {
     id: 'anthropic-vertex',
     label: 'Anthropic (Vertex)',
+    authPatternId: 'gcp-iam',
     manifest: {
       providers: [{ vendor: 'anthropic', credential: { projectId: '', region: 'us-central1' } }],
       models: ANTHROPIC_MODELS,
@@ -50,6 +52,7 @@ export const PRESETS: PresetTemplate[] = [
   {
     id: 'anthropic-bedrock',
     label: 'Anthropic (Bedrock)',
+    authPatternId: 'aws-iam',
     manifest: {
       providers: [{ vendor: 'anthropic', credential: { region: 'us-east-1' } }],
       models: ANTHROPIC_MODELS,
