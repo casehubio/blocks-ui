@@ -1,6 +1,5 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
 import type { ModelDescriptor, ProviderDeclaration } from '@casehubio/blocks-ui-core';
 import { getInferenceRanges, parseInferenceFromProperties, writeInferenceToProperties } from './provider-defaults.js';
 import type { InferenceDefaults, ProviderInferenceRanges } from './provider-defaults.js';
