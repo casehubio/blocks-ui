@@ -483,6 +483,8 @@ export class AvatarStep extends LitElement {
       this._selectedRole = null;
     }
     this._profile = this._initProfile(key);
+    if (this._profile.sdi) this._frameworks = { ...this._frameworks, sdi: this._profile.sdi };
+    if (this._profile.bigFive) this._bigFive = { ...this._bigFive, ...this._profile.bigFive };
     this._profileProfession = this._profession;
     this._profileRole = this._selectedRole;
     this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {

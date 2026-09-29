@@ -59,4 +59,24 @@ describe('avatar-step', () => {
     expect(detail).toBeDefined();
     expect(detail!.archetype).toBeDefined();
   });
+
+  it('archetype selection syncs SDI and Big Five to filter pill state', async () => {
+    await el.updateComplete;
+
+    // Click the first archetype cell (Caregiver family)
+    const cell = el.shadowRoot!.querySelector('.avatar-cell:not([aria-disabled="true"])') as HTMLElement;
+    expect(cell).toBeTruthy();
+    cell.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    await el.updateComplete;
+    await el.updateComplete;
+
+    // SDI pill for the archetype's value should have aria-selected="true"
+    const sdiPills = el.shadowRoot!.querySelectorAll('[data-framework="sdi"]');
+    const selectedSdi = Array.from(sdiPills).filter(p => p.getAttribute('aria-selected') === 'true');
+    expect(selectedSdi.length).toBeGreaterThan(0);
+
+    // Big Five toggles should reflect the archetype's values
+    const bigFiveToggles = el.shadowRoot!.querySelectorAll('.big5-toggle[aria-checked="true"]');
+    expect(bigFiveToggles.length).toBeGreaterThan(0);
+  });
 });
