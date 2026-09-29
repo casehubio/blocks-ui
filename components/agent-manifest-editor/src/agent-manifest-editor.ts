@@ -389,20 +389,6 @@ export class AgentManifestEditor extends LitElement {
     return 'incomplete';
   }
 
-  private _getModelStepStatus(): 'complete' | 'warning' | 'incomplete' {
-    let hasSelectedModels = false;
-    let hasOrphanModels = false;
-    for (const [, state] of this._providerStates) {
-      if (state.selectedModels.length > 0) {
-        hasSelectedModels = true;
-        if (!state.credential && !state.host) hasOrphanModels = true;
-      }
-    }
-    if (hasSelectedModels && !hasOrphanModels) return 'complete';
-    if (hasSelectedModels) return 'warning';
-    return 'incomplete';
-  }
-
   private _getAliasStepStatus(): 'complete' | 'warning' | 'incomplete' {
     if (this._aliases.length === 0) return 'incomplete';
     const allKeysValid = this._aliases.every(a => a.key !== '');
@@ -570,7 +556,7 @@ export class AgentManifestEditor extends LitElement {
       </div>
 
       <div class="section-title">Manifest YAML</div>
-      <pre class="yaml-preview">${this._manifestToYaml()}</pre>
+      <pre class="yaml-preview" role="region" aria-label="Manifest YAML preview">${this._manifestToYaml()}</pre>
 
       <div class="section-title">System Prompt Preview</div>
       <div class="prompt-label">Generated from personality profile</div>

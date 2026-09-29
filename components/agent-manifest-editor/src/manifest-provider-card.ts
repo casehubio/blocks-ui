@@ -41,6 +41,7 @@ export class ManifestProviderCard extends LitElement {
   @state() private _testing = false;
   @state() private _showBatchSet = false;
   @state() private _addedModels: ModelDescriptor[] = [];
+  private _addedModelCounter = 0;
   @state() private _otherModels: ModelDescriptor[] = [];
   @state() private _otherVendorName = '';
   @state() private _otherHost = '';
@@ -260,7 +261,8 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _addModel(): void {
-    const id = `custom-${this._addedModels.length + 1}`;
+    this._addedModelCounter++;
+    const id = `custom-${this._addedModelCounter}`;
     this._addedModels = [...this._addedModels, { id, vendor: this.vendor }];
   }
 
