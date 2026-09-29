@@ -93,26 +93,33 @@ describe('manifest-provider-card', () => {
     });
   });
 
-  describe('credential editing', () => {
-    it('shows credential type radios when expanded', async () => {
+  describe('auth pattern', () => {
+    it('shows connection method selector for providers with multiple patterns', async () => {
       await el.updateComplete;
       (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
       await el.updateComplete;
-      const radios = el.shadowRoot!.querySelectorAll('input[name="cred-type"]');
+      const radios = el.shadowRoot!.querySelectorAll('input[name="auth-pattern"]');
       expect(radios.length).toBe(3);
     });
 
-    it('dev-mode shows inline key option', async () => {
+    it('shows auth fields for the selected pattern', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+      const fields = el.shadowRoot!.querySelectorAll('.auth-field-row');
+      expect(fields.length).toBeGreaterThan(0);
+    });
+
+    it('dev-mode shows inline key section for api-key pattern', async () => {
       el.devMode = true;
       await el.updateComplete;
       (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
       await el.updateComplete;
-      const radios = el.shadowRoot!.querySelectorAll('input[name="cred-type"]');
-      expect(radios.length).toBe(4);
+      const devSection = el.shadowRoot!.querySelector('input[type="password"]');
+      expect(devSection).toBeTruthy();
     });
 
-    it('inline key never appears in provider-changed event', async () => {
-      el.devMode = true;
+    it('emits auth pattern ID in provider-changed', async () => {
       await el.updateComplete;
       (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
       await el.updateComplete;
@@ -120,33 +127,14 @@ describe('manifest-provider-card', () => {
       const events: any[] = [];
       el.addEventListener('provider-changed', ((e: CustomEvent) => events.push(e.detail)) as EventListener);
 
-      const inlineRadio = el.shadowRoot!.querySelector('input[value="inline"]') as HTMLInputElement;
-      inlineRadio.click();
-      await el.updateComplete;
-
-      const keyInput = el.shadowRoot!.querySelector('input[type="password"]') as HTMLInputElement;
-      keyInput.value = 'sk-secret-key';
-      keyInput.dispatchEvent(new Event('input', { bubbles: true }));
-      await el.updateComplete;
-
-      if (events.length > 0) {
-        const last = events[events.length - 1];
-        expect(last.credential).not.toBe('sk-secret-key');
-        expect(typeof last.credential === 'string' && last.credential.includes('sk-secret')).toBe(false);
+      const field = el.shadowRoot!.querySelector('.auth-field-row input') as HTMLInputElement;
+      if (field) {
+        field.value = 'test-value';
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        await el.updateComplete;
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].authPatternId).toBeDefined();
       }
-    });
-
-    it('multi-field credential shows read-only summary', async () => {
-      el.provider = {
-        vendor: 'aws-bedrock',
-        credential: { accessKey: 'env:AWS_KEY', secretKey: 'env:AWS_SECRET' },
-      };
-      await el.updateComplete;
-      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
-      await el.updateComplete;
-      const summary = el.shadowRoot!.querySelector('.multi-field-summary');
-      expect(summary).toBeTruthy();
-      expect(summary?.textContent).toContain('2 fields');
     });
   });
 

@@ -17,12 +17,6 @@ const OPENAI_MODELS: ModelDescriptor[] = [
   { id: 'gpt-4o-mini', displayName: 'GPT-4o Mini', vendor: 'openai', tier: 'FAST', contextWindow: 128000, maxOutput: 16384, capabilities: ['vision', 'tool_use'] },
 ];
 
-const VERTEX_MODELS: ModelDescriptor[] = [
-  { id: 'claude-opus-4-6', displayName: 'Claude Opus 4.6 (Vertex)', vendor: 'vertex-ai', tier: 'FLAGSHIP', contextWindow: 1000000, maxOutput: 32000, capabilities: ['vision', 'tool_use'], locality: 'CLOUD' },
-  { id: 'claude-sonnet-5', displayName: 'Claude Sonnet 5 (Vertex)', vendor: 'vertex-ai', tier: 'STANDARD', contextWindow: 200000, maxOutput: 16000, capabilities: ['vision', 'tool_use'], locality: 'CLOUD' },
-  { id: 'claude-haiku-4-5', displayName: 'Claude Haiku 4.5 (Vertex)', vendor: 'vertex-ai', tier: 'FAST', contextWindow: 200000, maxOutput: 8192, capabilities: ['vision', 'tool_use'], locality: 'CLOUD' },
-];
-
 const OLLAMA_MODELS: ModelDescriptor[] = [
   { id: 'llama3.1', displayName: 'Llama 3.1', vendor: 'ollama', tier: 'STANDARD', contextWindow: 128000, locality: 'LOCAL' },
   { id: 'mistral', displayName: 'Mistral', vendor: 'ollama', tier: 'STANDARD', contextWindow: 32000, locality: 'LOCAL' },
@@ -36,8 +30,8 @@ const STANDARD_ALIASES: Record<string, AliasDeclaration> = {
 
 export const PRESETS: PresetTemplate[] = [
   {
-    id: 'anthropic-production',
-    label: 'Anthropic Production',
+    id: 'anthropic-direct',
+    label: 'Anthropic (Direct)',
     manifest: {
       providers: [{ vendor: 'anthropic', credential: 'env:ANTHROPIC_API_KEY' }],
       models: ANTHROPIC_MODELS,
@@ -45,17 +39,26 @@ export const PRESETS: PresetTemplate[] = [
     },
   },
   {
-    id: 'vertex-ai',
-    label: 'Vertex AI',
+    id: 'anthropic-vertex',
+    label: 'Anthropic (Vertex)',
     manifest: {
-      providers: [{ vendor: 'vertex-ai', credential: { projectId: 'env:GCP_PROJECT_ID', region: 'env:GCP_REGION' } }],
-      models: VERTEX_MODELS,
-      aliases: { ...STANDARD_ALIASES, 'reasoning-heavy': { ...STANDARD_ALIASES['reasoning-heavy']!, preferVendor: 'vertex-ai' } },
+      providers: [{ vendor: 'anthropic', credential: { projectId: '', region: 'us-central1' } }],
+      models: ANTHROPIC_MODELS,
+      aliases: { ...STANDARD_ALIASES, 'reasoning-heavy': { ...STANDARD_ALIASES['reasoning-heavy']!, preferVendor: 'anthropic' } },
+    },
+  },
+  {
+    id: 'anthropic-bedrock',
+    label: 'Anthropic (Bedrock)',
+    manifest: {
+      providers: [{ vendor: 'anthropic', credential: { region: 'us-east-1' } }],
+      models: ANTHROPIC_MODELS,
+      aliases: { ...STANDARD_ALIASES, 'reasoning-heavy': { ...STANDARD_ALIASES['reasoning-heavy']!, preferVendor: 'anthropic' } },
     },
   },
   {
     id: 'openai-standard',
-    label: 'OpenAI Standard',
+    label: 'OpenAI',
     manifest: {
       providers: [{ vendor: 'openai', credential: 'env:OPENAI_API_KEY' }],
       models: OPENAI_MODELS,
@@ -64,7 +67,7 @@ export const PRESETS: PresetTemplate[] = [
   },
   {
     id: 'local-development',
-    label: 'Local Development',
+    label: 'Local (Ollama)',
     manifest: {
       providers: [{ vendor: 'ollama', host: 'http://localhost:11434' }],
       models: OLLAMA_MODELS,

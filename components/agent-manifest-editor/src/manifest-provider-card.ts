@@ -1,17 +1,16 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { ModelDescriptor, ProviderDeclaration } from '@casehubio/blocks-ui-core';
-import { getInferenceRanges, parseInferenceFromProperties, writeInferenceToProperties } from './provider-defaults.js';
-import type { InferenceDefaults, ProviderInferenceRanges } from './provider-defaults.js';
+import { getInferenceRanges, parseInferenceFromProperties, writeInferenceToProperties, getAuthPatterns, getDefaultAuthPattern } from './provider-defaults.js';
+import type { InferenceDefaults, ProviderInferenceRanges, AuthPattern, AuthField } from './provider-defaults.js';
 
 export interface ProviderChangedDetail {
   vendor: string;
   credential?: string | Record<string, string>;
   host?: string;
   selectedModels: ModelDescriptor[];
+  authPatternId?: string;
 }
-
-type CredentialType = 'env' | 'file' | 'ref' | 'inline';
 
 interface TestResult {
   success: boolean;
@@ -33,8 +32,9 @@ export class ManifestProviderCard extends LitElement {
   @property({ type: Boolean }) isOther = false;
 
   @state() private _expanded = false;
-  @state() private _credentialType: CredentialType = 'env';
-  @state() private _credentialValue = '';
+  @state() private _authPatternId = '';
+  @state() private _authValues: Record<string, string> = {};
+  @state() private _altIndex = 0;
   @state() private _inlineKey = '';
   @state() private _testResult: TestResult | null = null;
   @state() private _testing = false;
@@ -57,15 +57,15 @@ export class ManifestProviderCard extends LitElement {
     if (changed.has('displayName') || changed.has('vendor')) {
       this._updateAriaLabel();
     }
+    if (changed.has('vendor') && !this._authPatternId) {
+      this._authPatternId = getDefaultAuthPattern(this.vendor).id;
+    }
     if (changed.has('provider')) {
       this._initFromProvider();
     }
-    if (changed.has('_credentialValue') || changed.has('_credentialType') ||
-        changed.has('selectedModels') || changed.has('_otherHost')) {
-      if (changed.has('_credentialValue') || changed.has('_credentialType') ||
-          changed.has('selectedModels')) {
-        this._testResult = null;
-      }
+    if (changed.has('_authValues') || changed.has('_authPatternId') ||
+        changed.has('selectedModels')) {
+      this._testResult = null;
     }
   }
 
@@ -79,21 +79,19 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _initFromProvider(): void {
+    if (!this._authPatternId) {
+      this._authPatternId = getDefaultAuthPattern(this.vendor).id;
+    }
     const cred = this.provider?.credential;
-    if (typeof cred === 'string') {
-      if (cred.startsWith('env:')) {
-        this._credentialType = 'env';
-        this._credentialValue = cred.slice(4);
-      } else if (cred.startsWith('file:')) {
-        this._credentialType = 'file';
-        this._credentialValue = cred.slice(5);
-      } else if (cred.startsWith('ref:')) {
-        this._credentialType = 'ref';
-        this._credentialValue = cred.slice(4);
-      } else {
-        this._credentialType = 'env';
-        this._credentialValue = cred;
-      }
+    if (typeof cred === 'object' && cred !== null) {
+      this._authValues = { ...cred };
+    } else if (typeof cred === 'string') {
+      this._authValues = { apiKey: cred };
+    } else {
+      this._authValues = {};
+    }
+    if (this.provider?.host) {
+      this._authValues = { ...this._authValues, host: this.provider.host };
     }
     if (this.isOther) {
       this._otherVendorName = this.provider?.vendor ?? '';
@@ -101,21 +99,29 @@ export class ManifestProviderCard extends LitElement {
     }
   }
 
-  private _isMultiFieldCredential(): boolean {
-    return typeof this.provider?.credential === 'object' && this.provider.credential !== null;
+  private _buildCredential(): string | Record<string, string> | undefined {
+    const pattern = this._getActivePattern();
+    const allFields = [...pattern.fields, ...(pattern.alternatives?.[this._altIndex]?.fields ?? [])];
+    const secretFields = allFields.filter(f => f.type === 'secret');
+    const nonSecretFields = allFields.filter(f => f.type !== 'secret');
+
+    if (secretFields.length === 1 && nonSecretFields.every(f => f.key === 'baseUrl' || f.key === 'host')) {
+      const val = this._authValues[secretFields[0]!.key];
+      return val || undefined;
+    }
+
+    const cred: Record<string, string> = {};
+    for (const field of allFields) {
+      if (field.key === 'host' || field.key === 'baseUrl' || field.key === 'adc') continue;
+      const val = this._authValues[field.key];
+      if (val) cred[field.key] = val;
+    }
+    return Object.keys(cred).length > 0 ? cred : undefined;
   }
 
-  private _buildCredentialString(): string | Record<string, string> | undefined {
-    if (this._isMultiFieldCredential()) {
-      return this.provider.credential;
-    }
-    if (!this._credentialValue) return undefined;
-    switch (this._credentialType) {
-      case 'env': return `env:${this._credentialValue}`;
-      case 'file': return `file:${this._credentialValue}`;
-      case 'ref': return `ref:${this._credentialValue}`;
-      case 'inline': return undefined;
-    }
+  private _getActivePattern(): AuthPattern {
+    const patterns = getAuthPatterns(this.isOther ? '' : this.vendor);
+    return patterns.find(p => p.id === this._authPatternId) ?? patterns[0]!;
   }
 
   private _getSelectedModelDescriptors(): ModelDescriptor[] {
@@ -124,11 +130,13 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _emitChanged(): void {
+    const host = this._authValues.host || this._authValues.baseUrl || (this.isOther ? this._otherHost : this.provider?.host);
     const detail: ProviderChangedDetail = {
       vendor: this.isOther ? this._otherVendorName : this.vendor,
-      credential: this._buildCredentialString(),
-      host: this.isOther ? this._otherHost : this.provider?.host,
+      credential: this._buildCredential(),
+      host,
       selectedModels: this._getSelectedModelDescriptors(),
+      authPatternId: this._authPatternId,
     };
     this.dispatchEvent(new CustomEvent('provider-changed', {
       detail,
@@ -141,14 +149,20 @@ export class ManifestProviderCard extends LitElement {
     this._expanded = !this._expanded;
   }
 
-  private _onCredTypeChange(type: CredentialType): void {
-    this._credentialType = type;
-    this._credentialValue = '';
+  private _onAuthPatternChange(patternId: string): void {
+    this._authPatternId = patternId;
+    this._authValues = {};
+    this._altIndex = 0;
     this._emitChanged();
   }
 
-  private _onCredValueChange(value: string): void {
-    this._credentialValue = value;
+  private _onAltChange(index: number): void {
+    this._altIndex = index;
+    this._emitChanged();
+  }
+
+  private _onAuthFieldChange(key: string, value: string): void {
+    this._authValues = { ...this._authValues, [key]: value };
     this._emitChanged();
   }
 
@@ -313,7 +327,11 @@ export class ManifestProviderCard extends LitElement {
     .cred-radios { display: flex; gap: 1rem; margin: 0.5rem 0; }
     .cred-radios label { display: flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; cursor: pointer; }
     .cred-input { width: 100%; padding: 0.4rem; background: var(--pages-input-bg, #0f0f23); border: 1px solid var(--pages-border, #333); border-radius: 4px; color: inherit; font-family: monospace; }
-    .multi-field-summary { padding: 0.5rem; background: var(--pages-input-bg, #0f0f23); border-radius: 4px; font-size: 0.85rem; color: #aaa; }
+    .auth-pattern-label { font-size: 0.8rem; color: #888; margin: 0.25rem 0; }
+    .auth-field-row { margin: 0.35rem 0; }
+    .auth-field-label { display: block; font-size: 0.75rem; color: #aaa; margin-bottom: 0.15rem; }
+    .auth-field-label .required { color: #f44336; }
+    .auth-hint { font-size: 0.7rem; color: #666; margin-top: 0.15rem; font-style: italic; }
     .tier-group { margin: 0.5rem 0; }
     .tier-label { font-size: 0.7rem; text-transform: uppercase; color: #666; padding: 0.25rem 0; border-bottom: 1px solid #222; }
     .model-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.85rem; }
@@ -404,57 +422,69 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _renderCredentialEditor() {
-    if (this._isMultiFieldCredential()) {
-      const cred = this.provider.credential as Record<string, string>;
-      const count = Object.keys(cred).length;
-      return html`
-        <div class="section-label">Credentials</div>
-        <div class="multi-field-summary">
-          Multi-field credential (${count} fields):
-          ${Object.keys(cred).map(k => html` <span>${k}</span>`)}
-        </div>
-      `;
-    }
-
-    const types: { value: CredentialType; label: string }[] = [
-      { value: 'env', label: 'Env var' },
-      { value: 'file', label: 'File' },
-      { value: 'ref', label: 'Store ref' },
-    ];
-    if (this.devMode) {
-      types.push({ value: 'inline', label: 'API Key (dev)' });
-    }
+    const patterns = getAuthPatterns(this.isOther ? '' : this.vendor);
+    const activePattern = this._getActivePattern();
 
     return html`
-      <div class="section-label">Credentials</div>
-      <div class="cred-radios">
-        ${types.map(t => html`
-          <label>
-            <input type="radio" name="cred-type" value=${t.value}
-                   .checked=${this._credentialType === t.value}
-                   @change=${() => this._onCredTypeChange(t.value)}>
-            ${t.label}
-          </label>
-        `)}
-      </div>
-      ${this._credentialType === 'inline'
-        ? html`<input type="password" class="cred-input" .value=${this._inlineKey}
-                       placeholder="Paste API key (dev only — not persisted)"
-                       @input=${(e: Event) => this._onInlineKeyChange((e.target as HTMLInputElement).value)}>`
-        : html`<input class="cred-input" .value=${this._credentialValue}
-                       placeholder=${this._getCredPlaceholder()}
-                       @input=${(e: Event) => this._onCredValueChange((e.target as HTMLInputElement).value)}>`
-      }
+      <div class="section-label">Connection</div>
+      ${patterns.length > 1 ? html`
+        <div class="cred-radios">
+          ${patterns.map(p => html`
+            <label>
+              <input type="radio" name="auth-pattern" value=${p.id}
+                     .checked=${this._authPatternId === p.id}
+                     @change=${() => this._onAuthPatternChange(p.id)}>
+              ${p.label}
+            </label>
+          `)}
+        </div>
+      ` : html`<div class="auth-pattern-label">${activePattern.label}</div>`}
+
+      ${activePattern.fields.map(f => this._renderAuthField(f))}
+
+      ${activePattern.alternatives && activePattern.alternatives.length > 0 ? html`
+        <div class="section-label" style="margin-top:0.5rem">Authentication</div>
+        <div class="cred-radios">
+          ${activePattern.alternatives.map((alt, i) => html`
+            <label>
+              <input type="radio" name="auth-alt" value=${i}
+                     .checked=${this._altIndex === i}
+                     @change=${() => this._onAltChange(i)}>
+              ${alt.label}
+            </label>
+          `)}
+        </div>
+        ${activePattern.alternatives[this._altIndex]?.fields.map(f => this._renderAuthField(f))}
+      ` : nothing}
+
+      ${this.devMode && activePattern.id === 'api-key' ? html`
+        <div style="margin-top:0.5rem">
+          <div class="section-label">Dev Mode</div>
+          <input type="password" class="cred-input" .value=${this._inlineKey}
+                 placeholder="Paste API key (dev only — not persisted)"
+                 @input=${(e: Event) => this._onInlineKeyChange((e.target as HTMLInputElement).value)}>
+        </div>
+      ` : nothing}
     `;
   }
 
-  private _getCredPlaceholder(): string {
-    switch (this._credentialType) {
-      case 'env': return 'ANTHROPIC_API_KEY';
-      case 'file': return '/path/to/credentials.json';
-      case 'ref': return 'vault-production';
-      default: return '';
-    }
+  private _renderAuthField(field: AuthField) {
+    const value = this._authValues[field.key] ?? '';
+    const inputType = field.type === 'secret' ? 'password' : 'text';
+
+    return html`
+      <div class="auth-field-row">
+        <label class="auth-field-label">
+          ${field.label}
+          ${field.required ? html`<span class="required">*</span>` : nothing}
+        </label>
+        <input class="cred-input" type=${inputType}
+               .value=${value}
+               placeholder=${field.placeholder ?? (field.envVar ? `env: ${field.envVar}` : '')}
+               @input=${(e: Event) => this._onAuthFieldChange(field.key, (e.target as HTMLInputElement).value)}>
+        ${field.hint ? html`<div class="auth-hint">${field.hint}</div>` : nothing}
+      </div>
+    `;
   }
 
   private _renderModelList() {

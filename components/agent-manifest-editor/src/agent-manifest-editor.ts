@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import type { Manifest, ModelDescriptor, AliasDeclaration, ProviderDeclaration } from '@casehubio/blocks-ui-core';
 import { PRESETS } from './presets.js';
+import { BUILT_IN_PROVIDERS } from './provider-defaults.js';
 import type { ProviderChangedDetail } from './manifest-provider-card.js';
 import './manifest-provider-card.js';
 
@@ -27,14 +28,6 @@ export interface AgentManifestEditorProps {
   systemPrompt: string;
   devMode: boolean;
 }
-
-const BUILT_IN_PROVIDERS = [
-  { vendor: 'anthropic', displayName: 'Anthropic' },
-  { vendor: 'vertex-ai', displayName: 'Vertex AI' },
-  { vendor: 'openai', displayName: 'OpenAI' },
-  { vendor: 'google', displayName: 'Google' },
-  { vendor: 'ollama', displayName: 'Ollama' },
-];
 
 @customElement('agent-manifest-editor')
 export class AgentManifestEditor extends LitElement {

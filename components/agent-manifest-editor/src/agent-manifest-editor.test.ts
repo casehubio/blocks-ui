@@ -30,16 +30,16 @@ describe('agent-manifest-editor', () => {
   });
 
   describe('layout', () => {
-    it('renders preset bar with 5 presets', async () => {
+    it('renders preset bar with 6 presets', async () => {
       await el.updateComplete;
       const presets = el.shadowRoot!.querySelectorAll('.preset-card');
-      expect(presets.length).toBe(5);
+      expect(presets.length).toBe(6);
     });
 
-    it('renders provider cards (5 built-in + Other)', async () => {
+    it('renders provider cards (4 built-in + Other)', async () => {
       await el.updateComplete;
       const cards = el.shadowRoot!.querySelectorAll('manifest-provider-card');
-      expect(cards.length).toBe(6);
+      expect(cards.length).toBe(5);
     });
 
     it('renders alias editor section', async () => {
@@ -80,7 +80,7 @@ describe('agent-manifest-editor', () => {
   describe('preset selection', () => {
     it('clicking preset populates state and highlights', async () => {
       await el.updateComplete;
-      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
       preset.click();
       await el.updateComplete;
       expect(preset.classList.contains('active')).toBe(true);
@@ -88,7 +88,7 @@ describe('agent-manifest-editor', () => {
 
     it('clicking different preset unhighlights previous', async () => {
       await el.updateComplete;
-      const p1 = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+      const p1 = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
       const p2 = el.shadowRoot!.querySelector('[data-preset="openai-standard"]') as HTMLElement;
       p1.click();
       await el.updateComplete;
@@ -105,7 +105,7 @@ describe('agent-manifest-editor', () => {
         if (e.detail?.topic === 'manifest:configured') events.push(e.detail.payload);
       }) as EventListener);
 
-      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
       preset.click();
       await el.updateComplete;
       const firstCount = events.length;
@@ -122,7 +122,7 @@ describe('agent-manifest-editor', () => {
         if (e.detail?.topic === 'manifest:configured') events.push(e.detail.payload);
       }) as EventListener);
 
-      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
       preset.click();
       await el.updateComplete;
 

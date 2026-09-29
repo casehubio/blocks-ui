@@ -33,7 +33,7 @@ describe('agent-manifest-editor integration', () => {
     await el.updateComplete;
     const events = collectManifestEvents(el);
 
-    const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+    const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
     preset.click();
     await el.updateComplete;
 
@@ -78,7 +78,7 @@ describe('agent-manifest-editor integration', () => {
     await el.updateComplete;
 
     // Switch to a preset (modifies aliases)
-    const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-production"]') as HTMLElement;
+    const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
     preset.click();
     await el.updateComplete;
 
@@ -100,14 +100,13 @@ describe('agent-manifest-editor integration', () => {
     }
   });
 
-  it('provider cards render for all 5 built-in providers plus Other', async () => {
+  it('provider cards render for all 4 built-in providers plus Other', async () => {
     await el.updateComplete;
     const cards = el.shadowRoot!.querySelectorAll('manifest-provider-card');
-    expect(cards.length).toBe(6);
+    expect(cards.length).toBe(5);
 
     const vendors = Array.from(cards).map(c => (c as any).vendor);
     expect(vendors).toContain('anthropic');
-    expect(vendors).toContain('vertex-ai');
     expect(vendors).toContain('openai');
     expect(vendors).toContain('google');
     expect(vendors).toContain('ollama');
