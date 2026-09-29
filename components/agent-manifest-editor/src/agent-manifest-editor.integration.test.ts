@@ -133,4 +133,46 @@ describe('agent-manifest-editor integration', () => {
       expect((card as any).devMode).toBe(true);
     }
   });
+
+  describe('pipeline flow', () => {
+    it('pipeline steps reflect configuration state', async () => {
+      await el.updateComplete;
+
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(steps.length).toBe(2);
+      expect(steps[0]?.querySelector('.step-status.incomplete')).toBeTruthy();
+
+      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
+      preset.click();
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const updatedSteps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(updatedSteps[0]?.querySelector('.step-status.complete')).toBeTruthy();
+      expect(updatedSteps[1]?.querySelector('.step-status.complete')).toBeTruthy();
+    });
+
+    it('end-to-end: preset → alias resolves to correct model', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [
+          { id: 'claude-opus-4-6', displayName: 'Claude Opus 4.6', vendor: 'anthropic', tier: 'FLAGSHIP', capabilities: ['vision', 'tool_use'], contextWindow: 1000000 },
+          { id: 'claude-haiku-4-5', displayName: 'Claude Haiku 4.5', vendor: 'anthropic', tier: 'FAST', capabilities: ['tool_use'], contextWindow: 200000 },
+        ],
+        aliases: { 'reasoning-heavy': { tier: 'FLAGSHIP', capabilities: ['tool_use'] } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const resolution = el.shadowRoot!.querySelector('.alias-resolution');
+      expect(resolution?.textContent).toContain('Claude Opus 4.6');
+      expect(resolution?.classList.contains('match')).toBe(true);
+    });
+
+    it('aliases step dimmed message appears when no models selected', async () => {
+      await el.updateComplete;
+      const tooltip = el.shadowRoot!.querySelector('.step-dimmed-tooltip');
+      expect(tooltip?.textContent).toContain('Select models first');
+    });
+  });
 });

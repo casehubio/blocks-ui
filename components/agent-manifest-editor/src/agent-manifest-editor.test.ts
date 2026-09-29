@@ -234,4 +234,127 @@ describe('agent-manifest-editor', () => {
       }
     });
   });
+
+  describe('pipeline steps', () => {
+    it('renders two pipeline steps with step numbers', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(steps.length).toBe(2);
+      const numbers = el.shadowRoot!.querySelectorAll('.step-number');
+      expect(numbers[0]?.textContent?.trim()).toBe('1');
+      expect(numbers[1]?.textContent?.trim()).toBe('2');
+    });
+
+    it('pipeline step has ARIA label with step number and status', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(steps[0]?.getAttribute('aria-label')).toMatch(/Step 1.*Providers/);
+    });
+
+    it('providers step shows incomplete when no providers configured', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      const status = steps[0]?.querySelector('.step-status');
+      expect(status?.classList.contains('incomplete')).toBe(true);
+    });
+
+    it('providers step shows complete when a provider has credential', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [{ id: 'claude-opus-4-6', vendor: 'anthropic' }],
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      const status = steps[0]?.querySelector('.step-status');
+      expect(status?.classList.contains('complete')).toBe(true);
+    });
+
+    it('aliases section shows dimmed tooltip when no models selected', async () => {
+      await el.updateComplete;
+      const tooltip = el.shadowRoot!.querySelector('.step-dimmed-tooltip');
+      expect(tooltip).toBeTruthy();
+      expect(tooltip?.textContent).toContain('Select models first');
+    });
+
+    it('aliases section is dimmed when no models selected', async () => {
+      await el.updateComplete;
+      const aliasEditor = el.shadowRoot!.querySelector('.alias-editor');
+      expect(aliasEditor?.classList.contains('step-dimmed')).toBe(true);
+    });
+  });
+
+  describe('alias resolution preview', () => {
+    it('shows resolved model name when alias matches', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [
+          { id: 'claude-opus-4-6', displayName: 'Claude Opus 4.6', vendor: 'anthropic', tier: 'FLAGSHIP', capabilities: ['vision', 'tool_use'], contextWindow: 1000000 },
+          { id: 'claude-haiku-4-5', displayName: 'Claude Haiku 4.5', vendor: 'anthropic', tier: 'FAST', capabilities: ['tool_use'], contextWindow: 200000 },
+        ],
+        aliases: { 'reasoning-heavy': { tier: 'FLAGSHIP', capabilities: ['tool_use'] } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const resolution = el.shadowRoot!.querySelector('.alias-resolution');
+      expect(resolution?.textContent).toContain('Claude Opus 4.6');
+    });
+
+    it('shows no-match warning when alias cannot resolve', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [{ id: 'claude-haiku-4-5', vendor: 'anthropic', tier: 'FAST' }],
+        aliases: { 'embedding': { tier: 'EMBEDDING' } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const resolution = el.shadowRoot!.querySelector('.alias-resolution');
+      expect(resolution?.textContent).toContain('(no match)');
+      expect(resolution?.classList.contains('no-match')).toBe(true);
+    });
+
+    it('resolution has aria-live="polite"', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [{ id: 'claude-opus-4-6', vendor: 'anthropic', tier: 'FLAGSHIP' }],
+        aliases: { fast: { tier: 'FLAGSHIP' } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const resolution = el.shadowRoot!.querySelector('.alias-resolution');
+      expect(resolution?.getAttribute('aria-live')).toBe('polite');
+    });
+
+    it('preferVendor is a soft preference in resolution', async () => {
+      el.data = {
+        providers: [
+          { vendor: 'openai', credential: 'env:KEY' },
+        ],
+        models: [
+          { id: 'gpt-4o', displayName: 'GPT-4o', vendor: 'openai', tier: 'FLAGSHIP', contextWindow: 128000 },
+        ],
+        aliases: { 'reasoning-heavy': { tier: 'FLAGSHIP', preferVendor: 'anthropic' } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const resolution = el.shadowRoot!.querySelector('.alias-resolution');
+      expect(resolution?.textContent).toContain('GPT-4o');
+    });
+
+    it('stale-vendor warning is replaced by resolution preview', async () => {
+      el.data = {
+        providers: [{ vendor: 'openai', credential: 'env:KEY' }],
+        models: [{ id: 'gpt-4o', vendor: 'openai', tier: 'FLAGSHIP' }],
+        aliases: { test: { preferVendor: 'anthropic', tier: 'FLAGSHIP' } },
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+
+      expect(el.shadowRoot!.querySelector('.alias-stale-warning')).toBeNull();
+    });
+  });
 });

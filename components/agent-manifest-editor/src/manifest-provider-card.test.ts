@@ -195,4 +195,89 @@ describe('manifest-provider-card', () => {
       expect(count?.textContent).toContain('1');
     });
   });
+
+  describe('add model on built-in card', () => {
+    it('shows "Add model" button when expanded', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.add-model-btn');
+      expect(addBtn).toBeTruthy();
+      expect(addBtn?.getAttribute('aria-label')).toBe('Add a model to Anthropic configuration');
+    });
+
+    it('clicking "Add model" creates an editable row', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.add-model-btn') as HTMLElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const addedRows = el.shadowRoot!.querySelectorAll('.added-model-row');
+      expect(addedRows.length).toBe(1);
+    });
+
+    it('added model can be selected via checkbox', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.add-model-btn') as HTMLElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const idInput = el.shadowRoot!.querySelector('.added-model-row input[placeholder="Model ID"]') as HTMLInputElement;
+      idInput.value = 'claude-sonnet-5-5';
+      idInput.dispatchEvent(new Event('input', { bubbles: true }));
+      await el.updateComplete;
+
+      const events: any[] = [];
+      el.addEventListener('provider-changed', ((e: CustomEvent) => events.push(e.detail)) as EventListener);
+
+      const checkboxes = el.shadowRoot!.querySelectorAll('input[type="checkbox"]');
+      const lastCheckbox = checkboxes[checkboxes.length - 1] as HTMLInputElement;
+      lastCheckbox.click();
+      await el.updateComplete;
+
+      expect(events.length).toBeGreaterThan(0);
+      expect(events[0].selectedModels.some((m: any) => m.id === 'claude-sonnet-5-5')).toBe(true);
+    });
+
+    it('duplicate model ID shows validation error', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.add-model-btn') as HTMLElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const idInput = el.shadowRoot!.querySelector('.added-model-row input[placeholder="Model ID"]') as HTMLInputElement;
+      idInput.value = 'claude-opus-4-6';
+      idInput.dispatchEvent(new Event('input', { bubbles: true }));
+      await el.updateComplete;
+
+      const error = el.shadowRoot!.querySelector('.added-model-row .validation-error');
+      expect(error).toBeTruthy();
+    });
+
+    it('removing an added model removes it from the list', async () => {
+      await el.updateComplete;
+      (el.shadowRoot!.querySelector('.card-header') as HTMLElement).click();
+      await el.updateComplete;
+
+      const addBtn = el.shadowRoot!.querySelector('.add-model-btn') as HTMLElement;
+      addBtn.click();
+      await el.updateComplete;
+
+      const deleteBtn = el.shadowRoot!.querySelector('.added-model-row .delete-btn') as HTMLElement;
+      deleteBtn.click();
+      await el.updateComplete;
+
+      expect(el.shadowRoot!.querySelectorAll('.added-model-row').length).toBe(0);
+    });
+  });
 });

@@ -256,12 +256,42 @@ export class AgentManifestEditor extends LitElement {
     return key !== '' && this._aliases.some((a, i) => i !== idx && a.key === key);
   }
 
-  private _isStalePreferVendor(vendor?: string): boolean {
-    if (!vendor) return false;
+  private _getAllSelectedModels(): ModelDescriptor[] {
+    const models: ModelDescriptor[] = [];
     for (const [, state] of this._providerStates) {
-      if (state.vendor === vendor && state.selectedModels.length > 0) return false;
+      models.push(...state.selectedModels);
     }
-    return true;
+    return models;
+  }
+
+  private _resolveAlias(alias: AliasDeclaration): ModelDescriptor | null {
+    const allModels = this._getAllSelectedModels();
+    const candidates = allModels.filter(m => {
+      if (alias.tier && m.tier !== alias.tier) return false;
+      if (alias.capabilities?.length) {
+        if (!alias.capabilities.every(c => m.capabilities?.includes(c))) return false;
+      }
+      if (alias.locality && m.locality !== alias.locality) return false;
+      if (alias.maxCost) {
+        const costOrder = ['FREE', 'LOW', 'MEDIUM', 'HIGH', 'PREMIUM'];
+        if (costOrder.indexOf(m.costTier ?? 'MEDIUM') > costOrder.indexOf(alias.maxCost)) return false;
+      }
+      if (alias.minContext && (m.contextWindow ?? 0) < alias.minContext) return false;
+      if (alias.minOutput && (m.maxOutput ?? 0) < alias.minOutput) return false;
+      return true;
+    });
+    if (candidates.length === 0) return null;
+    const tierRank: Record<string, number> = { FLAGSHIP: 0, STANDARD: 1, FAST: 2, EMBEDDING: 3 };
+    candidates.sort((a, b) => {
+      const aPreferred = alias.preferVendor && a.vendor === alias.preferVendor ? 0 : 1;
+      const bPreferred = alias.preferVendor && b.vendor === alias.preferVendor ? 0 : 1;
+      if (aPreferred !== bPreferred) return aPreferred - bPreferred;
+      const aTier = tierRank[a.tier ?? 'STANDARD'] ?? 1;
+      const bTier = tierRank[b.tier ?? 'STANDARD'] ?? 1;
+      if (aTier !== bTier) return aTier - bTier;
+      return (b.contextWindow ?? 0) - (a.contextWindow ?? 0);
+    });
+    return candidates[0]!;
   }
 
   private _getModelsForProvider(vendor: string): ModelDescriptor[] {
@@ -272,6 +302,15 @@ export class AgentManifestEditor extends LitElement {
     for (const p of PRESETS) {
       for (const m of p.manifest.models ?? []) {
         if (m.vendor === vendor && !seen.has(m.id)) {
+          seen.add(m.id);
+          unique.push(m);
+        }
+      }
+    }
+    const state = this._providerStates.get(vendor);
+    if (state) {
+      for (const m of state.selectedModels) {
+        if (!seen.has(m.id)) {
           seen.add(m.id);
           unique.push(m);
         }
@@ -304,6 +343,16 @@ export class AgentManifestEditor extends LitElement {
     .preset-card.active { border-color: var(--pages-accent-9, #3b82f6); background: var(--pages-accent-2, #eff6ff); color: var(--pages-accent-11, #1e40af); }
     .provider-grid { display: flex; flex-direction: column; gap: var(--pages-space-1, 0.25rem); margin-bottom: var(--pages-space-4, 1rem); }
     .section-title { font-size: var(--pages-font-size-sm, 12px); font-weight: var(--pages-font-weight-semibold, 600); margin: var(--pages-space-4, 1rem) 0 var(--pages-space-2, 0.5rem); color: var(--pages-neutral-9, #737373); text-transform: uppercase; letter-spacing: 0.05em; }
+    .pipeline-step { display: flex; align-items: center; gap: var(--pages-space-2, 0.5rem); margin: var(--pages-space-4, 1rem) 0 var(--pages-space-2, 0.5rem); }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #404040); font-size: var(--pages-font-size-xs, 11px); font-weight: var(--pages-font-weight-semibold, 600); flex-shrink: 0; }
+    .step-number.active { background: var(--pages-accent-9, #3b82f6); color: var(--pages-neutral-1, #fff); }
+    .step-title { font-size: var(--pages-font-size-sm, 12px); font-weight: var(--pages-font-weight-semibold, 600); color: var(--pages-neutral-9, #737373); text-transform: uppercase; letter-spacing: 0.05em; }
+    .step-status { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--pages-neutral-6, #d4d4d4); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+    .step-status.complete { background: var(--pages-success-9, #16a34a); border-color: var(--pages-success-9, #16a34a); color: white; }
+    .step-status.warning { background: var(--pages-warning-9, #d97706); border-color: var(--pages-warning-9, #d97706); color: white; }
+    .step-status.incomplete { background: transparent; }
+    .step-dimmed { opacity: 0.4; pointer-events: auto; }
+    .step-dimmed-tooltip { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-neutral-8, #a3a3a3); font-style: italic; margin-left: auto; }
     .alias-editor { margin-bottom: var(--pages-space-4, 1rem); }
     .alias-row { display: flex; gap: var(--pages-space-2, 0.5rem); align-items: center; margin-bottom: var(--pages-space-1-5, 0.35rem); flex-wrap: wrap; }
     .alias-key-input { width: 140px; padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--pages-font-size-sm, 12px); }
@@ -311,10 +360,13 @@ export class AgentManifestEditor extends LitElement {
     .alias-field { padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-size: var(--pages-font-size-sm, 12px); min-width: 80px; }
     .alias-field select { background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-12, #111); border: none; }
     .alias-duplicate-error { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-danger-9, #dc2626); }
-    .alias-stale-warning { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-warning-9, #d97706); }
+    .alias-resolution { font-size: var(--pages-font-size-sm, 12px); font-family: 'SF Mono', 'Fira Code', monospace; white-space: nowrap; }
+    .alias-resolution.match { color: var(--pages-success-11, #15803d); }
+    .alias-resolution.no-match { color: var(--pages-warning-9, #d97706); }
     .delete-btn { background: none; border: none; color: var(--pages-danger-9, #dc2626); cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
     .add-alias-btn { font-size: var(--pages-font-size-sm, 12px); padding: var(--pages-space-1, 0.25rem) var(--pages-space-2, 0.5rem); border: 1px dashed var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: transparent; color: var(--pages-neutral-9, #737373); cursor: pointer; }
     .add-alias-btn:hover { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-9, #3b82f6); }
+    .yaml-preview { padding: var(--pages-space-3, 0.75rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); font-size: var(--pages-font-size-sm, 12px); line-height: 1.5; white-space: pre-wrap; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--pages-neutral-11, #404040); max-height: 300px; overflow-y: auto; margin-bottom: var(--pages-space-4, 1rem); }
     .prompt-preview { padding: var(--pages-space-3, 0.75rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); font-size: var(--pages-font-size-base, 14px); line-height: var(--pages-line-height-base, 1.5); white-space: pre-wrap; min-height: 3rem; color: var(--pages-neutral-11, #404040); }
     .prompt-label { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-neutral-8, #a3a3a3); margin-bottom: var(--pages-space-1, 0.25rem); }
     .prompt-empty { color: var(--pages-neutral-8, #a3a3a3); font-style: italic; }
@@ -325,10 +377,111 @@ export class AgentManifestEditor extends LitElement {
     @keyframes spin { to { transform: rotate(360deg); } }
   `;
 
+  private _getProviderStepStatus(): 'complete' | 'warning' | 'incomplete' {
+    let hasCredential = false;
+    let hasExpanded = false;
+    for (const [, state] of this._providerStates) {
+      if (state.credential || state.host) hasCredential = true;
+      if (state.selectedModels.length > 0 && !state.credential && !state.host) hasExpanded = true;
+    }
+    if (hasCredential) return 'complete';
+    if (hasExpanded) return 'warning';
+    return 'incomplete';
+  }
+
+  private _getAliasStepStatus(): 'complete' | 'warning' | 'incomplete' {
+    if (this._aliases.length === 0) return 'incomplete';
+    const allKeysValid = this._aliases.every(a => a.key !== '');
+    const noDuplicates = !this._aliases.some((a, i) => this._hasDuplicateAliasKey(a.key, i));
+    const allResolve = this._aliases.every(a => this._resolveAlias(a.declaration) !== null);
+    if (allKeysValid && noDuplicates && allResolve) return 'complete';
+    if (allKeysValid && noDuplicates) return 'warning';
+    return 'incomplete';
+  }
+
+  private _manifestToYaml(): string {
+    const manifest = this._assembleManifest();
+    const lines: string[] = [];
+    if (manifest.providers?.length) {
+      lines.push('providers:');
+      for (const p of manifest.providers) {
+        lines.push(`  - vendor: ${p.vendor}`);
+        if (p.credential) {
+          if (typeof p.credential === 'string') {
+            lines.push(`    credential: ${p.credential}`);
+          } else {
+            lines.push('    credential:');
+            for (const [k, v] of Object.entries(p.credential)) {
+              lines.push(`      ${k}: ${v}`);
+            }
+          }
+        }
+        if (p.host) lines.push(`    host: ${p.host}`);
+      }
+    }
+    if (manifest.models?.length) {
+      lines.push('models:');
+      for (const m of manifest.models) {
+        lines.push(`  - id: ${m.id}`);
+        if (m.displayName) lines.push(`    displayName: ${m.displayName}`);
+        if (m.vendor) lines.push(`    vendor: ${m.vendor}`);
+        if (m.tier) lines.push(`    tier: ${m.tier}`);
+        if (m.contextWindow) lines.push(`    contextWindow: ${m.contextWindow}`);
+        if (m.maxOutput) lines.push(`    maxOutput: ${m.maxOutput}`);
+        if (m.capabilities?.length) lines.push(`    capabilities: [${m.capabilities.join(', ')}]`);
+        if (m.costTier) lines.push(`    costTier: ${m.costTier}`);
+      }
+    }
+    if (manifest.aliases && Object.keys(manifest.aliases).length > 0) {
+      lines.push('aliases:');
+      for (const [key, decl] of Object.entries(manifest.aliases)) {
+        lines.push(`  ${key}:`);
+        if (decl.tier) lines.push(`    tier: ${decl.tier}`);
+        if (decl.capabilities?.length) lines.push(`    capabilities: [${decl.capabilities.join(', ')}]`);
+        if (decl.preferVendor) lines.push(`    preferVendor: ${decl.preferVendor}`);
+        if (decl.minContext) lines.push(`    minContext: ${decl.minContext}`);
+        if (decl.minOutput) lines.push(`    minOutput: ${decl.minOutput}`);
+        if (decl.maxCost) lines.push(`    maxCost: ${decl.maxCost}`);
+        if (decl.locality) lines.push(`    locality: ${decl.locality}`);
+        const resolved = this._resolveAlias(decl);
+        lines.push(`    # resolves to: ${resolved ? (resolved.displayName ?? resolved.id) : '(no match)'}`);
+      }
+    }
+    if (manifest.defaults) {
+      lines.push('defaults:');
+      if (manifest.defaults.backend) lines.push(`  backend: ${manifest.defaults.backend}`);
+    }
+    if (manifest.sources?.length) {
+      lines.push('sources:');
+      for (const s of manifest.sources) {
+        lines.push(`  - uri: ${s.uri}`);
+        if (s.priority !== undefined) lines.push(`    priority: ${s.priority}`);
+      }
+    }
+    return lines.length > 0 ? lines.join('\n') : '# No configuration yet';
+  }
+
+  private _renderPipelineStep(step: number, title: string, status: 'complete' | 'warning' | 'incomplete', dimmed: boolean, tooltip?: string) {
+    const isActive = status !== 'incomplete';
+    return html`
+      <div class="pipeline-step" aria-label="Step ${step}: ${title} — ${status}">
+        <span class="step-number ${isActive ? 'active' : ''}">${step}</span>
+        <span class="step-title">${title}</span>
+        <span class="step-status ${status}">${status === 'complete' ? '✓' : status === 'warning' ? '!' : ''}</span>
+        ${dimmed && tooltip ? html`<span class="step-dimmed-tooltip">${tooltip}</span>` : nothing}
+      </div>
+    `;
+  }
+
   render() {
     if (this._loading) {
       return html`<div class="loading"><span class="spinner"></span> Loading configuration...</div>`;
     }
+
+    const providerStatus = this._getProviderStepStatus();
+    const aliasStatus = this._getAliasStepStatus();
+    const noProviders = providerStatus === 'incomplete';
+    const noModels = this._getAllSelectedModels().length === 0;
 
     return html`
       ${this.devMode ? html`<div class="dev-banner">Dev Mode — inline API keys enabled (not persisted)</div>` : nothing}
@@ -349,6 +502,7 @@ export class AgentManifestEditor extends LitElement {
         `)}
       </div>
 
+      ${this._renderPipelineStep(1, 'Providers', providerStatus, false)}
       <div class="provider-grid">
         ${BUILT_IN_PROVIDERS.map(bp => html`
           <manifest-provider-card
@@ -395,11 +549,14 @@ export class AgentManifestEditor extends LitElement {
         ></manifest-provider-card>
       </div>
 
-      <div class="section-title">Aliases</div>
-      <div class="alias-editor">
+      ${this._renderPipelineStep(2, 'Aliases', aliasStatus, noModels, noModels ? 'Select models first' : undefined)}
+      <div class="alias-editor ${noModels ? 'step-dimmed' : ''}">
         ${this._aliases.map((row, i) => this._renderAliasRow(row, i))}
         <button class="add-alias-btn" @click=${this._addAlias}>+ Add alias</button>
       </div>
+
+      <div class="section-title">Manifest YAML</div>
+      <pre class="yaml-preview" role="region" aria-label="Manifest YAML preview">${this._manifestToYaml()}</pre>
 
       <div class="section-title">System Prompt Preview</div>
       <div class="prompt-label">Generated from personality profile</div>
@@ -413,7 +570,7 @@ export class AgentManifestEditor extends LitElement {
 
   private _renderAliasRow(row: AliasRow, idx: number) {
     const duplicate = this._hasDuplicateAliasKey(row.key, idx);
-    const staleVendor = this._isStalePreferVendor(row.declaration.preferVendor);
+    const resolved = this._resolveAlias(row.declaration);
 
     return html`
       <div class="alias-row">
@@ -435,8 +592,10 @@ export class AgentManifestEditor extends LitElement {
                .value=${row.declaration.preferVendor ?? ''}
                @input=${(e: Event) => this._updateAliasField(idx, 'preferVendor', (e.target as HTMLInputElement).value || undefined)}>
         <button class="delete-btn" @click=${() => this._removeAlias(idx)}>✗</button>
+        <span class="alias-resolution ${resolved ? 'match' : 'no-match'}" aria-live="polite">
+          → ${resolved ? (resolved.displayName ?? resolved.id) : '(no match)'}
+        </span>
         ${duplicate ? html`<span class="alias-duplicate-error">Duplicate key</span>` : nothing}
-        ${staleVendor ? html`<span class="alias-stale-warning" title="No models configured for this vendor">⚠</span>` : nothing}
       </div>
     `;
   }
