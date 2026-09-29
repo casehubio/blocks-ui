@@ -234,4 +234,54 @@ describe('agent-manifest-editor', () => {
       }
     });
   });
+
+  describe('pipeline steps', () => {
+    it('renders three pipeline steps with step numbers', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(steps.length).toBe(3);
+      const numbers = el.shadowRoot!.querySelectorAll('.step-number');
+      expect(numbers[0]?.textContent?.trim()).toBe('1');
+      expect(numbers[1]?.textContent?.trim()).toBe('2');
+      expect(numbers[2]?.textContent?.trim()).toBe('3');
+    });
+
+    it('pipeline step has ARIA label with step number and status', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      expect(steps[0]?.getAttribute('aria-label')).toMatch(/Step 1.*Providers/);
+    });
+
+    it('providers step shows incomplete when no providers configured', async () => {
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      const status = steps[0]?.querySelector('.step-status');
+      expect(status?.classList.contains('incomplete')).toBe(true);
+    });
+
+    it('providers step shows complete when a provider has credential', async () => {
+      el.data = {
+        providers: [{ vendor: 'anthropic', credential: 'env:KEY' }],
+        models: [{ id: 'claude-opus-4-6', vendor: 'anthropic' }],
+      };
+      await el.updateComplete;
+      await el.updateComplete;
+      const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
+      const status = steps[0]?.querySelector('.step-status');
+      expect(status?.classList.contains('complete')).toBe(true);
+    });
+
+    it('models section shows dimmed tooltip when no providers configured', async () => {
+      await el.updateComplete;
+      const tooltip = el.shadowRoot!.querySelector('.step-dimmed-tooltip');
+      expect(tooltip).toBeTruthy();
+      expect(tooltip?.textContent).toContain('Configure a provider first');
+    });
+
+    it('aliases section is dimmed when no models selected', async () => {
+      await el.updateComplete;
+      const aliasEditor = el.shadowRoot!.querySelector('.alias-editor');
+      expect(aliasEditor?.classList.contains('step-dimmed')).toBe(true);
+    });
+  });
 });

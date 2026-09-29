@@ -304,6 +304,16 @@ export class AgentManifestEditor extends LitElement {
     .preset-card.active { border-color: var(--pages-accent-9, #3b82f6); background: var(--pages-accent-2, #eff6ff); color: var(--pages-accent-11, #1e40af); }
     .provider-grid { display: flex; flex-direction: column; gap: var(--pages-space-1, 0.25rem); margin-bottom: var(--pages-space-4, 1rem); }
     .section-title { font-size: var(--pages-font-size-sm, 12px); font-weight: var(--pages-font-weight-semibold, 600); margin: var(--pages-space-4, 1rem) 0 var(--pages-space-2, 0.5rem); color: var(--pages-neutral-9, #737373); text-transform: uppercase; letter-spacing: 0.05em; }
+    .pipeline-step { display: flex; align-items: center; gap: var(--pages-space-2, 0.5rem); margin: var(--pages-space-4, 1rem) 0 var(--pages-space-2, 0.5rem); }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--pages-neutral-4, #e5e5e5); color: var(--pages-neutral-11, #404040); font-size: var(--pages-font-size-xs, 11px); font-weight: var(--pages-font-weight-semibold, 600); flex-shrink: 0; }
+    .step-number.active { background: var(--pages-accent-9, #3b82f6); color: var(--pages-neutral-1, #fff); }
+    .step-title { font-size: var(--pages-font-size-sm, 12px); font-weight: var(--pages-font-weight-semibold, 600); color: var(--pages-neutral-9, #737373); text-transform: uppercase; letter-spacing: 0.05em; }
+    .step-status { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--pages-neutral-6, #d4d4d4); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+    .step-status.complete { background: var(--pages-success-9, #16a34a); border-color: var(--pages-success-9, #16a34a); color: white; }
+    .step-status.warning { background: var(--pages-warning-9, #d97706); border-color: var(--pages-warning-9, #d97706); color: white; }
+    .step-status.incomplete { background: transparent; }
+    .step-dimmed { opacity: 0.4; pointer-events: auto; }
+    .step-dimmed-tooltip { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-neutral-8, #a3a3a3); font-style: italic; margin-left: auto; }
     .alias-editor { margin-bottom: var(--pages-space-4, 1rem); }
     .alias-row { display: flex; gap: var(--pages-space-2, 0.5rem); align-items: center; margin-bottom: var(--pages-space-1-5, 0.35rem); flex-wrap: wrap; }
     .alias-key-input { width: 140px; padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--pages-font-size-sm, 12px); }
@@ -325,10 +335,62 @@ export class AgentManifestEditor extends LitElement {
     @keyframes spin { to { transform: rotate(360deg); } }
   `;
 
+  private _getProviderStepStatus(): 'complete' | 'warning' | 'incomplete' {
+    let hasCredential = false;
+    let hasExpanded = false;
+    for (const [, state] of this._providerStates) {
+      if (state.credential || state.host) hasCredential = true;
+      if (state.selectedModels.length > 0 && !state.credential && !state.host) hasExpanded = true;
+    }
+    if (hasCredential) return 'complete';
+    if (hasExpanded) return 'warning';
+    return 'incomplete';
+  }
+
+  private _getModelStepStatus(): 'complete' | 'warning' | 'incomplete' {
+    let hasSelectedModels = false;
+    let hasOrphanModels = false;
+    for (const [, state] of this._providerStates) {
+      if (state.selectedModels.length > 0) {
+        hasSelectedModels = true;
+        if (!state.credential && !state.host) hasOrphanModels = true;
+      }
+    }
+    if (hasSelectedModels && !hasOrphanModels) return 'complete';
+    if (hasSelectedModels) return 'warning';
+    return 'incomplete';
+  }
+
+  private _getAliasStepStatus(): 'complete' | 'warning' | 'incomplete' {
+    if (this._aliases.length === 0) return 'incomplete';
+    const allKeysValid = this._aliases.every(a => a.key !== '');
+    const noDuplicates = !this._aliases.some((a, i) => this._hasDuplicateAliasKey(a.key, i));
+    if (allKeysValid && noDuplicates) return 'complete';
+    return 'incomplete';
+  }
+
+  private _renderPipelineStep(step: number, title: string, status: 'complete' | 'warning' | 'incomplete', dimmed: boolean, tooltip?: string) {
+    const isActive = status !== 'incomplete';
+    return html`
+      <div class="pipeline-step" aria-label="Step ${step}: ${title} — ${status}">
+        <span class="step-number ${isActive ? 'active' : ''}">${step}</span>
+        <span class="step-title">${title}</span>
+        <span class="step-status ${status}">${status === 'complete' ? '✓' : status === 'warning' ? '!' : ''}</span>
+        ${dimmed && tooltip ? html`<span class="step-dimmed-tooltip">${tooltip}</span>` : nothing}
+      </div>
+    `;
+  }
+
   render() {
     if (this._loading) {
       return html`<div class="loading"><span class="spinner"></span> Loading configuration...</div>`;
     }
+
+    const providerStatus = this._getProviderStepStatus();
+    const modelStatus = this._getModelStepStatus();
+    const aliasStatus = this._getAliasStepStatus();
+    const noProviders = providerStatus === 'incomplete';
+    const noModels = modelStatus === 'incomplete';
 
     return html`
       ${this.devMode ? html`<div class="dev-banner">Dev Mode — inline API keys enabled (not persisted)</div>` : nothing}
@@ -349,6 +411,7 @@ export class AgentManifestEditor extends LitElement {
         `)}
       </div>
 
+      ${this._renderPipelineStep(1, 'Providers', providerStatus, false)}
       <div class="provider-grid">
         ${BUILT_IN_PROVIDERS.map(bp => html`
           <manifest-provider-card
@@ -395,8 +458,10 @@ export class AgentManifestEditor extends LitElement {
         ></manifest-provider-card>
       </div>
 
-      <div class="section-title">Aliases</div>
-      <div class="alias-editor">
+      ${this._renderPipelineStep(2, 'Models', modelStatus, noProviders, noProviders ? 'Configure a provider first' : undefined)}
+
+      ${this._renderPipelineStep(3, 'Aliases', aliasStatus, noModels, noModels ? 'Select models first' : undefined)}
+      <div class="alias-editor ${noModels ? 'step-dimmed' : ''}">
         ${this._aliases.map((row, i) => this._renderAliasRow(row, i))}
         <button class="add-alias-btn" @click=${this._addAlias}>+ Add alias</button>
       </div>
