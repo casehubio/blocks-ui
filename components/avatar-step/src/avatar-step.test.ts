@@ -79,4 +79,87 @@ describe('avatar-step', () => {
     const bigFiveToggles = el.shadowRoot!.querySelectorAll('.big5-toggle[aria-checked="true"]');
     expect(bigFiveToggles.length).toBeGreaterThan(0);
   });
+
+  describe('archetype selection syncs all six frameworks to filter pills (#216)', () => {
+    function pill(fw: string, value: string): HTMLElement | null {
+      return el.shadowRoot!.querySelector(`[data-framework="${fw}"][data-value="${value}"]`);
+    }
+
+    async function clickArchetype(family: string, sub: string) {
+      const cell = el.shadowRoot!.querySelector(`[aria-label="${family} ${sub} avatar"]`) as HTMLElement;
+      expect(cell, `avatar cell for ${family}/${sub}`).toBeTruthy();
+      cell.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      await el.updateComplete;
+      await el.updateComplete;
+    }
+
+    it('syncs MBTI profile value as selected pill', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('mbti', 'INFJ');
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute('aria-selected')).toBe('true');
+    });
+
+    it('syncs Enneagram profile value as selected pill', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('enneagram', 'Type 2');
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute('aria-selected')).toBe('true');
+    });
+
+    it('syncs DISC profile value as selected pill', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('disc', 'S');
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute('aria-selected')).toBe('true');
+    });
+
+    it('syncs Belbin primary as selected pill', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('belbin', 'Co-ordinator');
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute('aria-selected')).toBe('true');
+    });
+
+    it('does not select non-profile MBTI values', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('mbti', 'INTJ');
+      expect(p).toBeTruthy();
+      expect(p!.getAttribute('aria-selected')).toBe('false');
+    });
+
+    it('dims non-matching SDI pills when archetype is selected', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      for (const val of ['Red', 'Green', 'Hub']) {
+        const p = pill('sdi', val);
+        expect(p, `SDI ${val} pill`).toBeTruthy();
+        expect(p!.hasAttribute('data-dimmed'), `SDI ${val} should be dimmed`).toBe(true);
+      }
+    });
+
+    it('does not dim selected SDI pill', async () => {
+      await el.updateComplete;
+      await clickArchetype('Caregiver', 'Angel');
+      const p = pill('sdi', 'Blue');
+      expect(p).toBeTruthy();
+      expect(p!.hasAttribute('data-dimmed')).toBe(false);
+    });
+
+    it('syncs correctly for a different family (Hero/Warrior)', async () => {
+      await el.updateComplete;
+      await clickArchetype('Hero', 'Warrior');
+      expect(pill('mbti', 'ENTJ')!.getAttribute('aria-selected')).toBe('true');
+      expect(pill('enneagram', 'Type 8')!.getAttribute('aria-selected')).toBe('true');
+      expect(pill('disc', 'D')!.getAttribute('aria-selected')).toBe('true');
+      expect(pill('sdi', 'Red')!.getAttribute('aria-selected')).toBe('true');
+      expect(pill('sdi', 'Blue')!.hasAttribute('data-dimmed')).toBe(true);
+      expect(pill('sdi', 'Green')!.hasAttribute('data-dimmed')).toBe(true);
+    });
+  });
 });

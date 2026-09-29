@@ -483,7 +483,13 @@ export class AvatarStep extends LitElement {
       this._selectedRole = null;
     }
     this._profile = this._initProfile(key);
-    if (this._profile.sdi) this._frameworks = { ...this._frameworks, sdi: this._profile.sdi };
+    const fwUpdate = { ...this._frameworks };
+    if (this._profile.mbti) fwUpdate.mbti = this._profile.mbti;
+    if (this._profile.enneagram) fwUpdate.enneagram = this._profile.enneagram;
+    if (this._profile.disc) fwUpdate.disc = this._profile.disc;
+    if (this._profile.belbin) fwUpdate.belbin = this._profile.belbin.primary;
+    if (this._profile.sdi) fwUpdate.sdi = this._profile.sdi;
+    this._frameworks = fwUpdate;
     if (this._profile.bigFive) this._bigFive = { ...this._bigFive, ...this._profile.bigFive };
     this._profileProfession = this._profession;
     this._profileRole = this._selectedRole;
@@ -842,6 +848,7 @@ export class AvatarStep extends LitElement {
                   const isRoleScope = roleVals.has(`${fwLabel}:${v}`);
                   const isSelected = this._frameworks[fw] === v;
                   const isDisabled = !valid.has(v) && !isSelected;
+                  const isDimmedSdi = fw === 'sdi' && this._selectedArchetype !== null && !isAvatarMatch && !isSelected;
                   const classes: Record<string, boolean> = { pill: true, 'avatar-match': isAvatarMatch && !isSelected, 'role-scope': isRoleScope && !isAvatarMatch && !isSelected };
                   if (fw === 'sdi') classes[`sdi-${v.toLowerCase()}`] = true;
                   return html`
@@ -849,7 +856,7 @@ export class AvatarStep extends LitElement {
                       role="option"
                       data-framework=${fw} data-value=${v}
                       aria-selected=${String(isSelected)}
-                      ?data-dimmed=${isDisabled}
+                      ?data-dimmed=${isDisabled || isDimmedSdi}
                       @click=${() => this._selectFramework(fw, v)}>
                       ${this._tip(`${fwLabel}:${v}`, v)}
                     </button>
