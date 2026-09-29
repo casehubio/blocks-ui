@@ -307,6 +307,15 @@ export class AgentManifestEditor extends LitElement {
         }
       }
     }
+    const state = this._providerStates.get(vendor);
+    if (state) {
+      for (const m of state.selectedModels) {
+        if (!seen.has(m.id)) {
+          seen.add(m.id);
+          unique.push(m);
+        }
+      }
+    }
     return unique;
   }
 
