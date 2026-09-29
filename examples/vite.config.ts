@@ -14,6 +14,8 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@casehubio/blocks-ui-core', replacement: resolve(__dirname, '../packages/blocks-ui-core/src') },
+      { find: '@casehubio/agent-avatar-2d', replacement: resolve(__dirname, '../packages/agent-avatar-2d/src') },
+      { find: '@casehubio/agent-manifest-editor', replacement: resolve(__dirname, '../components/agent-manifest-editor/src') },
       { find: '@casehubio/blocks-ui-document-workbench', replacement: resolve(__dirname, '../components/document-workbench/src') },
       { find: '@casehubio/blocks-ui-work-item-row', replacement: resolve(__dirname, '../components/work-item-row/src') },
       { find: '@casehubio/blocks-ui-work-item-inbox', replacement: resolve(__dirname, '../components/work-item-inbox/src') },
