@@ -38,6 +38,17 @@ export const FRAMEWORK_DESCRIPTORS: Record<string, string> = {
   'Hub': 'flexible',
 };
 
+import type { BigFiveDimension } from './compatibility-matrix.js';
+import type { PersonalityFramework } from './compatibility-matrix.js';
+
+export const BIG_FIVE_DIMS: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
+export const BIG_FIVE_LABELS: Record<BigFiveDimension, string> = {
+  O: 'Openness', C: 'Conscientiousness', E: 'Extraversion', A: 'Agreeableness', N: 'Neuroticism',
+};
+export const FRAMEWORK_LABELS: Record<PersonalityFramework, string> = {
+  mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI',
+};
+
 export function buildSummaryText(
   mbti: string | undefined,
   enneagram: string | undefined,

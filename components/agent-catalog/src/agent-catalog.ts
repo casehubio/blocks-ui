@@ -1,5 +1,5 @@
 import { LitElement, html, css, nothing } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import '@casehubio/agent-avatar-2d';
 import { PROFESSION_LIST, buildSummaryText } from '@casehubio/avatar-step';
@@ -77,6 +77,7 @@ export class AgentCatalog extends LitElement {
     }
     .template-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .template-card.expanded { border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-2, #1a2744); }
+    .template-card.selected { border-color: var(--pages-accent-8, #60a5fa); background: var(--pages-accent-2, #1a2744); }
     .card-info { flex: 1; min-width: 0; }
     .card-label { font-size: 12px; font-weight: 600; }
     .card-desc { font-size: 10px; color: var(--pages-neutral-9, #999); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -108,6 +109,9 @@ export class AgentCatalog extends LitElement {
     .empty-state { text-align: center; padding: 24px; color: var(--pages-neutral-9, #999); font-size: 13px; }
   `;
 
+  @property({ type: Boolean, attribute: 'suppress-detail' }) suppressDetail = false;
+  @property({ type: String, attribute: 'selected-template-id' }) selectedTemplateId: string | null = null;
+
   @state() private _search = '';
   @state() private _profession: string | null = null;
   @state() private _expandedId: string | null = null;
@@ -138,9 +142,21 @@ export class AgentCatalog extends LitElement {
 
   private _select(template: CatalogTemplate) {
     this.dispatchEvent(new CustomEvent('catalog:template:selected', {
-      detail: { template: buildDescriptor(template) },
+      detail: { template: buildDescriptor(template), templateId: template.id },
       bubbles: true, composed: true,
     }));
+  }
+
+  private _onCardClick(t: CatalogTemplate) {
+    if (this.suppressDetail) {
+      if (this.selectedTemplateId === t.id) {
+        this.dispatchEvent(new CustomEvent('catalog:template:deselected', { bubbles: true, composed: true }));
+      } else {
+        this._select(t);
+      }
+    } else {
+      this._expandedId = this._expandedId === t.id ? null : t.id;
+    }
   }
 
   protected override render() {
@@ -161,7 +177,7 @@ export class AgentCatalog extends LitElement {
         <div class="featured-header">Recommended</div>
         <div class="featured-grid">
           ${FEATURED_TEMPLATES.map(t => html`
-            <div class="featured-card" @click=${() => { this._profession = t.profession; this._expandedId = t.id; }}>
+            <div class="featured-card" @click=${() => { this._profession = t.profession; this._onCardClick(t); }}>
               <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
               <div class="featured-info">
                 <div class="featured-label">${t.variant.label}</div>
@@ -213,9 +229,9 @@ export class AgentCatalog extends LitElement {
           ${group.templates.map(t => {
             const isExpanded = this._expandedId === t.id;
             return html`
-              <div class=${classMap({ 'template-card': true, expanded: isExpanded })}
+              <div class=${classMap({ 'template-card': true, expanded: isExpanded, selected: this.selectedTemplateId === t.id })}
                 data-template-id=${t.id}
-                @click=${() => { this._expandedId = isExpanded ? null : t.id; }}>
+                @click=${() => { this._onCardClick(t); }}>
                 <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
                 <div class="card-info">
                   <div class="card-label">${t.variant.label}</div>
@@ -226,7 +242,7 @@ export class AgentCatalog extends LitElement {
             `;
           })}
         </div>
-        ${expandedTemplate ? this._renderDetail(expandedTemplate) : nothing}
+        ${!this.suppressDetail && expandedTemplate ? this._renderDetail(expandedTemplate) : nothing}
       </div>
     `;
   }

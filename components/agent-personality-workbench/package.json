@@ -1,0 +1,20 @@
+{
+  "name": "@casehubio/blocks-ui-agent-personality-workbench",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@casehubio/agent-catalog": "workspace:*",
+    "@casehubio/avatar-step": "workspace:*",
+    "@casehubio/blocks-ui-agent-profile-panel": "workspace:*",
+    "@casehubio/blocks-ui-core": "workspace:*",
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "@casehubio/agent-avatar-2d": "workspace:*",
+    "vitest": "^3.0.0"
+  },
+  "scripts": {
+    "test": "vitest run"
+  }
+}

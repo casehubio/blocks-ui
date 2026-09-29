@@ -1,9 +1,8 @@
 import type { ArchetypeFamily } from '@casehubio/agent-avatar-2d';
 import { SUB_ARCHETYPE_RULES, FRAMEWORK_FAMILY_MAP } from './compatibility-matrix.js';
 import type { BigFiveDimension, BigFivePole } from './compatibility-matrix.js';
-import type { PersonalityProfile } from '../avatar-step.js';
-
-const BIG_FIVE_DIMS: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
+import { BIG_FIVE_DIMS } from './framework-descriptors.js';
+import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 
 export function initProfile(archetypeKey: string): PersonalityProfile {
   const [family, sub] = archetypeKey.split('/');

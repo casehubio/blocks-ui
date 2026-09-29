@@ -1,95 +1,28 @@
-import { LitElement, html, css, nothing } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { LitElement, html, css, nothing, type PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { ARCHETYPE_CONFIGS, ARCHETYPE_FAMILIES, listCollections } from '@casehubio/agent-avatar-2d';
-import type { ArchetypeFamily } from '@casehubio/agent-avatar-2d';
+
 import { getCompatibleArchetypes, getValidFrameworkValues, getValidBigFivePoles } from './filter.js';
 import type { MatchTier } from './filter.js';
-import { FRAMEWORK_FAMILY_MAP, ALL_FRAMEWORK_VALUES, SUB_ARCHETYPE_RULES } from './data/compatibility-matrix.js';
+import { ALL_FRAMEWORK_VALUES, getFrameworkProfile, getRolesForArchetype, getRoleFrameworkValues } from './data/compatibility-matrix.js';
 import type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data/compatibility-matrix.js';
 import { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 import type { RoleVariant } from './data/profession-presets.js';
-import { buildSummaryText } from './data/framework-descriptors.js';
-import { deriveDispositions, deriveTendencies } from './data/disposition-mapping.js';
+import { buildSummaryText, BIG_FIVE_DIMS, BIG_FIVE_LABELS, FRAMEWORK_LABELS } from './data/framework-descriptors.js';
+import { deriveDispositions, deriveTendencies, DISPOSITION_TIPS } from './data/disposition-mapping.js';
 import { FRAMEWORK_TOOLTIPS } from './data/framework-tooltips.js';
 import { initProfile } from './data/profile-derivation.js';
-
-export interface PersonalityProfile {
-  profession?: string;
-  role?: string;
-  mbti?: string;
-  enneagram?: string;
-  disc?: string;
-  belbin?: { primary: string; secondaries: string[] };
-  sdi?: string;
-  bigFive?: Partial<Record<BigFiveDimension, BigFivePole>>;
-}
+import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 
 const FAMILIES = ARCHETYPE_FAMILIES as readonly string[];
-const BIG_FIVE_DIMS: BigFiveDimension[] = ['O', 'C', 'E', 'A', 'N'];
-const BIG_FIVE_LABELS: Record<BigFiveDimension, string> = {
-  O: 'Openness', C: 'Conscientiousness', E: 'Extraversion', A: 'Agreeableness', N: 'Neuroticism',
-};
-const FRAMEWORK_LABELS: Record<PersonalityFramework, string> = {
-  mbti: 'MBTI', enneagram: 'Enneagram', disc: 'DISC', belbin: 'Belbin', sdi: 'SDI',
-};
 const SINGLE_FRAMEWORKS: PersonalityFramework[] = ['mbti', 'enneagram', 'disc', 'belbin', 'sdi'];
 const MAPPED_ARCHETYPES = new Set(Object.values(PROFESSION_PRESETS).flatMap(roles => roles.flatMap(r => r.variants.map(v => v.archetype))));
-const DISPOSITION_TIPS: Record<string, { low: string; high: string }> = {
-  socialOrientation: { low: 'Prefers working independently, forms own assessments before consulting others', high: 'Seeks consensus, builds on others\' ideas, energised by teamwork' },
-  ruleFollowing: { low: 'Adapts approach based on circumstances, questions established rules when they don\'t fit', high: 'Follows established procedures, enforces standards consistently, values predictability' },
-  riskAppetite: { low: 'Flags risks proactively, errs on the side of safety, prefers proven approaches', high: 'Explores novel approaches, embraces calculated risk, comfortable with uncertainty' },
-  autonomy: { low: 'Seeks guidance and validation, works within established hierarchies, defers to authority', high: 'Self-directed, forms independent judgments, resists external pressure on conclusions' },
-  conflictMode: { low: 'Prioritises harmony, seeks compromise, avoids direct confrontation (Thomas-Kilmann accommodating)', high: 'Challenges directly, pushes back on weak arguments, stands ground under pressure (Thomas-Kilmann competing)' },
-};
 
 function familySubs(family: string): string[] {
   return Object.keys(ARCHETYPE_CONFIGS)
     .filter(k => k.startsWith(family + '/'))
     .map(k => k.split('/')[1]!);
-}
-
-function getFrameworkProfile(archetypeKey: string): Record<string, string[]> {
-  const [family, sub] = archetypeKey.split('/');
-  const profile: Record<string, string[]> = {};
-  const rules = SUB_ARCHETYPE_RULES[family as ArchetypeFamily]?.find(r => r.subArchetype === sub);
-  if (rules) {
-    profile['MBTI'] = [...rules.mbtiAffinity];
-    profile['Enneagram'] = rules.enneagramAffinity.map(n => `Type ${n}`);
-  }
-  for (const [fw, map] of Object.entries(FRAMEWORK_FAMILY_MAP)) {
-    if (fw === 'mbti' || fw === 'enneagram') continue;
-    const label = fw === 'disc' ? 'DISC' : fw === 'belbin' ? 'Belbin' : fw === 'sdi' ? 'SDI' : 'Big Five';
-    const matches = Object.entries(map).filter(([, families]) => (families as string[]).includes(family!)).map(([val]) => val);
-    if (matches.length > 0) profile[label] = matches;
-  }
-  return profile;
-}
-
-function getRolesForArchetype(archetypeKey: string): Array<{ profession: string; role: string }> {
-  const matches: Array<{ profession: string; role: string }> = [];
-  for (const [profession, roles] of Object.entries(PROFESSION_PRESETS)) {
-    for (const { role, variants } of roles) {
-      if (variants.some(v => v.archetype === archetypeKey)) {
-        matches.push({ profession, role });
-      }
-    }
-  }
-  return matches;
-}
-
-function getRoleFrameworkValues(profession: string, role: string): Set<string> {
-  const roles = PROFESSION_PRESETS[profession];
-  const r = roles?.find(x => x.role === role);
-  if (!r) return new Set();
-  const vals = new Set<string>();
-  for (const v of r.variants) {
-    const profile = getFrameworkProfile(v.archetype);
-    for (const [fw, fvs] of Object.entries(profile)) {
-      for (const fv of fvs) vals.add(`${fw}:${fv}`);
-    }
-  }
-  return vals;
 }
 
 @customElement('avatar-step')
@@ -281,6 +214,9 @@ export class AvatarStep extends LitElement {
     }
   `;
 
+  @property({ type: Boolean, attribute: 'hide-profile' }) hideProfile = false;
+  @property({ attribute: false }) externalProfile: PersonalityProfile | null = null;
+
   @state() private _collection = 'mythic';
   @state() private _selectedArchetype: string | null = null;
   @state() private _profession: string | null = null;
@@ -298,6 +234,37 @@ export class AvatarStep extends LitElement {
     super.connectedCallback();
     this.setAttribute('role', 'region');
     this.setAttribute('aria-label', 'Avatar selection');
+  }
+
+  protected override willUpdate(changed: PropertyValues) {
+    if (changed.has('externalProfile')) {
+      this._syncFromExternalProfile();
+    }
+  }
+
+  private _syncFromExternalProfile() {
+    const ext = this.externalProfile;
+    if (ext === null) {
+      this._reset();
+      this._profile = {} as PersonalityProfile;
+      this._profileProfession = null;
+      this._profileRole = null;
+      this._profileLocked = new Set();
+      return;
+    }
+    if (JSON.stringify(ext) === JSON.stringify(this._buildPersonalityProfile())) return;
+    this._profile = { ...ext };
+    const fwUpdate: Partial<Record<PersonalityFramework, string>> = {};
+    if (ext.mbti) fwUpdate.mbti = ext.mbti;
+    if (ext.enneagram) fwUpdate.enneagram = ext.enneagram;
+    if (ext.disc) fwUpdate.disc = ext.disc;
+    if (ext.belbin) fwUpdate.belbin = ext.belbin.primary;
+    if (ext.sdi) fwUpdate.sdi = ext.sdi;
+    this._frameworks = fwUpdate;
+    this._bigFive = ext.bigFive ? { ...ext.bigFive } : {};
+    this._profileProfession = ext.profession ?? null;
+    this._profileRole = ext.role ?? null;
+    this._selectedArchetype = null;
   }
 
   private _tiers(): Map<string, MatchTier> {
@@ -488,7 +455,7 @@ export class AvatarStep extends LitElement {
       ${this._renderCollectionBar()}
       <div class="main-panel">
         <div class="profession-side">
-          ${this._renderProfileSection()}
+          ${this.hideProfile ? nothing : this._renderProfileSection()}
           ${this._renderProfessionPanel()}
         </div>
         <div class="personality-side">${this._renderPersonalityPanel()}</div>

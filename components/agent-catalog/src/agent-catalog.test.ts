@@ -2,7 +2,11 @@ import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
 import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
 import './agent-catalog.js';
 
-type CatalogEl = HTMLElement & { updateComplete: Promise<boolean> };
+type CatalogEl = HTMLElement & {
+  updateComplete: Promise<boolean>;
+  suppressDetail: boolean;
+  selectedTemplateId: string | null;
+};
 
 beforeAll(() => {
   registerCollection(mythicCollection);
@@ -128,5 +132,77 @@ describe('agent-catalog', () => {
     const filteredCards = el.shadowRoot!.querySelectorAll('.template-card').length;
     expect(filteredCards).toBeLessThan(allCards);
     expect(filteredCards).toBeGreaterThan(0);
+  });
+
+  describe('suppressDetail mode', () => {
+    it('single-click emits catalog:template:selected when suppressDetail is true', async () => {
+      el.suppressDetail = true;
+      await el.updateComplete;
+
+      const events: CustomEvent[] = [];
+      el.addEventListener('catalog:template:selected', (e) => events.push(e as CustomEvent));
+
+      const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+      card.click();
+      expect(events.length).toBe(1);
+      expect(events[0]!.detail.template).toBeTruthy();
+    });
+
+    it('does not render detail expansion when suppressDetail is true', async () => {
+      el.suppressDetail = true;
+      await el.updateComplete;
+
+      const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+      card.click();
+      await el.updateComplete;
+
+      const detail = el.shadowRoot!.querySelector('.detail-expansion');
+      expect(detail).toBeNull();
+    });
+
+    it('click on already-selected card emits catalog:template:deselected', async () => {
+      el.suppressDetail = true;
+      await el.updateComplete;
+
+      const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+      const templateId = card.getAttribute('data-template-id')!;
+
+      el.selectedTemplateId = templateId;
+      await el.updateComplete;
+
+      const deselected: CustomEvent[] = [];
+      el.addEventListener('catalog:template:deselected', (e) => deselected.push(e as CustomEvent));
+      card.click();
+      expect(deselected.length).toBe(1);
+    });
+  });
+
+  describe('selectedTemplateId', () => {
+    it('highlights the matching card visually', async () => {
+      await el.updateComplete;
+
+      const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+      const templateId = card.getAttribute('data-template-id')!;
+
+      el.selectedTemplateId = templateId;
+      await el.updateComplete;
+
+      const highlighted = el.shadowRoot!.querySelector('.template-card.selected');
+      expect(highlighted).toBeTruthy();
+      expect(highlighted!.getAttribute('data-template-id')).toBe(templateId);
+    });
+
+    it('clears highlight when set to null', async () => {
+      await el.updateComplete;
+
+      const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+      el.selectedTemplateId = card.getAttribute('data-template-id')!;
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.template-card.selected')).toBeTruthy();
+
+      el.selectedTemplateId = null;
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.template-card.selected')).toBeNull();
+    });
   });
 });

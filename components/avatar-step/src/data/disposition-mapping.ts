@@ -1,4 +1,4 @@
-import type { PersonalityProfile } from '../avatar-step.js';
+import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 import type { BigFiveDimension, BigFivePole } from './compatibility-matrix.js';
 
 export type CanonicalAxis = 'socialOrientation' | 'ruleFollowing' | 'riskAppetite' | 'autonomy' | 'conflictMode';
@@ -147,6 +147,14 @@ const TENDENCY_RULES: TendencyRule[] = [
   { name: 'Direct', description: 'Says what needs saying without hedging, padding, or softening', conditions: [{ axis: 'conflictMode', direction: 'high', threshold: 0.25 }, { axis: 'ruleFollowing', direction: 'low', threshold: 0.1 }] },
   { name: 'Pragmatic', description: 'Focuses on practical outcomes and what works over theoretical elegance', conditions: [{ axis: 'ruleFollowing', direction: 'low', threshold: 0.05 }, { axis: 'riskAppetite', direction: 'low', threshold: 0.05 }] },
 ];
+
+export const DISPOSITION_TIPS: Record<string, { low: string; high: string }> = {
+  socialOrientation: { low: 'Prefers working independently, forms own assessments before consulting others', high: 'Seeks consensus, builds on others\' ideas, energised by teamwork' },
+  ruleFollowing: { low: 'Adapts approach based on circumstances, questions established rules when they don\'t fit', high: 'Follows established procedures, enforces standards consistently, values predictability' },
+  riskAppetite: { low: 'Flags risks proactively, errs on the side of safety, prefers proven approaches', high: 'Explores novel approaches, embraces calculated risk, comfortable with uncertainty' },
+  autonomy: { low: 'Seeks guidance and validation, works within established hierarchies, defers to authority', high: 'Self-directed, forms independent judgments, resists external pressure on conclusions' },
+  conflictMode: { low: 'Prioritises harmony, seeks compromise, avoids direct confrontation (Thomas-Kilmann accommodating)', high: 'Challenges directly, pushes back on weak arguments, stands ground under pressure (Thomas-Kilmann competing)' },
+};
 
 export function deriveTendencies(scores: AxisScore[]): BehavioralTendency[] {
   const scoreMap = Object.fromEntries(scores.map(s => [s.axis, s.score])) as Record<CanonicalAxis, number>;

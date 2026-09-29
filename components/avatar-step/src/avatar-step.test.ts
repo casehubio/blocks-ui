@@ -1,9 +1,18 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
 import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
 import './avatar-step.js';
+import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 
 type AvatarStepEl = HTMLElement & {
   updateComplete: Promise<boolean>;
+  hideProfile: boolean;
+  externalProfile: PersonalityProfile | null;
+  _profile: PersonalityProfile;
+  _frameworks: Record<string, string>;
+  _bigFive: Record<string, string>;
+  _profileProfession: string | null;
+  _profileRole: string | null;
+  _selectedArchetype: string | null;
 };
 
 beforeAll(() => {
@@ -160,6 +169,53 @@ describe('avatar-step', () => {
       expect(pill('sdi', 'Red')!.getAttribute('aria-selected')).toBe('true');
       expect(pill('sdi', 'Blue')!.hasAttribute('data-dimmed')).toBe(true);
       expect(pill('sdi', 'Green')!.hasAttribute('data-dimmed')).toBe(true);
+    });
+  });
+
+  describe('hideProfile', () => {
+    it('hides profile section when hideProfile is true', async () => {
+      el.remove();
+      const el2 = document.createElement('avatar-step') as AvatarStepEl;
+      el2.hideProfile = true;
+      document.body.appendChild(el2);
+      await el2.updateComplete;
+      const profile = el2.shadowRoot!.querySelector('.profile-section');
+      expect(profile).toBeNull();
+      el2.remove();
+    });
+
+    it('shows profile section when hideProfile is false (default)', async () => {
+      await el.updateComplete;
+      const profile = el.shadowRoot!.querySelector('.profile-section');
+      expect(profile).toBeTruthy();
+    });
+  });
+
+  describe('externalProfile', () => {
+    it('syncs internal state from externalProfile', async () => {
+      await el.updateComplete;
+      const profile: PersonalityProfile = {
+        profession: 'Engineering', role: 'Architect',
+        mbti: 'INTJ', enneagram: 'Type 5', disc: 'CD',
+      };
+      el.externalProfile = profile;
+      await el.updateComplete;
+      expect(el._profile.mbti).toBe('INTJ');
+      expect(el._frameworks.mbti).toBe('INTJ');
+      expect(el._profileProfession).toBe('Engineering');
+      expect(el._profileRole).toBe('Architect');
+    });
+
+    it('clears internal state when externalProfile is set to null', async () => {
+      await el.updateComplete;
+      el.externalProfile = { mbti: 'INTJ', enneagram: 'Type 5' };
+      await el.updateComplete;
+      expect(el._profile.mbti).toBe('INTJ');
+
+      el.externalProfile = null;
+      await el.updateComplete;
+      expect(el._profile.mbti).toBeUndefined();
+      expect(el._selectedArchetype).toBeNull();
     });
   });
 });

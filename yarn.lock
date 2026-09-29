@@ -117,7 +117,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/agent-catalog@workspace:components/agent-catalog":
+"@casehubio/agent-catalog@workspace:*, @casehubio/agent-catalog@workspace:components/agent-catalog":
   version: 0.0.0-use.local
   resolution: "@casehubio/agent-catalog@workspace:components/agent-catalog"
   dependencies:
@@ -145,6 +145,31 @@ __metadata:
   resolution: "@casehubio/avatar-step@workspace:components/avatar-step"
   dependencies:
     "@casehubio/agent-avatar-2d": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.0.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-agent-personality-workbench@workspace:components/agent-personality-workbench":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-agent-personality-workbench@workspace:components/agent-personality-workbench"
+  dependencies:
+    "@casehubio/agent-avatar-2d": "workspace:*"
+    "@casehubio/agent-catalog": "workspace:*"
+    "@casehubio/avatar-step": "workspace:*"
+    "@casehubio/blocks-ui-agent-profile-panel": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.0.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@casehubio/blocks-ui-agent-profile-panel@workspace:*, @casehubio/blocks-ui-agent-profile-panel@workspace:components/agent-profile-panel":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/blocks-ui-agent-profile-panel@workspace:components/agent-profile-panel"
+  dependencies:
+    "@casehubio/avatar-step": "workspace:*"
     "@casehubio/blocks-ui-core": "workspace:*"
     lit: "npm:^3.0.0"
     vitest: "npm:^3.0.0"

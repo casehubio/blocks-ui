@@ -1,4 +1,5 @@
 import type { ArchetypeFamily } from '@casehubio/agent-avatar-2d';
+import { PROFESSION_PRESETS } from './profession-presets.js';
 
 export type PersonalityFramework = 'mbti' | 'enneagram' | 'disc' | 'belbin' | 'sdi';
 export type BigFiveDimension = 'O' | 'C' | 'E' | 'A' | 'N';
@@ -55,16 +56,16 @@ export const FRAMEWORK_FAMILY_MAP: Record<
     'Resource Investigator': ['Explorer', 'Jester', 'Everyman'],
   },
   bigFive: {
-    'High O': ['Creator', 'Explorer', 'Magician', 'Rebel'],
-    'Low O': ['Sovereign', 'Everyman', 'Caregiver'],
-    'High C': ['Sovereign', 'Hero', 'Sage'],
-    'Low C': ['Jester', 'Rebel', 'Explorer'],
-    'High E': ['Jester', 'Hero', 'Lover', 'Everyman'],
-    'Low E': ['Sage', 'Creator', 'Innocent'],
-    'High A': ['Caregiver', 'Everyman', 'Innocent', 'Lover'],
-    'Low A': ['Rebel', 'Sovereign', 'Hero'],
-    'High N': ['Creator', 'Rebel', 'Lover'],
-    'Low N': ['Sage', 'Sovereign', 'Innocent', 'Everyman'],
+    'High O': ['Creator', 'Explorer', 'Jester', 'Lover', 'Magician', 'Rebel', 'Sage'],
+    'Low O': ['Caregiver', 'Everyman', 'Hero', 'Innocent', 'Sovereign'],
+    'High C': ['Caregiver', 'Everyman', 'Hero', 'Innocent', 'Magician', 'Sage', 'Sovereign'],
+    'Low C': ['Creator', 'Explorer', 'Jester', 'Lover', 'Rebel'],
+    'High E': ['Caregiver', 'Everyman', 'Explorer', 'Hero', 'Jester', 'Lover', 'Rebel', 'Sovereign'],
+    'Low E': ['Creator', 'Innocent', 'Magician', 'Sage'],
+    'High A': ['Caregiver', 'Everyman', 'Innocent', 'Jester', 'Lover', 'Sage'],
+    'Low A': ['Creator', 'Explorer', 'Hero', 'Magician', 'Rebel', 'Sovereign'],
+    'High N': ['Creator', 'Lover', 'Rebel'],
+    'Low N': ['Caregiver', 'Everyman', 'Explorer', 'Hero', 'Innocent', 'Jester', 'Magician', 'Sage', 'Sovereign'],
   },
   sdi: {
     'Blue': ['Caregiver', 'Innocent', 'Lover'],
@@ -163,3 +164,46 @@ export const ALL_FRAMEWORK_VALUES: Record<PersonalityFramework | 'bigFive', read
   bigFive: Object.keys(FRAMEWORK_FAMILY_MAP.bigFive),
   sdi: Object.keys(FRAMEWORK_FAMILY_MAP.sdi),
 };
+
+export function getFrameworkProfile(archetypeKey: string): Record<string, string[]> {
+  const [family, sub] = archetypeKey.split('/');
+  const profile: Record<string, string[]> = {};
+  const rules = SUB_ARCHETYPE_RULES[family as ArchetypeFamily]?.find(r => r.subArchetype === sub);
+  if (rules) {
+    profile['MBTI'] = [...rules.mbtiAffinity];
+    profile['Enneagram'] = rules.enneagramAffinity.map(n => `Type ${n}`);
+  }
+  for (const [fw, map] of Object.entries(FRAMEWORK_FAMILY_MAP)) {
+    if (fw === 'mbti' || fw === 'enneagram') continue;
+    const label = fw === 'disc' ? 'DISC' : fw === 'belbin' ? 'Belbin' : fw === 'sdi' ? 'SDI' : 'Big Five';
+    const matches = Object.entries(map).filter(([, families]) => (families as string[]).includes(family!)).map(([val]) => val);
+    if (matches.length > 0) profile[label] = matches;
+  }
+  return profile;
+}
+
+export function getRolesForArchetype(archetypeKey: string): Array<{ profession: string; role: string }> {
+  const matches: Array<{ profession: string; role: string }> = [];
+  for (const [profession, roles] of Object.entries(PROFESSION_PRESETS)) {
+    for (const { role, variants } of roles) {
+      if (variants.some(v => v.archetype === archetypeKey)) {
+        matches.push({ profession, role });
+      }
+    }
+  }
+  return matches;
+}
+
+export function getRoleFrameworkValues(profession: string, role: string): Set<string> {
+  const roles = PROFESSION_PRESETS[profession];
+  const r = roles?.find(x => x.role === role);
+  if (!r) return new Set();
+  const vals = new Set<string>();
+  for (const v of r.variants) {
+    const profile = getFrameworkProfile(v.archetype);
+    for (const [fw, fvs] of Object.entries(profile)) {
+      for (const fv of fvs) vals.add(`${fw}:${fv}`);
+    }
+  }
+  return vals;
+}
