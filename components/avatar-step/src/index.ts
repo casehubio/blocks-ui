@@ -6,3 +6,4 @@ export type { PersonalityFramework, BigFiveDimension, BigFivePole } from './data
 export { PROFESSION_PRESETS, PROFESSION_LIST } from './data/profession-presets.js';
 export type { ProfessionRole, RoleVariant } from './data/profession-presets.js';
 export { initProfile } from './data/profile-derivation.js';
+export { buildSummaryText } from './data/framework-descriptors.js';
