@@ -306,6 +306,20 @@ export const groupedDataViewPropsSchema = z.object({
   ariaLabel: z.union([z.null(), z.string()]),
   groupBy: z.string(),
   groupOrder: z.array(z.string()).optional(),
+  groupConfig: z.object({
+    size: z.number(),
+    "__@toStringTag@566": z.string(),
+  }).optional(),
+  columnConfig: z.array(z.unknown()).optional(),
+  columnRenderers: z.object({
+    size: z.number(),
+  }).optional(),
+  rowStyle: z.array(z.object({
+      condition: z.string(),
+      className: z.string().optional(),
+      style: z.record(z.string()).optional(),
+    })).optional(),
+  selection: z.enum(["none", "single", "multi"]).optional(),
   preset: z.enum(["sectioned", "spreadsheet", "list"]),
   defaultExpanded: z.boolean(),
   sortable: z.boolean(),
@@ -416,6 +430,7 @@ export const workItemDetailPropsSchema = z.object({
       groups: z.array(z.string()),
       tenancyId: z.string().optional(),
     })]),
+  userSearchProvider: z.union([z.null(), z.object({})]),
   data: z.union([z.null(), z.object({
       id: z.string(),
       title: z.string(),
@@ -971,6 +986,164 @@ export const orgDiagramPropsSchema = z.object({
   readonly: z.boolean().optional(),
 });
 
+export const denyPatternEditorPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  patterns: z.object({
+    staticPatterns: z.array(z.string()),
+    dynamicPatterns: z.array(z.object({
+        pattern: z.string(),
+        addedBy: z.string(),
+        addedAt: z.string(),
+      })),
+  }).optional(),
+  readonly: z.boolean().optional(),
+});
+
+export const watchPatternEditorPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  patterns: z.array(z.object({
+      id: z.string(),
+      category: z.union([z.null(), z.string()]),
+      areaId: z.union([z.null(), z.string()]),
+      targetPattern: z.union([z.null(), z.string()]),
+      minEstimatedSize: z.union([z.null(), z.number()]),
+      createdAt: z.string(),
+    })).optional(),
+  categories: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      domainId: z.string(),
+    })).optional(),
+  readonly: z.boolean().optional(),
+});
+
+export const gatePolicyEditorPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  stages: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      ordinal: z.number(),
+      gateCheckpoint: z.boolean(),
+      domainId: z.string(),
+    })).optional(),
+  policy: z.object({
+    modes: z.union([z.null(), z.record(z.enum(["GATED", "AUTO", "NOTIFY"]))]),
+    gateTimeoutMinutes: z.union([z.null(), z.number()]),
+  }).optional(),
+  readonly: z.boolean().optional(),
+});
+
+export const evolutionWorkbenchPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  tabs: z.array(z.object({
+      id: z.string(),
+      label: z.string(),
+      tagName: z.string(),
+      icon: z.string().optional(),
+      order: z.number().optional(),
+    })).optional(),
+  pushUrl: z.string().optional(),
+  pushTopics: z.array(z.string()).optional(),
+  state: z.object({
+    caseId: z.string(),
+    timestamp: z.string(),
+    healthScore: z.number(),
+    componentScores: z.record(z.number()),
+    healthDelta: z.number(),
+    healthWindowMinutes: z.number(),
+    circuitBreakerState: z.string(),
+    categoryStates: z.record(z.object({
+        successCount: z.number(),
+        failureCount: z.number(),
+        rejectionCount: z.number(),
+        paused: z.boolean(),
+        pausedUntil: z.union([z.null(), z.string()]),
+        suppressed: z.boolean(),
+      })),
+    projectComplianceLevel: z.string(),
+    complianceEvaluatedAt: z.union([z.null(), z.string()]),
+    areaComplianceLevels: z.record(z.string()),
+    activeImprovementCount: z.number(),
+    dailyImprovementCount: z.number(),
+    evolutionEnabled: z.boolean(),
+    pendingInboxCount: z.number(),
+  }).optional(),
+  streams: z.array(z.object({
+      improvementCaseId: z.string(),
+      category: z.string(),
+      target: z.union([z.null(), z.string()]),
+      currentStage: z.string(),
+      blockedBy: z.union([z.null(), z.string()]),
+      conflictBlocked: z.boolean(),
+      startedAt: z.string(),
+    })).optional(),
+  inbox: z.array(z.object({
+      caseId: z.string(),
+      id: z.string(),
+      stage: z.string(),
+      status: z.enum(["PENDING", "REJECTED", "APPROVED", "REDIRECTED", "TIMED_OUT", "AUTO_APPROVED"]),
+      category: z.union([z.null(), z.string()]),
+      areaId: z.union([z.null(), z.string()]),
+      improvementCaseId: z.union([z.null(), z.string()]),
+      summary: z.union([z.null(), z.string()]),
+      escalationTriggers: z.array(z.object({
+          layer: z.enum(["CATEGORY_RULE", "WATCH_PATTERN", "CONFIDENCE_SCORE"]),
+          reason: z.string(),
+        })),
+      confidence: z.number(),
+      queuedAt: z.string(),
+      resolvedAt: z.union([z.null(), z.string()]),
+      timeoutMinutes: z.union([z.null(), z.number()]),
+      decision: z.union([z.null(), z.object({
+          outcome: z.enum(["PENDING", "REJECTED", "APPROVED", "REDIRECTED", "TIMED_OUT", "AUTO_APPROVED"]),
+          reason: z.union([z.null(), z.string()]),
+          feedback: z.union([z.null(), z.string()]),
+        })]),
+    })).optional(),
+  denyPatterns: z.object({
+    staticPatterns: z.array(z.string()),
+    dynamicPatterns: z.array(z.object({
+        pattern: z.string(),
+        addedBy: z.string(),
+        addedAt: z.string(),
+      })),
+  }).optional(),
+  watchPatterns: z.array(z.object({
+      id: z.string(),
+      category: z.union([z.null(), z.string()]),
+      areaId: z.union([z.null(), z.string()]),
+      targetPattern: z.union([z.null(), z.string()]),
+      minEstimatedSize: z.union([z.null(), z.number()]),
+      createdAt: z.string(),
+    })).optional(),
+  stages: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      ordinal: z.number(),
+      gateCheckpoint: z.boolean(),
+      domainId: z.string(),
+    })).optional(),
+  categories: z.array(z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      domainId: z.string(),
+    })).optional(),
+  gatePolicy: z.object({
+    modes: z.union([z.null(), z.record(z.enum(["GATED", "AUTO", "NOTIFY"]))]),
+    gateTimeoutMinutes: z.union([z.null(), z.number()]),
+  }).optional(),
+});
+
 export const agentAvatarPropsSchema = z.object({
   archetype: z.object({
     family: z.string(),
@@ -979,6 +1152,58 @@ export const agentAvatarPropsSchema = z.object({
   code: z.string().optional(),
   size: z.enum(["sm", "md", "xs", "lg"]).optional(),
   collection: z.string().optional(),
+});
+
+export const agentManifestEditorPropsSchema = z.object({
+  data: z.object({
+    providers: z.array(z.object({
+        vendor: z.string(),
+        credential: z.union([z.string(), z.record(z.string())]).optional(),
+        host: z.string().optional(),
+      })).optional(),
+    models: z.array(z.object({
+        id: z.string(),
+        apiModelId: z.string().optional(),
+        backendKey: z.string().optional(),
+        backendInstanceId: z.string().optional(),
+        vendor: z.string().optional(),
+        family: z.string().optional(),
+        displayName: z.string().optional(),
+        tier: z.enum(["FLAGSHIP", "STANDARD", "FAST", "EMBEDDING"]).optional(),
+        capabilities: z.array(z.string()).optional(),
+        contextWindow: z.number().optional(),
+        maxOutput: z.number().optional(),
+        locality: z.enum(["CLOUD", "LOCAL", "HYBRID"]).optional(),
+        costTier: z.enum(["LOW", "MEDIUM", "HIGH", "FREE", "PREMIUM"]).optional(),
+        authMethod: z.string().optional(),
+        properties: z.record(z.string()).optional(),
+      })).optional(),
+    aliases: z.record(z.object({
+        tier: z.enum(["FLAGSHIP", "STANDARD", "FAST", "EMBEDDING"]).optional(),
+        capabilities: z.array(z.string()).optional(),
+        locality: z.enum(["CLOUD", "LOCAL", "HYBRID"]).optional(),
+        maxCost: z.enum(["LOW", "MEDIUM", "HIGH", "FREE", "PREMIUM"]).optional(),
+        minContext: z.number().optional(),
+        minOutput: z.number().optional(),
+        preferVendor: z.string().optional(),
+      })).optional(),
+    defaults: z.object({
+      backend: z.string().optional(),
+    }).optional(),
+    sources: z.array(z.object({
+        uri: z.string(),
+        priority: z.number().optional(),
+      })).optional(),
+    localModels: z.array(z.object({
+        id: z.string(),
+        backendKey: z.string().optional(),
+        host: z.string().optional(),
+      })).optional(),
+  }),
+  endpoint: z.string(),
+  providersEndpoint: z.string(),
+  systemPrompt: z.string(),
+  devMode: z.boolean(),
 });
 
 export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map([
@@ -1038,5 +1263,10 @@ export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map(
   ["commitment-range-bar", commitmentRangeBarPropsSchema] as [string, z.ZodType],
   ["commitment-transition-badge", commitmentTransitionBadgePropsSchema] as [string, z.ZodType],
   ["blocks-org-diagram", orgDiagramPropsSchema] as [string, z.ZodType],
+  ["blocks-deny-pattern-editor", denyPatternEditorPropsSchema] as [string, z.ZodType],
+  ["blocks-watch-pattern-editor", watchPatternEditorPropsSchema] as [string, z.ZodType],
+  ["blocks-gate-policy-editor", gatePolicyEditorPropsSchema] as [string, z.ZodType],
+  ["blocks-evolution-workbench", evolutionWorkbenchPropsSchema] as [string, z.ZodType],
   ["agent-avatar", agentAvatarPropsSchema] as [string, z.ZodType],
+  ["agent-manifest-editor", agentManifestEditorPropsSchema] as [string, z.ZodType],
 ]);
