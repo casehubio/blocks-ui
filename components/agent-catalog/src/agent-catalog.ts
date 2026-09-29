@@ -7,6 +7,23 @@ import { CATALOG_TEMPLATES, FEATURED_TEMPLATES, buildDescriptor } from './data/c
 import type { CatalogTemplate } from './data/catalog-templates.js';
 import type { FullAgentDescriptor } from '@casehubio/blocks-ui-core';
 
+interface RoleGroup {
+  profession: string;
+  role: string;
+  templates: CatalogTemplate[];
+}
+
+function groupByRole(templates: readonly CatalogTemplate[]): RoleGroup[] {
+  const map = new Map<string, RoleGroup>();
+  for (const t of templates) {
+    const key = `${t.profession}::${t.role}`;
+    let group = map.get(key);
+    if (!group) { group = { profession: t.profession, role: t.role, templates: [] }; map.set(key, group); }
+    group.templates.push(t);
+  }
+  return [...map.values()];
+}
+
 @customElement('agent-catalog')
 export class AgentCatalog extends LitElement {
   static override styles = css`
@@ -45,22 +62,29 @@ export class AgentCatalog extends LitElement {
     }
     .filter-pill:hover:not([aria-selected="true"]) { background: var(--pages-neutral-3, #2d2d44); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 12px; }
-    @media (max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    .role-group { margin-bottom: 12px; }
+    .role-header {
+      font-size: 12px; font-weight: 600; color: var(--pages-neutral-10, #aaa);
+      margin-bottom: 6px; padding-left: 2px;
+    }
+    .profession-label { color: var(--pages-accent-11, #93c5fd); }
+    .variant-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .template-card {
-      display: flex; flex-direction: column; align-items: center; padding: 10px;
+      display: flex; align-items: center; gap: 10px; padding: 8px 14px;
       border: 2px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px;
       background: var(--pages-neutral-2, #252538); cursor: pointer;
-      color: var(--pages-neutral-11, #ccc); transition: all 0.15s; text-align: center;
+      color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
+      flex: 1 1 0; min-width: 180px; max-width: 320px;
     }
     .template-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
     .template-card.expanded { border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-2, #1a2744); }
-    .card-label { font-size: 12px; font-weight: 600; margin-top: 6px; }
-    .card-role { font-size: 10px; color: var(--pages-neutral-9, #999); }
+    .card-info { flex: 1; min-width: 0; }
+    .card-label { font-size: 12px; font-weight: 600; }
+    .card-desc { font-size: 10px; color: var(--pages-neutral-9, #999); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .card-family { font-size: 9px; color: var(--pages-accent-11, #93c5fd); margin-top: 2px; }
 
     .detail-expansion {
-      grid-column: 1 / -1; padding: 14px; margin: -4px 0 4px;
+      margin-top: 6px; padding: 14px;
       border: 1px solid var(--pages-accent-7, #3b82f6); border-radius: 8px;
       background: var(--pages-neutral-1, #1e1e2e);
     }
@@ -73,10 +97,7 @@ export class AgentCatalog extends LitElement {
       border: 1px solid var(--pages-neutral-5, #4a4a62);
       background: var(--pages-neutral-3, #2d2d44); color: var(--pages-neutral-11, #ccc);
     }
-    .detail-alias {
-      font-size: 11px; color: var(--pages-accent-11, #93c5fd);
-      margin-bottom: 10px;
-    }
+    .detail-alias { font-size: 11px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 10px; }
     .detail-summary { font-size: 11px; color: var(--pages-neutral-10, #aaa); font-style: italic; margin-bottom: 10px; line-height: 1.4; }
     .detail-actions { display: flex; gap: 8px; }
     .select-btn {
@@ -145,11 +166,12 @@ export class AgentCatalog extends LitElement {
   protected override render() {
     const filtered = this._filtered();
     const showFeatured = !this._profession && !this._search;
+    const groups = groupByRole(filtered);
     return html`
       ${showFeatured ? this._renderFeatured() : nothing}
       ${this._renderSearch()}
       ${this._renderProfessionPills()}
-      ${filtered.length > 0 ? this._renderGrid(filtered) : html`<div class="empty-state">No templates match your search.</div>`}
+      ${groups.length > 0 ? groups.map(g => this._renderRoleGroup(g)) : html`<div class="empty-state">No templates match your search.</div>`}
       ${this._renderFromScratch()}
     `;
   }
@@ -160,7 +182,7 @@ export class AgentCatalog extends LitElement {
         <div class="featured-header">Recommended</div>
         <div class="featured-grid">
           ${FEATURED_TEMPLATES.map(t => html`
-            <div class="featured-card" @click=${() => { this._expandedId = t.id; }}>
+            <div class="featured-card" @click=${() => { this._profession = t.profession; this._expandedId = t.id; }}>
               <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
               <div class="featured-info">
                 <div class="featured-label">${t.variant.label}</div>
@@ -200,25 +222,34 @@ export class AgentCatalog extends LitElement {
     `;
   }
 
-  private _renderGrid(templates: readonly CatalogTemplate[]) {
-    const items: unknown[] = [];
-    for (const t of templates) {
-      const isExpanded = this._expandedId === t.id;
-      items.push(html`
-        <div class=${classMap({ 'template-card': true, expanded: isExpanded })}
-          data-template-id=${t.id}
-          @click=${() => { this._expandedId = isExpanded ? null : t.id; }}>
-          <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
-          <div class="card-label">${t.variant.label}</div>
-          <div class="card-role">${t.profession} &rsaquo; ${t.role}</div>
-          <div class="card-family">${t.variant.archetype}</div>
+  private _renderRoleGroup(group: RoleGroup) {
+    const expandedTemplate = group.templates.find(t => t.id === this._expandedId);
+    const showProfession = !this._profession;
+    return html`
+      <div class="role-group" role="group" aria-label="${group.profession} ${group.role}">
+        <div class="role-header">
+          ${showProfession ? html`<span class="profession-label">${group.profession}</span> &rsaquo; ` : nothing}${group.role}
         </div>
-      `);
-      if (isExpanded) {
-        items.push(this._renderDetail(t));
-      }
-    }
-    return html`<div class="grid" role="list" aria-label="Agent templates">${items}</div>`;
+        <div class="variant-row">
+          ${group.templates.map(t => {
+            const isExpanded = this._expandedId === t.id;
+            return html`
+              <div class=${classMap({ 'template-card': true, expanded: isExpanded })}
+                data-template-id=${t.id}
+                @click=${() => { this._expandedId = isExpanded ? null : t.id; }}>
+                <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
+                <div class="card-info">
+                  <div class="card-label">${t.variant.label}</div>
+                  <div class="card-desc">${t.variant.description}</div>
+                  <div class="card-family">${t.variant.archetype}</div>
+                </div>
+              </div>
+            `;
+          })}
+        </div>
+        ${expandedTemplate ? this._renderDetail(expandedTemplate) : nothing}
+      </div>
+    `;
   }
 
   private _renderDetail(t: CatalogTemplate) {

@@ -45,22 +45,24 @@ describe('agent-catalog', () => {
     expect(search).toBeTruthy();
   });
 
-  it('renders template grid with cards', async () => {
+  it('renders role groups with template cards', async () => {
     await el.updateComplete;
+    const groups = el.shadowRoot!.querySelectorAll('.role-group');
+    expect(groups.length).toBeGreaterThan(0);
     const cards = el.shadowRoot!.querySelectorAll('.template-card');
     expect(cards.length).toBeGreaterThan(0);
   });
 
-  it('profession filter reduces grid to matching templates', async () => {
+  it('profession filter reduces to matching role groups', async () => {
     await el.updateComplete;
-    const allCards = el.shadowRoot!.querySelectorAll('.template-card').length;
+    const allGroups = el.shadowRoot!.querySelectorAll('.role-group').length;
     const pill = el.shadowRoot!.querySelector('[data-filter="profession"][data-value="Legal"]') as HTMLElement;
     expect(pill).toBeTruthy();
     pill.click();
     await el.updateComplete;
-    const filteredCards = el.shadowRoot!.querySelectorAll('.template-card').length;
-    expect(filteredCards).toBeLessThan(allCards);
-    expect(filteredCards).toBeGreaterThan(0);
+    const filteredGroups = el.shadowRoot!.querySelectorAll('.role-group').length;
+    expect(filteredGroups).toBeLessThan(allGroups);
+    expect(filteredGroups).toBeGreaterThan(0);
   });
 
   it('hides featured section when profession filter active', async () => {
@@ -72,7 +74,7 @@ describe('agent-catalog', () => {
     expect(featured).toBeNull();
   });
 
-  it('card click expands inline detail', async () => {
+  it('card click expands detail below its role group', async () => {
     await el.updateComplete;
     const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
     card.click();
@@ -80,6 +82,8 @@ describe('agent-catalog', () => {
     const detail = el.shadowRoot!.querySelector('.detail-expansion');
     expect(detail).toBeTruthy();
     expect(detail!.getAttribute('role')).toBe('region');
+    const group = detail!.closest('.role-group');
+    expect(group).toBeTruthy();
   });
 
   it('second card click collapses previous and expands new', async () => {
