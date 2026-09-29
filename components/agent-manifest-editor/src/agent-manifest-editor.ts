@@ -87,12 +87,12 @@ export class AgentManifestEditor extends LitElement {
 
   private _initFromData(manifest: Manifest): void {
     this._dataSnapshot = { ...manifest };
-    this._providerStates.clear();
+    const newStates = new Map<string, ProviderChangedDetail>();
 
     if (manifest.providers) {
       for (const provider of manifest.providers) {
         const models = manifest.models?.filter(m => m.vendor === provider.vendor) ?? [];
-        this._providerStates.set(provider.vendor, {
+        newStates.set(provider.vendor, {
           vendor: provider.vendor,
           credential: provider.credential,
           host: provider.host,
@@ -100,15 +100,15 @@ export class AgentManifestEditor extends LitElement {
         });
       }
     }
+    this._providerStates = newStates;
 
-    this._aliases = [];
+    const newAliases: AliasRow[] = [];
     if (manifest.aliases) {
       for (const [key, decl] of Object.entries(manifest.aliases)) {
-        this._aliases.push({ key, declaration: { ...decl } });
+        newAliases.push({ key, declaration: { ...decl } });
       }
     }
-
-    this.requestUpdate();
+    this._aliases = newAliases;
   }
 
   private async _fetchEndpoint(): Promise<void> {
@@ -257,9 +257,17 @@ export class AgentManifestEditor extends LitElement {
   private _getModelsForProvider(vendor: string): ModelDescriptor[] {
     const backendModels = this._providerModels.get(vendor);
     if (backendModels) return backendModels;
-    const preset = PRESETS.flatMap(p => p.manifest.models ?? []).filter(m => m.vendor === vendor);
-    if (preset.length > 0) return preset;
-    return [];
+    const seen = new Set<string>();
+    const unique: ModelDescriptor[] = [];
+    for (const p of PRESETS) {
+      for (const m of p.manifest.models ?? []) {
+        if (m.vendor === vendor && !seen.has(m.id)) {
+          seen.add(m.id);
+          unique.push(m);
+        }
+      }
+    }
+    return unique;
   }
 
   private _getSelectedForProvider(vendor: string): string[] {
