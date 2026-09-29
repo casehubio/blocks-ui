@@ -46,6 +46,7 @@ import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
 import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps } from '@casehubio/blocks-ui-evolution-config';
 import type { EvolutionWorkbenchProps } from '@casehubio/blocks-ui-evolution-workbench';
 import type { AgentAvatarProps } from '@casehubio/agent-avatar-2d';
+import type { AgentManifestEditorProps } from '@casehubio/agent-manifest-editor';
 
 export interface BlocksComponentRegistry {
   'blocks-sla-indicator': SlaIndicatorProps;
@@ -109,4 +110,5 @@ export interface BlocksComponentRegistry {
   'blocks-gate-policy-editor': GatePolicyEditorProps;
   'blocks-evolution-workbench': EvolutionWorkbenchProps;
   'agent-avatar': AgentAvatarProps;
+  'agent-manifest-editor': AgentManifestEditorProps;
 }
