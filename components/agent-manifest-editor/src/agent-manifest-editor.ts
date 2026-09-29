@@ -46,15 +46,18 @@ export class AgentManifestEditor extends LitElement {
   @state() private _providerModels = new Map<string, ModelDescriptor[]>();
   @state() private _loading = false;
   @state() private _error = '';
+  @state() private _dataVersion = 0;
 
   private _endpointAbort: AbortController | null = null;
   private _providersAbort: AbortController | null = null;
+  private _lastDataRef: Manifest | null = null;
 
   connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', 'form');
     this.setAttribute('aria-label', 'LLM configuration editor');
     if (this.data && (this.data.providers?.length || this.data.aliases || this.data.models?.length)) {
+      this._lastDataRef = this.data;
       this._initFromData(this.data);
     }
     if (this.providersEndpoint) this._fetchProviders();
@@ -67,7 +70,8 @@ export class AgentManifestEditor extends LitElement {
   }
 
   updated(changed: Map<string, unknown>): void {
-    if (changed.has('data')) {
+    if (changed.has('data') && this.data !== this._lastDataRef) {
+      this._lastDataRef = this.data;
       this._endpointAbort?.abort();
       this._initFromData(this.data);
     }

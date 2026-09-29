@@ -21,7 +21,9 @@ const SAMPLE_DATA: Manifest = {
   defaults: { backend: 'anthropic' },
 };
 
-const SAMPLE_PROMPT = `You are a detail-oriented analyst who values precision and structured reasoning. You prefer clear evidence chains and flag ambiguity rather than guessing. You communicate findings with confidence levels and supporting data.
+const EMPTY_MANIFEST: Manifest = {};
+
+const SAMPLE_PROMPT =`You are a detail-oriented analyst who values precision and structured reasoning. You prefer clear evidence chains and flag ambiguity rather than guessing. You communicate findings with confidence levels and supporting data.
 
 When presenting analysis:
 - Lead with the conclusion, then the evidence
@@ -84,7 +86,7 @@ export class ManifestEditorPage extends LitElement {
 
       <div class="demo-section" @pages-event=${this._handleManifestConfigured}>
         <agent-manifest-editor
-          .data=${this._hasData ? SAMPLE_DATA : {}}
+          .data=${this._hasData ? SAMPLE_DATA : EMPTY_MANIFEST}
           .systemPrompt=${this._hasPrompt ? SAMPLE_PROMPT : ''}
           .devMode=${this._devMode}
         ></agent-manifest-editor>

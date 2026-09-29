@@ -115,7 +115,7 @@ describe('agent-manifest-editor', () => {
       expect(events.length).toBe(firstCount);
     });
 
-    it('preset selection emits manifest:configured', async () => {
+    it('preset selection emits manifest:configured with models', async () => {
       await el.updateComplete;
       const events: any[] = [];
       el.addEventListener('pages-event', ((e: CustomEvent) => {
@@ -131,6 +131,21 @@ describe('agent-manifest-editor', () => {
       expect(manifest.providers).toBeDefined();
       expect(manifest.providers![0]!.vendor).toBe('anthropic');
       expect(manifest.models!.length).toBeGreaterThan(0);
+      expect(manifest.models!.some(m => m.id === 'claude-opus-4-6')).toBe(true);
+    });
+
+    it('preset selection populates provider card selectedModels', async () => {
+      await el.updateComplete;
+      const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
+      preset.click();
+      await el.updateComplete;
+      await el.updateComplete;
+
+      const cards = el.shadowRoot!.querySelectorAll('manifest-provider-card');
+      const anthropicCard = Array.from(cards).find(c => (c as any).vendor === 'anthropic') as any;
+      expect(anthropicCard).toBeTruthy();
+      expect(anthropicCard.selectedModels.length).toBeGreaterThan(0);
+      expect(anthropicCard.selectedModels).toContain('claude-opus-4-6');
     });
   });
 
