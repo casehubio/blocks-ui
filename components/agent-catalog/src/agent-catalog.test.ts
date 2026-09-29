@@ -1,0 +1,132 @@
+import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
+import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
+import './agent-catalog.js';
+
+type CatalogEl = HTMLElement & { updateComplete: Promise<boolean> };
+
+beforeAll(() => {
+  registerCollection(mythicCollection);
+});
+
+describe('agent-catalog', () => {
+  let el: CatalogEl;
+
+  beforeEach(() => {
+    el = document.createElement('agent-catalog') as CatalogEl;
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    el.remove();
+  });
+
+  it('renders with role="region" and aria-label', async () => {
+    await el.updateComplete;
+    expect(el.getAttribute('role')).toBe('region');
+    expect(el.getAttribute('aria-label')).toBe('Agent template catalog');
+  });
+
+  it('renders featured section with curated templates', async () => {
+    await el.updateComplete;
+    const featured = el.shadowRoot!.querySelectorAll('.featured-card');
+    expect(featured.length).toBeGreaterThanOrEqual(3);
+    expect(featured.length).toBeLessThanOrEqual(5);
+  });
+
+  it('renders profession filter pills', async () => {
+    await el.updateComplete;
+    const pills = el.shadowRoot!.querySelectorAll('[data-filter="profession"]');
+    expect(pills.length).toBeGreaterThan(0);
+  });
+
+  it('renders search input', async () => {
+    await el.updateComplete;
+    const search = el.shadowRoot!.querySelector('[role="searchbox"]');
+    expect(search).toBeTruthy();
+  });
+
+  it('renders role groups with template cards', async () => {
+    await el.updateComplete;
+    const groups = el.shadowRoot!.querySelectorAll('.role-group');
+    expect(groups.length).toBeGreaterThan(0);
+    const cards = el.shadowRoot!.querySelectorAll('.template-card');
+    expect(cards.length).toBeGreaterThan(0);
+  });
+
+  it('profession filter reduces to matching role groups', async () => {
+    await el.updateComplete;
+    const allGroups = el.shadowRoot!.querySelectorAll('.role-group').length;
+    const pill = el.shadowRoot!.querySelector('[data-filter="profession"][data-value="Legal"]') as HTMLElement;
+    expect(pill).toBeTruthy();
+    pill.click();
+    await el.updateComplete;
+    const filteredGroups = el.shadowRoot!.querySelectorAll('.role-group').length;
+    expect(filteredGroups).toBeLessThan(allGroups);
+    expect(filteredGroups).toBeGreaterThan(0);
+  });
+
+  it('hides featured section when profession filter active', async () => {
+    await el.updateComplete;
+    const pill = el.shadowRoot!.querySelector('[data-filter="profession"]') as HTMLElement;
+    pill.click();
+    await el.updateComplete;
+    const featured = el.shadowRoot!.querySelector('.featured-section');
+    expect(featured).toBeNull();
+  });
+
+  it('card click expands detail below its role group', async () => {
+    await el.updateComplete;
+    const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+    card.click();
+    await el.updateComplete;
+    const detail = el.shadowRoot!.querySelector('.detail-expansion');
+    expect(detail).toBeTruthy();
+    expect(detail!.getAttribute('role')).toBe('region');
+    const group = detail!.closest('.role-group');
+    expect(group).toBeTruthy();
+  });
+
+  it('second card click collapses previous and expands new', async () => {
+    await el.updateComplete;
+    const cards = el.shadowRoot!.querySelectorAll('.template-card');
+    (cards[0] as HTMLElement).click();
+    await el.updateComplete;
+    const firstId = el.shadowRoot!.querySelector('.detail-expansion')?.getAttribute('data-template-id');
+    (cards[1] as HTMLElement).click();
+    await el.updateComplete;
+    const details = el.shadowRoot!.querySelectorAll('.detail-expansion');
+    expect(details.length).toBe(1);
+    expect(details[0]!.getAttribute('data-template-id')).not.toBe(firstId);
+  });
+
+  it('select button emits catalog:template:selected', async () => {
+    await el.updateComplete;
+    const card = el.shadowRoot!.querySelector('.template-card') as HTMLElement;
+    card.click();
+    await el.updateComplete;
+    let detail: Record<string, unknown> | undefined;
+    el.addEventListener('catalog:template:selected', ((e: CustomEvent) => {
+      detail = e.detail;
+    }) as EventListener);
+    const selectBtn = el.shadowRoot!.querySelector('.select-btn') as HTMLElement;
+    selectBtn.click();
+    await el.updateComplete;
+    expect(detail).toBeDefined();
+    expect(detail!.template).toBeDefined();
+    const tmpl = detail!.template as Record<string, unknown>;
+    expect(tmpl.archetypeFamily).toBeTruthy();
+    expect(tmpl.personality).toBeDefined();
+  });
+
+  it('search filters templates by label', async () => {
+    await el.updateComplete;
+    const allCards = el.shadowRoot!.querySelectorAll('.template-card').length;
+    const input = el.shadowRoot!.querySelector('[role="searchbox"]') as HTMLInputElement;
+    input.value = 'investigator';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    const filteredCards = el.shadowRoot!.querySelectorAll('.template-card').length;
+    expect(filteredCards).toBeLessThan(allCards);
+    expect(filteredCards).toBeGreaterThan(0);
+  });
+});

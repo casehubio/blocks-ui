@@ -117,6 +117,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@casehubio/agent-catalog@workspace:components/agent-catalog":
+  version: 0.0.0-use.local
+  resolution: "@casehubio/agent-catalog@workspace:components/agent-catalog"
+  dependencies:
+    "@casehubio/agent-avatar-2d": "workspace:*"
+    "@casehubio/avatar-step": "workspace:*"
+    "@casehubio/blocks-ui-core": "workspace:*"
+    lit: "npm:^3.0.0"
+    vitest: "npm:^3.0.0"
+  languageName: unknown
+  linkType: soft
+
 "@casehubio/agent-manifest-editor@workspace:components/agent-manifest-editor":
   version: 0.0.0-use.local
   resolution: "@casehubio/agent-manifest-editor@workspace:components/agent-manifest-editor"
@@ -128,7 +140,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@casehubio/avatar-step@workspace:components/avatar-step":
+"@casehubio/avatar-step@workspace:*, @casehubio/avatar-step@workspace:components/avatar-step":
   version: 0.0.0-use.local
   resolution: "@casehubio/avatar-step@workspace:components/avatar-step"
   dependencies:
