@@ -357,6 +357,7 @@ export class AgentManifestEditor extends LitElement {
     .delete-btn { background: none; border: none; color: var(--pages-danger-9, #dc2626); cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
     .add-alias-btn { font-size: var(--pages-font-size-sm, 12px); padding: var(--pages-space-1, 0.25rem) var(--pages-space-2, 0.5rem); border: 1px dashed var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: transparent; color: var(--pages-neutral-9, #737373); cursor: pointer; }
     .add-alias-btn:hover { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-9, #3b82f6); }
+    .yaml-preview { padding: var(--pages-space-3, 0.75rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); font-size: var(--pages-font-size-sm, 12px); line-height: 1.5; white-space: pre-wrap; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--pages-neutral-11, #404040); max-height: 300px; overflow-y: auto; margin-bottom: var(--pages-space-4, 1rem); }
     .prompt-preview { padding: var(--pages-space-3, 0.75rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); font-size: var(--pages-font-size-base, 14px); line-height: var(--pages-line-height-base, 1.5); white-space: pre-wrap; min-height: 3rem; color: var(--pages-neutral-11, #404040); }
     .prompt-label { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-neutral-8, #a3a3a3); margin-bottom: var(--pages-space-1, 0.25rem); }
     .prompt-empty { color: var(--pages-neutral-8, #a3a3a3); font-style: italic; }
@@ -403,6 +404,68 @@ export class AgentManifestEditor extends LitElement {
     return 'incomplete';
   }
 
+  private _manifestToYaml(): string {
+    const manifest = this._assembleManifest();
+    const lines: string[] = [];
+    if (manifest.providers?.length) {
+      lines.push('providers:');
+      for (const p of manifest.providers) {
+        lines.push(`  - vendor: ${p.vendor}`);
+        if (p.credential) {
+          if (typeof p.credential === 'string') {
+            lines.push(`    credential: ${p.credential}`);
+          } else {
+            lines.push('    credential:');
+            for (const [k, v] of Object.entries(p.credential)) {
+              lines.push(`      ${k}: ${v}`);
+            }
+          }
+        }
+        if (p.host) lines.push(`    host: ${p.host}`);
+      }
+    }
+    if (manifest.models?.length) {
+      lines.push('models:');
+      for (const m of manifest.models) {
+        lines.push(`  - id: ${m.id}`);
+        if (m.displayName) lines.push(`    displayName: ${m.displayName}`);
+        if (m.vendor) lines.push(`    vendor: ${m.vendor}`);
+        if (m.tier) lines.push(`    tier: ${m.tier}`);
+        if (m.contextWindow) lines.push(`    contextWindow: ${m.contextWindow}`);
+        if (m.maxOutput) lines.push(`    maxOutput: ${m.maxOutput}`);
+        if (m.capabilities?.length) lines.push(`    capabilities: [${m.capabilities.join(', ')}]`);
+        if (m.costTier) lines.push(`    costTier: ${m.costTier}`);
+      }
+    }
+    if (manifest.aliases && Object.keys(manifest.aliases).length > 0) {
+      lines.push('aliases:');
+      for (const [key, decl] of Object.entries(manifest.aliases)) {
+        lines.push(`  ${key}:`);
+        if (decl.tier) lines.push(`    tier: ${decl.tier}`);
+        if (decl.capabilities?.length) lines.push(`    capabilities: [${decl.capabilities.join(', ')}]`);
+        if (decl.preferVendor) lines.push(`    preferVendor: ${decl.preferVendor}`);
+        if (decl.minContext) lines.push(`    minContext: ${decl.minContext}`);
+        if (decl.minOutput) lines.push(`    minOutput: ${decl.minOutput}`);
+        if (decl.maxCost) lines.push(`    maxCost: ${decl.maxCost}`);
+        if (decl.locality) lines.push(`    locality: ${decl.locality}`);
+        const resolved = this._resolveAlias(decl);
+        lines.push(`    # resolves to: ${resolved ? (resolved.displayName ?? resolved.id) : '(no match)'}`);
+      }
+    }
+    if (manifest.defaults) {
+      lines.push('defaults:');
+      if (manifest.defaults.backend) lines.push(`  backend: ${manifest.defaults.backend}`);
+    }
+    if (manifest.sources?.length) {
+      lines.push('sources:');
+      for (const s of manifest.sources) {
+        lines.push(`  - uri: ${s.uri}`);
+        if (s.priority !== undefined) lines.push(`    priority: ${s.priority}`);
+      }
+    }
+    return lines.length > 0 ? lines.join('\n') : '# No configuration yet';
+  }
+
   private _renderPipelineStep(step: number, title: string, status: 'complete' | 'warning' | 'incomplete', dimmed: boolean, tooltip?: string) {
     const isActive = status !== 'incomplete';
     return html`
@@ -421,10 +484,9 @@ export class AgentManifestEditor extends LitElement {
     }
 
     const providerStatus = this._getProviderStepStatus();
-    const modelStatus = this._getModelStepStatus();
     const aliasStatus = this._getAliasStepStatus();
     const noProviders = providerStatus === 'incomplete';
-    const noModels = modelStatus === 'incomplete';
+    const noModels = this._getAllSelectedModels().length === 0;
 
     return html`
       ${this.devMode ? html`<div class="dev-banner">Dev Mode — inline API keys enabled (not persisted)</div>` : nothing}
@@ -492,13 +554,14 @@ export class AgentManifestEditor extends LitElement {
         ></manifest-provider-card>
       </div>
 
-      ${this._renderPipelineStep(2, 'Models', modelStatus, noProviders, noProviders ? 'Configure a provider first' : undefined)}
-
-      ${this._renderPipelineStep(3, 'Aliases', aliasStatus, noModels, noModels ? 'Select models first' : undefined)}
+      ${this._renderPipelineStep(2, 'Aliases', aliasStatus, noModels, noModels ? 'Select models first' : undefined)}
       <div class="alias-editor ${noModels ? 'step-dimmed' : ''}">
         ${this._aliases.map((row, i) => this._renderAliasRow(row, i))}
         <button class="add-alias-btn" @click=${this._addAlias}>+ Add alias</button>
       </div>
+
+      <div class="section-title">Manifest YAML</div>
+      <pre class="yaml-preview">${this._manifestToYaml()}</pre>
 
       <div class="section-title">System Prompt Preview</div>
       <div class="prompt-label">Generated from personality profile</div>

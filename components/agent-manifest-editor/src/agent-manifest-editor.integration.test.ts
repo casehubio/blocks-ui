@@ -139,7 +139,7 @@ describe('agent-manifest-editor integration', () => {
       await el.updateComplete;
 
       const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
-      expect(steps.length).toBe(3);
+      expect(steps.length).toBe(2);
       expect(steps[0]?.querySelector('.step-status.incomplete')).toBeTruthy();
 
       const preset = el.shadowRoot!.querySelector('[data-preset="anthropic-direct"]') as HTMLElement;
@@ -169,10 +169,10 @@ describe('agent-manifest-editor integration', () => {
       expect(resolution?.classList.contains('match')).toBe(true);
     });
 
-    it('models step dimmed message appears when no providers', async () => {
+    it('aliases step dimmed message appears when no models selected', async () => {
       await el.updateComplete;
       const tooltip = el.shadowRoot!.querySelector('.step-dimmed-tooltip');
-      expect(tooltip?.textContent).toContain('Configure a provider first');
+      expect(tooltip?.textContent).toContain('Select models first');
     });
   });
 });

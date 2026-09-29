@@ -236,14 +236,13 @@ describe('agent-manifest-editor', () => {
   });
 
   describe('pipeline steps', () => {
-    it('renders three pipeline steps with step numbers', async () => {
+    it('renders two pipeline steps with step numbers', async () => {
       await el.updateComplete;
       const steps = el.shadowRoot!.querySelectorAll('.pipeline-step');
-      expect(steps.length).toBe(3);
+      expect(steps.length).toBe(2);
       const numbers = el.shadowRoot!.querySelectorAll('.step-number');
       expect(numbers[0]?.textContent?.trim()).toBe('1');
       expect(numbers[1]?.textContent?.trim()).toBe('2');
-      expect(numbers[2]?.textContent?.trim()).toBe('3');
     });
 
     it('pipeline step has ARIA label with step number and status', async () => {
@@ -271,11 +270,11 @@ describe('agent-manifest-editor', () => {
       expect(status?.classList.contains('complete')).toBe(true);
     });
 
-    it('models section shows dimmed tooltip when no providers configured', async () => {
+    it('aliases section shows dimmed tooltip when no models selected', async () => {
       await el.updateComplete;
       const tooltip = el.shadowRoot!.querySelector('.step-dimmed-tooltip');
       expect(tooltip).toBeTruthy();
-      expect(tooltip?.textContent).toContain('Configure a provider first');
+      expect(tooltip?.textContent).toContain('Select models first');
     });
 
     it('aliases section is dimmed when no models selected', async () => {
