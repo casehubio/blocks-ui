@@ -38,19 +38,19 @@ export class ManifestEditorPage extends LitElement {
   @state() private _eventCount = 0;
 
   static override styles = css`
-    :host { display: block; padding: 24px; height: 100%; box-sizing: border-box; overflow-y: auto; }
-    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; color: var(--pages-neutral-12, #111); }
+    :host { display: block; padding: 24px; height: 100%; box-sizing: border-box; overflow-y: auto; color: var(--pages-neutral-12, #111); font-family: var(--pages-font-family, system-ui); }
+    h2 { margin-bottom: 8px; font-size: 20px; font-weight: 600; }
     p { margin-bottom: 24px; color: var(--pages-neutral-11, #555); font-size: 14px; }
     .controls { margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
-    button { padding: 6px 12px; border-radius: 4px; border: 1px solid var(--pages-neutral-6, #ccc); background: var(--pages-neutral-1, #fff); cursor: pointer; font-size: 13px; }
-    button:hover { background: var(--pages-neutral-3, #f0f0f0); }
-    button.active { background: var(--pages-primary-3, #e3f2fd); border-color: var(--pages-primary-7, #1976d2); }
-    .demo-section { margin-bottom: 24px; border: 1px solid var(--pages-neutral-5, #e0e0e0); border-radius: 6px; background: var(--pages-neutral-1, #fff); padding: 16px; }
+    button { padding: 6px 12px; border-radius: var(--pages-radius-2, 4px); border: 1px solid var(--pages-neutral-6, #ccc); background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-12, #111); cursor: pointer; font-size: 13px; }
+    button:hover { background: var(--pages-neutral-3, #e5e5e5); }
+    button.active { background: var(--pages-accent-3, #dbeafe); border-color: var(--pages-accent-9, #3b82f6); color: var(--pages-accent-11, #1e40af); }
+    .demo-section { margin-bottom: 24px; border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); background: var(--pages-neutral-1, #fff); padding: 16px; }
     .output-section { margin-top: 16px; }
     .output-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
     .output-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
     .event-count { font-size: 12px; color: var(--pages-neutral-9, #888); }
-    pre { margin: 0; padding: 16px; background: var(--pages-neutral-2, #f5f5f5); border-radius: 8px; max-height: 300px; overflow-y: auto; font-size: 13px; font-family: monospace; white-space: pre-wrap; }
+    pre { margin: 0; padding: 16px; background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-12, #111); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 8px); max-height: 300px; overflow-y: auto; font-size: 13px; font-family: 'SF Mono', 'Fira Code', monospace; white-space: pre-wrap; }
   `;
 
   private _handleManifestConfigured(e: CustomEvent) {
