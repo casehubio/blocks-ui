@@ -40,6 +40,7 @@ export class ManifestProviderCard extends LitElement {
   @state() private _testResult: TestResult | null = null;
   @state() private _testing = false;
   @state() private _showBatchSet = false;
+  @state() private _addedModels: ModelDescriptor[] = [];
   @state() private _otherModels: ModelDescriptor[] = [];
   @state() private _otherVendorName = '';
   @state() private _otherHost = '';
@@ -131,7 +132,7 @@ export class ManifestProviderCard extends LitElement {
   }
 
   private _getSelectedModelDescriptors(): ModelDescriptor[] {
-    const allModels = this.isOther ? this._otherModels : this.models;
+    const allModels = this.isOther ? this._otherModels : [...this.models, ...this._addedModels];
     return allModels.filter(m => this.selectedModels.includes(m.id));
   }
 
@@ -258,6 +259,38 @@ export class ManifestProviderCard extends LitElement {
     }
   }
 
+  private _addModel(): void {
+    const id = `custom-${this._addedModels.length + 1}`;
+    this._addedModels = [...this._addedModels, { id, vendor: this.vendor }];
+  }
+
+  private _removeAddedModel(idx: number): void {
+    const removed = this._addedModels[idx]!;
+    this._addedModels = this._addedModels.filter((_, i) => i !== idx);
+    this.selectedModels = this.selectedModels.filter(id => id !== removed.id);
+    this._emitChanged();
+  }
+
+  private _updateAddedModel(idx: number, field: string, value: string | number): void {
+    const models = [...this._addedModels];
+    const model = { ...models[idx]! };
+    if (field === 'id') model.id = value as string;
+    else if (field === 'displayName') model.displayName = value as string;
+    else if (field === 'contextWindow') model.contextWindow = value as number;
+    model.vendor = this.vendor;
+    models[idx] = model;
+    this._addedModels = models;
+    this._emitChanged();
+  }
+
+  private _hasAddedDuplicateModelId(id: string, idx: number): boolean {
+    const allModels = [...this.models, ...this._addedModels];
+    return allModels.some((m, i) => {
+      if (i === this.models.length + idx) return false;
+      return m.id === id;
+    });
+  }
+
   private _addOtherModel(): void {
     const id = `model-${this._otherModels.length + 1}`;
     this._otherModels = [...this._otherModels, { id, vendor: this._otherVendorName }];
@@ -369,6 +402,7 @@ export class ManifestProviderCard extends LitElement {
     .validation-error { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-danger-9, #dc2626); }
     .add-btn { font-size: var(--pages-font-size-sm, 12px); padding: var(--pages-space-1, 0.25rem) var(--pages-space-2, 0.5rem); border: 1px dashed var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: transparent; color: var(--pages-neutral-9, #737373); cursor: pointer; margin-top: var(--pages-space-1, 0.25rem); }
     .add-btn:hover { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-9, #3b82f6); }
+    .add-model-btn { margin-top: var(--pages-space-2, 0.5rem); }
     .delete-btn { background: none; border: none; color: var(--pages-danger-9, #dc2626); cursor: pointer; font-size: 0.9rem; padding: 0; }
     .apply-btn { font-size: var(--pages-font-size-xs, 11px); padding: 2px var(--pages-space-2, 0.5rem); border: 1px solid var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: var(--pages-neutral-1, #fff); color: var(--pages-neutral-12, #111); cursor: pointer; }
     .apply-btn:hover { background: var(--pages-neutral-3, #f0f0f0); }
@@ -496,6 +530,26 @@ export class ManifestProviderCard extends LitElement {
     `;
   }
 
+  private _renderAddedModelRow(model: ModelDescriptor, idx: number) {
+    const duplicate = this._hasAddedDuplicateModelId(model.id, idx);
+    const checked = this.selectedModels.includes(model.id);
+    return html`
+      <div class="added-model-row other-model-row">
+        <input type="checkbox" .checked=${checked}
+               @change=${() => this._onModelToggle(model.id)}>
+        <input class="cred-input" .value=${model.id} placeholder="Model ID"
+               @input=${(e: Event) => this._updateAddedModel(idx, 'id', (e.target as HTMLInputElement).value)}>
+        <input class="cred-input" .value=${model.displayName ?? ''} placeholder="Display name"
+               @input=${(e: Event) => this._updateAddedModel(idx, 'displayName', (e.target as HTMLInputElement).value)}>
+        <input class="cred-input" type="number" .value=${String(model.contextWindow ?? '')} placeholder="Context"
+               style="width: 80px"
+               @input=${(e: Event) => this._updateAddedModel(idx, 'contextWindow', Number((e.target as HTMLInputElement).value))}>
+        <button class="delete-btn" @click=${() => this._removeAddedModel(idx)}>✗</button>
+        ${duplicate ? html`<span class="validation-error">Duplicate ID</span>` : nothing}
+      </div>
+    `;
+  }
+
   private _renderModelList() {
     const groups = this._groupModelsByTier();
     return html`
@@ -507,6 +561,8 @@ export class ManifestProviderCard extends LitElement {
           ${models.map(m => this._renderModelRow(m))}
         </div>
       `)}
+      ${this._addedModels.map((m, i) => this._renderAddedModelRow(m, i))}
+      <button class="add-model-btn add-btn" aria-label="Add a model to ${this.displayName} configuration" @click=${this._addModel}>+ Add model</button>
     `;
   }
 
