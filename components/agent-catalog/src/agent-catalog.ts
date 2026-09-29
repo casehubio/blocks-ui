@@ -5,7 +5,6 @@ import '@casehubio/agent-avatar-2d';
 import { PROFESSION_LIST, buildSummaryText } from '@casehubio/avatar-step';
 import { CATALOG_TEMPLATES, FEATURED_TEMPLATES, buildDescriptor } from './data/catalog-templates.js';
 import type { CatalogTemplate } from './data/catalog-templates.js';
-import type { FullAgentDescriptor } from '@casehubio/blocks-ui-core';
 
 interface RoleGroup {
   profession: string;
@@ -106,17 +105,6 @@ export class AgentCatalog extends LitElement {
     }
     .select-btn:hover { background: var(--pages-accent-10, #1d4ed8); }
 
-    .from-scratch {
-      padding: 12px; border: 2px dashed var(--pages-neutral-5, #4a4a62); border-radius: 8px;
-      text-align: center;
-    }
-    .from-scratch-btn {
-      padding: 8px 20px; border-radius: 6px; border: 1px solid var(--pages-neutral-5, #4a4a62);
-      background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc);
-      cursor: pointer; font-size: 13px;
-    }
-    .from-scratch-btn:hover { background: var(--pages-neutral-3, #2d2d44); }
-
     .empty-state { text-align: center; padding: 24px; color: var(--pages-neutral-9, #999); font-size: 13px; }
   `;
 
@@ -155,14 +143,6 @@ export class AgentCatalog extends LitElement {
     }));
   }
 
-  private _selectFromScratch() {
-    const empty: FullAgentDescriptor = { agentId: '', name: '', tenancyId: '' };
-    this.dispatchEvent(new CustomEvent('catalog:template:selected', {
-      detail: { template: empty },
-      bubbles: true, composed: true,
-    }));
-  }
-
   protected override render() {
     const filtered = this._filtered();
     const showFeatured = !this._profession && !this._search;
@@ -172,7 +152,6 @@ export class AgentCatalog extends LitElement {
       ${this._renderSearch()}
       ${this._renderProfessionPills()}
       ${groups.length > 0 ? groups.map(g => this._renderRoleGroup(g)) : html`<div class="empty-state">No templates match your search.</div>`}
-      ${this._renderFromScratch()}
     `;
   }
 
@@ -286,11 +265,4 @@ export class AgentCatalog extends LitElement {
     `;
   }
 
-  private _renderFromScratch() {
-    return html`
-      <div class="from-scratch">
-        <button class="from-scratch-btn" @click=${() => this._selectFromScratch()}>+ Create from scratch</button>
-      </div>
-    `;
-  }
 }

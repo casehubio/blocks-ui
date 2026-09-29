@@ -118,22 +118,6 @@ describe('agent-catalog', () => {
     expect(tmpl.personality).toBeDefined();
   });
 
-  it('from-scratch button emits catalog:template:selected with empty descriptor', async () => {
-    await el.updateComplete;
-    let detail: Record<string, unknown> | undefined;
-    el.addEventListener('catalog:template:selected', ((e: CustomEvent) => {
-      detail = e.detail;
-    }) as EventListener);
-    const btn = el.shadowRoot!.querySelector('.from-scratch-btn') as HTMLElement;
-    expect(btn).toBeTruthy();
-    btn.click();
-    await el.updateComplete;
-    expect(detail).toBeDefined();
-    const tmpl = detail!.template as Record<string, unknown>;
-    expect(tmpl.agentId).toBe('');
-    expect(tmpl.archetypeFamily).toBeUndefined();
-  });
-
   it('search filters templates by label', async () => {
     await el.updateComplete;
     const allCards = el.shadowRoot!.querySelectorAll('.template-card').length;
