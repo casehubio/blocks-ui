@@ -280,30 +280,32 @@ export class AgentManifestEditor extends LitElement {
   }
 
   static styles = css`
-    :host { display: block; color: var(--pages-text, #e0e0e0); font-family: system-ui, sans-serif; }
-    .dev-banner { background: #e65100; color: white; padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 4px; margin-bottom: 0.75rem; }
-    .preset-bar { display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 0.25rem; }
-    .preset-card { padding: 0.5rem 1rem; border: 1px solid var(--pages-border, #333); border-radius: 6px; cursor: pointer; white-space: nowrap; font-size: 0.85rem; background: var(--pages-surface, #1a1a2e); transition: border-color 0.15s; }
-    .preset-card:hover { border-color: #555; }
-    .preset-card.active { border-color: #7986cb; background: #1a237e33; }
-    .provider-grid { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1rem; }
-    .section-title { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.5rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; }
-    .alias-editor { margin-bottom: 1rem; }
-    .alias-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; }
-    .alias-key-input { width: 140px; padding: 0.3rem; background: var(--pages-input-bg, #0f0f23); border: 1px solid var(--pages-border, #333); border-radius: 4px; color: inherit; font-family: monospace; font-size: 0.8rem; }
-    .alias-field { padding: 0.3rem; background: var(--pages-input-bg, #0f0f23); border: 1px solid var(--pages-border, #333); border-radius: 4px; color: inherit; font-size: 0.8rem; min-width: 80px; }
-    .alias-field select { background: var(--pages-input-bg, #0f0f23); color: inherit; border: none; }
-    .alias-duplicate-error { font-size: 0.7rem; color: #f44336; }
-    .alias-stale-warning { font-size: 0.7rem; color: #ff9800; }
-    .delete-btn { background: none; border: none; color: #f44336; cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
-    .add-alias-btn { font-size: 0.8rem; padding: 0.25rem 0.5rem; border: 1px dashed #555; border-radius: 4px; background: transparent; color: #aaa; cursor: pointer; }
-    .prompt-preview { padding: 0.75rem; background: var(--pages-input-bg, #0f0f23); border-radius: 6px; font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; min-height: 3rem; color: #ccc; }
-    .prompt-label { font-size: 0.7rem; color: #666; margin-bottom: 0.25rem; }
-    .prompt-empty { color: #666; font-style: italic; }
-    .error-banner { background: #b71c1c; color: white; padding: 0.5rem 1rem; border-radius: 4px; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
-    .retry-btn { padding: 0.2rem 0.5rem; border: 1px solid white; border-radius: 4px; background: transparent; color: white; cursor: pointer; font-size: 0.8rem; }
-    .loading { display: flex; align-items: center; justify-content: center; padding: 2rem; color: #888; }
-    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #555; border-top-color: #aaa; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 0.5rem; }
+    :host { display: block; color: var(--pages-neutral-12, #111); font-family: var(--pages-font-family, system-ui); }
+    .dev-banner { background: var(--pages-warning-9, #d97706); color: var(--pages-warning-1, #fff); padding: var(--pages-space-2, 0.4rem) var(--pages-space-4, 1rem); font-size: var(--pages-font-size-sm, 12px); border-radius: var(--pages-radius-2, 4px); margin-bottom: var(--pages-space-3, 0.75rem); }
+    .preset-bar { display: flex; gap: var(--pages-space-2, 0.5rem); margin-bottom: var(--pages-space-4, 1rem); overflow-x: auto; padding-bottom: var(--pages-space-1, 0.25rem); }
+    .preset-card { padding: var(--pages-space-2, 0.5rem) var(--pages-space-4, 1rem); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 6px); cursor: pointer; white-space: nowrap; font-size: var(--pages-font-size-base, 14px); background: var(--pages-neutral-1, #fff); color: var(--pages-neutral-12, #111); transition: border-color 0.15s; }
+    .preset-card:hover { border-color: var(--pages-neutral-7, #a3a3a3); }
+    .preset-card.active { border-color: var(--pages-accent-9, #3b82f6); background: var(--pages-accent-2, #eff6ff); color: var(--pages-accent-11, #1e40af); }
+    .provider-grid { display: flex; flex-direction: column; gap: var(--pages-space-1, 0.25rem); margin-bottom: var(--pages-space-4, 1rem); }
+    .section-title { font-size: var(--pages-font-size-sm, 12px); font-weight: var(--pages-font-weight-semibold, 600); margin: var(--pages-space-4, 1rem) 0 var(--pages-space-2, 0.5rem); color: var(--pages-neutral-9, #737373); text-transform: uppercase; letter-spacing: 0.05em; }
+    .alias-editor { margin-bottom: var(--pages-space-4, 1rem); }
+    .alias-row { display: flex; gap: var(--pages-space-2, 0.5rem); align-items: center; margin-bottom: var(--pages-space-1-5, 0.35rem); flex-wrap: wrap; }
+    .alias-key-input { width: 140px; padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--pages-font-size-sm, 12px); }
+    .alias-key-input:focus { outline: 2px solid var(--pages-accent-7, #3b82f6); outline-offset: -1px; }
+    .alias-field { padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-size: var(--pages-font-size-sm, 12px); min-width: 80px; }
+    .alias-field select { background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-12, #111); border: none; }
+    .alias-duplicate-error { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-danger-9, #dc2626); }
+    .alias-stale-warning { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-warning-9, #d97706); }
+    .delete-btn { background: none; border: none; color: var(--pages-danger-9, #dc2626); cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
+    .add-alias-btn { font-size: var(--pages-font-size-sm, 12px); padding: var(--pages-space-1, 0.25rem) var(--pages-space-2, 0.5rem); border: 1px dashed var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: transparent; color: var(--pages-neutral-9, #737373); cursor: pointer; }
+    .add-alias-btn:hover { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-9, #3b82f6); }
+    .prompt-preview { padding: var(--pages-space-3, 0.75rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-3, 6px); font-size: var(--pages-font-size-base, 14px); line-height: var(--pages-line-height-base, 1.5); white-space: pre-wrap; min-height: 3rem; color: var(--pages-neutral-11, #404040); }
+    .prompt-label { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-neutral-8, #a3a3a3); margin-bottom: var(--pages-space-1, 0.25rem); }
+    .prompt-empty { color: var(--pages-neutral-8, #a3a3a3); font-style: italic; }
+    .error-banner { background: var(--pages-danger-9, #dc2626); color: white; padding: var(--pages-space-2, 0.5rem) var(--pages-space-4, 1rem); border-radius: var(--pages-radius-2, 4px); display: flex; align-items: center; gap: var(--pages-space-2, 0.5rem); margin-bottom: var(--pages-space-3, 0.75rem); }
+    .retry-btn { padding: 2px var(--pages-space-2, 0.5rem); border: 1px solid white; border-radius: var(--pages-radius-2, 4px); background: transparent; color: white; cursor: pointer; font-size: var(--pages-font-size-sm, 12px); }
+    .loading { display: flex; align-items: center; justify-content: center; padding: var(--pages-space-8, 2rem); color: var(--pages-neutral-9, #737373); }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--pages-neutral-5, #d4d4d4); border-top-color: var(--pages-neutral-11, #404040); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: var(--pages-space-2, 0.5rem); }
     @keyframes spin { to { transform: rotate(360deg); } }
   `;
 
