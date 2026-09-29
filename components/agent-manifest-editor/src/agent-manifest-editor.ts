@@ -256,12 +256,42 @@ export class AgentManifestEditor extends LitElement {
     return key !== '' && this._aliases.some((a, i) => i !== idx && a.key === key);
   }
 
-  private _isStalePreferVendor(vendor?: string): boolean {
-    if (!vendor) return false;
+  private _getAllSelectedModels(): ModelDescriptor[] {
+    const models: ModelDescriptor[] = [];
     for (const [, state] of this._providerStates) {
-      if (state.vendor === vendor && state.selectedModels.length > 0) return false;
+      models.push(...state.selectedModels);
     }
-    return true;
+    return models;
+  }
+
+  private _resolveAlias(alias: AliasDeclaration): ModelDescriptor | null {
+    const allModels = this._getAllSelectedModels();
+    const candidates = allModels.filter(m => {
+      if (alias.tier && m.tier !== alias.tier) return false;
+      if (alias.capabilities?.length) {
+        if (!alias.capabilities.every(c => m.capabilities?.includes(c))) return false;
+      }
+      if (alias.locality && m.locality !== alias.locality) return false;
+      if (alias.maxCost) {
+        const costOrder = ['FREE', 'LOW', 'MEDIUM', 'HIGH', 'PREMIUM'];
+        if (costOrder.indexOf(m.costTier ?? 'MEDIUM') > costOrder.indexOf(alias.maxCost)) return false;
+      }
+      if (alias.minContext && (m.contextWindow ?? 0) < alias.minContext) return false;
+      if (alias.minOutput && (m.maxOutput ?? 0) < alias.minOutput) return false;
+      return true;
+    });
+    if (candidates.length === 0) return null;
+    const tierRank: Record<string, number> = { FLAGSHIP: 0, STANDARD: 1, FAST: 2, EMBEDDING: 3 };
+    candidates.sort((a, b) => {
+      const aPreferred = alias.preferVendor && a.vendor === alias.preferVendor ? 0 : 1;
+      const bPreferred = alias.preferVendor && b.vendor === alias.preferVendor ? 0 : 1;
+      if (aPreferred !== bPreferred) return aPreferred - bPreferred;
+      const aTier = tierRank[a.tier ?? 'STANDARD'] ?? 1;
+      const bTier = tierRank[b.tier ?? 'STANDARD'] ?? 1;
+      if (aTier !== bTier) return aTier - bTier;
+      return (b.contextWindow ?? 0) - (a.contextWindow ?? 0);
+    });
+    return candidates[0]!;
   }
 
   private _getModelsForProvider(vendor: string): ModelDescriptor[] {
@@ -321,7 +351,9 @@ export class AgentManifestEditor extends LitElement {
     .alias-field { padding: var(--pages-space-1-5, 0.3rem); background: var(--pages-neutral-2, #f5f5f5); border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: var(--pages-radius-2, 4px); color: var(--pages-neutral-12, #111); font-size: var(--pages-font-size-sm, 12px); min-width: 80px; }
     .alias-field select { background: var(--pages-neutral-2, #f5f5f5); color: var(--pages-neutral-12, #111); border: none; }
     .alias-duplicate-error { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-danger-9, #dc2626); }
-    .alias-stale-warning { font-size: var(--pages-font-size-xs, 11px); color: var(--pages-warning-9, #d97706); }
+    .alias-resolution { font-size: var(--pages-font-size-sm, 12px); font-family: 'SF Mono', 'Fira Code', monospace; white-space: nowrap; }
+    .alias-resolution.match { color: var(--pages-success-11, #15803d); }
+    .alias-resolution.no-match { color: var(--pages-warning-9, #d97706); }
     .delete-btn { background: none; border: none; color: var(--pages-danger-9, #dc2626); cursor: pointer; font-size: 0.9rem; padding: 0.2rem; }
     .add-alias-btn { font-size: var(--pages-font-size-sm, 12px); padding: var(--pages-space-1, 0.25rem) var(--pages-space-2, 0.5rem); border: 1px dashed var(--pages-neutral-6, #d4d4d4); border-radius: var(--pages-radius-2, 4px); background: transparent; color: var(--pages-neutral-9, #737373); cursor: pointer; }
     .add-alias-btn:hover { border-color: var(--pages-accent-7, #3b82f6); color: var(--pages-accent-9, #3b82f6); }
@@ -365,7 +397,9 @@ export class AgentManifestEditor extends LitElement {
     if (this._aliases.length === 0) return 'incomplete';
     const allKeysValid = this._aliases.every(a => a.key !== '');
     const noDuplicates = !this._aliases.some((a, i) => this._hasDuplicateAliasKey(a.key, i));
-    if (allKeysValid && noDuplicates) return 'complete';
+    const allResolve = this._aliases.every(a => this._resolveAlias(a.declaration) !== null);
+    if (allKeysValid && noDuplicates && allResolve) return 'complete';
+    if (allKeysValid && noDuplicates) return 'warning';
     return 'incomplete';
   }
 
@@ -478,7 +512,7 @@ export class AgentManifestEditor extends LitElement {
 
   private _renderAliasRow(row: AliasRow, idx: number) {
     const duplicate = this._hasDuplicateAliasKey(row.key, idx);
-    const staleVendor = this._isStalePreferVendor(row.declaration.preferVendor);
+    const resolved = this._resolveAlias(row.declaration);
 
     return html`
       <div class="alias-row">
@@ -500,8 +534,10 @@ export class AgentManifestEditor extends LitElement {
                .value=${row.declaration.preferVendor ?? ''}
                @input=${(e: Event) => this._updateAliasField(idx, 'preferVendor', (e.target as HTMLInputElement).value || undefined)}>
         <button class="delete-btn" @click=${() => this._removeAlias(idx)}>✗</button>
+        <span class="alias-resolution ${resolved ? 'match' : 'no-match'}" aria-live="polite">
+          → ${resolved ? (resolved.displayName ?? resolved.id) : '(no match)'}
+        </span>
         ${duplicate ? html`<span class="alias-duplicate-error">Duplicate key</span>` : nothing}
-        ${staleVendor ? html`<span class="alias-stale-warning" title="No models configured for this vendor">⚠</span>` : nothing}
       </div>
     `;
   }
