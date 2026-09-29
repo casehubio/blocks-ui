@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { registerCollection, mythicCollection, chibiCollection, donutCreekCollection, neonCollection } from '../../../packages/agent-avatar-2d/src/index.js';
+import { registerCollection, mythicCollection, chibiCollection, neonCollection } from '../../../packages/agent-avatar-2d/src/index.js';
 import '../../../components/avatar-step/src/avatar-step.js';
 
 @customElement('blocks-example-avatar-step')
@@ -22,7 +22,6 @@ export class AvatarStepPage extends LitElement {
     super.connectedCallback();
     registerCollection(mythicCollection);
     registerCollection(chibiCollection);
-    registerCollection(donutCreekCollection);
     registerCollection(neonCollection);
   }
 

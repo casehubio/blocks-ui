@@ -30,16 +30,16 @@ describe('agent-manifest-editor', () => {
   });
 
   describe('layout', () => {
-    it('renders preset bar with 4 presets', async () => {
+    it('renders preset bar with 5 presets', async () => {
       await el.updateComplete;
       const presets = el.shadowRoot!.querySelectorAll('.preset-card');
-      expect(presets.length).toBe(4);
+      expect(presets.length).toBe(5);
     });
 
-    it('renders provider cards (4 built-in + Other)', async () => {
+    it('renders provider cards (5 built-in + Other)', async () => {
       await el.updateComplete;
       const cards = el.shadowRoot!.querySelectorAll('manifest-provider-card');
-      expect(cards.length).toBe(5);
+      expect(cards.length).toBe(6);
     });
 
     it('renders alias editor section', async () => {

@@ -30,6 +30,7 @@ export interface AgentManifestEditorProps {
 
 const BUILT_IN_PROVIDERS = [
   { vendor: 'anthropic', displayName: 'Anthropic' },
+  { vendor: 'vertex-ai', displayName: 'Vertex AI' },
   { vendor: 'openai', displayName: 'OpenAI' },
   { vendor: 'google', displayName: 'Google' },
   { vendor: 'ollama', displayName: 'Ollama' },

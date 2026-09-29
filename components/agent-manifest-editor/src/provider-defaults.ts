@@ -22,6 +22,11 @@ export const PROVIDER_DEFAULTS: Record<string, ProviderInferenceRanges> = {
     topP: { min: 0, max: 1, default: 1 },
     maxTokens: { min: 1, max: 8192, default: 4096 },
   },
+  'vertex-ai': {
+    temperature: { min: 0, max: 1, default: 1 },
+    topP: { min: 0, max: 1, default: 1 },
+    maxTokens: { min: 1, max: 8192, default: 4096 },
+  },
   openai: {
     temperature: { min: 0, max: 2, default: 1 },
     topP: { min: 0, max: 1, default: 1 },

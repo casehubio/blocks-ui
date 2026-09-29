@@ -100,13 +100,14 @@ describe('agent-manifest-editor integration', () => {
     }
   });
 
-  it('provider cards render for all 4 built-in providers plus Other', async () => {
+  it('provider cards render for all 5 built-in providers plus Other', async () => {
     await el.updateComplete;
     const cards = el.shadowRoot!.querySelectorAll('manifest-provider-card');
-    expect(cards.length).toBe(5);
+    expect(cards.length).toBe(6);
 
     const vendors = Array.from(cards).map(c => (c as any).vendor);
     expect(vendors).toContain('anthropic');
+    expect(vendors).toContain('vertex-ai');
     expect(vendors).toContain('openai');
     expect(vendors).toContain('google');
     expect(vendors).toContain('ollama');
