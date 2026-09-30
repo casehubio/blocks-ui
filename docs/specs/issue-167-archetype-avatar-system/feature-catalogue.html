@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Feature Catalogue — Mouths, Noses, Eyes</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #2a2a2a; color: #ccc; font-family: 'Courier New', monospace; padding: 20px; }
+h1 { color: #e8c060; font-size: 20px; margin-bottom: 4px; }
+.subtitle { color: #888; font-size: 13px; margin-bottom: 30px; }
+h2 { color: #e8c060; font-size: 16px; margin: 30px 0 10px; border-bottom: 1px solid #444; padding-bottom: 6px; }
+h3 { color: #aaa; font-size: 13px; margin: 16px 0 6px; }
+.row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; padding: 10px 0; }
+.cell { text-align: center; }
+.cell svg { border: 1px solid #444; border-radius: 3px; display: block; margin: 0 auto 4px; image-rendering: pixelated; }
+.label { font-size: 11px; color: #e8c060; font-weight: bold; }
+.desc { font-size: 10px; color: #888; max-width: 130px; margin: 2px auto 0; line-height: 1.3; }
+.gender { font-size: 9px; padding: 1px 6px; border-radius: 3px; display: inline-block; margin-top: 3px; }
+.male { background: #2c3e6b; color: #8ab4f8; }
+.female { background: #6b2c4e; color: #f8a0c8; }
+.neutral { background: #3a3a3a; color: #aaa; }
+.section-note { background: #1e1e1e; border-left: 3px solid #e67e22; padding: 10px 14px; margin: 10px 0 20px; font-size: 12px; line-height: 1.6; color: #bbb; max-width: 900px; }
+.existing { border-color: #444 !important; }
+.new { border-color: #2ecc71 !important; border-width: 2px !important; }
+.tag { font-size: 8px; padding: 1px 4px; border-radius: 2px; display: inline-block; margin-bottom: 2px; }
+.tag-existing { background: #333; color: #888; }
+.tag-new { background: #1a4a2a; color: #2ecc71; }
+.combo-row { display: flex; gap: 24px; flex-wrap: wrap; padding: 10px 0; }
+.combo { text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Feature Catalogue — Composable Parts</h1>
+<div class="subtitle">Existing parts extracted from heads + new variations. Green border = new.<br>
+All rendered on head-standard at canonical positions. Skin: #d4a574.</div>
+
+<!-- ============================================ -->
+<!-- MOUTHS                                       -->
+<!-- ============================================ -->
+<h2>MOUTHS (8 variations)</h2>
+
+<div class="section-note">
+<strong>Male/female strategy:</strong> No gender field — mouth type IS the signal.<br>
+<strong>Male (line-*):</strong> Dark crease only, no fill. Varies in width and shape.<br>
+<strong>Female (lips-*):</strong> Visible lip colour (#cc8888/#cc7777 rose). The classic pixel art gender cue.<br>
+<strong>Neutral:</strong> smile and small — no strong gender read.
+</div>
+
+<div class="row">
+
+<!-- mouth-line-neutral (EXISTING) -->
+<div class="cell">
+  <span class="tag tag-existing">existing</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="existing"
+       style="--skin:#d4a574; background:#d4a574">
+    <!-- Upper lip shadow -->
+    <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.06"/>
+    <!-- Main mouth line -->
+    <rect x="90" y="94" width="20" height="2" fill="#000" opacity="0.3"/>
+    <!-- Corner fades -->
+    <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <!-- Under-lip shadow -->
+    <rect x="92" y="96" width="16" height="2" fill="#000" opacity="0.07"/>
+  </svg>
+  <div class="label">line-neutral</div>
+  <div class="desc">20px dark crease, no lip colour</div>
+  <span class="gender male">masculine</span>
+</div>
+
+<!-- mouth-line-wide (EXISTING - from Jester) -->
+<div class="cell">
+  <span class="tag tag-existing">existing</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="74 90 52 14" width="216" height="58" class="existing"
+       style="--skin:#d4a574; background:#d4a574">
+    <!-- Upper lip shadow -->
+    <rect x="88" y="92" width="24" height="2" fill="#000" opacity="0.06"/>
+    <!-- Upturned corners -->
+    <rect x="82" y="92" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="116" y="92" width="2" height="2" fill="#000" opacity="0.12"/>
+    <!-- Main mouth line -->
+    <rect x="84" y="94" width="32" height="2" fill="#000" opacity="0.3"/>
+    <rect x="82" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <rect x="116" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <!-- Under-lip shadow -->
+    <rect x="86" y="96" width="28" height="2" fill="#000" opacity="0.07"/>
+  </svg>
+  <div class="label">line-wide</div>
+  <div class="desc">32px grin, upturned corners</div>
+  <span class="gender male">masculine</span>
+</div>
+
+<!-- mouth-line-stern (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <rect x="94" y="92" width="12" height="2" fill="#000" opacity="0.06"/>
+    <!-- Main mouth line -->
+    <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.3"/>
+    <!-- Downturned corners -->
+    <rect x="90" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="108" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="94" y="96" width="12" height="2" fill="#000" opacity="0.06"/>
+  </svg>
+  <div class="label">line-stern</div>
+  <div class="desc">16px, downturned corners</div>
+  <span class="gender male">masculine</span>
+</div>
+
+<!-- mouth-smile (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.06"/>
+    <!-- Upturned corners -->
+    <rect x="88" y="92" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="110" y="92" width="2" height="2" fill="#000" opacity="0.12"/>
+    <!-- Main mouth line -->
+    <rect x="90" y="94" width="20" height="2" fill="#000" opacity="0.28"/>
+    <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.14"/>
+    <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.14"/>
+    <rect x="92" y="96" width="16" height="2" fill="#000" opacity="0.07"/>
+  </svg>
+  <div class="label">smile</div>
+  <div class="desc">20px, upturned corners</div>
+  <span class="gender neutral">neutral</span>
+</div>
+
+<!-- mouth-lips-natural (NEW - female) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <!-- Upper lip (colored) -->
+    <rect x="92" y="92" width="16" height="2" fill="#cc8888" opacity="0.45"/>
+    <!-- Mouth crease (softer) -->
+    <rect x="90" y="94" width="20" height="2" fill="#000" opacity="0.18"/>
+    <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.08"/>
+    <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.08"/>
+    <!-- Lower lip (colored) -->
+    <rect x="92" y="96" width="16" height="2" fill="#cc8888" opacity="0.3"/>
+    <rect x="94" y="98" width="12" height="2" fill="#cc8888" opacity="0.12"/>
+  </svg>
+  <div class="label">lips-natural</div>
+  <div class="desc">Subtle rose lip colour, standard width</div>
+  <span class="gender female">feminine</span>
+</div>
+
+<!-- mouth-lips-full (NEW - female) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 88 36 18" width="216" height="108" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <!-- Cupid's bow peaks -->
+    <rect x="96" y="90" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+    <rect x="102" y="90" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+    <!-- Upper lip (prominent) -->
+    <rect x="90" y="92" width="20" height="2" fill="#cc7777" opacity="0.5"/>
+    <!-- Mouth crease (soft) -->
+    <rect x="88" y="94" width="24" height="2" fill="#000" opacity="0.15"/>
+    <!-- Lower lip (fuller) -->
+    <rect x="90" y="96" width="20" height="2" fill="#cc7777" opacity="0.45"/>
+    <rect x="92" y="98" width="16" height="2" fill="#cc7777" opacity="0.2"/>
+    <rect x="94" y="100" width="12" height="2" fill="#cc7777" opacity="0.08"/>
+  </svg>
+  <div class="label">lips-full</div>
+  <div class="desc">Cupid's bow, prominent rose, fuller lower lip</div>
+  <span class="gender female">feminine</span>
+</div>
+
+<!-- mouth-smirk (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <rect x="94" y="92" width="14" height="2" fill="#000" opacity="0.06"/>
+    <!-- Right corner up -->
+    <rect x="108" y="92" width="2" height="2" fill="#000" opacity="0.15"/>
+    <!-- Main mouth line (asymmetric) -->
+    <rect x="92" y="94" width="18" height="2" fill="#000" opacity="0.28"/>
+    <!-- Left corner neutral -->
+    <rect x="90" y="94" width="2" height="2" fill="#000" opacity="0.14"/>
+    <rect x="94" y="96" width="14" height="2" fill="#000" opacity="0.06"/>
+  </svg>
+  <div class="label">smirk</div>
+  <div class="desc">Asymmetric, one corner up</div>
+  <span class="gender neutral">neutral</span>
+</div>
+
+<!-- mouth-small (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 90 36 14" width="216" height="84" class="new"
+       style="--skin:#d4a574; background:#d4a574">
+    <rect x="96" y="92" width="8" height="2" fill="#000" opacity="0.04"/>
+    <!-- Small mouth line -->
+    <rect x="94" y="94" width="12" height="2" fill="#000" opacity="0.25"/>
+    <rect x="92" y="94" width="2" height="2" fill="#000" opacity="0.1"/>
+    <rect x="106" y="94" width="2" height="2" fill="#000" opacity="0.1"/>
+    <rect x="96" y="96" width="8" height="2" fill="#000" opacity="0.05"/>
+  </svg>
+  <div class="label">small</div>
+  <div class="desc">14px, understated/quiet</div>
+  <span class="gender neutral">neutral</span>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- NOSES                                        -->
+<!-- ============================================ -->
+<h2>NOSES (6 variations)</h2>
+
+<div class="row">
+
+<!-- nose-subtle (EXISTING) -->
+<div class="cell">
+  <span class="tag tag-existing">existing</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 82 24 14" width="192" height="112" class="existing"
+       style="background:#d4a574">
+    <!-- Bridge shadow -->
+    <rect x="98" y="84" width="4" height="8" fill="#000" opacity="0.1"/>
+    <!-- Nostril dots -->
+    <rect x="96" y="90" width="2" height="2" fill="#000" opacity="0.18"/>
+    <rect x="102" y="90" width="2" height="2" fill="#000" opacity="0.18"/>
+    <!-- Highlight -->
+    <rect x="102" y="86" width="2" height="4" fill="#fff" opacity="0.06"/>
+  </svg>
+  <div class="label">subtle</div>
+  <div class="desc">Minimal bridge shadow, small nostrils</div>
+</div>
+
+<!-- nose-prominent (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="86 80 28 16" width="192" height="110" class="new"
+       style="background:#d4a574">
+    <!-- Wider bridge -->
+    <rect x="96" y="82" width="8" height="10" fill="#000" opacity="0.12"/>
+    <!-- Side shadows -->
+    <rect x="94" y="86" width="2" height="6" fill="#000" opacity="0.08"/>
+    <rect x="104" y="86" width="2" height="6" fill="#000" opacity="0.08"/>
+    <!-- Large nostrils -->
+    <rect x="94" y="92" width="2" height="2" fill="#000" opacity="0.22"/>
+    <rect x="104" y="92" width="2" height="2" fill="#000" opacity="0.22"/>
+    <!-- Nose base -->
+    <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.06"/>
+    <!-- Highlight -->
+    <rect x="104" y="84" width="2" height="6" fill="#fff" opacity="0.08"/>
+  </svg>
+  <div class="label">prominent</div>
+  <div class="desc">Wider bridge, large nostrils, stronger shadow</div>
+</div>
+
+<!-- nose-button (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="86 84 28 12" width="192" height="82" class="new"
+       style="background:#d4a574">
+    <!-- Short bridge -->
+    <rect x="98" y="86" width="4" height="4" fill="#000" opacity="0.08"/>
+    <!-- Round tip -->
+    <rect x="96" y="88" width="8" height="2" fill="#000" opacity="0.1"/>
+    <!-- Wide nostrils -->
+    <rect x="94" y="90" width="4" height="2" fill="#000" opacity="0.18"/>
+    <rect x="102" y="90" width="4" height="2" fill="#000" opacity="0.18"/>
+    <!-- Base -->
+    <rect x="94" y="92" width="12" height="2" fill="#000" opacity="0.05"/>
+    <!-- Highlight -->
+    <rect x="100" y="86" width="2" height="2" fill="#fff" opacity="0.08"/>
+  </svg>
+  <div class="label">button</div>
+  <div class="desc">Short, wider, round tip</div>
+</div>
+
+<!-- nose-narrow (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 82 24 14" width="192" height="112" class="new"
+       style="background:#d4a574">
+    <!-- Thin bridge -->
+    <rect x="98" y="84" width="4" height="8" fill="#000" opacity="0.07"/>
+    <!-- Small nostrils -->
+    <rect x="96" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="102" y="90" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="102" y="86" width="2" height="4" fill="#fff" opacity="0.04"/>
+  </svg>
+  <div class="label">narrow</div>
+  <div class="desc">Thin bridge, minimal nostrils</div>
+</div>
+
+<!-- nose-aquiline (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="86 80 28 18" width="192" height="124" class="new"
+       style="background:#d4a574">
+    <!-- Long bridge -->
+    <rect x="98" y="82" width="4" height="12" fill="#000" opacity="0.12"/>
+    <!-- Side shadows -->
+    <rect x="96" y="84" width="2" height="8" fill="#000" opacity="0.06"/>
+    <rect x="102" y="84" width="2" height="8" fill="#000" opacity="0.06"/>
+    <!-- Nostrils -->
+    <rect x="96" y="92" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="102" y="92" width="2" height="2" fill="#000" opacity="0.2"/>
+    <!-- Base -->
+    <rect x="94" y="94" width="12" height="2" fill="#000" opacity="0.06"/>
+    <!-- Strong bridge highlight -->
+    <rect x="102" y="84" width="2" height="6" fill="#fff" opacity="0.08"/>
+  </svg>
+  <div class="label">aquiline</div>
+  <div class="desc">Longer bridge, pronounced tip</div>
+</div>
+
+<!-- nose-broad (NEW) -->
+<div class="cell">
+  <span class="tag tag-new">new</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="84 84 32 12" width="192" height="72" class="new"
+       style="background:#d4a574">
+    <!-- Moderate bridge -->
+    <rect x="96" y="86" width="8" height="4" fill="#000" opacity="0.08"/>
+    <!-- Wide nostrils -->
+    <rect x="92" y="90" width="4" height="2" fill="#000" opacity="0.18"/>
+    <rect x="104" y="90" width="4" height="2" fill="#000" opacity="0.18"/>
+    <!-- Wide base -->
+    <rect x="90" y="92" width="20" height="2" fill="#000" opacity="0.05"/>
+    <!-- Highlight -->
+    <rect x="102" y="86" width="2" height="4" fill="#fff" opacity="0.06"/>
+  </svg>
+  <div class="label">broad</div>
+  <div class="desc">Wide base, flatter bridge</div>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- FULL FACE COMBINATIONS                       -->
+<!-- ============================================ -->
+<h2>Combination Examples — Full Face on Head</h2>
+<div class="section-note">
+Each face shows head-standard + eyes-standard + a nose + a mouth composed together.
+Demonstrates how the features read when combined on actual skin.
+</div>
+
+<div class="combo-row">
+
+<!-- Male neutral -->
+<div class="combo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="62 56 76 60" width="190" height="150"
+       style="--skin:#d4a574; background:#333; image-rendering:pixelated">
+    <!-- Head skin area -->
+    <rect x="68" y="56" width="64" height="60" fill="var(--skin)"/>
+    <!-- Ears -->
+    <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
+    <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
+    <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
+    <!-- Eyes standard -->
+    <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="88" y="70" width="6" height="6" fill="#4a6fa5"/>
+    <rect x="90" y="70" width="4" height="6" fill="#3a5a85"/>
+    <rect x="90" y="72" width="4" height="4" fill="#111"/>
+    <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+    <rect x="106" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="106" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="110" y="70" width="6" height="6" fill="#4a6fa5"/>
+    <rect x="112" y="70" width="4" height="6" fill="#3a5a85"/>
+    <rect x="112" y="72" width="4" height="4" fill="#111"/>
+    <rect x="110" y="70" width="2" height="2" fill="#fff"/>
+    <!-- Nose subtle -->
+    <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.1"/>
+    <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.18"/>
+    <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.18"/>
+    <rect x="102" y="84" width="2" height="4" fill="#fff" opacity="0.06"/>
+    <!-- Mouth line-neutral -->
+    <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.06"/>
+    <rect x="90" y="94" width="20" height="2" fill="#000" opacity="0.3"/>
+    <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.15"/>
+    <rect x="92" y="96" width="16" height="2" fill="#000" opacity="0.07"/>
+    <!-- Cheek blush -->
+    <rect x="72" y="84" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+    <rect x="120" y="84" width="8" height="8" fill="#cc7766" opacity="0.1"/>
+  </svg>
+  <div class="label">Male neutral</div>
+  <div class="desc">subtle nose + line-neutral mouth</div>
+</div>
+
+<!-- Female natural -->
+<div class="combo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="62 56 76 60" width="190" height="150"
+       style="--skin:#d4a574; background:#333; image-rendering:pixelated">
+    <rect x="68" y="56" width="64" height="60" fill="var(--skin)"/>
+    <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
+    <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
+    <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
+    <!-- Eyes standard -->
+    <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="88" y="70" width="6" height="6" fill="#4a6fa5"/>
+    <rect x="90" y="70" width="4" height="6" fill="#3a5a85"/>
+    <rect x="90" y="72" width="4" height="4" fill="#111"/>
+    <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+    <rect x="106" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="106" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="110" y="70" width="6" height="6" fill="#4a6fa5"/>
+    <rect x="112" y="70" width="4" height="6" fill="#3a5a85"/>
+    <rect x="112" y="72" width="4" height="4" fill="#111"/>
+    <rect x="110" y="70" width="2" height="2" fill="#fff"/>
+    <!-- Nose narrow -->
+    <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.07"/>
+    <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+    <!-- Mouth lips-natural -->
+    <rect x="92" y="92" width="16" height="2" fill="#cc8888" opacity="0.45"/>
+    <rect x="90" y="94" width="20" height="2" fill="#000" opacity="0.18"/>
+    <rect x="88" y="94" width="2" height="2" fill="#000" opacity="0.08"/>
+    <rect x="110" y="94" width="2" height="2" fill="#000" opacity="0.08"/>
+    <rect x="92" y="96" width="16" height="2" fill="#cc8888" opacity="0.3"/>
+    <rect x="94" y="98" width="12" height="2" fill="#cc8888" opacity="0.12"/>
+    <!-- Cheek blush (warmer) -->
+    <rect x="72" y="84" width="8" height="8" fill="#cc7766" opacity="0.18"/>
+    <rect x="120" y="84" width="8" height="8" fill="#cc7766" opacity="0.14"/>
+  </svg>
+  <div class="label">Female natural</div>
+  <div class="desc">narrow nose + lips-natural mouth</div>
+</div>
+
+<!-- Female full -->
+<div class="combo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="62 56 76 62" width="190" height="155"
+       style="--skin:#d4a574; background:#333; image-rendering:pixelated">
+    <rect x="68" y="56" width="64" height="62" fill="var(--skin)"/>
+    <rect x="64" y="68" width="4" height="12" fill="var(--skin)"/>
+    <rect x="62" y="70" width="2" height="8" fill="var(--skin)"/>
+    <rect x="132" y="68" width="4" height="12" fill="var(--skin)"/>
+    <!-- Eyes standard -->
+    <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="88" y="70" width="6" height="6" fill="#8b2252"/>
+    <rect x="90" y="70" width="4" height="6" fill="#6a1a40"/>
+    <rect x="90" y="72" width="4" height="4" fill="#111"/>
+    <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+    <rect x="106" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="106" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="110" y="70" width="6" height="6" fill="#8b2252"/>
+    <rect x="112" y="70" width="4" height="6" fill="#6a1a40"/>
+    <rect x="112" y="72" width="4" height="4" fill="#111"/>
+    <rect x="110" y="70" width="2" height="2" fill="#fff"/>
+    <!-- Nose narrow -->
+    <rect x="98" y="82" width="4" height="8" fill="#000" opacity="0.07"/>
+    <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+    <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.12"/>
+    <!-- Mouth lips-full -->
+    <rect x="96" y="90" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+    <rect x="102" y="90" width="2" height="2" fill="#cc7777" opacity="0.3"/>
+    <rect x="90" y="92" width="20" height="2" fill="#cc7777" opacity="0.5"/>
+    <rect x="88" y="94" width="24" height="2" fill="#000" opacity="0.15"/>
+    <rect x="90" y="96" width="20" height="2" fill="#cc7777" opacity="0.45"/>
+    <rect x="92" y="98" width="16" height="2" fill="#cc7777" opacity="0.2"/>
+    <rect x="94" y="100" width="12" height="2" fill="#cc7777" opacity="0.08"/>
+    <!-- Cheek blush (warmer) -->
+    <rect x="72" y="84" width="8" height="8" fill="#cc7766" opacity="0.2"/>
+    <rect x="120" y="84" width="8" height="8" fill="#cc7766" opacity="0.16"/>
+  </svg>
+  <div class="label">Female full</div>
+  <div class="desc">narrow nose + lips-full mouth (Lover palette)</div>
+</div>
+
+<!-- Male stern -->
+<div class="combo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="62 56 76 60" width="190" height="150"
+       style="--skin:#c8a882; background:#333; image-rendering:pixelated">
+    <rect x="68" y="56" width="64" height="60" fill="#c8a882"/>
+    <rect x="64" y="68" width="4" height="12" fill="#c8a882"/>
+    <rect x="62" y="70" width="2" height="8" fill="#c8a882"/>
+    <rect x="132" y="68" width="4" height="12" fill="#c8a882"/>
+    <!-- Eyes standard -->
+    <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+    <rect x="88" y="70" width="6" height="6" fill="#8b1a1a"/>
+    <rect x="90" y="70" width="4" height="6" fill="#6a1515"/>
+    <rect x="90" y="72" width="4" height="4" fill="#111"/>
+    <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+    <rect x="106" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="106" y="68" width="14" height="2" fill="#3a2520" opacity="0.6"/>
+    <rect x="110" y="70" width="6" height="6" fill="#8b1a1a"/>
+    <rect x="112" y="70" width="4" height="6" fill="#6a1515"/>
+    <rect x="112" y="72" width="4" height="4" fill="#111"/>
+    <rect x="110" y="70" width="2" height="2" fill="#fff"/>
+    <!-- Nose prominent -->
+    <rect x="96" y="82" width="8" height="10" fill="#000" opacity="0.12"/>
+    <rect x="94" y="86" width="2" height="6" fill="#000" opacity="0.08"/>
+    <rect x="104" y="86" width="2" height="6" fill="#000" opacity="0.08"/>
+    <rect x="94" y="92" width="2" height="2" fill="#000" opacity="0.22"/>
+    <rect x="104" y="92" width="2" height="2" fill="#000" opacity="0.22"/>
+    <rect x="104" y="84" width="2" height="6" fill="#fff" opacity="0.08"/>
+    <!-- Mouth line-stern -->
+    <rect x="94" y="92" width="12" height="2" fill="#000" opacity="0.06"/>
+    <rect x="92" y="94" width="16" height="2" fill="#000" opacity="0.3"/>
+    <rect x="90" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="108" y="96" width="2" height="2" fill="#000" opacity="0.2"/>
+    <!-- Cheek blush (subtle) -->
+    <rect x="72" y="84" width="8" height="8" fill="#cc7766" opacity="0.1"/>
+    <rect x="120" y="84" width="8" height="8" fill="#cc7766" opacity="0.08"/>
+  </svg>
+  <div class="label">Male stern</div>
+  <div class="desc">prominent nose + line-stern (Hero palette)</div>
+</div>
+
+<!-- Smirk + aquiline -->
+<div class="combo">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="62 56 76 60" width="190" height="150"
+       style="--skin:#c8a882; background:#333; image-rendering:pixelated">
+    <rect x="68" y="56" width="64" height="60" fill="#c8a882"/>
+    <rect x="64" y="68" width="4" height="12" fill="#c8a882"/>
+    <rect x="62" y="70" width="2" height="8" fill="#c8a882"/>
+    <rect x="132" y="68" width="4" height="12" fill="#c8a882"/>
+    <!-- Eyes -->
+    <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="88" y="70" width="6" height="6" fill="#1a1a1a"/>
+    <rect x="90" y="70" width="4" height="6" fill="#111"/>
+    <rect x="90" y="72" width="4" height="4" fill="#111"/>
+    <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+    <rect x="106" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+    <rect x="106" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+    <rect x="110" y="70" width="6" height="6" fill="#1a1a1a"/>
+    <rect x="112" y="70" width="4" height="6" fill="#111"/>
+    <rect x="112" y="72" width="4" height="4" fill="#111"/>
+    <rect x="110" y="70" width="2" height="2" fill="#fff"/>
+    <!-- Nose aquiline -->
+    <rect x="98" y="80" width="4" height="12" fill="#000" opacity="0.12"/>
+    <rect x="96" y="82" width="2" height="8" fill="#000" opacity="0.06"/>
+    <rect x="102" y="82" width="2" height="8" fill="#000" opacity="0.06"/>
+    <rect x="96" y="90" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="102" y="90" width="2" height="2" fill="#000" opacity="0.2"/>
+    <rect x="102" y="82" width="2" height="6" fill="#fff" opacity="0.08"/>
+    <!-- Mouth smirk -->
+    <rect x="94" y="92" width="14" height="2" fill="#000" opacity="0.06"/>
+    <rect x="108" y="92" width="2" height="2" fill="#000" opacity="0.15"/>
+    <rect x="92" y="94" width="18" height="2" fill="#000" opacity="0.28"/>
+    <rect x="90" y="94" width="2" height="2" fill="#000" opacity="0.14"/>
+    <rect x="94" y="96" width="14" height="2" fill="#000" opacity="0.06"/>
+  </svg>
+  <div class="label">Rebel smirk</div>
+  <div class="desc">aquiline nose + smirk (Rebel palette)</div>
+</div>
+
+</div>
+
+</body>
+</html>

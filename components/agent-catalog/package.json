@@ -1,0 +1,18 @@
+{
+  "name": "@casehubio/agent-catalog",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@casehubio/agent-avatar-2d": "workspace:*",
+    "@casehubio/avatar-step": "workspace:*",
+    "@casehubio/blocks-ui-core": "workspace:*",
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  },
+  "scripts": {
+    "test": "vitest run"
+  }
+}

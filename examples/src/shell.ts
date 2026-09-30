@@ -98,6 +98,13 @@ const NAV: NavCategory[] = [
       { id: 'workspace-status', label: 'Workspace Status', hash: '#document-workbench/workspace-status' },
     ],
   },
+  {
+    label: 'Agent Setup',
+    items: [
+      { id: 'avatar-step', label: 'Personality Profiler', hash: '#agent-setup/avatar-step' },
+      { id: 'manifest-editor', label: 'Manifest Editor', hash: '#agent-setup/manifest-editor' },
+    ],
+  },
 ];
 
 
@@ -315,6 +322,8 @@ export class ExampleShell extends LitElement {
       case '#document-workbench/brainstorm-options': return html`<blocks-example-brainstorm-options></blocks-example-brainstorm-options>`;
       case '#document-workbench/brainstorm-picker': return html`<blocks-example-brainstorm-picker></blocks-example-brainstorm-picker>`;
       case '#document-workbench/workspace-status': return html`<blocks-example-workspace-status></blocks-example-workspace-status>`;
+      case '#agent-setup/avatar-step': return html`<blocks-example-avatar-step></blocks-example-avatar-step>`;
+      case '#agent-setup/manifest-editor': return html`<blocks-example-manifest-editor></blocks-example-manifest-editor>`;
       default: return html`<blocks-example-workbench></blocks-example-workbench>`;
     }
   }

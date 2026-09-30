@@ -45,6 +45,11 @@ import type { CommitmentRangeBarProps, CommitmentTransitionBadgeProps } from '@c
 import type { OrgDiagramProps } from '@casehubio/blocks-ui-org-diagram';
 import type { DenyPatternEditorProps, WatchPatternEditorProps, GatePolicyEditorProps, EvolutionStreamsProps, EvolutionInboxProps } from '@casehubio/blocks-ui-evolution-config';
 import type { EvolutionWorkbenchProps } from '@casehubio/blocks-ui-evolution-workbench';
+import type { AgentDetailProps } from '@casehubio/blocks-ui-agent-detail';
+import type { AgentAvatarProps } from '@casehubio/agent-avatar-2d';
+import type { AgentManifestEditorProps } from '@casehubio/agent-manifest-editor';
+import type { AgentProfilePanelProps } from '@casehubio/blocks-ui-agent-profile-panel';
+import type { AgentPersonalityWorkbenchProps } from '@casehubio/blocks-ui-agent-personality-workbench';
 
 export interface BlocksComponentRegistry {
   'blocks-sla-indicator': SlaIndicatorProps;
@@ -109,4 +114,9 @@ export interface BlocksComponentRegistry {
   'blocks-evolution-workbench': EvolutionWorkbenchProps;
   'blocks-evolution-streams': EvolutionStreamsProps;
   'blocks-evolution-inbox': EvolutionInboxProps;
+  'blocks-agent-detail': AgentDetailProps;
+  'agent-avatar': AgentAvatarProps;
+  'agent-manifest-editor': AgentManifestEditorProps;
+  'blocks-agent-profile-panel': AgentProfilePanelProps;
+  'blocks-agent-personality-workbench': AgentPersonalityWorkbenchProps;
 }

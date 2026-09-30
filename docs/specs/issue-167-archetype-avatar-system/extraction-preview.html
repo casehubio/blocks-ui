@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Feature Extraction Audit — What Exists Today</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #2a2a2a; color: #ccc; font-family: 'Courier New', monospace; padding: 20px; }
+h1 { color: #e8c060; font-size: 20px; margin-bottom: 4px; }
+.subtitle { color: #888; font-size: 13px; margin-bottom: 30px; }
+h2 { color: #e8c060; font-size: 16px; margin: 30px 0 10px; border-bottom: 1px solid #444; padding-bottom: 6px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; padding: 10px 0; }
+.cell { text-align: center; }
+.cell svg { border: 1px solid #444; border-radius: 3px; display: block; margin: 0 auto 4px; }
+.label { font-size: 10px; color: #aaa; line-height: 1.3; }
+.family { color: #888; font-size: 9px; }
+.summary { background: #1e1e1e; border-left: 3px solid #e67e22; padding: 10px 14px; margin: 10px 0 20px; font-size: 12px; line-height: 1.6; color: #bbb; max-width: 900px; }
+.summary strong { color: #e8c060; }
+.gap { color: #e74c3c; font-weight: bold; }
+.ok { color: #2ecc71; }
+</style>
+</head>
+<body>
+
+<h1>Feature Extraction Audit — What Exists Today</h1>
+<div class="subtitle">Cropped views of actual pixel art from each head symbol in scummbar-hd-test.svg.<br>
+Shows what facial features currently exist as baked-in parts of heads — and where the gaps are.</div>
+
+<!-- Hidden SVG defs containing all head symbols -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<defs>
+<clipPath id="diamond-face-clip">
+    <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
+  </clipPath>
+<g id="hd:head-oval">
+  <!-- Tinted outline -->
+  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Anti-alias pixels at corners (mid-tone) -->
+  <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
+  <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="68" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill (inset 1px from outline) -->
+  <!-- Ears -->
+  <rect x="66" y="68" width="4" height="12" fill="var(--skin)"/>
+  <rect x="64" y="70" width="2" height="8" fill="var(--skin)"/>
+  <rect x="64" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="130" y="68" width="4" height="12" fill="var(--skin)"/>
+  <rect x="134" y="70" width="2" height="8" fill="var(--skin)"/>
+  <rect x="132" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="64" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="64" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="134" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="134" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left eye -->
+  <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="88" y="70" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="70" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="72" width="4" height="4" fill="#111"/>
+  <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right eye -->
+  <rect x="104" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="108" y="70" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="110" y="70" width="4" height="6" fill="#3a5a85"/>
+  <rect x="110" y="72" width="4" height="4" fill="#111"/>
+  <rect x="108" y="70" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge shadow + nostril definition -->
+  <rect x="98" y="80" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="82" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="82" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="90" width="12" height="2" fill="#000" opacity="0.08"/>
+  <!-- Nose highlight (right side catch light) -->
+  <rect x="102" y="82" width="2" height="4" fill="#fff" opacity="0.08"/>
+  <!-- Mouth: male — dark crease, no lip colour -->
+  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- Shadow below mouth (chin crease) -->
+  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (TWP-visible level) -->
+  <rect x="74" y="80" width="10" height="10" fill="#cc7766" opacity="0.2"/>
+  <rect x="76" y="78" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="116" y="80" width="10" height="10" fill="#cc7766" opacity="0.16"/>
+  <rect x="118" y="78" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow (contained to chin only) -->
+  <rect x="88" y="106" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck: plain skin, no shading -->
+  <rect x="90" y="116" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="118" width="4" height="10" fill="var(--skin)"/>
+  <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>
+</g>
+<g id="hd:head-square-jaw">
+  <g transform="translate(0,6)">
+  <!-- Outline: wide jaw, flat chin -->
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="76" y="28" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="2" height="2" fill="var(--skin)"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="62" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes (same position, heavier upper lid for determined look) -->
+  <rect x="78" y="62" width="16" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="78" y="62" width="16" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="78" y="70" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="86" y="64" width="6" height="6" fill="#8b1a1a"/>
+  <rect x="88" y="64" width="4" height="6" fill="#6a1515"/>
+  <rect x="88" y="66" width="4" height="4" fill="#111"/>
+  <rect x="86" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="16" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="16" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="106" y="70" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="112" y="64" width="6" height="6" fill="#8b1a1a"/>
+  <rect x="114" y="64" width="4" height="6" fill="#6a1515"/>
+  <rect x="114" y="66" width="4" height="4" fill="#111"/>
+  <rect x="112" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="74" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="76" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="76" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="82" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="84" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="102" y="76" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Mouth + upper lip shadow -->
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.06"/>
+  <rect x="90" y="90" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Jaw shadow (strong — square jaw is defined by this) -->
+  <rect x="68" y="88" width="64" height="2" fill="#000" opacity="0.1"/>
+  <rect x="66" y="90" width="8" height="6" fill="#000" opacity="0.14"/>
+  <rect x="126" y="90" width="8" height="6" fill="#000" opacity="0.06"/>
+  <!-- Chin -->
+  <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="88" y="102" width="24" height="26" fill="var(--skin)"/>
+  <rect x="86" y="106" width="4" height="18" fill="var(--skin)"/>
+  <rect x="110" y="106" width="4" height="18" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</g>
+<g id="hd:head-angular">
+  <g transform="translate(0,8)">
+  <!-- Outline: sharp edges, asymmetric -->
+  <path d="M 82,26 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="80" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="124" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="64" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="58" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="60" width="2" height="8" fill="var(--skin)"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#333"/>
+  <rect x="88" y="62" width="4" height="6" fill="#222"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="62" width="6" height="6" fill="#333"/>
+  <rect x="112" y="62" width="4" height="6" fill="#222"/>
+  <rect x="112" y="64" width="4" height="4" fill="#111"/>
+  <rect x="110" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="72" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="74" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="74" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="80" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="80" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="82" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="102" y="74" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="72" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="72" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Chin shadow -->
+  <rect x="86" y="94" width="28" height="2" fill="#000" opacity="0.12"/>
+  <!-- Jawline definition (angular head feature) -->
+  <rect x="70" y="84" width="6" height="2" fill="#000" opacity="0.08"/>
+  <rect x="124" y="82" width="6" height="2" fill="#000" opacity="0.06"/>
+  <!-- Neck -->
+  <rect x="90" y="100" width="20" height="28" fill="var(--skin)"/>
+  <rect x="88" y="104" width="4" height="20" fill="var(--skin)"/>
+  <rect x="108" y="104" width="4" height="20" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</g>
+<g id="hd:head-round">
+  <g transform="translate(0,8)">
+  <!-- Outline: circular, soft -->
+  <path d="M 78,30 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="76" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="76" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="122" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#2e5940"/>
+  <rect x="88" y="62" width="4" height="6" fill="#1e4030"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="112" y="62" width="6" height="6" fill="#2e5940"/>
+  <rect x="114" y="62" width="4" height="6" fill="#1e4030"/>
+  <rect x="114" y="64" width="4" height="4" fill="#111"/>
+  <rect x="112" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="70" width="4" height="10" fill="#000" opacity="0.1"/>
+  <rect x="96" y="72" width="2" height="6" fill="#000" opacity="0.05"/>
+  <rect x="102" y="72" width="2" height="6" fill="#000" opacity="0.05"/>
+  <rect x="96" y="78" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="78" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="80" width="12" height="2" fill="#000" opacity="0.05"/>
+  <rect x="102" y="72" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="92" y="82" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth -->
+  <rect x="90" y="84" width="20" height="2" fill="#000" opacity="0.28"/>
+  <rect x="88" y="84" width="2" height="2" fill="#000" opacity="0.14"/>
+  <rect x="110" y="84" width="2" height="2" fill="#000" opacity="0.14"/>
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush (warmer, visible — Caregiver warmth) -->
+  <rect x="72" y="70" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="74" y="68" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="118" y="70" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="120" y="68" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow -->
+  <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="100" width="4" height="24" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</g>
+<g id="hd:head-round-wide">
+  <g transform="translate(0,12)">
+  <!-- Outline: widest, most animated -->
+  <path d="M 72,34 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="70" y="34" width="2" height="2" fill="var(--skin)"/>
+  <rect x="128" y="34" width="2" height="2" fill="var(--skin)"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="56" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="140" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="144" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="142" y="60" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="54" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="52" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="54" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="144" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="146" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="144" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes (wider spacing for wider head, bigger for animated look) -->
+  <rect x="74" y="56" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="74" y="56" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="80" y="58" width="8" height="8" fill="#e67e22"/>
+  <rect x="84" y="58" width="4" height="8" fill="#c06020"/>
+  <rect x="84" y="60" width="4" height="6" fill="#111"/>
+  <rect x="80" y="58" width="2" height="2" fill="#fff"/>
+  <rect x="110" y="56" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="110" y="56" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="116" y="58" width="8" height="8" fill="#e67e22"/>
+  <rect x="120" y="58" width="4" height="8" fill="#c06020"/>
+  <rect x="120" y="60" width="4" height="6" fill="#111"/>
+  <rect x="116" y="58" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="68" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="70" width="2" height="4" fill="#000" opacity="0.05"/>
+  <rect x="102" y="70" width="2" height="4" fill="#000" opacity="0.05"/>
+  <rect x="96" y="74" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="74" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="76" width="12" height="2" fill="#000" opacity="0.05"/>
+  <rect x="102" y="70" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="88" y="78" width="24" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth (wider, expressive for Jester — big grin) -->
+  <rect x="84" y="80" width="32" height="2" fill="#000" opacity="0.3"/>
+  <rect x="82" y="80" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="116" y="80" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="86" y="82" width="28" height="2" fill="#000" opacity="0.08"/>
+  <!-- Mouth corners turned up (grin) -->
+  <rect x="82" y="78" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="116" y="78" width="2" height="2" fill="#000" opacity="0.12"/>
+  <!-- Cheek blush (big, rosy — animated face) -->
+  <rect x="66" y="66" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="68" y="64" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="124" y="66" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="126" y="64" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow -->
+  <rect x="84" y="86" width="32" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="92" width="20" height="36" fill="var(--skin)"/>
+  <rect x="88" y="96" width="4" height="28" fill="var(--skin)"/>
+  <rect x="108" y="96" width="4" height="28" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</g>
+<g id="hd:head-diamond">
+  <g transform="translate(0,6)">
+  <!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <clipPath id="diamond-face-clip">
+    <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
+  </clipPath>
+  <rect x="62" y="26" width="76" height="72" fill="var(--skin)" clip-path="url(#diamond-face-clip)"/>
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="80" y="66" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="66" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="68" width="6" height="6" fill="#5b3a8c"/>
+  <rect x="88" y="68" width="4" height="6" fill="#3a2570"/>
+  <rect x="88" y="70" width="4" height="4" fill="#111"/>
+  <rect x="86" y="68" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="66" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="66" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="112" y="68" width="6" height="6" fill="#5b3a8c"/>
+  <rect x="114" y="68" width="4" height="6" fill="#3a2570"/>
+  <rect x="114" y="70" width="4" height="4" fill="#111"/>
+  <rect x="112" y="68" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="80" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="86" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="86" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="88" width="12" height="2" fill="#000" opacity="0.05"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="78" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="78" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Mouth -->
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.3"/>
+  <rect x="94" y="94" width="12" height="2" fill="#000" opacity="0.07"/>
+  <!-- Neck -->
+  <rect x="94" y="96" width="12" height="30" fill="var(--skin)"/>
+  <rect x="90" y="100" width="4" height="22" fill="var(--skin)"/>
+  <rect x="106" y="100" width="4" height="22" fill="var(--skin)"/>
+  </g>
+</g>
+<g id="hd:head-heart">
+  <g transform="translate(0,8)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="136" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="140" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="138" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#8b2252"/>
+  <rect x="90" y="64" width="4" height="6" fill="#6a1a40"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#8b2252"/>
+  <rect x="112" y="64" width="4" height="6" fill="#6a1a40"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Neck -->
+  <rect x="90" y="94" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="98" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="98" width="4" height="24" fill="var(--skin)"/>
+  </g>
+</g>
+<g id="hd:head-soft-oval">
+  <g transform="translate(0,2)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="134" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="138" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="136" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#c0392b"/>
+  <rect x="90" y="66" width="4" height="6" fill="#9a2a20"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#c0392b"/>
+  <rect x="112" y="66" width="4" height="6" fill="#9a2a20"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
+  </g>
+</g>
+<g id="hd:head-strong-sym">
+  <g transform="translate(0,6)">
+  <path d="M 74,28 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="136" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="140" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="138" y="62" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#1a2744"/>
+  <rect x="88" y="62" width="4" height="6" fill="#0f1a30"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="62" width="6" height="6" fill="#1a2744"/>
+  <rect x="112" y="62" width="4" height="6" fill="#0f1a30"/>
+  <rect x="112" y="64" width="4" height="4" fill="#111"/>
+  <rect x="110" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="76" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="82" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="96" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="96" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="102" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="106" width="20" height="20" fill="var(--skin)"/>
+  <rect x="88" y="110" width="4" height="14" fill="var(--skin)"/>
+  <rect x="108" y="110" width="4" height="14" fill="var(--skin)"/>
+  </g>
+</g>
+<g id="hd:head-weathered">
+  <g transform="translate(0,4)">
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#5a4a35"/>
+  <rect x="90" y="66" width="4" height="6" fill="#3a3025"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#5a4a35"/>
+  <rect x="112" y="66" width="4" height="6" fill="#3a3025"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
+  <!-- Weathering lines -->
+  <rect x="66" y="50" width="4" height="2" fill="#000" opacity="0.08"/>
+  <rect x="128" y="48" width="4" height="2" fill="#000" opacity="0.06"/>
+  <rect x="64" y="80" width="4" height="2" fill="#000" opacity="0.06"/>
+  </g>
+</g>
+<g id="hd:head-standard">
+  <g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>
+</g>
+<g id="hd:head-fallback">
+  <g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>
+</g>
+</defs>
+</svg>
+
+<h2>EYES — Cropped from each head</h2>
+<div class="row">
+<div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 64 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2c3e6b;--iris-dark:#4a6fa5;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-oval"/>
+  </svg>
+  <div class="label">oval<br><span class="family">Sage</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 64 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b1a1a;--iris-dark:#6a1515;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-square-jaw"/>
+  </svg>
+  <div class="label">square-jaw<br><span class="family">Hero</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 68 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a1a1a;--iris-dark:#333333;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-angular"/>
+  </svg>
+  <div class="label">angular<br><span class="family">Rebel</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 64 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2e5940;--iris-dark:#1e4030;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round"/>
+  </svg>
+  <div class="label">round<br><span class="family">Caregiver/Innocent</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="64 64 72 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#e67e22;--iris-dark:#c06020;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round-wide"/>
+  </svg>
+  <div class="label">round-wide<br><span class="family">Jester</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 68 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5b3a8c;--iris-dark:#3a2570;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-diamond"/>
+  </svg>
+  <div class="label">diamond<br><span class="family">Magician</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 66 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b2252;--iris-dark:#6a1a40;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-heart"/>
+  </svg>
+  <div class="label">heart<br><span class="family">Lover</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 62 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#c0392b;--iris-dark:#9a2a20;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-soft-oval"/>
+  </svg>
+  <div class="label">soft-oval<br><span class="family">Creator</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 62 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a2744;--iris-dark:#0f1a30;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-strong-sym"/>
+  </svg>
+  <div class="label">strong-sym<br><span class="family">Sovereign</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 64 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a4a35;--iris-dark:#3a3025;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-weathered"/>
+  </svg>
+  <div class="label">weathered<br><span class="family">Explorer</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="70 64 60 18" width="180" height="54"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a5a5a;--iris-dark:#3a3a3a;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-standard"/>
+  </svg>
+  <div class="label">standard<br><span class="family">Everyman</span></div>
+</div>
+</div>
+<div class="summary"><strong>Current state:</strong> 2 distinct sizes — <span class="ok">standard (14&times;10 sclera)</span> used by 10 heads, <span class="ok">large (16&times;12)</span> used by round-wide (Jester) only. Upper lid weight varies: square-jaw has heavier lid (opacity 0.6 vs 0.5). Iris colour is hardcoded per family (not a CSS var yet). Eye spacing is consistent (left at x=82, right at x=106) except round-wide (wider at x=74/x=110).<br><span class="gap">GAP:</span> No narrow, round, almond, or deep-set eye variants exist. All 10 standard heads share identical eye structure — only iris colour differs.</div>
+
+<h2>NOSES — Cropped from each head</h2>
+<div class="row">
+<div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 78 24 16" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2c3e6b;--iris-dark:#4a6fa5;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-oval"/>
+  </svg>
+  <div class="label">oval<br><span class="family">Sage</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 78 24 16" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b1a1a;--iris-dark:#6a1515;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-square-jaw"/>
+  </svg>
+  <div class="label">square-jaw<br><span class="family">Hero</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 78 24 16" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a1a1a;--iris-dark:#333333;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-angular"/>
+  </svg>
+  <div class="label">angular<br><span class="family">Rebel</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 76 24 16" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2e5940;--iris-dark:#1e4030;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round"/>
+  </svg>
+  <div class="label">round<br><span class="family">Caregiver/Innocent</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 78 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#e67e22;--iris-dark:#c06020;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round-wide"/>
+  </svg>
+  <div class="label">round-wide<br><span class="family">Jester</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 84 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5b3a8c;--iris-dark:#3a2570;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-diamond"/>
+  </svg>
+  <div class="label">diamond<br><span class="family">Magician</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 84 24 12" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b2252;--iris-dark:#6a1a40;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-heart"/>
+  </svg>
+  <div class="label">heart<br><span class="family">Lover</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 78 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#c0392b;--iris-dark:#9a2a20;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-soft-oval"/>
+  </svg>
+  <div class="label">soft-oval<br><span class="family">Creator</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 80 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a2744;--iris-dark:#0f1a30;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-strong-sym"/>
+  </svg>
+  <div class="label">strong-sym<br><span class="family">Sovereign</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 80 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a4a35;--iris-dark:#3a3025;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-weathered"/>
+  </svg>
+  <div class="label">weathered<br><span class="family">Explorer</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="88 82 24 14" width="144" height="96"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a5a5a;--iris-dark:#3a3a3a;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-standard"/>
+  </svg>
+  <div class="label">standard<br><span class="family">Everyman</span></div>
+</div>
+</div>
+<div class="summary"><strong>Current state:</strong> 1 basic pattern across all heads — bridge shadow (4px wide, opacity 0.1-0.12) + nostril dots (2px, opacity 0.18-0.2) + optional highlight. Oval head has a slightly longer bridge (y=80 to y=90, 10px) vs most others (8px). Round-wide nose is slightly shorter. Diamond has wider nostril spacing.<br><span class="gap">GAP:</span> No shape variation exists. No prominent, button, narrow, aquiline, or broad noses. All noses are the same "subtle" pattern at slightly different y-positions.</div>
+
+<h2>MOUTHS — Cropped from each head</h2>
+<div class="row">
+<div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 93 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2c3e6b;--iris-dark:#4a6fa5;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-oval"/>
+  </svg>
+  <div class="label">oval<br><span class="family">Sage</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 93 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b1a1a;--iris-dark:#6a1515;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-square-jaw"/>
+  </svg>
+  <div class="label">square-jaw<br><span class="family">Hero</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 93 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a1a1a;--iris-dark:#333333;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-angular"/>
+  </svg>
+  <div class="label">angular<br><span class="family">Rebel</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 89 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2e5940;--iris-dark:#1e4030;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round"/>
+  </svg>
+  <div class="label">round<br><span class="family">Caregiver/Innocent</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="76 89 48 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#e67e22;--iris-dark:#c06020;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round-wide"/>
+  </svg>
+  <div class="label">round-wide<br><span class="family">Jester</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 95 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5b3a8c;--iris-dark:#3a2570;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-diamond"/>
+  </svg>
+  <div class="label">diamond<br><span class="family">Magician</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 93 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b2252;--iris-dark:#6a1a40;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-heart"/>
+  </svg>
+  <div class="label">heart<br><span class="family">Lover</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 87 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#c0392b;--iris-dark:#9a2a20;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-soft-oval"/>
+  </svg>
+  <div class="label">soft-oval<br><span class="family">Creator</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 91 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a2744;--iris-dark:#0f1a30;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-strong-sym"/>
+  </svg>
+  <div class="label">strong-sym<br><span class="family">Sovereign</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 89 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a4a35;--iris-dark:#3a3025;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-weathered"/>
+  </svg>
+  <div class="label">weathered<br><span class="family">Explorer</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="82 91 36 10" width="216" height="60"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a5a5a;--iris-dark:#3a3a3a;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-standard"/>
+  </svg>
+  <div class="label">standard<br><span class="family">Everyman</span></div>
+</div>
+</div>
+<div class="summary"><strong>Current state:</strong> 1 basic pattern — dark crease line (opacity 0.28-0.3), corner fades (opacity 0.14-0.15), under-lip shadow (opacity 0.07-0.08). Oval head comment says "male — dark crease, no lip colour". Round-wide (Jester) has a wider grin (32px vs 20px) with upturned corners — the only distinct variant.<br><span class="gap">GAP:</span> No female lip variant (no lip colour at all). No smile, stern, smirk, or small variants. No cupid&rsquo;s bow shape. Lip colour is the primary gender signal in pixel art and is completely absent.</div>
+
+<h2>EARS — Left ear cropped from each head</h2>
+<div class="row">
+<div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="58 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2c3e6b;--iris-dark:#4a6fa5;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-oval"/>
+  </svg>
+  <div class="label">oval<br><span class="family">Sage</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="54 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b1a1a;--iris-dark:#6a1515;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-square-jaw"/>
+  </svg>
+  <div class="label">square-jaw<br><span class="family">Hero</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="58 68 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a1a1a;--iris-dark:#333333;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-angular"/>
+  </svg>
+  <div class="label">angular<br><span class="family">Rebel</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="56 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#2e5940;--iris-dark:#1e4030;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round"/>
+  </svg>
+  <div class="label">round<br><span class="family">Caregiver/Innocent</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="54 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#e67e22;--iris-dark:#c06020;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-round-wide"/>
+  </svg>
+  <div class="label">round-wide<br><span class="family">Jester</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="54 62 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5b3a8c;--iris-dark:#3a2570;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-diamond"/>
+  </svg>
+  <div class="label">diamond<br><span class="family">Magician</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="54 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#8b2252;--iris-dark:#6a1a40;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-heart"/>
+  </svg>
+  <div class="label">heart<br><span class="family">Lover</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="56 62 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#c0392b;--iris-dark:#9a2a20;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-soft-oval"/>
+  </svg>
+  <div class="label">soft-oval<br><span class="family">Creator</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="54 60 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#1a2744;--iris-dark:#0f1a30;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-strong-sym"/>
+  </svg>
+  <div class="label">strong-sym<br><span class="family">Sovereign</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="56 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a4a35;--iris-dark:#3a3025;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-weathered"/>
+  </svg>
+  <div class="label">weathered<br><span class="family">Explorer</span></div>
+</div><div class="cell">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="56 64 16 20" width="96" height="120"
+       style="--skin:#d4a574;--hair-color:#3a2a1a;--iris:#5a5a5a;--iris-dark:#3a3a3a;background:#1a1a1a;image-rendering:pixelated">
+    <use href="#hd:head-standard"/>
+  </svg>
+  <div class="label">standard<br><span class="family">Everyman</span></div>
+</div>
+</div>
+<div class="summary"><strong>Current state:</strong> 1 pattern — rectangular protrusion (4&times;12 skin fill + ear outline). Inner shadow (opacity 0.1) on left ear, highlight (opacity 0.06) on right ear. Height varies: square-jaw/diamond/strong-sym use 14px ears, others use 12px. X-position varies by 12px across heads (x=60 to x=66 for left ear).<br><span class="gap">GAP:</span> No pointed, prominent, or small ear variants. All ears are the same rectangular shape. Ears will stay in heads due to x-position coupling to head width, but can have per-head variants.</div>
+
+<div style="margin-top: 40px; border-top: 1px solid #444; padding-top: 20px;">
+<h2 style="border: none;">Summary — What Needs Creating</h2>
+<div class="summary" style="max-width: 100%;">
+<strong>Eyes:</strong> Need 5 new variants (narrow, round, almond, deep-set, plus variations of standard). Currently 2 sizes exist.<br>
+<strong>Noses:</strong> Need 5 new variants (prominent, button, narrow, aquiline, broad). Currently 1 pattern exists.<br>
+<strong>Mouths:</strong> Need 7 new variants (line-wide exists as Jester grin; need line-stern, smile, lips-natural, lips-full, smirk, small). Currently 2 patterns exist (neutral + grin).<br>
+<strong>Ears:</strong> Could benefit from 3 variants (pointed, prominent, small) but ears stay coupled to head shape. Lower priority.<br><br>
+<strong>Total new feature symbols to create:</strong> ~17 (5 eyes + 5 noses + 7 mouths), each at canonical y-positions with per-head offset anchors.
+</div>
+</div>
+
+</body>
+</html>

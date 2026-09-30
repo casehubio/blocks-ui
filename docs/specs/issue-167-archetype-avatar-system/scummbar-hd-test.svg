@@ -1,0 +1,2591 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+<!-- Scummbar HD: composable pixel art parts at 2x2 unit grid (100x120 px)
+     Shading: shadow overlay + base + highlight overlay
+     Outlines: tinted (dark version of surface colour)
+     Quality target: Thimbleweed Park level, torso-only so more head detail -->
+<defs>
+
+<!-- HEAD: oval (Sage family) -->
+<symbol id="hd:head-oval" viewBox="0 0 200 240">
+  <!-- Tinted outline -->
+  <path d="M 82,26 h36 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v68 h-2 v2 h-2 v2 h-2 v4 h-2 v2 h-4 v2 h-4 v2 h-6 v2 h-16 v-2 h-6 v-2 h-4 v-2 h-4 v-2 h-2 v-4 h-2 v-2 h-2 v-2 h-2 v-68 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Anti-alias pixels at corners (mid-tone) -->
+  <rect x="80" y="26" width="2" height="2" fill="var(--skin)"/>
+  <rect x="118" y="26" width="2" height="2" fill="var(--skin)"/>
+  <rect x="130" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="68" y="32" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill (inset 1px from outline) -->
+  <!-- Ears -->
+  <rect x="66" y="68" width="4" height="12" fill="var(--skin)"/>
+  <rect x="64" y="70" width="2" height="8" fill="var(--skin)"/>
+  <rect x="64" y="70" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="130" y="68" width="4" height="12" fill="var(--skin)"/>
+  <rect x="134" y="70" width="2" height="8" fill="var(--skin)"/>
+  <rect x="132" y="72" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="64" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="64" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="134" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="70" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="134" y="78" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left eye -->
+  <rect x="82" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="82" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="88" y="70" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="90" y="70" width="4" height="6" fill="#3a5a85"/>
+  <rect x="90" y="72" width="4" height="4" fill="#111"/>
+  <rect x="88" y="70" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right eye -->
+  <rect x="104" y="68" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="104" y="68" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="104" y="76" width="14" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="108" y="70" width="6" height="6" fill="#4a6fa5"/>
+  <rect x="110" y="70" width="4" height="6" fill="#3a5a85"/>
+  <rect x="110" y="72" width="4" height="4" fill="#111"/>
+  <rect x="108" y="70" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge shadow + nostril definition -->
+  <rect x="98" y="80" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="82" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="82" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="88" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="90" width="12" height="2" fill="#000" opacity="0.08"/>
+  <!-- Nose highlight (right side catch light) -->
+  <rect x="102" y="82" width="2" height="4" fill="#fff" opacity="0.08"/>
+  <!-- Mouth: male — dark crease, no lip colour -->
+  <rect x="90" y="96" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="96" width="2" height="2" fill="#000" opacity="0.15"/>
+  <!-- Shadow below mouth (chin crease) -->
+  <rect x="92" y="98" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (TWP-visible level) -->
+  <rect x="74" y="80" width="10" height="10" fill="#cc7766" opacity="0.2"/>
+  <rect x="76" y="78" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="116" y="80" width="10" height="10" fill="#cc7766" opacity="0.16"/>
+  <rect x="118" y="78" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow (contained to chin only) -->
+  <rect x="88" y="106" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck: plain skin, no shading -->
+  <rect x="90" y="116" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="118" width="4" height="10" fill="var(--skin)"/>
+  <rect x="108" y="118" width="4" height="10" fill="var(--skin)"/>
+</symbol>
+
+<!-- HAIR: wild-einstein (Sage/Mentor) -->
+<symbol id="hd:hair-wild-einstein" viewBox="0 0 200 240">
+  <!-- Main mass -->
+  <path d="M 48,22 h8 v-4 h10 v-2 h80 v2 h10 v4 h8 v6 h-4 v4 h4 v10 h-4 v8 h-4 v4 h-8 v4 h-100 v-4 h-8 v-4 h-4 v-8 h-4 v-10 h4 v-4 h-4 v-6 h8 z" fill="var(--hair-color)"/>
+  <!-- Frizz tufts left -->
+  <rect x="42" y="30" width="6" height="10" fill="var(--hair-color)"/>
+  <rect x="40" y="26" width="4" height="8" fill="var(--hair-color)"/>
+  <rect x="44" y="20" width="4" height="6" fill="var(--hair-color)"/>
+  <!-- Frizz tufts right -->
+  <rect x="152" y="28" width="6" height="12" fill="var(--hair-color)"/>
+  <rect x="156" y="24" width="4" height="10" fill="var(--hair-color)"/>
+  <rect x="150" y="18" width="4" height="8" fill="var(--hair-color)"/>
+  <!-- Shadow (left + bottom) -->
+  <rect x="48" y="36" width="10" height="18" fill="#000" opacity="0.15"/>
+  <rect x="58" y="42" width="6" height="12" fill="#000" opacity="0.1"/>
+  <rect x="40" y="32" width="8" height="8" fill="#000" opacity="0.12"/>
+  <rect x="64" y="48" width="72" height="6" fill="#000" opacity="0.08"/>
+  <!-- Highlight (top right) -->
+  <rect x="110" y="18" width="20" height="6" fill="#fff" opacity="0.12"/>
+  <rect x="130" y="20" width="14" height="8" fill="#fff" opacity="0.1"/>
+  <rect x="144" y="24" width="8" height="6" fill="#fff" opacity="0.08"/>
+  <!-- Strand texture -->
+  <rect x="60" y="24" width="2" height="16" fill="#000" opacity="0.06"/>
+  <rect x="80" y="20" width="2" height="18" fill="#000" opacity="0.05"/>
+  <rect x="100" y="18" width="2" height="20" fill="#000" opacity="0.04"/>
+  <rect x="120" y="20" width="2" height="16" fill="#000" opacity="0.05"/>
+  <rect x="140" y="22" width="2" height="14" fill="#000" opacity="0.06"/>
+</symbol>
+
+<!-- HAIR: long-flowing (Sage/Shaman) -->
+<symbol id="hd:hair-long-flowing" viewBox="0 0 200 240">
+  <!-- Top cap -->
+  <path d="M 72,22 h56 v2 h6 v2 h4 v2 h4 v2 h2 v8 h-88 v-8 h2 v-2 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
+  <!-- Left flowing side -->
+  <rect x="56" y="38" width="16" height="70" fill="var(--hair-color)"/>
+  <rect x="52" y="44" width="4" height="58" fill="var(--hair-color)"/>
+  <rect x="50" y="50" width="2" height="46" fill="var(--hair-color)"/>
+  <rect x="54" y="102" width="6" height="10" fill="var(--hair-color)"/>
+  <rect x="58" y="108" width="4" height="8" fill="var(--hair-color)"/>
+  <!-- Right flowing side -->
+  <rect x="128" y="38" width="16" height="70" fill="var(--hair-color)"/>
+  <rect x="144" y="44" width="4" height="58" fill="var(--hair-color)"/>
+  <rect x="148" y="50" width="2" height="46" fill="var(--hair-color)"/>
+  <rect x="140" y="102" width="6" height="10" fill="var(--hair-color)"/>
+  <rect x="138" y="108" width="4" height="8" fill="var(--hair-color)"/>
+  <!-- Shadow left side -->
+  <rect x="52" y="50" width="6" height="50" fill="#000" opacity="0.15"/>
+  <rect x="58" y="44" width="4" height="50" fill="#000" opacity="0.08"/>
+  <!-- Highlight right side -->
+  <rect x="142" y="44" width="4" height="40" fill="#fff" opacity="0.1"/>
+  <rect x="146" y="50" width="2" height="30" fill="#fff" opacity="0.08"/>
+  <!-- Strand highlights -->
+  <rect x="56" y="50" width="2" height="40" fill="#fff" opacity="0.06"/>
+  <rect x="142" y="48" width="2" height="35" fill="#fff" opacity="0.08"/>
+  <!-- Top highlight -->
+  <rect x="96" y="22" width="20" height="4" fill="#fff" opacity="0.1"/>
+  <rect x="110" y="24" width="10" height="4" fill="#fff" opacity="0.07"/>
+</symbol>
+
+<!-- HAIR: bald-sides (Sage/Detective, Sage/Scientist) -->
+<symbol id="hd:hair-bald-sides" viewBox="0 0 200 240">
+  <!-- Left side patch -->
+  <rect x="62" y="44" width="8" height="30" fill="var(--hair-color)"/>
+  <rect x="60" y="42" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="64" y="74" width="4" height="6" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="60" y="40" width="2" height="4" fill="var(--hair-color)" opacity="0.4"/>
+  <!-- Left deep shadow -->
+  <rect x="62" y="54" width="4" height="18" fill="#000" opacity="0.2"/>
+  <rect x="62" y="44" width="2" height="10" fill="#000" opacity="0.12"/>
+  <!-- Left highlight strands -->
+  <rect x="66" y="46" width="2" height="12" fill="#fff" opacity="0.15"/>
+  <rect x="68" y="50" width="2" height="6" fill="#fff" opacity="0.1"/>
+  <!-- Right side patch -->
+  <rect x="130" y="44" width="8" height="30" fill="var(--hair-color)"/>
+  <rect x="134" y="42" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="132" y="74" width="4" height="6" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="138" y="40" width="2" height="4" fill="var(--hair-color)" opacity="0.4"/>
+  <!-- Right highlight strands (catches more light) -->
+  <rect x="134" y="44" width="2" height="14" fill="#fff" opacity="0.18"/>
+  <rect x="136" y="48" width="2" height="8" fill="#fff" opacity="0.12"/>
+  <rect x="132" y="52" width="2" height="6" fill="#fff" opacity="0.08"/>
+  <!-- Right subtle shadow -->
+  <rect x="130" y="62" width="2" height="10" fill="#000" opacity="0.08"/>
+  <!-- Scalp shine (strong, visible) -->
+  <rect x="94" y="28" width="14" height="4" fill="#fff" opacity="0.18"/>
+  <rect x="104" y="26" width="8" height="2" fill="#fff" opacity="0.14"/>
+  <rect x="90" y="30" width="6" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="110" y="30" width="4" height="2" fill="#fff" opacity="0.06"/>
+</symbol>
+
+<!-- HAIR: cropped-fringe (Sage/Translator) -->
+<symbol id="hd:hair-cropped-fringe" viewBox="0 0 200 240">
+  <!-- Top cap -->
+  <path d="M 72,22 h56 v2 h6 v2 h4 v2 h4 v10 h-84 v-10 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
+  <!-- Fringe hanging forward -->
+  <rect x="72" y="38" width="36" height="10" fill="var(--hair-color)"/>
+  <rect x="76" y="48" width="24" height="6" fill="var(--hair-color)"/>
+  <rect x="80" y="54" width="12" height="4" fill="var(--hair-color)"/>
+  <!-- Shadow -->
+  <rect x="72" y="38" width="8" height="10" fill="#000" opacity="0.1"/>
+  <rect x="76" y="48" width="6" height="6" fill="#000" opacity="0.08"/>
+  <!-- Highlight -->
+  <rect x="96" y="24" width="20" height="4" fill="#fff" opacity="0.1"/>
+  <rect x="100" y="38" width="8" height="4" fill="#fff" opacity="0.07"/>
+  <!-- Side coverage -->
+  <rect x="62" y="36" width="10" height="14" fill="var(--hair-color)"/>
+  <rect x="128" y="36" width="10" height="14" fill="var(--hair-color)"/>
+  <rect x="128" y="36" width="10" height="6" fill="#fff" opacity="0.06"/>
+</symbol>
+
+<!-- BROW: thin-arched -->
+<symbol id="hd:brow-thin-arched" viewBox="0 0 200 240">
+  <rect x="82" y="64" width="12" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="80" y="66" width="4" height="2" fill="#3a2520" opacity="0.45"/>
+  <rect x="106" y="64" width="12" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="116" y="66" width="4" height="2" fill="#3a2520" opacity="0.45"/>
+</symbol>
+
+<!-- BROW: bushy-wild (Sage/Mentor) -->
+<symbol id="hd:brow-bushy-wild" viewBox="0 0 200 240">
+  <rect x="78" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
+  <rect x="76" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
+  <rect x="92" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+  <rect x="80" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="104" y="62" width="18" height="4" fill="#3a2520" opacity="0.8"/>
+  <rect x="120" y="60" width="4" height="4" fill="#3a2520" opacity="0.5"/>
+  <rect x="104" y="60" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+  <rect x="114" y="66" width="6" height="2" fill="#3a2520" opacity="0.3"/>
+</symbol>
+
+<!-- BROW: soft-rounded (Sage/Translator) -->
+<symbol id="hd:brow-soft-rounded" viewBox="0 0 200 240">
+  <rect x="82" y="64" width="12" height="2" fill="#3a2520" opacity="0.55"/>
+  <rect x="94" y="66" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="106" y="64" width="12" height="2" fill="#3a2520" opacity="0.55"/>
+  <rect x="104" y="66" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+</symbol>
+
+<!-- GLASSES: round-wire (Sam-inspired) -->
+<symbol id="hd:glasses-round-wire" viewBox="0 0 200 240">
+  <!-- Left lens -->
+  <rect x="76" y="64" width="20" height="2" fill="#777"/>
+  <rect x="76" y="80" width="20" height="2" fill="#777"/>
+  <rect x="74" y="66" width="2" height="14" fill="#777"/>
+  <rect x="96" y="66" width="2" height="14" fill="#777"/>
+  <rect x="76" y="66" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="94" y="66" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="76" y="78" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="94" y="78" width="2" height="2" fill="#777" opacity="0.5"/>
+  <!-- Right lens -->
+  <rect x="104" y="64" width="20" height="2" fill="#777"/>
+  <rect x="104" y="80" width="20" height="2" fill="#777"/>
+  <rect x="102" y="66" width="2" height="14" fill="#777"/>
+  <rect x="124" y="66" width="2" height="14" fill="#777"/>
+  <rect x="104" y="66" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="122" y="66" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="104" y="78" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="122" y="78" width="2" height="2" fill="#777" opacity="0.5"/>
+  <!-- Bridge -->
+  <rect x="96" y="68" width="6" height="2" fill="#777"/>
+  <!-- Temples -->
+  <rect x="62" y="68" width="12" height="2" fill="#777" opacity="0.5"/>
+  <rect x="126" y="68" width="12" height="2" fill="#777" opacity="0.5"/>
+  <!-- Subtle lens tint -->
+  <rect x="76" y="66" width="20" height="14" fill="var(--accent)" opacity="0.04"/>
+  <rect x="104" y="66" width="20" height="14" fill="var(--accent)" opacity="0.04"/>
+  <!-- Lens glint -->
+  <rect x="78" y="66" width="4" height="2" fill="#fff" opacity="0.12"/>
+  <rect x="106" y="66" width="4" height="2" fill="#fff" opacity="0.12"/>
+</symbol>
+
+<!-- GLASSES: pince-nez (Sage/Shaman) -->
+<symbol id="hd:glasses-pince-nez" viewBox="0 0 200 240">
+  <rect x="80" y="66" width="14" height="2" fill="#777"/>
+  <rect x="80" y="78" width="14" height="2" fill="#777"/>
+  <rect x="78" y="68" width="2" height="10" fill="#777"/>
+  <rect x="94" y="68" width="2" height="10" fill="#777"/>
+  <rect x="106" y="66" width="14" height="2" fill="#777"/>
+  <rect x="106" y="78" width="14" height="2" fill="#777"/>
+  <rect x="104" y="68" width="2" height="10" fill="#777"/>
+  <rect x="120" y="68" width="2" height="10" fill="#777"/>
+  <!-- Nose pinch -->
+  <rect x="96" y="72" width="2" height="4" fill="#777"/>
+  <rect x="102" y="72" width="2" height="4" fill="#777"/>
+  <rect x="98" y="74" width="4" height="2" fill="#777"/>
+</symbol>
+
+<!-- GLASSES: half-rim (Sage/Mentor) -->
+<symbol id="hd:glasses-half-rim" viewBox="0 0 200 240">
+  <rect x="76" y="64" width="20" height="2" fill="#555"/>
+  <rect x="74" y="66" width="2" height="2" fill="#555"/>
+  <rect x="96" y="66" width="2" height="2" fill="#555"/>
+  <rect x="104" y="64" width="20" height="2" fill="#555"/>
+  <rect x="102" y="66" width="2" height="2" fill="#555"/>
+  <rect x="124" y="66" width="2" height="2" fill="#555"/>
+  <rect x="96" y="66" width="6" height="2" fill="#555"/>
+  <rect x="62" y="66" width="12" height="2" fill="#555" opacity="0.4"/>
+  <rect x="126" y="66" width="12" height="2" fill="#555" opacity="0.4"/>
+</symbol>
+
+<!-- BEARD: bushy-white (Sage/Mentor — long scholarly beard) -->
+<symbol id="hd:beard-bushy-white" viewBox="0 0 200 240">
+  <!-- Symmetric bushy beard centered at x=100 -->
+  <path d="M 68,88 h64 v2 h4 v4 h2 v12 h-2 v4 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 h-16 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 h-2 v-12 h2 v-4 h4 v-2 z" fill="#ccc"/>
+  <rect x="74" y="86" width="52" height="6" fill="#ddd"/>
+  <rect x="70" y="84" width="6" height="4" fill="#ddd"/>
+  <rect x="124" y="84" width="6" height="4" fill="#ddd"/>
+  <rect x="68" y="94" width="8" height="20" fill="#000" opacity="0.12"/>
+  <rect x="76" y="98" width="4" height="18" fill="#000" opacity="0.06"/>
+  <rect x="124" y="92" width="8" height="14" fill="#fff" opacity="0.1"/>
+  <rect x="118" y="90" width="6" height="6" fill="#fff" opacity="0.06"/>
+  <rect x="76" y="96" width="2" height="20" fill="#000" opacity="0.05"/>
+  <rect x="86" y="98" width="2" height="22" fill="#000" opacity="0.04"/>
+  <rect x="98" y="96" width="2" height="22" fill="#000" opacity="0.05"/>
+  <rect x="112" y="98" width="2" height="20" fill="#000" opacity="0.04"/>
+  <rect x="122" y="96" width="2" height="16" fill="#000" opacity="0.05"/>
+  <rect x="92" y="120" width="16" height="2" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<!-- COSTUME: blazer-tie (Sage/Detective, Sage/Translator) -->
+<symbol id="hd:costume-blazer-tie" viewBox="0 0 200 240">
+  <!-- Clip path matching the tapered body -->
+  <clipPath id="blazer-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v10 h-80 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <!-- Blazer body: tapered shoulders to waist -->
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v10 h-80 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <!-- Shoulder caps -->
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <!-- All shading clipped to body shape -->
+  <g clip-path="url(#blazer-clip)">
+  <!-- Shoulder seam (distinct dark line) -->
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.25"/>
+  <!-- GRADIENT SHADING: 5 bands left-to-right, no flat area -->
+  <!-- Band 1: deep shadow (far left — still reads as blue, not black) -->
+  <rect x="46" y="128" width="12" height="106" fill="#000" opacity="0.18"/>
+  <!-- Band 2: mid-shadow -->
+  <rect x="58" y="128" width="14" height="106" fill="#000" opacity="0.1"/>
+  <!-- Band 3: subtle base darkening (center-left, breaks up flat area) -->
+  <rect x="72" y="140" width="14" height="80" fill="#000" opacity="0.04"/>
+  <!-- Band 4: very subtle mid-highlight (right of center, barely visible) -->
+  <rect x="114" y="128" width="16" height="50" fill="#fff" opacity="0.04"/>
+  <!-- Band 5: shoulder catch light only (not full length) -->
+  <rect x="130" y="128" width="20" height="30" fill="#fff" opacity="0.09"/>
+  <rect x="128" y="158" width="16" height="20" fill="#fff" opacity="0.04"/>
+  <!-- VERTICAL FOLD SHADOWS (wrinkle lines across the body) -->
+  <rect x="56" y="148" width="2" height="60" fill="#000" opacity="0.14"/>
+  <rect x="64" y="160" width="2" height="40" fill="#000" opacity="0.1"/>
+  <rect x="70" y="172" width="2" height="30" fill="#000" opacity="0.07"/>
+  <rect x="134" y="155" width="2" height="35" fill="#000" opacity="0.08"/>
+  <rect x="140" y="165" width="2" height="25" fill="#000" opacity="0.06"/>
+  <rect x="146" y="150" width="2" height="40" fill="#000" opacity="0.07"/>
+  <!-- Under-arm shadow pools -->
+  <rect x="46" y="148" width="14" height="14" fill="#000" opacity="0.12"/>
+  <rect x="142" y="146" width="12" height="10" fill="#000" opacity="0.06"/>
+  <!-- Horizontal crease shadows (body flexion lines) -->
+  <rect x="52" y="170" width="22" height="2" fill="#000" opacity="0.06"/>
+  <rect x="126" y="174" width="20" height="2" fill="#000" opacity="0.05"/>
+  <rect x="56" y="200" width="18" height="2" fill="#000" opacity="0.05"/>
+  <rect x="130" y="196" width="16" height="2" fill="#000" opacity="0.04"/>
+  <!-- Lapels (distinctly darker) -->
+  <rect x="56" y="126" width="20" height="6" fill="var(--primary)"/>
+  <rect x="56" y="126" width="20" height="6" fill="#000" opacity="0.18"/>
+  <rect x="56" y="132" width="18" height="14" fill="var(--primary)"/>
+  <rect x="56" y="132" width="18" height="14" fill="#000" opacity="0.15"/>
+  <rect x="126" y="126" width="20" height="6" fill="var(--primary)"/>
+  <rect x="126" y="126" width="20" height="6" fill="#000" opacity="0.18"/>
+  <rect x="128" y="132" width="18" height="14" fill="var(--primary)"/>
+  <rect x="128" y="132" width="18" height="14" fill="#000" opacity="0.12"/>
+  <!-- Lapel highlight (right lapel catches light) -->
+  <rect x="132" y="134" width="8" height="6" fill="#fff" opacity="0.08"/>
+  <!-- Lapel inner edge (crisp dark line) -->
+  <rect x="74" y="132" width="2" height="50" fill="#000" opacity="0.25"/>
+  <rect x="124" y="132" width="2" height="50" fill="#000" opacity="0.25"/>
+  <!-- Lapel notch detail -->
+  <rect x="72" y="130" width="4" height="4" fill="#000" opacity="0.12"/>
+  <rect x="124" y="130" width="4" height="4" fill="#000" opacity="0.12"/>
+  <!-- White shirt V -->
+  <rect x="76" y="126" width="48" height="8" fill="#e8e4dc"/>
+  <rect x="80" y="134" width="40" height="8" fill="#e8e4dc"/>
+  <rect x="84" y="142" width="32" height="6" fill="#e8e4dc"/>
+  <rect x="88" y="148" width="24" height="30" fill="#e8e4dc"/>
+  <!-- Shirt collar line -->
+  <rect x="76" y="126" width="48" height="2" fill="#000" opacity="0.1"/>
+  <!-- Shirt fold shadows (visible) -->
+  <rect x="90" y="150" width="2" height="24" fill="#000" opacity="0.12"/>
+  <rect x="108" y="148" width="2" height="22" fill="#000" opacity="0.1"/>
+  <rect x="86" y="148" width="2" height="16" fill="#000" opacity="0.08"/>
+  <!-- Shirt shadow (left side of V) -->
+  <rect x="76" y="128" width="6" height="6" fill="#000" opacity="0.08"/>
+  <rect x="80" y="136" width="4" height="8" fill="#000" opacity="0.06"/>
+  <!-- Shirt highlight -->
+  <rect x="98" y="136" width="8" height="8" fill="#fff" opacity="0.08"/>
+  <!-- Tie knot -->
+  <rect x="94" y="126" width="12" height="6" fill="var(--accent)"/>
+  <rect x="94" y="126" width="6" height="6" fill="#000" opacity="0.08"/>
+  <!-- Tie body -->
+  <rect x="96" y="132" width="8" height="6" fill="var(--accent)"/>
+  <rect x="96" y="138" width="8" height="34" fill="var(--accent)"/>
+  <!-- Tie point -->
+  <rect x="94" y="172" width="12" height="4" fill="var(--accent)"/>
+  <rect x="96" y="176" width="8" height="2" fill="var(--accent)"/>
+  <rect x="98" y="178" width="4" height="2" fill="var(--accent)"/>
+  <!-- Tie shadow (left half darker) -->
+  <rect x="96" y="138" width="4" height="34" fill="#000" opacity="0.12"/>
+  <rect x="94" y="172" width="6" height="4" fill="#000" opacity="0.1"/>
+  <!-- Tie highlight stripe -->
+  <rect x="102" y="140" width="2" height="20" fill="#fff" opacity="0.14"/>
+  <!-- Tie subtle stripe pattern -->
+  <rect x="96" y="144" width="8" height="2" fill="#000" opacity="0.06"/>
+  <rect x="96" y="152" width="8" height="2" fill="#000" opacity="0.06"/>
+  <rect x="96" y="160" width="8" height="2" fill="#000" opacity="0.06"/>
+  <!-- Buttons (more defined) -->
+  <rect x="98" y="186" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="99" y="187" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="98" y="202" width="4" height="4" fill="#000" opacity="0.25"/>
+  <rect x="99" y="203" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Breast pocket (left) -->
+  <rect x="60" y="148" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="60" y="148" width="2" height="10" fill="#000" opacity="0.08"/>
+  <rect x="70" y="148" width="2" height="10" fill="#000" opacity="0.08"/>
+  <!-- Pocket square hint -->
+  <rect x="62" y="146" width="8" height="4" fill="var(--accent)" opacity="0.5"/>
+  <!-- FABRIC TEXTURE: dense stipple across entire blazer body -->
+  <!-- Left body dark stipple -->
+  <rect x="52" y="138" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="58" y="146" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="50" y="154" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="64" y="152" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="56" y="166" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="62" y="178" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="52" y="184" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="68" y="190" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="58" y="198" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="50" y="210" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="66" y="206" width="2" height="2" fill="#000" opacity="0.08"/>
+  <rect x="54" y="218" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="62" y="226" width="2" height="2" fill="#000" opacity="0.08"/>
+  <!-- Center body stipple (subtler, base tone area) -->
+  <rect x="82" y="186" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="90" y="196" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="86" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="108" y="190" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="114" y="204" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="104" y="218" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="224" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="112" y="226" width="2" height="2" fill="#000" opacity="0.04"/>
+  <!-- Right body highlight stipple -->
+  <rect x="128" y="138" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="136" y="148" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="130" y="160" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="142" y="154" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="126" y="172" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="168" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="134" y="184" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="144" y="178" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="128" y="194" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="140" y="198" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="132" y="210" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="146" y="206" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="136" y="222" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <!-- Center front line (button placket) -->
+  <rect x="98" y="180" width="2" height="52" fill="#000" opacity="0.06"/>
+  <!-- Jacket bottom hem line -->
+  <rect x="56" y="232" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<!-- COSTUME: tweed-patches (Sage/Mentor) -->
+<symbol id="hd:costume-tweed-patches" viewBox="0 0 200 240">
+  <clipPath id="tweed-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v10 h-80 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <!-- Tapered body -->
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v10 h-80 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#tweed-clip)">
+  <!-- Shoulder seam -->
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient shading -->
+  <rect x="46" y="128" width="12" height="100" fill="#000" opacity="0.18"/>
+  <rect x="58" y="130" width="8" height="90" fill="#000" opacity="0.1"/>
+  <rect x="66" y="134" width="8" height="70" fill="#000" opacity="0.05"/>
+  <rect x="130" y="128" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Elbow patches (leather, with own shading) -->
+  <rect x="46" y="176" width="18" height="22" fill="var(--secondary)"/>
+  <rect x="46" y="176" width="18" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="46" y="196" width="18" height="2" fill="#000" opacity="0.1"/>
+  <rect x="46" y="180" width="4" height="12" fill="#000" opacity="0.08"/>
+  <rect x="58" y="180" width="4" height="8" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="176" width="18" height="22" fill="var(--secondary)"/>
+  <rect x="138" y="176" width="18" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="138" y="196" width="18" height="2" fill="#000" opacity="0.1"/>
+  <rect x="150" y="180" width="4" height="8" fill="#fff" opacity="0.06"/>
+  <!-- Shirt collar V -->
+  <rect x="76" y="126" width="48" height="8" fill="#ddd"/>
+  <rect x="80" y="134" width="40" height="6" fill="#ddd"/>
+  <rect x="84" y="140" width="32" height="4" fill="#ddd"/>
+  <rect x="76" y="126" width="48" height="2" fill="#000" opacity="0.08"/>
+  <!-- Shirt fold shadow -->
+  <rect x="88" y="136" width="2" height="8" fill="#000" opacity="0.06"/>
+  <rect x="108" y="134" width="2" height="6" fill="#000" opacity="0.05"/>
+  <!-- DENSE tweed texture (herringbone-like dither pattern) -->
+  <rect x="52" y="138" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="56" y="142" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="50" y="148" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="58" y="152" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="54" y="158" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="52" y="164" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="60" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="56" y="206" width="2" height="2" fill="#000" opacity="0.07"/>
+  <rect x="50" y="212" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="58" y="218" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="64" y="144" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="68" y="156" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="66" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="70" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
+  <!-- Right side texture -->
+  <rect x="120" y="140" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="126" y="148" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="122" y="156" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="130" y="152" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="124" y="164" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="134" y="142" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="128" y="170" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="132" y="162" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="136" y="154" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="126" y="202" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="210" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <!-- Center texture -->
+  <rect x="82" y="150" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="156" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="86" y="166" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="106" y="162" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="98" y="178" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="88" y="192" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="110" y="184" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="100" y="202" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="92" y="216" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="114" y="208" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <!-- Fold lines -->
+  <rect x="56" y="150" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="168" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="156" width="2" height="30" fill="#000" opacity="0.04"/>
+  <!-- Horizontal creases -->
+  <rect x="52" y="166" width="18" height="2" fill="#000" opacity="0.05"/>
+  <rect x="128" y="170" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="56" y="200" width="14" height="2" fill="#000" opacity="0.04"/>
+  <!-- Buttons -->
+  <rect x="98" y="150" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="99" y="151" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="98" y="166" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="99" y="167" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="98" y="182" width="4" height="4" fill="#000" opacity="0.2"/>
+  <!-- Center placket -->
+  <rect x="98" y="144" width="2" height="80" fill="#000" opacity="0.05"/>
+  <!-- Hem -->
+  <rect x="56" y="230" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<!-- COSTUME: robes (Sage/Shaman) -->
+<symbol id="hd:costume-robes" viewBox="0 0 200 240">
+  <clipPath id="robes-clip">
+    <path d="M 38,126 h124 v8 h-2 v32 h-4 v20 h-2 v16 h-2 v14 h-2 v14 h-2 v10 h-88 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-2 v-20 h-4 v-32 h-2 z"/>
+  </clipPath>
+  <!-- Wider robe body (flowing, wider than blazer) -->
+  <path d="M 40,126 h120 v40 h-4 v20 h-2 v16 h-2 v14 h-2 v14 h-2 v10 h-88 v-10 h-2 v-14 h-2 v-14 h-2 v-16 h-2 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="38" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="156" y="126" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#robes-clip)">
+  <!-- Shoulder line -->
+  <rect x="38" y="126" width="124" height="2" fill="#000" opacity="0.15"/>
+  <!-- Gradient shading -->
+  <rect x="40" y="128" width="12" height="106" fill="#000" opacity="0.18"/>
+  <rect x="52" y="130" width="8" height="96" fill="#000" opacity="0.1"/>
+  <rect x="60" y="134" width="8" height="80" fill="#000" opacity="0.05"/>
+  <rect x="140" y="128" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <rect x="136" y="132" width="6" height="14" fill="#fff" opacity="0.05"/>
+  <!-- Trim at top (decorative band) -->
+  <rect x="38" y="126" width="124" height="6" fill="var(--accent)"/>
+  <rect x="38" y="126" width="124" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="38" y="130" width="124" height="2" fill="#000" opacity="0.08"/>
+  <!-- Trim pattern (small repeating marks) -->
+  <rect x="44" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="52" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="60" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="132" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="140" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="148" y="128" width="2" height="2" fill="#000" opacity="0.12"/>
+  <!-- Trim at bottom -->
+  <rect x="40" y="232" width="120" height="8" fill="var(--accent)"/>
+  <rect x="40" y="232" width="120" height="2" fill="#fff" opacity="0.12"/>
+  <!-- V-neck opening -->
+  <rect x="86" y="132" width="28" height="10" fill="var(--skin)"/>
+  <rect x="90" y="142" width="20" height="8" fill="var(--skin)"/>
+  <rect x="94" y="150" width="12" height="6" fill="var(--skin)"/>
+  <rect x="98" y="156" width="4" height="4" fill="var(--skin)"/>
+  <!-- V-neck edges (darker trim lines) -->
+  <rect x="86" y="132" width="2" height="40" fill="#000" opacity="0.1"/>
+  <rect x="112" y="132" width="2" height="36" fill="#000" opacity="0.08"/>
+  <!-- Pendant in V -->
+  <rect x="94" y="148" width="12" height="10" fill="var(--accent)"/>
+  <rect x="94" y="148" width="12" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="98" y="152" width="4" height="4" fill="#fff" opacity="0.3"/>
+  <!-- Flowing fabric fold lines (robes have more drape than a blazer) -->
+  <rect x="96" y="162" width="2" height="66" fill="#000" opacity="0.07"/>
+  <rect x="72" y="148" width="2" height="70" fill="#000" opacity="0.06"/>
+  <rect x="80" y="160" width="2" height="50" fill="#000" opacity="0.04"/>
+  <rect x="118" y="146" width="2" height="65" fill="#000" opacity="0.05"/>
+  <rect x="126" y="156" width="2" height="50" fill="#000" opacity="0.04"/>
+  <rect x="56" y="158" width="2" height="50" fill="#000" opacity="0.06"/>
+  <rect x="64" y="170" width="2" height="38" fill="#000" opacity="0.04"/>
+  <rect x="138" y="160" width="2" height="40" fill="#000" opacity="0.04"/>
+  <!-- Fabric texture stipple -->
+  <rect x="50" y="142" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="58" y="156" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="54" y="172" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="62" y="186" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="50" y="200" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="56" y="216" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="86" y="170" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="108" y="178" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="92" y="198" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="104" y="210" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="130" y="144" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="158" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="132" y="174" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="142" y="188" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="134" y="204" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="140" y="218" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <!-- Horizontal drape lines (heavy flowing fabric) -->
+  <rect x="48" y="170" width="22" height="2" fill="#000" opacity="0.05"/>
+  <rect x="130" y="174" width="18" height="2" fill="#000" opacity="0.04"/>
+  <rect x="52" y="200" width="18" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="196" width="16" height="2" fill="#000" opacity="0.03"/>
+  <rect x="70" y="220" width="60" height="2" fill="#000" opacity="0.03"/>
+  </g>
+</symbol>
+
+<!-- PROP: magnifying-glass (1/3 larger) -->
+<symbol id="hd:prop-magnifying-glass" viewBox="0 0 200 240">
+  <!-- Handle -->
+  <rect x="150" y="184" width="10" height="36" fill="var(--primary)"/>
+  <rect x="150" y="184" width="5" height="36" fill="#000" opacity="0.1"/>
+  <rect x="155" y="188" width="3" height="14" fill="#fff" opacity="0.12"/>
+  <!-- Ferrule -->
+  <rect x="147" y="176" width="16" height="10" fill="#888"/>
+  <rect x="147" y="176" width="16" height="2" fill="#fff" opacity="0.15"/>
+  <!-- Lens ring -->
+  <rect x="132" y="136" width="40" height="3" fill="#888"/>
+  <rect x="132" y="176" width="40" height="3" fill="#888"/>
+  <rect x="129" y="139" width="3" height="37" fill="#888"/>
+  <rect x="172" y="139" width="3" height="37" fill="#888"/>
+  <rect x="132" y="139" width="3" height="3" fill="#888"/>
+  <rect x="169" y="139" width="3" height="3" fill="#888"/>
+  <rect x="132" y="173" width="3" height="3" fill="#888"/>
+  <rect x="169" y="173" width="3" height="3" fill="#888"/>
+  <!-- Ring highlight -->
+  <rect x="170" y="142" width="3" height="14" fill="#fff" opacity="0.2"/>
+  <rect x="140" y="136" width="16" height="3" fill="#fff" opacity="0.12"/>
+  <!-- Lens glass -->
+  <rect x="132" y="139" width="40" height="37" fill="#aaddff" opacity="0.12"/>
+  <!-- Lens glint -->
+  <rect x="140" y="142" width="8" height="3" fill="#fff" opacity="0.35"/>
+  <rect x="137" y="145" width="3" height="8" fill="#fff" opacity="0.25"/>
+  <rect x="140" y="145" width="3" height="3" fill="#fff" opacity="0.15"/>
+</symbol>
+
+<!-- PROP: book-open (1/3 larger) -->
+<symbol id="hd:prop-book-open" viewBox="0 0 200 240">
+  <rect x="132" y="160" width="48" height="38" fill="var(--primary)"/>
+  <rect x="132" y="160" width="48" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Spine -->
+  <rect x="156" y="160" width="3" height="38" fill="#000" opacity="0.15"/>
+  <!-- Pages right -->
+  <rect x="159" y="163" width="18" height="32" fill="#e8e4dc" opacity="0.9"/>
+  <!-- Text lines -->
+  <rect x="162" y="168" width="12" height="2" fill="#000" opacity="0.15"/>
+  <rect x="162" y="174" width="10" height="2" fill="#000" opacity="0.15"/>
+  <rect x="162" y="180" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="162" y="186" width="8" height="2" fill="#000" opacity="0.15"/>
+  <!-- Pages left -->
+  <rect x="135" y="163" width="18" height="32" fill="#e8e4dc" opacity="0.85"/>
+  <rect x="138" y="168" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="138" y="174" width="10" height="2" fill="#000" opacity="0.12"/>
+  <rect x="138" y="180" width="12" height="2" fill="#000" opacity="0.1"/>
+  <rect x="138" y="186" width="8" height="2" fill="#000" opacity="0.1"/>
+</symbol>
+
+<!-- PROP: crystal-ball (1/3 larger) -->
+<symbol id="hd:prop-crystal-ball" viewBox="0 0 200 240">
+  <!-- Stand -->
+  <rect x="138" y="192" width="38" height="6" fill="var(--primary)"/>
+  <rect x="143" y="186" width="28" height="6" fill="var(--primary)"/>
+  <rect x="143" y="186" width="28" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Ball outline -->
+  <rect x="144" y="150" width="26" height="3" fill="#6644aa" opacity="0.8"/>
+  <rect x="141" y="153" width="3" height="3" fill="#6644aa" opacity="0.8"/>
+  <rect x="170" y="153" width="3" height="3" fill="#6644aa" opacity="0.8"/>
+  <rect x="138" y="156" width="3" height="24" fill="#6644aa" opacity="0.8"/>
+  <rect x="173" y="156" width="3" height="24" fill="#6644aa" opacity="0.8"/>
+  <rect x="141" y="180" width="3" height="3" fill="#6644aa" opacity="0.8"/>
+  <rect x="170" y="180" width="3" height="3" fill="#6644aa" opacity="0.8"/>
+  <rect x="144" y="183" width="26" height="3" fill="#6644aa" opacity="0.8"/>
+  <!-- Ball fill -->
+  <rect x="141" y="153" width="32" height="30" fill="var(--accent)" opacity="0.35"/>
+  <!-- Inner glow -->
+  <rect x="150" y="162" width="14" height="12" fill="var(--accent)" opacity="0.25"/>
+  <!-- Highlight glint -->
+  <rect x="147" y="156" width="6" height="3" fill="#fff" opacity="0.4"/>
+  <rect x="144" y="159" width="3" height="6" fill="#fff" opacity="0.25"/>
+  <rect x="147" y="159" width="3" height="3" fill="#fff" opacity="0.15"/>
+  <!-- Glow spillover -->
+  <rect x="135" y="159" width="3" height="8" fill="var(--accent)" opacity="0.12"/>
+  <rect x="176" y="165" width="3" height="6" fill="var(--accent)" opacity="0.1"/>
+  <rect x="153" y="147" width="8" height="3" fill="var(--accent)" opacity="0.08"/>
+</symbol>
+
+<!-- PROP: scroll (1/3 larger) -->
+<symbol id="hd:prop-scroll" viewBox="0 0 200 240">
+  <rect x="140" y="158" width="38" height="46" fill="#e8dcc8"/>
+  <!-- Roll tops -->
+  <rect x="137" y="154" width="44" height="6" fill="var(--primary)"/>
+  <rect x="137" y="154" width="44" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="137" y="202" width="44" height="6" fill="var(--primary)"/>
+  <!-- Parchment shadow -->
+  <rect x="140" y="160" width="8" height="38" fill="#000" opacity="0.05"/>
+  <!-- Text lines -->
+  <rect x="146" y="164" width="24" height="2" fill="#000" opacity="0.15"/>
+  <rect x="146" y="172" width="18" height="2" fill="#000" opacity="0.15"/>
+  <rect x="146" y="180" width="24" height="2" fill="#000" opacity="0.12"/>
+  <rect x="146" y="188" width="14" height="2" fill="#000" opacity="0.15"/>
+  <rect x="146" y="196" width="20" height="2" fill="#000" opacity="0.1"/>
+  <!-- Highlight -->
+  <rect x="168" y="162" width="8" height="28" fill="#fff" opacity="0.06"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HEAD: square-jaw (Hero family)                   -->
+<!-- ================================================ -->
+<symbol id="hd:head-square-jaw" viewBox="0 0 200 240">
+  <g transform="translate(0,6)">
+  <!-- Outline: wide jaw, flat chin -->
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v56 h-2 v4 h-4 v2 h-8 v2 h-40 v-2 h-8 v-2 h-4 v-4 h-2 v-56 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="76" y="28" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="28" width="2" height="2" fill="var(--skin)"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="62" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="64" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="62" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="64" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="64" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes (same position, heavier upper lid for determined look) -->
+  <rect x="78" y="62" width="16" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="78" y="62" width="16" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="78" y="70" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="86" y="64" width="6" height="6" fill="#8b1a1a"/>
+  <rect x="88" y="64" width="4" height="6" fill="#6a1515"/>
+  <rect x="88" y="66" width="4" height="4" fill="#111"/>
+  <rect x="86" y="64" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="62" width="16" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="16" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="106" y="70" width="16" height="2" fill="#3a2520" opacity="0.2"/>
+  <rect x="112" y="64" width="6" height="6" fill="#8b1a1a"/>
+  <rect x="114" y="64" width="4" height="6" fill="#6a1515"/>
+  <rect x="114" y="66" width="4" height="4" fill="#111"/>
+  <rect x="112" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="74" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="76" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="76" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="82" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="84" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="102" y="76" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Mouth + upper lip shadow -->
+  <rect x="92" y="88" width="16" height="2" fill="#000" opacity="0.06"/>
+  <rect x="90" y="90" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="90" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Jaw shadow (strong — square jaw is defined by this) -->
+  <rect x="68" y="88" width="64" height="2" fill="#000" opacity="0.1"/>
+  <rect x="66" y="90" width="8" height="6" fill="#000" opacity="0.14"/>
+  <rect x="126" y="90" width="8" height="6" fill="#000" opacity="0.06"/>
+  <!-- Chin -->
+  <rect x="84" y="96" width="32" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="88" y="102" width="24" height="26" fill="var(--skin)"/>
+  <rect x="86" y="106" width="4" height="18" fill="var(--skin)"/>
+  <rect x="110" y="106" width="4" height="18" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HEAD: angular (Rebel family)                     -->
+<!-- ================================================ -->
+<symbol id="hd:head-angular" viewBox="0 0 200 240">
+  <g transform="translate(0,8)">
+  <!-- Outline: sharp edges, asymmetric -->
+  <path d="M 82,26 h36 v2 h6 v2 h4 v4 h2 v2 h2 v52 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-4 v2 h-12 h-12 h-4 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-4 v-52 h2 v-2 h2 v-4 h4 v-2 h6 v-2 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="80" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="124" y="26" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="64" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="58" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="60" width="2" height="8" fill="var(--skin)"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#333"/>
+  <rect x="88" y="62" width="4" height="6" fill="#222"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="62" width="6" height="6" fill="#333"/>
+  <rect x="112" y="62" width="4" height="6" fill="#222"/>
+  <rect x="112" y="64" width="4" height="4" fill="#111"/>
+  <rect x="110" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="72" width="4" height="10" fill="#000" opacity="0.12"/>
+  <rect x="96" y="74" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="102" y="74" width="2" height="6" fill="#000" opacity="0.06"/>
+  <rect x="96" y="80" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="102" y="80" width="2" height="2" fill="#000" opacity="0.2"/>
+  <rect x="94" y="82" width="12" height="2" fill="#000" opacity="0.06"/>
+  <rect x="102" y="74" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="88" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="110" y="88" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.08"/>
+  <!-- Cheek blush (visible) -->
+  <rect x="72" y="72" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="118" y="72" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Chin shadow -->
+  <rect x="86" y="94" width="28" height="2" fill="#000" opacity="0.12"/>
+  <!-- Jawline definition (angular head feature) -->
+  <rect x="70" y="84" width="6" height="2" fill="#000" opacity="0.08"/>
+  <rect x="124" y="82" width="6" height="2" fill="#000" opacity="0.06"/>
+  <!-- Neck -->
+  <rect x="90" y="100" width="20" height="28" fill="var(--skin)"/>
+  <rect x="88" y="104" width="4" height="20" fill="var(--skin)"/>
+  <rect x="108" y="104" width="4" height="20" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HEAD: round (Caregiver + Innocent families)      -->
+<!-- ================================================ -->
+<symbol id="hd:head-round" viewBox="0 0 200 240">
+  <g transform="translate(0,8)">
+  <!-- Outline: circular, soft -->
+  <path d="M 78,30 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-44 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="76" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="122" y="30" width="2" height="2" fill="var(--skin)"/>
+  <rect x="76" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <rect x="122" y="86" width="2" height="2" fill="#3a2520" opacity="0.3"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#2e5940"/>
+  <rect x="88" y="62" width="4" height="6" fill="#1e4030"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="112" y="62" width="6" height="6" fill="#2e5940"/>
+  <rect x="114" y="62" width="4" height="6" fill="#1e4030"/>
+  <rect x="114" y="64" width="4" height="4" fill="#111"/>
+  <rect x="112" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="70" width="4" height="10" fill="#000" opacity="0.1"/>
+  <rect x="96" y="72" width="2" height="6" fill="#000" opacity="0.05"/>
+  <rect x="102" y="72" width="2" height="6" fill="#000" opacity="0.05"/>
+  <rect x="96" y="78" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="78" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="80" width="12" height="2" fill="#000" opacity="0.05"/>
+  <rect x="102" y="72" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="92" y="82" width="16" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth -->
+  <rect x="90" y="84" width="20" height="2" fill="#000" opacity="0.28"/>
+  <rect x="88" y="84" width="2" height="2" fill="#000" opacity="0.14"/>
+  <rect x="110" y="84" width="2" height="2" fill="#000" opacity="0.14"/>
+  <rect x="92" y="86" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush (warmer, visible — Caregiver warmth) -->
+  <rect x="72" y="70" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="74" y="68" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="118" y="70" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="120" y="68" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow -->
+  <rect x="86" y="90" width="28" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="96" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="100" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="100" width="4" height="24" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HEAD: round-wide (Jester family)                 -->
+<!-- ================================================ -->
+<symbol id="hd:head-round-wide" viewBox="0 0 200 240">
+  <g transform="translate(0,12)">
+  <!-- Outline: widest, most animated -->
+  <path d="M 72,34 h56 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v32 h-2 v2 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-8 v2 h-36 v-2 h-8 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-2 h-2 v-32 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- AA corners -->
+  <rect x="70" y="34" width="2" height="2" fill="var(--skin)"/>
+  <rect x="128" y="34" width="2" height="2" fill="var(--skin)"/>
+  <!-- Skin fill -->
+  <!-- Ears -->
+  <rect x="56" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="54" y="58" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="140" y="56" width="4" height="14" fill="var(--skin)"/>
+  <rect x="144" y="58" width="2" height="10" fill="var(--skin)"/>
+  <rect x="142" y="60" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="54" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="52" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="54" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="144" y="56" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="146" y="58" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="144" y="68" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes (wider spacing for wider head, bigger for animated look) -->
+  <rect x="74" y="56" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="74" y="56" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="80" y="58" width="8" height="8" fill="#e67e22"/>
+  <rect x="84" y="58" width="4" height="8" fill="#c06020"/>
+  <rect x="84" y="60" width="4" height="6" fill="#111"/>
+  <rect x="80" y="58" width="2" height="2" fill="#fff"/>
+  <rect x="110" y="56" width="16" height="12" fill="#dde4e8" opacity="0.95"/>
+  <rect x="110" y="56" width="16" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="116" y="58" width="8" height="8" fill="#e67e22"/>
+  <rect x="120" y="58" width="4" height="8" fill="#c06020"/>
+  <rect x="120" y="60" width="4" height="6" fill="#111"/>
+  <rect x="116" y="58" width="2" height="2" fill="#fff"/>
+  <!-- Nose: bridge + nostrils + highlight -->
+  <rect x="98" y="68" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="70" width="2" height="4" fill="#000" opacity="0.05"/>
+  <rect x="102" y="70" width="2" height="4" fill="#000" opacity="0.05"/>
+  <rect x="96" y="74" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="74" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="76" width="12" height="2" fill="#000" opacity="0.05"/>
+  <rect x="102" y="70" width="2" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Upper lip shadow -->
+  <rect x="88" y="78" width="24" height="2" fill="#000" opacity="0.06"/>
+  <!-- Mouth (wider, expressive for Jester — big grin) -->
+  <rect x="84" y="80" width="32" height="2" fill="#000" opacity="0.3"/>
+  <rect x="82" y="80" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="116" y="80" width="2" height="2" fill="#000" opacity="0.15"/>
+  <rect x="86" y="82" width="28" height="2" fill="#000" opacity="0.08"/>
+  <!-- Mouth corners turned up (grin) -->
+  <rect x="82" y="78" width="2" height="2" fill="#000" opacity="0.12"/>
+  <rect x="116" y="78" width="2" height="2" fill="#000" opacity="0.12"/>
+  <!-- Cheek blush (big, rosy — animated face) -->
+  <rect x="66" y="66" width="10" height="12" fill="#cc7766" opacity="0.2"/>
+  <rect x="68" y="64" width="6" height="4" fill="#cc7766" opacity="0.12"/>
+  <rect x="124" y="66" width="10" height="12" fill="#cc7766" opacity="0.16"/>
+  <rect x="126" y="64" width="6" height="4" fill="#cc7766" opacity="0.1"/>
+  <!-- Chin shadow -->
+  <rect x="84" y="86" width="32" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="92" width="20" height="36" fill="var(--skin)"/>
+  <rect x="88" y="96" width="4" height="28" fill="var(--skin)"/>
+  <rect x="108" y="96" width="4" height="28" fill="var(--skin)"/>
+  <!-- no neck shading -->
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- COSTUME: armour (Hero family)                    -->
+<!-- ================================================ -->
+<symbol id="hd:costume-armour" viewBox="0 0 200 240">
+  <clipPath id="armour-clip">
+    <path d="M 40,118 h120 v8 h-6 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v18 h-80 v-18 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-6 z"/>
+  </clipPath>
+  <!-- Base armour -->
+  <path d="M 44,118 h112 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v18 h-80 v-18 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="#999"/>
+  <!-- Shoulder pauldrons -->
+  <rect x="38" y="114" width="24" height="14" fill="#888"/>
+  <rect x="38" y="114" width="24" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="38" y="126" width="24" height="2" fill="#000" opacity="0.15"/>
+  <rect x="138" y="114" width="24" height="14" fill="#888"/>
+  <rect x="138" y="114" width="24" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="138" y="126" width="24" height="2" fill="#000" opacity="0.15"/>
+  <g clip-path="url(#armour-clip)">
+  <!-- Chest plate (brighter inset) -->
+  <rect x="62" y="130" width="76" height="50" fill="#aaa"/>
+  <rect x="62" y="130" width="76" height="2" fill="#fff" opacity="0.15"/>
+  <!-- Chest plate shadow -->
+  <rect x="62" y="132" width="10" height="46" fill="#000" opacity="0.12"/>
+  <rect x="72" y="136" width="6" height="36" fill="#000" opacity="0.06"/>
+  <!-- Chest plate highlight -->
+  <rect x="126" y="132" width="10" height="20" fill="#fff" opacity="0.12"/>
+  <rect x="120" y="134" width="6" height="10" fill="#fff" opacity="0.06"/>
+  <!-- Emblem -->
+  <rect x="90" y="148" width="20" height="16" fill="var(--primary)"/>
+  <rect x="90" y="148" width="20" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="94" y="152" width="12" height="8" fill="var(--accent)"/>
+  <!-- Body shadow bands -->
+  <rect x="44" y="128" width="12" height="100" fill="#000" opacity="0.18"/>
+  <rect x="56" y="130" width="8" height="90" fill="#000" opacity="0.1"/>
+  <!-- Body highlight -->
+  <rect x="140" y="128" width="12" height="30" fill="#fff" opacity="0.1"/>
+  <!-- Metal texture stipple -->
+  <rect x="50" y="142" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="56" y="156" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="52" y="172" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="130" y="140" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="136" y="154" width="2" height="2" fill="#fff" opacity="0.09"/>
+  <rect x="128" y="168" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="68" y="184" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="78" y="196" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="118" y="188" width="2" height="2" fill="#000" opacity="0.05"/>
+  <!-- Horizontal plate seam lines -->
+  <rect x="50" y="166" width="100" height="2" fill="#000" opacity="0.1"/>
+  <rect x="54" y="196" width="92" height="2" fill="#000" opacity="0.08"/>
+  <rect x="62" y="180" width="76" height="2" fill="#000" opacity="0.06"/>
+  <!-- Dense metal texture -->
+  <rect x="52" y="140" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="60" y="150" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="48" y="162" width="2" height="2" fill="#fff" opacity="0.09"/>
+  <rect x="56" y="174" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="50" y="188" width="2" height="2" fill="#fff" opacity="0.09"/>
+  <rect x="64" y="182" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="130" y="138" width="2" height="2" fill="#fff" opacity="0.12"/>
+  <rect x="138" y="148" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="126" y="160" width="2" height="2" fill="#fff" opacity="0.09"/>
+  <rect x="134" y="172" width="2" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="140" y="186" width="2" height="2" fill="#fff" opacity="0.09"/>
+  <rect x="128" y="196" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="80" y="170" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="90" y="186" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="174" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="118" y="192" width="2" height="2" fill="#000" opacity="0.04"/>
+  <!-- Vertical rivet lines -->
+  <rect x="62" y="132" width="2" height="60" fill="#000" opacity="0.04"/>
+  <rect x="136" y="132" width="2" height="60" fill="#000" opacity="0.03"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- COSTUME: leather-jacket (Rebel family)           -->
+<!-- ================================================ -->
+<symbol id="hd:costume-leather-jacket" viewBox="0 0 200 240">
+  <clipPath id="leather-clip">
+    <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <!-- Base jacket -->
+  <path d="M 46,120 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v16 h-80 v-16 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="#222"/>
+  <!-- Shoulder caps -->
+  <rect x="42" y="120" width="6" height="8" fill="#222"/>
+  <rect x="152" y="120" width="6" height="8" fill="#222"/>
+  <!-- Popped collar -->
+  <rect x="56" y="112" width="22" height="10" fill="#222"/>
+  <rect x="56" y="112" width="22" height="2" fill="#fff" opacity="0.08"/>
+  <rect x="122" y="112" width="22" height="10" fill="#222"/>
+  <rect x="122" y="112" width="22" height="2" fill="#fff" opacity="0.08"/>
+  <g clip-path="url(#leather-clip)">
+  <!-- Shoulder seam -->
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.3"/>
+  <!-- Shadow bands -->
+  <rect x="46" y="128" width="10" height="100" fill="#000" opacity="0.2"/>
+  <rect x="56" y="130" width="6" height="90" fill="#000" opacity="0.1"/>
+  <!-- Highlight -->
+  <rect x="138" y="128" width="12" height="26" fill="#fff" opacity="0.1"/>
+  <rect x="132" y="130" width="6" height="12" fill="#fff" opacity="0.05"/>
+  <!-- Diagonal zipper -->
+  <rect x="82" y="128" width="2" height="4" fill="#888"/>
+  <rect x="80" y="132" width="2" height="6" fill="#888"/>
+  <rect x="78" y="138" width="2" height="6" fill="#888"/>
+  <rect x="76" y="144" width="2" height="6" fill="#888"/>
+  <rect x="74" y="150" width="2" height="6" fill="#888"/>
+  <rect x="72" y="156" width="2" height="8" fill="#888"/>
+  <rect x="70" y="164" width="2" height="8" fill="#888"/>
+  <rect x="68" y="172" width="2" height="8" fill="#888"/>
+  <!-- Zipper pull -->
+  <rect x="74" y="148" width="6" height="4" fill="#aaa"/>
+  <rect x="74" y="148" width="6" height="2" fill="#fff" opacity="0.15"/>
+  <!-- Leather texture stipple -->
+  <rect x="52" y="140" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="60" y="156" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="54" y="174" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="62" y="192" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="92" y="186" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="128" y="142" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="136" y="158" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="176" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="140" y="190" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <!-- Collar shadow under popped collar -->
+  <rect x="78" y="126" width="44" height="4" fill="var(--skin)"/>
+  <rect x="78" y="126" width="44" height="4" fill="#000" opacity="0.1"/>
+  <!-- More fold lines -->
+  <rect x="58" y="152" width="2" height="48" fill="#000" opacity="0.08"/>
+  <rect x="64" y="168" width="2" height="32" fill="#000" opacity="0.06"/>
+  <rect x="70" y="180" width="2" height="20" fill="#000" opacity="0.05"/>
+  <rect x="134" y="156" width="2" height="34" fill="#000" opacity="0.05"/>
+  <rect x="140" y="170" width="2" height="20" fill="#000" opacity="0.04"/>
+  <!-- Horizontal creases -->
+  <rect x="52" y="170" width="18" height="2" fill="#000" opacity="0.05"/>
+  <rect x="130" y="174" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="56" y="198" width="14" height="2" fill="#000" opacity="0.04"/>
+  <!-- More leather stipple -->
+  <rect x="48" y="148" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="56" y="162" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="52" y="180" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="60" y="196" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="96" y="178" width="2" height="2" fill="#fff" opacity="0.03"/>
+  <rect x="110" y="188" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="126" y="150" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="134" y="168" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <rect x="142" y="182" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="196" width="2" height="2" fill="#fff" opacity="0.04"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- COSTUME: performer (Jester family)               -->
+<!-- ================================================ -->
+<symbol id="hd:costume-performer" viewBox="0 0 200 240">
+  <clipPath id="performer-clip">
+    <path d="M 42,112 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v24 h-80 v-24 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,112 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v24 h-80 v-24 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="112" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="112" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#performer-clip)">
+  <rect x="42" y="112" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Shadow -->
+  <rect x="46" y="128" width="10" height="100" fill="#000" opacity="0.16"/>
+  <rect x="56" y="130" width="6" height="80" fill="#000" opacity="0.08"/>
+  <!-- Highlight -->
+  <rect x="138" y="128" width="12" height="26" fill="#fff" opacity="0.1"/>
+  <!-- Collar (big, flashy) -->
+  <rect x="72" y="126" width="56" height="8" fill="var(--secondary)"/>
+  <rect x="72" y="126" width="56" height="2" fill="#fff" opacity="0.12"/>
+  <!-- Sequin/polka-dot pattern (larger, bolder — clown costume!) -->
+  <rect x="52" y="136" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="72" y="144" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="50" y="158" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="68" y="170" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="54" y="186" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="74" y="196" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="120" y="138" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="138" y="148" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="110" y="160" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="132" y="170" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="142" y="188" width="6" height="6" fill="var(--accent)" opacity="0.6"/>
+  <rect x="116" y="196" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="90" y="176" width="6" height="6" fill="var(--accent)" opacity="0.5"/>
+  <rect x="96" y="200" width="6" height="6" fill="var(--accent)" opacity="0.4"/>
+  <!-- Spot highlights (each dot gets a glint) -->
+  <rect x="54" y="138" width="2" height="2" fill="#fff" opacity="0.2"/>
+  <rect x="74" y="146" width="2" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="122" y="140" width="2" height="2" fill="#fff" opacity="0.2"/>
+  <rect x="140" y="150" width="2" height="2" fill="#fff" opacity="0.15"/>
+  <!-- Fabric stipple -->
+  <rect x="60" y="146" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="74" y="170" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="100" y="184" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="130" y="170" width="2" height="2" fill="#000" opacity="0.05"/>
+  <!-- Fold lines -->
+  <rect x="56" y="158" width="2" height="40" fill="#000" opacity="0.08"/>
+  <rect x="142" y="156" width="2" height="30" fill="#000" opacity="0.06"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- COSTUME: soft-wrap (Caregiver family)            -->
+<!-- ================================================ -->
+<symbol id="hd:costume-soft-wrap" viewBox="0 0 200 240">
+  <clipPath id="wrap-clip">
+    <path d="M 42,114 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v22 h-80 v-22 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,114 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v22 h-80 v-22 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="114" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="114" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#wrap-clip)">
+  <rect x="42" y="114" width="116" height="2" fill="#000" opacity="0.15"/>
+  <!-- Shadow -->
+  <rect x="46" y="128" width="10" height="100" fill="#000" opacity="0.16"/>
+  <rect x="56" y="132" width="6" height="80" fill="#000" opacity="0.08"/>
+  <!-- Highlight -->
+  <rect x="138" y="128" width="12" height="24" fill="#fff" opacity="0.1"/>
+  <!-- V-neck drape -->
+  <rect x="80" y="126" width="40" height="8" fill="var(--skin)"/>
+  <rect x="84" y="134" width="32" height="6" fill="var(--skin)"/>
+  <rect x="88" y="140" width="24" height="6" fill="var(--skin)"/>
+  <rect x="92" y="146" width="16" height="4" fill="var(--skin)"/>
+  <rect x="96" y="150" width="8" height="4" fill="var(--skin)"/>
+  <!-- Wrap fold lines (flowing fabric) -->
+  <rect x="78" y="130" width="2" height="60" fill="#000" opacity="0.06"/>
+  <rect x="120" y="132" width="2" height="55" fill="#000" opacity="0.05"/>
+  <rect x="96" y="154" width="2" height="60" fill="#000" opacity="0.04"/>
+  <rect x="68" y="150" width="2" height="40" fill="#000" opacity="0.05"/>
+  <rect x="132" y="148" width="2" height="35" fill="#000" opacity="0.04"/>
+  <!-- Soft fabric stipple (flowing texture — more than blazer since fabric drapes) -->
+  <rect x="52" y="140" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="60" y="152" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="54" y="166" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="66" y="174" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="58" y="188" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="52" y="202" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="64" y="214" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="88" y="168" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="110" y="176" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="100" y="198" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="220" width="2" height="2" fill="#000" opacity="0.03"/>
+  <rect x="126" y="140" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="154" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="168" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="180" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="196" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="136" y="210" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="142" y="148" width="2" height="2" fill="#fff" opacity="0.04"/>
+  <!-- Horizontal drape creases (soft fabric bunches) -->
+  <rect x="54" y="160" width="18" height="2" fill="#000" opacity="0.04"/>
+  <rect x="128" y="164" width="16" height="2" fill="#000" opacity="0.03"/>
+  <rect x="56" y="192" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="188" width="14" height="2" fill="#000" opacity="0.03"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HAIR: mohawk (Rebel family)                      -->
+<!-- ================================================ -->
+<symbol id="hd:hair-mohawk" viewBox="0 0 200 240">
+  <!-- Central spike mass -->
+  <rect x="88" y="6" width="24" height="4" fill="var(--hair-color)"/>
+  <rect x="86" y="10" width="28" height="6" fill="var(--hair-color)"/>
+  <rect x="84" y="16" width="32" height="8" fill="var(--hair-color)"/>
+  <rect x="82" y="24" width="36" height="14" fill="var(--hair-color)"/>
+  <!-- Spike tips -->
+  <rect x="90" y="2" width="8" height="4" fill="var(--hair-color)"/>
+  <rect x="94" y="0" width="4" height="2" fill="var(--hair-color)"/>
+  <rect x="86" y="8" width="4" height="4" fill="var(--hair-color)"/>
+  <rect x="110" y="8" width="4" height="4" fill="var(--hair-color)"/>
+  <!-- Shadow (left side) -->
+  <rect x="82" y="16" width="6" height="20" fill="#000" opacity="0.18"/>
+  <rect x="86" y="10" width="4" height="8" fill="#000" opacity="0.12"/>
+  <!-- Highlight (right side + tips) -->
+  <rect x="110" y="10" width="4" height="14" fill="#fff" opacity="0.15"/>
+  <rect x="106" y="16" width="4" height="8" fill="#fff" opacity="0.08"/>
+  <rect x="96" y="2" width="4" height="6" fill="#fff" opacity="0.12"/>
+  <!-- Strand texture -->
+  <rect x="90" y="8" width="2" height="24" fill="#000" opacity="0.06"/>
+  <rect x="98" y="4" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="106" y="10" width="2" height="22" fill="#000" opacity="0.06"/>
+  <!-- Shaved sides hint -->
+  <rect x="64" y="36" width="16" height="8" fill="var(--skin)" opacity="0.3"/>
+  <rect x="120" y="36" width="16" height="8" fill="var(--skin)" opacity="0.3"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- HAIR: shoulder-wavy (Caregiver/Angel)            -->
+<!-- ================================================ -->
+<symbol id="hd:hair-shoulder-wavy" viewBox="0 0 200 240">
+  <!-- Top cap -->
+  <path d="M 70,22 h60 v2 h6 v2 h4 v2 h4 v2 h2 v10 h-92 v-10 h2 v-2 h4 v-2 h4 v-2 h6 z" fill="var(--hair-color)"/>
+  <!-- Left flowing side -->
+  <rect x="56" y="38" width="10" height="60" fill="var(--hair-color)"/>
+  <rect x="52" y="44" width="4" height="48" fill="var(--hair-color)"/>
+  <rect x="56" y="98" width="6" height="10" fill="var(--hair-color)"/>
+  <rect x="60" y="108" width="4" height="6" fill="var(--hair-color)" opacity="0.6"/>
+  <!-- Right flowing side -->
+  <rect x="134" y="38" width="10" height="60" fill="var(--hair-color)"/>
+  <rect x="144" y="44" width="4" height="48" fill="var(--hair-color)"/>
+  <rect x="138" y="98" width="6" height="10" fill="var(--hair-color)"/>
+  <rect x="136" y="108" width="4" height="6" fill="var(--hair-color)" opacity="0.6"/>
+  <!-- Left shadow -->
+  <rect x="52" y="48" width="6" height="42" fill="#000" opacity="0.16"/>
+  <rect x="58" y="44" width="4" height="40" fill="#000" opacity="0.08"/>
+  <!-- Right highlight -->
+  <rect x="142" y="42" width="4" height="36" fill="#fff" opacity="0.12"/>
+  <rect x="140" y="50" width="2" height="24" fill="#fff" opacity="0.06"/>
+  <!-- Top highlight -->
+  <rect x="96" y="22" width="22" height="4" fill="#fff" opacity="0.12"/>
+  <rect x="112" y="24" width="10" height="4" fill="#fff" opacity="0.08"/>
+  <!-- Strand highlights -->
+  <rect x="56" y="50" width="2" height="30" fill="#fff" opacity="0.06"/>
+  <rect x="142" y="46" width="2" height="28" fill="#fff" opacity="0.08"/>
+  <!-- Wave texture (subtle bends) -->
+  <rect x="54" y="62" width="4" height="4" fill="#000" opacity="0.04"/>
+  <rect x="56" y="78" width="4" height="4" fill="#000" opacity="0.04"/>
+  <rect x="140" y="58" width="4" height="4" fill="#000" opacity="0.03"/>
+  <rect x="138" y="74" width="4" height="4" fill="#000" opacity="0.03"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- PROP: shield (Hero — larger)                     -->
+<!-- ================================================ -->
+<symbol id="hd:prop-shield" viewBox="0 0 200 240">
+  <!-- Larger shield (matches magnifying glass prominence) -->
+  <path d="M 124,132 h46 v4 h2 v42 h-2 v4 h-4 v4 h-6 v4 h-6 v4 h-10 v-4 h-6 v-4 h-6 v-4 h-4 v-4 h-2 v-42 h2 z" fill="var(--primary)"/>
+  <!-- Shield rim -->
+  <rect x="124" y="132" width="46" height="2" fill="#fff" opacity="0.18"/>
+  <rect x="124" y="134" width="2" height="44" fill="#fff" opacity="0.1"/>
+  <rect x="168" y="134" width="2" height="40" fill="#000" opacity="0.1"/>
+  <rect x="124" y="176" width="46" height="2" fill="#000" opacity="0.08"/>
+  <!-- Emblem (centered, bigger) -->
+  <rect x="136" y="150" width="22" height="18" fill="var(--accent)"/>
+  <rect x="136" y="150" width="22" height="2" fill="#fff" opacity="0.12"/>
+  <rect x="142" y="156" width="10" height="6" fill="var(--primary)"/>
+  <!-- Shadow band -->
+  <rect x="126" y="140" width="8" height="32" fill="#000" opacity="0.1"/>
+  <!-- Highlight band -->
+  <rect x="158" y="136" width="8" height="18" fill="#fff" opacity="0.1"/>
+  <!-- Metal texture -->
+  <rect x="132" y="142" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="140" y="172" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="156" y="146" width="2" height="2" fill="#fff" opacity="0.07"/>
+  <rect x="148" y="168" width="2" height="2" fill="#000" opacity="0.04"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- PROP: wrench (Rebel/Maverick — larger)            -->
+<!-- ================================================ -->
+<symbol id="hd:prop-wrench" viewBox="0 0 200 240">
+  <!-- Shaft (thicker, longer) -->
+  <rect x="152" y="144" width="8" height="56" fill="#888"/>
+  <rect x="152" y="144" width="4" height="56" fill="#000" opacity="0.1"/>
+  <rect x="156" y="148" width="3" height="24" fill="#fff" opacity="0.12"/>
+  <!-- Head (wider open jaw) -->
+  <rect x="140" y="130" width="30" height="16" fill="#888"/>
+  <rect x="140" y="130" width="30" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="140" y="144" width="30" height="2" fill="#000" opacity="0.1"/>
+  <rect x="148" y="136" width="12" height="10" fill="var(--skin)" opacity="0.4"/>
+  <!-- Handle end -->
+  <rect x="148" y="198" width="16" height="6" fill="#777"/>
+  <rect x="148" y="198" width="16" height="2" fill="#fff" opacity="0.1"/>
+  <!-- Metal texture -->
+  <rect x="144" y="134" width="2" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="164" y="134" width="2" height="2" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- PROP: juggling-balls (Jester — larger)            -->
+<!-- ================================================ -->
+<symbol id="hd:prop-juggling-balls" viewBox="0 0 200 240">
+  <!-- Ball 1 (left, accent colour) -->
+  <rect x="132" y="142" width="12" height="12" fill="var(--accent)"/>
+  <rect x="132" y="142" width="12" height="2" fill="#fff" opacity="0.2"/>
+  <rect x="132" y="152" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="134" y="144" width="2" height="2" fill="#fff" opacity="0.25"/>
+  <!-- Ball 2 (center top, primary) -->
+  <rect x="148" y="132" width="12" height="12" fill="var(--primary)"/>
+  <rect x="148" y="132" width="12" height="2" fill="#fff" opacity="0.2"/>
+  <rect x="148" y="142" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="150" y="134" width="2" height="2" fill="#fff" opacity="0.25"/>
+  <!-- Ball 3 (right, secondary) -->
+  <rect x="164" y="142" width="12" height="12" fill="var(--secondary)"/>
+  <rect x="164" y="142" width="12" height="2" fill="#fff" opacity="0.2"/>
+  <rect x="164" y="152" width="12" height="2" fill="#000" opacity="0.12"/>
+  <rect x="166" y="144" width="2" height="2" fill="#fff" opacity="0.25"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- PROP: halo (Caregiver/Angel — larger)             -->
+<!-- ================================================ -->
+<symbol id="hd:prop-halo" viewBox="0 0 200 240">
+  <!-- Halo ring above head -->
+  <rect x="76" y="14" width="48" height="4" fill="var(--accent)" opacity="0.7"/>
+  <rect x="72" y="18" width="4" height="2" fill="var(--accent)" opacity="0.6"/>
+  <rect x="124" y="18" width="4" height="2" fill="var(--accent)" opacity="0.6"/>
+  <rect x="76" y="20" width="48" height="2" fill="var(--accent)" opacity="0.5"/>
+  <!-- Glow effect -->
+  <rect x="80" y="12" width="40" height="2" fill="var(--accent)" opacity="0.3"/>
+  <rect x="84" y="10" width="32" height="2" fill="var(--accent)" opacity="0.15"/>
+  <!-- Highlight on ring -->
+  <rect x="96" y="14" width="10" height="2" fill="#fff" opacity="0.25"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- PROP: red-nose (Jester/Clown)                     -->
+<!-- ================================================ -->
+<symbol id="hd:prop-red-nose" viewBox="0 0 200 240">
+  <rect x="92" y="74" width="16" height="14" fill="#cc0000"/>
+  <rect x="90" y="76" width="2" height="10" fill="#cc0000"/>
+  <rect x="108" y="76" width="2" height="10" fill="#cc0000"/>
+  <!-- Shadow -->
+  <rect x="92" y="84" width="16" height="4" fill="#000" opacity="0.15"/>
+  <rect x="90" y="80" width="4" height="6" fill="#000" opacity="0.1"/>
+  <!-- Highlight -->
+  <rect x="96" y="76" width="4" height="4" fill="#ff3333" opacity="0.5"/>
+  <rect x="98" y="74" width="2" height="2" fill="#fff" opacity="0.3"/>
+</symbol>
+
+
+<!-- ================================================ -->
+<!-- REMAINING HEADS                                  -->
+<!-- ================================================ -->
+
+<symbol id="hd:head-diamond" viewBox="0 0 200 240">
+  <g transform="translate(0,6)">
+  <!-- Diamond: wide cheekbones, narrower top + chin. Slower taper below cheeks. -->
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <clipPath id="diamond-face-clip">
+    <path d="M 80,26 h40 v2 h4 v2 h4 v2 h4 v4 h2 v4 h2 v24 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v4 h-4 v2 h-4 v2 h-6 h-6 h-4 v-2 h-4 v-2 h-4 v-4 h-4 v-4 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 h-2 v-4 v-24 h2 v-4 h2 v-4 h4 v-2 h4 v-2 h4 v-2 z"/>
+  </clipPath>
+  <rect x="62" y="26" width="76" height="72" fill="var(--skin)" clip-path="url(#diamond-face-clip)"/>
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="134" y="60" width="4" height="14" fill="var(--skin)"/>
+  <rect x="138" y="62" width="2" height="10" fill="var(--skin)"/>
+  <rect x="136" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="62" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="80" y="66" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="66" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="68" width="6" height="6" fill="#5b3a8c"/>
+  <rect x="88" y="68" width="4" height="6" fill="#3a2570"/>
+  <rect x="88" y="70" width="4" height="4" fill="#111"/>
+  <rect x="86" y="68" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="66" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="66" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="112" y="68" width="6" height="6" fill="#5b3a8c"/>
+  <rect x="114" y="68" width="4" height="6" fill="#3a2570"/>
+  <rect x="114" y="70" width="4" height="4" fill="#111"/>
+  <rect x="112" y="68" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="80" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="86" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="86" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="94" y="88" width="12" height="2" fill="#000" opacity="0.05"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="78" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="78" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Mouth -->
+  <rect x="92" y="92" width="16" height="2" fill="#000" opacity="0.3"/>
+  <rect x="94" y="94" width="12" height="2" fill="#000" opacity="0.07"/>
+  <!-- Neck -->
+  <rect x="94" y="96" width="12" height="30" fill="var(--skin)"/>
+  <rect x="90" y="100" width="4" height="22" fill="var(--skin)"/>
+  <rect x="106" y="100" width="4" height="22" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-heart" viewBox="0 0 200 240">
+  <g transform="translate(0,8)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v40 h-2 v4 h-2 v4 h-2 v4 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-8 h-8 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-4 h-2 v-4 h-2 v-4 v-40 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="60" y="62" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="136" y="60" width="4" height="12" fill="var(--skin)"/>
+  <rect x="140" y="62" width="2" height="8" fill="var(--skin)"/>
+  <rect x="138" y="64" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="60" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="62" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#8b2252"/>
+  <rect x="90" y="64" width="4" height="6" fill="#6a1a40"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#8b2252"/>
+  <rect x="112" y="64" width="4" height="6" fill="#6a1a40"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="76" width="10" height="10" fill="#cc7766" opacity="0.18"/>
+  <rect x="114" y="76" width="10" height="10" fill="#cc7766" opacity="0.14"/>
+  <!-- Neck -->
+  <rect x="90" y="94" width="20" height="32" fill="var(--skin)"/>
+  <rect x="88" y="98" width="4" height="24" fill="var(--skin)"/>
+  <rect x="108" y="98" width="4" height="24" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-soft-oval" viewBox="0 0 200 240">
+  <g transform="translate(0,2)">
+  <path d="M 78,26 h44 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v60 h-2 v2 h-2 v2 h-4 v4 h-4 v2 h-6 v2 h-8 v2 h-18 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-4 v-2 h-2 v-2 h-2 v-60 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="134" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="138" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="136" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#c0392b"/>
+  <rect x="90" y="66" width="4" height="6" fill="#9a2a20"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#c0392b"/>
+  <rect x="112" y="66" width="4" height="6" fill="#9a2a20"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-strong-sym" viewBox="0 0 200 240">
+  <g transform="translate(0,6)">
+  <path d="M 74,28 h52 v2 h4 v2 h4 v2 h2 v2 h2 v52 h-2 v4 h-4 v2 h-6 v2 h-8 v2 h-34 v-2 h-8 v-2 h-6 v-2 h-4 v-4 h-2 v-52 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="62" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="60" y="60" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="136" y="58" width="4" height="14" fill="var(--skin)"/>
+  <rect x="140" y="60" width="2" height="10" fill="var(--skin)"/>
+  <rect x="138" y="62" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="60" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="58" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="58" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="142" y="60" width="2" height="10" fill="#3a2520" opacity="0.7"/>
+  <rect x="140" y="70" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="80" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="80" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="62" width="6" height="6" fill="#1a2744"/>
+  <rect x="88" y="62" width="4" height="6" fill="#0f1a30"/>
+  <rect x="88" y="64" width="4" height="4" fill="#111"/>
+  <rect x="86" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="60" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="60" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="62" width="6" height="6" fill="#1a2744"/>
+  <rect x="112" y="62" width="4" height="6" fill="#0f1a30"/>
+  <rect x="112" y="64" width="4" height="4" fill="#111"/>
+  <rect x="110" y="62" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="76" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="82" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="82" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="76" y="96" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="96" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="102" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="106" width="20" height="20" fill="var(--skin)"/>
+  <rect x="88" y="110" width="4" height="14" fill="var(--skin)"/>
+  <rect x="108" y="110" width="4" height="14" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-weathered" viewBox="0 0 200 240">
+  <g transform="translate(0,4)">
+  <path d="M 80,26 h40 v2 h4 v2 h4 v2 h2 v2 h2 v2 h2 v62 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-6 v2 h-10 h-10 v-2 h-6 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-62 h2 v-2 h2 v-2 h2 v-2 h4 v-2 h4 v-2 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="66" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="64" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="66" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="68" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="64" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="66" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="74" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="66" width="6" height="6" fill="#5a4a35"/>
+  <rect x="90" y="66" width="4" height="6" fill="#3a3025"/>
+  <rect x="90" y="68" width="4" height="4" fill="#111"/>
+  <rect x="88" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="64" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="64" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="66" width="6" height="6" fill="#5a4a35"/>
+  <rect x="112" y="66" width="4" height="6" fill="#3a3025"/>
+  <rect x="112" y="68" width="4" height="4" fill="#111"/>
+  <rect x="110" y="66" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="100" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="100" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="108" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="112" width="20" height="14" fill="var(--skin)"/>
+  <rect x="88" y="116" width="4" height="8" fill="var(--skin)"/>
+  <rect x="108" y="116" width="4" height="8" fill="var(--skin)"/>
+  <!-- Weathering lines -->
+  <rect x="66" y="50" width="4" height="2" fill="#000" opacity="0.08"/>
+  <rect x="128" y="48" width="4" height="2" fill="#000" opacity="0.06"/>
+  <rect x="64" y="80" width="4" height="2" fill="#000" opacity="0.06"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-standard" viewBox="0 0 200 240">
+  <g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<symbol id="hd:head-fallback" viewBox="0 0 200 240">
+  <g transform="translate(0,6)">
+  <path d="M 78,28 h44 v2 h4 v2 h4 v2 h2 v2 h2 v54 h-2 v2 h-2 v4 h-4 v2 h-4 v2 h-6 v2 h-8 v2 h-16 v-2 h-8 v-2 h-6 v-2 h-4 v-2 h-4 v-4 h-2 v-2 h-2 v-54 h2 v-2 h2 v-2 h4 v-2 h4 z" fill="var(--skin)"/>
+  <!-- Ears -->
+  <rect x="64" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="62" y="64" width="2" height="8" fill="#000" opacity="0.1"/>
+  <rect x="132" y="62" width="4" height="12" fill="var(--skin)"/>
+  <rect x="136" y="64" width="2" height="8" fill="var(--skin)"/>
+  <rect x="134" y="66" width="4" height="4" fill="#fff" opacity="0.06"/>
+  <!-- Ear outlines -->
+  <rect x="62" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="60" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="62" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="62" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="138" y="64" width="2" height="8" fill="#3a2520" opacity="0.7"/>
+  <rect x="136" y="72" width="2" height="2" fill="#3a2520" opacity="0.7"/>
+  <!-- Eyes: left -->
+  <rect x="82" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="82" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="88" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="90" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="90" y="66" width="4" height="4" fill="#111"/>
+  <rect x="88" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Eyes: right -->
+  <rect x="106" y="62" width="14" height="10" fill="#dde4e8" opacity="0.95"/>
+  <rect x="106" y="62" width="14" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="110" y="64" width="6" height="6" fill="#5a5a5a"/>
+  <rect x="112" y="64" width="4" height="6" fill="#3a3a3a"/>
+  <rect x="112" y="66" width="4" height="4" fill="#111"/>
+  <rect x="110" y="64" width="2" height="2" fill="#fff"/>
+  <!-- Nose -->
+  <rect x="98" y="78" width="4" height="8" fill="#000" opacity="0.1"/>
+  <rect x="96" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <rect x="102" y="84" width="2" height="2" fill="#000" opacity="0.18"/>
+  <!-- Mouth -->
+  <rect x="90" y="88" width="20" height="2" fill="#000" opacity="0.3"/>
+  <rect x="92" y="90" width="16" height="2" fill="#000" opacity="0.07"/>
+  <!-- Cheek blush -->
+  <rect x="78" y="98" width="8" height="8" fill="#cc7766" opacity="0.15"/>
+  <rect x="116" y="98" width="8" height="8" fill="#cc7766" opacity="0.12"/>
+  <!-- Chin shadow -->
+  <rect x="88" y="104" width="24" height="2" fill="#000" opacity="0.1"/>
+  <!-- Neck -->
+  <rect x="90" y="108" width="20" height="18" fill="var(--skin)"/>
+  <rect x="88" y="112" width="4" height="12" fill="var(--skin)"/>
+  <rect x="108" y="112" width="4" height="12" fill="var(--skin)"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING COSTUMES                               -->
+<!-- ================================================ -->
+
+<symbol id="hd:costume-utility-vest" viewBox="0 0 200 240">
+  <clipPath id="vest-clip">
+    <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v0 h-80 v-0 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,120 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v0 h-80 v-0 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="120" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#vest-clip)">
+  <rect x="42" y="120" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="122" width="12" height="116" fill="#000" opacity="0.18"/>
+  <rect x="58" y="124" width="8" height="112" fill="#000" opacity="0.1"/>
+  <rect x="66" y="128" width="8" height="104" fill="#000" opacity="0.04"/>
+  <rect x="130" y="122" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Pockets grid -->
+  <rect x="54" y="136" width="16" height="12" fill="var(--secondary)" stroke="#3a2520" stroke-width="1"/>
+  <rect x="54" y="152" width="16" height="12" fill="var(--secondary)" stroke="#3a2520" stroke-width="1"/>
+  <rect x="54" y="168" width="16" height="12" fill="var(--secondary)" stroke="#3a2520" stroke-width="1"/>
+  <rect x="130" y="136" width="16" height="12" fill="var(--secondary)" stroke="#3a2520" stroke-width="1"/>
+  <rect x="130" y="152" width="16" height="12" fill="var(--secondary)" stroke="#3a2520" stroke-width="1"/>
+  <!-- Pocket flaps -->
+  <rect x="54" y="134" width="16" height="2" fill="#000" opacity="0.12"/>
+  <rect x="54" y="150" width="16" height="2" fill="#000" opacity="0.12"/>
+  <rect x="54" y="166" width="16" height="2" fill="#000" opacity="0.12"/>
+  <rect x="130" y="134" width="16" height="2" fill="#000" opacity="0.12"/>
+  <rect x="130" y="150" width="16" height="2" fill="#000" opacity="0.12"/>
+  <!-- Zipper center -->
+  <rect x="98" y="120" width="4" height="100" fill="#000" opacity="0.08"/>
+  <rect x="100" y="140" width="2" height="6" fill="#888"/>
+  <!-- Collar -->
+  <rect x="76" y="120" width="48" height="6" fill="var(--primary)"/>
+  <rect x="76" y="120" width="48" height="2" fill="#000" opacity="0.1"/>
+  <!-- Stipple -->
+  <rect x="52" y="134" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="148" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="176" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="190" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="204" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="170" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="178" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="196" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="136" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="150" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="166" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="180" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="196" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="146" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="158" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="150" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="164" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="168" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-smock" viewBox="0 0 200 240">
+  <clipPath id="smock-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#smock-clip)">
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.18"/>
+  <rect x="58" y="130" width="8" height="106" fill="#000" opacity="0.1"/>
+  <rect x="66" y="134" width="8" height="98" fill="#000" opacity="0.04"/>
+  <rect x="130" y="128" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Collar -->
+  <rect x="78" y="126" width="44" height="8" fill="#ddd"/>
+  <rect x="78" y="126" width="44" height="2" fill="#000" opacity="0.08"/>
+  <!-- Paint splatters -->
+  <rect x="56" y="148" width="8" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="130" y="158" width="10" height="8" fill="var(--secondary)" opacity="0.6"/>
+  <rect x="72" y="178" width="6" height="8" fill="#3366ff" opacity="0.5"/>
+  <rect x="118" y="142" width="8" height="6" fill="#ff3366" opacity="0.5"/>
+  <rect x="88" y="196" width="6" height="10" fill="#33cc66" opacity="0.5"/>
+  <rect x="62" y="210" width="8" height="6" fill="var(--accent)" opacity="0.4"/>
+  <rect x="138" y="190" width="6" height="8" fill="#3366ff" opacity="0.4"/>
+  <!-- Stipple -->
+  <rect x="52" y="140" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="154" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="182" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="196" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="176" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="184" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="202" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="142" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="156" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="172" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="186" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="202" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="152" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="164" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="156" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="170" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="174" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-simple-dress" viewBox="0 0 200 240">
+  <clipPath id="dress-clip">
+    <path d="M 42,116 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v4 h-80 v-4 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,116 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v4 h-80 v-4 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="116" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="116" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#dress-clip)">
+  <rect x="42" y="116" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="118" width="12" height="120" fill="#000" opacity="0.18"/>
+  <rect x="58" y="120" width="8" height="116" fill="#000" opacity="0.1"/>
+  <rect x="66" y="124" width="8" height="108" fill="#000" opacity="0.04"/>
+  <rect x="130" y="118" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Neckline -->
+  <rect x="80" y="116" width="40" height="6" fill="var(--skin)"/>
+  <rect x="84" y="122" width="32" height="4" fill="var(--skin)"/>
+  <rect x="88" y="126" width="24" height="2" fill="var(--skin)"/>
+  <!-- Gentle fold lines (clean fabric) -->
+  <rect x="90" y="130" width="2" height="70" fill="#000" opacity="0.03"/>
+  <rect x="108" y="132" width="2" height="65" fill="#000" opacity="0.03"/>
+  <!-- Stipple -->
+  <rect x="52" y="130" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="144" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="158" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="172" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="186" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="200" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="166" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="174" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="192" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="132" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="146" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="162" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="176" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="192" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="142" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="154" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="146" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="160" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="164" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-romantic" viewBox="0 0 200 240">
+  <clipPath id="romantic-clip">
+    <path d="M 42,122 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-2 h-80 v-2 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,122 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-2 h-80 v-2 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="122" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="122" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#romantic-clip)">
+  <rect x="42" y="122" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="124" width="12" height="114" fill="#000" opacity="0.18"/>
+  <rect x="58" y="126" width="8" height="110" fill="#000" opacity="0.1"/>
+  <rect x="66" y="130" width="8" height="102" fill="#000" opacity="0.04"/>
+  <rect x="130" y="124" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- V-neckline (deeper, more sensual) -->
+  <rect x="76" y="122" width="48" height="8" fill="var(--skin)"/>
+  <rect x="80" y="130" width="40" height="6" fill="var(--skin)"/>
+  <rect x="84" y="136" width="32" height="6" fill="var(--skin)"/>
+  <rect x="90" y="142" width="20" height="4" fill="var(--skin)"/>
+  <!-- Neckline edge trim -->
+  <rect x="76" y="122" width="2" height="30" fill="#000" opacity="0.08"/>
+  <rect x="122" y="122" width="2" height="26" fill="#000" opacity="0.06"/>
+  <!-- Rich fabric drape folds -->
+  <rect x="74" y="150" width="2" height="50" fill="#000" opacity="0.06"/>
+  <rect x="82" y="160" width="2" height="40" fill="#000" opacity="0.04"/>
+  <rect x="116" y="148" width="2" height="45" fill="#000" opacity="0.05"/>
+  <rect x="124" y="156" width="2" height="35" fill="#000" opacity="0.04"/>
+  <rect x="96" y="148" width="2" height="60" fill="#000" opacity="0.04"/>
+  <!-- Stipple -->
+  <rect x="52" y="136" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="150" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="164" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="178" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="192" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="206" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="172" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="180" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="198" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="138" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="152" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="168" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="182" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="198" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="148" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="160" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="152" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="166" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="170" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-lab-coat" viewBox="0 0 200 240">
+  <clipPath id="labcoat-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#labcoat-clip)">
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.18"/>
+  <rect x="58" y="130" width="8" height="106" fill="#000" opacity="0.1"/>
+  <rect x="66" y="134" width="8" height="98" fill="#000" opacity="0.04"/>
+  <rect x="130" y="128" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Override base to white -->
+  <rect x="46" y="126" width="108" height="114" fill="#eee"/>
+  <rect x="42" y="126" width="6" height="8" fill="#eee"/>
+  <rect x="152" y="126" width="6" height="8" fill="#eee"/>
+  <!-- Collar -->
+  <rect x="76" y="126" width="48" height="8" fill="#eee"/>
+  <rect x="76" y="126" width="48" height="2" fill="#000" opacity="0.06"/>
+  <!-- Buttons -->
+  <rect x="98" y="148" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="98" y="164" width="4" height="4" fill="#000" opacity="0.2"/>
+  <rect x="98" y="180" width="4" height="4" fill="#000" opacity="0.2"/>
+  <!-- Pocket -->
+  <rect x="112" y="152" width="18" height="14" fill="none" stroke="#000" stroke-width="1" opacity="0.15"/>
+  <!-- Pens in pocket -->
+  <rect x="116" y="148" width="2" height="8" fill="var(--accent)"/>
+  <rect x="120" y="146" width="2" height="10" fill="var(--primary)"/>
+  <!-- Center placket -->
+  <rect x="98" y="140" width="2" height="80" fill="#000" opacity="0.05"/>
+  <!-- Purple shirt underneath visible at collar -->
+  <rect x="80" y="128" width="40" height="6" fill="var(--primary)" opacity="0.4"/>
+  <!-- Stipple -->
+  <rect x="52" y="140" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="154" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="182" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="196" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="176" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="184" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="202" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="142" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="156" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="172" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="186" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="202" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="152" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="164" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="156" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="170" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="174" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-formal-sash" viewBox="0 0 200 240">
+  <clipPath id="sash-clip">
+    <path d="M 42,126 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,126 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v-6 h-80 v-6 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="126" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="126" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#sash-clip)">
+  <rect x="42" y="126" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="128" width="12" height="110" fill="#000" opacity="0.18"/>
+  <rect x="58" y="130" width="8" height="106" fill="#000" opacity="0.1"/>
+  <rect x="66" y="134" width="8" height="98" fill="#000" opacity="0.04"/>
+  <rect x="130" y="128" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Epaulettes -->
+  <rect x="36" y="122" width="18" height="10" fill="var(--accent)"/>
+  <rect x="36" y="122" width="18" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="36" y="130" width="18" height="2" fill="#000" opacity="0.1"/>
+  <rect x="146" y="122" width="18" height="10" fill="var(--accent)"/>
+  <rect x="146" y="122" width="18" height="2" fill="#fff" opacity="0.15"/>
+  <!-- Epaulette fringe -->
+  <rect x="38" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="42" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="46" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="148" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="152" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="156" y="132" width="2" height="4" fill="var(--accent)" opacity="0.6"/>
+  <!-- Diagonal sash -->
+  <rect x="130" y="126" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="122" y="132" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="114" y="138" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="106" y="144" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="98" y="150" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="90" y="156" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="82" y="162" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="74" y="168" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <rect x="66" y="174" width="10" height="6" fill="var(--accent)" opacity="0.7"/>
+  <!-- Medals -->
+  <rect x="58" y="148" width="6" height="6" fill="var(--accent)"/>
+  <rect x="58" y="148" width="6" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="68" y="148" width="6" height="6" fill="var(--accent)"/>
+  <!-- Shirt collar -->
+  <rect x="80" y="126" width="40" height="6" fill="#ddd"/>
+  <!-- Stipple -->
+  <rect x="52" y="140" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="154" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="168" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="182" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="196" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="210" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="176" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="184" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="202" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="142" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="156" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="172" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="186" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="202" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="152" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="164" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="156" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="170" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="174" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<symbol id="hd:costume-plain-shirt" viewBox="0 0 200 240">
+  <clipPath id="shirt-clip">
+    <path d="M 42,120 h116 v8 h-4 v32 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v0 h-80 v-0 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 v-32 h-4 z"/>
+  </clipPath>
+  <path d="M 46,120 h108 v40 h-4 v20 h-4 v16 h-2 v14 h-2 v14 h-2 v0 h-80 v-0 h-2 v-14 h-2 v-14 h-2 v-16 h-4 v-20 h-4 z" fill="var(--primary)"/>
+  <rect x="42" y="120" width="6" height="8" fill="var(--primary)"/>
+  <rect x="152" y="120" width="6" height="8" fill="var(--primary)"/>
+  <g clip-path="url(#shirt-clip)">
+  <rect x="42" y="120" width="116" height="2" fill="#000" opacity="0.2"/>
+  <!-- Gradient -->
+  <rect x="46" y="122" width="12" height="116" fill="#000" opacity="0.18"/>
+  <rect x="58" y="124" width="8" height="112" fill="#000" opacity="0.1"/>
+  <rect x="66" y="128" width="8" height="104" fill="#000" opacity="0.04"/>
+  <rect x="130" y="122" width="16" height="28" fill="#fff" opacity="0.09"/>
+  <!-- Collar -->
+  <rect x="80" y="120" width="40" height="6" fill="var(--primary)"/>
+  <rect x="80" y="120" width="40" height="2" fill="#000" opacity="0.08"/>
+  <!-- Buttons -->
+  <rect x="98" y="140" width="4" height="4" fill="#000" opacity="0.15"/>
+  <rect x="98" y="156" width="4" height="4" fill="#000" opacity="0.15"/>
+  <rect x="98" y="172" width="4" height="4" fill="#000" opacity="0.15"/>
+  <!-- Center placket -->
+  <rect x="98" y="126" width="2" height="80" fill="#000" opacity="0.04"/>
+  <!-- Stipple -->
+  <rect x="52" y="134" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="60" y="148" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="54" y="162" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="66" y="176" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="50" y="190" width="2" height="2" fill="#000" opacity="0.06"/>
+  <rect x="62" y="204" width="2" height="2" fill="#000" opacity="0.05"/>
+  <rect x="84" y="170" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="108" y="178" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="94" y="196" width="2" height="2" fill="#000" opacity="0.04"/>
+  <rect x="126" y="136" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="134" y="150" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="128" y="166" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <rect x="138" y="180" width="2" height="2" fill="#fff" opacity="0.05"/>
+  <rect x="130" y="196" width="2" height="2" fill="#fff" opacity="0.06"/>
+  <!-- Folds -->
+  <rect x="56" y="146" width="2" height="40" fill="#000" opacity="0.07"/>
+  <rect x="64" y="158" width="2" height="28" fill="#000" opacity="0.05"/>
+  <rect x="136" y="150" width="2" height="30" fill="#000" opacity="0.04"/>
+  <rect x="52" y="164" width="16" height="2" fill="#000" opacity="0.04"/>
+  <rect x="130" y="168" width="14" height="2" fill="#000" opacity="0.03"/>
+  <!-- Hem -->
+  <rect x="56" y="234" width="88" height="2" fill="#000" opacity="0.1"/>
+  </g>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING HAIR                                   -->
+<!-- ================================================ -->
+
+<symbol id="hd:hair-slicked" viewBox="0 0 200 240">
+  <path d="M 66,30 h68 v2 h6 v2 h4 v2 h4 v10 h-92 v-10 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+  <rect x="70" y="32" width="60" height="2" fill="#000" opacity="0.12"/>
+  <rect x="72" y="36" width="56" height="2" fill="#000" opacity="0.08"/>
+  <rect x="74" y="40" width="52" height="2" fill="#000" opacity="0.06"/>
+  <rect x="130" y="32" width="8" height="6" fill="#fff" opacity="0.1"/>
+  <rect x="68" y="34" width="6" height="8" fill="#000" opacity="0.12"/>
+</symbol>
+
+<symbol id="hd:hair-pixie" viewBox="0 0 200 240">
+  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-4 v4 h-82 v-4 h-4 v-10 h4 v-2 h6 v-2 h2 z" fill="var(--hair-color)"/>
+  <rect x="70" y="26" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="106" y="24" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="66" y="34" width="6" height="8" fill="#000" opacity="0.12"/>
+  <rect x="130" y="30" width="6" height="8" fill="#fff" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:hair-ponytail" viewBox="0 0 200 240">
+  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+  <rect x="136" y="38" width="10" height="10" fill="var(--hair-color)"/>
+  <rect x="140" y="48" width="10" height="16" fill="var(--hair-color)"/>
+  <rect x="142" y="64" width="8" height="16" fill="var(--hair-color)"/>
+  <rect x="136" y="46" width="4" height="6" fill="var(--accent)"/>
+  <rect x="66" y="32" width="6" height="8" fill="#000" opacity="0.12"/>
+  <rect x="144" y="50" width="4" height="12" fill="#fff" opacity="0.08"/>
+  <rect x="140" y="56" width="2" height="16" fill="#000" opacity="0.08"/>
+</symbol>
+
+<symbol id="hd:hair-braids" viewBox="0 0 200 240">
+  <path d="M 66,28 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+  <!-- Left braid -->
+  <rect x="58" y="42" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="54" y="52" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="58" y="62" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="54" y="72" width="8" height="8" fill="var(--hair-color)"/>
+  <rect x="54" y="52" width="4" height="8" fill="#000" opacity="0.1"/>
+  <!-- Right braid -->
+  <rect x="134" y="42" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="138" y="52" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="134" y="62" width="8" height="10" fill="var(--hair-color)"/>
+  <rect x="138" y="72" width="8" height="8" fill="var(--hair-color)"/>
+  <rect x="140" y="44" width="4" height="8" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<symbol id="hd:hair-windswept" viewBox="0 0 200 240">
+  <path d="M 64,26 h72 v2 h8 v2 h6 v4 h-4 v4 h-92 v-6 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+  <rect x="146" y="26" width="10" height="4" fill="var(--hair-color)"/>
+  <rect x="150" y="30" width="8" height="4" fill="var(--hair-color)"/>
+  <rect x="148" y="22" width="6" height="6" fill="var(--hair-color)"/>
+  <rect x="64" y="30" width="6" height="8" fill="#000" opacity="0.12"/>
+  <rect x="140" y="26" width="6" height="6" fill="#fff" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:hair-afro-short" viewBox="0 0 200 240">
+  <path d="M 58,24 h84 v2 h6 v2 h4 v2 h4 v18 h-106 v-18 h4 v-2 h4 v-2 h-2 z" fill="var(--hair-color)"/>
+  <rect x="60" y="28" width="4" height="4" fill="#000" opacity="0.12"/>
+  <rect x="76" y="26" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="94" y="28" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="112" y="26" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="130" y="28" width="4" height="4" fill="#000" opacity="0.1"/>
+  <rect x="140" y="26" width="6" height="6" fill="#fff" opacity="0.1"/>
+  <rect x="126" y="24" width="8" height="4" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<symbol id="hd:hair-messy-bun" viewBox="0 0 200 240">
+  <rect x="82" y="12" width="36" height="6" fill="var(--hair-color)"/>
+  <rect x="78" y="18" width="44" height="10" fill="var(--hair-color)"/>
+  <rect x="82" y="28" width="36" height="4" fill="var(--hair-color)"/>
+  <path d="M 66,30 h68 v2 h6 v2 h4 v10 h-92 v-10 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+  <!-- Loose strands -->
+  <rect x="58" y="42" width="4" height="14" fill="var(--hair-color)"/>
+  <rect x="138" y="40" width="4" height="12" fill="var(--hair-color)"/>
+  <rect x="84" y="14" width="8" height="6" fill="#000" opacity="0.1"/>
+  <rect x="108" y="14" width="8" height="6" fill="#fff" opacity="0.08"/>
+  <rect x="66" y="32" width="6" height="8" fill="#000" opacity="0.12"/>
+</symbol>
+
+<symbol id="hd:hair-undercut" viewBox="0 0 200 240">
+  <path d="M 76,22 h52 v2 h6 v2 h4 v12 h-72 v-4 h-4 v-6 h4 v-2 h6 v-2 h4 z" fill="var(--hair-color)"/>
+  <rect x="64" y="34" width="14" height="4" fill="var(--hair-color)"/>
+  <rect x="60" y="38" width="8" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <!-- Shaved sides -->
+  <rect x="60" y="40" width="8" height="12" fill="var(--skin)" opacity="0.35"/>
+  <rect x="132" y="38" width="8" height="14" fill="var(--skin)" opacity="0.35"/>
+  <rect x="78" y="24" width="6" height="8" fill="#000" opacity="0.1"/>
+  <rect x="124" y="24" width="8" height="6" fill="#fff" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:hair-buzz" viewBox="0 0 200 240">
+  <path d="M 68,30 h64 v2 h6 v2 h4 v2 h4 v8 h-88 v-8 h4 v-2 h4 v-2 h2 z" fill="var(--hair-color)"/>
+  <rect x="72" y="32" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="88" y="30" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="104" y="32" width="4" height="4" fill="#000" opacity="0.06"/>
+  <rect x="120" y="30" width="4" height="4" fill="#000" opacity="0.08"/>
+  <rect x="130" y="30" width="6" height="4" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING BEARDS                                 -->
+<!-- ================================================ -->
+
+<symbol id="hd:beard-goatee" viewBox="0 0 200 240">
+  <!-- Symmetric goatee centered at x=100 -->
+  <path d="M 86,90 h28 v2 h4 v10 h-2 v6 h-4 v4 h-6 v2 h-12 v-2 h-6 v-4 h-4 v-6 h-2 v-10 h4 v-2 z" fill="var(--hair-color)"/>
+  <rect x="82" y="84" width="36" height="6" fill="var(--hair-color)"/>
+  <rect x="78" y="82" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="116" y="82" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="86" y="92" width="4" height="12" fill="#000" opacity="0.08"/>
+  <rect x="110" y="92" width="4" height="8" fill="#fff" opacity="0.06"/>
+</symbol>
+
+<symbol id="hd:beard-stubble" viewBox="0 0 200 240">
+  <!-- Symmetric stubble dots centered at x=100 -->
+  <rect x="74" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="82" y="92" width="4" height="4" fill="var(--hair-color)" opacity="0.55"/>
+  <rect x="90" y="90" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="98" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.55"/>
+  <rect x="106" y="90" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="114" y="92" width="4" height="4" fill="var(--hair-color)" opacity="0.55"/>
+  <rect x="122" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="78" y="96" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="86" y="98" width="4" height="4" fill="var(--hair-color)" opacity="0.45"/>
+  <rect x="94" y="96" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="102" y="98" width="4" height="4" fill="var(--hair-color)" opacity="0.45"/>
+  <rect x="110" y="96" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="118" y="98" width="4" height="4" fill="var(--hair-color)" opacity="0.45"/>
+</symbol>
+
+<symbol id="hd:beard-handlebar" viewBox="0 0 200 240">
+  <rect x="82" y="84" width="36" height="6" fill="var(--hair-color)"/>
+  <rect x="66" y="82" width="16" height="6" fill="var(--hair-color)"/>
+  <rect x="60" y="78" width="10" height="6" fill="var(--hair-color)"/>
+  <rect x="56" y="74" width="8" height="6" fill="var(--hair-color)"/>
+  <rect x="54" y="70" width="6" height="6" fill="var(--hair-color)"/>
+  <rect x="118" y="82" width="16" height="6" fill="var(--hair-color)"/>
+  <rect x="130" y="78" width="10" height="6" fill="var(--hair-color)"/>
+  <rect x="136" y="74" width="8" height="6" fill="var(--hair-color)"/>
+  <rect x="140" y="70" width="6" height="6" fill="var(--hair-color)"/>
+  <rect x="60" y="78" width="4" height="4" fill="#000" opacity="0.1"/>
+  <rect x="138" y="74" width="4" height="4" fill="#fff" opacity="0.08"/>
+</symbol>
+
+<symbol id="hd:beard-heavy" viewBox="0 0 200 240">
+  <!-- Symmetric heavy beard centered at x=100 -->
+  <path d="M 68,86 h64 v2 h4 v10 h-2 v4 h-4 v4 h-6 v4 h-8 v2 h-32 h-8 v-2 h-6 v-4 h-4 v-4 h-2 v-14 h4 v-2 z" fill="var(--hair-color)"/>
+  <rect x="82" y="84" width="36" height="6" fill="var(--hair-color)"/>
+  <rect x="78" y="82" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="116" y="82" width="6" height="4" fill="var(--hair-color)"/>
+  <rect x="68" y="88" width="8" height="14" fill="#000" opacity="0.1"/>
+  <rect x="76" y="90" width="4" height="10" fill="#000" opacity="0.06"/>
+  <rect x="124" y="88" width="8" height="8" fill="#fff" opacity="0.06"/>
+</symbol>
+
+<symbol id="hd:beard-rugged" viewBox="0 0 200 240">
+  <!-- Symmetric rugged dots centered at x=100 -->
+  <rect x="74" y="86" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="82" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="90" y="86" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="98" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="106" y="86" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="114" y="88" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="122" y="86" width="4" height="4" fill="var(--hair-color)" opacity="0.7"/>
+  <rect x="78" y="92" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="86" y="94" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="94" y="92" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="102" y="94" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="110" y="92" width="4" height="4" fill="var(--hair-color)" opacity="0.6"/>
+  <rect x="118" y="94" width="4" height="4" fill="var(--hair-color)" opacity="0.65"/>
+  <rect x="82" y="98" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="94" y="100" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="106" y="98" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+  <rect x="118" y="100" width="4" height="4" fill="var(--hair-color)" opacity="0.5"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING GLASSES                                -->
+<!-- ================================================ -->
+
+<symbol id="hd:glasses-thick-rect" viewBox="0 0 200 240">
+  <rect x="74" y="64" width="22" height="16" fill="none" stroke="#111" stroke-width="3"/>
+  <rect x="104" y="64" width="22" height="16" fill="none" stroke="#111" stroke-width="3"/>
+  <rect x="96" y="68" width="8" height="2" fill="#111"/>
+  <rect x="62" y="68" width="12" height="2" fill="#111" opacity="0.5"/>
+  <rect x="126" y="68" width="12" height="2" fill="#111" opacity="0.5"/>
+</symbol>
+
+<symbol id="hd:glasses-cat-eye" viewBox="0 0 200 240">
+  <rect x="74" y="66" width="22" height="12" fill="none" stroke="var(--primary)" stroke-width="2"/>
+  <rect x="94" y="62" width="4" height="4" fill="var(--primary)"/>
+  <rect x="102" y="62" width="4" height="4" fill="var(--primary)"/>
+  <rect x="104" y="66" width="22" height="12" fill="none" stroke="var(--primary)" stroke-width="2"/>
+  <rect x="96" y="70" width="8" height="2" fill="var(--primary)"/>
+</symbol>
+
+<symbol id="hd:glasses-goggles" viewBox="0 0 200 240">
+  <rect x="62" y="62" width="76" height="18" fill="var(--secondary)" opacity="0.25" stroke="#111" stroke-width="2"/>
+  <rect x="98" y="62" width="4" height="18" fill="#111" opacity="0.2"/>
+  <rect x="52" y="66" width="10" height="6" fill="var(--primary)"/>
+  <rect x="138" y="66" width="10" height="6" fill="var(--primary)"/>
+</symbol>
+
+<symbol id="hd:glasses-aviator" viewBox="0 0 200 240">
+  <path d="M 72,64 h22 v2 h2 v14 h-2 v2 h-4 v2 h-8 v-2 h-8 v-2 h-2 v-14 h2 z" fill="var(--secondary)" opacity="0.3" stroke="#111" stroke-width="2"/>
+  <path d="M 106,64 h22 v2 h2 v14 h-2 v2 h-4 v2 h-8 v-2 h-8 v-2 h-2 v-14 h2 z" fill="var(--secondary)" opacity="0.3" stroke="#111" stroke-width="2"/>
+  <rect x="94" y="66" width="12" height="2" fill="#111"/>
+  <rect x="62" y="68" width="10" height="2" fill="#111" opacity="0.5"/>
+  <rect x="130" y="68" width="10" height="2" fill="#111" opacity="0.5"/>
+</symbol>
+
+<symbol id="hd:glasses-monocle" viewBox="0 0 200 240">
+  <rect x="104" y="62" width="22" height="2" fill="#777"/>
+  <rect x="104" y="80" width="22" height="2" fill="#777"/>
+  <rect x="102" y="64" width="2" height="16" fill="#777"/>
+  <rect x="126" y="64" width="2" height="16" fill="#777"/>
+  <rect x="104" y="64" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="124" y="64" width="2" height="2" fill="#777" opacity="0.5"/>
+  <rect x="128" y="82" width="2" height="4" fill="#777" opacity="0.5"/>
+  <rect x="130" y="86" width="2" height="6" fill="#777" opacity="0.4"/>
+  <rect x="132" y="92" width="2" height="8" fill="#777" opacity="0.3"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING BROWS                                  -->
+<!-- ================================================ -->
+
+<symbol id="hd:brow-angular" viewBox="0 0 200 240">
+  <rect x="80" y="68" width="8" height="2" fill="#3a2520" opacity="0.8"/>
+  <rect x="88" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="94" y="62" width="2" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="106" y="62" width="2" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="108" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="114" y="68" width="8" height="2" fill="#3a2520" opacity="0.8"/>
+</symbol>
+
+<symbol id="hd:brow-raised" viewBox="0 0 200 240">
+  <rect x="82" y="60" width="12" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="80" y="62" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+  <rect x="106" y="60" width="12" height="2" fill="#3a2520" opacity="0.65"/>
+  <rect x="116" y="62" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+</symbol>
+
+<symbol id="hd:brow-asymmetric" viewBox="0 0 200 240">
+  <rect x="82" y="62" width="12" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="80" y="64" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+  <rect x="106" y="66" width="12" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="116" y="68" width="4" height="2" fill="#3a2520" opacity="0.4"/>
+</symbol>
+
+<symbol id="hd:brow-concerned" viewBox="0 0 200 240">
+  <rect x="80" y="68" width="6" height="2" fill="#3a2520" opacity="0.5"/>
+  <rect x="86" y="66" width="4" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="90" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="106" y="64" width="6" height="2" fill="#3a2520" opacity="0.7"/>
+  <rect x="112" y="66" width="4" height="2" fill="#3a2520" opacity="0.6"/>
+  <rect x="116" y="68" width="6" height="2" fill="#3a2520" opacity="0.5"/>
+</symbol>
+
+<symbol id="hd:brow-thick-straight" viewBox="0 0 200 240">
+  <rect x="80" y="64" width="14" height="4" fill="#3a2520" opacity="0.7"/>
+  <rect x="106" y="64" width="14" height="4" fill="#3a2520" opacity="0.7"/>
+</symbol>
+
+<!-- ================================================ -->
+<!-- REMAINING PROPS                                  -->
+<!-- ================================================ -->
+
+<symbol id="hd:prop-compass" viewBox="0 0 200 240">
+  <rect x="136" y="158" width="32" height="32" fill="var(--primary)" stroke="#3a2520" stroke-width="2"/>
+  <rect x="140" y="162" width="24" height="24" fill="var(--accent)" opacity="0.3"/>
+  <rect x="150" y="164" width="4" height="10" fill="#cc0000"/>
+  <rect x="150" y="174" width="4" height="10" fill="#eee"/>
+  <rect x="151" y="168" width="2" height="12" fill="#111"/>
+</symbol>
+
+<symbol id="hd:prop-paintbrush" viewBox="0 0 200 240">
+  <rect x="154" y="176" width="6" height="26" fill="var(--primary)"/>
+  <rect x="154" y="176" width="3" height="26" fill="#000" opacity="0.1"/>
+  <rect x="150" y="168" width="12" height="8" fill="#888"/>
+  <rect x="148" y="160" width="16" height="8" fill="var(--accent)"/>
+  <rect x="148" y="160" width="16" height="2" fill="#fff" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-flask" viewBox="0 0 200 240">
+  <rect x="152" y="152" width="10" height="12" fill="#ddd" stroke="#3a2520" stroke-width="1"/>
+  <rect x="146" y="164" width="22" height="4" fill="#ddd"/>
+  <rect x="142" y="168" width="30" height="22" fill="#ddd" stroke="#3a2520" stroke-width="1"/>
+  <rect x="144" y="180" width="26" height="10" fill="#33cc66" opacity="0.5"/>
+  <rect x="142" y="178" width="30" height="4" fill="#33cc66" opacity="0.3"/>
+</symbol>
+
+<symbol id="hd:prop-lightbulb" viewBox="0 0 200 240">
+  <rect x="146" y="158" width="22" height="4" fill="var(--accent)" opacity="0.8"/>
+  <rect x="142" y="162" width="30" height="20" fill="var(--accent)" opacity="0.7"/>
+  <rect x="146" y="182" width="22" height="4" fill="var(--accent)" opacity="0.6"/>
+  <rect x="150" y="186" width="14" height="6" fill="#888"/>
+  <rect x="152" y="192" width="10" height="4" fill="#777"/>
+  <rect x="148" y="164" width="4" height="4" fill="#fff" opacity="0.3"/>
+  <rect x="156" y="168" width="2" height="8" fill="#000" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-flower" viewBox="0 0 200 240">
+  <rect x="158" y="180" width="4" height="20" fill="#339933"/>
+  <rect x="152" y="166" width="8" height="8" fill="var(--accent)"/>
+  <rect x="164" y="166" width="8" height="8" fill="var(--accent)"/>
+  <rect x="156" y="160" width="8" height="8" fill="var(--accent)"/>
+  <rect x="156" y="174" width="8" height="8" fill="var(--accent)"/>
+  <rect x="158" y="168" width="4" height="8" fill="#ffcc00"/>
+</symbol>
+
+<symbol id="hd:prop-crown" viewBox="0 0 200 240">
+  <rect x="136" y="162" width="36" height="16" fill="var(--accent)"/>
+  <rect x="140" y="152" width="8" height="10" fill="var(--accent)"/>
+  <rect x="152" y="148" width="8" height="14" fill="var(--accent)"/>
+  <rect x="164" y="152" width="8" height="10" fill="var(--accent)"/>
+  <rect x="142" y="168" width="6" height="6" fill="#cc0000"/>
+  <rect x="158" y="166" width="6" height="6" fill="#0066cc"/>
+  <rect x="136" y="162" width="36" height="2" fill="#fff" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-scepter" viewBox="0 0 200 240">
+  <rect x="156" y="158" width="6" height="42" fill="var(--accent)"/>
+  <rect x="156" y="158" width="3" height="42" fill="#000" opacity="0.08"/>
+  <rect x="148" y="148" width="22" height="12" fill="var(--accent)"/>
+  <rect x="148" y="148" width="22" height="2" fill="#fff" opacity="0.15"/>
+  <rect x="156" y="142" width="6" height="6" fill="#cc0000"/>
+</symbol>
+
+<symbol id="hd:prop-clipboard" viewBox="0 0 200 240">
+  <rect x="140" y="156" width="28" height="40" fill="#c9a06c"/>
+  <rect x="144" y="162" width="20" height="30" fill="#eee"/>
+  <rect x="148" y="154" width="12" height="6" fill="#888"/>
+  <rect x="148" y="168" width="12" height="2" fill="#000" opacity="0.2"/>
+  <rect x="148" y="174" width="14" height="2" fill="#000" opacity="0.2"/>
+  <rect x="148" y="180" width="10" height="2" fill="#000" opacity="0.2"/>
+  <rect x="148" y="186" width="14" height="2" fill="#000" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-broom" viewBox="0 0 200 240">
+  <rect x="156" y="148" width="4" height="42" fill="var(--primary)"/>
+  <rect x="156" y="148" width="2" height="42" fill="#000" opacity="0.08"/>
+  <rect x="146" y="188" width="24" height="14" fill="#c9a06c"/>
+  <rect x="148" y="192" width="2" height="10" fill="#000" opacity="0.1"/>
+  <rect x="154" y="192" width="2" height="10" fill="#000" opacity="0.08"/>
+  <rect x="160" y="192" width="2" height="10" fill="#000" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:prop-microphone" viewBox="0 0 200 240">
+  <rect x="148" y="156" width="16" height="4" fill="#888"/>
+  <rect x="146" y="160" width="20" height="14" fill="#888"/>
+  <rect x="148" y="174" width="16" height="2" fill="#888"/>
+  <rect x="152" y="176" width="8" height="20" fill="#555"/>
+  <rect x="150" y="162" width="12" height="2" fill="#000" opacity="0.2"/>
+  <rect x="150" y="168" width="12" height="2" fill="#000" opacity="0.2"/>
+  <rect x="154" y="158" width="4" height="2" fill="#fff" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-torch" viewBox="0 0 200 240">
+  <rect x="154" y="174" width="8" height="30" fill="var(--primary)"/>
+  <rect x="154" y="174" width="4" height="30" fill="#000" opacity="0.08"/>
+  <rect x="148" y="158" width="20" height="16" fill="#ff6600"/>
+  <rect x="152" y="150" width="12" height="8" fill="#ffaa00"/>
+  <rect x="156" y="144" width="6" height="6" fill="#ffcc00"/>
+  <rect x="158" y="140" width="4" height="4" fill="#ffee88" opacity="0.6"/>
+  <rect x="148" y="158" width="6" height="8" fill="#ff4400" opacity="0.5"/>
+</symbol>
+
+<symbol id="hd:prop-dove" viewBox="0 0 200 240">
+  <rect x="142" y="162" width="22" height="12" fill="#eee"/>
+  <rect x="138" y="164" width="6" height="8" fill="#ddd"/>
+  <rect x="134" y="160" width="8" height="6" fill="#ddd"/>
+  <rect x="164" y="164" width="6" height="4" fill="#ffaa00"/>
+  <rect x="162" y="162" width="2" height="2" fill="#111"/>
+  <rect x="142" y="174" width="18" height="2" fill="#000" opacity="0.08"/>
+  <rect x="140" y="160" width="4" height="4" fill="#fff" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:prop-dice" viewBox="0 0 200 240">
+  <rect x="140" y="160" width="24" height="24" fill="#eee" stroke="#111" stroke-width="2"/>
+  <rect x="146" y="166" width="4" height="4" fill="#111"/>
+  <rect x="158" y="174" width="4" height="4" fill="#111"/>
+  <rect x="146" y="174" width="4" height="4" fill="#111"/>
+  <rect x="158" y="166" width="4" height="4" fill="#111"/>
+  <rect x="152" y="170" width="4" height="4" fill="#111"/>
+</symbol>
+
+<symbol id="hd:prop-playing-cards" viewBox="0 0 200 240">
+  <rect x="142" y="160" width="18" height="26" fill="var(--primary)" stroke="#111" stroke-width="1"/>
+  <rect x="148" y="156" width="18" height="26" fill="#eee" stroke="#111" stroke-width="1"/>
+  <rect x="152" y="162" width="6" height="6" fill="#cc0000"/>
+  <rect x="158" y="172" width="6" height="6" fill="#111"/>
+</symbol>
+
+<symbol id="hd:prop-wine-glass" viewBox="0 0 200 240">
+  <rect x="146" y="158" width="20" height="14" fill="#cc3366" opacity="0.5"/>
+  <rect x="150" y="172" width="12" height="4" fill="#cc3366" opacity="0.3"/>
+  <rect x="154" y="176" width="6" height="12" fill="#ddd"/>
+  <rect x="148" y="188" width="18" height="4" fill="#ddd"/>
+  <rect x="150" y="160" width="4" height="4" fill="#fff" opacity="0.15"/>
+</symbol>
+
+<symbol id="hd:prop-ribbon" viewBox="0 0 200 240">
+  <rect x="150" y="158" width="6" height="6" fill="var(--accent)"/>
+  <rect x="160" y="158" width="6" height="6" fill="var(--accent)"/>
+  <rect x="152" y="164" width="12" height="8" fill="var(--accent)"/>
+  <rect x="154" y="172" width="8" height="6" fill="var(--accent)"/>
+  <rect x="156" y="178" width="4" height="8" fill="var(--accent)"/>
+  <rect x="152" y="164" width="4" height="4" fill="#fff" opacity="0.1"/>
+</symbol>
+
+<symbol id="hd:prop-gavel" viewBox="0 0 200 240">
+  <rect x="154" y="168" width="6" height="30" fill="var(--primary)"/>
+  <rect x="154" y="168" width="3" height="30" fill="#000" opacity="0.08"/>
+  <rect x="142" y="156" width="30" height="14" fill="var(--primary)"/>
+  <rect x="142" y="156" width="30" height="2" fill="#fff" opacity="0.1"/>
+  <rect x="142" y="168" width="30" height="2" fill="#000" opacity="0.1"/>
+</symbol>
+
+
+
+</defs>
+</svg>
