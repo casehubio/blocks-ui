@@ -29,7 +29,7 @@
   "dependencies": {
     "@casehubio/graph-core": "*",
     "@casehubio/pages-diagram-core": "*",
-    "@casehubio/pages-lsp": "workspace:*",
+    "@casehubio/pages-lsp": "*",
     "@openworkflowspec/sdk": "1.0.3-alpha8",
     "lit": "^3.3.3",
     "yaml": "^2.7.0"
