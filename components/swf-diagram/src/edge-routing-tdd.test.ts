@@ -17,7 +17,7 @@ function extractAllYamls(file: string): string[] {
 
 async function renderSwfDiagram(yaml: string, direction: 'DOWN' | 'RIGHT' = 'DOWN') {
   const { model } = toSwfGraph(yaml);
-  const layout = await computeElkLayout(model, { direction, spacing: 40, containerPadding: 25, wrapping: true });
+  const layout = await computeElkLayout(model, { direction, spacing: 60, containerPadding: 25 });
   const { nodes: rawNodes, edges: rawEdges } = toReactFlowGraph(model, layout, undefined, direction);
   const nodeParents = new Map(rawNodes.map(n => [n.id, n.parentId]));
   const filteredEdges = rawEdges.filter(e => {
