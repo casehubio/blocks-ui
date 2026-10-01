@@ -5,10 +5,10 @@ interface RfEdge {
   type?: string | undefined;
   source: string;
   target: string;
-  sourceHandle?: string | null | undefined;
-  targetHandle?: string | null | undefined;
+  sourceHandle?: string | null;
+  targetHandle?: string | null;
   data?: Record<string, unknown> | undefined;
-  label?: string | undefined;
+  label?: unknown;
   labelStyle?: Record<string, unknown> | undefined;
   labelBgStyle?: Record<string, unknown> | undefined;
   labelBgPadding?: [number, number] | undefined;
@@ -53,4 +53,3 @@ export function applyOrgEdgeLabels<E extends RfEdge>(edges: readonly E[]): E[] {
     };
   });
 }
-
