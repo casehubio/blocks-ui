@@ -18,7 +18,7 @@ export class ChannelInputElement extends LitElement {
   @property({ type: String }) topicId = '';
   @property({ type: Array }) topics: QhorusTopic[] = [];
   @property({ type: Boolean }) showTopicSelector = false;
-  @property({ attribute: false }) correctionTarget?: Pick<QhorusMessage, 'id' | 'content' | 'sender' | 'createdAt'>;
+  @property({ attribute: false }) correctionTarget?: Pick<QhorusMessage, 'id' | 'content' | 'sender' | 'createdAt'> | undefined;
 
   @state() private _text = '';
   @state() private _error = '';
