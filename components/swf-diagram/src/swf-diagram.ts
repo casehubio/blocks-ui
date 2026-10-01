@@ -138,7 +138,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
   }
 
   protected override _layoutOptions() {
-    return { direction: this.layoutDirection, spacing: 40, containerPadding: 25, wrapping: true };
+    return { direction: this.layoutDirection, spacing: 60, containerPadding: 25 };
   }
 
   protected override _editPolicy(): EditPolicy {
