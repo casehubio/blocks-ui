@@ -40,7 +40,6 @@ import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import { stringify, parseDocument } from 'yaml';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
-import { computeStackColumnLayout } from '@casehubio/graph-renderer';
 import type { PropertyPaletteSource, EditorResolver, FieldRenderContext } from '@casehubio/pages-property-palette';
 import '@casehubio/graph-renderer';
 import './casehub-diagram-toolbar.js';
