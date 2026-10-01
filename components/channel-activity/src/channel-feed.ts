@@ -382,7 +382,7 @@ export class ChannelFeedElement extends ChannelFeedBase {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    const feed = this.renderRoot.querySelector('.feed');
+    const feed = this.renderRoot.querySelector<HTMLElement>('.feed');
     if (feed) {
       feed.removeEventListener('scroll', this._onFeedScroll);
       feed.removeEventListener('keydown', this._onFeedKeydown);
