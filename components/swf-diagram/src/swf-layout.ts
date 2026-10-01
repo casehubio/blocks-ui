@@ -23,7 +23,7 @@ export async function computeSwfLayout(
   const siblings = new Map<string, string[]>();
 
   for (const node of model.nodes) {
-    const parent = node.parentId ?? '__root__';
+    const parent = !node.parentId || node.parentId === 'root' ? '__root__' : node.parentId;
     const group = siblings.get(parent) ?? [];
     group.push(node.id);
     siblings.set(parent, group);
