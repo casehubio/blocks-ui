@@ -13,7 +13,6 @@ export {
   addMember, removeMember, addRelationship, removeRelationship,
 } from './adapter/yaml-editor.js';
 export { createOrgEditPolicy } from './editing/org-edit-policy.js';
-export { computeRadialLayout } from '@casehubio/graph-renderer';
 export type { AgentDescriptor, DispositionAxes, OrgAgentNodeData, OrgUnitNodeData } from './types.js';
 export { enrichWithDescriptors } from './adapter/enrichment.js';
 export { computeDerivedData } from './adapter/derived-data.js';

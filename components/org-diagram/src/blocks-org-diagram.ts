@@ -31,7 +31,7 @@ import type {
   DerivedOrgData,
   FactBase,
 } from '@casehubio/graph-stencil-org';
-import { computeElkLayout, computeRadialLayout } from '@casehubio/graph-renderer';
+import { computeElkLayout } from '@casehubio/graph-renderer';
 import type { ElkLayoutOptions, EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
@@ -271,7 +271,7 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
 
       if (primary === 'hub-spoke' || primary === 'circular') {
         try {
-          return { layout: computeRadialLayout(model), direction: undefined };
+          return { layout: await computeElkLayout(model, { algorithm: 'radial' }), direction: undefined };
         } catch { /* fall through to ELK */ }
       }
 
