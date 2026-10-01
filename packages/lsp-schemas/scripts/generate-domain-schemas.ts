@@ -135,11 +135,11 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>, discr
       || text.includes('Record<string,')) {
     const typeArgs = type.getAliasTypeArguments();
     if (typeArgs.length === 2) {
-      return `z.record(${typeToZod(typeArgs[1], depth + 1, visited, discriminatorConfig)})`;
+      return `z.record(z.string(), ${typeToZod(typeArgs[1], depth + 1, visited, discriminatorConfig)})`;
     }
     const indexType = type.getStringIndexType();
-    if (indexType) return `z.record(${typeToZod(indexType, depth + 1, visited, discriminatorConfig)})`;
-    return 'z.record(z.unknown())';
+    if (indexType) return `z.record(z.string(), ${typeToZod(indexType, depth + 1, visited, discriminatorConfig)})`;
+    return 'z.record(z.string(), z.unknown())';
   }
 
   if (type.isIntersection()) {
@@ -171,7 +171,7 @@ export function typeToZod(type: Type, depth: number, visited: Set<string>, discr
     const props = type.getProperties();
     const nonIndexProps = props.filter(p => !isIndexSignature(p) && !p.getName().startsWith('__@'));
     if (stringIndexType && nonIndexProps.length === 0) {
-      return `z.record(${typeToZod(stringIndexType, depth + 1, visited, discriminatorConfig)})`;
+      return `z.record(z.string(), ${typeToZod(stringIndexType, depth + 1, visited, discriminatorConfig)})`;
     }
 
     const symbol = type.getSymbol() || type.getAliasSymbol();
