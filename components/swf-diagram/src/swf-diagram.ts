@@ -3,11 +3,12 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { toSwfGraph, applySwfPropertyEdit, addSwfTask, insertSwfTask, spliceSwfTask, removeSwfTask, moveSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
-import type { AdapterResult } from '@casehubio/pages-diagram-core';
+import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import { stringify } from 'yaml';
+import { computeSwfLayout } from './swf-layout.js';
 import '@casehubio/graph-renderer';
 
 const swfEditPolicy = createSwfEditPolicy();
@@ -139,6 +140,14 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
 
   protected override _layoutOptions() {
     return { direction: this.layoutDirection, spacing: 60, containerPadding: 25 };
+  }
+
+  protected override async _computeLayout(
+    model: import('@casehubio/graph-core').GraphModel,
+    options: import('@casehubio/graph-renderer').ElkLayoutOptions,
+  ): Promise<LayoutResult> {
+    const layout = await computeSwfLayout(model, options);
+    return { layout, direction: options.direction };
   }
 
   protected override _editPolicy(): EditPolicy {
