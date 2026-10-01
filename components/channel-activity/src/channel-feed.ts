@@ -213,7 +213,7 @@ export class ChannelFeedElement extends ChannelFeedBase {
         if (corrections?.length || isRetracted) {
           return {
             ...m,
-            content: corrections?.length ? corrections[corrections.length - 1].content : m.content,
+            content: corrections?.at(-1)?.content ?? m.content,
             _corrected: !!corrections?.length,
             _corrections: corrections ?? [],
             _retracted: isRetracted,
@@ -354,7 +354,7 @@ export class ChannelFeedElement extends ChannelFeedBase {
 
   private _scrollToSelected() {
     if (!this.selectedMessageId) return;
-    const feed = this.renderRoot.querySelector('.feed');
+    const feed = this.renderRoot.querySelector<HTMLElement>('.feed');
     if (!feed) return;
     const target = feed.querySelector(`[data-message-id="${this.selectedMessageId}"]`) as HTMLElement | null;
     if (target) {
@@ -373,7 +373,7 @@ export class ChannelFeedElement extends ChannelFeedBase {
   }
 
   override firstUpdated() {
-    const feed = this.renderRoot.querySelector('.feed');
+    const feed = this.renderRoot.querySelector<HTMLElement>('.feed');
     if (feed) {
       feed.addEventListener('scroll', this._onFeedScroll);
       feed.addEventListener('keydown', this._onFeedKeydown);
