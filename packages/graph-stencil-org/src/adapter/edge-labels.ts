@@ -2,17 +2,17 @@ interface ScopeData { capabilityName?: string; }
 
 interface RfEdge {
   id: string;
-  type?: string;
+  type?: string | undefined;
   source: string;
   target: string;
-  sourceHandle?: string;
-  targetHandle?: string;
-  data?: Record<string, unknown>;
-  label?: string;
-  labelStyle?: Record<string, unknown>;
-  labelBgStyle?: Record<string, unknown>;
-  labelBgPadding?: [number, number];
-  labelBgBorderRadius?: number;
+  sourceHandle?: string | null | undefined;
+  targetHandle?: string | null | undefined;
+  data?: Record<string, unknown> | undefined;
+  label?: string | undefined;
+  labelStyle?: Record<string, unknown> | undefined;
+  labelBgStyle?: Record<string, unknown> | undefined;
+  labelBgPadding?: [number, number] | undefined;
+  labelBgBorderRadius?: number | undefined;
   [key: string]: unknown;
 }
 
@@ -53,5 +53,4 @@ export function applyOrgEdgeLabels<E extends RfEdge>(edges: readonly E[]): E[] {
     };
   });
 }
-
 
