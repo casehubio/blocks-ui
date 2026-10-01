@@ -107,7 +107,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     this._chooserState = null;
   };
 
-  protected override _chooserItems() {
+  override _chooserItems() {
     if (!this._pendingEdgeId || !this._adapterResult) {
       return super._chooserItems();
     }
