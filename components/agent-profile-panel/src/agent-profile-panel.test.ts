@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
+import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
 import './agent-profile-panel.js';
 import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 
@@ -7,8 +8,17 @@ type ProfilePanelEl = HTMLElement & {
   archetype: { family: string; subArchetype: string } | null;
   locked: Set<string>;
   showConfirmButton: boolean;
+  archetypeRoles: Array<{ profession: string; role: string }>;
+  templateName: string;
+  templateDesc: string;
+  templateAlias: string;
+  collection: string;
   updateComplete: Promise<boolean>;
 };
+
+beforeAll(() => {
+  registerCollection(mythicCollection);
+});
 
 describe('agent-profile-panel', () => {
   let el: ProfilePanelEl;
@@ -135,5 +145,87 @@ describe('agent-profile-panel', () => {
 
     const tendencies = el.shadowRoot!.querySelector('.tendencies-section');
     expect(tendencies).toBeTruthy();
+  });
+
+  describe('detail header', () => {
+    it('renders detail header when templateName is set', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetype = { family: 'Scholar', subArchetype: 'Analyst' };
+      el.templateName = 'Scholar Analyst';
+      el.templateDesc = 'Analytical thinker';
+      el.templateAlias = 'sage';
+      await el.updateComplete;
+
+      const header = el.shadowRoot!.querySelector('.detail-header');
+      expect(header).toBeTruthy();
+      expect(header!.textContent).toContain('Scholar Analyst');
+      expect(header!.textContent).toContain('Analytical thinker');
+      expect(header!.textContent).toContain('sage');
+    });
+
+    it('does not render detail header when templateName is empty', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetype = { family: 'Scholar', subArchetype: 'Analyst' };
+      await el.updateComplete;
+
+      const header = el.shadowRoot!.querySelector('.detail-header');
+      expect(header).toBeNull();
+    });
+
+    it('renders avatar in detail header', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetype = { family: 'Scholar', subArchetype: 'Analyst' };
+      el.templateName = 'Scholar Analyst';
+      await el.updateComplete;
+
+      const avatar = el.shadowRoot!.querySelector('.detail-header agent-avatar');
+      expect(avatar).toBeTruthy();
+    });
+
+    it('shows archetype key in detail header', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetype = { family: 'Scholar', subArchetype: 'Analyst' };
+      el.templateName = 'Scholar Analyst';
+      await el.updateComplete;
+
+      const archLabel = el.shadowRoot!.querySelector('.detail-archetype');
+      expect(archLabel).toBeTruthy();
+      expect(archLabel!.textContent).toContain('Scholar/Analyst');
+    });
+  });
+
+  describe('archetypeRoles', () => {
+    it('renders role badges when archetypeRoles is set', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetypeRoles = [
+        { profession: 'Engineering', role: 'Architect' },
+        { profession: 'Research', role: 'Scientist' },
+      ];
+      await el.updateComplete;
+
+      const badges = el.shadowRoot!.querySelectorAll('.role-badge');
+      expect(badges.length).toBe(2);
+      expect(badges[0]!.textContent).toContain('Engineering');
+      expect(badges[0]!.textContent).toContain('Architect');
+    });
+
+    it('does not render role badges when archetypeRoles is empty', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetypeRoles = [];
+      await el.updateComplete;
+
+      const badges = el.shadowRoot!.querySelectorAll('.role-badge');
+      expect(badges.length).toBe(0);
+    });
+
+    it('archetype roles list has ARIA attributes', async () => {
+      el.profile = { mbti: 'INTJ' };
+      el.archetypeRoles = [{ profession: 'Legal', role: 'Advocate' }];
+      await el.updateComplete;
+
+      const list = el.shadowRoot!.querySelector('[aria-label="Archetype roles"]');
+      expect(list).toBeTruthy();
+      expect(list!.getAttribute('role')).toBe('list');
+    });
   });
 });

@@ -1,6 +1,8 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { PersonalityProfile, FullAgentDescriptor } from '@casehubio/blocks-ui-core';
+import { listCollections } from '../../../packages/agent-avatar-2d/src/collections/registry.js';
+import { getRolesForArchetype } from '../../avatar-step/src/data/compatibility-matrix.js';
 import '../../agent-catalog/src/agent-catalog.js';
 import '../../avatar-step/src/avatar-step.js';
 import '../../agent-profile-panel/src/agent-profile-panel.js';
@@ -14,9 +16,14 @@ export class AgentPersonalityWorkbench extends LitElement {
   @property({ attribute: false }) initialDescriptor: FullAgentDescriptor | null = null;
 
   @state() _activeTab: 'templates' | 'advanced' = 'templates';
+  @state() _collection = 'mythic';
+  @state() _groupBy: 'role' | 'family' = 'role';
   @state() _profile: PersonalityProfile | null = null;
   @state() _archetype: { family: string; subArchetype: string } | null = null;
   @state() _selectedTemplateId: string | null = null;
+  @state() _templateName = '';
+  @state() _templateDesc = '';
+  @state() _templateAlias = '';
   @state() _locked: Set<string> = new Set();
 
   override connectedCallback() {
@@ -55,12 +62,35 @@ export class AgentPersonalityWorkbench extends LitElement {
     }
     .tab-panel { flex: 1; overflow-y: auto; }
     .tab-panel[hidden] { display: none; }
+    .collection-bar { display: flex; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
+    .collection-pill {
+      padding: 5px 14px; border-radius: 6px; border: 2px solid var(--pages-neutral-4, #3a3a52);
+      background: var(--pages-neutral-2, #252538); cursor: pointer; font-size: 13px; font-weight: 500;
+      color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
+    }
+    .collection-pill[aria-checked="true"] {
+      border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-3, #1e3a5f);
+      color: var(--pages-accent-11, #93c5fd);
+    }
+    .control-row { display: flex; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
+    .toggle-btn {
+      padding: 5px 14px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc);
+      cursor: pointer; font-size: 12px; transition: all 0.15s;
+    }
+    .toggle-btn:first-child { border-radius: 6px 0 0 6px; }
+    .toggle-btn:last-child { border-radius: 0 6px 6px 0; }
+    .toggle-btn[aria-checked="true"] {
+      background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb);
+    }
   `;
 
   protected override render() {
     return html`
       <div class="workbench-grid">
         <div class="tab-column">
+          ${this._renderCollectionBar()}
+          ${this._renderGroupToggle()}
           <div class="tab-bar" role="tablist" aria-label="Personality configuration mode">
             <button class="tab-btn" role="tab"
               id="tab-templates"
@@ -82,7 +112,9 @@ export class AgentPersonalityWorkbench extends LitElement {
             @catalog:template:deselected=${this._onTemplateDeselected}>
             <agent-catalog
               .suppressDetail=${true}
-              .selectedTemplateId=${this._selectedTemplateId}>
+              .selectedTemplateId=${this._selectedTemplateId}
+              .collection=${this._collection}
+              .groupBy=${this._groupBy}>
             </agent-catalog>
           </div>
           <div class="tab-panel" role="tabpanel" id="panel-advanced"
@@ -92,7 +124,8 @@ export class AgentPersonalityWorkbench extends LitElement {
             @avatar:personality:changed=${this._onPersonalityChanged}>
             <avatar-step
               .hideProfile=${true}
-              .externalProfile=${this._profile}>
+              .externalProfile=${this._profile}
+              .collection=${this._collection}>
             </avatar-step>
           </div>
         </div>
@@ -104,9 +137,43 @@ export class AgentPersonalityWorkbench extends LitElement {
           <agent-profile-panel
             .profile=${this._profile}
             .archetype=${this._archetype}
-            .locked=${this._locked}>
+            .locked=${this._locked}
+            .archetypeRoles=${this._archetypeRoles}
+            .templateName=${this._templateName}
+            .templateDesc=${this._templateDesc}
+            .templateAlias=${this._templateAlias}
+            .collection=${this._collection}>
           </agent-profile-panel>
         </div>
+      </div>
+    `;
+  }
+
+  private _renderCollectionBar() {
+    const collections: ReadonlyArray<{ id: string; label: string }> = listCollections();
+    if (collections.length <= 1) return nothing;
+    return html`
+      <div class="collection-bar" role="radiogroup" aria-label="Avatar collection">
+        ${collections.map(c => html`
+          <button class="collection-pill" role="radio"
+            aria-checked=${String(this._collection === c.id)}
+            @click=${() => { this._collection = c.id; }}>
+            ${c.label}
+          </button>
+        `)}
+      </div>
+    `;
+  }
+
+  private _renderGroupToggle() {
+    return html`
+      <div class="control-row" role="radiogroup" aria-label="Group by">
+        <button class="toggle-btn" role="radio"
+          aria-checked=${String(this._groupBy === 'role')}
+          @click=${() => { this._groupBy = 'role'; }}>By Role</button>
+        <button class="toggle-btn" role="radio"
+          aria-checked=${String(this._groupBy === 'family')}
+          @click=${() => { this._groupBy = 'family'; }}>By Family</button>
       </div>
     `;
   }
@@ -120,6 +187,11 @@ export class AgentPersonalityWorkbench extends LitElement {
     }
   }
 
+  private get _archetypeRoles(): Array<{ profession: string; role: string }> {
+    if (!this._archetype) return [];
+    return getRolesForArchetype(`${this._archetype.family}/${this._archetype.subArchetype}`);
+  }
+
   private _onTemplateSelected(e: CustomEvent) {
     const descriptor = e.detail.template as FullAgentDescriptor;
     this._profile = descriptor.personality ? { ...descriptor.personality } : null;
@@ -127,12 +199,18 @@ export class AgentPersonalityWorkbench extends LitElement {
       ? { family: descriptor.archetypeFamily, subArchetype: descriptor.subArchetype }
       : null;
     this._selectedTemplateId = (e.detail.templateId as string) || null;
+    this._templateName = descriptor.name || '';
+    this._templateDesc = descriptor.description || '';
+    this._templateAlias = descriptor.preferredAlias || '';
   }
 
   private _onTemplateDeselected() {
     this._profile = null;
     this._archetype = null;
     this._selectedTemplateId = null;
+    this._templateName = '';
+    this._templateDesc = '';
+    this._templateAlias = '';
   }
 
   private _onArchetypeSelected(e: CustomEvent) {
@@ -190,6 +268,9 @@ export class AgentPersonalityWorkbench extends LitElement {
     this._profile = null;
     this._archetype = null;
     this._selectedTemplateId = null;
+    this._templateName = '';
+    this._templateDesc = '';
+    this._templateAlias = '';
     this._locked = new Set();
   }
 

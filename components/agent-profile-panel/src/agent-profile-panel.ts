@@ -8,12 +8,18 @@ import { ALL_FRAMEWORK_VALUES, getFrameworkProfile } from '../../avatar-step/src
 import type { PersonalityFramework, BigFiveDimension, BigFivePole } from '../../avatar-step/src/data/compatibility-matrix.js';
 import { FRAMEWORK_TOOLTIPS } from '../../avatar-step/src/data/framework-tooltips.js';
 import { PROFESSION_LIST, PROFESSION_PRESETS } from '../../avatar-step/src/data/profession-presets.js';
+import '@casehubio/agent-avatar-2d';
 
 export interface AgentProfilePanelProps {
   profile: PersonalityProfile | null;
   archetype: { family: string; subArchetype: string } | null;
   locked: Set<string>;
   showConfirmButton: boolean;
+  archetypeRoles: Array<{ profession: string; role: string }>;
+  templateName: string;
+  templateDesc: string;
+  templateAlias: string;
+  collection: string;
 }
 
 @customElement('agent-profile-panel')
@@ -22,6 +28,11 @@ export class AgentProfilePanel extends LitElement {
   @property({ attribute: false }) archetype: { family: string; subArchetype: string } | null = null;
   @property({ attribute: false }) locked: Set<string> = new Set();
   @property({ type: Boolean, attribute: 'show-confirm-button' }) showConfirmButton = true;
+  @property({ attribute: false }) archetypeRoles: Array<{ profession: string; role: string }> = [];
+  @property({ type: String }) templateName = '';
+  @property({ type: String }) templateDesc = '';
+  @property({ type: String }) templateAlias = '';
+  @property({ type: String }) collection = '';
 
   @state() private _tipDialog: string | null = null;
 
@@ -138,6 +149,21 @@ export class AgentProfilePanel extends LitElement {
       float: right; background: none; border: none; color: var(--pages-neutral-10, #aaa);
       cursor: pointer; font-size: 16px; padding: 0;
     }
+    .detail-header { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--pages-neutral-4, #3a3a52); }
+    .detail-avatar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .detail-info { flex: 1; min-width: 0; }
+    .detail-name { font-size: 16px; font-weight: 600; color: var(--pages-neutral-12, #eee); }
+    .detail-archetype { font-size: 11px; color: var(--pages-accent-11, #93c5fd); margin-top: 2px; }
+    .detail-desc { font-size: 12px; color: var(--pages-neutral-10, #aaa); margin-top: 4px; }
+    .detail-alias { font-size: 11px; color: var(--pages-accent-11, #93c5fd); margin-bottom: 6px; }
+    .detail-summary { font-size: 11px; color: var(--pages-neutral-10, #aaa); font-style: italic; line-height: 1.4; }
+    .archetype-roles { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 8px; }
+    .role-badge {
+      padding: 2px 8px; border-radius: 10px; font-size: 10px;
+      background: var(--pages-neutral-3, #2d2d44);
+      color: var(--pages-neutral-10, #aaa);
+      border: 1px solid var(--pages-neutral-5, #4a4a62);
+    }
   `;
 
   protected override render() {
@@ -150,9 +176,30 @@ export class AgentProfilePanel extends LitElement {
       `;
     }
     return html`
+      ${this.templateName ? this._renderDetailHeader() : nothing}
       ${this._renderProfileSection()}
       ${this._renderActions()}
       ${this._renderTipDialog()}
+    `;
+  }
+
+  private _renderDetailHeader() {
+    const archetypeKey = this.archetype ? `${this.archetype.family}/${this.archetype.subArchetype}` : null;
+    const summary = buildSummaryText(this.profile?.mbti, this.profile?.enneagram, this.profile?.disc, this.archetype?.subArchetype ?? 'agent');
+    return html`
+      <div class="detail-header">
+        <div class="detail-avatar-row">
+          <agent-avatar .archetype=${this.archetype}
+            collection=${this.collection || 'mythic'} size="md"></agent-avatar>
+          <div class="detail-info">
+            <div class="detail-name">${this.templateName}</div>
+            <div class="detail-archetype">${archetypeKey}</div>
+            <div class="detail-desc">${this.templateDesc}</div>
+          </div>
+        </div>
+        <div class="detail-alias">Preferred: ${this.templateAlias}</div>
+        ${summary ? html`<div class="detail-summary">${summary}</div>` : nothing}
+      </div>
     `;
   }
 
@@ -211,6 +258,13 @@ export class AgentProfilePanel extends LitElement {
     return html`
       <div class="profile-section" role="region" aria-label="Personality profile">
         <div class="profile-header">Personality Profile</div>
+        ${this.archetypeRoles.length > 0 ? html`
+          <div class="archetype-roles" role="list" aria-label="Archetype roles">
+            ${this.archetypeRoles.map(r => html`
+              <span class="role-badge" role="listitem">${r.profession} › ${r.role}</span>
+            `)}
+          </div>
+        ` : nothing}
         <div class=${classMap({ 'profile-group': true, locked: this.locked.has('profession') })}>
           <div class="profile-row">
             <span class="profile-label">Profession</span>

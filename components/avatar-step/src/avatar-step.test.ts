@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
-import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
+import { registerCollection, mythicCollection, chibiCollection } from '@casehubio/agent-avatar-2d';
 import './avatar-step.js';
 import type { PersonalityProfile } from '@casehubio/blocks-ui-core';
 
@@ -7,6 +7,8 @@ type AvatarStepEl = HTMLElement & {
   updateComplete: Promise<boolean>;
   hideProfile: boolean;
   externalProfile: PersonalityProfile | null;
+  collection: string;
+  _collection: string;
   _profile: PersonalityProfile;
   _frameworks: Record<string, string>;
   _bigFive: Record<string, string>;
@@ -17,6 +19,7 @@ type AvatarStepEl = HTMLElement & {
 
 beforeAll(() => {
   registerCollection(mythicCollection);
+  registerCollection(chibiCollection);
 });
 
 describe('avatar-step', () => {
@@ -216,6 +219,92 @@ describe('avatar-step', () => {
       await el.updateComplete;
       expect(el._profile.mbti).toBeUndefined();
       expect(el._selectedArchetype).toBeNull();
+    });
+  });
+
+  describe('external collection', () => {
+    it('uses internal _collection by default', async () => {
+      await el.updateComplete;
+      expect(el._collection).toBe('mythic');
+    });
+
+    it('uses external collection when property is set', async () => {
+      await el.updateComplete;
+      el.collection = 'chibi';
+      await el.updateComplete;
+      expect(el._collection).toBe('chibi');
+    });
+
+    it('hides internal collection bar when external collection is set', async () => {
+      await el.updateComplete;
+      el.collection = 'chibi';
+      await el.updateComplete;
+      const bar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]');
+      expect(bar).toBeNull();
+    });
+
+    it('shows internal collection bar when no external collection', async () => {
+      await el.updateComplete;
+      const bar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]');
+      expect(bar).toBeTruthy();
+    });
+
+    it('passes external collection to agent-avatar elements', async () => {
+      await el.updateComplete;
+      el.collection = 'neon';
+      await el.updateComplete;
+      const avatars = el.shadowRoot!.querySelectorAll('agent-avatar');
+      const first = avatars[0] as HTMLElement & { collection: string };
+      expect(first?.getAttribute('collection') ?? first?.collection).toBe('neon');
+    });
+  });
+
+  describe('profession filter on grid', () => {
+    it('all grid cells are strong tier when no profession selected', async () => {
+      await el.updateComplete;
+      const cells = el.shadowRoot!.querySelectorAll('.avatar-cell');
+      const ghosted = [...cells].filter(c => c.classList.contains('profession-ghosted'));
+      expect(ghosted.length).toBe(0);
+    });
+
+    it('ghosts grid cells for archetypes not in selected profession', async () => {
+      await el.updateComplete;
+      const pill = el.shadowRoot!.querySelector('[aria-label="Professions"] [role="option"]') as HTMLElement;
+      expect(pill).toBeTruthy();
+      pill.click();
+      await el.updateComplete;
+      const cells = el.shadowRoot!.querySelectorAll('.avatar-cell');
+      const ghosted = [...cells].filter(c => c.classList.contains('profession-ghosted'));
+      expect(ghosted.length).toBeGreaterThan(0);
+      const visible = [...cells].filter(c => !c.classList.contains('profession-ghosted'));
+      expect(visible.length).toBeGreaterThan(0);
+    });
+
+    it('ghosted cells remain clickable', async () => {
+      await el.updateComplete;
+      const pill = el.shadowRoot!.querySelector('[aria-label="Professions"] [role="option"]') as HTMLElement;
+      pill.click();
+      await el.updateComplete;
+      const ghosted = el.shadowRoot!.querySelector('.avatar-cell.profession-ghosted') as HTMLElement;
+      expect(ghosted).toBeTruthy();
+      let selected = false;
+      el.addEventListener('avatar:archetype:selected', () => { selected = true; });
+      ghosted.click();
+      await el.updateComplete;
+      expect(selected).toBe(true);
+    });
+
+    it('highlights role-matched archetypes when archetype is selected', async () => {
+      await el.updateComplete;
+      const cell = el.shadowRoot!.querySelector('.avatar-cell:not([aria-disabled="true"])') as HTMLElement;
+      cell.click();
+      await el.updateComplete;
+      const roleMatched = el.shadowRoot!.querySelectorAll('.avatar-cell.role-match');
+      const selectedCell = el.shadowRoot!.querySelector('.avatar-cell.selected');
+      expect(selectedCell).toBeTruthy();
+      if (roleMatched.length > 0) {
+        expect(selectedCell!.classList.contains('role-match')).toBe(false);
+      }
     });
   });
 });

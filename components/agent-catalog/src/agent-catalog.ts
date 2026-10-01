@@ -12,12 +12,28 @@ interface RoleGroup {
   templates: CatalogTemplate[];
 }
 
+interface FamilyGroup {
+  family: string;
+  templates: CatalogTemplate[];
+}
+
 function groupByRole(templates: readonly CatalogTemplate[]): RoleGroup[] {
   const map = new Map<string, RoleGroup>();
   for (const t of templates) {
     const key = `${t.profession}::${t.role}`;
     let group = map.get(key);
     if (!group) { group = { profession: t.profession, role: t.role, templates: [] }; map.set(key, group); }
+    group.templates.push(t);
+  }
+  return [...map.values()];
+}
+
+function groupByFamily(templates: readonly CatalogTemplate[]): FamilyGroup[] {
+  const map = new Map<string, FamilyGroup>();
+  for (const t of templates) {
+    const family = t.variant.archetype.split('/')[0]!;
+    let group = map.get(family);
+    if (!group) { group = { family, templates: [] }; map.set(family, group); }
     group.templates.push(t);
   }
   return [...map.values()];
@@ -111,6 +127,8 @@ export class AgentCatalog extends LitElement {
 
   @property({ type: Boolean, attribute: 'suppress-detail' }) suppressDetail = false;
   @property({ type: String, attribute: 'selected-template-id' }) selectedTemplateId: string | null = null;
+  @property({ type: String }) collection = 'mythic';
+  @property({ type: String, attribute: 'group-by' }) groupBy: 'role' | 'family' = 'role';
 
   @state() private _search = '';
   @state() private _profession: string | null = null;
@@ -162,12 +180,48 @@ export class AgentCatalog extends LitElement {
   protected override render() {
     const filtered = this._filtered();
     const showFeatured = !this._profession && !this._search;
-    const groups = groupByRole(filtered);
     return html`
       ${showFeatured ? this._renderFeatured() : nothing}
       ${this._renderSearch()}
       ${this._renderProfessionPills()}
-      ${groups.length > 0 ? groups.map(g => this._renderRoleGroup(g)) : html`<div class="empty-state">No templates match your search.</div>`}
+      ${this.groupBy === 'family' ? this._renderFamilyGroups(filtered) : this._renderRoleGroups(filtered)}
+    `;
+  }
+
+  private _renderRoleGroups(filtered: CatalogTemplate[]) {
+    const groups = groupByRole(filtered);
+    return groups.length > 0 ? groups.map(g => this._renderRoleGroup(g)) : html`<div class="empty-state">No templates match your search.</div>`;
+  }
+
+  private _renderFamilyGroups(filtered: CatalogTemplate[]) {
+    const groups = groupByFamily(filtered);
+    return groups.length > 0 ? groups.map(g => this._renderFamilyGroup(g)) : html`<div class="empty-state">No templates match your search.</div>`;
+  }
+
+  private _renderFamilyGroup(group: FamilyGroup) {
+    const expandedTemplate = group.templates.find(t => t.id === this._expandedId);
+    return html`
+      <div class="family-group" role="group" aria-label="${group.family}">
+        <div class="role-header">${group.family}</div>
+        <div class="variant-row">
+          ${group.templates.map(t => {
+            const isExpanded = this._expandedId === t.id;
+            return html`
+              <div class=${classMap({ 'template-card': true, expanded: isExpanded, selected: this.selectedTemplateId === t.id })}
+                data-template-id=${t.id}
+                @click=${() => { this._onCardClick(t); }}>
+                <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} collection=${this.collection} size="sm"></agent-avatar>
+                <div class="card-info">
+                  <div class="card-label">${t.variant.label}</div>
+                  <div class="card-desc">${t.variant.description}</div>
+                  <div class="card-family">${t.variant.archetype}</div>
+                </div>
+              </div>
+            `;
+          })}
+        </div>
+        ${!this.suppressDetail && expandedTemplate ? this._renderDetail(expandedTemplate) : nothing}
+      </div>
     `;
   }
 
@@ -178,7 +232,7 @@ export class AgentCatalog extends LitElement {
         <div class="featured-grid">
           ${FEATURED_TEMPLATES.map(t => html`
             <div class="featured-card" @click=${() => { this._profession = t.profession; this._onCardClick(t); }}>
-              <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
+              <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} collection=${this.collection} size="sm"></agent-avatar>
               <div class="featured-info">
                 <div class="featured-label">${t.variant.label}</div>
                 <div class="featured-role">${t.profession} &rsaquo; ${t.role}</div>
@@ -232,7 +286,7 @@ export class AgentCatalog extends LitElement {
               <div class=${classMap({ 'template-card': true, expanded: isExpanded, selected: this.selectedTemplateId === t.id })}
                 data-template-id=${t.id}
                 @click=${() => { this._onCardClick(t); }}>
-                <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} size="sm"></agent-avatar>
+                <agent-avatar .archetype=${{ family: t.variant.archetype.split('/')[0], subArchetype: t.variant.archetype.split('/')[1] }} collection=${this.collection} size="sm"></agent-avatar>
                 <div class="card-info">
                   <div class="card-label">${t.variant.label}</div>
                   <div class="card-desc">${t.variant.description}</div>
@@ -263,7 +317,7 @@ export class AgentCatalog extends LitElement {
       <div class="detail-expansion" role="region" aria-label="Template details"
         data-template-id=${t.id}>
         <div class="detail-header">
-          <agent-avatar .archetype=${{ family, subArchetype: sub }} size="md"></agent-avatar>
+          <agent-avatar .archetype=${{ family, subArchetype: sub }} collection=${this.collection} size="md"></agent-avatar>
           <div>
             <div class="detail-name">${t.variant.label}</div>
             <div class="detail-desc">${t.variant.description}</div>

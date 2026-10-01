@@ -6,6 +6,8 @@ type CatalogEl = HTMLElement & {
   updateComplete: Promise<boolean>;
   suppressDetail: boolean;
   selectedTemplateId: string | null;
+  collection: string;
+  groupBy: 'role' | 'family';
 };
 
 beforeAll(() => {
@@ -203,6 +205,49 @@ describe('agent-catalog', () => {
       el.selectedTemplateId = null;
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.template-card.selected')).toBeNull();
+    });
+  });
+
+  describe('collection property', () => {
+    it('passes collection to agent-avatar elements in cards', async () => {
+      el.collection = 'chibi';
+      await el.updateComplete;
+      const avatar = el.shadowRoot!.querySelector('agent-avatar') as HTMLElement & { collection: string };
+      expect(avatar).toBeTruthy();
+      expect(avatar.getAttribute('collection') ?? avatar.collection).toBe('chibi');
+    });
+
+    it('defaults to mythic when no collection set', async () => {
+      await el.updateComplete;
+      const avatar = el.shadowRoot!.querySelector('agent-avatar') as HTMLElement & { collection: string };
+      expect(avatar).toBeTruthy();
+      expect(avatar.getAttribute('collection') ?? avatar.collection).toBe('mythic');
+    });
+  });
+
+  describe('groupBy property', () => {
+    it('defaults to role grouping', async () => {
+      await el.updateComplete;
+      expect(el.groupBy).toBe('role');
+      const groups = el.shadowRoot!.querySelectorAll('.role-group');
+      expect(groups.length).toBeGreaterThan(0);
+    });
+
+    it('switches to family grouping when set to family', async () => {
+      el.groupBy = 'family';
+      await el.updateComplete;
+      const familyGroups = el.shadowRoot!.querySelectorAll('.family-group');
+      expect(familyGroups.length).toBeGreaterThan(0);
+      const roleGroups = el.shadowRoot!.querySelectorAll('.role-group');
+      expect(roleGroups.length).toBe(0);
+    });
+
+    it('family groups have aria-label with family name', async () => {
+      el.groupBy = 'family';
+      await el.updateComplete;
+      const group = el.shadowRoot!.querySelector('.family-group') as HTMLElement;
+      expect(group).toBeTruthy();
+      expect(group.getAttribute('aria-label')).toBeTruthy();
     });
   });
 });

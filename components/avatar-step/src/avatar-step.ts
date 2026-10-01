@@ -163,6 +163,10 @@ export class AvatarStep extends LitElement {
     .avatar-cell.incompatible { opacity: 0.25; transform: scale(0.9); cursor: pointer; }
     .avatar-cell.incompatible:hover { opacity: 0.5; border-color: var(--pages-neutral-5, #4a4a62); }
     .avatar-cell.unmapped .sub-label::after { content: ' *'; color: var(--pages-neutral-9, #999); font-size: 8px; }
+    .avatar-cell.profession-ghosted { opacity: 0.2; transform: scale(0.9); }
+    .avatar-cell.profession-ghosted:hover { opacity: 0.5; transform: scale(1); }
+    .avatar-cell.role-match { border-color: var(--pages-accent-7, #3b82f6); opacity: 1; }
+    .avatar-cell.role-match .sub-label { color: var(--pages-accent-11, #93c5fd); font-weight: 600; }
     .avatar-cell.selected { border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-2, #eff6ff); }
     .avatar-cell .sub-label { font-size: 10px; color: var(--pages-neutral-9, #737373); text-align: center; margin-top: 2px; }
 
@@ -216,6 +220,7 @@ export class AvatarStep extends LitElement {
 
   @property({ type: Boolean, attribute: 'hide-profile' }) hideProfile = false;
   @property({ attribute: false }) externalProfile: PersonalityProfile | null = null;
+  @property({ type: String }) collection = '';
 
   @state() private _collection = 'mythic';
   @state() private _selectedArchetype: string | null = null;
@@ -237,6 +242,9 @@ export class AvatarStep extends LitElement {
   }
 
   protected override willUpdate(changed: PropertyValues) {
+    if (changed.has('collection') && this.collection) {
+      this._collection = this.collection;
+    }
     if (changed.has('externalProfile')) {
       this._syncFromExternalProfile();
     }
@@ -466,6 +474,7 @@ export class AvatarStep extends LitElement {
   }
 
   private _renderCollectionBar() {
+    if (this.collection) return nothing;
     const collections = listCollections();
     if (collections.length <= 1) return nothing;
     return html`
@@ -827,9 +836,32 @@ export class AvatarStep extends LitElement {
     `;
   }
 
+  private _professionArchetypes(): Set<string> {
+    if (!this._profession) return new Set();
+    const presets = PROFESSION_PRESETS[this._profession];
+    if (!presets) return new Set();
+    const set = new Set<string>();
+    for (const { variants } of presets) {
+      for (const v of variants) set.add(v.archetype);
+    }
+    return set;
+  }
+
+  private _roleArchetypes(): Set<string> {
+    if (!this._profession || !this._selectedRole) return new Set();
+    const presets = PROFESSION_PRESETS[this._profession];
+    if (!presets) return new Set();
+    const role = presets.find(r => r.role === this._selectedRole);
+    if (!role) return new Set();
+    return new Set(role.variants.map(v => v.archetype));
+  }
+
   private _renderGrid() {
     const tiers = this._tiers();
     const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
+    const profArchetypes = this._professionArchetypes();
+    const hasProfFilter = profArchetypes.size > 0;
+    const roleArchetypes = this._roleArchetypes();
     return html`
       ${hasFilters ? html`
         <div class="grid-toggle">
@@ -851,9 +883,11 @@ export class AvatarStep extends LitElement {
               const tier = tiers.get(key) ?? 'strong';
               const selected = this._selectedArchetype === key;
               const incompatible = tier === 'incompatible';
+              const profGhosted = hasProfFilter && !profArchetypes.has(key);
+              const roleMatch = !selected && roleArchetypes.has(key);
               if (this._compactGrid && incompatible) return html`<div></div>`;
               return html`
-                <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key) })}
+                <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key), 'profession-ghosted': profGhosted, 'role-match': roleMatch })}
                   role="radio" aria-checked=${String(selected)}
                   aria-label="${family} ${sub} avatar"
                   @click=${() => incompatible ? this._selectIncompatibleArchetype(key) : this._selectArchetype(key)}>

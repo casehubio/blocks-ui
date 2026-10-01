@@ -1,20 +1,26 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
-import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
+import { registerCollection, mythicCollection, chibiCollection } from '@casehubio/agent-avatar-2d';
 import './agent-personality-workbench.js';
 import type { PersonalityProfile, FullAgentDescriptor } from '@casehubio/blocks-ui-core';
 
 type WorkbenchEl = HTMLElement & {
   initialDescriptor: FullAgentDescriptor | null;
   _activeTab: 'templates' | 'advanced';
+  _collection: string;
+  _groupBy: 'role' | 'family';
   _profile: PersonalityProfile | null;
   _archetype: { family: string; subArchetype: string } | null;
   _selectedTemplateId: string | null;
+  _templateName: string;
+  _templateDesc: string;
+  _templateAlias: string;
   _locked: Set<string>;
   updateComplete: Promise<boolean>;
 };
 
 beforeAll(() => {
   registerCollection(mythicCollection);
+  registerCollection(chibiCollection);
 });
 
 describe('agent-personality-workbench', () => {
@@ -149,5 +155,144 @@ describe('agent-personality-workbench', () => {
     firstTab.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await el.updateComplete;
     expect(el._activeTab).toBe('advanced');
+  });
+
+  describe('collection bar', () => {
+    it('renders collection bar with radiogroup', async () => {
+      await el.updateComplete;
+      const bar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]');
+      expect(bar).toBeTruthy();
+      expect(bar!.getAttribute('role')).toBe('radiogroup');
+    });
+
+    it('renders a pill for each registered collection', async () => {
+      await el.updateComplete;
+      const pills = el.shadowRoot!.querySelectorAll('[aria-label="Avatar collection"] [role="radio"]');
+      expect(pills.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('selects mythic by default', async () => {
+      await el.updateComplete;
+      expect(el._collection).toBe('mythic');
+      const selected = el.shadowRoot!.querySelector('[aria-label="Avatar collection"] [aria-checked="true"]');
+      expect(selected).toBeTruthy();
+      expect(selected!.textContent!.trim().toLowerCase()).toContain('mythic');
+    });
+
+    it('updates collection on pill click', async () => {
+      await el.updateComplete;
+      const pills = el.shadowRoot!.querySelectorAll('[aria-label="Avatar collection"] [role="radio"]');
+      if (pills.length < 2) return;
+      (pills[1] as HTMLElement).click();
+      await el.updateComplete;
+      expect(el._collection).not.toBe('mythic');
+    });
+
+    it('passes collection to avatar-step', async () => {
+      await el.updateComplete;
+      const avatarStep = el.shadowRoot!.querySelector('avatar-step') as HTMLElement & { collection: string };
+      expect(avatarStep).toBeTruthy();
+      expect(avatarStep.collection).toBe(el._collection);
+    });
+
+    it('passes collection to agent-catalog', async () => {
+      await el.updateComplete;
+      const catalog = el.shadowRoot!.querySelector('agent-catalog') as HTMLElement & { collection: string };
+      expect(catalog).toBeTruthy();
+      expect(catalog.collection).toBe(el._collection);
+    });
+
+    it('collection bar is above tab bar', async () => {
+      await el.updateComplete;
+      const collectionBar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]') as HTMLElement;
+      const tabBar = el.shadowRoot!.querySelector('[role="tablist"]') as HTMLElement;
+      expect(collectionBar).toBeTruthy();
+      expect(tabBar).toBeTruthy();
+      const position = collectionBar.compareDocumentPosition(tabBar);
+      expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+  });
+
+  describe('group toggle', () => {
+    it('renders group toggle with radiogroup', async () => {
+      await el.updateComplete;
+      const toggle = el.shadowRoot!.querySelector('[aria-label="Group by"]');
+      expect(toggle).toBeTruthy();
+      expect(toggle!.getAttribute('role')).toBe('radiogroup');
+    });
+
+    it('defaults to By Role', async () => {
+      await el.updateComplete;
+      expect(el._groupBy).toBe('role');
+      const checked = el.shadowRoot!.querySelector('[aria-label="Group by"] [aria-checked="true"]');
+      expect(checked).toBeTruthy();
+      expect(checked!.textContent!.trim()).toBe('By Role');
+    });
+
+    it('toggles to By Family on click', async () => {
+      await el.updateComplete;
+      const btns = el.shadowRoot!.querySelectorAll('[aria-label="Group by"] [role="radio"]');
+      expect(btns.length).toBe(2);
+      (btns[1] as HTMLElement).click();
+      await el.updateComplete;
+      expect(el._groupBy).toBe('family');
+    });
+
+    it('passes groupBy to agent-catalog', async () => {
+      await el.updateComplete;
+      el._groupBy = 'family';
+      await el.updateComplete;
+      const catalog = el.shadowRoot!.querySelector('agent-catalog') as HTMLElement & { groupBy: string };
+      expect(catalog.groupBy).toBe('family');
+    });
+  });
+
+  describe('profile panel properties', () => {
+    it('passes templateName to profile panel on template selection', async () => {
+      await el.updateComplete;
+      const catalog = el.shadowRoot!.querySelector('agent-catalog')!;
+      catalog.dispatchEvent(new CustomEvent('catalog:template:selected', {
+        detail: {
+          template: {
+            agentId: '', name: 'Scholar Analyst', tenancyId: '',
+            archetypeFamily: 'Scholar', subArchetype: 'Analyst',
+            description: 'Analytical thinker',
+            preferredAlias: 'sage',
+            personality: { mbti: 'INTJ' },
+          } as unknown as FullAgentDescriptor,
+          templateId: 'test-id',
+        },
+        bubbles: true, composed: true,
+      }));
+      await el.updateComplete;
+      expect(el._templateName).toBe('Scholar Analyst');
+      expect(el._templateDesc).toBe('Analytical thinker');
+      expect(el._templateAlias).toBe('sage');
+      const panel = el.shadowRoot!.querySelector('agent-profile-panel') as HTMLElement & { templateName: string; templateDesc: string; templateAlias: string };
+      expect(panel.templateName).toBe('Scholar Analyst');
+      expect(panel.templateDesc).toBe('Analytical thinker');
+      expect(panel.templateAlias).toBe('sage');
+    });
+
+    it('clears template info on deselection', async () => {
+      await el.updateComplete;
+      el._templateName = 'Test';
+      el._templateDesc = 'Desc';
+      el._templateAlias = 'alias';
+      await el.updateComplete;
+
+      const catalog = el.shadowRoot!.querySelector('agent-catalog')!;
+      catalog.dispatchEvent(new CustomEvent('catalog:template:deselected', { bubbles: true, composed: true }));
+      await el.updateComplete;
+      expect(el._templateName).toBe('');
+      expect(el._templateDesc).toBe('');
+      expect(el._templateAlias).toBe('');
+    });
+
+    it('passes collection to profile panel', async () => {
+      await el.updateComplete;
+      const panel = el.shadowRoot!.querySelector('agent-profile-panel') as HTMLElement & { collection: string };
+      expect(panel.collection).toBe(el._collection);
+    });
   });
 });
