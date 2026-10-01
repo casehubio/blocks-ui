@@ -3,9 +3,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { toSwfGraph, applySwfPropertyEdit, addSwfTask, insertSwfTask, spliceSwfTask, removeSwfTask, moveSwfTask, registerSwfStencils, createSwfEditPolicy } from '@casehubio/graph-stencil-swf';
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
-import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
+import type { AdapterResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
-import { computeStackColumnLayout } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import { stringify } from 'yaml';
@@ -140,21 +139,6 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
 
   protected override _layoutOptions() {
     return { direction: this.layoutDirection, spacing: 40, containerPadding: 25, wrapping: true };
-  }
-
-  protected override async _computeLayout(
-    model: import('@casehubio/graph-core').GraphModel,
-    options: import('@casehubio/graph-renderer').ElkLayoutOptions,
-  ): Promise<LayoutResult> {
-    const layout = computeStackColumnLayout(model, {
-      verticalGap: 40,
-      horizontalGap: 30,
-      containerPaddingTop: 40,
-      containerPaddingBottom: 20,
-      containerPaddingX: 20,
-      skipTypes: new Set(['swf-root']),
-    });
-    return { layout, direction: options.direction };
   }
 
   protected override _editPolicy(): EditPolicy {
