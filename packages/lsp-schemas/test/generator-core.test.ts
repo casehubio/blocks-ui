@@ -37,8 +37,8 @@ describe('typeToZod', () => {
     expect(zodForType('string[]')).toBe('z.array(z.string())');
   });
 
-  it('maps Record<string, number> to z.record(z.number())', () => {
-    expect(zodForType('Record<string, number>')).toBe('z.record(z.number())');
+  it('maps Record<string, number> to a keyed Zod 4 record', () => {
+    expect(zodForType('Record<string, number>')).toBe('z.record(z.string(), z.number())');
   });
 
   it('maps unknown to z.unknown()', () => {

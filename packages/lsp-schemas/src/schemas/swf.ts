@@ -9,19 +9,19 @@ const documentInfoSchema = z.object({
 
 const callTaskSchema = z.object({
   call: z.enum(['http', 'grpc', 'asyncapi', 'openapi']),
-  with: z.record(z.unknown()).optional(),
+  with: z.record(z.string(), z.unknown()).optional(),
   output: z.unknown().optional(),
   then: z.string().optional(),
   if: z.string().optional(),
 });
 
 const setTaskSchema = z.object({
-  set: z.record(z.unknown()),
+  set: z.record(z.string(), z.unknown()),
   then: z.string().optional(),
   if: z.string().optional(),
 });
 
-const switchCaseSchema = z.record(z.object({
+const switchCaseSchema = z.record(z.string(), z.object({
   when: z.string().optional(),
   then: z.string().optional(),
 }));
@@ -88,7 +88,7 @@ export const swfDocumentSchema = z.object({
   document: documentInfoSchema.optional(),
   input: z.unknown().optional(),
   output: z.unknown().optional(),
-  do: z.array(z.record(taskDefinitionSchema)),
+  do: z.array(z.record(z.string(), taskDefinitionSchema)),
   use: z.unknown().optional(),
   timeout: z.unknown().optional(),
   schedule: z.unknown().optional(),

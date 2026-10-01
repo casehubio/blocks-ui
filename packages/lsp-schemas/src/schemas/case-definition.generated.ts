@@ -17,7 +17,7 @@ export const caseDefinitionDocumentSchema = z.object({
       secrets: z.array(z.string()).optional(),
       configMaps: z.array(z.string()).optional(),
     }).optional(),
-    semanticData: z.record(z.unknown()).optional(),
+    semanticData: z.record(z.string(), z.unknown()).optional(),
     episodic: z.object({
       memory: z.object({
         domain: z.string(),
@@ -38,7 +38,7 @@ export const caseDefinitionDocumentSchema = z.object({
     labelRules: z.array(z.object({
         name: z.string(),
         when: z.string(),
-        actions: z.array(z.union([z.record(z.unknown()), z.record(z.unknown())])),
+        actions: z.array(z.union([z.record(z.string(), z.unknown()), z.record(z.string(), z.unknown())])),
       })).optional(),
     inboundMappings: z.array(z.object({
         signal: z.string(),
@@ -61,7 +61,7 @@ export const caseDefinitionDocumentSchema = z.object({
           description: z.string().optional(),
           inputProjection: z.string().optional(),
           outputProjection: z.string().optional(),
-          cognitiveDemand: z.record(z.number()).optional(),
+          cognitiveDemand: z.record(z.string(), z.number()).optional(),
         })).optional(),
       goals: z.array(z.object({
           name: z.string(),
@@ -78,10 +78,10 @@ export const caseDefinitionDocumentSchema = z.object({
       implementationRouting: z.string().optional(),
       humanTaskRouting: z.string().optional(),
       candidateMatching: z.string().optional(),
-      routingSignalWeights: z.record(z.number()).optional(),
+      routingSignalWeights: z.record(z.string(), z.number()).optional(),
       cbr: z.object({
-        features: z.record(z.string()),
-        weights: z.record(z.number()).optional(),
+        features: z.record(z.string(), z.string()),
+        weights: z.record(z.string(), z.number()).optional(),
         topK: z.number().optional(),
         minSimilarity: z.number().optional(),
         vectorWeight: z.number().optional(),
@@ -121,7 +121,7 @@ export const caseDefinitionDocumentSchema = z.object({
             maxRerouteAttempts: z.number().optional(),
           }).optional(),
           inputProjectionOverride: z.string().optional(),
-          contextWrite: z.record(z.unknown()).optional(),
+          contextWrite: z.record(z.string(), z.unknown()).optional(),
           producedKeys: z.array(z.string()).optional(),
           lifecycleScope: z.enum(["BINDING", "COMPOUND", "CASE"]).optional(),
           participation: z.enum(["PARTICIPANT", "COMPANION"]).optional(),
@@ -156,7 +156,7 @@ export const caseDefinitionDocumentSchema = z.object({
             maxRerouteAttempts: z.number().optional(),
           }).optional(),
           inputProjectionOverride: z.string().optional(),
-          contextWrite: z.record(z.unknown()).optional(),
+          contextWrite: z.record(z.string(), z.unknown()).optional(),
           producedKeys: z.array(z.string()).optional(),
           lifecycleScope: z.enum(["BINDING", "COMPOUND", "CASE"]).optional(),
           participation: z.enum(["PARTICIPANT", "COMPANION"]).optional(),
@@ -204,7 +204,7 @@ export const caseDefinitionDocumentSchema = z.object({
             maxRerouteAttempts: z.number().optional(),
           }).optional(),
           inputProjectionOverride: z.string().optional(),
-          contextWrite: z.record(z.unknown()).optional(),
+          contextWrite: z.record(z.string(), z.unknown()).optional(),
           producedKeys: z.array(z.string()).optional(),
           lifecycleScope: z.enum(["BINDING", "COMPOUND", "CASE"]).optional(),
           participation: z.enum(["PARTICIPANT", "COMPANION"]).optional(),
