@@ -5,14 +5,7 @@ interface RfEdge {
   type?: string | undefined;
   source: string;
   target: string;
-  sourceHandle?: string | null;
-  targetHandle?: string | null;
-  data?: Record<string, unknown> | undefined;
-  label?: unknown;
-  labelStyle?: Record<string, unknown> | undefined;
-  labelBgStyle?: Record<string, unknown> | undefined;
-  labelBgPadding?: [number, number] | undefined;
-  labelBgBorderRadius?: number | undefined;
+  data: Record<string, unknown>;
   [key: string]: unknown;
 }
 
