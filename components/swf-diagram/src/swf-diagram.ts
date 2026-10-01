@@ -88,7 +88,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
 
   @state() private _pendingEdgeId: string | null = null;
 
-  protected override _onChooserSelect = (e: Event): void => {
+  override _onChooserSelect = (e: Event): void => {
     const detail = (e as CustomEvent).detail;
     const nodeType = detail?.item?.type as string | undefined;
     if (!nodeType || !this._adapterResult || !this._chooserState) return;
@@ -102,7 +102,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     this._chooserState = null;
   };
 
-  protected override _onChooserDismiss = (): void => {
+  override _onChooserDismiss = (): void => {
     this._pendingEdgeId = null;
     this._chooserState = null;
   };
