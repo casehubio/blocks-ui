@@ -452,6 +452,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@casehubio/blocks-ui-document-workbench@workspace:components/document-workbench"
   dependencies:
+    "@casehubio/blocks-ui-core": "workspace:*"
+    "@casehubio/pages-data": "npm:*"
     "@types/node": "npm:^22.0.0"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
