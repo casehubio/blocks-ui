@@ -242,10 +242,10 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   private _buildElkOpts(strategy: OrgLayoutStrategy): ElkLayoutOptions {
     const orgOpts = this._engine.elkOptions(strategy);
     const opts: ElkLayoutOptions = {
-      algorithm: orgOpts.algorithm,
-      spacing: orgOpts.spacing,
       headerHeight: 68,
     };
+    if (orgOpts.algorithm !== undefined) opts.algorithm = orgOpts.algorithm;
+    if (orgOpts.spacing !== undefined) opts.spacing = orgOpts.spacing;
     if (orgOpts.direction !== undefined) opts.direction = orgOpts.direction;
     if (orgOpts.containerPadding !== undefined) opts.containerPadding = orgOpts.containerPadding;
     if (orgOpts.elkOptions !== undefined) opts.elkOptions = orgOpts.elkOptions;
