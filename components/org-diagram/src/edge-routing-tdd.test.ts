@@ -5,18 +5,94 @@ import { computeElkLayout } from '@casehubio/graph-renderer/layout/elk-layout.js
 import type { ElkLayoutOptions } from '@casehubio/graph-renderer/layout/elk-layout.js';
 import { toReactFlowGraph } from '@casehubio/graph-renderer/mapping.js';
 import { validateEdgeRouting } from '@casehubio/graph-renderer/edge-routing-validator.js';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 
 registerOrgStencils();
 
-const ARCHETYPES_DIR = resolve(
-  import.meta.dirname,
-  '../../../../../../eidos/examples/org-scenarios/src/test/resources/archetypes',
-);
+type Relationship = readonly [source: string, target: string, kind: string];
+
+const ARCHETYPES: Record<string, readonly Relationship[]> = {
+  'simple-structure': [
+    ['ceo', 'dev-1', 'SUPERVISES'],
+    ['ceo', 'dev-2', 'SUPERVISES'],
+    ['ceo', 'designer', 'SUPERVISES'],
+    ['ceo', 'ops', 'SUPERVISES'],
+  ],
+  'federation-orchestrator': [
+    ['orchestrator', 'searcher', 'DELEGATES_TO'],
+    ['orchestrator', 'coder', 'DELEGATES_TO'],
+    ['orchestrator', 'tester', 'DELEGATES_TO'],
+    ['orchestrator', 'reviewer', 'DELEGATES_TO'],
+    ['searcher', 'orchestrator', 'REPORTS_TO'],
+    ['coder', 'orchestrator', 'REPORTS_TO'],
+    ['tester', 'orchestrator', 'REPORTS_TO'],
+    ['reviewer', 'orchestrator', 'REPORTS_TO'],
+  ],
+  pipeline: [
+    ['researcher', 'writer', 'DELEGATES_TO'],
+    ['writer', 'editor', 'DELEGATES_TO'],
+    ['editor', 'publisher', 'DELEGATES_TO'],
+    ['editor', 'writer', 'ESCALATES_TO'],
+  ],
+  'coalition-advisory': [
+    ['security', 'judge', 'REPORTS_TO'],
+    ['performance', 'judge', 'REPORTS_TO'],
+    ['maintainability', 'judge', 'REPORTS_TO'],
+  ],
+  'divisional-holarchy': [
+    ['er-attending', 'er-resident', 'SUPERVISES'],
+    ['er-attending', 'er-triage', 'SUPERVISES'],
+    ['radiologist', 'rad-tech', 'SUPERVISES'],
+    ['er-attending', 'radiologist', 'DELEGATES_TO'],
+    ['radiologist', 'er-attending', 'REPORTS_TO'],
+  ],
+  matrix: [
+    ['platform-lead', 'alice', 'SUPERVISES'],
+    ['platform-lead', 'bob', 'SUPERVISES'],
+    ['alice', 'billing-manager', 'REPORTS_TO'],
+    ['bob', 'search-manager', 'REPORTS_TO'],
+  ],
+  'tiered-escalation': [
+    ['l1-a', 'l2-billing', 'ESCALATES_TO'],
+    ['l1-a', 'l2-technical', 'ESCALATES_TO'],
+    ['l1-b', 'l2-billing', 'ESCALATES_TO'],
+    ['l1-b', 'l2-technical', 'ESCALATES_TO'],
+    ['l2-billing', 'l3', 'ESCALATES_TO'],
+    ['l2-technical', 'l3', 'ESCALATES_TO'],
+    ['l2-technical', 'l1-a', 'SUPERVISES'],
+    ['l2-technical', 'l1-b', 'SUPERVISES'],
+  ],
+  market: [
+    ['auctioneer', 'fast', 'DELEGATES_TO'],
+    ['auctioneer', 'quality', 'DELEGATES_TO'],
+    ['auctioneer', 'cheap', 'DELEGATES_TO'],
+  ],
+  'professional-bureaucracy': [
+    ['backend', 'frontend', 'BACKS_UP'],
+    ['frontend', 'backend', 'BACKS_UP'],
+  ],
+};
 
 function loadArchetype(name: string): string {
-  return readFileSync(resolve(ARCHETYPES_DIR, `${name}.yaml`), 'utf-8');
+  const relationships = ARCHETYPES[name];
+  if (!relationships) throw new Error(`Unknown archetype: ${name}`);
+  const agentIds = [...new Set(relationships.flatMap(([source, target]) => [source, target]))];
+  return JSON.stringify({
+    organization: {
+      units: [{
+        unitId: name,
+        name,
+        kind: name,
+        tenancyId: 'routing-test',
+        members: agentIds.map(agentId => ({ agentId, role: 'member' })),
+      }],
+      relationships: relationships.map(([sourceAgentId, targetAgentId, kind]) => ({
+        sourceAgentId,
+        targetAgentId,
+        kind,
+        tenancyId: 'routing-test',
+      })),
+    },
+  });
 }
 
 function buildEngine(): LayoutEngine {
