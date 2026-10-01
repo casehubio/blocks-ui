@@ -5,7 +5,7 @@ interface RfEdge {
   type?: string | undefined;
   source: string;
   target: string;
-  data: Record<string, unknown>;
+  data?: Record<string, unknown>;
   [key: string]: unknown;
 }
 
