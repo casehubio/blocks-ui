@@ -137,7 +137,7 @@ export class AvatarStep extends LitElement {
 
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
-    .pill.role-match { border-color: var(--pages-accent-7, #93c5fd); background: var(--pages-accent-2, #eff6ff); }
+    .pill.role-match { border-color: var(--pages-accent-7, #3b82f6); background: var(--pages-accent-3, #1e3a5f); color: var(--pages-accent-11, #93c5fd); }
     .variant-card { display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px; align-items: center; width: 100%; padding: 8px 12px; margin-bottom: 4px; border: 2px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px; background: var(--pages-neutral-2, #252538); cursor: pointer; text-align: left; color: var(--pages-neutral-11, #ccc); font-size: 13px; }
     .variant-card.selected { border-color: var(--pages-accent-9, #2563eb); }
     .variant-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
