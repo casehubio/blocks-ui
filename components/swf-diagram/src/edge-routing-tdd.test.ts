@@ -31,7 +31,8 @@ async function renderSwfDiagram(yaml: string, direction: 'DOWN' | 'RIGHT' = 'DOW
   const filteredNodes = rawNodes
     .filter(n => n.type !== 'swf-root')
     .map(n => {
-      const cleared = n.parentId === 'root' ? { ...n, parentId: undefined } : { ...n };
+      const cleared = { ...n };
+      if (cleared.parentId === 'root') delete cleared.parentId;
       if (!connectedIds.has(n.id)) cleared.data = { ...cleared.data, _hideHandles: true };
       return cleared;
     });

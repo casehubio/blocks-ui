@@ -7,6 +7,7 @@ interface TestEdge {
   target: string;
   className?: string;
   style?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 describe('applySelectionHighlight', () => {
@@ -16,25 +17,25 @@ describe('applySelectionHighlight', () => {
   ];
 
   it('highlights edges connected to selected node', () => {
-    const result = applySelectionHighlight(edges as any, 'agent:u1:alice');
+    const result = applySelectionHighlight(edges, 'agent:u1:alice');
     expect(result[0]!.className).toContain('org-edge-highlighted');
     expect(result[1]!.style?.opacity).toBe(0.15);
   });
 
   it('restores all edges when no selection', () => {
-    const result = applySelectionHighlight(edges as any, undefined);
+    const result = applySelectionHighlight(edges, undefined);
     expect(result[0]!.className).toBeUndefined();
     expect(result[0]!.style?.opacity).toBeUndefined();
   });
 
   it('highlights edges on both sides of selected node', () => {
-    const result = applySelectionHighlight(edges as any, 'agent:u1:bob');
+    const result = applySelectionHighlight(edges, 'agent:u1:bob');
     expect(result[0]!.className).toContain('org-edge-highlighted');
     expect(result[1]!.className).toContain('org-edge-highlighted');
   });
 
   it('dims all edges when selected node has no connections', () => {
-    const result = applySelectionHighlight(edges as any, 'agent:u1:unknown');
+    const result = applySelectionHighlight(edges, 'agent:u1:unknown');
     expect(result[0]!.style?.opacity).toBe(0.15);
     expect(result[1]!.style?.opacity).toBe(0.15);
   });
