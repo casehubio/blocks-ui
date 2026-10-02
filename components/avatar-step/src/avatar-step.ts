@@ -165,9 +165,9 @@ export class AvatarStep extends LitElement {
     .avatar-cell.unmapped .sub-label::after { content: ' *'; color: var(--pages-neutral-9, #999); font-size: 8px; }
     .avatar-cell.profession-ghosted { opacity: 0.2; transform: scale(0.9); }
     .avatar-cell.profession-ghosted:hover { opacity: 0.5; transform: scale(1); }
-    .avatar-cell.role-match { border-color: var(--pages-accent-7, #3b82f6); opacity: 1; }
+    .avatar-cell.role-match { border-color: var(--pages-accent-7, #3b82f6); opacity: 1; transform: none; }
     .avatar-cell.role-match .sub-label { color: var(--pages-accent-11, #93c5fd); font-weight: 600; }
-    .avatar-cell.selected { border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-2, #eff6ff); }
+    .avatar-cell.selected { border-color: var(--pages-accent-9, #0066cc); background: var(--pages-accent-2, #eff6ff); opacity: 1; transform: none; }
     .avatar-cell .sub-label { font-size: 10px; color: var(--pages-neutral-9, #737373); text-align: center; margin-top: 2px; }
 
     .preview { display: flex; align-items: center; gap: 16px; padding: 12px; border: 1px solid var(--pages-neutral-4, #e5e5e5); border-radius: 8px; min-height: 80px; }
@@ -894,7 +894,7 @@ export class AvatarStep extends LitElement {
               const tier = tiers.get(key) ?? 'strong';
               const selected = this._selectedArchetype === key;
               const incompatible = tier === 'incompatible';
-              const profGhosted = hasProfFilter && !profArchetypes.has(key);
+              const profGhosted = hasProfFilter && !profArchetypes.has(key) && !selected;
               const roleMatch = !selected && roleArchetypes.has(key);
               if (this._compactGrid && incompatible) return html`<div></div>`;
               return html`
