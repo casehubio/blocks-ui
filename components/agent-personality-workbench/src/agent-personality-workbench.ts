@@ -125,6 +125,7 @@ export class AgentPersonalityWorkbench extends LitElement {
             <avatar-step
               .hideProfile=${true}
               .externalProfile=${this._profile}
+              .externalArchetype=${this._archetype}
               .collection=${this._collection}>
             </avatar-step>
           </div>

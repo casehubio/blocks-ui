@@ -7,6 +7,7 @@ type AvatarStepEl = HTMLElement & {
   updateComplete: Promise<boolean>;
   hideProfile: boolean;
   externalProfile: PersonalityProfile | null;
+  externalArchetype: { family: string; subArchetype: string } | null;
   collection: string;
   _collection: string;
   _profile: PersonalityProfile;
@@ -15,6 +16,7 @@ type AvatarStepEl = HTMLElement & {
   _profileProfession: string | null;
   _profileRole: string | null;
   _selectedArchetype: string | null;
+  _profession: string | null;
 };
 
 beforeAll(() => {
@@ -218,6 +220,40 @@ describe('avatar-step', () => {
       el.externalProfile = null;
       await el.updateComplete;
       expect(el._profile.mbti).toBeUndefined();
+      expect(el._selectedArchetype).toBeNull();
+    });
+  });
+
+  describe('externalArchetype', () => {
+    it('selects archetype in grid when externalArchetype is set', async () => {
+      await el.updateComplete;
+      el.externalProfile = { mbti: 'ENFJ', enneagram: 'Type 1' };
+      el.externalArchetype = { family: 'Sage', subArchetype: 'Mentor' };
+      await el.updateComplete;
+      expect(el._selectedArchetype).toBe('Sage/Mentor');
+      const selected = el.shadowRoot!.querySelector('.avatar-cell.selected');
+      expect(selected).toBeTruthy();
+      expect(selected!.getAttribute('aria-label')).toBe('Sage Mentor avatar');
+    });
+
+    it('auto-navigates profession from archetype', async () => {
+      await el.updateComplete;
+      el.externalProfile = { mbti: 'ENFJ' };
+      el.externalArchetype = { family: 'Sage', subArchetype: 'Mentor' };
+      await el.updateComplete;
+      expect(el._profession).toBeTruthy();
+    });
+
+    it('clears selection when externalArchetype is set to null', async () => {
+      await el.updateComplete;
+      el.externalProfile = { mbti: 'ENFJ' };
+      el.externalArchetype = { family: 'Sage', subArchetype: 'Mentor' };
+      await el.updateComplete;
+      expect(el._selectedArchetype).toBe('Sage/Mentor');
+
+      el.externalArchetype = null;
+      el.externalProfile = null;
+      await el.updateComplete;
       expect(el._selectedArchetype).toBeNull();
     });
   });

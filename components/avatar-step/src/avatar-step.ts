@@ -220,6 +220,7 @@ export class AvatarStep extends LitElement {
 
   @property({ type: Boolean, attribute: 'hide-profile' }) hideProfile = false;
   @property({ attribute: false }) externalProfile: PersonalityProfile | null = null;
+  @property({ attribute: false }) externalArchetype: { family: string; subArchetype: string } | null = null;
   @property({ type: String }) collection = '';
 
   @state() private _collection = 'mythic';
@@ -245,7 +246,7 @@ export class AvatarStep extends LitElement {
     if (changed.has('collection') && this.collection) {
       this._collection = this.collection;
     }
-    if (changed.has('externalProfile')) {
+    if (changed.has('externalProfile') || changed.has('externalArchetype')) {
       this._syncFromExternalProfile();
     }
   }
@@ -272,7 +273,17 @@ export class AvatarStep extends LitElement {
     this._bigFive = ext.bigFive ? { ...ext.bigFive } : {};
     this._profileProfession = ext.profession ?? null;
     this._profileRole = ext.role ?? null;
-    this._selectedArchetype = null;
+    if (this.externalArchetype) {
+      const key = `${this.externalArchetype.family}/${this.externalArchetype.subArchetype}`;
+      this._selectedArchetype = key;
+      const matched = getRolesForArchetype(key);
+      if (matched.length > 0 && !this._profession) {
+        this._profession = matched[0]!.profession;
+        this._selectedRole = matched[0]!.role;
+      }
+    } else {
+      this._selectedArchetype = null;
+    }
   }
 
   private _tiers(): Map<string, MatchTier> {
