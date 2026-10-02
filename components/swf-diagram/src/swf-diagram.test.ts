@@ -18,10 +18,10 @@ describe('swf-diagram integration', () => {
     expect(nodes.length).toBeGreaterThan(0);
     expect(edges.length).toBeGreaterThan(0);
 
-    const callNodes = nodes.filter((n: { type?: string }) => n.type === 'swf-call');
+    const callNodes = nodes.filter(n => n.type === 'swf-call');
     expect(callNodes.length).toBeGreaterThanOrEqual(1);
 
-    const setNodes = nodes.filter((n: { type?: string }) => n.type === 'swf-set');
+    const setNodes = nodes.filter(n => n.type === 'swf-set');
     expect(setNodes.length).toBeGreaterThanOrEqual(1);
   });
 
