@@ -5,10 +5,10 @@ import { toSwfGraph, applySwfPropertyEdit, addSwfTask, insertSwfTask, spliceSwfT
 import { DiagramBaseMixin } from '@casehubio/pages-diagram-core';
 import type { AdapterResult, LayoutResult } from '@casehubio/pages-diagram-core';
 import type { EditPolicy, GraphEdit } from '@casehubio/graph-renderer';
-import { computeStackColumnLayout } from '@casehubio/graph-renderer';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { detectDiagramType } from '@casehubio/blocks-ui-core';
 import { stringify } from 'yaml';
+import { computeSwfLayout } from './swf-layout.js';
 import '@casehubio/graph-renderer';
 
 const swfEditPolicy = createSwfEditPolicy();
@@ -89,7 +89,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
 
   @state() private _pendingEdgeId: string | null = null;
 
-  protected override _onChooserSelect = (e: Event): void => {
+  override _onChooserSelect = (e: Event): void => {
     const detail = (e as CustomEvent).detail;
     const nodeType = detail?.item?.type as string | undefined;
     if (!nodeType || !this._adapterResult || !this._chooserState) return;
@@ -103,12 +103,12 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     this._chooserState = null;
   };
 
-  protected override _onChooserDismiss = (): void => {
+  override _onChooserDismiss = (): void => {
     this._pendingEdgeId = null;
     this._chooserState = null;
   };
 
-  protected override _chooserItems() {
+  override _chooserItems() {
     if (!this._pendingEdgeId || !this._adapterResult) {
       return super._chooserItems();
     }
@@ -139,21 +139,14 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
   }
 
   protected override _layoutOptions() {
-    return { direction: this.layoutDirection, spacing: 40, containerPadding: 25, wrapping: true };
+    return { direction: this.layoutDirection, spacing: 60, containerPadding: 25 };
   }
 
   protected override async _computeLayout(
     model: import('@casehubio/graph-core').GraphModel,
     options: import('@casehubio/graph-renderer').ElkLayoutOptions,
   ): Promise<LayoutResult> {
-    const layout = computeStackColumnLayout(model, {
-      verticalGap: 40,
-      horizontalGap: 30,
-      containerPaddingTop: 40,
-      containerPaddingBottom: 20,
-      containerPaddingX: 20,
-      skipTypes: new Set(['swf-root']),
-    });
+    const layout = await computeSwfLayout(model, options);
     return { layout, direction: options.direction };
   }
 

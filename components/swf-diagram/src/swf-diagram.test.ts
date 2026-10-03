@@ -18,10 +18,10 @@ describe('swf-diagram integration', () => {
     expect(nodes.length).toBeGreaterThan(0);
     expect(edges.length).toBeGreaterThan(0);
 
-    const callNodes = nodes.filter((n: { type?: string }) => n.type === 'swf-call');
+    const callNodes = nodes.filter(n => n.type === 'swf-call');
     expect(callNodes.length).toBeGreaterThanOrEqual(1);
 
-    const setNodes = nodes.filter((n: { type?: string }) => n.type === 'swf-set');
+    const setNodes = nodes.filter(n => n.type === 'swf-set');
     expect(setNodes.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -45,7 +45,7 @@ describe('swf-diagram integration', () => {
 describe('swf property editing', () => {
   it('applySwfPropertyEdit updates YAML and re-parse reflects change', () => {
     const result = toSwfGraph(SIMPLE_YAML);
-    const callNodeId = '/do/0/fetchData';
+    const callNodeId = '/do/fetchData';
     const nodePath = result.yamlPaths.get(callNodeId);
     expect(nodePath).toBeDefined();
 
@@ -62,7 +62,7 @@ describe('swf property editing', () => {
 
   it('removing a property sets it to undefined in the YAML', () => {
     const result = toSwfGraph(SIMPLE_YAML);
-    const callNodeId = '/do/0/fetchData';
+    const callNodeId = '/do/fetchData';
     const nodePath = result.yamlPaths.get(callNodeId);
     expect(nodePath).toBeDefined();
 

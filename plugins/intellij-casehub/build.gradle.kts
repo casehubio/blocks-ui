@@ -17,7 +17,12 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     intellijPlatform {
-        local("/Applications/IntelliJ IDEA.app")
+        val localIdePath = providers.gradleProperty("localIdePath").orNull
+        if (localIdePath != null) {
+            local(localIdePath)
+        } else {
+            intellijIdea(providers.gradleProperty("platformVersion").get())
+        }
         plugin("com.redhat.devtools.lsp4ij", providers.gradleProperty("lsp4ijVersion").get())
         bundledPlugin("org.jetbrains.plugins.yaml")
         bundledPlugin("com.intellij.modules.jcef")

@@ -1,20 +1,19 @@
 import { describe, it, expect } from 'vitest';
 import { parse as parseYaml } from 'yaml';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { CaseHub } from './generated/case-definition.js';
 
 const EXAMPLE_PATH = resolve(
   import.meta.dirname,
-  '../../../../../engine/schema/src/main/resources/examples/document-processing.yaml',
+  '../test-fixtures/document-processing.yaml',
 );
-const HAS_ENGINE = existsSync(EXAMPLE_PATH);
 
 function loadExample(): CaseHub {
   return parseYaml(readFileSync(EXAMPLE_PATH, 'utf-8')) as CaseHub;
 }
 
-describe.skipIf(!HAS_ENGINE)('CaseDefinition generated types', () => {
+describe('CaseDefinition generated types', () => {
   it('parses document-processing.yaml root fields', () => {
     const def = loadExample();
     expect(def.dsl).toBe('1.0.0');

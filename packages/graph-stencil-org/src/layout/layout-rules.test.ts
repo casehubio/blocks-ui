@@ -341,7 +341,7 @@ describe('hard constraint rules (isolated — no layout rules)', () => {
 
 const ARCHETYPES_DIR = resolve(
   __dirname,
-  '../../../../../eidos/examples/org-scenarios/src/test/resources/archetypes',
+  '../test-fixtures/archetypes',
 );
 
 function loadArchetypeYaml(name: string): string {

@@ -8,7 +8,7 @@ import type { ArchetypeName, OrgLayoutStrategy } from './types.js';
 
 const ARCHETYPES_DIR = resolve(
   __dirname,
-  '../../../../../eidos/examples/org-scenarios/src/test/resources/archetypes',
+  '../test-fixtures/archetypes',
 );
 
 function classifyFile(name: string): { archetype: ArchetypeName; strategy: OrgLayoutStrategy; confidence: string } {

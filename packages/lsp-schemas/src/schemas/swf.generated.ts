@@ -12,7 +12,7 @@ export const swfDocumentSchema = z.object({
     }).optional(),
     input: z.unknown().optional(),
     output: z.unknown().optional(),
-    do: z.array(z.record(z.unknown())),
+    do: z.array(z.record(z.string(), z.unknown())),
     use: z.unknown().optional(),
     timeout: z.unknown().optional(),
     schedule: z.unknown().optional(),

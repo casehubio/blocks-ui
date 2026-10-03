@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { toSwfGraph } from '@casehubio/graph-stencil-swf';
-import { computeElkLayout, toReactFlowGraph, validateEdgeRouting } from '@casehubio/graph-renderer';
+import { toReactFlowGraph, validateEdgeRouting } from '@casehubio/graph-renderer';
+import { computeSwfLayout } from './swf-layout.js';
 
 function extractAllYamls(file: string): string[] {
   const src = readFileSync(resolve(import.meta.dirname, '../../../examples/src/pages/' + file), 'utf-8');
@@ -17,7 +18,7 @@ function extractAllYamls(file: string): string[] {
 
 async function renderSwfDiagram(yaml: string, direction: 'DOWN' | 'RIGHT' = 'DOWN') {
   const { model } = toSwfGraph(yaml);
-  const layout = await computeElkLayout(model, { direction, spacing: 40, containerPadding: 25, wrapping: true });
+  const layout = await computeSwfLayout(model, { direction, spacing: 60, containerPadding: 25 });
   const { nodes: rawNodes, edges: rawEdges } = toReactFlowGraph(model, layout, undefined, direction);
   const nodeParents = new Map(rawNodes.map(n => [n.id, n.parentId]));
   const filteredEdges = rawEdges.filter(e => {
@@ -30,7 +31,8 @@ async function renderSwfDiagram(yaml: string, direction: 'DOWN' | 'RIGHT' = 'DOW
   const filteredNodes = rawNodes
     .filter(n => n.type !== 'swf-root')
     .map(n => {
-      const cleared = n.parentId === 'root' ? { ...n, parentId: undefined } : { ...n };
+      const cleared = { ...n };
+      if (cleared.parentId === 'root') delete cleared.parentId;
       if (!connectedIds.has(n.id)) cleared.data = { ...cleared.data, _hideHandles: true };
       return cleared;
     });

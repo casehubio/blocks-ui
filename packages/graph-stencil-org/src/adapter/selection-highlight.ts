@@ -3,7 +3,7 @@ interface RfEdge {
   source: string;
   target: string;
   className?: string;
-  style?: Record<string, unknown>;
+  style?: object;
   [key: string]: unknown;
 }
 

@@ -5,7 +5,7 @@ import { toOrgGraph } from './org-adapter.js';
 
 const ARCHETYPES_DIR = resolve(
   __dirname,
-  '../../../../../eidos/examples/org-scenarios/src/test/resources/archetypes',
+  '../test-fixtures/archetypes',
 );
 
 function loadArchetype(name: string): string {

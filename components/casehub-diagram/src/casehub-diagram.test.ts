@@ -2,14 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { toGraph, applyPropertyEdit, addElement, removeElement, switchBindingTarget } from '@casehubio/graph-stencil-case';
 import { toReactFlowGraph } from '@casehubio/graph-renderer';
 import { InMemoryBackend } from '@casehubio/graph-core';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const EXAMPLE_PATH = resolve(import.meta.dirname, '../../../../engine/schema/src/main/resources/examples/document-processing.yaml');
-const HAS_ENGINE = existsSync(EXAMPLE_PATH);
-const EXAMPLE_YAML = HAS_ENGINE ? readFileSync(EXAMPLE_PATH, 'utf-8') : '';
+const EXAMPLE_PATH = resolve(import.meta.dirname, '../../../packages/graph-stencil-case/src/test-fixtures/document-processing.yaml');
+const EXAMPLE_YAML = readFileSync(EXAMPLE_PATH, 'utf-8');
 
-describe.skipIf(!HAS_ENGINE)('casehub-diagram integration', () => {
+describe('casehub-diagram integration', () => {
   it('end-to-end: YAML → GraphModel → React Flow nodes', () => {
     const { model } = toGraph(EXAMPLE_YAML);
     const { nodes, edges } = toReactFlowGraph(model);
@@ -50,7 +49,7 @@ describe.skipIf(!HAS_ENGINE)('casehub-diagram integration', () => {
   });
 });
 
-describe.skipIf(!HAS_ENGINE)('edit cycle', () => {
+describe('edit cycle', () => {
   it('applyPropertyEdit updates YAML and re-parse produces updated model', () => {
     const result = toGraph(EXAMPLE_YAML);
     const bindingPath = result.yamlPaths.get('binding:extract-text');

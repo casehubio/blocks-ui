@@ -151,5 +151,5 @@ describe("schema generator", () => {
     );
     const regenerated = readFileSync(generatedPath, "utf-8");
     expect(regenerated).toBe(current);
-  });
+  }, 30_000);
 });

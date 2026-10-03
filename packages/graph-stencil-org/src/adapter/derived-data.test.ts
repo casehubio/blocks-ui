@@ -5,7 +5,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
 const GASTOWN_YAML = readFileSync(
-  resolve(__dirname, '../../../../../eidos/org-runtime/src/test/resources/gastown-org.yaml'),
+  resolve(__dirname, '../test-fixtures/gastown-org.yaml'),
   'utf-8',
 );
 
