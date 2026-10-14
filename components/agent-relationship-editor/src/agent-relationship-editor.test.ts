@@ -76,7 +76,7 @@ describe('agent-relationship-editor', () => {
     const addBtn = el.shadowRoot!.querySelector('.add-relationship') as HTMLElement;
     addBtn.click();
     await el.updateComplete;
-    const select = el.shadowRoot!.querySelector('.add-form select.agent-picker') as HTMLSelectElement;
+    const select = el.shadowRoot!.querySelector('.add-form select.target-picker') as HTMLSelectElement;
     expect(select).toBeTruthy();
     const options = select.querySelectorAll('option');
     expect(options.length).toBeGreaterThanOrEqual(SAMPLE_ROSTER.length);
@@ -88,9 +88,9 @@ describe('agent-relationship-editor', () => {
     addBtn.click();
     await el.updateComplete;
 
-    const agentPicker = el.shadowRoot!.querySelector('.add-form select.agent-picker') as HTMLSelectElement;
-    agentPicker.value = 'eve';
-    agentPicker.dispatchEvent(new Event('change'));
+    const targetPicker = el.shadowRoot!.querySelector('.add-form select.target-picker') as HTMLSelectElement;
+    targetPicker.value = 'eve';
+    targetPicker.dispatchEvent(new Event('change'));
 
     const confirmAdd = el.shadowRoot!.querySelector('.add-form .btn-add-confirm') as HTMLElement;
     confirmAdd.click();

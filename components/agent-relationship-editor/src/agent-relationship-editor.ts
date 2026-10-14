@@ -222,6 +222,7 @@ export class AgentRelationshipEditor extends LitElement {
   @state() private _pendingRemovals: Set<number> = new Set();
   @state() private _viewTab: ViewTab = 'table';
   @state() private _showAddForm = false;
+  @state() private _addSourceId = '';
   @state() private _addTargetId = '';
   @state() private _addKind: RelationshipKind = 'SUPERVISES';
   @state() private _addScope = '';
@@ -312,18 +313,20 @@ export class AgentRelationshipEditor extends LitElement {
   }
 
   private _addRelationship() {
-    if (!this._addTargetId) return;
+    const source = this._addSourceId || this.agentId;
+    if (!this._addTargetId || !source) return;
     const rel: AgentRelationship = {
-      sourceAgentId: this.agentId,
+      sourceAgentId: source,
       targetAgentId: this._addTargetId,
       kind: this._addKind,
-      tenancyId: '',
+      tenancyId: this.tenancyId,
     };
     if (this._addScope) {
       rel.scope = { domain: this._addScope };
     }
     this._pendingAdditions = [...this._pendingAdditions, rel];
     this._showAddForm = false;
+    this._addSourceId = '';
     this._addTargetId = '';
     this._addScope = '';
   }
@@ -434,10 +437,9 @@ export class AgentRelationshipEditor extends LitElement {
   private _renderAddForm() {
     return html`
       <div class="add-form">
-        <select class="agent-picker" .value=${this._addTargetId}
-          @change=${(e: Event) => { this._addTargetId = (e.target as HTMLSelectElement).value; }}>
-          <option value="">Select agent...</option>
-          ${this.roster.map(r => html`<option value=${r.agentId}>${r.name}</option>`)}
+        <select class="agent-picker source-picker" .value=${this._addSourceId || this.agentId}
+          @change=${(e: Event) => { this._addSourceId = (e.target as HTMLSelectElement).value; }}>
+          ${this.roster.map(r => html`<option value=${r.agentId} ?selected=${r.agentId === (this._addSourceId || this.agentId)}>${r.name}</option>`)}
         </select>
         <select class="kind-picker" .value=${this._addKind}
           @change=${(e: Event) => { this._addKind = (e.target as HTMLSelectElement).value as RelationshipKind; }}>
@@ -445,6 +447,11 @@ export class AgentRelationshipEditor extends LitElement {
             const desc = lookupRelationshipType(kindToRegistryKey(k));
             return html`<option value=${k}>${desc.label ?? k}</option>`;
           })}
+        </select>
+        <select class="agent-picker target-picker" .value=${this._addTargetId}
+          @change=${(e: Event) => { this._addTargetId = (e.target as HTMLSelectElement).value; }}>
+          <option value="">Target...</option>
+          ${this.roster.map(r => html`<option value=${r.agentId}>${r.name}</option>`)}
         </select>
         <input type="text" placeholder="Scope (optional)" .value=${this._addScope}
           @input=${(e: Event) => { this._addScope = (e.target as HTMLInputElement).value; }}>
