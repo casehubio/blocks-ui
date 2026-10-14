@@ -1,7 +1,14 @@
 {
   "name": "@casehubio/blocks-ui-event-trail",
   "version": "0.1.0",
-  "description": "DEPRECATED — migrated to @casehubio/pages-ui-components/event-trail",
+  "description": "DEPRECATED \u2014 migrated to @casehubio/pages-ui-components/event-trail",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "deprecated": "Use @casehubio/pages-ui-components/event-trail instead",
   "type": "module",
   "license": "Apache-2.0"

@@ -1,7 +1,14 @@
 {
   "name": "@casehubio/blocks-ui-split-workbench",
   "version": "0.2.2",
-  "description": "DEPRECATED — migrated to @casehubio/pages-ui-components/split-workbench",
+  "description": "DEPRECATED \u2014 migrated to @casehubio/pages-ui-components/split-workbench",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "deprecated": "Use @casehubio/pages-ui-components/split-workbench instead",
   "type": "module",
   "license": "Apache-2.0"
