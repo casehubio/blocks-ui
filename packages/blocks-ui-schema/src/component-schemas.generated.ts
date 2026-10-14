@@ -1152,7 +1152,11 @@ export const orgDiagramPropsSchema = z.object({
           visibility: z.string().optional(),
         })).optional(),
       briefing: z.string().optional(),
+      avatar: z.string().optional(),
+      profession: z.string().optional(),
+      role: z.string().optional(),
     })).optional(),
+  agentsEndpoint: z.string().optional(),
   kindColors: z.record(z.object({
       start: z.string(),
       end: z.string(),
@@ -1160,6 +1164,7 @@ export const orgDiagramPropsSchema = z.object({
   layoutStrategy: z.enum(["star", "tree", "circular", "layered", "nested", "hub-spoke", "flow", "radial", "grid", "force", "auto"]).optional(),
   selectionTopic: z.string().optional(),
   readonly: z.boolean().optional(),
+  collections: z.array(z.string()).optional(),
 });
 
 export const denyPatternEditorPropsSchema = z.object({

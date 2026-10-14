@@ -53,9 +53,8 @@ describe('renderOrgAgent — rich card', () => {
       },
     };
     const result = renderOrgAgent(node);
-    const strings = (result as any).strings as string[];
-    const joined = strings.join('');
-    expect(joined).toContain('agent-avatar');
+    const flat = JSON.stringify((result as any).values);
+    expect(flat).toContain('agent-avatar');
   });
 
   it('renders colored dot when avatar is absent', () => {
@@ -64,10 +63,9 @@ describe('renderOrgAgent — rich card', () => {
       properties: { agentId: 'a1', role: 'worker', label: 'a1', unitId: 'u1', unitColorStart: '#2c5282' },
     };
     const result = renderOrgAgent(node);
-    const strings = (result as any).strings as string[];
-    const joined = strings.join('');
-    expect(joined).toContain('<svg');
-    expect(joined).toContain('circle');
+    const flat = JSON.stringify((result as any).values);
+    expect(flat).toContain('svg');
+    expect(flat).toContain('circle');
   });
 
   it('renders profession row when profession is present', () => {

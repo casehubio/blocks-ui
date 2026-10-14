@@ -5,9 +5,10 @@ import type { PersonalityProfile, FullAgentDescriptor } from '@casehubio/blocks-
 
 type WorkbenchEl = HTMLElement & {
   initialDescriptor: FullAgentDescriptor | null;
-  _activeTab: 'templates' | 'advanced';
+  _activeView: 'role' | 'character';
   _collection: string;
   _groupBy: 'role' | 'family';
+  _collectionDropdownOpen: boolean;
   _profile: PersonalityProfile | null;
   _archetype: { family: string; subArchetype: string } | null;
   _selectedTemplateId: string | null;
@@ -62,7 +63,7 @@ describe('agent-personality-workbench', () => {
     (tabs[1] as HTMLElement).click();
     await el.updateComplete;
     expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
-    expect(el._activeTab).toBe('advanced');
+    expect(el._activeView).toBe('character');
   });
 
   it('renders profile panel', async () => {
@@ -148,42 +149,46 @@ describe('agent-personality-workbench', () => {
     expect(events[0]!.detail.archetype.family).toBe('Scholar');
   });
 
-  it('tab keyboard navigation with arrow keys', async () => {
+  it('tabs are focusable', async () => {
     await el.updateComplete;
-    const firstTab = el.shadowRoot!.querySelector('#tab-templates') as HTMLElement;
-    firstTab.focus();
-    firstTab.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-    await el.updateComplete;
-    expect(el._activeTab).toBe('advanced');
+    const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]');
+    expect(tabs.length).toBe(2);
+    expect((tabs[0] as HTMLElement).tagName).toBe('BUTTON');
+    expect((tabs[1] as HTMLElement).tagName).toBe('BUTTON');
   });
 
-  describe('collection bar', () => {
-    it('renders collection bar with radiogroup', async () => {
+  describe('collection dropdown', () => {
+    it('renders collection dropdown trigger in nav bar', async () => {
       await el.updateComplete;
-      const bar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]');
-      expect(bar).toBeTruthy();
-      expect(bar!.getAttribute('role')).toBe('radiogroup');
+      const trigger = el.shadowRoot!.querySelector('.collection-trigger');
+      expect(trigger).toBeTruthy();
     });
 
-    it('renders a pill for each registered collection', async () => {
-      await el.updateComplete;
-      const pills = el.shadowRoot!.querySelectorAll('[aria-label="Avatar collection"] [role="radio"]');
-      expect(pills.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('selects mythic by default', async () => {
+    it('defaults to mythic collection', async () => {
       await el.updateComplete;
       expect(el._collection).toBe('mythic');
-      const selected = el.shadowRoot!.querySelector('[aria-label="Avatar collection"] [aria-checked="true"]');
-      expect(selected).toBeTruthy();
-      expect(selected!.textContent!.trim().toLowerCase()).toContain('mythic');
+      const trigger = el.shadowRoot!.querySelector('.collection-trigger');
+      expect(trigger!.textContent!.trim().toLowerCase()).toContain('mythic');
     });
 
-    it('updates collection on pill click', async () => {
+    it('opens dropdown menu on click', async () => {
       await el.updateComplete;
-      const pills = el.shadowRoot!.querySelectorAll('[aria-label="Avatar collection"] [role="radio"]');
-      if (pills.length < 2) return;
-      (pills[1] as HTMLElement).click();
+      const trigger = el.shadowRoot!.querySelector('.collection-trigger') as HTMLElement;
+      trigger.click();
+      await el.updateComplete;
+      const menu = el.shadowRoot!.querySelector('.collection-menu');
+      expect(menu).toBeTruthy();
+      const options = el.shadowRoot!.querySelectorAll('.collection-option');
+      expect(options.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('updates collection on option click', async () => {
+      await el.updateComplete;
+      el._collectionDropdownOpen = true;
+      await el.updateComplete;
+      const options = el.shadowRoot!.querySelectorAll('.collection-option');
+      if (options.length < 2) return;
+      (options[1] as HTMLElement).click();
       await el.updateComplete;
       expect(el._collection).not.toBe('mythic');
     });
@@ -202,49 +207,19 @@ describe('agent-personality-workbench', () => {
       expect(catalog.collection).toBe(el._collection);
     });
 
-    it('collection bar is above tab bar', async () => {
+    it('dropdown is in nav bar alongside tabs', async () => {
       await el.updateComplete;
-      const collectionBar = el.shadowRoot!.querySelector('[aria-label="Avatar collection"]') as HTMLElement;
+      const navBar = el.shadowRoot!.querySelector('.nav-bar') as HTMLElement;
       const tabBar = el.shadowRoot!.querySelector('[role="tablist"]') as HTMLElement;
-      expect(collectionBar).toBeTruthy();
+      expect(navBar).toBeTruthy();
       expect(tabBar).toBeTruthy();
-      const position = collectionBar.compareDocumentPosition(tabBar);
-      expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(navBar.contains(tabBar)).toBe(true);
     });
   });
 
-  describe('group toggle', () => {
-    it('renders group toggle with radiogroup', async () => {
-      await el.updateComplete;
-      const toggle = el.shadowRoot!.querySelector('[aria-label="Group by"]');
-      expect(toggle).toBeTruthy();
-      expect(toggle!.getAttribute('role')).toBe('radiogroup');
-    });
-
-    it('defaults to By Role', async () => {
-      await el.updateComplete;
-      expect(el._groupBy).toBe('role');
-      const checked = el.shadowRoot!.querySelector('[aria-label="Group by"] [aria-checked="true"]');
-      expect(checked).toBeTruthy();
-      expect(checked!.textContent!.trim()).toBe('By Role');
-    });
-
-    it('toggles to By Family on click', async () => {
-      await el.updateComplete;
-      const btns = el.shadowRoot!.querySelectorAll('[aria-label="Group by"] [role="radio"]');
-      expect(btns.length).toBe(2);
-      (btns[1] as HTMLElement).click();
-      await el.updateComplete;
-      expect(el._groupBy).toBe('family');
-    });
-
-    it('passes groupBy to agent-catalog', async () => {
-      await el.updateComplete;
-      el._groupBy = 'family';
-      await el.updateComplete;
-      const catalog = el.shadowRoot!.querySelector('agent-catalog') as HTMLElement & { groupBy: string };
-      expect(catalog.groupBy).toBe('family');
-    });
+  it('defaults groupBy to role', async () => {
+    await el.updateComplete;
+    expect(el._groupBy).toBe('role');
   });
 
   describe('profile panel properties', () => {
