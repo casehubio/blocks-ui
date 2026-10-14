@@ -361,7 +361,9 @@ export class AvatarStep extends LitElement {
     if (fw === 'belbin') { this._updateProfileBelbin(value); return; }
     const current = (this._profile as Record<string, unknown>)[fw];
     if (current === value) {
-      this._profile = { ...this._profile, [fw]: undefined };
+      const copy = { ...this._profile };
+      delete (copy as Record<string, unknown>)[fw];
+      this._profile = copy;
     } else {
       this._profile = { ...this._profile, [fw]: value };
     }
@@ -374,7 +376,7 @@ export class AvatarStep extends LitElement {
       this._profile = { ...this._profile, belbin: { primary: value, secondaries: [] } };
     } else if (belbin.primary === value) {
       const { belbin: _, ...rest } = this._profile;
-      this._profile = rest;
+      this._profile = rest as PersonalityProfile;
     } else if (belbin.secondaries.includes(value)) {
       this._profile = { ...this._profile, belbin: { ...belbin, secondaries: belbin.secondaries.filter(s => s !== value) } };
     } else if (belbin.secondaries.length < 2) {
