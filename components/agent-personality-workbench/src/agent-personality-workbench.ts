@@ -15,9 +15,10 @@ export interface AgentPersonalityWorkbenchProps {
 export class AgentPersonalityWorkbench extends LitElement {
   @property({ attribute: false }) initialDescriptor: FullAgentDescriptor | null = null;
 
-  @state() _activeTab: 'templates' | 'advanced' = 'templates';
-  @state() _collection = 'mythic';
+  @state() _activeView: 'role' | 'character' = 'role';
   @state() _groupBy: 'role' | 'family' = 'role';
+  @state() _collection = 'mythic';
+  @state() _collectionDropdownOpen = false;
   @state() _profile: PersonalityProfile | null = null;
   @state() _archetype: { family: string; subArchetype: string } | null = null;
   @state() _selectedTemplateId: string | null = null;
@@ -43,83 +44,81 @@ export class AgentPersonalityWorkbench extends LitElement {
     @media (max-width: 768px) {
       .workbench-grid { grid-template-columns: 1fr; }
     }
-    .tab-column { display: flex; flex-direction: column; overflow: hidden; }
+    .main-column { display: flex; flex-direction: column; overflow: hidden; }
     .profile-column { overflow-y: auto; border-left: 1px solid var(--pages-neutral-4, #333); padding-left: 16px; }
     @media (max-width: 768px) {
       .profile-column { border-left: none; border-top: 1px solid var(--pages-neutral-4, #333); padding-left: 0; padding-top: 16px; }
     }
-    .tab-bar { display: flex; gap: 4px; margin-bottom: 12px; flex-shrink: 0; }
-    .tab-btn {
-      padding: 6px 16px; border: 1px solid var(--pages-neutral-5, #4a4a62);
-      border-radius: 6px 6px 0 0; background: var(--pages-neutral-2, #252538);
-      color: var(--pages-neutral-11, #ccc); cursor: pointer; font-size: 13px;
-      border-bottom: none;
+
+    /* Navigation bar — single row */
+    .nav-bar {
+      display: flex; align-items: center; gap: 4px;
+      margin-bottom: 12px; flex-shrink: 0;
     }
-    .tab-btn[aria-selected="true"] {
+    .nav-tabs { display: flex; gap: 4px; }
+    .nav-spacer { flex: 1; }
+    .nav-btn {
+      padding: 6px 16px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      border-radius: 6px; background: var(--pages-neutral-2, #252538);
+      color: var(--pages-neutral-11, #ccc); cursor: pointer; font-size: 13px;
+    }
+    .nav-btn[aria-selected="true"], .nav-btn[aria-checked="true"] {
       background: var(--pages-neutral-3, #2e2e44);
       color: var(--pages-neutral-12, #eee);
-      border-bottom: 2px solid var(--pages-accent-7, #3b82f6);
+      border-color: var(--pages-accent-7, #3b82f6);
     }
-    .tab-panel { flex: 1; overflow-y: auto; }
-    .tab-panel[hidden] { display: none; }
-    .collection-bar { display: flex; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
-    .collection-pill {
-      padding: 5px 14px; border-radius: 6px; border: 2px solid var(--pages-neutral-4, #3a3a52);
-      background: var(--pages-neutral-2, #252538); cursor: pointer; font-size: 13px; font-weight: 500;
-      color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
+
+
+
+    /* Collection dropdown */
+    .collection-dropdown { position: relative; }
+    .collection-trigger {
+      padding: 4px 10px; border: 1px solid var(--pages-neutral-5, #4a4a62);
+      border-radius: 6px; background: var(--pages-neutral-2, #252538);
+      color: var(--pages-neutral-11, #ccc); cursor: pointer; font-size: 12px;
+      display: flex; align-items: center; gap: 6px;
     }
-    .collection-pill[aria-checked="true"] {
-      border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-3, #1e3a5f);
-      color: var(--pages-accent-11, #93c5fd);
+    .collection-menu {
+      position: absolute; top: 100%; right: 0; margin-top: 4px;
+      background: var(--pages-neutral-2, #252538); border: 1px solid var(--pages-neutral-5, #4a4a62);
+      border-radius: 6px; padding: 4px; z-index: 10; min-width: 140px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    .control-row { display: flex; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
-    .toggle-btn {
-      padding: 5px 14px; border: 1px solid var(--pages-neutral-5, #4a4a62);
-      background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc);
-      cursor: pointer; font-size: 12px; transition: all 0.15s;
+    .collection-option {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 6px 12px; border: none;
+      background: transparent; color: var(--pages-neutral-11, #ccc);
+      cursor: pointer; font-size: 12px; text-align: left; border-radius: 4px;
     }
-    .toggle-btn:first-child { border-radius: 6px 0 0 6px; }
-    .toggle-btn:last-child { border-radius: 0 6px 6px 0; }
-    .toggle-btn[aria-checked="true"] {
-      background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb);
+    .collection-option:hover { background: var(--pages-neutral-3, #2e2e44); }
+    .collection-option[aria-selected="true"] {
+      color: var(--pages-accent-11, #93c5fd); font-weight: 600;
     }
+    .collection-option agent-avatar, .collection-trigger agent-avatar {
+      flex-shrink: 0;
+    }
+
+    .view-panel { flex: 1; overflow-y: auto; }
+    .view-panel[hidden] { display: none; }
   `;
 
   protected override render() {
     return html`
       <div class="workbench-grid">
-        <div class="tab-column">
-          ${this._renderCollectionBar()}
-          ${this._renderGroupToggle()}
-          <div class="tab-bar" role="tablist" aria-label="Personality configuration mode">
-            <button class="tab-btn" role="tab"
-              id="tab-templates"
-              aria-selected=${String(this._activeTab === 'templates')}
-              aria-controls="panel-templates"
-              @click=${() => { this._activeTab = 'templates'; }}
-              @keydown=${this._onTabKeydown}>Templates</button>
-            <button class="tab-btn" role="tab"
-              id="tab-advanced"
-              aria-selected=${String(this._activeTab === 'advanced')}
-              aria-controls="panel-advanced"
-              @click=${() => { this._activeTab = 'advanced'; }}
-              @keydown=${this._onTabKeydown}>Advanced</button>
-          </div>
-          <div class="tab-panel" role="tabpanel" id="panel-templates"
-            aria-labelledby="tab-templates"
-            ?hidden=${this._activeTab !== 'templates'}
+        <div class="main-column">
+          ${this._renderNavBar()}
+          <div class="view-panel"
+            ?hidden=${this._activeView !== 'role'}
             @catalog:template:selected=${this._onTemplateSelected}
             @catalog:template:deselected=${this._onTemplateDeselected}>
             <agent-catalog
               .suppressDetail=${true}
               .selectedTemplateId=${this._selectedTemplateId}
-              .collection=${this._collection}
-              .groupBy=${this._groupBy}>
+              .collection=${this._collection}>
             </agent-catalog>
           </div>
-          <div class="tab-panel" role="tabpanel" id="panel-advanced"
-            aria-labelledby="tab-advanced"
-            ?hidden=${this._activeTab !== 'advanced'}
+          <div class="view-panel"
+            ?hidden=${this._activeView !== 'character'}
             @avatar:archetype:selected=${this._onArchetypeSelected}
             @avatar:personality:changed=${this._onPersonalityChanged}>
             <avatar-step
@@ -150,42 +149,43 @@ export class AgentPersonalityWorkbench extends LitElement {
     `;
   }
 
-  private _renderCollectionBar() {
+  private _renderNavBar() {
     const collections: ReadonlyArray<{ id: string; label: string }> = listCollections();
-    if (collections.length <= 1) return nothing;
+    const currentCollection = collections.find(c => c.id === this._collection);
     return html`
-      <div class="collection-bar" role="radiogroup" aria-label="Avatar collection">
-        ${collections.map(c => html`
-          <button class="collection-pill" role="radio"
-            aria-checked=${String(this._collection === c.id)}
-            @click=${() => { this._collection = c.id; }}>
-            ${c.label}
-          </button>
-        `)}
+      <div class="nav-bar">
+        <div class="nav-tabs" role="tablist" aria-label="Browse mode">
+          <button class="nav-btn" role="tab"
+            aria-selected=${String(this._activeView === 'role')}
+            @click=${() => { this._activeView = 'role'; }}>Browse</button>
+          <button class="nav-btn" role="tab"
+            aria-selected=${String(this._activeView === 'character')}
+            @click=${() => { this._activeView = 'character'; }}>Custom</button>
+        </div>
+        <div class="nav-spacer"></div>
+        ${collections.length > 1 ? html`
+          <div class="collection-dropdown">
+            <button class="collection-trigger"
+              @click=${() => { this._collectionDropdownOpen = !this._collectionDropdownOpen; }}>
+              <agent-avatar .archetype=${{ family: 'Sage', subArchetype: 'Detective' }} collection=${this._collection} size="xs"></agent-avatar>
+              ${currentCollection?.label ?? 'Mythic'} ▾
+            </button>
+            ${this._collectionDropdownOpen ? html`
+              <div class="collection-menu">
+                ${collections.map(c => html`
+                  <button class="collection-option"
+                    aria-selected=${String(this._collection === c.id)}
+                    @click=${() => { this._collection = c.id; this._collectionDropdownOpen = false; }}>
+                    <agent-avatar .archetype=${{ family: 'Sage', subArchetype: 'Detective' }} collection=${c.id} size="xs"></agent-avatar>
+                    ${c.label}
+                  </button>
+                `)}
+              </div>
+            ` : nothing}
+          </div>
+        ` : nothing}
       </div>
     `;
-  }
-
-  private _renderGroupToggle() {
-    return html`
-      <div class="control-row" role="radiogroup" aria-label="Group by">
-        <button class="toggle-btn" role="radio"
-          aria-checked=${String(this._groupBy === 'role')}
-          @click=${() => { this._groupBy = 'role'; }}>By Role</button>
-        <button class="toggle-btn" role="radio"
-          aria-checked=${String(this._groupBy === 'family')}
-          @click=${() => { this._groupBy = 'family'; }}>By Family</button>
-      </div>
-    `;
-  }
-
-  private _onTabKeydown(e: KeyboardEvent) {
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      this._activeTab = this._activeTab === 'templates' ? 'advanced' : 'templates';
-      const nextTab = this.shadowRoot!.querySelector(`#tab-${this._activeTab}`) as HTMLElement;
-      nextTab?.focus();
-    }
   }
 
   private get _archetypeRoles(): Array<{ profession: string; role: string }> {
@@ -195,7 +195,9 @@ export class AgentPersonalityWorkbench extends LitElement {
 
   private _onTemplateSelected(e: CustomEvent) {
     const descriptor = e.detail.template as FullAgentDescriptor;
-    this._profile = descriptor.personality ? { ...descriptor.personality } : null;
+    this._profile = descriptor.personality
+      ? { ...descriptor.personality, profession: descriptor.profession, role: descriptor.role }
+      : null;
     this._archetype = descriptor.archetypeFamily && descriptor.subArchetype
       ? { family: descriptor.archetypeFamily, subArchetype: descriptor.subArchetype }
       : null;

@@ -54,10 +54,8 @@ export class AvatarStep extends LitElement {
     .personality-side .reset-btn { font-size: 11px; padding: 3px 10px; }
     .personality-side .pill.avatar-match { background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb); }
     .personality-side .pill.role-scope { border-color: var(--pages-accent-7, #3b82f6); background: var(--pages-accent-2, #1a2744); }
-    .grid-toggle { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
-    .grid-toggle label { font-size: 11px; color: var(--pages-neutral-10, #aaa); }
-    .grid-toggle button { padding: 2px 8px; font-size: 10px; border-radius: 4px; border: 1px solid var(--pages-neutral-5, #4a4a62); background: var(--pages-neutral-2, #252538); color: var(--pages-neutral-11, #ccc); cursor: pointer; }
-    .grid-toggle button.active { background: var(--pages-accent-9, #2563eb); color: #fff; border-color: var(--pages-accent-9, #2563eb); }
+
+
 
     .framework-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .framework-label { font-size: 12px; font-weight: 600; min-width: 90px; color: var(--pages-neutral-10, #aaa); }
@@ -138,6 +136,7 @@ export class AvatarStep extends LitElement {
     .profession-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
     .role-pills { display: flex; gap: 6px; flex-wrap: wrap; }
     .pill.role-match { border-color: var(--pages-accent-7, #3b82f6); background: var(--pages-accent-3, #1e3a5f); color: var(--pages-accent-11, #93c5fd); }
+    .pill.has-compatible { border-color: var(--pages-accent-6, #60a5fa); color: var(--pages-accent-11, #93c5fd); }
     .variant-card { display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px; align-items: center; width: 100%; padding: 8px 12px; margin-bottom: 4px; border: 2px solid var(--pages-neutral-4, #3a3a52); border-radius: 8px; background: var(--pages-neutral-2, #252538); cursor: pointer; text-align: left; color: var(--pages-neutral-11, #ccc); font-size: 13px; }
     .variant-card.selected { border-color: var(--pages-accent-9, #2563eb); }
     .variant-card:hover { border-color: var(--pages-accent-7, #93c5fd); }
@@ -219,6 +218,7 @@ export class AvatarStep extends LitElement {
   `;
 
   @property({ type: Boolean, attribute: 'hide-profile' }) hideProfile = false;
+  @property({ type: Boolean, attribute: 'hide-personality' }) hidePersonality = false;
   @property({ attribute: false }) externalProfile: PersonalityProfile | null = null;
   @property({ attribute: false }) externalArchetype: { family: string; subArchetype: string } | null = null;
   @property({ type: String }) collection = '';
@@ -229,7 +229,8 @@ export class AvatarStep extends LitElement {
   @state() private _selectedRole: string | null = null;
   @state() private _frameworks: Partial<Record<PersonalityFramework, string>> = {};
   @state() private _bigFive: Partial<Record<BigFiveDimension, BigFivePole>> = {};
-  @state() private _compactGrid = false;
+  @state() private _professionAutoSelected = false;
+  private _suppressExternalReset = false;
   @state() private _profile: PersonalityProfile = {};
   @state() private _profileProfession: string | null = null;
   @state() private _profileRole: string | null = null;
@@ -254,32 +255,47 @@ export class AvatarStep extends LitElement {
   private _syncFromExternalProfile() {
     const ext = this.externalProfile;
     if (ext === null) {
-      this._reset();
-      this._profile = {} as PersonalityProfile;
-      this._profileProfession = null;
-      this._profileRole = null;
-      this._profileLocked = new Set();
+      if (!this._suppressExternalReset) {
+        this._reset();
+        this._profile = {} as PersonalityProfile;
+        this._profileProfession = null;
+        this._profileRole = null;
+        this._profileLocked = new Set();
+      }
+      this._suppressExternalReset = false;
       return;
     }
-    if (JSON.stringify(ext) === JSON.stringify(this._buildPersonalityProfile())) return;
-    this._profile = { ...ext };
-    const fwUpdate: Partial<Record<PersonalityFramework, string>> = {};
-    if (ext.mbti) fwUpdate.mbti = ext.mbti;
-    if (ext.enneagram) fwUpdate.enneagram = ext.enneagram;
-    if (ext.disc) fwUpdate.disc = ext.disc;
-    if (ext.belbin) fwUpdate.belbin = ext.belbin.primary;
-    if (ext.sdi) fwUpdate.sdi = ext.sdi;
-    this._frameworks = fwUpdate;
-    this._bigFive = ext.bigFive ? { ...ext.bigFive } : {};
-    this._profileProfession = ext.profession ?? null;
-    this._profileRole = ext.role ?? null;
-    if (this.externalArchetype) {
-      const key = `${this.externalArchetype.family}/${this.externalArchetype.subArchetype}`;
-      this._selectedArchetype = key;
-      const matched = getRolesForArchetype(key);
-      if (matched.length > 0 && !this._profession) {
-        this._profession = matched[0]!.profession;
-        this._selectedRole = matched[0]!.role;
+    const profileChanged = JSON.stringify(ext) !== JSON.stringify(this._buildPersonalityProfile());
+    const extKey = this.externalArchetype ? `${this.externalArchetype.family}/${this.externalArchetype.subArchetype}` : null;
+    const archetypeChanged = extKey !== this._selectedArchetype;
+    if (!profileChanged && !archetypeChanged) return;
+    if (profileChanged) {
+      this._profile = { ...ext };
+      const fwUpdate: Partial<Record<PersonalityFramework, string>> = {};
+      if (ext.mbti) fwUpdate.mbti = ext.mbti;
+      if (ext.enneagram) fwUpdate.enneagram = ext.enneagram;
+      if (ext.disc) fwUpdate.disc = ext.disc;
+      if (ext.belbin) fwUpdate.belbin = ext.belbin.primary;
+      if (ext.sdi) fwUpdate.sdi = ext.sdi;
+      this._frameworks = fwUpdate;
+      this._bigFive = ext.bigFive ? { ...ext.bigFive } : {};
+      this._profileProfession = ext.profession ?? null;
+      this._profileRole = ext.role ?? null;
+    }
+    if (extKey) {
+      this._selectedArchetype = extKey;
+      const extProf = this.externalProfile?.profession;
+      const extRole = this.externalProfile?.role;
+      if (extProf) {
+        this._profession = extProf;
+        this._selectedRole = extRole ?? null;
+        this._professionAutoSelected = false;
+      } else if (!this._profession) {
+        const matched = getRolesForArchetype(extKey);
+        if (matched.length > 0) {
+          this._profession = matched[0]!.profession;
+          this._selectedRole = matched[0]!.role;
+        }
       }
     } else {
       this._selectedArchetype = null;
@@ -382,15 +398,46 @@ export class AvatarStep extends LitElement {
     this._frameworks = frameworks;
     this._bigFive = bigFive;
     const tiers = this._tiers();
-    if (this._selectedArchetype && tiers.get(this._selectedArchetype) === 'incompatible') {
-      this._selectedArchetype = null;
+    if (this._selectedArchetype) {
+      const tier = tiers.get(this._selectedArchetype);
+      if (tier !== 'strong') {
+        const oldProfile = this._initProfile(this._selectedArchetype);
+        this._selectedArchetype = null;
+        this._profession = null;
+        this._selectedRole = null;
+        this._profile = {};
+        this._profileProfession = null;
+        this._profileRole = null;
+        const userFrameworks: Partial<Record<PersonalityFramework, string>> = {};
+        for (const [fw, val] of Object.entries(this._frameworks)) {
+          const profileVal = (oldProfile as Record<string, unknown>)[fw];
+          const belbinVal = fw === 'belbin' ? oldProfile.belbin?.primary : profileVal;
+          if (val !== belbinVal && val !== profileVal) {
+            (userFrameworks as Record<string, string>)[fw] = val as string;
+          }
+        }
+        this._frameworks = userFrameworks;
+        this._bigFive = {};
+        this._suppressExternalReset = true;
+        this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
+          detail: { archetype: null, collection: this._collection, personality: null },
+          bubbles: true, composed: true,
+        }));
+      }
     }
-    this._syncProfessionToFilters(tiers);
+    if (this._professionAutoSelected) {
+      this._profession = null;
+      this._selectedRole = null;
+      this._professionAutoSelected = false;
+    }
+    const currentTiers = this._tiers();
+    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
+    if (hasFilters && !this._profession) {
+      this._autoSelectBestProfession(currentTiers);
+    }
   }
 
-  private _syncProfessionToFilters(tiers: Map<string, MatchTier>) {
-    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
-    if (!hasFilters) { this._profession = null; this._selectedRole = null; return; }
+  private _autoSelectBestProfession(tiers: Map<string, MatchTier>) {
     let bestProf: string | null = null;
     let bestRole: string | null = null;
     let bestScore = -1;
@@ -405,8 +452,27 @@ export class AvatarStep extends LitElement {
         if (score > bestScore) { bestScore = score; bestProf = prof; bestRole = role; }
       }
     }
-    if (bestScore > 0) { this._profession = bestProf; this._selectedRole = bestRole; }
-    else { this._profession = null; this._selectedRole = null; }
+    if (bestScore > 0) {
+      this._profession = bestProf;
+      this._selectedRole = bestRole;
+      this._professionAutoSelected = true;
+    }
+  }
+
+  private _compatibleProfessions(): Set<string> {
+    const tiers = this._tiers();
+    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
+    if (!hasFilters) return new Set();
+    const compatible = new Set<string>();
+    for (const [prof, roles] of Object.entries(PROFESSION_PRESETS)) {
+      outer: for (const { variants } of roles) {
+        for (const v of variants) {
+          const t = tiers.get(v.archetype);
+          if (t === 'strong' || t === 'weak') { compatible.add(prof); break outer; }
+        }
+      }
+    }
+    return compatible;
   }
 
   // ── Entry points (all delegate to pipeline) ──
@@ -424,6 +490,37 @@ export class AvatarStep extends LitElement {
   }
 
   private _selectArchetype(key: string) {
+    const hasActiveFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
+    if (hasActiveFilters) {
+      this._selectArchetypeWithinContext(key);
+    } else {
+      this._selectArchetypeFresh(key);
+    }
+  }
+
+  private _selectArchetypeWithinContext(key: string) {
+    this._selectedArchetype = key;
+    const [family, sub] = key.split('/');
+    const matched = getRolesForArchetype(key);
+    const currentMatch = matched.find(m => m.profession === this._profession);
+    if (currentMatch) {
+      this._selectedRole = currentMatch.role;
+    } else if (matched.length > 0) {
+      this._profession = matched[0]!.profession;
+      this._selectedRole = matched[0]!.role;
+    } else {
+      this._selectedRole = null;
+    }
+    this._profile = this._initProfile(key);
+    this._profileProfession = this._profession;
+    this._profileRole = this._selectedRole;
+    this.dispatchEvent(new CustomEvent('avatar:archetype:selected', {
+      detail: { archetype: { family, subArchetype: sub }, collection: this._collection, personality: this._buildPersonalityProfile() },
+      bubbles: true, composed: true,
+    }));
+  }
+
+  private _selectArchetypeFresh(key: string) {
     this._selectedArchetype = key;
     const [family, sub] = key.split('/');
     const matched = getRolesForArchetype(key);
@@ -477,7 +574,7 @@ export class AvatarStep extends LitElement {
           ${this.hideProfile ? nothing : this._renderProfileSection()}
           ${this._renderProfessionPanel()}
         </div>
-        <div class="personality-side">${this._renderPersonalityPanel()}</div>
+        ${this.hidePersonality ? nothing : html`<div class="personality-side">${this._renderPersonalityPanel()}</div>`}
       </div>
       ${this._renderGrid()}
       ${this._renderTipDialog()}
@@ -511,16 +608,19 @@ export class AvatarStep extends LitElement {
         <div class="profession-pills" role="listbox" aria-label="Professions">
           ${PROFESSION_LIST.map(p => {
             const isProfMatch = matchedProfessions.has(p) && this._profession !== p;
+            const isCompatible = this._compatibleProfessions().has(p) && this._profession !== p;
             return html`
-              <button class=${classMap({ pill: true, 'role-match': isProfMatch })}
+              <button class=${classMap({ pill: true, 'role-match': isProfMatch, 'has-compatible': isCompatible && !isProfMatch })}
                 role="option"
                 aria-selected=${String(this._profession === p)}
                 @click=${() => {
                 if (this._profession === p) {
                   this._profession = null;
                   this._selectedRole = null;
+                  this._professionAutoSelected = false;
                 } else {
                   this._profession = p;
+                  this._professionAutoSelected = false;
                   if (this._selectedArchetype) {
                     const match = matchedRoles.find(m => m.profession === p);
                     this._selectedRole = match ? match.role : null;
@@ -537,6 +637,14 @@ export class AvatarStep extends LitElement {
         ${this._selectedArchetype && matchedRoles.length === 0 ? html`
           <div style="font-size:12px;color:var(--pages-neutral-9,#999);margin-top:8px;padding:6px 10px;border:1px dashed var(--pages-neutral-5,#4a4a62);border-radius:6px">
             ${this._selectedArchetype.split('/')[0]} / ${this._selectedArchetype.split('/')[1]} — not mapped to any profession role. Use "By Personality" to explore this archetype.
+          </div>
+        ` : nothing}
+        ${!this._profession && !this._selectedArchetype && Object.keys(this._frameworks).length === 0 && Object.keys(this._bigFive).length === 0 ? html`
+          <div style="margin-top:24px;padding:20px;text-align:center;color:var(--pages-neutral-9,#888);font-size:13px;line-height:1.6;border:1px dashed var(--pages-neutral-5,#4a4a62);border-radius:8px">
+            <div style="font-size:15px;margin-bottom:8px;color:var(--pages-neutral-11,#ccc)">Choose your starting point</div>
+            <div>Select a <strong style="color:var(--pages-neutral-11,#ccc)">personality type</strong> on the right to find matching roles,</div>
+            <div>or pick a <strong style="color:var(--pages-neutral-11,#ccc)">profession</strong> above to browse archetypes by role.</div>
+            <div style="margin-top:12px;font-size:12px;color:var(--pages-neutral-8,#666)">You can also click any avatar in the grid below to start from a character.</div>
           </div>
         ` : nothing}
         ${roles ? html`
@@ -869,24 +977,13 @@ export class AvatarStep extends LitElement {
 
   private _renderGrid() {
     const tiers = this._tiers();
-    const hasFilters = Object.keys(this._frameworks).length > 0 || Object.keys(this._bigFive).length > 0;
     const profArchetypes = this._professionArchetypes();
     const hasProfFilter = profArchetypes.size > 0;
     const roleArchetypes = this._roleArchetypes();
     return html`
-      ${hasFilters ? html`
-        <div class="grid-toggle">
-          <label>View:</label>
-          <button class=${this._compactGrid ? '' : 'active'} @click=${() => { this._compactGrid = false; }}>Full</button>
-          <button class=${this._compactGrid ? 'active' : ''} @click=${() => { this._compactGrid = true; }}>Compact</button>
-        </div>
-      ` : nothing}
       <div class="grid" role="radiogroup" aria-label="Select archetype avatar">
         ${FAMILIES.map(family => {
           const subs = familySubs(family);
-          const familyTiers = subs.map(s => tiers.get(`${family}/${s}`) ?? 'strong');
-          const allIncompat = this._compactGrid && familyTiers.every(t => t === 'incompatible');
-          if (allIncompat) return nothing;
           return html`
             <div class="family-label" role="group" aria-label="${family} family">${family}</div>
             ${subs.map(sub => {
@@ -896,7 +993,6 @@ export class AvatarStep extends LitElement {
               const incompatible = tier === 'incompatible';
               const profGhosted = hasProfFilter && !profArchetypes.has(key) && !selected;
               const roleMatch = !selected && roleArchetypes.has(key);
-              if (this._compactGrid && incompatible) return html`<div></div>`;
               return html`
                 <div class=${classMap({ 'avatar-cell': true, [tier]: true, selected, unmapped: !MAPPED_ARCHETYPES.has(key), 'profession-ghosted': profGhosted, 'role-match': roleMatch })}
                   role="radio" aria-checked=${String(selected)}

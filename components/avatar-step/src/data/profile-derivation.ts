@@ -9,7 +9,7 @@ export function initProfile(archetypeKey: string): PersonalityProfile {
   const profile: PersonalityProfile = {};
 
   const rules = SUB_ARCHETYPE_RULES[family as ArchetypeFamily]?.find(r => r.subArchetype === sub);
-  if (rules?.mbtiAffinity.length) profile.mbti = rules.mbtiAffinity[0];
+  if (rules?.mbtiAffinity.length) profile.mbti = rules.mbtiAffinity[0]!;
   if (rules?.enneagramAffinity.length) profile.enneagram = `Type ${rules.enneagramAffinity[0]}`;
 
   for (const fw of ['disc', 'sdi'] as const) {

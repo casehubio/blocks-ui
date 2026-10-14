@@ -49,8 +49,8 @@ export class AgentCatalog extends LitElement {
     .featured-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
     .featured-card {
       display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-      border: 2px solid var(--pages-accent-7, #3b82f6); border-radius: 8px;
-      background: var(--pages-accent-2, #1a2744); cursor: pointer;
+      border: 1px solid var(--pages-neutral-5, #4a4a62); border-radius: 8px;
+      background: var(--pages-neutral-2, #252538); cursor: pointer;
       color: var(--pages-neutral-11, #ccc); transition: all 0.15s;
     }
     .featured-card:hover { border-color: var(--pages-accent-9, #2563eb); background: var(--pages-accent-3, #1e3a5f); }
@@ -258,15 +258,23 @@ export class AgentCatalog extends LitElement {
 
   private _renderProfessionPills() {
     return html`
-      <div class="filter-bar" role="listbox" aria-label="Filter by profession">
-        ${PROFESSION_LIST.map(p => html`
-          <button class="filter-pill" role="option"
-            data-filter="profession" data-value=${p}
-            aria-selected=${String(this._profession === p)}
-            @click=${() => { this._profession = this._profession === p ? null : p; }}>
-            ${p}
-          </button>
-        `)}
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div class="filter-bar" role="listbox" aria-label="Filter by profession" style="flex:1;margin-bottom:0">
+          ${PROFESSION_LIST.map(p => html`
+            <button class="filter-pill" role="option"
+              data-filter="profession" data-value=${p}
+              aria-selected=${String(this._profession === p)}
+              @click=${() => { this._profession = this._profession === p ? null : p; }}>
+              ${p}
+            </button>
+          `)}
+        </div>
+        <div style="display:flex;gap:0;border:1px solid var(--pages-neutral-5,#4a4a62);border-radius:6px;overflow:hidden;flex-shrink:0">
+          <button style="padding:4px 10px;border:none;font-size:11px;cursor:pointer;background:${this.groupBy === 'role' ? 'var(--pages-accent-9,#2563eb)' : 'var(--pages-neutral-2,#252538)'};color:${this.groupBy === 'role' ? '#fff' : 'var(--pages-neutral-11,#ccc)'}"
+            @click=${() => { this.groupBy = 'role'; }}>By Role</button>
+          <button style="padding:4px 10px;border:none;border-left:1px solid var(--pages-neutral-5,#4a4a62);font-size:11px;cursor:pointer;background:${this.groupBy === 'family' ? 'var(--pages-accent-9,#2563eb)' : 'var(--pages-neutral-2,#252538)'};color:${this.groupBy === 'family' ? '#fff' : 'var(--pages-neutral-11,#ccc)'}"
+            @click=${() => { this.groupBy = 'family'; }}>By Family</button>
+        </div>
       </div>
     `;
   }
