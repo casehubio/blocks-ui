@@ -271,9 +271,6 @@ export class AgentRelationshipEditor extends LitElement {
     const groups = new Map<RelationshipKind, { rel: AgentRelationship; index: number }[]>();
     const allRels = [...this.relationships, ...this._pendingAdditions];
     allRels.forEach((rel, index) => {
-      const isPending = index >= this.relationships.length;
-      const involvesFocal = rel.sourceAgentId === this.agentId || rel.targetAgentId === this.agentId;
-      if (!involvesFocal && !isPending) return;
       const existing = groups.get(rel.kind) ?? [];
       existing.push({ rel, index });
       groups.set(rel.kind, existing);
