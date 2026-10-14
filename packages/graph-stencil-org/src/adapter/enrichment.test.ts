@@ -93,4 +93,35 @@ describe('enrichWithDescriptors', () => {
     const alice = enriched.nodes.find(n => n.properties['agentId'] === 'alice');
     expect(alice!.properties['briefing']).toBe('Handle code reviews');
   });
+
+  it('merges avatar from descriptor', () => {
+    const base = toOrgGraph(SIMPLE_YAML);
+    const agents: Record<string, AgentDescriptor> = {
+      alice: { avatar: 'mythic:P15' },
+    };
+    const enriched = enrichWithDescriptors(base.model, agents);
+    const alice = enriched.nodes.find(n => n.properties['agentId'] === 'alice');
+    expect(alice!.properties['avatar']).toBe('mythic:P15');
+  });
+
+  it('merges profession from descriptor', () => {
+    const base = toOrgGraph(SIMPLE_YAML);
+    const agents: Record<string, AgentDescriptor> = {
+      alice: { profession: 'Software' },
+    };
+    const enriched = enrichWithDescriptors(base.model, agents);
+    const alice = enriched.nodes.find(n => n.properties['agentId'] === 'alice');
+    expect(alice!.properties['profession']).toBe('Software');
+  });
+
+  it('maps descriptor role to descriptorRole on node data', () => {
+    const base = toOrgGraph(SIMPLE_YAML);
+    const agents: Record<string, AgentDescriptor> = {
+      alice: { role: 'Architect' },
+    };
+    const enriched = enrichWithDescriptors(base.model, agents);
+    const alice = enriched.nodes.find(n => n.properties['agentId'] === 'alice');
+    expect(alice!.properties['descriptorRole']).toBe('Architect');
+    expect(alice!.properties['role']).toBe('worker');
+  });
 });

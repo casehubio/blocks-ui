@@ -91,6 +91,9 @@ export interface AgentDescriptor {
   goals?: AgentGoal[];
   constraints?: AgentConstraint[];
   briefing?: string;
+  avatar?: string;
+  profession?: string;
+  role?: string;
 }
 
 export interface OrgAgentNodeData {
@@ -109,6 +112,9 @@ export interface OrgAgentNodeData {
   unitKind?: string;
   unitColorStart?: string;
   unitColorEnd?: string;
+  avatar?: string;
+  profession?: string;
+  descriptorRole?: string;
 }
 
 export interface OrgUnitNodeData {

@@ -42,6 +42,62 @@ describe('renderOrgAgent — rich card', () => {
     };
     expect(() => renderOrgAgent(node)).not.toThrow();
   });
+
+  it('renders avatar component when avatar code is present', () => {
+    const node: GraphNode = {
+      id: 'agent:u1:a1', type: 'org-agent', parentId: 'unit:u1',
+      properties: {
+        agentId: 'a1', role: 'worker', label: 'a1', unitId: 'u1',
+        avatar: 'mythic:P15',
+        unitColorStart: '#2c5282',
+      },
+    };
+    const result = renderOrgAgent(node);
+    const strings = (result as any).strings as string[];
+    const joined = strings.join('');
+    expect(joined).toContain('agent-avatar');
+  });
+
+  it('renders colored dot when avatar is absent', () => {
+    const node: GraphNode = {
+      id: 'agent:u1:a1', type: 'org-agent', parentId: 'unit:u1',
+      properties: { agentId: 'a1', role: 'worker', label: 'a1', unitId: 'u1', unitColorStart: '#2c5282' },
+    };
+    const result = renderOrgAgent(node);
+    const strings = (result as any).strings as string[];
+    const joined = strings.join('');
+    expect(joined).toContain('<svg');
+    expect(joined).toContain('circle');
+  });
+
+  it('renders profession row when profession is present', () => {
+    const node: GraphNode = {
+      id: 'agent:u1:a1', type: 'org-agent', parentId: 'unit:u1',
+      properties: {
+        agentId: 'a1', role: 'worker', label: 'a1', unitId: 'u1',
+        profession: 'Software', descriptorRole: 'Architect',
+      },
+    };
+    const result = renderOrgAgent(node);
+    const values = (result as any).values as unknown[];
+    const flat = JSON.stringify(values);
+    expect(flat).toContain('Software');
+    expect(flat).toContain('Architect');
+  });
+
+  it('renders profession without descriptorRole when only profession is set', () => {
+    const node: GraphNode = {
+      id: 'agent:u1:a1', type: 'org-agent', parentId: 'unit:u1',
+      properties: {
+        agentId: 'a1', role: 'worker', label: 'a1', unitId: 'u1',
+        profession: 'Software',
+      },
+    };
+    const result = renderOrgAgent(node);
+    const values = (result as any).values as unknown[];
+    const flat = JSON.stringify(values);
+    expect(flat).toContain('Software');
+  });
 });
 
 describe('renderOrgUnit — rich container', () => {

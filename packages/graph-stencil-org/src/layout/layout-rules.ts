@@ -42,6 +42,7 @@ export function sizingClassifier(): ClassificationRule {
           const p = node.properties;
           let h = AGENT_HEADER_HEIGHT + PADDING;
           if (p['slot']) h += ROW_HEIGHT;
+          if (p['profession']) h += ROW_HEIGHT;
           if ((p['capabilities'] as unknown[] | undefined)?.length) h += ROW_HEIGHT;
           const disp = p['disposition'] as Partial<DispositionAxes> | undefined;
           if (disp && Object.keys(disp).length > 0) h += DISPOSITION_ROW_HEIGHT;

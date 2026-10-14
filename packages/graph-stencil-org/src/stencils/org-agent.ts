@@ -2,6 +2,7 @@ import { html, nothing } from 'lit-html';
 import type { GraphNode, NodeDecoration } from '@casehubio/graph-core';
 import type { OrgAgentNodeData, AgentCapability } from '../types.js';
 import { DISPOSITION_SHORT_NAMES } from '../layout/layout-rules.js';
+import '@casehubio/agent-avatar-2d';
 
 const DISPOSITION_COLORS: Record<string, { bg: string; color: string }> = {
   autonomy: { bg: '#fed7d7', color: '#c53030' },
@@ -53,10 +54,17 @@ export function renderOrgAgent(node: GraphNode, _decoration?: NodeDecoration) {
   return html`
     <div style="display:flex;flex-direction:column;background:#fff;border:1.5px solid ${borderColor};border-radius:8px;min-width:240px;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden;">
       <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:${tintBg};border-bottom:1px solid ${borderColor};">
-        <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="${colorStart}"/></svg>
+        ${d.avatar
+          ? html`<agent-avatar .code=${d.avatar} size="xs" aria-hidden="true" style="flex-shrink:0;"></agent-avatar>`
+          : html`<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="${colorStart}"/></svg>`}
         <span style="font-weight:700;font-size:12px;color:${colorStart};flex:1;${truncStyle}">${d.agentId}</span>
         ${d.role ? html`<span style="font-size:8px;font-weight:600;color:${colorStart};text-transform:uppercase;flex-shrink:0;">${d.role}</span>` : nothing}
       </div>
+      ${d.profession ? html`
+        <div style="padding:2px 10px 0 ${d.avatar ? '42px' : '28px'};font-size:9px;color:#718096;">
+          ${d.descriptorRole ? `${d.profession} / ${d.descriptorRole}` : d.profession}
+        </div>
+      ` : nothing}
       <div style="padding:4px 0 6px 0;">
         ${d.slot ? renderRow('SLOT', d.slot) : nothing}
         ${(d.capabilities as AgentCapability[] | undefined)?.length ? renderRow('CAPS', d.capabilities!.map(c => c.name).join(', ')) : nothing}

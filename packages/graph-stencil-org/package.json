@@ -25,6 +25,7 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
+    "@casehubio/agent-avatar-2d": "workspace:*",
     "@casehubio/blocks-ui-core": "workspace:*",
     "@casehubio/graph-core": "*",
     "@casehubio/graph-renderer": "*",

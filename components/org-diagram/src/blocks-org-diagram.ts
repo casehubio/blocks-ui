@@ -47,8 +47,23 @@ import './panels/edge-tooltip.js';
 import type { OrgTooltip } from './panels/tooltip.js';
 import type { OrgEdgeTooltip } from './panels/edge-tooltip.js';
 import type { OrgAgentNodeData } from '@casehubio/graph-stencil-org';
+import {
+  mythicCollection,
+  chibiCollection,
+  neonCollection,
+  simpsonsCollection,
+  registerCollection,
+} from '@casehubio/agent-avatar-2d';
+import type { AvatarCollection } from '@casehubio/agent-avatar-2d';
 
 const orgEditPolicy = createOrgEditPolicy();
+
+const COLLECTION_MODULES: Record<string, AvatarCollection> = {
+  mythic: mythicCollection,
+  chibi: chibiCollection,
+  neon: neonCollection,
+  simpsons: simpsonsCollection,
+};
 
 const EMPTY_ORG_YAML = `organization:
   units:
@@ -84,10 +99,12 @@ export interface OrgDiagramProps {
   yaml?: string;
   src?: string;
   agents?: Record<string, AgentDescriptor>;
+  agentsEndpoint?: string;
   kindColors?: Record<string, { start: string; end: string }>;
   layoutStrategy?: OrgLayoutStrategy | 'auto';
   selectionTopic?: string;
   readonly?: boolean;
+  collections?: string[];
 }
 
 @customElement('blocks-org-diagram')
@@ -95,7 +112,9 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   @property({ attribute: 'selection-topic' }) selectionTopic = '';
   @property() layoutStrategy: OrgLayoutStrategy | 'auto' = 'auto';
   @property({ type: Object }) agents: Record<string, AgentDescriptor> | undefined;
+  @property({ attribute: 'agents-endpoint' }) agentsEndpoint?: string;
   @property({ type: Object }) kindColors: Record<string, { start: string; end: string }> | undefined;
+  @property({ type: Array }) collections?: string[];
 
   @state() private _archetypeHint: ArchetypeHint | null = null;
   @state() private _paletteOpen = true;
@@ -105,6 +124,8 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
   @state() private _showEscalation = true;
   @state() private _showSupervision = true;
   @state() private _showAttestation = true;
+  @state() private _fetchedAgents: Record<string, AgentDescriptor> | undefined;
+  @state() private _agentsFetchError: string | undefined;
   private _derivedData: DerivedOrgData | null = null;
   private _baseEdges: any[] = [];
   private _computedNodeSizes: ReadonlyMap<string, { width: number; height: number }> = new Map();
@@ -120,17 +141,50 @@ export class BlocksOrgDiagram extends DiagramBaseMixin(LitElement) {
     for (const c of orgHardConstraints()) this._engine.register(c);
   }
 
+  private get _effectiveAgents(): Record<string, AgentDescriptor> | undefined {
+    return this.agents ?? this._fetchedAgents;
+  }
+
   override connectedCallback(): void {
     super.connectedCallback();
     registerOrgStencils();
     this.setAttribute('role', 'region');
     this.setAttribute('aria-label', 'Organization diagram editor');
+    const cols = this.collections ?? ['mythic'];
+    for (const id of cols) {
+      const col = COLLECTION_MODULES[id];
+      if (col) registerCollection(col);
+    }
+  }
+
+  override updated(changed: Map<string, unknown>): void {
+    super.updated(changed);
+    if (changed.has('agentsEndpoint') && this.agentsEndpoint) {
+      this._fetchAgents(this.agentsEndpoint);
+    }
+  }
+
+  private async _fetchAgents(endpoint: string): Promise<void> {
+    try {
+      const resp = await fetch(endpoint);
+      if (!resp.ok) {
+        this._agentsFetchError = `Failed to fetch agents: ${resp.status}`;
+        console.warn(this._agentsFetchError);
+        return;
+      }
+      this._fetchedAgents = await resp.json();
+      this._agentsFetchError = undefined;
+      if (this._currentYaml) this._fullRender(this._currentYaml);
+    } catch (err) {
+      this._agentsFetchError = `Failed to fetch agents: ${err}`;
+      console.warn(this._agentsFetchError);
+    }
   }
 
   protected _adaptYaml(yaml: string): AdapterResult {
     const base = toOrgGraph(yaml);
-    let model = this.agents
-      ? enrichWithDescriptors(base.model, this.agents)
+    let model = this._effectiveAgents
+      ? enrichWithDescriptors(base.model, this._effectiveAgents)
       : base.model;
     const derived = computeDerivedData(model);
     this._derivedData = derived;

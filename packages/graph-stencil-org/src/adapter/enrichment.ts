@@ -20,6 +20,9 @@ export function enrichWithDescriptors(
         ...(desc.goals?.length ? { goals: desc.goals } : {}),
         ...(desc.constraints?.length ? { constraints: desc.constraints } : {}),
         ...(desc.briefing !== undefined ? { briefing: desc.briefing } : {}),
+        ...(desc.avatar !== undefined ? { avatar: desc.avatar } : {}),
+        ...(desc.profession !== undefined ? { profession: desc.profession } : {}),
+        ...(desc.role !== undefined ? { descriptorRole: desc.role } : {}),
       },
     };
   });
