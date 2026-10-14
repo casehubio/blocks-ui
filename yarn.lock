@@ -553,7 +553,6 @@ __metadata:
   dependencies:
     "@casehubio/blocks-ui-core": "workspace:*"
     "@casehubio/pages-data": "npm:*"
-    "@casehubio/pages-document-diff": "npm:*"
     "@types/node": "npm:^22.0.0"
     jsdom: "npm:^29.1.1"
     lit: "npm:^3.3.3"
@@ -1321,15 +1320,6 @@ __metadata:
   dependencies:
     "@casehubio/pages-primitives": "npm:0.2.3"
     lit: "npm:^3.3.3"
-  languageName: node
-  linkType: soft
-
-"@casehubio/pages-document-diff@portal:./.casehub-packages/packages/pages-document-diff::locator=casehub-blocks-ui%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@casehubio/pages-document-diff@portal:./.casehub-packages/packages/pages-document-diff::locator=casehub-blocks-ui%40workspace%3A."
-  dependencies:
-    lit: "npm:^3.3.3"
-    marked: "npm:^15.0.0"
   languageName: node
   linkType: soft
 
@@ -6254,7 +6244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^15.0.0, marked@npm:^15.0.12":
+"marked@npm:^15.0.12":
   version: 15.0.12
   resolution: "marked@npm:15.0.12"
   bin:
