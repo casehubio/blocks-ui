@@ -87,9 +87,14 @@
       el.addEventListener('pages-event', (e) => {
         const { topic, payload } = e.detail;
         if (topic === 'relationship:changed') {
-          log.textContent = `Event: ${topic}\n` +
-            `Additions: ${JSON.stringify(payload?.additions || [], null, 2)}\n` +
-            `Removals: ${JSON.stringify(payload?.removals || [], null, 2)}`;
+          const current = [...el.relationships];
+          for (const add of (payload?.additions || [])) current.push(add);
+          for (const rem of (payload?.removals || [])) {
+            const idx = current.findIndex(r => r.sourceAgentId === rem.sourceAgentId && r.targetAgentId === rem.targetAgentId && r.kind === rem.kind);
+            if (idx >= 0) current.splice(idx, 1);
+          }
+          el.relationships = current;
+          log.textContent = `Applied: +${(payload?.additions || []).length} -${(payload?.removals || []).length} (${current.length} total)`;
         } else {
           log.textContent = `Event: ${topic}\nPayload: ${JSON.stringify(payload, null, 2)}`;
         }
