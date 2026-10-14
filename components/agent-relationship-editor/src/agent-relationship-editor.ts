@@ -407,8 +407,9 @@ export class AgentRelationshipEditor extends LitElement {
               const outgoing = this._isOutgoing(rel);
               return html`
                 <div class="relationship-row ${isRemoval ? 'pending-removal' : ''} ${isAddition ? 'pending-addition' : ''}">
-                  <span class="direction-arrow">${outgoing ? '→' : '←'}</span>
-                  ${this._renderAgentCell(other)}
+                  ${this._renderAgentCell(rel.sourceAgentId)}
+                  <span class="direction-arrow">→</span>
+                  ${this._renderAgentCell(rel.targetAgentId)}
                   ${rel.scope?.domain ? html`<span class="scope-badge">${rel.scope.domain}</span>` : nothing}
                   ${!isRemoval && !isAddition ? html`
                     <button class="btn-delete" @click=${() => this._markForRemoval(index)}>Remove</button>
