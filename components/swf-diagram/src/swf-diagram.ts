@@ -142,6 +142,41 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     return { direction: this.layoutDirection, spacing: 60, containerPadding: 25 };
   }
 
+  protected override _postLayout(nodes: import('@xyflow/react').Node[], edges: import('@xyflow/react').Edge[]) {
+    const nodeParents = new Map(nodes.map(n => [n.id, n.parentId]));
+    const nodeTypes = new Map(nodes.map(n => [n.id, n.type]));
+    const filteredEdges = edges.filter(e => {
+      const sp = nodeParents.get(e.source);
+      const tp = nodeParents.get(e.target);
+      if (!sp || !tp || sp !== tp) return true;
+      if (sp === 'root') return true;
+      const parentType = nodeTypes.get(sp);
+      return parentType !== 'swf-try' && parentType !== 'swf-try-catch' && parentType !== 'swf-fork';
+    });
+    const connectedIds = new Set(filteredEdges.flatMap(e => [e.source, e.target]));
+    const containerTypes = new Set(['swf-try', 'swf-try-catch', 'swf-for', 'swf-do', 'swf-fork']);
+    const filteredNodes = nodes
+      .filter(n => n.type !== 'swf-root')
+      .map(n => {
+        const cleared = { ...n };
+        if (n.parentId === 'root') delete cleared.parentId;
+        const isInnerStructural = (n.type === 'swf-try-catch' || n.type === 'swf-try' || n.type === 'swf-catch' || n.type === 'swf-do' || n.type === 'swf-fork') && n.parentId && n.parentId !== 'root';
+        if (!connectedIds.has(n.id) || isInnerStructural) {
+          cleared.data = { ...cleared.data, _hideHandles: true };
+        }
+        if (containerTypes.has(n.type ?? '')) {
+          cleared.style = {
+            ...cleared.style,
+            background: 'var(--pages-neutral-4, #e5e5e5)',
+            border: '2px solid #d97706',
+            borderRadius: '10px',
+          };
+        }
+        return cleared;
+      });
+    return { nodes: filteredNodes, edges: filteredEdges };
+  }
+
   protected override async _computeLayout(
     model: import('@casehubio/graph-core').GraphModel,
     options: import('@casehubio/graph-renderer').ElkLayoutOptions,
@@ -286,50 +321,11 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
     }
   };
 
-  private _computeFilteredEdges() {
-    const nodeParents = new Map(this._nodes.map(n => [n.id, n.parentId]));
-    const nodeTypes = new Map(this._nodes.map(n => [n.id, n.type]));
-    return this._edges.filter(e => {
-      const sp = nodeParents.get(e.source);
-      const tp = nodeParents.get(e.target);
-      if (!sp || !tp || sp !== tp) return true;
-      if (sp === 'root') return true;
-      const parentType = nodeTypes.get(sp);
-      return parentType !== 'swf-try' && parentType !== 'swf-try-catch' && parentType !== 'swf-fork';
-    });
-  }
-
-  private _computeFilteredNodes(filteredEdges: typeof this._edges) {
-    const connectedIds = new Set(filteredEdges.flatMap(e => [e.source, e.target]));
-    const containerTypes = new Set(['swf-try', 'swf-try-catch', 'swf-for', 'swf-do', 'swf-fork']);
-    return this._nodes
-      .filter(n => n.type !== 'swf-root')
-      .map(n => {
-        const cleared = n.parentId === 'root' ? { ...n, parentId: undefined } : { ...n };
-        const isInnerStructural = (n.type === 'swf-try-catch' || n.type === 'swf-try' || n.type === 'swf-catch' || n.type === 'swf-do' || n.type === 'swf-fork') && n.parentId && n.parentId !== 'root';
-        if (!connectedIds.has(n.id) || isInnerStructural) {
-          cleared.data = { ...cleared.data, _hideHandles: true };
-        }
-        if (containerTypes.has(n.type ?? '')) {
-          cleared.style = {
-            ...cleared.style,
-            background: 'var(--pages-neutral-4, #e5e5e5)',
-            border: '2px solid #d97706',
-            borderRadius: '10px',
-          };
-        }
-        return cleared;
-      });
-  }
-
   override render() {
     if (this._error) {
       return this._renderError();
     }
     const hasSelection = this._selectedNodeId !== '';
-    const isReadonly = this.readonly || !!this._adapterResult?.degraded;
-    const filteredEdges = this._computeFilteredEdges();
-    const filteredNodes = this._computeFilteredNodes(filteredEdges);
 
     return html`
       <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
@@ -346,18 +342,7 @@ export class SwfDiagram extends DiagramBaseMixin(LitElement) {
             ${this._renderStencilPalette()}
           </div>
           <div style="flex:1;height:100%;min-width:0;position:relative;" @pointerdown=${this._onCanvasPointerDown}>
-            <pages-graph-canvas
-              .nodes=${filteredNodes}
-              .edges=${filteredEdges}
-              .model=${this._adapterResult?.model}
-              .editPolicy=${this._editPolicy()}
-              .onMutation=${this._handleMutation}
-
-              role="img"
-              aria-label="Workflow diagram"
-              style="width:100%;height:100%;"
-              @pages-event=${this._handleCanvasEvent}
-            ></pages-graph-canvas>
+            ${this._renderCanvas()}
             ${this._renderNodePicker()}
           </div>
           ${hasSelection ? html`

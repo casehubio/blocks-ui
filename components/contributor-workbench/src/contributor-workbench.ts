@@ -2,8 +2,8 @@ import { LitElement, html, css, nothing, type PropertyValues, type TemplateResul
 import { customElement, property, state } from 'lit/decorators.js';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { ContributorDetail } from './types.js';
-import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import type { TypedDataSet, TypedRow } from '@casehubio/pages-data';
+import { fromRows } from '@casehubio/pages-data';
 import { OUTCOME_COLUMNS, OUTCOME_TABLE_CONFIG, ID_COL } from './columns.js';
 import '@casehubio/pages-ui-components/split-workbench';
 import '@casehubio/blocks-ui-trust-score-panel';

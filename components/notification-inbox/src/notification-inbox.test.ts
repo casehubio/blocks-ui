@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { nothing } from 'lit';
-import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data';
 import type { Notification, NotificationPage } from './types.js';
 import './notification-inbox.js';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
 
 function mockTypedRow(n: Notification) {
   const ds = fromRows([n], [

@@ -1,7 +1,7 @@
 import type { RoutingRationaleData, CandidateScore } from '@casehubio/blocks-ui-routing-rationale';
 import type { GateDecision } from '@casehubio/blocks-ui-trust-feedback-display';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
-import type { ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { ColumnId } from '@casehubio/pages-data';
 import type { TemplateResult } from 'lit';
 
 export type { RoutingRationaleData, CandidateScore, GateDecision };

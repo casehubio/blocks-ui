@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NavigationController } from './navigation-controller.js';
 import type { EntityTypeRegistration, EntityEvent } from './types.js';
-import { columnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId } from '@casehubio/pages-data';
 
 describe('NavigationController', () => {
   const caseType: EntityTypeRegistration = {

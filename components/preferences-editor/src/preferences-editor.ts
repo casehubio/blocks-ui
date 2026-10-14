@@ -1,9 +1,9 @@
 import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DataSourceAdapter } from '@casehubio/pages-component';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { ColumnType, columnId } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { ColumnType, columnId } from '@casehubio/pages-data';
+import type { TypedDataSet, TypedRow } from '@casehubio/pages-data';
 import type { DataSink } from '@casehubio/pages-data/dist/datasource/types.js';
 import '@casehubio/pages-table';
 import './value-editor.js';

@@ -28,9 +28,9 @@ import { PushMixin } from '@casehubio/pages-component';
 import '@casehubio/pages-table';
 import '@casehubio/pages-ui-components';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data';
 import './inbox-summary-bar.js';
 import './inbox-filter-bar.js';
 import './queue-pill-bar.js';
@@ -111,7 +111,7 @@ export class WorkItemInbox extends WorkItemInboxBase {
   @state() private _claimError: string | null = null;
   @state() private _showCancelDialog = false;
   @state() private _pendingCancelItems: string[] = [];
-  @state() private _tableDataSet: import('@casehubio/pages-data/dist/dataset/types.js').TypedDataSet | undefined;
+  @state() private _tableDataSet: import('@casehubio/pages-data').TypedDataSet | undefined;
 
   // Queue scope
   @state() private _queueScope: QueueScope | null = null;

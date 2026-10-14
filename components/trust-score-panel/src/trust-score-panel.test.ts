@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import './trust-score-panel.js';
 import type { TrustScorePanel } from './trust-score-panel.js';
 import type { TrustScoreResponse } from './types.js';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
 
 let originalFetch: typeof globalThis.fetch;
 

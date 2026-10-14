@@ -2,11 +2,11 @@ import { LitElement, html, css, nothing, type PropertyValues, type TemplateResul
 import { customElement, property, state } from 'lit/decorators.js';
 import { emitPagesEvent } from '@casehubio/pages-data';
 import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { ColumnType, columnId as toColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { TypedDataSet, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { ColumnType, columnId as toColumnId } from '@casehubio/pages-data';
+import type { TypedDataSet, ColumnId } from '@casehubio/pages-data';
 import '@casehubio/blocks-ui-list-pane';
-import type { TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { TypedRow } from '@casehubio/pages-data';
 import type { EntityTypeRegistration, EntitySelection, FilterDescriptor } from './types.js';
 import { DEFAULT_READER, DEFAULT_RESPONSE_READER } from './readers.js';
 

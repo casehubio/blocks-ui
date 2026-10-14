@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId } from '@casehubio/pages-data';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import { PHASE_STYLES } from '@casehubio/blocks-ui-routing-rationale';
 import { formatTimestamp } from '@casehubio/blocks-ui-core';

@@ -1,4 +1,4 @@
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId, ColumnType } from '@casehubio/pages-data';
 import type { TableColumnConfig } from '@casehubio/pages-table';
 import type { ContributorOutcomeSummary } from './types.js';
 

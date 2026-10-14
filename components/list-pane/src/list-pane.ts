@@ -4,7 +4,7 @@ import { DataSourceMixin, PushMixin } from '@casehubio/pages-component';
 import { emitPagesEvent, onPagesEvent } from '@casehubio/pages-data';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import '@casehubio/pages-table';
-import type { TypedRow, ColumnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import type { TypedRow, ColumnId } from '@casehubio/pages-data';
 
 export interface ListPaneProps {
   selectionTopic: string;

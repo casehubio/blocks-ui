@@ -1,4 +1,4 @@
-import { columnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId } from '@casehubio/pages-data';
 import type { EntityTypeRegistration } from './types.js';
 
 export function caseInstanceType(config: { listEndpoint: string }): EntityTypeRegistration {

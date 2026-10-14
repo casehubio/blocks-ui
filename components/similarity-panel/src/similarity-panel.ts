@@ -6,9 +6,9 @@ import { createTypedFetchSource, EMPTY_DATASET } from '@casehubio/pages-data';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { SourceFactory } from '@casehubio/pages-data';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data';
 import type { Precedent } from './types.js';
 
 export const SimilarityPanelTopics = {

@@ -5,9 +5,9 @@ import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primiti
 import '@casehubio/pages-table';
 import '@casehubio/pages-ui-components/status-badge';
 import type { TableColumnConfig, ColumnRenderer, RowActivateDetail } from '@casehubio/pages-table';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, TypedDataSet, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, TypedDataSet, TypedRow } from '@casehubio/pages-data';
 import type { SessionResponse, CreateSessionRequest } from './types.js';
 import { SessionEventTopics } from './types.js';
 

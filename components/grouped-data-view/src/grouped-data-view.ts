@@ -2,8 +2,8 @@ import { LitElement, html, css, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { DataSourceMixin } from '@casehubio/pages-component';
 import { emitPagesEvent } from '@casehubio/pages-data';
-import type { ColumnId, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { GroupingKey } from '@casehubio/pages-data/dist/dataset/group.js';
+import type { ColumnId, TypedDataSet } from '@casehubio/pages-data';
+import type { GroupingKey } from '@casehubio/pages-data';
 import type { TableColumnConfig, ColumnRenderer, SelectionMode } from '@casehubio/pages-table';
 import type { RowStyleRule } from '@casehubio/pages-component';
 import type { GroupStyleConfig } from './types.js';
@@ -15,8 +15,8 @@ interface PagesGroupedViewHost extends HTMLElement {
   loading: boolean;
   error: string;
   setColumnRenderers(v: ReadonlyMap<ColumnId, ColumnRenderer> | undefined): void;
-  setGetRowKey(v: ((row: import('@casehubio/pages-data/dist/dataset/types.js').TypedRow) => string) | undefined): void;
-  setGetRowClass(v: ((row: import('@casehubio/pages-data/dist/dataset/types.js').TypedRow) => string) | undefined): void;
+  setGetRowKey(v: ((row: import('@casehubio/pages-data').TypedRow) => string) | undefined): void;
+  setGetRowClass(v: ((row: import('@casehubio/pages-data').TypedRow) => string) | undefined): void;
 }
 
 export interface GroupedDataViewProps {

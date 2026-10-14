@@ -6,9 +6,9 @@ import { KeyboardShortcutMixin, LiveRegionMixin } from '@casehubio/pages-primiti
 import { PushMixin } from '@casehubio/pages-component';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer, SelectionChangeDetail, RowActivateDetail } from '@casehubio/pages-table';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data';
 import type { Notification, NotificationPage } from './types.js';
 import { NotificationApi } from './api.js';
 import { emitNotificationEvent, NotificationEventTopics } from './events.js';

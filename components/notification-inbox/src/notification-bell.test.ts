@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data/dist/sse/sse-manager.js';
+import type { SSEHandler, SSEEvent, SSESubscribeOptions, SSEManager } from '@casehubio/pages-data';
 import './notification-bell.js';
 import type { NotificationBell } from './notification-bell.js';
 

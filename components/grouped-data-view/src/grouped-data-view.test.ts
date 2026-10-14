@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import './grouped-data-view.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { ColumnId, TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { ColumnId, TypedDataSet } from '@casehubio/pages-data';
+import { fromRows } from '@casehubio/pages-data';
 import type { GroupStyleConfig } from './types.js';
 
 type GroupedDataViewEl = HTMLElement & {

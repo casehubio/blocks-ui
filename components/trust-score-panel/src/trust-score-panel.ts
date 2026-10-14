@@ -9,9 +9,9 @@ import { trustLevelFromScore } from './types.js';
 import '@casehubio/pages-table';
 import type { TableColumnConfig, ColumnRenderer } from '@casehubio/pages-table';
 import type { SourceFactory } from '@casehubio/pages-data';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data';
 
 const TAG_COL = columnId('tag');
 const SCORE_COL = columnId('score');

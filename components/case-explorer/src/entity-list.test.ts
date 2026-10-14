@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import './entity-list.js';
 import type { EntityTypeRegistration, EntityListResponse, EntityInstance } from './types.js';
-import { columnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId } from '@casehubio/pages-data';
 
 describe('EntityList', () => {
   let fetchFn: ReturnType<typeof vi.fn>;

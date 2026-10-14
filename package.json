@@ -31,7 +31,8 @@
     "@casehubio/pages-schema": "portal:./.casehub-packages/packages/pages-schema",
     "@casehubio/yaml-core": "portal:./.casehub-packages/packages/yaml-core",
     "@casehubio/pages-aria": "portal:./.casehub-packages/packages/pages-aria",
-    "@casehubio/pages-document": "portal:./.casehub-packages/packages/pages-document"
+    "@casehubio/pages-document": "portal:./.casehub-packages/packages/pages-document",
+    "@casehubio/pages-document-diff": "portal:./.casehub-packages/packages/pages-document-diff"
   },
   "scripts": {
     "build": "yarn workspaces foreach -A --topological run build && yarn workspace @casehubio/blocks-ui-schema run generate",

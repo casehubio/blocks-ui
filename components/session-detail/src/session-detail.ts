@@ -3,9 +3,9 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { onPagesEvent } from '@casehubio/pages-data';
 import { PushMixin } from '@casehubio/pages-component';
 import '@casehubio/pages-table';
-import { fromRows } from '@casehubio/pages-data/dist/dataset/conversion.js';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { TypedDataSet } from '@casehubio/pages-data/dist/dataset/types.js';
+import { fromRows } from '@casehubio/pages-data';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { TypedDataSet } from '@casehubio/pages-data';
 import type { GitStatusResponse, PortStatus } from '@casehubio/blocks-ui-session-list';
 import { SessionEventTopics } from '@casehubio/blocks-ui-session-list';
 

@@ -815,27 +815,177 @@ export const orchestrationWorkbenchPropsSchema = z.object({
 });
 
 export const dagViewerPropsSchema = z.object({
-  dagPlan: z.unknown(),
-  dagResult: z.unknown(),
-  dispatchMode: z.unknown(),
+  dagPlan: z.union([z.null(), z.object({
+      nodes: z.record(z.object({
+          id: z.string(),
+          taskId: z.string(),
+          taskDescription: z.string().optional(),
+          executorName: z.string().optional(),
+          dependsOn: z.array(z.string()),
+          joinType: z.enum(["ALL_OF", "ANY_OF"]),
+        })),
+      timestamp: z.string(),
+    })]),
+  dagResult: z.union([z.null(), z.object({
+      nodeStates: z.record(z.object({
+          kind: z.enum(["Pending", "Dispatched", "Completed", "Failed", "Skipped", "Cancelled"]),
+          reason: z.string().optional(),
+        })),
+      completedResults: z.record(z.unknown()).optional(),
+      allSucceeded: z.boolean(),
+      elapsed: z.string(),
+      timestamp: z.string(),
+    })]),
+  dispatchMode: z.union([z.null(), z.string(), z.string()]),
   selectionTopic: z.string(),
 });
 
 export const decompositionTreePropsSchema = z.object({
-  decomposition: z.unknown(),
+  decomposition: z.union([z.null(), z.object({
+      root: z.union([z.object({
+          kind: z.string(),
+          id: z.string(),
+          description: z.string().optional(),
+          executorName: z.string().optional(),
+        }), z.object({
+          kind: z.string(),
+          id: z.string(),
+          name: z.string(),
+          methods: z.array(z.object({
+              guardLabel: z.string().optional(),
+              strategyId: z.string(),
+              children: z.array(z.unknown()),
+            })),
+        })]),
+      timestamp: z.string(),
+    })]),
   selectionTopic: z.string(),
 });
 
 export const planItemTreePropsSchema = z.object({
-  definition: z.unknown(),
+  definition: z.union([z.null(), z.object({
+      kind: z.string(),
+      id: z.string(),
+      name: z.string(),
+      executor: z.object({
+        name: z.string(),
+        description: z.string().optional(),
+      }),
+      entryCondition: z.string().optional(),
+    }), z.object({
+      kind: z.string(),
+      id: z.string(),
+      name: z.string(),
+      children: z.array(z.union([z.object({
+            kind: z.string(),
+            id: z.string(),
+            name: z.string(),
+            executor: z.object({
+              name: z.string(),
+              description: z.string().optional(),
+            }),
+            entryCondition: z.string().optional(),
+          }), z.object({
+            kind: z.string(),
+            id: z.string(),
+            name: z.string(),
+            children: z.array(z.union([z.unknown(), z.unknown()])),
+            planningStrategy: z.string().optional(),
+            completion: z.union([z.object({
+                kind: z.unknown(),
+              }), z.object({
+                kind: z.unknown(),
+                m: z.unknown(),
+              }), z.object({
+                kind: z.unknown(),
+              })]),
+            dispatchMode: z.enum(["ORCHESTRATED", "CHOREOGRAPHED"]),
+            entryCondition: z.string().optional(),
+            exitCondition: z.string().optional(),
+            repeatable: z.boolean(),
+            scopedBindings: z.record(z.enum(["PARTICIPANT", "COMPANION"])).optional(),
+          })])),
+      planningStrategy: z.string().optional(),
+      completion: z.union([z.object({
+          kind: z.string(),
+        }), z.object({
+          kind: z.string(),
+          m: z.number(),
+        }), z.object({
+          kind: z.string(),
+        })]),
+      dispatchMode: z.enum(["ORCHESTRATED", "CHOREOGRAPHED"]),
+      entryCondition: z.string().optional(),
+      exitCondition: z.string().optional(),
+      repeatable: z.boolean(),
+      scopedBindings: z.record(z.enum(["PARTICIPANT", "COMPANION"])).optional(),
+    })]),
 });
 
 export const planModelDashboardPropsSchema = z.object({
-  planModel: z.unknown(),
+  planModel: z.union([z.null(), z.object({
+      caseId: z.string(),
+      agenda: z.array(z.object({
+          planItemId: z.string(),
+          bindingName: z.string(),
+          status: z.string(),
+          description: z.string().optional(),
+        })),
+      focus: z.string().optional(),
+      focusRationale: z.string().optional(),
+      resourceBudget: z.record(z.unknown()),
+      subCases: z.array(z.object({
+          caseDefinition: z.string(),
+          namespace: z.string(),
+          status: z.string().optional(),
+        })),
+      compounds: z.array(z.object({
+          id: z.string(),
+          name: z.string(),
+          status: z.string(),
+          childCount: z.number(),
+          completedCount: z.number(),
+          completion: z.union([z.object({
+              kind: z.string(),
+            }), z.object({
+              kind: z.string(),
+              m: z.number(),
+            }), z.object({
+              kind: z.string(),
+            })]),
+        })),
+      timestamp: z.string(),
+    })]),
 });
 
 export const caseFlowViewerPropsSchema = z.object({
-  runtimeState: z.unknown(),
+  runtimeState: z.union([z.null(), z.object({
+      planItems: z.array(z.object({
+          id: z.string(),
+          bindingName: z.string(),
+          status: z.enum(["RUNNING", "FAULTED", "CANCELLED", "COMPLETED", "PENDING", "REJECTED", "DELEGATED", "SUSPENDED", "OBSOLETE"]),
+          createdAt: z.string(),
+        })),
+      milestones: z.array(z.object({
+          name: z.string(),
+          status: z.enum(["COMPLETED", "PENDING", "ACTIVE"]),
+        })),
+      timestamp: z.string(),
+      caseStatus: z.string().optional(),
+      trustScores: z.array(z.object({
+          bindingName: z.string(),
+          workerId: z.string(),
+          score: z.number(),
+        })).optional(),
+      adaptiveDecisions: z.array(z.object({
+          trigger: z.string(),
+          condition: z.string(),
+          fired: z.boolean(),
+          timestamp: z.string(),
+          affectedBindings: z.array(z.string()).optional(),
+        })).optional(),
+      parallelGroups: z.array(z.array(z.string())).optional(),
+    })]),
   selectionTopic: z.string(),
 });
 
@@ -847,7 +997,33 @@ export const caseDependencyGraphPropsSchema = z.object({
 export const diagramWorkbenchPropsSchema = z.object({
   yaml: z.string(),
   src: z.string(),
-  runtimeState: z.unknown(),
+  runtimeState: z.union([z.null(), z.object({
+      planItems: z.array(z.object({
+          id: z.string(),
+          bindingName: z.string(),
+          status: z.enum(["RUNNING", "FAULTED", "CANCELLED", "COMPLETED", "PENDING", "REJECTED", "DELEGATED", "SUSPENDED", "OBSOLETE"]),
+          createdAt: z.string(),
+        })),
+      milestones: z.array(z.object({
+          name: z.string(),
+          status: z.enum(["COMPLETED", "PENDING", "ACTIVE"]),
+        })),
+      timestamp: z.string(),
+      caseStatus: z.string().optional(),
+      trustScores: z.array(z.object({
+          bindingName: z.string(),
+          workerId: z.string(),
+          score: z.number(),
+        })).optional(),
+      adaptiveDecisions: z.array(z.object({
+          trigger: z.string(),
+          condition: z.string(),
+          fired: z.boolean(),
+          timestamp: z.string(),
+          affectedBindings: z.array(z.string()).optional(),
+        })).optional(),
+      parallelGroups: z.array(z.array(z.string())).optional(),
+    })]),
 });
 
 export const clusterPanelPropsSchema = z.object({
@@ -998,6 +1174,15 @@ export const denyPatternEditorPropsSchema = z.object({
         addedAt: z.string(),
       })),
   }).optional(),
+  streams: z.array(z.object({
+      improvementCaseId: z.string(),
+      category: z.string(),
+      target: z.union([z.null(), z.string()]),
+      currentStage: z.string(),
+      blockedBy: z.union([z.null(), z.string()]),
+      conflictBlocked: z.boolean(),
+      startedAt: z.string(),
+    })).optional(),
   readonly: z.boolean().optional(),
 });
 
@@ -1037,6 +1222,15 @@ export const gatePolicyEditorPropsSchema = z.object({
     modes: z.union([z.null(), z.record(z.enum(["GATED", "AUTO", "NOTIFY"]))]),
     gateTimeoutMinutes: z.union([z.null(), z.number()]),
   }).optional(),
+  streams: z.array(z.object({
+      improvementCaseId: z.string(),
+      category: z.string(),
+      target: z.union([z.null(), z.string()]),
+      currentStage: z.string(),
+      blockedBy: z.union([z.null(), z.string()]),
+      conflictBlocked: z.boolean(),
+      startedAt: z.string(),
+    })).optional(),
   readonly: z.boolean().optional(),
 });
 
@@ -1144,6 +1338,54 @@ export const evolutionWorkbenchPropsSchema = z.object({
   }).optional(),
 });
 
+export const evolutionStreamsPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  streams: z.array(z.object({
+      improvementCaseId: z.string(),
+      category: z.string(),
+      target: z.union([z.null(), z.string()]),
+      currentStage: z.string(),
+      blockedBy: z.union([z.null(), z.string()]),
+      conflictBlocked: z.boolean(),
+      startedAt: z.string(),
+    })).optional(),
+  readonly: z.boolean().optional(),
+});
+
+export const evolutionInboxPropsSchema = z.object({
+  endpoint: z.string().optional(),
+  caseId: z.string().optional(),
+  tenancyId: z.string().optional(),
+  inbox: z.array(z.object({
+      caseId: z.string(),
+      id: z.string(),
+      stage: z.string(),
+      status: z.enum(["PENDING", "REJECTED", "APPROVED", "REDIRECTED", "TIMED_OUT", "AUTO_APPROVED"]),
+      category: z.union([z.null(), z.string()]),
+      areaId: z.union([z.null(), z.string()]),
+      improvementCaseId: z.union([z.null(), z.string()]),
+      summary: z.union([z.null(), z.string()]),
+      escalationTriggers: z.array(z.object({
+          layer: z.enum(["CATEGORY_RULE", "WATCH_PATTERN", "CONFIDENCE_SCORE"]),
+          reason: z.string(),
+        })),
+      confidence: z.number(),
+      queuedAt: z.string(),
+      resolvedAt: z.union([z.null(), z.string()]),
+      timeoutMinutes: z.union([z.null(), z.number()]),
+      decision: z.union([z.null(), z.object({
+          outcome: z.enum(["PENDING", "REJECTED", "APPROVED", "REDIRECTED", "TIMED_OUT", "AUTO_APPROVED"]),
+          reason: z.union([z.null(), z.string()]),
+          feedback: z.union([z.null(), z.string()]),
+        })]),
+    })).optional(),
+  readonly: z.boolean().optional(),
+});
+
+export const agentDetailPropsSchema = z.object({});
+
 export const agentAvatarPropsSchema = z.object({
   archetype: z.object({
     family: z.string(),
@@ -1204,6 +1446,113 @@ export const agentManifestEditorPropsSchema = z.object({
   providersEndpoint: z.string(),
   systemPrompt: z.string(),
   devMode: z.boolean(),
+});
+
+export const agentProfilePanelPropsSchema = z.object({
+  profile: z.union([z.null(), z.object({
+      profession: z.string().optional(),
+      role: z.string().optional(),
+      mbti: z.string().optional(),
+      enneagram: z.string().optional(),
+      disc: z.string().optional(),
+      belbin: z.object({
+        primary: z.string(),
+        secondaries: z.array(z.string()),
+      }).optional(),
+      sdi: z.string().optional(),
+      bigFive: z.object({}).optional(),
+    })]),
+  archetype: z.union([z.null(), z.object({
+      family: z.string(),
+      subArchetype: z.string(),
+    })]),
+  locked: z.object({
+    size: z.number(),
+    "__@toStringTag@566": z.string(),
+  }),
+  showConfirmButton: z.boolean(),
+  archetypeRoles: z.array(z.object({
+      profession: z.string(),
+      role: z.string(),
+    })),
+  templateName: z.string(),
+  templateDesc: z.string(),
+  templateAlias: z.string(),
+  collection: z.string(),
+});
+
+export const agentPersonalityWorkbenchPropsSchema = z.object({
+  initialDescriptor: z.object({
+    agentId: z.string(),
+    name: z.string(),
+    tenancyId: z.string(),
+    archetypeFamily: z.string().optional(),
+    subArchetype: z.string().optional(),
+    archetypeAdjectives: z.array(z.string()).optional(),
+    avatar: z.string().optional(),
+    description: z.string().optional(),
+    personality: z.object({
+      profession: z.string().optional(),
+      role: z.string().optional(),
+      mbti: z.string().optional(),
+      enneagram: z.string().optional(),
+      disc: z.string().optional(),
+      belbin: z.object({
+        primary: z.string(),
+        secondaries: z.array(z.string()),
+      }).optional(),
+      sdi: z.string().optional(),
+      bigFive: z.object({}).optional(),
+    }).optional(),
+    manifest: z.object({
+      providers: z.array(z.object({
+          vendor: z.string(),
+          credential: z.union([z.string(), z.record(z.string())]).optional(),
+          host: z.string().optional(),
+        })).optional(),
+      models: z.array(z.object({
+          id: z.string(),
+          apiModelId: z.string().optional(),
+          backendKey: z.string().optional(),
+          backendInstanceId: z.string().optional(),
+          vendor: z.string().optional(),
+          family: z.string().optional(),
+          displayName: z.string().optional(),
+          tier: z.enum(["FLAGSHIP", "STANDARD", "FAST", "EMBEDDING"]).optional(),
+          capabilities: z.array(z.string()).optional(),
+          contextWindow: z.number().optional(),
+          maxOutput: z.number().optional(),
+          locality: z.enum(["CLOUD", "LOCAL", "HYBRID"]).optional(),
+          costTier: z.enum(["LOW", "MEDIUM", "HIGH", "FREE", "PREMIUM"]).optional(),
+          authMethod: z.string().optional(),
+          properties: z.record(z.string()).optional(),
+        })).optional(),
+      aliases: z.record(z.object({
+          tier: z.enum(["FLAGSHIP", "STANDARD", "FAST", "EMBEDDING"]).optional(),
+          capabilities: z.array(z.string()).optional(),
+          locality: z.enum(["CLOUD", "LOCAL", "HYBRID"]).optional(),
+          maxCost: z.enum(["LOW", "MEDIUM", "HIGH", "FREE", "PREMIUM"]).optional(),
+          minContext: z.number().optional(),
+          minOutput: z.number().optional(),
+          preferVendor: z.string().optional(),
+        })).optional(),
+      defaults: z.object({
+        backend: z.string().optional(),
+      }).optional(),
+      sources: z.array(z.object({
+          uri: z.string(),
+          priority: z.number().optional(),
+        })).optional(),
+      localModels: z.array(z.object({
+          id: z.string(),
+          backendKey: z.string().optional(),
+          host: z.string().optional(),
+        })).optional(),
+    }).optional(),
+    preferredAlias: z.string().optional(),
+    profession: z.string().optional(),
+    role: z.string().optional(),
+  }).optional(),
 });
 
 export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map([
@@ -1267,6 +1616,11 @@ export const blocksComponentSchemaMap: ReadonlyMap<string, z.ZodType> = new Map(
   ["blocks-watch-pattern-editor", watchPatternEditorPropsSchema] as [string, z.ZodType],
   ["blocks-gate-policy-editor", gatePolicyEditorPropsSchema] as [string, z.ZodType],
   ["blocks-evolution-workbench", evolutionWorkbenchPropsSchema] as [string, z.ZodType],
+  ["blocks-evolution-streams", evolutionStreamsPropsSchema] as [string, z.ZodType],
+  ["blocks-evolution-inbox", evolutionInboxPropsSchema] as [string, z.ZodType],
+  ["blocks-agent-detail", agentDetailPropsSchema] as [string, z.ZodType],
   ["agent-avatar", agentAvatarPropsSchema] as [string, z.ZodType],
   ["agent-manifest-editor", agentManifestEditorPropsSchema] as [string, z.ZodType],
+  ["blocks-agent-profile-panel", agentProfilePanelPropsSchema] as [string, z.ZodType],
+  ["blocks-agent-personality-workbench", agentPersonalityWorkbenchPropsSchema] as [string, z.ZodType],
 ]);

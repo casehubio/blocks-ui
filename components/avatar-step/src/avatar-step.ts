@@ -373,7 +373,8 @@ export class AvatarStep extends LitElement {
     if (!belbin) {
       this._profile = { ...this._profile, belbin: { primary: value, secondaries: [] } };
     } else if (belbin.primary === value) {
-      this._profile = { ...this._profile, belbin: undefined };
+      const { belbin: _, ...rest } = this._profile;
+      this._profile = rest;
     } else if (belbin.secondaries.includes(value)) {
       this._profile = { ...this._profile, belbin: { ...belbin, secondaries: belbin.secondaries.filter(s => s !== value) } };
     } else if (belbin.secondaries.length < 2) {

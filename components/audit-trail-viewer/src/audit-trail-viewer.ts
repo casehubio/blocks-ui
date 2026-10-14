@@ -6,8 +6,8 @@ import { LiveRegionMixin } from '@casehubio/pages-primitives/a11y';
 import type { WorkIdentity } from '@casehubio/blocks-ui-core';
 import type { LedgerEntry, VerificationResult, Attestation } from './types.js';
 import '@casehubio/pages-ui-components/event-trail';
-import { columnId, ColumnType } from '@casehubio/pages-data/dist/dataset/types.js';
-import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId, ColumnType } from '@casehubio/pages-data';
+import type { CellValue, ColumnId, TypedRow } from '@casehubio/pages-data';
 import type { DataSource, DataSink } from '@casehubio/pages-data/dist/datasource/types.js';
 
 const ID_COL = columnId('id');

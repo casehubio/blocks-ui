@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { html } from 'lit';
 import './entity-detail.js';
 import type { EntityTypeRegistration, EntityInstance } from './types.js';
-import { columnId } from '@casehubio/pages-data/dist/dataset/types.js';
+import { columnId } from '@casehubio/pages-data';
 
 describe('EntityDetail', () => {
   let fetchFn: ReturnType<typeof vi.fn>;

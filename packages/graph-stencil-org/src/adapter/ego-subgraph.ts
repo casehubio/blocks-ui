@@ -34,5 +34,5 @@ export function extractEgoSubgraph(model: GraphModel, egoAgentId: string): Graph
   const nodes: GraphNode[] = model.nodes.filter(n => includedNodeIds.has(n.id));
   const edges: GraphEdge[] = relevantEdges;
 
-  return { nodes, edges, metadata: model.metadata };
+  return { nodes, edges, ...(model.metadata ? { metadata: model.metadata } : {}) };
 }
