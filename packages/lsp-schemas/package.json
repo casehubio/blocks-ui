@@ -2,6 +2,13 @@
   "name": "@casehubio/lsp-schemas",
   "version": "0.1.0",
   "description": "Domain YAML format schemas and wrapper LSP server for CaseHub",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casehubio/blocks-ui.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
