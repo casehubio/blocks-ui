@@ -4,10 +4,9 @@ import type { AgentRelationship, RelationshipKind, AgentDescriptor } from '@case
 import { toOrgYaml } from '@casehubio/graph-stencil-org';
 import { lookupRelationshipType } from '@casehubio/blocks-ui-core';
 import type { RelationshipChangeset, AgentRosterEntry } from './types.js';
-import './arc-view.js';
 import '@casehubio/agent-avatar-2d';
 
-type ViewTab = 'table' | 'arc' | 'diagram';
+type ViewTab = 'table' | 'diagram';
 
 const RELATIONSHIP_KINDS: RelationshipKind[] = [
   'SUPERVISES', 'DELEGATES_TO', 'ESCALATES_TO', 'REPORTS_TO', 'BACKS_UP', 'EXTENDED',
@@ -375,15 +374,10 @@ export class AgentRelationshipEditor extends LitElement {
     return html`
       <div class="view-tabs" role="tablist" aria-label="Relationship views">
         <button role="tab" id="tab-table" aria-selected=${this._viewTab === 'table'} aria-controls="panel-table" class="view-tab ${this._viewTab === 'table' ? 'active' : ''}" @click=${() => { this._viewTab = 'table'; }}>Table</button>
-        <button role="tab" id="tab-arc" aria-selected=${this._viewTab === 'arc'} aria-controls="panel-arc" class="view-tab ${this._viewTab === 'arc' ? 'active' : ''}" @click=${() => { this._viewTab = 'arc'; }}>Arc</button>
         <button role="tab" id="tab-diagram" aria-selected=${this._viewTab === 'diagram'} aria-controls="panel-diagram" class="view-tab ${this._viewTab === 'diagram' ? 'active' : ''}" @click=${() => { this._viewTab = 'diagram'; }}>Diagram</button>
       </div>
 
-      ${this._viewTab === 'arc' ? html`
-        <div role="tabpanel" id="panel-arc" aria-labelledby="tab-arc">
-          <arc-view agent-id=${this.agentId} .relationships=${this.relationships} .roster=${this.roster}></arc-view>
-        </div>
-      ` : this._viewTab === 'diagram' ? html`
+      ${this._viewTab === 'diagram' ? html`
         <div role="tabpanel" id="panel-diagram" aria-labelledby="tab-diagram">
           <blocks-org-diagram readonly .yaml=${this._effectiveYaml} .agents=${this.agents} .selectionTopic=${'relationship-editor:diagram:agent-selected'}></blocks-org-diagram>
         </div>

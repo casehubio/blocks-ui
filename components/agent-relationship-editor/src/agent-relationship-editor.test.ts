@@ -148,7 +148,7 @@ describe('agent-relationship-editor', () => {
       const tablist = el.shadowRoot!.querySelector('[role="tablist"]');
       expect(tablist).toBeTruthy();
       const tabs = el.shadowRoot!.querySelectorAll('[role="tab"]');
-      expect(tabs).toHaveLength(3);
+      expect(tabs).toHaveLength(2);
     });
 
     it('marks active tab with aria-selected', async () => {
