@@ -72,7 +72,8 @@ describe('blocks-list-pane', () => {
     globalThis.fetch = mockFetch() as unknown as typeof fetch;
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await new Promise(r => setTimeout(r, 200));
     el?.remove();
     globalThis.fetch = originalFetch;
     vi.restoreAllMocks();
