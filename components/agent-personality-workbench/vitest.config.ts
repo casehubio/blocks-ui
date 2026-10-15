@@ -23,5 +23,6 @@ export default defineConfig({
     hookTimeout: 30_000,
     teardownTimeout: 10_000,
     pool: 'forks',
+    poolOptions: { forks: { singleFork: true } },
   },
 });

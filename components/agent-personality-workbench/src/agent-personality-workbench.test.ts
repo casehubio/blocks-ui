@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import { registerCollection, mythicCollection, chibiCollection } from '@casehubio/agent-avatar-2d';
 import './agent-personality-workbench.js';
 import type { PersonalityProfile, FullAgentDescriptor } from '@casehubio/blocks-ui-core';
@@ -27,13 +27,29 @@ beforeAll(() => {
 describe('agent-personality-workbench', () => {
   let el: WorkbenchEl;
 
-  beforeEach(() => {
+  beforeAll(async () => {
     el = document.createElement('agent-personality-workbench') as WorkbenchEl;
     document.body.appendChild(el);
+    await el.updateComplete;
   });
 
-  afterEach(() => {
+  afterAll(() => {
     el.remove();
+  });
+
+  afterEach(async () => {
+    el._activeView = 'role';
+    el._collection = 'mythic';
+    el._collectionDropdownOpen = false;
+    el._groupBy = 'role';
+    el._profile = null;
+    el._archetype = null;
+    el._selectedTemplateId = null;
+    el._templateName = '';
+    el._templateDesc = '';
+    el._templateAlias = '';
+    el._locked = new Set();
+    await el.updateComplete;
   });
 
   it('renders with role="region" and aria-label', async () => {
