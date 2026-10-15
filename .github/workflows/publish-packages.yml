@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'npm-packages/pom.xml'
       - 'packages/*/package.json'
       - 'packages/*/src/**'
       - 'components/*/package.json'
