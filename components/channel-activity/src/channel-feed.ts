@@ -556,17 +556,22 @@ export class ChannelFeedElement extends ChannelFeedBase {
           <span class="group-sender">${group.sender}</span>
         </div>
         ${group.messages.map(msg => repliesByParent.has(msg.id) ? html`
-          <blocks-channel-thread tabindex="-1" class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
-                         .rootMessage=${msg}
-                         .replies=${repliesByParent.get(msg.id)!}
-                         .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
-                         .selectedMessageId=${this.selectedMessageId}
-                         .renderContent=${this.renderContent}
-                         .formatSender=${this.formatSender}
-                         .currentActorId=${this.currentActorId}
-                         data-message-id=${msg.id}
-                         data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
-          </blocks-channel-thread>
+          <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id} tabindex="-1" style=${this._highlightStyle(msg)}
+            @mouseenter=${() => this._onMessageEnter(msg.id)}
+            @mouseleave=${() => this._onMessageLeave()}>
+            ${this._renderHoverToolbar(msg)}
+            <blocks-channel-thread class=${this.selectedMessageId === msg.id || repliesByParent.get(msg.id)!.some(r => r.id === this.selectedMessageId) ? 'selected' : ''}
+                           .rootMessage=${msg}
+                           .replies=${repliesByParent.get(msg.id)!}
+                           .reactions=${this._threadReactions(msg.id, repliesByParent.get(msg.id)!, reactionIndex)}
+                           .selectedMessageId=${this.selectedMessageId}
+                           .renderContent=${this.renderContent}
+                           .formatSender=${this.formatSender}
+                           .currentActorId=${this.currentActorId}
+                           data-message-id=${msg.id}
+                           data-contains=${repliesByParent.get(msg.id)!.map(r => r.id).join(' ')}>
+            </blocks-channel-thread>
+          </div>
         ` : html`
           <div class="${this._messageItemClasses(msg)}" data-message-id=${msg.id} tabindex="-1" style=${this._highlightStyle(msg)}
             @mouseenter=${() => this._onMessageEnter(msg.id)}
