@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
-import { registerCollection, mythicCollection } from '@casehubio/agent-avatar-2d';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { registerCollection, mythicCollection, type AgentAvatar } from '@casehubio/agent-avatar-2d';
 import './agent-catalog.js';
 
 type CatalogEl = HTMLElement & {
@@ -10,20 +10,36 @@ type CatalogEl = HTMLElement & {
   groupBy: 'role' | 'family';
 };
 
-beforeAll(() => {
-  registerCollection(mythicCollection);
-});
+// Catalog behavior does not depend on SVG artwork. Avoid rendering the full
+// artwork for every card in every test; the integration test below covers it.
+const catalogTestCollection = { ...mythicCollection, parts: new Map<string, string>() };
 
 describe('agent-catalog', () => {
   let el: CatalogEl;
 
   beforeEach(() => {
+    registerCollection(catalogTestCollection);
     el = document.createElement('agent-catalog') as CatalogEl;
     document.body.appendChild(el);
   });
 
   afterEach(() => {
     el.remove();
+    registerCollection(catalogTestCollection);
+  });
+
+  it('renders real SVG artwork for a catalog avatar', async () => {
+    await el.updateComplete;
+    const avatars = el.shadowRoot!.querySelectorAll<AgentAvatar>('agent-avatar');
+    expect(avatars.length).toBeGreaterThan(0);
+    await Promise.all(Array.from(avatars, avatar => avatar.updateComplete));
+
+    // Render one real avatar, rather than a full catalog of SVGs on every update.
+    registerCollection(mythicCollection);
+    const avatar = avatars[0]!;
+    avatar.requestUpdate();
+    await avatar.updateComplete;
+    expect(avatar.shadowRoot!.querySelector('svg [data-part]')).toBeTruthy();
   });
 
   it('renders with role="region" and aria-label', async () => {
