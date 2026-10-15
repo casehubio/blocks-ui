@@ -7,12 +7,12 @@
     <parent>
         <groupId>io.casehub</groupId>
         <artifactId>casehub-parent</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3</version>
         <relativePath/>
     </parent>
 
     <artifactId>casehub-blocks-ui-npm</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
     <name>CaseHub Blocks UI NPM Packages</name>
     <description>Packed @casehubio/blocks-ui-* npm packages with resolved versions — consumed by CaseHub apps via Maven</description>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>io.casehub</groupId>
             <artifactId>casehub-pages-npm</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3</version>
         </dependency>
     </dependencies>
 
@@ -65,7 +65,7 @@
                                 <artifactItem>
                                     <groupId>io.casehub</groupId>
                                     <artifactId>casehub-pages-npm</artifactId>
-                                    <version>0.2-SNAPSHOT</version>
+                                    <version>0.3</version>
                                     <outputDirectory>${project.basedir}/../.casehub-packages</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
