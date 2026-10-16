@@ -26,3 +26,4 @@ proj
 tmp/
 test-results/
 hs_err_pid*.log
+.flattened-pom.xml

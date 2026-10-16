@@ -6,7 +6,7 @@
 
   <groupId>io.casehub</groupId>
   <artifactId>casehub-blocks-ui-app</artifactId>
-  <version>0.3</version>
+  <version>0.4-SNAPSHOT</version>
 
   <name>CaseHub Blocks UI :: Dev App</name>
   <description>Minimal Quarkus + Quinoa dev server for blocks-ui component development</description>
